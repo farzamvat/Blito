@@ -13,6 +13,8 @@ public class Permission {
 	long permissionId;
 	
 	ApiBusinessName apiBusinessName;
+	
+	String description;
 
 	public long getPermissionId() {
 		return permissionId;
@@ -28,6 +30,14 @@ public class Permission {
 
 	public void setApiBusinessName(ApiBusinessName apiBusinessName) {
 		this.apiBusinessName = apiBusinessName;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 }
