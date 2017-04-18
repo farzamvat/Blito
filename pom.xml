@@ -28,6 +28,21 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- scope provided because the processor is only needed at compile time -->
+		<dependency>
+			<groupId>fr.xebia.extras</groupId>
+			<artifactId>selma-processor</artifactId>
+			<version>0.15</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- This is the only real dependency you will have in your binaries -->
+		<dependency>
+			<groupId>fr.xebia.extras</groupId>
+			<artifactId>selma</artifactId>
+			<version>0.15</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-spatial -->
 		<dependency>
 			<groupId>org.hibernate</groupId>

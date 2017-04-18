@@ -26,7 +26,8 @@ public enum Response {
     MERCHANT_TYPE_NOT_FOUND("error.merchant.type.not.found"),
     SERVICE_REQUEST_NOT_FOUND("error.service.request.not.found"),
     OPERATION_NOT_ALLOWED("operation.not.allowed"),
-    IDP_CONFLICT("error.idp.conflict");
+    IDP_CONFLICT("error.idp.conflict"),
+    REGISTER_SUCCESS("success.registration.operation");
 
     private final String message;
 

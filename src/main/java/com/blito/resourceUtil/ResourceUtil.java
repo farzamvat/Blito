@@ -7,7 +7,7 @@ import com.blito.enums.Response;
 import com.blito.validators.ValidationInterface;
 
 public class ResourceUtil {
-	private static ResourceBundle resourceBundle = ResourceBundle.getBundle("messages/messages", new Locale("fa"));
+	private static ResourceBundle resourceBundle = ResourceBundle.getBundle("Messages/messages", new Locale("fa"));
 
 	public static String getMessage(Response response) {
 		return resourceBundle.getString(response.getMessage());
