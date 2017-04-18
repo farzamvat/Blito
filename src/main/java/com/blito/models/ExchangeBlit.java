@@ -6,13 +6,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity(name="exchange_blit")
 public class ExchangeBlit {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private String exchangeBlitId;
-	
-	private BlitType blitType;
+	private long exchangeBlitId;
 	
 	private String fisrtname;
 	
@@ -35,21 +35,25 @@ public class ExchangeBlit {
 	private String vendorAddress;
 	
 	private String description;
+	
+	@ManyToOne
+	@JoinColumn(name="userId")
+	private User user;
+	
+	public User getUser() {
+		return user;
+	}
 
-	public String getExchangeBlitId() {
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public long getExchangeBlitId() {
 		return exchangeBlitId;
 	}
 
-	public void setExchangeBlitId(String exchangeBlitId) {
+	public void setExchangeBlitId(long exchangeBlitId) {
 		this.exchangeBlitId = exchangeBlitId;
-	}
-
-	public BlitType getBlitType() {
-		return blitType;
-	}
-
-	public void setBlitType(BlitType blitType) {
-		this.blitType = blitType;
 	}
 
 	public String getFisrtname() {

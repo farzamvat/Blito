@@ -36,17 +36,17 @@ public class User {
 	private String mobile;
 	
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
-    @JoinTable(name="role" , joinColumns=@JoinColumn(name="user_id"), 
+    @JoinTable(name="user_role" , joinColumns=@JoinColumn(name="user_id"), 
     inverseJoinColumns=@JoinColumn(name="role_id"))
     private List<Role> roles;
 	
-	@OneToMany
+	@OneToMany(mappedBy="user",targetEntity=EventHost.class, cascade=CascadeType.ALL)
 	private List<EventHost> eventHosts;
 	
-	@OneToMany
+	@OneToMany(mappedBy="user",targetEntity=Blit.class, cascade=CascadeType.ALL)
 	private List<Blit> blits;
 	
-	@OneToMany
+	@OneToMany(mappedBy="user", targetEntity=ExchangeBlit.class, fetch=FetchType.LAZY)
 	private List<ExchangeBlit> exchangeBlits;
 
 	public long getUserId() {

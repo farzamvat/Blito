@@ -4,23 +4,37 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity(name="blit")
 public class Blit {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private String blitId;
+	private long blitId;
 	
 	private int count;
 	
 	@ManyToOne
+	@JoinColumn(name="blitTypeId")
 	private BlitType blitType;
+	
+	@ManyToOne
+	@JoinColumn(name="userId")
+	User user;
+	
+	public User getUser() {
+		return user;
+	}
 
-	public String getBlitId() {
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public long getBlitId() {
 		return blitId;
 	}
 
-	public void setBlitId(String blitId) {
+	public void setBlitId(long blitId) {
 		this.blitId = blitId;
 	}
 

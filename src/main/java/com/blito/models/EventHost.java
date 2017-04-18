@@ -2,6 +2,7 @@ package com.blito.models;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,7 +10,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 import com.blito.enums.HostType;
@@ -17,9 +21,9 @@ import com.blito.enums.HostType;
 @Entity(name="event_host")
 public class EventHost {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	long eventHostID;
+	long eventHostId;
 	
-	@OneToMany(mappedBy="event_host")
+	@OneToMany(mappedBy="eventHost",targetEntity=Event.class,cascade=CascadeType.ALL)
 	List<Event> events;
 
 	@Column(name="host_name")
@@ -40,16 +44,58 @@ public class EventHost {
 	@Column(name="twitter_link")
 	private String twitterLink;
 	
+	@Column(name="linkedin_link")
+	private String linkedinLink;
+	
 	@Column(name="event_type")
 	@Enumerated(EnumType.STRING)
 	private HostType hostType;
 	
-	public long getEventHostID() {
-		return eventHostID;
+	@ManyToOne(targetEntity=User.class)
+	@JoinColumn(name="userId")
+	User user;
+	
+	@OneToOne(cascade=CascadeType.ALL,optional=true)
+	Image hostPhoto;
+
+	public Image getHostPhoto() {
+		return hostPhoto;
 	}
 
-	public void setEventHostID(long eventHostID) {
-		this.eventHostID = eventHostID;
+	public void setHostPhoto(Image hostPhoto) {
+		this.hostPhoto = hostPhoto;
+	}
+
+	public String getLinkedinLink() {
+		return linkedinLink;
+	}
+
+	public void setLinkedinLink(String linkedinLink) {
+		this.linkedinLink = linkedinLink;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public long getEventHostId() {
+		return eventHostId;
+	}
+
+	public void setEventHostId(long eventHostId) {
+		this.eventHostId = eventHostId;
+	}
+
+	public List<Event> getEvents() {
+		return events;
+	}
+
+	public void setEvents(List<Event> events) {
+		this.events = events;
 	}
 
 	public String getHostName() {

@@ -6,13 +6,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity(name="blit_type")
 public class BlitType {
 	
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private String blitTypeId;
+	private long blitTypeId;
 	
 	private boolean isFree;
 	
@@ -21,14 +22,22 @@ public class BlitType {
 	private Timestamp date;
 	
 	@ManyToOne
-	private Event event;
+	@JoinColumn(name="eventDateId")
+	private EventDate eventDate;
 	
+	public EventDate getEventDate() {
+		return eventDate;
+	}
 
-	public String getBlitTypeId() {
+	public void setEventDate(EventDate eventDate) {
+		this.eventDate = eventDate;
+	}
+
+	public long getBlitTypeId() {
 		return blitTypeId;
 	}
 
-	public void setBlitTypeId(String blitTypeId) {
+	public void setBlitTypeId(long blitTypeId) {
 		this.blitTypeId = blitTypeId;
 	}
 

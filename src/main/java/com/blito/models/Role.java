@@ -18,8 +18,9 @@ public class Role {
 	long roleId;
 
 	String name;
+	
 	@ManyToMany(cascade=CascadeType.ALL)
-	@JoinTable(name="permission")
+	@JoinTable(name="role_permission")
 	List<Permission> permissions;
 	
 	public Role(List<Permission> permissions) {
