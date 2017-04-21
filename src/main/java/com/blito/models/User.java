@@ -35,6 +35,10 @@ public class User {
 	
 	private String mobile;
 	
+	private String activationKey;
+	
+	private boolean banned = false;
+	
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
     @JoinTable(name="user_role" , joinColumns=@JoinColumn(name="user_id"), 
     inverseJoinColumns=@JoinColumn(name="role_id"))
@@ -48,6 +52,47 @@ public class User {
 	
 	@OneToMany(mappedBy="user", targetEntity=ExchangeBlit.class, fetch=FetchType.LAZY)
 	private List<ExchangeBlit> exchangeBlits;
+	
+
+	public boolean isBanned() {
+		return banned;
+	}
+
+	public void setBanned(boolean banned) {
+		this.banned = banned;
+	}
+
+	public String getActivationKey() {
+		return activationKey;
+	}
+
+	public void setActivationKey(String activationKey) {
+		this.activationKey = activationKey;
+	}
+
+	public List<EventHost> getEventHosts() {
+		return eventHosts;
+	}
+
+	public void setEventHosts(List<EventHost> eventHosts) {
+		this.eventHosts = eventHosts;
+	}
+
+	public List<Blit> getBlits() {
+		return blits;
+	}
+
+	public void setBlits(List<Blit> blits) {
+		this.blits = blits;
+	}
+
+	public List<ExchangeBlit> getExchangeBlits() {
+		return exchangeBlits;
+	}
+
+	public void setExchangeBlits(List<ExchangeBlit> exchangeBlits) {
+		this.exchangeBlits = exchangeBlits;
+	}
 
 	public long getUserId() {
 		return userId;
