@@ -39,6 +39,12 @@ public class User {
 	
 	private boolean banned = false;
 	
+	private boolean isActive = false;
+	
+	private boolean isFirstTimeLogin = true;
+	
+	private String refreshToken;
+	
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
     @JoinTable(name="user_role" , joinColumns=@JoinColumn(name="user_id"), 
     inverseJoinColumns=@JoinColumn(name="role_id"))
@@ -53,6 +59,30 @@ public class User {
 	@OneToMany(mappedBy="user", targetEntity=ExchangeBlit.class, fetch=FetchType.LAZY)
 	private List<ExchangeBlit> exchangeBlits;
 	
+	
+	public String getRefreshToken() {
+		return refreshToken;
+	}
+
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
+	}
+
+	public boolean isFirstTimeLogin() {
+		return isFirstTimeLogin;
+	}
+
+	public void setFirstTimeLogin(boolean isFirstTimeLogin) {
+		this.isFirstTimeLogin = isFirstTimeLogin;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
 
 	public boolean isBanned() {
 		return banned;

@@ -27,7 +27,9 @@ public enum Response {
     SERVICE_REQUEST_NOT_FOUND("error.service.request.not.found"),
     OPERATION_NOT_ALLOWED("operation.not.allowed"),
     IDP_CONFLICT("error.idp.conflict"),
-    REGISTER_SUCCESS("success.registration.operation");
+    REGISTER_SUCCESS("success.registration.operation"),
+    ACTIVATE_ACCOUNT_EMAIL("activation.account.email");
+    
 
     private final String message;
 

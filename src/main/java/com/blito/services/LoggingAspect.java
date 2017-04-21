@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 public class LoggingAspect {
 	private Logger log = LoggerFactory.getLogger(getClass());
 	
-	@Before("execution(* com.homapay.merchantportal.rests.controllers.AccountController.*(..))")
+	@Before("execution(* com.blito.rest.controllers.AccountController.*(..))")
 	public void beforelog(JoinPoint joinPoint){
 		log.info(joinPoint.getSignature().getName() + " is going to call");
 	}
 	
-	@After("execution(* com.homapay.merchantportal.rests.controllers.AccountController.*(..))")
+	@After("execution(* com.blito.rest.controllers.AccountController.*(..))")
 	public void afterlog(JoinPoint joinPoint){
 		log.info(joinPoint.getSignature().getName() + " is called");
 	}
