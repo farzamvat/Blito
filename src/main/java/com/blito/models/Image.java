@@ -14,7 +14,7 @@ public class Image {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	long imageId;
 	
-	String imagePath;
+	String imageUUID;
 	
 	@Enumerated(EnumType.STRING)
 	ImageType imageType;
@@ -35,11 +35,11 @@ public class Image {
 		this.imageType = imageType;
 	}
 
-	public String getImagePath() {
-		return imagePath;
+	public String getImageUUID() {
+		return imageUUID;
 	}
 
-	public void setImagePath(String imagePath) {
-		this.imagePath = imagePath;
+	public void setImageUUID(String imageUUID) {
+		this.imageUUID = imageUUID;
 	}
 }
