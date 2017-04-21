@@ -33,13 +33,14 @@ public class MailService {
 	@Autowired
 	private SpringTemplateEngine templateEngine;
 
-	public void sendPasswordResetMail(User user) {
-        log.debug("Sending password reset e-mail to '{}'", user.getEmail());
+	public void sendActivationEmail(User user) {
+        log.debug("Sending user activation e-mail to '{}'", user.getEmail());
         Context context = new Context();
         context.setVariable("user", user);
         context.setVariable("baseUrl", baseUrl);
         context.setVariable("serverAddress",serverAddress);
-        String content = templateEngine.process("passwordResetEmail", context);
+        String content = templateEngine.process("activationEmail", context);
+        System.out.println(content);
         sendEmail(user.getEmail(), content);
     }
 
@@ -49,7 +50,7 @@ public class MailService {
 		try {
 			MimeMessageHelper message = new MimeMessageHelper(mimeMessage, CharEncoding.UTF_8);
 			message.setTo(to);
-			message.setSubject(ResourceUtil.getMessage(Response.FORGETING_PASSWORD_USER_EMAIL));
+			message.setSubject(ResourceUtil.getMessage(Response.ACTIVATE_ACCOUNT_EMAIL));
 			message.setText(content, true);
 			javaMailSender.send(mimeMessage);
 			log.debug("Sent e-mail to User '{}'", to);
