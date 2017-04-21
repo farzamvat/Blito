@@ -6,3 +6,4 @@
 .idea
 *.iml
 /.apt_generated/
+/images
