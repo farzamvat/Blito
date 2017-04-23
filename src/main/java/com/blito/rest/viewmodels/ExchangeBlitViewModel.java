@@ -1,55 +1,43 @@
-package com.blito.models;
+package com.blito.rest.viewmodels;
 
 import java.sql.Timestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
+import com.blito.annotations.Email;
+import com.blito.annotations.MobileNumber;
 import com.blito.enums.ExchangeBlitOperatorState;
 import com.blito.enums.ExchangeBlitState;
 import com.blito.enums.ExchangeBlitType;
 
-@Entity(name="exchange_blit")
-public class ExchangeBlit {
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+public class ExchangeBlitViewModel {
 	private long exchangeBlitId;
-	
+	@NotNull
 	private String fisrtname;
-	
+	@NotNull
 	private String lastname;
-	
+	@NotNull
 	private Timestamp eventDate;
-	
+	@NotNull
 	private double blitCost;
-	
+	@NotNull
 	private boolean isBlitoEvent;
-	
+	@MobileNumber
 	private String phoneNumber;
-	
+	@Email
 	private String email;
-	
+	@NotNull
 	private String eventAddress;
-	
+	@NotNull
 	private String vendorAddress;
 	
 	private String description;
 	
-	@Enumerated(EnumType.STRING)
 	private ExchangeBlitState state;
-	@Enumerated(EnumType.STRING)
-	private ExchangeBlitType type;
-	@Enumerated(EnumType.STRING)
-	private ExchangeBlitOperatorState operatorState;
 	
-	@ManyToOne
-	@JoinColumn(name="userId")
-	private User user;
+	private ExchangeBlitType type;
+	
+	private ExchangeBlitOperatorState operatorState;
 	
 	public ExchangeBlitOperatorState getOperatorState() {
 		return operatorState;
@@ -65,22 +53,6 @@ public class ExchangeBlit {
 
 	public void setType(ExchangeBlitType type) {
 		this.type = type;
-	}
-
-	public ExchangeBlitState getState() {
-		return state;
-	}
-
-	public void setState(ExchangeBlitState state) {
-		this.state = state;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 	public long getExchangeBlitId() {
@@ -170,6 +142,12 @@ public class ExchangeBlit {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
+
+	public ExchangeBlitState getState() {
+		return state;
+	}
+
+	public void setState(ExchangeBlitState state) {
+		this.state = state;
+	}
 }

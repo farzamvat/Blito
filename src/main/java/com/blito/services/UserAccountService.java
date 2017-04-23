@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.blito.enums.Response;
 import com.blito.exceptions.EmailAlreadyExistsException;
+import com.blito.exceptions.UserNotActivatedException;
 import com.blito.exceptions.UserNotFoundException;
 import com.blito.exceptions.WrongPasswordException;
 import com.blito.mappers.UserMapper;
@@ -53,6 +54,9 @@ public class UserAccountService {
 		User user = userRepository.findByEmail(vmodel.getEmail())
 				.map(u -> u)
 				.orElseThrow(() -> new UserNotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
+		if(!user.isActive())
+			throw new UserNotActivatedException(ResourceUtil.getMessage(Response.USER_NOT_ACTIVATED));
+			
 		return CompletableFuture.supplyAsync(() -> encoder.matches(vmodel.getPassword(), user.getPassword()))
 				.thenCombine(jwtService.generateToken(user.getUserId()), (isMatchedAsyncResult,asyncTokenResult) -> {
 					if(isMatchedAsyncResult)

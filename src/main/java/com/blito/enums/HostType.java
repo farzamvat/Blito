@@ -6,4 +6,5 @@ public enum HostType {
 	ORGANIZATION,
 	CULTURALCENTER,
 	THEATER,
+	OTHER
 }
