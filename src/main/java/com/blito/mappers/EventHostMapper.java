@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import com.blito.models.EventHost;
+import com.blito.rest.viewmodels.EventHostSimpleViewModel;
 import com.blito.rest.viewmodels.EventHostViewModel;
 
 @Component
@@ -40,8 +41,17 @@ public class EventHostMapper {
 		return vmodel;
 	}
 	
-	public List<EventHostViewModel> eventHostsToViewModels(List<EventHost> eventHosts)
+	public List<EventHostSimpleViewModel> eventHostsToViewModels(List<EventHost> eventHosts)
 	{
-		return eventHosts.stream().map(e -> eventHostToViewModel(e)).collect(Collectors.toList());
+		return eventHosts.stream().map(e -> eventHostToSimpleViewModel(e)).collect(Collectors.toList());
+	}
+	
+	public EventHostSimpleViewModel eventHostToSimpleViewModel(EventHost eventHost)
+	{
+		EventHostSimpleViewModel simple = new EventHostSimpleViewModel();
+		simple.setEventHostId(eventHost.getEventHostId());
+		simple.setHostName(eventHost.getHostName());
+		simple.setImageUUID(eventHost.getHostPhoto().getImageUUID());
+		return simple;
 	}
 }
