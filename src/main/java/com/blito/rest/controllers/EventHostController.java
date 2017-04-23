@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.blito.enums.Response;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.viewmodels.EventHostSimpleViewModel;
 import com.blito.rest.viewmodels.EventHostViewModel;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.services.EventHostService;
@@ -52,7 +53,7 @@ public class EventHostController {
 	}
 	
 	@GetMapping("/all")
-	public ResponseEntity<List<EventHostViewModel>> getCurrentUserEventHosts()
+	public ResponseEntity<List<EventHostSimpleViewModel>> getCurrentUserEventHosts()
 	{
 		return ResponseEntity.ok(eventHostService.getCurrentUserEventHosts());
 	}

@@ -19,6 +19,7 @@ import com.blito.repositories.EventHostRepository;
 import com.blito.repositories.ImageRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.viewmodels.EventHostSimpleViewModel;
 import com.blito.rest.viewmodels.EventHostViewModel;
 import com.blito.security.SecurityContextHolder;
 
@@ -75,7 +76,7 @@ public class EventHostService {
 		eventHostRepository.delete(eventHost);
 	}
 	
-	public List<EventHostViewModel> getCurrentUserEventHosts()
+	public List<EventHostSimpleViewModel> getCurrentUserEventHosts()
 	{
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		return eventHostMapper.eventHostsToViewModels(user.getEventHosts());
