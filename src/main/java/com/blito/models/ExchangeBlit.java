@@ -3,13 +3,17 @@ package com.blito.models;
 import java.sql.Timestamp;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.blito.enums.ExchangeBlitOperatorState;
 import com.blito.enums.ExchangeBlitState;
+import com.blito.enums.ExchangeBlitType;
 
 @Entity(name="exchange_blit")
 public class ExchangeBlit {
@@ -26,8 +30,6 @@ public class ExchangeBlit {
 	
 	private boolean isBlitoEvent;
 	
-	private long trackingCode;
-	
 	private String phoneNumber;
 	
 	private String email;
@@ -38,12 +40,33 @@ public class ExchangeBlit {
 	
 	private String description;
 	
+	@Enumerated(EnumType.STRING)
 	private ExchangeBlitState state;
+	@Enumerated(EnumType.STRING)
+	private ExchangeBlitType type;
+	@Enumerated(EnumType.STRING)
+	private ExchangeBlitOperatorState operatorState;
 	
 	@ManyToOne
 	@JoinColumn(name="userId")
 	private User user;
 	
+	public ExchangeBlitOperatorState getOperatorState() {
+		return operatorState;
+	}
+
+	public void setOperatorState(ExchangeBlitOperatorState operatorState) {
+		this.operatorState = operatorState;
+	}
+
+	public ExchangeBlitType getType() {
+		return type;
+	}
+
+	public void setType(ExchangeBlitType type) {
+		this.type = type;
+	}
+
 	public ExchangeBlitState getState() {
 		return state;
 	}
@@ -106,14 +129,6 @@ public class ExchangeBlit {
 
 	public void setBlitoEvent(boolean isBlitoEvent) {
 		this.isBlitoEvent = isBlitoEvent;
-	}
-
-	public long getTrackingCode() {
-		return trackingCode;
-	}
-
-	public void setTrackingCode(long trackingCode) {
-		this.trackingCode = trackingCode;
 	}
 
 	public String getPhoneNumber() {

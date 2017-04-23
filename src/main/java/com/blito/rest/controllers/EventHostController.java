@@ -47,11 +47,12 @@ public class EventHostController {
 	@DeleteMapping
 	public ResponseEntity<?> deleteEventHost(@RequestParam long eventHostId)
 	{
+		eventHostService.delete(eventHostId);
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
 	
 	@GetMapping("/all")
-	public ResponseEntity<List<EventHostViewModel>> getAll()
+	public ResponseEntity<List<EventHostViewModel>> getCurrentUserEventHosts()
 	{
 		return ResponseEntity.ok(eventHostService.getCurrentUserEventHosts());
 	}
