@@ -28,7 +28,10 @@ public enum Response {
     OPERATION_NOT_ALLOWED("operation.not.allowed"),
     IDP_CONFLICT("error.idp.conflict"),
     REGISTER_SUCCESS("success.registration.operation"),
-    ACTIVATE_ACCOUNT_EMAIL("activation.account.email");
+    ACTIVATE_ACCOUNT_EMAIL("activation.account.email"),
+    IMAGE_NOT_FOUND("error.not.found.image"), 
+    EVENT_HOST_NOT_FOUND("error.event.host.not.found"), 
+    NOT_ALLOWED("error.operation.not.allowed");
     
 
     private final String message;

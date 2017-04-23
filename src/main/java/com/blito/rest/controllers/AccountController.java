@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.blito.enums.RegisterEnumValidation;
 import com.blito.enums.Response;
+import com.blito.enums.validation.RegisterEnumValidation;
 import com.blito.exceptions.EmailAlreadyExistsException;
 import com.blito.exceptions.ExceptionUtil;
 import com.blito.mappers.UserMapper;

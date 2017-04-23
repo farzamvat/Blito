@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.blito.enums.ExchangeBlitState;
+
 @Entity(name="exchange_blit")
 public class ExchangeBlit {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
@@ -36,10 +38,20 @@ public class ExchangeBlit {
 	
 	private String description;
 	
+	private ExchangeBlitState state;
+	
 	@ManyToOne
 	@JoinColumn(name="userId")
 	private User user;
 	
+	public ExchangeBlitState getState() {
+		return state;
+	}
+
+	public void setState(ExchangeBlitState state) {
+		this.state = state;
+	}
+
 	public User getUser() {
 		return user;
 	}

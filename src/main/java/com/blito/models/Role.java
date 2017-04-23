@@ -23,7 +23,7 @@ public class Role {
 	@JoinTable(name="role_permission")
 	List<Permission> permissions;
 	
-	public Role(List<Permission> permissions) {
+	public Role() {
 		permissions = new ArrayList<>();
 	}
 	public long getRoleId() {
