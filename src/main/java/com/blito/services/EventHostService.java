@@ -37,7 +37,7 @@ public class EventHostService {
 				.orElseThrow(() -> new ImageNotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
 		EventHost eventHost = new EventHost();
 		eventHost = eventHostMapper.eventHostViewModelToEventHost(vmodel,eventHost);
-		eventHost.setHostPhoto(image);
+//		eventHost.setHostPhoto(image);
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		user.setEventHosts(Arrays.asList(eventHost));
 		return eventHostMapper.eventHostToViewModel(eventHost);
@@ -56,7 +56,7 @@ public class EventHostService {
 				.map(i -> i)
 				.orElseThrow(() -> new ImageNotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
 		eventHost = eventHostMapper.eventHostViewModelToEventHost(vmodel,eventHost);
-		eventHost.setHostPhoto(image);
+//		eventHost.setHostPhoto(image);
 		return eventHostMapper.eventHostToViewModel(eventHost);
 	}
 	

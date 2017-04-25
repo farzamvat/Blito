@@ -1,6 +1,6 @@
 package com.blito.enums;
 
-public enum ExchangeBlitState {
+public enum State {
 	SOLD,
 	OPEN,
 	CLOSED

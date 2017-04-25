@@ -6,14 +6,16 @@ import javax.validation.constraints.NotNull;
 
 import com.blito.annotations.Email;
 import com.blito.annotations.MobileNumber;
-import com.blito.enums.ExchangeBlitOperatorState;
-import com.blito.enums.ExchangeBlitState;
+import com.blito.enums.OperatorState;
+import com.blito.enums.State;
 import com.blito.enums.ExchangeBlitType;
 
 public class ExchangeBlitViewModel {
 	private long exchangeBlitId;
 	@NotNull
-	private String fisrtname;
+	private String title;
+	@NotNull
+	private String firstname;
 	@NotNull
 	private String lastname;
 	@NotNull
@@ -33,17 +35,26 @@ public class ExchangeBlitViewModel {
 	
 	private String description;
 	
-	private ExchangeBlitState state;
+	private State state;
 	
 	private ExchangeBlitType type;
 	
-	private ExchangeBlitOperatorState operatorState;
+	private OperatorState operatorState;
 	
-	public ExchangeBlitOperatorState getOperatorState() {
+	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public OperatorState getOperatorState() {
 		return operatorState;
 	}
 
-	public void setOperatorState(ExchangeBlitOperatorState operatorState) {
+	public void setOperatorState(OperatorState operatorState) {
 		this.operatorState = operatorState;
 	}
 
@@ -63,12 +74,12 @@ public class ExchangeBlitViewModel {
 		this.exchangeBlitId = exchangeBlitId;
 	}
 
-	public String getFisrtname() {
-		return fisrtname;
+	public String getFirstname() {
+		return firstname;
 	}
 
-	public void setFisrtname(String fisrtname) {
-		this.fisrtname = fisrtname;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
 
 	public String getLastname() {
@@ -143,11 +154,11 @@ public class ExchangeBlitViewModel {
 		this.description = description;
 	}
 
-	public ExchangeBlitState getState() {
+	public State getState() {
 		return state;
 	}
 
-	public void setState(ExchangeBlitState state) {
+	public void setState(State state) {
 		this.state = state;
 	}
 }

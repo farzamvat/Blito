@@ -37,7 +37,7 @@ public class EventHostMapper {
 		vmodel.setTwitterLink(eventHost.getTwitterLink());
 		vmodel.setWebsiteLink(eventHost.getWebsiteLink());
 		vmodel.setTelephone(eventHost.getTelephone());
-		vmodel.setImageUUID(eventHost.getHostPhoto().getImageUUID());
+//		vmodel.setImageUUID(eventHost.getHostPhoto().getImageUUID());
 		return vmodel;
 	}
 	
@@ -51,7 +51,7 @@ public class EventHostMapper {
 		EventHostSimpleViewModel simple = new EventHostSimpleViewModel();
 		simple.setEventHostId(eventHost.getEventHostId());
 		simple.setHostName(eventHost.getHostName());
-		simple.setImageUUID(eventHost.getHostPhoto().getImageUUID());
+//		simple.setImageUUID(eventHost.getHostPhoto().getImageUUID());
 		return simple;
 	}
 }

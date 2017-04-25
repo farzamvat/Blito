@@ -1,6 +1,6 @@
 package com.blito.enums;
 
-public enum ExchangeBlitOperatorState {
+public enum OperatorState {
 	PENDING,
 	APPROVED,
 	REJECTED

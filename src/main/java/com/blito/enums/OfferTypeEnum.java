@@ -1,6 +1,6 @@
 package com.blito.enums;
 
-public enum OfferType {
+public enum OfferTypeEnum {
 	SPECIAL_OFFER,
 	OUR_OFFER,
 }

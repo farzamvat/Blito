@@ -1,20 +1,25 @@
 package com.blito.mappers;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
 import com.blito.models.ExchangeBlit;
+import com.blito.rest.viewmodels.AdminExchangeBlitViewModel;
+import com.blito.rest.viewmodels.ApprovedExchangeBlitViewModel;
 import com.blito.rest.viewmodels.ExchangeBlitViewModel;
+import com.blito.rest.viewmodels.SimpleExchangeBlitViewModel;
+import com.blito.rest.viewmodels.UserEditExchangeBlitViewModel;
 
 @Component
-public class ExchangeBlitMapper {
+public class ExchangeBlitMapper extends AbstractMapper {
+	
 	public ExchangeBlit ViewModelToExchangeBlit(ExchangeBlitViewModel vmodel,ExchangeBlit exchangeBlit)
 	{
+		exchangeBlit.setTitle(vmodel.getTitle());
 		exchangeBlit.setBlitCost(vmodel.getBlitCost());
 		exchangeBlit.setDescription(vmodel.getDescription());
-		exchangeBlit.setFisrtname(vmodel.getFisrtname());
+		exchangeBlit.setFirstname(vmodel.getFirstname());
 		exchangeBlit.setLastname(vmodel.getLastname());
 		exchangeBlit.setEmail(vmodel.getEmail());
 		exchangeBlit.setBlitoEvent(vmodel.isBlitoEvent());
@@ -28,9 +33,10 @@ public class ExchangeBlitMapper {
 	public ExchangeBlitViewModel exchangeBlitToViewModel(ExchangeBlit exchangeBlit)
 	{
 		ExchangeBlitViewModel vmodel = new ExchangeBlitViewModel();
+		vmodel.setTitle(exchangeBlit.getTitle());
 		vmodel.setBlitCost(exchangeBlit.getBlitCost());
 		vmodel.setDescription(exchangeBlit.getDescription());
-		vmodel.setFisrtname(exchangeBlit.getFisrtname());
+		vmodel.setFirstname(exchangeBlit.getFirstname());
 		vmodel.setLastname(exchangeBlit.getLastname());
 		vmodel.setEmail(exchangeBlit.getEmail());
 		vmodel.setBlitoEvent(exchangeBlit.isBlitoEvent());
@@ -40,11 +46,106 @@ public class ExchangeBlitMapper {
 		vmodel.setVendorAddress(exchangeBlit.getVendorAddress());
 		vmodel.setState(exchangeBlit.getState());
 		vmodel.setOperatorState(exchangeBlit.getOperatorState());
+		vmodel.setType(exchangeBlit.getType());
 		return vmodel;
+	}
+	
+	public SimpleExchangeBlitViewModel exchangeBlitToSimpleViewModel(ExchangeBlit exchangeBlit)
+	{
+		SimpleExchangeBlitViewModel vmodel = new SimpleExchangeBlitViewModel();
+		vmodel.setTitle(exchangeBlit.getTitle());
+		vmodel.setExchangeBlitId(exchangeBlit.getExchangeBlitId());
+		vmodel.setBlitCost(exchangeBlit.getBlitCost());
+		vmodel.setEventDate(exchangeBlit.getEventDate());
+		vmodel.setState(exchangeBlit.getState());
+		vmodel.setOperatorState(exchangeBlit.getOperatorState());
+		vmodel.setType(exchangeBlit.getType());
+		return vmodel;
+	}
+	
+	public ApprovedExchangeBlitViewModel exchangeBlitToApprovedViewModel(ExchangeBlit exchangeBlit)
+	{
+		ApprovedExchangeBlitViewModel vmodel = new ApprovedExchangeBlitViewModel();
+		vmodel.setEventDate(exchangeBlit.getEventDate());
+		vmodel.setBlitCost(exchangeBlit.getBlitCost());
+		vmodel.setDescription(exchangeBlit.getDescription());
+		vmodel.setType(exchangeBlit.getType());
+		vmodel.setTitle(exchangeBlit.getTitle());
+		return vmodel;
+	}
+	
+	public UserEditExchangeBlitViewModel exchangeBlitToUserEditViewModel (ExchangeBlit exchangeBlit)
+	{
+		UserEditExchangeBlitViewModel vmodel = new UserEditExchangeBlitViewModel();
+		vmodel.setTitle(exchangeBlit.getTitle());
+		vmodel.setBlitCost(exchangeBlit.getBlitCost());
+		vmodel.setDescription(exchangeBlit.getDescription());
+		vmodel.setFirstname(exchangeBlit.getFirstname());
+		vmodel.setLastname(exchangeBlit.getLastname());
+		vmodel.setEmail(exchangeBlit.getEmail());
+		vmodel.setBlitoEvent(exchangeBlit.isBlitoEvent());
+		vmodel.setEventAddress(exchangeBlit.getEventAddress());
+		vmodel.setPhoneNumber(exchangeBlit.getPhoneNumber());
+		vmodel.setEventDate(exchangeBlit.getEventDate());
+		vmodel.setVendorAddress(exchangeBlit.getVendorAddress());
+		vmodel.setState(exchangeBlit.getState());
+		vmodel.setType(exchangeBlit.getType());
+		return vmodel;
+	}
+	
+	public ExchangeBlit userEditViewModelToExchangeBlit(UserEditExchangeBlitViewModel vmodel,ExchangeBlit exchangeBlit)
+	{
+		exchangeBlit.setTitle(vmodel.getTitle());
+		exchangeBlit.setBlitCost(vmodel.getBlitCost());
+		exchangeBlit.setDescription(vmodel.getDescription());
+		exchangeBlit.setFirstname(vmodel.getFirstname());
+		exchangeBlit.setLastname(vmodel.getLastname());
+		exchangeBlit.setEmail(vmodel.getEmail());
+		exchangeBlit.setBlitoEvent(vmodel.isBlitoEvent());
+		exchangeBlit.setEventAddress(vmodel.getEventAddress());
+		exchangeBlit.setPhoneNumber(vmodel.getPhoneNumber());
+		exchangeBlit.setEventDate(vmodel.getEventDate());
+		exchangeBlit.setVendorAddress(vmodel.getVendorAddress());
+		exchangeBlit.setState(vmodel.getState());
+		exchangeBlit.setType(vmodel.getType());
+		return exchangeBlit;
+	}
+	
+	public AdminExchangeBlitViewModel exchangeBlitToAdminViewModel(ExchangeBlit exchangeBlit)
+	{
+		AdminExchangeBlitViewModel vmodel = new AdminExchangeBlitViewModel();
+		vmodel.setTitle(exchangeBlit.getTitle());
+		vmodel.setBlitCost(exchangeBlit.getBlitCost());
+		vmodel.setDescription(exchangeBlit.getDescription());
+		vmodel.setFirstname(exchangeBlit.getFirstname());
+		vmodel.setLastname(exchangeBlit.getLastname());
+		vmodel.setEmail(exchangeBlit.getEmail());
+		vmodel.setBlitoEvent(exchangeBlit.isBlitoEvent());
+		vmodel.setEventAddress(exchangeBlit.getEventAddress());
+		vmodel.setPhoneNumber(exchangeBlit.getPhoneNumber());
+		vmodel.setEventDate(exchangeBlit.getEventDate());
+		vmodel.setVendorAddress(exchangeBlit.getVendorAddress());
+		vmodel.setState(exchangeBlit.getState());
+		vmodel.setOperatorState(exchangeBlit.getOperatorState());
+		vmodel.setType(exchangeBlit.getType());
+		vmodel.setUserId(exchangeBlit.getUser().getUserId());
+		return vmodel;
+	}
+	
+	
+	
+	public List<AdminExchangeBlitViewModel> exchangeBlitsToAdminViewModels(List<ExchangeBlit> exchangeBlits)
+	{
+		return toList(exchangeBlits, this::exchangeBlitToAdminViewModel);
+	}
+	
+	public List<SimpleExchangeBlitViewModel> exchangeBlitsToSimpleViewModels(List<ExchangeBlit> exchangeBlits)
+	{
+		return toList(exchangeBlits, this::exchangeBlitToSimpleViewModel);
 	}
 	
 	public List<ExchangeBlitViewModel> exchangeBlitsToViewModels(List<ExchangeBlit> exchangeBlits)
 	{
-		return exchangeBlits.stream().map(e -> exchangeBlitToViewModel(e)).collect(Collectors.toList());
+		return toList(exchangeBlits, this:: exchangeBlitToViewModel);
 	}
 }

@@ -20,7 +20,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.blito.enums.Response;
-import com.blito.enums.validation.RegisterEnumValidation;
+import com.blito.enums.validation.AccountControllerEnumValidation;
 import com.blito.exceptions.EmailAlreadyExistsException;
 import com.blito.exceptions.ExceptionUtil;
 import com.blito.exceptions.UserNotActivatedException;
@@ -57,7 +57,7 @@ public class AccountController {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ExceptionViewModel argumentValidation(HttpServletRequest request,
 			MethodArgumentNotValidException exception) {
-		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception, RegisterEnumValidation.class);
+		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception, AccountControllerEnumValidation.class);
 	}
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

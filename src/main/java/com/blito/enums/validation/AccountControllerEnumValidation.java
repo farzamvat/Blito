@@ -2,7 +2,7 @@ package com.blito.enums.validation;
 
 import com.blito.validators.ValidationInterface;
 
-public enum RegisterEnumValidation implements ValidationInterface {
+public enum AccountControllerEnumValidation implements ValidationInterface {
 	FIRSTNAME("validation.register.firstname"),
 	LASTNAME("validation.register.lastname"),
 	EMAIL("validation.register.email"),
@@ -11,7 +11,7 @@ public enum RegisterEnumValidation implements ValidationInterface {
 	
 	private final String message;
 	
-	private RegisterEnumValidation(String value)
+	private AccountControllerEnumValidation(String value)
 	{
 		this.message = value;
 	}

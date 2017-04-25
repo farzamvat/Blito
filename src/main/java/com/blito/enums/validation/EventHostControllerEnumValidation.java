@@ -2,7 +2,7 @@ package com.blito.enums.validation;
 
 import com.blito.validators.ValidationInterface;
 
-public enum EventHostEnumValidation implements ValidationInterface {
+public enum EventHostControllerEnumValidation implements ValidationInterface {
 	
 	HOSTNAME("validation.eventhost.hostname"),
 	TELEPHONE("validation.eventhost.telephone"),
@@ -14,7 +14,7 @@ public enum EventHostEnumValidation implements ValidationInterface {
 	HOST_TYPE("validation.eventhost.host.type");
 	
 	private final String message;
-	private EventHostEnumValidation(String value) {
+	private EventHostControllerEnumValidation(String value) {
 		// TODO Auto-generated constructor stub
 		this.message = value;
 		

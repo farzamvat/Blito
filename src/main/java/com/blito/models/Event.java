@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.blito.enums.EventType;
+import com.blito.enums.OperatorState;
+import com.blito.enums.State;
 
 @Entity(name="event")
 public class Event {
@@ -31,9 +33,13 @@ public class Event {
 	@JoinColumn(name="eventHostId")
 	private EventHost eventHost;
 	
-	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true)
-	@JoinColumn(name="event_id")
+	@OneToMany
+	@JoinColumn(name="eventId")
 	private List<Image> images; 
+	
+	@OneToMany
+	@JoinColumn(name="eventId")
+	List<OfferType> offerTypes;
 	
 	@Column(name="event_name")
 	private String eventName;
@@ -62,6 +68,55 @@ public class Event {
 	
 	String indexDescription;
 	
+	State eventState;
+	
+	OperatorState operatorState;
+	
+	String aparatDisplayCode;
+	
+	int orderNumber;
+	
+	
+	public int getOrderNumber() {
+		return orderNumber;
+	}
+
+	public void setOrderNumber(int orderNumber) {
+		this.orderNumber = orderNumber;
+	}
+
+	public List<OfferType> getOfferTypes() {
+		return offerTypes;
+	}
+
+	public void setOfferTypes(List<OfferType> offerTypes) {
+		this.offerTypes = offerTypes;
+	}
+
+	public String getAparatDisplayCode() {
+		return aparatDisplayCode;
+	}
+
+	public void setAparatDisplayCode(String aparatDisplayCode) {
+		this.aparatDisplayCode = aparatDisplayCode;
+	}
+
+	public State getEventState() {
+		return eventState;
+	}
+
+	public void setEventState(State eventState) {
+		this.eventState = eventState;
+	}
+
+	public OperatorState getOperatorState() {
+		return operatorState;
+	}
+
+	public void setOperatorState(OperatorState operatorState) {
+		this.operatorState = operatorState;
+	}
+
 	public String getIndexTitle() {
 		return indexTitle;
 	}

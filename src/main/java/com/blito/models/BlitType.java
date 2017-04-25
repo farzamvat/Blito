@@ -1,13 +1,16 @@
 package com.blito.models;
 
-import java.sql.Timestamp;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.blito.enums.State;
 
 @Entity(name="blit_type")
 public class BlitType {
@@ -19,12 +22,41 @@ public class BlitType {
 	
 	private int count;
 	
-	private Timestamp date;
+	private long price;
+	
+	@Enumerated(EnumType.STRING)
+	State blitTypeState;
 	
 	@ManyToOne
 	@JoinColumn(name="eventDateId")
 	private EventDate eventDate;
 	
+	private String name;
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public State getBlitTypeState() {
+		return blitTypeState;
+	}
+
+	public void setBlitTypeState(State blitTypeState) {
+		this.blitTypeState = blitTypeState;
+	}
+
+	public long getPrice() {
+		return price;
+	}
+
+	public void setPrice(long price) {
+		this.price = price;
+	}
+
 	public EventDate getEventDate() {
 		return eventDate;
 	}
@@ -56,14 +88,5 @@ public class BlitType {
 	public void setCount(int count) {
 		this.count = count;
 	}
-
-	public Timestamp getDate() {
-		return date;
-	}
-
-	public void setDate(Timestamp date) {
-		this.date = date;
-	}
-	
 	
 }

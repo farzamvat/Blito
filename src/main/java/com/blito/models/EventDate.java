@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.blito.enums.DayOfWeek;
+import com.blito.enums.State;
 
 @Entity(name="event_time")
 public class EventDate {
@@ -26,6 +27,9 @@ public class EventDate {
 	DayOfWeek dayOfWeek;
 	
 	Timestamp date;
+	
+	@Enumerated(EnumType.STRING)
+	State eventState;
 	
 	@OneToMany(mappedBy="eventDate", targetEntity=BlitType.class,fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	List<BlitType> blitTypes;

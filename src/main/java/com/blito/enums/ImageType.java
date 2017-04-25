@@ -3,6 +3,7 @@ package com.blito.enums;
 public enum ImageType {
 	BANNER,
 	GALLERY,
-	HOSTPHOTO,
-	INDEX_BANNER
+	HOST_PHOTO,
+	INDEX_BANNER,
+	EVENT_PHOTO
 }
