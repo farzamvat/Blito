@@ -2,6 +2,7 @@ package com.blito.rest.viewmodels;
 
 import javax.validation.constraints.NotNull;
 
+import com.blito.annotations.Url;
 import com.blito.enums.HostType;
 
 public class EventHostViewModel {
@@ -10,10 +11,15 @@ public class EventHostViewModel {
 	String hostName;
 	@NotNull
 	String telephone;
+	@Url
 	String telegramLink;
+	@Url
 	String instagramLink;
+	@Url
 	String twitterLink;
+	@Url
 	String linkedinLink;
+	@Url
 	String websiteLink;
 	@NotNull
 	HostType hostType;

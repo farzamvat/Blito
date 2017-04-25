@@ -3,9 +3,12 @@ package com.blito.mappers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Component;
+
 import com.blito.models.ExchangeBlit;
 import com.blito.rest.viewmodels.ExchangeBlitViewModel;
 
+@Component
 public class ExchangeBlitMapper {
 	public ExchangeBlit ViewModelToExchangeBlit(ExchangeBlitViewModel vmodel,ExchangeBlit exchangeBlit)
 	{

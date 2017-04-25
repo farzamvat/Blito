@@ -23,6 +23,9 @@ import com.blito.enums.Response;
 import com.blito.enums.validation.RegisterEnumValidation;
 import com.blito.exceptions.EmailAlreadyExistsException;
 import com.blito.exceptions.ExceptionUtil;
+import com.blito.exceptions.UserNotActivatedException;
+import com.blito.exceptions.UserNotFoundException;
+import com.blito.exceptions.WrongPasswordException;
 import com.blito.mappers.UserMapper;
 import com.blito.models.User;
 import com.blito.repositories.UserRepository;
@@ -58,15 +61,22 @@ public class AccountController {
 	}
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler({ EmailAlreadyExistsException.class })
+	@ExceptionHandler({ EmailAlreadyExistsException.class, UserNotActivatedException.class, 
+		WrongPasswordException.class, ValidationException.class })
 	public ExceptionViewModel badRequests(HttpServletRequest request, RuntimeException exception) {
 		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception);
+	}
+	
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ExceptionHandler({UserNotFoundException.class})
+	public ExceptionViewModel notFounds(HttpServletRequest request, RuntimeException exception) {
+		return ExceptionUtil.generate(HttpStatus.NOT_FOUND, request, exception);
 	}
 
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "user registration")
 	@ApiResponses({ @ApiResponse(code = 201, message = "created successfully", response = ResultVm.class),
-			@ApiResponse(code = 400, message = "ValidationException (password is not mathed with confirm password) "
+			@ApiResponse(code = 400, message = "ValidationException()"
 					+ "or EmailAlreadyExistsException", response = ExceptionViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
 	@PostMapping("/register")
@@ -84,6 +94,7 @@ public class AccountController {
 			return deferred;
 		}).join();
 	}
+	
 	
 	@GetMapping("/activate")
 	public ModelAndView activateAccount(@RequestParam String key)
@@ -107,7 +118,8 @@ public class AccountController {
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "login")
 	@ApiResponses({ @ApiResponse(code = 200, message = "login successful", response = TokenModel.class),
-			@ApiResponse(code = 400, message = "Wrong password exception"),
+			@ApiResponse(code = 400, message = "Wrong password exception " + "or User not activated exception " +
+	"or ValidationException"),
 			@ApiResponse(code = 404, message = "User not found exception", response = ExceptionViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
 	@PostMapping("/login")
@@ -125,6 +137,12 @@ public class AccountController {
 				}).join();
 	}
 	
+	// ***************** SWAGGER DOCS ***************** //
+		@ApiOperation(value = "change password")
+		@ApiResponses({ @ApiResponse(code = 200, message = "password change successful", response = ResultVm.class),
+				@ApiResponse(code = 400, message = "ValidationException" +
+		"or Wrong password exception", response = ExceptionViewModel.class)})
+	// ***************** SWAGGER DOCS ***************** //
 	@PostMapping("/account/change-password")
 	public DeferredResult<ResponseEntity<?>> changePassword(@Validated @RequestBody ChangePasswordViewModel vmodel)
 	{
@@ -144,12 +162,21 @@ public class AccountController {
 				}).join();
 	}
 	
+	// ***************** SWAGGER DOCS ***************** //
+		@ApiOperation(value = "get user info")
+		@ApiResponses({@ApiResponse(code = 200, message = "get user info successful", response = UserInfoViewModel.class)})
+	// ***************** SWAGGER DOCS ***************** //
 	@GetMapping("/account/user-info")
 	public ResponseEntity<UserInfoViewModel> getCurrentUserInfo()
 	{
 		return ResponseEntity.ok(userMapper.userToUserInfoViewModel(SecurityContextHolder.currentUser()));
 	}
 	
+	// ***************** SWAGGER DOCS ***************** //
+		@ApiOperation(value = "update user info")
+		@ApiResponses({ @ApiResponse(code = 200, message = "update successful", response = UserInfoViewModel.class),
+			@ApiResponse(code = 400, message = "ValidationException", response = ExceptionViewModel.class)})
+	// ***************** SWAGGER DOCS ***************** //
 	@PostMapping("/account/update-info")
 	public ResponseEntity<UserInfoViewModel> updateUserInfo(@Validated @RequestBody UserInfoViewModel vmodel)
 	{
