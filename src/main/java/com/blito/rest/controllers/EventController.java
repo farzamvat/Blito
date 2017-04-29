@@ -5,14 +5,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blito.rest.viewmodels.CreateEventViewModel;
+import com.blito.rest.viewmodels.EventCreateViewModel;
 
 @RestController
 @RequestMapping("${api.base.url}" + "/events")
 public class EventController {
 	
 	@PostMapping("/current-user")
-	public ResponseEntity<?> create (CreateEventViewModel vmodel){
+	public ResponseEntity<?> create (EventCreateViewModel vmodel){
 		return null;
 	}
 

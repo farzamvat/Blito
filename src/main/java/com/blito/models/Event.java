@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -17,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.blito.enums.EventType;
+import com.blito.enums.OfferTypeEnum;
 import com.blito.enums.OperatorState;
 import com.blito.enums.State;
 
@@ -37,9 +39,8 @@ public class Event {
 	@JoinColumn(name="eventId")
 	private List<Image> images; 
 	
-	@OneToMany
-	@JoinColumn(name="eventId")
-	List<OfferType> offerTypes;
+	@ElementCollection(fetch=FetchType.EAGER)
+	List<OfferTypeEnum> offers;
 	
 	@Column(name="event_name")
 	private String eventName;
@@ -77,20 +78,22 @@ public class Event {
 	int orderNumber;
 	
 	
+	
+	
+	public List<OfferTypeEnum> getOffers() {
+		return offers;
+	}
+
+	public void setOffers(List<OfferTypeEnum> offers) {
+		this.offers = offers;
+	}
+
 	public int getOrderNumber() {
 		return orderNumber;
 	}
 
 	public void setOrderNumber(int orderNumber) {
 		this.orderNumber = orderNumber;
-	}
-
-	public List<OfferType> getOfferTypes() {
-		return offerTypes;
-	}
-
-	public void setOfferTypes(List<OfferType> offerTypes) {
-		this.offerTypes = offerTypes;
 	}
 
 	public String getAparatDisplayCode() {

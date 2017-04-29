@@ -9,6 +9,7 @@ public class ImageViewModel {
 	String encodedBase64;
 	@NotNull
 	ImageType type;
+	
 	public String getEncodedBase64() {
 		return encodedBase64;
 	}

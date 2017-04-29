@@ -184,6 +184,21 @@ public class AccountController {
 		return ResponseEntity.ok(userMapper.userToUserInfoViewModel(userRepository.save(user)));
 	}
 	
+	@GetMapping("/refresh")
+	public DeferredResult<ResponseEntity<TokenModel>> getAccessToken(@RequestParam String refresh_token)
+	{
+		DeferredResult<ResponseEntity<TokenModel>> deferred = new DeferredResult<>();
+		return userAccountService.getNewAccessToken(refresh_token)
+				.thenApply(result -> {
+					deferred.setResult(ResponseEntity.ok(result));
+					return deferred;
+				})
+				.exceptionally(throwable -> {
+					deferred.setErrorResult(throwable.getCause());
+					return deferred;
+				}).join();
+	}
+	
 	
 	
 }

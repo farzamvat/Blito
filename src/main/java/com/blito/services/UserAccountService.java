@@ -93,4 +93,12 @@ public class UserAccountService {
 				});
 	}
 	
+	public CompletableFuture<TokenModel> getNewAccessToken(String refresh_token)
+	{
+		User user = userRepository.findByRefreshToken(refresh_token)
+				.map(u -> u)
+				.orElseThrow(() -> new UserNotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
+		return jwtService.generateToken(user.getUserId());
+	}
+	
 }

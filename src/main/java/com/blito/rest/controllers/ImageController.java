@@ -17,7 +17,7 @@ import com.blito.exceptions.ImageNotFoundException;
 import com.blito.models.Image;
 import com.blito.repositories.ImageRepository;
 import com.blito.resourceUtil.ResourceUtil;
-import com.blito.rest.viewmodels.ImageViewModel;
+import com.blito.rest.viewmodels.ImageUploadViewModel;
 import com.blito.services.ImageService;
 
 @RestController
@@ -30,14 +30,13 @@ public class ImageController {
 	ImageRepository imageRepository;
 	
 	@PostMapping("/images/upload")
-	public DeferredResult<ResponseEntity<?>> upload(@RequestBody ImageViewModel vmodel)
+	public DeferredResult<ResponseEntity<?>> upload(@RequestBody ImageUploadViewModel vmodel)
 	{
 		DeferredResult<ResponseEntity<?>> deferred = new DeferredResult<>();
 		return imageService.save(vmodel.getEncodedBase64())
 				.thenApply(uuid -> {
 					Image image = new Image();
 					image.setImageUUID(uuid);
-					image.setImageType(vmodel.getType());
 					imageRepository.save(image);
 					JSONObject json = new JSONObject();
 					json.put("imageId",image.getImageUUID());
