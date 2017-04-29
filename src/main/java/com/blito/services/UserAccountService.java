@@ -98,7 +98,11 @@ public class UserAccountService {
 		User user = userRepository.findByRefreshToken(refresh_token)
 				.map(u -> u)
 				.orElseThrow(() -> new UserNotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
-		return jwtService.generateToken(user.getUserId());
+		return jwtService.generateAccessToken(user.getUserId())
+				.thenApply(tokenModel -> {
+					tokenModel.setRefreshToken(refresh_token);
+					return tokenModel;
+				});
 	}
 	
 }

@@ -39,6 +39,20 @@ public class JwtService {
 			return tokenModel;
 		});
 	}
+	
+	public CompletableFuture<TokenModel> generateAccessToken(Long userId)
+	{
+		TokenModel tokenModel = new TokenModel();
+		Long expire = System.currentTimeMillis();
+		tokenModel.setAccessTokenExipreTime(expire + accessTokenMilliSeconds);
+		
+		return CompletableFuture.supplyAsync(() -> {
+			return generateJwtToken(userId, expire + accessTokenMilliSeconds); 
+		}).thenApply(accessToken -> {
+			tokenModel.setAccessToken(accessToken);
+			return tokenModel;
+		});
+	}
 
 	private String generateJwtToken(Long userid, Long expireDate) {
 		String generatedToken = Jwts.builder().setSubject(String.valueOf(userid))

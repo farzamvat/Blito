@@ -77,9 +77,6 @@ public class Event {
 	
 	int orderNumber;
 	
-	
-	
-	
 	public List<OfferTypeEnum> getOffers() {
 		return offers;
 	}

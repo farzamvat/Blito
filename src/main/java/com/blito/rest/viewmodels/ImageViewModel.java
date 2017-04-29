@@ -6,15 +6,16 @@ import com.blito.enums.ImageType;
 
 public class ImageViewModel {
 	@NotNull
-	String encodedBase64;
+	String imageUUID;
 	@NotNull
 	ImageType type;
 	
-	public String getEncodedBase64() {
-		return encodedBase64;
+	
+	public String getImageUUID() {
+		return imageUUID;
 	}
-	public void setEncodedBase64(String encodedBase64) {
-		this.encodedBase64 = encodedBase64;
+	public void setImageUUID(String imageUUID) {
+		this.imageUUID = imageUUID;
 	}
 	public ImageType getType() {
 		return type;

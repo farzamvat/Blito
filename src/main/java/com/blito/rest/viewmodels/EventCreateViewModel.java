@@ -5,9 +5,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import com.blito.annotations.Url;
 import com.blito.enums.EventType;
-import com.blito.enums.State;
 
 public class EventCreateViewModel {
 	@NotNull
@@ -20,16 +18,22 @@ public class EventCreateViewModel {
 	private String description;
 	private Double latitude;
 	private Double longitude;
-	@Url
-	private String eventLink;
 	private String indexTitle;
 	private String indexDescription;
-	private State state;
 	private String aparatDisplayCode;
 	private long eventHostId;
 	
 	List<EventDateCreateViewModel> eventDates;
 	List<ImageViewModel> images;
+	
+
+	public List<ImageViewModel> getImages() {
+		return images;
+	}
+
+	public void setImages(List<ImageViewModel> images) {
+		this.images = images;
+	}
 
 	public String getEventName() {
 		return EventName;
@@ -95,14 +99,6 @@ public class EventCreateViewModel {
 		this.longitude = longitude;
 	}
 
-	public String getEventLink() {
-		return eventLink;
-	}
-
-	public void setEventLink(String eventLink) {
-		this.eventLink = eventLink;
-	}
-
 	public String getIndexTitle() {
 		return indexTitle;
 	}
@@ -117,14 +113,6 @@ public class EventCreateViewModel {
 
 	public void setIndexDescription(String indexDescription) {
 		this.indexDescription = indexDescription;
-	}
-
-	public State getState() {
-		return state;
-	}
-
-	public void setState(State state) {
-		this.state = state;
 	}
 
 	public String getAparatDisplayCode() {
