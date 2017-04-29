@@ -14,6 +14,8 @@ public class Blit {
 	
 	private int count;
 	
+	private long totalAmount;
+	
 	@ManyToOne
 	@JoinColumn(name="blitTypeId")
 	private BlitType blitType;
@@ -22,6 +24,14 @@ public class Blit {
 	@JoinColumn(name="userId")
 	User user;
 	
+	public long getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(long totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+
 	public User getUser() {
 		return user;
 	}

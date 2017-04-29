@@ -1,5 +1,7 @@
 package com.blito.mappers;
 
+import org.springframework.stereotype.Component;
+
 import com.blito.models.BlitType;
 import com.blito.models.Event;
 import com.blito.models.EventDate;
@@ -7,6 +9,7 @@ import com.blito.rest.viewmodels.BlitTypeCreateViewModel;
 import com.blito.rest.viewmodels.EventCreateViewModel;
 import com.blito.rest.viewmodels.EventDateCreateViewModel;
 
+@Component
 public class EventMapper extends AbstractMapper {
 	public Event eventCreateViewModelToEvent(EventCreateViewModel vmodel,Event event)
 	{
