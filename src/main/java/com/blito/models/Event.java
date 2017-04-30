@@ -65,10 +65,6 @@ public class Event {
 	
 	String eventLink;
 	
-	String indexTitle;
-	
-	String indexDescription;
-	
 	State eventState;
 	
 	OperatorState operatorState;
@@ -115,22 +111,6 @@ public class Event {
 
 	public void setOperatorState(OperatorState operatorState) {
 		this.operatorState = operatorState;
-	}
-
-	public String getIndexTitle() {
-		return indexTitle;
-	}
-
-	public void setIndexTitle(String indexTitle) {
-		this.indexTitle = indexTitle;
-	}
-
-	public String getIndexDescription() {
-		return indexDescription;
-	}
-
-	public void setIndexDescription(String indexDescription) {
-		this.indexDescription = indexDescription;
 	}
 
 	public List<Image> getImages() {

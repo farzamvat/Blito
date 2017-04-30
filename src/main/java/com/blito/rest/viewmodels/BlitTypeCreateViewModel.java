@@ -2,7 +2,7 @@ package com.blito.rest.viewmodels;
 
 public class BlitTypeCreateViewModel {
 	private boolean isFree;
-	private int count;
+	private int capacity;
 	private long price;
 	private String name;
 	public boolean isFree() {
@@ -11,11 +11,12 @@ public class BlitTypeCreateViewModel {
 	public void setFree(boolean isFree) {
 		this.isFree = isFree;
 	}
-	public int getCount() {
-		return count;
+	
+	public int getCapacity() {
+		return capacity;
 	}
-	public void setCount(int count) {
-		this.count = count;
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
 	}
 	public long getPrice() {
 		return price;
