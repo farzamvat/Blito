@@ -20,6 +20,5 @@ public class EventController {
 	public ResponseEntity<?> create (EventCreateViewModel vmodel) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(eventService.createEvent(vmodel));
 	}
-
 	
 }

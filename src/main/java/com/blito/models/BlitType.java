@@ -1,6 +1,8 @@
 package com.blito.models;
 
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.blito.enums.State;
 
@@ -20,7 +23,9 @@ public class BlitType {
 	
 	private boolean isFree;
 	
-	private int count;
+	private int capacity;
+	
+	private int soldCount;
 	
 	private long price;
 	
@@ -33,6 +38,28 @@ public class BlitType {
 	
 	private String name;
 	
+	@OneToMany(mappedBy="blitType",targetEntity=BlitTypeSeat.class)
+	List<BlitTypeSeat> blitTypeSeats;
+	
+	@OneToMany(mappedBy="blitType",targetEntity=CommonBlit.class)
+	List<CommonBlit> commonBlits;
+	
+	public List<BlitTypeSeat> getBlitTypeSeats() {
+		return blitTypeSeats;
+	}
+
+	public void setBlitTypeSeats(List<BlitTypeSeat> blitTypeSeats) {
+		this.blitTypeSeats = blitTypeSeats;
+	}
+
+	public List<CommonBlit> getCommonBlits() {
+		return commonBlits;
+	}
+
+	public void setCommonBlits(List<CommonBlit> commonBlits) {
+		this.commonBlits = commonBlits;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -81,12 +108,19 @@ public class BlitType {
 		this.isFree = isFree;
 	}
 
-	public int getCount() {
-		return count;
+	public int getCapacity() {
+		return capacity;
 	}
 
-	public void setCount(int count) {
-		this.count = count;
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
 	}
-	
+
+	public int getSoldCount() {
+		return soldCount;
+	}
+
+	public void setSoldCount(int soldCount) {
+		this.soldCount = soldCount;
+	}
 }

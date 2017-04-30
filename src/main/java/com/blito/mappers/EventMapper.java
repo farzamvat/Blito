@@ -1,5 +1,9 @@
 package com.blito.mappers;
 
+import org.springframework.stereotype.Component;
+
+import com.blito.enums.OperatorState;
+import com.blito.enums.State;
 import com.blito.models.BlitType;
 import com.blito.models.Event;
 import com.blito.models.EventDate;
@@ -7,6 +11,7 @@ import com.blito.rest.viewmodels.BlitTypeCreateViewModel;
 import com.blito.rest.viewmodels.EventCreateViewModel;
 import com.blito.rest.viewmodels.EventDateCreateViewModel;
 
+@Component
 public class EventMapper extends AbstractMapper {
 	public Event eventCreateViewModelToEvent(EventCreateViewModel vmodel,Event event)
 	{
@@ -19,6 +24,8 @@ public class EventMapper extends AbstractMapper {
 		event.setEventType(vmodel.getEventType());
 		event.setLatitude(vmodel.getLatitude());
 		event.setLongitude(vmodel.getLongitude());
+		event.setOperatorState(OperatorState.PENDING);
+		event.setEventState(State.CLOSED);
 		return event;
 	}
 	
@@ -32,7 +39,7 @@ public class EventMapper extends AbstractMapper {
 	public BlitType blitTypeViewModelToBlitType(BlitTypeCreateViewModel vmodel,BlitType blitType)
 	{
 		blitType.setName(vmodel.getName());
-		blitType.setCount(vmodel.getCount());
+		blitType.setCapacity(vmodel.getCapacity());
 		blitType.setFree(vmodel.isFree());
 		blitType.setPrice(vmodel.getPrice());
 		return blitType;

@@ -37,6 +37,26 @@ public class EventDate {
 	@ManyToOne
 	@JoinColumn(name="eventId")
 	Event event;
+	
+	@ManyToOne(optional=true)
+	@JoinColumn(name="salonId")
+	Salon salon;
+
+	public State getEventState() {
+		return eventState;
+	}
+
+	public void setEventState(State eventState) {
+		this.eventState = eventState;
+	}
+
+	public Salon getSalon() {
+		return salon;
+	}
+
+	public void setSalon(Salon salon) {
+		this.salon = salon;
+	}
 
 	public Event getEvent() {
 		return event;

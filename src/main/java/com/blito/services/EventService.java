@@ -65,6 +65,7 @@ public class EventService {
 				blitType.setBlitTypeState(State.CLOSED);
 				return blitType;
 			}).collect(Collectors.toList()));
+			eventDate.setEventState(State.CLOSED);
 			return eventDate;
 		}).collect(Collectors.toList()));
 		event.setImages(images);
