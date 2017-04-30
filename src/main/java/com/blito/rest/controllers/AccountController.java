@@ -23,6 +23,7 @@ import com.blito.enums.Response;
 import com.blito.enums.validation.AccountControllerEnumValidation;
 import com.blito.exceptions.EmailAlreadyExistsException;
 import com.blito.exceptions.ExceptionUtil;
+import com.blito.exceptions.UnauthorizedException;
 import com.blito.exceptions.UserNotActivatedException;
 import com.blito.exceptions.UserNotFoundException;
 import com.blito.exceptions.WrongPasswordException;
@@ -71,6 +72,13 @@ public class AccountController {
 	@ExceptionHandler({UserNotFoundException.class})
 	public ExceptionViewModel notFounds(HttpServletRequest request, RuntimeException exception) {
 		return ExceptionUtil.generate(HttpStatus.NOT_FOUND, request, exception);
+	}
+	
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	@ExceptionHandler(UnauthorizedException.class)
+	public ExceptionViewModel unauthorized(HttpServletRequest request,UnauthorizedException exception)
+	{
+		return ExceptionUtil.generate(HttpStatus.UNAUTHORIZED, request, exception);
 	}
 
 	// ***************** SWAGGER DOCS ***************** //

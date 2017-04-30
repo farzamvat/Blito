@@ -6,8 +6,12 @@ import java.util.concurrent.CompletableFuture;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.blito.enums.Response;
+import com.blito.exceptions.UnauthorizedException;
+import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.TokenModel;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -52,6 +56,17 @@ public class JwtService {
 			tokenModel.setAccessToken(accessToken);
 			return tokenModel;
 		});
+	}
+	
+	public long refreshTokenValidation(String refresh_token)
+	{
+		try {
+			Claims claims = Jwts.parser().setSigningKey(tokenSecret).parseClaimsJws(refresh_token).getBody();
+			return Long.parseLong(claims.getSubject());
+		} catch(Exception e)
+		{
+			throw new UnauthorizedException(ResourceUtil.getMessage(Response.ACCESS_DENIED));
+		}
 	}
 
 	private String generateJwtToken(Long userid, Long expireDate) {

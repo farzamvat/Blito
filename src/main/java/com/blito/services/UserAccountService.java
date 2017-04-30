@@ -69,7 +69,7 @@ public class UserAccountService {
 						else {
 							asyncTokenResult.setFirstTime(false);
 						}
-						user.setRefreshToken(asyncTokenResult.getRefreshToken());
+//						user.setRefreshToken(asyncTokenResult.getRefreshToken());
 						userRepository.save(user);
 						return asyncTokenResult;
 					}
@@ -95,7 +95,7 @@ public class UserAccountService {
 	
 	public CompletableFuture<TokenModel> getNewAccessToken(String refresh_token)
 	{
-		User user = userRepository.findByRefreshToken(refresh_token)
+		User user = Optional.ofNullable(userRepository.findOne(jwtService.refreshTokenValidation(refresh_token)))
 				.map(u -> u)
 				.orElseThrow(() -> new UserNotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
 		return jwtService.generateAccessToken(user.getUserId())
