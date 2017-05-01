@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.blito.enums.Response;
 import com.blito.enums.State;
 import com.blito.exceptions.EventHostNotFoundException;
+import com.blito.exceptions.EventNotFoundException;
 import com.blito.exceptions.ImageNotFoundException;
 import com.blito.mappers.EventMapper;
 import com.blito.models.BlitType;
@@ -24,6 +25,7 @@ import com.blito.repositories.EventRepository;
 import com.blito.repositories.ImageRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.EventCreateViewModel;
+import com.blito.rest.viewmodels.EventViewModel;
 
 @Service
 public class EventService {
@@ -38,7 +40,7 @@ public class EventService {
 
 	@Transactional
 	public Event createEvent(EventCreateViewModel vmodel) {
-		if (vmodel.getBlitSalteStartDate().after(vmodel.getBlitSaleEndDate())) {
+		if (vmodel.getBlitSaleStartDate().after(vmodel.getBlitSaleEndDate())) {
 			throw new RuntimeException("start date is after end date");
 		}
 		EventHost eventHost = Optional.ofNullable(eventHostRepository.findOne(vmodel.getEventHostId())).map(eh -> eh)
@@ -71,5 +73,12 @@ public class EventService {
 		event.setImages(images);
 		event.setEventHost(eventHost);
 		return eventRepository.save(event);
+	}
+	
+	public EventViewModel getEvent(long eventId) {
+		Event event = Optional.ofNullable(eventRepository.findOne(eventId))
+				.map(e->e)
+				.orElseThrow(() -> new EventNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+		return eventMapper.eventToEventViewModel(event);
 	}
 }

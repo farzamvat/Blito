@@ -12,7 +12,7 @@ public class EventCreateViewModel {
 	private String EventName;
 	@NotNull
 	private EventType eventType;
-	private Timestamp blitSalteStartDate;
+	private Timestamp blitSaleStartDate;
 	private Timestamp blitSaleEndDate;
 	private String address;
 	private String description;
@@ -51,12 +51,12 @@ public class EventCreateViewModel {
 		this.eventType = eventType;
 	}
 
-	public Timestamp getBlitSalteStartDate() {
-		return blitSalteStartDate;
+	public Timestamp getBlitSaleStartDate() {
+		return blitSaleStartDate;
 	}
 
-	public void setBlitSalteStartDate(Timestamp blitSalteStartDate) {
-		this.blitSalteStartDate = blitSalteStartDate;
+	public void setBlitSaleStartDate(Timestamp blitSalteStartDate) {
+		this.blitSaleStartDate = blitSalteStartDate;
 	}
 
 	public Timestamp getBlitSaleEndDate() {

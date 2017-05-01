@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.blito.enums.Response;
 import com.blito.exceptions.EmailAlreadyExistsException;
+import com.blito.exceptions.UnauthorizedException;
 import com.blito.exceptions.UserNotActivatedException;
 import com.blito.exceptions.UserNotFoundException;
 import com.blito.exceptions.WrongPasswordException;
@@ -95,6 +96,8 @@ public class UserAccountService {
 	
 	public CompletableFuture<TokenModel> getNewAccessToken(String refresh_token)
 	{
+		if(refresh_token == null || refresh_token.equals(""))
+			throw new UnauthorizedException(ResourceUtil.getMessage(Response.REFRESH_TOKEN_NOT_PRESENT));
 		User user = Optional.ofNullable(userRepository.findOne(jwtService.refreshTokenValidation(refresh_token)))
 				.map(u -> u)
 				.orElseThrow(() -> new UserNotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));

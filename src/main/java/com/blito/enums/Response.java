@@ -32,7 +32,9 @@ public enum Response {
     IMAGE_NOT_FOUND("error.not.found.image"), 
     EVENT_HOST_NOT_FOUND("error.event.host.not.found"), 
     NOT_ALLOWED("error.operation.not.allowed"), 
-    BLIT_NOT_FOUND("error.blit.not.found");
+    BLIT_NOT_FOUND("error.blit.not.found"),
+	EVENT_NOT_FOUND("error.event.not.found"),
+	REFRESH_TOKEN_NOT_PRESENT("error.refresh.token.not.present");
     
 
     private final String message;
