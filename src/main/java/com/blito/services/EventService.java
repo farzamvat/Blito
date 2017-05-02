@@ -13,8 +13,8 @@ import com.blito.enums.Response;
 import com.blito.enums.State;
 import com.blito.exceptions.EventHostNotFoundException;
 import com.blito.exceptions.EventNotFoundException;
-import com.blito.exceptions.ImageNotFoundException;
 import com.blito.mappers.EventMapper;
+import com.blito.mappers.ImageMapper;
 import com.blito.models.BlitType;
 import com.blito.models.Event;
 import com.blito.models.EventDate;
@@ -24,8 +24,8 @@ import com.blito.repositories.EventHostRepository;
 import com.blito.repositories.EventRepository;
 import com.blito.repositories.ImageRepository;
 import com.blito.resourceUtil.ResourceUtil;
-import com.blito.rest.viewmodels.EventCreateViewModel;
-import com.blito.rest.viewmodels.EventViewModel;
+import com.blito.rest.viewmodels.event.EventCreateViewModel;
+import com.blito.rest.viewmodels.event.EventViewModel;
 
 @Service
 public class EventService {
@@ -37,6 +37,8 @@ public class EventService {
 	ImageRepository imageRepository;
 	@Autowired
 	EventRepository eventRepository;
+	@Autowired
+	ImageMapper imageMapper;
 
 	@Transactional
 	public Event createEvent(EventCreateViewModel vmodel) {
@@ -48,13 +50,7 @@ public class EventService {
 						() -> new EventHostNotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
 		List<Image> images = imageRepository.findByImageUUIDIn(
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
-		images = images.stream().map(im -> vmodel.getImages().stream()
-				.filter(imv -> imv.getImageUUID().equals(im.getImageUUID())).map(imageViewModel -> {
-					im.setImageType(imageViewModel.getType());
-					return im;
-				}).findFirst().map(i -> i)
-				.orElseThrow(() -> new ImageNotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))))
-				.collect(Collectors.toList());
+		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 
 		Event event = new Event();
 		event = eventMapper.eventCreateViewModelToEvent(vmodel, event);
@@ -72,6 +68,7 @@ public class EventService {
 		}).collect(Collectors.toList()));
 		event.setImages(images);
 		event.setEventHost(eventHost);
+		event.setEventLink(generateEventLink(event));
 		return eventRepository.save(event);
 	}
 	
@@ -80,5 +77,16 @@ public class EventService {
 				.map(e->e)
 				.orElseThrow(() -> new EventNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 		return eventMapper.eventToEventViewModel(event);
+	}
+	
+	
+	private String generateEventLink(Event event)
+	{
+		String eventLink = event.getEventName().replaceAll(" ", "-") + '-' + RandomUtil.generateLinkRandomNumber();
+		while(eventRepository.findByEventLink(eventLink).isPresent())
+		{
+			eventLink = event.getEventName().replaceAll(" ", "-") + '-' + RandomUtil.generateLinkRandomNumber();
+		}
+		return eventLink;
 	}
 }

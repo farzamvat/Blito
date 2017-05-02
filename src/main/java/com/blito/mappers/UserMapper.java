@@ -3,8 +3,8 @@ package com.blito.mappers;
 import org.springframework.stereotype.Component;
 
 import com.blito.models.User;
-import com.blito.rest.viewmodels.RegisterVm;
-import com.blito.rest.viewmodels.UserInfoViewModel;
+import com.blito.rest.viewmodels.account.RegisterVm;
+import com.blito.rest.viewmodels.account.UserInfoViewModel;
 
 @Component
 public class UserMapper {

@@ -18,9 +18,9 @@ import com.blito.models.User;
 import com.blito.repositories.ExchangeBlitRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
-import com.blito.rest.viewmodels.ApprovedExchangeBlitViewModel;
-import com.blito.rest.viewmodels.ExchangeBlitViewModel;
-import com.blito.rest.viewmodels.UserEditExchangeBlitViewModel;
+import com.blito.rest.viewmodels.exchangeblit.ApprovedExchangeBlitViewModel;
+import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
+import com.blito.rest.viewmodels.exchangeblit.UserEditExchangeBlitViewModel;
 import com.blito.security.SecurityContextHolder;
 
 @Service

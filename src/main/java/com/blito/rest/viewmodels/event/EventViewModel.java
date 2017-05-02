@@ -1,11 +1,13 @@
-package com.blito.rest.viewmodels;
+package com.blito.rest.viewmodels.event;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.blito.enums.EventType;
 import com.blito.enums.OfferTypeEnum;
 import com.blito.enums.State;
+import com.blito.rest.viewmodels.image.ImageViewModel;
 
 public class EventViewModel {
 	long eventId;
@@ -27,6 +29,13 @@ public class EventViewModel {
 	
 	List<EventDateViewModel> eventDates;
 	List<ImageViewModel> images;
+	
+	public EventViewModel()
+	{
+		offers = new ArrayList<>();
+		eventDates = new ArrayList<>();
+		images = new ArrayList<>();
+	}
 	
 	public long getEventId() {
 		return eventId;

@@ -1,4 +1,4 @@
-package com.blito.rest.viewmodels;
+package com.blito.rest.viewmodels.exchangeblit;
 
 import javax.validation.constraints.NotNull;
 

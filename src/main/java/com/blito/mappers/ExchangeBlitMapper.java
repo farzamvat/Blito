@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.blito.models.ExchangeBlit;
-import com.blito.rest.viewmodels.AdminExchangeBlitViewModel;
-import com.blito.rest.viewmodels.ApprovedExchangeBlitViewModel;
-import com.blito.rest.viewmodels.ExchangeBlitViewModel;
-import com.blito.rest.viewmodels.SimpleExchangeBlitViewModel;
-import com.blito.rest.viewmodels.UserEditExchangeBlitViewModel;
+import com.blito.rest.viewmodels.exchangeblit.AdminExchangeBlitViewModel;
+import com.blito.rest.viewmodels.exchangeblit.ApprovedExchangeBlitViewModel;
+import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
+import com.blito.rest.viewmodels.exchangeblit.SimpleExchangeBlitViewModel;
+import com.blito.rest.viewmodels.exchangeblit.UserEditExchangeBlitViewModel;
 
 @Component
 public class ExchangeBlitMapper extends AbstractMapper {

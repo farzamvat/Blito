@@ -1,4 +1,4 @@
-package com.blito.rest.viewmodels;
+package com.blito.rest.viewmodels.account;
 
 public class TokenModel {
 	String accessToken;

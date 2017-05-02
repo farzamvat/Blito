@@ -19,9 +19,9 @@ import com.blito.mappers.ExchangeBlitMapper;
 import com.blito.models.ExchangeBlit;
 import com.blito.repositories.ExchangeBlitRepository;
 import com.blito.resourceUtil.ResourceUtil;
-import com.blito.rest.viewmodels.AdminChangeExchangeBlitStateViewModel;
-import com.blito.rest.viewmodels.AdminExchangeBlitViewModel;
 import com.blito.rest.viewmodels.ResultVm;
+import com.blito.rest.viewmodels.exchangeblit.AdminChangeExchangeBlitStateViewModel;
+import com.blito.rest.viewmodels.exchangeblit.AdminExchangeBlitViewModel;
 
 @RestController
 @RequestMapping("${api.base.url}" + "/admin")

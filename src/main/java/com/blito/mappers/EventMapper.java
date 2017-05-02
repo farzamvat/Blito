@@ -10,12 +10,12 @@ import com.blito.enums.State;
 import com.blito.models.BlitType;
 import com.blito.models.Event;
 import com.blito.models.EventDate;
-import com.blito.rest.viewmodels.BlitTypeCreateViewModel;
-import com.blito.rest.viewmodels.BlitTypeViewModel;
-import com.blito.rest.viewmodels.EventCreateViewModel;
-import com.blito.rest.viewmodels.EventDateCreateViewModel;
-import com.blito.rest.viewmodels.EventDateViewModel;
-import com.blito.rest.viewmodels.EventViewModel;
+import com.blito.rest.viewmodels.event.BlitTypeCreateViewModel;
+import com.blito.rest.viewmodels.event.BlitTypeViewModel;
+import com.blito.rest.viewmodels.event.EventCreateViewModel;
+import com.blito.rest.viewmodels.event.EventDateCreateViewModel;
+import com.blito.rest.viewmodels.event.EventDateViewModel;
+import com.blito.rest.viewmodels.event.EventViewModel;
 
 @Component
 public class EventMapper extends AbstractMapper {
@@ -68,8 +68,7 @@ public class EventMapper extends AbstractMapper {
 		vmodel.setAparatDisplayCode(event.getAparatDisplayCode());
 		vmodel.setOffers(event.getOffers());
 		vmodel.setEventDates(event.getEventDates().stream()
-													.map(ed -> ed.getBlitTypes())
-													.flatMap(bt -> bt.stream())
+													.flatMap(ed -> ed.getBlitTypes().stream())
 													.map(bt->eventDateToEventDateViewModelFlat(bt.getEventDate(), bt))
 													.collect(Collectors.toList()));		
 		vmodel.setEventHostId(event.getEventHost().getEventHostId());

@@ -1,11 +1,13 @@
-package com.blito.rest.viewmodels;
+package com.blito.rest.viewmodels.event;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
 import com.blito.enums.EventType;
+import com.blito.rest.viewmodels.image.ImageViewModel;
 
 public class EventCreateViewModel {
 	@NotNull
@@ -18,13 +20,17 @@ public class EventCreateViewModel {
 	private String description;
 	private Double latitude;
 	private Double longitude;
-	private String indexTitle;
-	private String indexDescription;
 	private String aparatDisplayCode;
 	private long eventHostId;
 	
 	List<EventDateCreateViewModel> eventDates;
 	List<ImageViewModel> images;
+	
+	public EventCreateViewModel()
+	{
+		eventDates = new ArrayList<>();
+		images = new ArrayList<>();
+	}
 	
 
 	public List<ImageViewModel> getImages() {
@@ -97,22 +103,6 @@ public class EventCreateViewModel {
 
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
-	}
-
-	public String getIndexTitle() {
-		return indexTitle;
-	}
-
-	public void setIndexTitle(String indexTitle) {
-		this.indexTitle = indexTitle;
-	}
-
-	public String getIndexDescription() {
-		return indexDescription;
-	}
-
-	public void setIndexDescription(String indexDescription) {
-		this.indexDescription = indexDescription;
 	}
 
 	public String getAparatDisplayCode() {

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.blito.enums.Response;
 import com.blito.exceptions.UnauthorizedException;
 import com.blito.resourceUtil.ResourceUtil;
-import com.blito.rest.viewmodels.TokenModel;
+import com.blito.rest.viewmodels.account.TokenModel;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

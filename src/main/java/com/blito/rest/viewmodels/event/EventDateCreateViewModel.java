@@ -1,6 +1,7 @@
-package com.blito.rest.viewmodels;
+package com.blito.rest.viewmodels.event;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.blito.enums.DayOfWeek;
@@ -9,6 +10,11 @@ public class EventDateCreateViewModel {
 	DayOfWeek dayOfWeek;
 	Timestamp date;
 	List<BlitTypeCreateViewModel> blitTypes;
+	
+	public EventDateCreateViewModel()
+	{
+		blitTypes = new ArrayList<>();
+	}
 	
 	public DayOfWeek getDayOfWeek() {
 		return dayOfWeek;

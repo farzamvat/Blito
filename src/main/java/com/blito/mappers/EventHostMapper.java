@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import com.blito.models.EventHost;
-import com.blito.rest.viewmodels.EventHostSimpleViewModel;
-import com.blito.rest.viewmodels.EventHostViewModel;
+import com.blito.rest.viewmodels.eventhost.EventHostSimpleViewModel;
+import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 
 @Component
 public class EventHostMapper {

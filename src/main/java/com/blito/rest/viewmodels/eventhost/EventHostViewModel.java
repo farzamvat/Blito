@@ -1,9 +1,13 @@
-package com.blito.rest.viewmodels;
+package com.blito.rest.viewmodels.eventhost;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
 import com.blito.annotations.Url;
 import com.blito.enums.HostType;
+import com.blito.rest.viewmodels.image.ImageViewModel;
 
 public class EventHostViewModel {
 	long eventHostId;
@@ -23,7 +27,19 @@ public class EventHostViewModel {
 	String websiteLink;
 	@NotNull
 	HostType hostType;
-	String imageUUID;
+	List<ImageViewModel> images;
+	
+	public EventHostViewModel()
+	{
+		images = new ArrayList<>();
+	}
+	
+	public List<ImageViewModel> getImages() {
+		return images;
+	}
+	public void setImages(List<ImageViewModel> images) {
+		this.images = images;
+	}
 	public long getEventHostId() {
 		return eventHostId;
 	}
@@ -77,11 +93,5 @@ public class EventHostViewModel {
 	}
 	public void setHostType(HostType hostType) {
 		this.hostType = hostType;
-	}
-	public String getImageUUID() {
-		return imageUUID;
-	}
-	public void setImageUUID(String imageUUID) {
-		this.imageUUID = imageUUID;
 	}
 }

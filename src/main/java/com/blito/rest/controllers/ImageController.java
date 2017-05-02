@@ -17,7 +17,7 @@ import com.blito.exceptions.ImageNotFoundException;
 import com.blito.models.Image;
 import com.blito.repositories.ImageRepository;
 import com.blito.resourceUtil.ResourceUtil;
-import com.blito.rest.viewmodels.ImageUploadViewModel;
+import com.blito.rest.viewmodels.image.ImageUploadViewModel;
 import com.blito.services.ImageService;
 
 @RestController

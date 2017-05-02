@@ -11,8 +11,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import com.blito.enums.Response;
 import com.blito.resourceUtil.ResourceUtil;
-import com.blito.rest.viewmodels.ExceptionViewModel;
-import com.blito.rest.viewmodels.FieldErrorViewModel;
+import com.blito.rest.viewmodels.exception.ExceptionViewModel;
+import com.blito.rest.viewmodels.exception.FieldErrorViewModel;
 import com.blito.validators.ValidationInterface;
 
 

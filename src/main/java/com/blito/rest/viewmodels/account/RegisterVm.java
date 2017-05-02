@@ -1,4 +1,4 @@
-package com.blito.rest.viewmodels;
+package com.blito.rest.viewmodels.account;
 
 import javax.validation.constraints.NotNull;
 

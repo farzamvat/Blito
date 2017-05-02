@@ -18,10 +18,10 @@ import com.blito.mappers.UserMapper;
 import com.blito.models.User;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
-import com.blito.rest.viewmodels.ChangePasswordViewModel;
-import com.blito.rest.viewmodels.LoginViewModel;
-import com.blito.rest.viewmodels.RegisterVm;
-import com.blito.rest.viewmodels.TokenModel;
+import com.blito.rest.viewmodels.account.ChangePasswordViewModel;
+import com.blito.rest.viewmodels.account.LoginViewModel;
+import com.blito.rest.viewmodels.account.RegisterVm;
+import com.blito.rest.viewmodels.account.TokenModel;
 import com.blito.security.SecurityContextHolder;
 
 

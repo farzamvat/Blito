@@ -1,4 +1,4 @@
-package com.blito.rest.viewmodels;
+package com.blito.rest.viewmodels.event;
 
 import java.sql.Timestamp;
 import java.util.List;

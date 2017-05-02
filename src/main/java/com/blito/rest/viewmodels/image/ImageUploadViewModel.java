@@ -1,4 +1,4 @@
-package com.blito.rest.viewmodels;
+package com.blito.rest.viewmodels.image;
 
 public class ImageUploadViewModel {
 	String encodedBase64;

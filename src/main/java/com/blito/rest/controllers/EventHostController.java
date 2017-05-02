@@ -26,10 +26,10 @@ import com.blito.exceptions.ExceptionUtil;
 import com.blito.exceptions.ImageNotFoundException;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.resourceUtil.ResourceUtil;
-import com.blito.rest.viewmodels.EventHostSimpleViewModel;
-import com.blito.rest.viewmodels.EventHostViewModel;
-import com.blito.rest.viewmodels.ExceptionViewModel;
 import com.blito.rest.viewmodels.ResultVm;
+import com.blito.rest.viewmodels.eventhost.EventHostSimpleViewModel;
+import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
+import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.services.EventHostService;
 
 import io.swagger.annotations.ApiOperation;
