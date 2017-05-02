@@ -12,43 +12,7 @@ import com.blito.rest.viewmodels.exchangeblit.SimpleExchangeBlitViewModel;
 import com.blito.rest.viewmodels.exchangeblit.UserEditExchangeBlitViewModel;
 
 @Component
-public class ExchangeBlitMapper extends AbstractMapper {
-	
-	public ExchangeBlit ViewModelToExchangeBlit(ExchangeBlitViewModel vmodel,ExchangeBlit exchangeBlit)
-	{
-		exchangeBlit.setTitle(vmodel.getTitle());
-		exchangeBlit.setBlitCost(vmodel.getBlitCost());
-		exchangeBlit.setDescription(vmodel.getDescription());
-		exchangeBlit.setFirstname(vmodel.getFirstname());
-		exchangeBlit.setLastname(vmodel.getLastname());
-		exchangeBlit.setEmail(vmodel.getEmail());
-		exchangeBlit.setBlitoEvent(vmodel.isBlitoEvent());
-		exchangeBlit.setEventAddress(vmodel.getEventAddress());
-		exchangeBlit.setPhoneNumber(vmodel.getPhoneNumber());
-		exchangeBlit.setEventDate(vmodel.getEventDate());
-		exchangeBlit.setVendorAddress(vmodel.getVendorAddress());
-		return exchangeBlit;
-	}
-	
-	public ExchangeBlitViewModel exchangeBlitToViewModel(ExchangeBlit exchangeBlit)
-	{
-		ExchangeBlitViewModel vmodel = new ExchangeBlitViewModel();
-		vmodel.setTitle(exchangeBlit.getTitle());
-		vmodel.setBlitCost(exchangeBlit.getBlitCost());
-		vmodel.setDescription(exchangeBlit.getDescription());
-		vmodel.setFirstname(exchangeBlit.getFirstname());
-		vmodel.setLastname(exchangeBlit.getLastname());
-		vmodel.setEmail(exchangeBlit.getEmail());
-		vmodel.setBlitoEvent(exchangeBlit.isBlitoEvent());
-		vmodel.setEventAddress(exchangeBlit.getEventAddress());
-		vmodel.setPhoneNumber(exchangeBlit.getPhoneNumber());
-		vmodel.setEventDate(exchangeBlit.getEventDate());
-		vmodel.setVendorAddress(exchangeBlit.getVendorAddress());
-		vmodel.setState(exchangeBlit.getState());
-		vmodel.setOperatorState(exchangeBlit.getOperatorState());
-		vmodel.setType(exchangeBlit.getType());
-		return vmodel;
-	}
+public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit,ExchangeBlitViewModel> {
 	
 	public SimpleExchangeBlitViewModel exchangeBlitToSimpleViewModel(ExchangeBlit exchangeBlit)
 	{
@@ -143,9 +107,48 @@ public class ExchangeBlitMapper extends AbstractMapper {
 	{
 		return toList(exchangeBlits, this::exchangeBlitToSimpleViewModel);
 	}
-	
-	public List<ExchangeBlitViewModel> exchangeBlitsToViewModels(List<ExchangeBlit> exchangeBlits)
-	{
-		return toList(exchangeBlits, this:: exchangeBlitToViewModel);
+
+
+	@Override
+	public ExchangeBlit createFromViewModel(ExchangeBlitViewModel vmodel) {
+		ExchangeBlit exchangeBlit = new ExchangeBlit();
+		exchangeBlit.setTitle(vmodel.getTitle());
+		exchangeBlit.setBlitCost(vmodel.getBlitCost());
+		exchangeBlit.setDescription(vmodel.getDescription());
+		exchangeBlit.setFirstname(vmodel.getFirstname());
+		exchangeBlit.setLastname(vmodel.getLastname());
+		exchangeBlit.setEmail(vmodel.getEmail());
+		exchangeBlit.setBlitoEvent(vmodel.isBlitoEvent());
+		exchangeBlit.setEventAddress(vmodel.getEventAddress());
+		exchangeBlit.setPhoneNumber(vmodel.getPhoneNumber());
+		exchangeBlit.setEventDate(vmodel.getEventDate());
+		exchangeBlit.setVendorAddress(vmodel.getVendorAddress());
+		return exchangeBlit;
+	}
+
+	@Override
+	public ExchangeBlitViewModel createFromEntity(ExchangeBlit exchangeBlit) {
+		ExchangeBlitViewModel vmodel = new ExchangeBlitViewModel();
+		vmodel.setTitle(exchangeBlit.getTitle());
+		vmodel.setBlitCost(exchangeBlit.getBlitCost());
+		vmodel.setDescription(exchangeBlit.getDescription());
+		vmodel.setFirstname(exchangeBlit.getFirstname());
+		vmodel.setLastname(exchangeBlit.getLastname());
+		vmodel.setEmail(exchangeBlit.getEmail());
+		vmodel.setBlitoEvent(exchangeBlit.isBlitoEvent());
+		vmodel.setEventAddress(exchangeBlit.getEventAddress());
+		vmodel.setPhoneNumber(exchangeBlit.getPhoneNumber());
+		vmodel.setEventDate(exchangeBlit.getEventDate());
+		vmodel.setVendorAddress(exchangeBlit.getVendorAddress());
+		vmodel.setState(exchangeBlit.getState());
+		vmodel.setOperatorState(exchangeBlit.getOperatorState());
+		vmodel.setType(exchangeBlit.getType());
+		return vmodel;
+	}
+
+	@Override
+	public ExchangeBlit updateEntity(ExchangeBlitViewModel viewModel, ExchangeBlit entity) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

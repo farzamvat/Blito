@@ -7,6 +7,7 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import com.blito.enums.EventType;
+import com.blito.rest.viewmodels.eventdate.EventDateCreateViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
 
 public class EventCreateViewModel {
@@ -21,8 +22,7 @@ public class EventCreateViewModel {
 	private Double latitude;
 	private Double longitude;
 	private String aparatDisplayCode;
-	private long eventHostId;
-	
+	long eventHostId;
 	List<EventDateCreateViewModel> eventDates;
 	List<ImageViewModel> images;
 	
@@ -30,15 +30,7 @@ public class EventCreateViewModel {
 	{
 		eventDates = new ArrayList<>();
 		images = new ArrayList<>();
-	}
-	
-
-	public List<ImageViewModel> getImages() {
-		return images;
-	}
-
-	public void setImages(List<ImageViewModel> images) {
-		this.images = images;
+		
 	}
 
 	public String getEventName() {
@@ -61,8 +53,8 @@ public class EventCreateViewModel {
 		return blitSaleStartDate;
 	}
 
-	public void setBlitSaleStartDate(Timestamp blitSalteStartDate) {
-		this.blitSaleStartDate = blitSalteStartDate;
+	public void setBlitSaleStartDate(Timestamp blitSaleStartDate) {
+		this.blitSaleStartDate = blitSaleStartDate;
 	}
 
 	public Timestamp getBlitSaleEndDate() {
@@ -128,5 +120,12 @@ public class EventCreateViewModel {
 	public void setEventDates(List<EventDateCreateViewModel> eventDates) {
 		this.eventDates = eventDates;
 	}
-	
+
+	public List<ImageViewModel> getImages() {
+		return images;
+	}
+
+	public void setImages(List<ImageViewModel> images) {
+		this.images = images;
+	}
 }

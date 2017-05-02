@@ -7,23 +7,40 @@ import org.springframework.stereotype.Component;
 
 import com.blito.enums.OperatorState;
 import com.blito.enums.State;
-import com.blito.models.BlitType;
 import com.blito.models.Event;
-import com.blito.models.EventDate;
-import com.blito.rest.viewmodels.event.BlitTypeCreateViewModel;
-import com.blito.rest.viewmodels.event.BlitTypeViewModel;
 import com.blito.rest.viewmodels.event.EventCreateViewModel;
-import com.blito.rest.viewmodels.event.EventDateCreateViewModel;
-import com.blito.rest.viewmodels.event.EventDateViewModel;
+import com.blito.rest.viewmodels.event.EventUpdateViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
 
 @Component
-public class EventMapper extends AbstractMapper {
+public class EventMapper implements GenericMapper<Event,EventViewModel> {
 
-	@Autowired
-	ImageMapper imageMapper;
-
-	public Event eventCreateViewModelToEvent(EventCreateViewModel vmodel, Event event) {
+	@Autowired EventDateFlatMapper flatMapper;
+	@Autowired ImageMapper imageMapper;
+	
+	@Override
+	public Event createFromViewModel(EventViewModel viewModel) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public Event updateEventFromUpdateViewModel(EventUpdateViewModel vmodel,Event event)
+	{
+		event.setAddress(vmodel.getAddress());
+		event.setAparatDisplayCode(vmodel.getAparatDisplayCode());
+		event.setBlitSaleEndDate(vmodel.getBlitSaleEndDate());
+		event.setBlitSaleStartDate(vmodel.getBlitSaleStartDate());
+		event.setDescription(vmodel.getDescription());
+		event.setEventName(vmodel.getEventName());
+		event.setEventType(vmodel.getEventType());
+		event.setLongitude(vmodel.getLongitude());
+		event.setLatitude(vmodel.getLatitude());
+		return event;
+	}
+	
+	public Event eventCreateViewModelToEvent(EventCreateViewModel vmodel)
+	{
+		Event event = new Event();
 		event.setEventName(vmodel.getEventName());
 		event.setAddress(vmodel.getAddress());
 		event.setAparatDisplayCode(vmodel.getAparatDisplayCode());
@@ -38,72 +55,37 @@ public class EventMapper extends AbstractMapper {
 		return event;
 	}
 
-	public EventDate eventDateCreationViewModelToEventDate(EventDateCreateViewModel vmodel, EventDate eventDate) {
-		eventDate.setDate(vmodel.getDate());
-		eventDate.setDayOfWeek(vmodel.getDayOfWeek());
-		return eventDate;
-	}
-
-	public BlitType blitTypeViewModelToBlitType(BlitTypeCreateViewModel vmodel, BlitType blitType) {
-		blitType.setName(vmodel.getName());
-		blitType.setCapacity(vmodel.getCapacity());
-		blitType.setFree(vmodel.isFree());
-		blitType.setPrice(vmodel.getPrice());
-		return blitType;
-	}
-
-	public EventViewModel eventToEventViewModel(Event event) {
+	@Override
+	public EventViewModel createFromEntity(Event event) {
 		EventViewModel vmodel = new EventViewModel();
 		vmodel.setEventId(event.getEventId());
-		vmodel.setEventname(event.getEventName());
+		vmodel.setEventName(event.getEventName());
 		vmodel.setEventType(event.getEventType());
 		vmodel.setBlitSaleStartDate(event.getBlitSaleStartDate());
 		vmodel.setBlitSaleEndDate(event.getBlitSaleEndDate());
 		vmodel.setAddress(event.getAddress());
-		vmodel.setDescrption(event.getDescription());
+		vmodel.setDescription(event.getDescription());
 		vmodel.setLatitude(event.getLatitude());
 		vmodel.setLongitude(event.getLongitude());
 		vmodel.setEventLink(event.getEventLink());
 		vmodel.setEventState(event.getEventState());
 		vmodel.setAparatDisplayCode(event.getAparatDisplayCode());
 		vmodel.setOffers(event.getOffers());
+		
 		vmodel.setEventDates(event.getEventDates().stream()
 													.flatMap(ed -> ed.getBlitTypes().stream())
-													.map(bt->eventDateToEventDateViewModelFlat(bt.getEventDate(), bt))
+													.map(bt->flatMapper.eventDateToEventDateViewModelFlat(bt.getEventDate(), bt))
 													.collect(Collectors.toList()));		
 		vmodel.setEventHostId(event.getEventHost().getEventHostId());
 		vmodel.setImages(
-				event.getImages().stream().map(i -> imageMapper.imageToImageViewModel(i)).collect(Collectors.toList()));
+				event.getImages().stream().map(i -> imageMapper.createFromEntity(i)).collect(Collectors.toList()));
 		return vmodel;
 	}
 
-	
-
-	public EventDateViewModel eventDateToEventDateViewModelFlat(EventDate eventDate, BlitType blitType) {
-		EventDateViewModel vmodel = new EventDateViewModel();
-		vmodel.setEventDateId(eventDate.getEventDateId());
-		vmodel.setDate(eventDate.getDate());
-		vmodel.setDayOfWeek(eventDate.getDayOfWeek());
-		vmodel.setEventState(eventDate.getEventState());
-		vmodel.setBlitTypeId(blitType.getBlitTypeId());
-		vmodel.setName(blitType.getName());
-		vmodel.setPrice(blitType.getPrice());
-		vmodel.setCapacity(blitType.getCapacity());
-		vmodel.setSoldCount(blitType.getSoldCount());
-		vmodel.setBlitTypeState(blitType.getBlitTypeState());
-		vmodel.setFree(blitType.isFree());
-		return vmodel;
+	@Override
+	public Event updateEntity(EventViewModel viewModel, Event entity) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	public BlitTypeViewModel blitTypeToBlitTypeViewModel(BlitType blitType) {
-		BlitTypeViewModel vmodel = new BlitTypeViewModel();
-		vmodel.setBlitTypeId(blitType.getBlitTypeId());
-		vmodel.setName(blitType.getName());
-		vmodel.setPrice(blitType.getPrice());
-		vmodel.setCapacity(blitType.getCapacity());
-		vmodel.setSoldCount(blitType.getSoldCount());
-		vmodel.setBlitTypeState(blitType.getBlitTypeState());
-		vmodel.setFree(blitType.isFree());
-		return vmodel;
-	}
 }

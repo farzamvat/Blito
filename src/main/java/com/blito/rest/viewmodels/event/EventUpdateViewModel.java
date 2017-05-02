@@ -4,13 +4,18 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
 
 import com.blito.enums.EventType;
+import com.blito.rest.viewmodels.eventdate.EventDateCreateViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
 
 public class EventUpdateViewModel {
-	private long eventId;
+	long eventId;
+	long eventHostId;
+	@NotNull
 	private String EventName;
+	@NotNull
 	private EventType eventType;
 	private Timestamp blitSaleStartDate;
 	private Timestamp blitSaleEndDate;
@@ -19,25 +24,10 @@ public class EventUpdateViewModel {
 	private Double latitude;
 	private Double longitude;
 	private String aparatDisplayCode;
-	private long eventHostId;
 	
 	List<EventDateCreateViewModel> eventDates;
 	List<ImageViewModel> images;
 	
-	public EventUpdateViewModel()
-	{
-		eventDates = new ArrayList<>();
-		images = new ArrayList<>();
-	}
-
-	public long getEventId() {
-		return eventId;
-	}
-
-	public void setEventId(long eventId) {
-		this.eventId = eventId;
-	}
-
 	public String getEventName() {
 		return EventName;
 	}
@@ -108,6 +98,20 @@ public class EventUpdateViewModel {
 
 	public void setAparatDisplayCode(String aparatDisplayCode) {
 		this.aparatDisplayCode = aparatDisplayCode;
+	}
+
+	public EventUpdateViewModel()
+	{
+		eventDates = new ArrayList<>();
+		images = new ArrayList<>();
+	}
+
+	public long getEventId() {
+		return eventId;
+	}
+
+	public void setEventId(long eventId) {
+		this.eventId = eventId;
 	}
 
 	public long getEventHostId() {

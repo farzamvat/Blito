@@ -38,12 +38,12 @@ public class EventHostService {
 		List<Image> images = imageRepository.findByImageUUIDIn(
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
-		EventHost eventHost = new EventHost();
-		eventHost = eventHostMapper.eventHostViewModelToEventHost(vmodel,eventHost);
+		
+		EventHost eventHost = eventHostMapper.createFromViewModel(vmodel);
 		eventHost.setImages(images);
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		user.setEventHosts(Arrays.asList(eventHost));
-		return eventHostMapper.eventHostToViewModel(eventHost);
+		return eventHostMapper.createFromEntity(eventHost);
 	}
 	
 	public EventHostViewModel update(EventHostViewModel vmodel)
@@ -59,9 +59,7 @@ public class EventHostService {
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 		eventHost.setImages(images);
-		eventHost = eventHostMapper.eventHostViewModelToEventHost(vmodel,eventHost);
-		
-		return eventHostMapper.eventHostToViewModel(eventHost);
+		return eventHostMapper.createFromEntity(eventHostRepository.save(eventHostMapper.updateEntity(vmodel,eventHost)));
 	}
 	
 	public EventHostViewModel get(long id)
@@ -69,7 +67,7 @@ public class EventHostService {
 		EventHost eventHost = Optional.ofNullable(eventHostRepository.findOne(id))
 				.map(e -> e)
 				.orElseThrow(() -> new EventHostNotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
-		return eventHostMapper.eventHostToViewModel(eventHost);
+		return eventHostMapper.createFromEntity(eventHost);
 	}
 	
 	public void delete(long id)

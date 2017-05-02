@@ -1,4 +1,4 @@
-package com.blito.rest.viewmodels.event;
+package com.blito.rest.viewmodels.blittype;
 
 public class BlitTypeCreateViewModel {
 	private boolean isFree;

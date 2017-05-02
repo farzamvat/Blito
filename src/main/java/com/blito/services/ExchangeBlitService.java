@@ -39,7 +39,7 @@ public class ExchangeBlitService {
 		exchangeBlit.setOperatorState(OperatorState.PENDING);
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		exchangeBlit.setUser(user);
-		return exchangeBlitMapper.exchangeBlitToViewModel(exchangeBlitRepository.save(exchangeBlit));
+		return exchangeBlitMapper.createFromEntity(exchangeBlitRepository.save(exchangeBlit));
 	}
 
 	public ExchangeBlitViewModel update(UserEditExchangeBlitViewModel vmodel) {
@@ -54,7 +54,7 @@ public class ExchangeBlitService {
 		exchangeBlit = exchangeBlitMapper.userEditViewModelToExchangeBlit(vmodel, exchangeBlit);
 		exchangeBlit.setOperatorState(OperatorState.PENDING);
 
-		return exchangeBlitMapper.exchangeBlitToViewModel(exchangeBlitRepository.save(exchangeBlit));
+		return exchangeBlitMapper.createFromEntity(exchangeBlitRepository.save(exchangeBlit));
 	}
 
 	public void delete(long exchangeBlitId) {
@@ -72,7 +72,7 @@ public class ExchangeBlitService {
 	public ExchangeBlitViewModel getExchangeBlitById(long exchangeBlitId)
 	{
 		return Optional.ofNullable(exchangeBlitRepository.findOne(exchangeBlitId))
-				.map(e -> exchangeBlitMapper.exchangeBlitToViewModel(e))
+				.map(e -> exchangeBlitMapper.createFromEntity(e))
 				.orElseThrow(() -> new ExchangeBlitNotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
 	}
 }
