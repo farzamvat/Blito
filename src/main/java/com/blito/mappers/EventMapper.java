@@ -67,11 +67,11 @@ public class EventMapper extends AbstractMapper {
 		vmodel.setEventState(event.getEventState());
 		vmodel.setAparatDisplayCode(event.getAparatDisplayCode());
 		vmodel.setOffers(event.getOffers());
-//		vmodel.setEventDates(event.getEventDates().stream()
-//													.map(ed -> ed.getBlitTypes())
-//													.flatMap(et -> et.stream())
-//													.distinct()
-//													.collect(Collectors.toList()));
+		vmodel.setEventDates(event.getEventDates().stream()
+													.map(ed -> ed.getBlitTypes())
+													.flatMap(bt -> bt.stream())
+													.map(bt->eventDateToEventDateViewModelFlat(bt.getEventDate(), bt))
+													.collect(Collectors.toList()));		
 		vmodel.setEventHostId(event.getEventHost().getEventHostId());
 		vmodel.setImages(
 				event.getImages().stream().map(i -> imageMapper.imageToImageViewModel(i)).collect(Collectors.toList()));
