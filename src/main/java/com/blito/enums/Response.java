@@ -34,7 +34,8 @@ public enum Response {
     NOT_ALLOWED("error.operation.not.allowed"), 
     BLIT_NOT_FOUND("error.blit.not.found"),
 	EVENT_NOT_FOUND("error.event.not.found"),
-	REFRESH_TOKEN_NOT_PRESENT("error.refresh.token.not.present");
+	REFRESH_TOKEN_NOT_PRESENT("error.refresh.token.not.present"), 
+	EVENT_LINK_EXISTS("error.event.link.exists");
     
 
     private final String message;

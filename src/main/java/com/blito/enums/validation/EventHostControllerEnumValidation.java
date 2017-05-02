@@ -23,7 +23,7 @@ public enum EventHostControllerEnumValidation implements ValidationInterface {
 	@Override
 	public String get() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.message;
 	}
 
 }

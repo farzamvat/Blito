@@ -24,6 +24,7 @@ public class EventMapper implements GenericMapper<Event,EventViewModel> {
 		return null;
 	}
 	
+	
 	public Event updateEventFromUpdateViewModel(EventUpdateViewModel vmodel,Event event)
 	{
 		event.setAddress(vmodel.getAddress());
@@ -35,10 +36,12 @@ public class EventMapper implements GenericMapper<Event,EventViewModel> {
 		event.setEventType(vmodel.getEventType());
 		event.setLongitude(vmodel.getLongitude());
 		event.setLatitude(vmodel.getLatitude());
+		event.setEventLink(vmodel.getEventLink());
+		event.setOperatorState(OperatorState.PENDING);
 		return event;
 	}
 	
-	public Event eventCreateViewModelToEvent(EventCreateViewModel vmodel)
+	public Event createFromCreateViewModel(EventCreateViewModel vmodel)
 	{
 		Event event = new Event();
 		event.setEventName(vmodel.getEventName());

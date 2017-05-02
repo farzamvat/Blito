@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.blito.enums.Response;
 import com.blito.enums.State;
 import com.blito.exceptions.EventHostNotFoundException;
+import com.blito.exceptions.EventLinkAlreadyExistsException;
 import com.blito.exceptions.EventNotFoundException;
 import com.blito.mappers.BlitTypeMapper;
 import com.blito.mappers.EventDateCreateMapper;
@@ -45,7 +46,7 @@ public class EventService {
 	@Autowired
 	ImageMapper imageMapper;
 
-	public Event createEvent(EventCreateViewModel vmodel) {
+	public Event create(EventCreateViewModel vmodel) {
 		if (vmodel.getBlitSaleStartDate().after(vmodel.getBlitSaleEndDate())) {
 			throw new RuntimeException("start date is after end date");
 		}
@@ -56,7 +57,7 @@ public class EventService {
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 
-		Event event = eventMapper.eventCreateViewModelToEvent(vmodel);
+		Event event = eventMapper.createFromCreateViewModel(vmodel);
 		event.setEventDates(vmodel.getEventDates().stream().map(ed -> {
 			EventDate eventDate = eventDateCreateMapper.createFromViewModel(ed);
 			eventDate.setBlitTypes(ed.getBlitTypes().stream().map(bt -> {
@@ -74,7 +75,7 @@ public class EventService {
 		return eventRepository.save(event);
 	}
 	
-	public EventViewModel getEvent(long eventId) {
+	public EventViewModel getById(long eventId) {
 		Event event = Optional.ofNullable(eventRepository.findOne(eventId))
 				.map(e->e)
 				.orElseThrow(() -> new EventNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
@@ -109,8 +110,12 @@ public class EventService {
 		}).collect(Collectors.toList()));
 		event.setImages(images);
 		event.setEventHost(eventHost);
-		//
-		event.setEventLink(generateEventLink(event));
+		Optional<Event> eventResult = eventRepository.findByEventLink(vmodel.getEventLink());
+		if(eventResult.isPresent())
+		{
+			throw new EventLinkAlreadyExistsException(ResourceUtil.getMessage(Response.EVENT_LINK_EXISTS));
+		}
+		event.setEventLink(vmodel.getEventLink());
 		return eventMapper.createFromEntity(eventRepository.save(event));
 	}
 	
