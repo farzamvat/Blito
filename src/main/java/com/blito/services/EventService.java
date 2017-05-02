@@ -80,6 +80,8 @@ public class EventService {
 	}
 	
 	
+	
+	
 	private String generateEventLink(Event event)
 	{
 		String eventLink = event.getEventName().replaceAll(" ", "-") + '-' + RandomUtil.generateLinkRandomNumber();
