@@ -23,9 +23,9 @@ import com.blito.enums.Response;
 import com.blito.enums.validation.AccountControllerEnumValidation;
 import com.blito.exceptions.EmailAlreadyExistsException;
 import com.blito.exceptions.ExceptionUtil;
+import com.blito.exceptions.NotFoundException;
 import com.blito.exceptions.UnauthorizedException;
 import com.blito.exceptions.UserNotActivatedException;
-import com.blito.exceptions.UserNotFoundException;
 import com.blito.exceptions.WrongPasswordException;
 import com.blito.mappers.UserMapper;
 import com.blito.models.User;
@@ -69,7 +69,7 @@ public class AccountController {
 	}
 	
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	@ExceptionHandler({UserNotFoundException.class})
+	@ExceptionHandler({NotFoundException.class})
 	public ExceptionViewModel notFounds(HttpServletRequest request, RuntimeException exception) {
 		return ExceptionUtil.generate(HttpStatus.NOT_FOUND, request, exception);
 	}

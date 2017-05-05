@@ -27,19 +27,16 @@ public class EventDateFlatMapper implements GenericMapper<EventDate,EventDateFla
 	
 	@Override
 	public EventDate createFromViewModel(EventDateFlatViewModel viewModel) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public EventDateFlatViewModel createFromEntity(EventDate entity) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public EventDate updateEntity(EventDateFlatViewModel viewModel, EventDate entity) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

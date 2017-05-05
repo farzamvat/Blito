@@ -18,13 +18,11 @@ public class EventDateCreateMapper implements GenericMapper<EventDate,EventDateC
 
 	@Override
 	public EventDateCreateViewModel createFromEntity(EventDate entity) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public EventDate updateEntity(EventDateCreateViewModel viewModel, EventDate entity) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

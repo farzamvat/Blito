@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import com.blito.enums.OperatorState;
 import com.blito.enums.Response;
 import com.blito.enums.State;
-import com.blito.exceptions.ExchangeBlitNotFoundException;
 import com.blito.exceptions.NotAllowedException;
+import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.ExchangeBlitMapper;
 import com.blito.models.ExchangeBlit;
 import com.blito.models.User;
@@ -31,6 +31,13 @@ public class ExchangeBlitService {
 	ExchangeBlitRepository exchangeBlitRepository;
 	@Autowired
 	UserRepository userRepository;
+	
+	private ExchangeBlit findByExchangeBlitId(long id) 
+	{
+		return Optional.ofNullable(exchangeBlitRepository.findOne(id))
+				.map(e -> e)
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
+	}
 
 	public ExchangeBlitViewModel create(UserEditExchangeBlitViewModel vmodel) {
 		ExchangeBlit exchangeBlit = new ExchangeBlit();
@@ -43,9 +50,7 @@ public class ExchangeBlitService {
 	}
 
 	public ExchangeBlitViewModel update(UserEditExchangeBlitViewModel vmodel) {
-		ExchangeBlit exchangeBlit = Optional.ofNullable(exchangeBlitRepository.findOne(vmodel.getExchangeBlitId()))
-				.map(e -> e)
-				.orElseThrow(() -> new ExchangeBlitNotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
+		ExchangeBlit exchangeBlit = findByExchangeBlitId(vmodel.getExchangeBlitId());
 		if (exchangeBlit.getOperatorState().equals(OperatorState.PENDING)
 				|| exchangeBlit.getState().equals(State.SOLD) || exchangeBlit.getState().equals(State.CLOSED)
 				|| exchangeBlit.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
@@ -58,8 +63,7 @@ public class ExchangeBlitService {
 	}
 
 	public void delete(long exchangeBlitId) {
-		ExchangeBlit exchangeBlit = Optional.ofNullable(exchangeBlitRepository.findOne(exchangeBlitId)).map(e -> e)
-				.orElseThrow(() -> new ExchangeBlitNotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
+		ExchangeBlit exchangeBlit = findByExchangeBlitId(exchangeBlitId);
 		exchangeBlitRepository.delete(exchangeBlit);
 	}
 
@@ -71,8 +75,6 @@ public class ExchangeBlitService {
 	
 	public ExchangeBlitViewModel getExchangeBlitById(long exchangeBlitId)
 	{
-		return Optional.ofNullable(exchangeBlitRepository.findOne(exchangeBlitId))
-				.map(e -> exchangeBlitMapper.createFromEntity(e))
-				.orElseThrow(() -> new ExchangeBlitNotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
+		return exchangeBlitMapper.createFromEntity(findByExchangeBlitId(exchangeBlitId));
 	}
 }

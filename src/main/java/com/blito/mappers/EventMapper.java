@@ -20,7 +20,6 @@ public class EventMapper implements GenericMapper<Event,EventViewModel> {
 	
 	@Override
 	public Event createFromViewModel(EventViewModel viewModel) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
@@ -87,7 +86,6 @@ public class EventMapper implements GenericMapper<Event,EventViewModel> {
 
 	@Override
 	public Event updateEntity(EventViewModel viewModel, Event entity) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

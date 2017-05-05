@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.blito.enums.Response;
-import com.blito.exceptions.EventHostNotFoundException;
 import com.blito.exceptions.NotAllowedException;
+import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.EventHostMapper;
 import com.blito.mappers.ImageMapper;
 import com.blito.models.EventHost;
@@ -32,6 +32,13 @@ public class EventHostService {
 	@Autowired EventHostRepository eventHostRepository;
 	@Autowired ImageMapper imageMapper;
 	
+	private EventHost findEventHostById(long id)
+	{
+		return Optional.ofNullable(eventHostRepository.findOne(id))
+				.map(e -> e)
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
+	}
+	
 	public EventHostViewModel create(EventHostViewModel vmodel)
 	{
 
@@ -48,9 +55,7 @@ public class EventHostService {
 	
 	public EventHostViewModel update(EventHostViewModel vmodel)
 	{
-		EventHost eventHost = Optional.ofNullable(eventHostRepository.findOne(vmodel.getEventHostId()))
-				.map(e -> e)
-				.orElseThrow(() -> new EventHostNotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
+		EventHost eventHost = findEventHostById(vmodel.getEventHostId());
 		if(eventHost.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId())
 		{
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
@@ -64,18 +69,12 @@ public class EventHostService {
 	
 	public EventHostViewModel get(long id)
 	{
-		EventHost eventHost = Optional.ofNullable(eventHostRepository.findOne(id))
-				.map(e -> e)
-				.orElseThrow(() -> new EventHostNotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
-		return eventHostMapper.createFromEntity(eventHost);
+		return eventHostMapper.createFromEntity(findEventHostById(id));
 	}
 	
 	public void delete(long id)
 	{
-		EventHost eventHost = Optional.ofNullable(eventHostRepository.findOne(id))
-				.map(e -> e)
-				.orElseThrow(() -> new EventHostNotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
-		eventHostRepository.delete(eventHost);
+		eventHostRepository.delete(findEventHostById(id));
 	}
 	
 	public List<EventHostSimpleViewModel> getCurrentUserEventHosts()

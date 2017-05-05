@@ -1,12 +1,12 @@
 package com.blito.exceptions;
 
-public class UserNotFoundException extends NotFoundException {
+public class RoleAlreadyExistsException extends RuntimeException {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public UserNotFoundException(String message)
+	public RoleAlreadyExistsException(String message)
 	{
 		super(message);
 	}

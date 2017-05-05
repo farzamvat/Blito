@@ -1,14 +1,12 @@
 package com.blito.validators;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import com.blito.annotations.Url;
+import com.blito.configs.Constants;
 
 
 public class UrlValidation implements ConstraintValidator<Url, String> {
@@ -22,12 +20,7 @@ public class UrlValidation implements ConstraintValidator<Url, String> {
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 		if(value == null)
 			return true;
-		try {
-			new URL(value);
-		} catch (MalformedURLException e) {
-			return false;
-		}
-		return true;
+		return Pattern.compile(Constants.LINK_REGEX).matcher(value).matches();
 	}
 
 }

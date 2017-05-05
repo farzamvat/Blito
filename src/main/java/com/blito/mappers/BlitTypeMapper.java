@@ -44,7 +44,6 @@ public class BlitTypeMapper implements GenericMapper<BlitType,BlitTypeViewModel>
 
 	@Override
 	public BlitType updateEntity(BlitTypeViewModel viewModel, BlitType entity) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

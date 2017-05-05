@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.blito.enums.Response;
 import com.blito.enums.State;
-import com.blito.exceptions.EventHostNotFoundException;
 import com.blito.exceptions.EventLinkAlreadyExistsException;
-import com.blito.exceptions.EventNotFoundException;
+import com.blito.exceptions.NotAllowedException;
+import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.BlitTypeMapper;
 import com.blito.mappers.EventDateCreateMapper;
 import com.blito.mappers.EventMapper;
@@ -28,6 +28,7 @@ import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.event.EventCreateViewModel;
 import com.blito.rest.viewmodels.event.EventUpdateViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
+import com.blito.security.SecurityContextHolder;
 
 @Service
 public class EventService {
@@ -52,7 +53,7 @@ public class EventService {
 		}
 		EventHost eventHost = Optional.ofNullable(eventHostRepository.findOne(vmodel.getEventHostId())).map(eh -> eh)
 				.orElseThrow(
-						() -> new EventHostNotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
+						() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
 		List<Image> images = imageRepository.findByImageUUIDIn(
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
@@ -75,10 +76,10 @@ public class EventService {
 		return eventRepository.save(event);
 	}
 	
-	public EventViewModel getById(long eventId) {
+	public EventViewModel getById(long eventId)  {
 		Event event = Optional.ofNullable(eventRepository.findOne(eventId))
 				.map(e->e)
-				.orElseThrow(() -> new EventNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 		return eventMapper.createFromEntity(event);
 	}
 	
@@ -88,14 +89,19 @@ public class EventService {
 		}
 		EventHost eventHost = Optional.ofNullable(eventHostRepository.findOne(vmodel.getEventHostId())).map(eh -> eh)
 				.orElseThrow(
-						() -> new EventHostNotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
+						() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
+		
+		if(eventHost.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
+		}
+		
 		List<Image> images = imageRepository.findByImageUUIDIn(
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 
 		Event event = Optional.ofNullable(eventRepository.findOne(vmodel.getEventId()))
 				.map(e -> e)
-				.orElseThrow(() -> new EventNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 		
 		event = eventMapper.updateEventFromUpdateViewModel(vmodel, event);
 		event.setEventDates(vmodel.getEventDates().stream().map(ed -> {
@@ -117,6 +123,25 @@ public class EventService {
 		}
 		event.setEventLink(vmodel.getEventLink());
 		return eventMapper.createFromEntity(eventRepository.save(event));
+	}
+	
+	public void delete(long eventId)
+	{
+		Optional<Event> eventResult = Optional.ofNullable(eventRepository.findOne(eventId));
+		if(!eventResult.isPresent())
+		{
+			throw new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND));
+		}
+		else {
+			if(eventResult.get().getEventHost().getUser().getUserId() != SecurityContextHolder.currentUser().getUserId())
+			{
+				throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
+			}
+			else {
+				eventRepository.delete(eventId);
+			}
+		}
+		
 	}
 	
 	
