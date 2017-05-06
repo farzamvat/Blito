@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.blito.enums.Response;
 import com.blito.mappers.ExchangeBlitMapper;
 import com.blito.models.User;
-import com.blito.repositories.ExchangeBlitRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
@@ -37,30 +37,29 @@ import com.blito.services.ExchangeBlitService;
 public class ExchangeBlitController {
 	
 	@Autowired ExchangeBlitService exchangeBlitService;
-	@Autowired ExchangeBlitRepository exchangeBlitRepository;
 	@Autowired UserRepository userRepository;
 	@Autowired ExchangeBlitMapper exchangeBlitMapper;
 	
-	@PostMapping("/current-user")
+	@PostMapping
 	public ResponseEntity<ExchangeBlitViewModel> create(@Validated @RequestBody UserEditExchangeBlitViewModel vmodel)
 	{
 		return ResponseEntity.status(HttpStatus.CREATED).body(exchangeBlitService.create(vmodel));
 	}
 	
-	@PutMapping("/current-user")
+	@PutMapping
 	public ResponseEntity<ExchangeBlitViewModel> update(@Validated @RequestBody UserEditExchangeBlitViewModel vmodel)
 	{
 		return ResponseEntity.accepted().body(exchangeBlitService.update(vmodel));
 	}
 	
-	@DeleteMapping("/current-user")
+	@DeleteMapping
 	public ResponseEntity<ResultVm> delete(@RequestParam long exchangeBlitId)
 	{
 		exchangeBlitService.delete(exchangeBlitId);
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
 	
-	@GetMapping("/current-user/all")
+	@GetMapping("/all")
 	public ResponseEntity<List<SimpleExchangeBlitViewModel>> currentUserExchangeBlits()
 	{
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
@@ -73,8 +72,8 @@ public class ExchangeBlitController {
 		return ResponseEntity.ok(exchangeBlitService.getApprovedAndNotClosedOrSoldBlits(pageable));
 	}
 	
-	@GetMapping("/current-user")
-	public ResponseEntity<ExchangeBlitViewModel> getExchangeBlitById(@RequestParam long exchangeBlitId)
+	@GetMapping("/{exchangeBlitId}")
+	public ResponseEntity<ExchangeBlitViewModel> getExchangeBlitById(@PathVariable long exchangeBlitId)
 	{
 		return ResponseEntity.ok(exchangeBlitService.getExchangeBlitById(exchangeBlitId));
 	}

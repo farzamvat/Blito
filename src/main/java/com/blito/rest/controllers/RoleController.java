@@ -44,4 +44,5 @@ public class RoleController {
 	public ResponseEntity<?> delete(@PathVariable long roleId) {
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
+
 }

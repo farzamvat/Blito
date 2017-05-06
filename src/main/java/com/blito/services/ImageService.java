@@ -1,6 +1,5 @@
 package com.blito.services;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -9,6 +8,10 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.stereotype.Service;
+
+import com.blito.enums.Response;
+import com.blito.exceptions.NotFoundException;
+import com.blito.resourceUtil.ResourceUtil;
 
 @Service
 public class ImageService {
@@ -21,11 +24,8 @@ public class ImageService {
 				writer.write(encodedBase64);
 				writer.close();
 				return uuid;
-				
-			} catch (FileNotFoundException e) {
-				throw new RuntimeException(e.getMessage());
-			} catch (IOException e) {
-				throw new RuntimeException(e.getMessage());
+			} catch (Exception e) {
+				throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
 			}
 		});
 	}

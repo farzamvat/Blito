@@ -5,6 +5,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 
 import com.blito.enums.Response;
@@ -28,6 +33,7 @@ import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.event.EventCreateViewModel;
 import com.blito.rest.viewmodels.event.EventUpdateViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
+import com.blito.search.SearchViewModel;
 import com.blito.security.SecurityContextHolder;
 
 @Service
@@ -52,8 +58,7 @@ public class EventService {
 			throw new RuntimeException("start date is after end date");
 		}
 		EventHost eventHost = Optional.ofNullable(eventHostRepository.findOne(vmodel.getEventHostId())).map(eh -> eh)
-				.orElseThrow(
-						() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
 		List<Image> images = imageRepository.findByImageUUIDIn(
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
@@ -75,34 +80,31 @@ public class EventService {
 		event.setEventLink(generateEventLink(event));
 		return eventRepository.save(event);
 	}
-	
-	public EventViewModel getById(long eventId)  {
-		Event event = Optional.ofNullable(eventRepository.findOne(eventId))
-				.map(e->e)
+
+	public EventViewModel getById(long eventId) {
+		Event event = Optional.ofNullable(eventRepository.findOne(eventId)).map(e -> e)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 		return eventMapper.createFromEntity(event);
 	}
-	
+
 	public EventViewModel update(EventUpdateViewModel vmodel) {
 		if (vmodel.getBlitSaleStartDate().after(vmodel.getBlitSaleEndDate())) {
 			throw new RuntimeException("start date is after end date");
 		}
 		EventHost eventHost = Optional.ofNullable(eventHostRepository.findOne(vmodel.getEventHostId())).map(eh -> eh)
-				.orElseThrow(
-						() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
-		
-		if(eventHost.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
+
+		if (eventHost.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
-		
+
 		List<Image> images = imageRepository.findByImageUUIDIn(
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 
-		Event event = Optional.ofNullable(eventRepository.findOne(vmodel.getEventId()))
-				.map(e -> e)
+		Event event = Optional.ofNullable(eventRepository.findOne(vmodel.getEventId())).map(e -> e)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
-		
+
 		event = eventMapper.updateEventFromUpdateViewModel(vmodel, event);
 		event.setEventDates(vmodel.getEventDates().stream().map(ed -> {
 			EventDate eventDate = eventDateCreateMapper.createFromViewModel(ed);
@@ -117,41 +119,42 @@ public class EventService {
 		event.setImages(images);
 		event.setEventHost(eventHost);
 		Optional<Event> eventResult = eventRepository.findByEventLink(vmodel.getEventLink());
-		if(eventResult.isPresent())
-		{
+		if (eventResult.isPresent()) {
 			throw new EventLinkAlreadyExistsException(ResourceUtil.getMessage(Response.EVENT_LINK_EXISTS));
 		}
 		event.setEventLink(vmodel.getEventLink());
 		return eventMapper.createFromEntity(eventRepository.save(event));
 	}
-	
-	public void delete(long eventId)
-	{
+
+	public void delete(long eventId) {
 		Optional<Event> eventResult = Optional.ofNullable(eventRepository.findOne(eventId));
-		if(!eventResult.isPresent())
-		{
+		if (!eventResult.isPresent()) {
 			throw new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND));
-		}
-		else {
-			if(eventResult.get().getEventHost().getUser().getUserId() != SecurityContextHolder.currentUser().getUserId())
-			{
+		} else {
+			if (eventResult.get().getEventHost().getUser().getUserId() != SecurityContextHolder.currentUser()
+					.getUserId()) {
 				throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
-			}
-			else {
+			} else {
 				eventRepository.delete(eventId);
 			}
 		}
-		
+
 	}
-	
-	
-	private String generateEventLink(Event event)
-	{
+
+	private String generateEventLink(Event event) {
 		String eventLink = event.getEventName().replaceAll(" ", "-") + '-' + RandomUtil.generateLinkRandomNumber();
-		while(eventRepository.findByEventLink(eventLink).isPresent())
-		{
+		while (eventRepository.findByEventLink(eventLink).isPresent()) {
 			eventLink = event.getEventName().replaceAll(" ", "-") + '-' + RandomUtil.generateLinkRandomNumber();
 		}
 		return eventLink;
+	}
+
+	public Page<Event> searchEvents(SearchViewModel<Event> searchViewModel, Pageable pageable) {
+		return searchViewModel.getRestrictions().stream().map(r -> r.action())
+				.reduce((s1, s2) -> Specifications.where(s1).and(s2))
+				.map(specification -> new PageImpl<>(eventRepository.findAll(specification).stream()
+						.skip(pageable.getPageNumber() * pageable.getPageSize()).limit(pageable.getPageSize())
+						.collect(Collectors.toList())))
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 	}
 }

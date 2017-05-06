@@ -1,6 +1,7 @@
 package com.blito.rest.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -21,6 +22,7 @@ import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.event.EventCreateViewModel;
 import com.blito.rest.viewmodels.event.EventUpdateViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
+import com.blito.search.SearchViewModel;
 import com.blito.services.EventService;
 
 @RestController
@@ -51,5 +53,11 @@ public class EventController {
 	{
 		eventService.delete(eventId);
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
+	}
+	
+	@PostMapping("/search")
+	public ResponseEntity<?> search(@RequestBody SearchViewModel<Event> searchViewModel,Pageable pageable)
+	{
+		return ResponseEntity.ok(eventService.searchEvents(searchViewModel, pageable));
 	}
 }

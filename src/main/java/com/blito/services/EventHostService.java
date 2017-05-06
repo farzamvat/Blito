@@ -74,7 +74,12 @@ public class EventHostService {
 	
 	public void delete(long id)
 	{
-		eventHostRepository.delete(findEventHostById(id));
+		EventHost eventHost = findEventHostById(id);
+		if(eventHost.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId())
+		{
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
+		}
+		eventHostRepository.delete(eventHost);
 	}
 	
 	public List<EventHostSimpleViewModel> getCurrentUserEventHosts()
