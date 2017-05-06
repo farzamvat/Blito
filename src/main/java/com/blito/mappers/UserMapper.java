@@ -60,7 +60,6 @@ public class UserMapper implements GenericMapper <User, UserViewModel> {
 		user.setLastname(vmodel.getLastname());
 		user.setMobile(vmodel.getMobile());
 		user.setPassword(vmodel.getPassword());
-		user.setBanned(vmodel.isBanned());
 		return user;
 	}
 

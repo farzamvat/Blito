@@ -47,4 +47,5 @@ public class AdminExchangeBlitController {
 		exchangeBlitRepository.save(exchangeBlit);
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
+
 }
