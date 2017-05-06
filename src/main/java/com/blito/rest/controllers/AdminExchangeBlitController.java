@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blito.enums.Response;
-import com.blito.exceptions.ExchangeBlitNotFoundException;
+import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.ExchangeBlitMapper;
 import com.blito.models.ExchangeBlit;
 import com.blito.repositories.ExchangeBlitRepository;
@@ -42,7 +42,7 @@ public class AdminExchangeBlitController {
 	{
 		ExchangeBlit exchangeBlit = Optional.ofNullable(exchangeBlitRepository.findOne(vmodel.getExchangeBlitId()))
 				.map(e -> e)
-				.orElseThrow(() -> new ExchangeBlitNotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
 		exchangeBlit.setOperatorState(vmodel.getOperatorState());
 		exchangeBlitRepository.save(exchangeBlit);
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));

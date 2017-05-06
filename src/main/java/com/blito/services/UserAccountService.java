@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 
 import com.blito.enums.Response;
 import com.blito.exceptions.EmailAlreadyExistsException;
+import com.blito.exceptions.NotFoundException;
 import com.blito.exceptions.UnauthorizedException;
 import com.blito.exceptions.UserNotActivatedException;
-import com.blito.exceptions.UserNotFoundException;
 import com.blito.exceptions.WrongPasswordException;
 import com.blito.mappers.UserMapper;
 import com.blito.models.User;
@@ -54,7 +54,7 @@ public class UserAccountService {
 	{
 		User user = userRepository.findByEmail(vmodel.getEmail())
 				.map(u -> u)
-				.orElseThrow(() -> new UserNotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
 		if(!user.isActive())
 			throw new UserNotActivatedException(ResourceUtil.getMessage(Response.USER_NOT_ACTIVATED));
 			
@@ -70,7 +70,7 @@ public class UserAccountService {
 						else {
 							asyncTokenResult.setFirstTime(false);
 						}
-//						user.setRefreshToken(asyncTokenResult.getRefreshToken());
+						user.setRefreshToken(asyncTokenResult.getRefreshToken());
 						userRepository.save(user);
 						return asyncTokenResult;
 					}
@@ -100,7 +100,7 @@ public class UserAccountService {
 			throw new UnauthorizedException(ResourceUtil.getMessage(Response.REFRESH_TOKEN_NOT_PRESENT));
 		User user = Optional.ofNullable(userRepository.findOne(jwtService.refreshTokenValidation(refresh_token)))
 				.map(u -> u)
-				.orElseThrow(() -> new UserNotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
 		return jwtService.generateAccessToken(user.getUserId())
 				.thenApply(tokenModel -> {
 					tokenModel.setRefreshToken(refresh_token);

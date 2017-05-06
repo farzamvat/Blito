@@ -24,10 +24,18 @@ public class EventUpdateViewModel {
 	private Double latitude;
 	private Double longitude;
 	private String aparatDisplayCode;
-	
+	private String eventLink;
 	List<EventDateCreateViewModel> eventDates;
 	List<ImageViewModel> images;
 	
+	public String getEventLink() {
+		return eventLink;
+	}
+
+	public void setEventLink(String eventLink) {
+		this.eventLink = eventLink;
+	}
+
 	public String getEventName() {
 		return EventName;
 	}

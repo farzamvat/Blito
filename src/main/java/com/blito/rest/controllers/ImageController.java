@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import com.blito.enums.Response;
-import com.blito.exceptions.ImageNotFoundException;
+import com.blito.exceptions.NotFoundException;
 import com.blito.models.Image;
 import com.blito.repositories.ImageRepository;
 import com.blito.resourceUtil.ResourceUtil;
@@ -55,7 +55,7 @@ public class ImageController {
 		DeferredResult<ResponseEntity<String>> deferred = new DeferredResult<>();
 		Image image = imageRepository.findByImageUUID(id)
 			.map(i -> i)
-			.orElseThrow(() -> new ImageNotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
+			.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
 		
 		return imageService.getFileEncodedBase64(image.getImageUUID())
 				.thenApply(imageEncodedBase64 -> {

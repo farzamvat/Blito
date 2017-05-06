@@ -15,7 +15,7 @@ public class EventHostMapper implements GenericMapper<EventHost,EventHostViewMod
 	
 	public List<EventHostSimpleViewModel> eventHostsToViewModels(List<EventHost> eventHosts)
 	{
-		return eventHosts.stream().map(e -> eventHostToSimpleViewModel(e)).collect(Collectors.toList());
+		return eventHosts.stream().map(this::eventHostToSimpleViewModel).collect(Collectors.toList());
 	}
 	
 	public EventHostSimpleViewModel eventHostToSimpleViewModel(EventHost eventHost)

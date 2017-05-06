@@ -20,9 +20,9 @@ public class EventMapper implements GenericMapper<Event,EventViewModel> {
 	
 	@Override
 	public Event createFromViewModel(EventViewModel viewModel) {
-		// TODO Auto-generated method stub
 		return null;
 	}
+	
 	
 	public Event updateEventFromUpdateViewModel(EventUpdateViewModel vmodel,Event event)
 	{
@@ -35,10 +35,12 @@ public class EventMapper implements GenericMapper<Event,EventViewModel> {
 		event.setEventType(vmodel.getEventType());
 		event.setLongitude(vmodel.getLongitude());
 		event.setLatitude(vmodel.getLatitude());
+		event.setEventLink(vmodel.getEventLink());
+		event.setOperatorState(OperatorState.PENDING);
 		return event;
 	}
 	
-	public Event eventCreateViewModelToEvent(EventCreateViewModel vmodel)
+	public Event createFromCreateViewModel(EventCreateViewModel vmodel)
 	{
 		Event event = new Event();
 		event.setEventName(vmodel.getEventName());
@@ -84,7 +86,6 @@ public class EventMapper implements GenericMapper<Event,EventViewModel> {
 
 	@Override
 	public Event updateEntity(EventViewModel viewModel, Event entity) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

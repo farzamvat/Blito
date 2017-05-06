@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import com.blito.enums.Response;
-import com.blito.exceptions.ImageNotFoundException;
+import com.blito.exceptions.NotFoundException;
 import com.blito.models.Image;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.image.ImageViewModel;
@@ -21,13 +21,12 @@ public class ImageMapper implements GenericMapper<Image,ImageViewModel> {
 					im.setImageType(imageViewModel.getType());
 					return im;
 				}).findFirst().map(i -> i)
-				.orElseThrow(() -> new ImageNotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))))
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))))
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public Image createFromViewModel(ImageViewModel viewModel) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -41,7 +40,6 @@ public class ImageMapper implements GenericMapper<Image,ImageViewModel> {
 
 	@Override
 	public Image updateEntity(ImageViewModel viewModel, Image entity) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

@@ -15,15 +15,13 @@ public enum EventHostControllerEnumValidation implements ValidationInterface {
 	
 	private final String message;
 	private EventHostControllerEnumValidation(String value) {
-		// TODO Auto-generated constructor stub
 		this.message = value;
 		
 	}
 
 	@Override
 	public String get() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.message;
 	}
 
 }

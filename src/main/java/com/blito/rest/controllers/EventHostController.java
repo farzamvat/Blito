@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.blito.enums.Response;
 import com.blito.enums.validation.EventHostControllerEnumValidation;
 import com.blito.exceptions.ExceptionUtil;
-import com.blito.exceptions.ImageNotFoundException;
 import com.blito.exceptions.NotAllowedException;
+import com.blito.exceptions.NotFoundException;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.eventhost.EventHostSimpleViewModel;
@@ -49,7 +49,7 @@ public class EventHostController {
 	}
 	
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	@ExceptionHandler({ImageNotFoundException.class})
+	@ExceptionHandler({NotFoundException.class})
 	public ExceptionViewModel notFound(HttpServletRequest request, RuntimeException exception) {
 		return ExceptionUtil.generate(HttpStatus.NOT_FOUND, request, exception);
 	}
