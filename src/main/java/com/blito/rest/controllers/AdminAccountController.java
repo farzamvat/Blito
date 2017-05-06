@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blito.rest.viewmodels.account.UserAdminUpdateViewModel;
 import com.blito.rest.viewmodels.account.UserSimpleViewModel;
 import com.blito.rest.viewmodels.account.UserViewModel;
 import com.blito.services.AdminService;
@@ -31,9 +32,8 @@ public class AdminAccountController {
 	}
 	
 	@PutMapping
-	public ResponseEntity<UserViewModel> updateUser(){
-		return null;
+	public ResponseEntity<UserViewModel> updateUser(UserAdminUpdateViewModel vmodel){
+		return ResponseEntity.ok(adminService.updateUser(vmodel));
 	}
 	
-
 }
