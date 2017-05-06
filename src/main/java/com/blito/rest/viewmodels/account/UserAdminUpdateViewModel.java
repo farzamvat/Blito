@@ -6,7 +6,6 @@ public class UserAdminUpdateViewModel {
 	String lastname;
 	String mobile;
 	String password;
-	boolean banned;
 
 	public long getUserId() {
 		return userId;
@@ -38,12 +37,5 @@ public class UserAdminUpdateViewModel {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public boolean isBanned() {
-		return banned;
-	}
-	public void setBanned(boolean banned) {
-		this.banned = banned;
-	}
-	
 	
 }

@@ -14,5 +14,4 @@ public interface UserRepository extends JpaRepository<User,Long> {
 	Optional<User> findByActivationKey(String key);
 	Optional<User> findByRefreshToken(String refreshToken);
 	Page<User> findAll(Pageable pageable);
-	Optional<User> findById(long userId);
 }

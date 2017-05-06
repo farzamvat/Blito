@@ -1,5 +1,7 @@
 package com.blito.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +18,7 @@ import com.blito.rest.viewmodels.account.UserSimpleViewModel;
 import com.blito.rest.viewmodels.account.UserViewModel;
 
 @Service
-public class AdminService {
+public class AdminAccountService {
 
 	@Autowired
 	UserRepository userRepository;
@@ -28,16 +30,22 @@ public class AdminService {
 	}
 
 	public UserViewModel getUser(long userId) {
-		User user = userRepository.findById(userId).map(u -> u)
+		User user = Optional.ofNullable(userRepository.findOne(userId)).map(u -> u)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
 		return userMapper.createFromEntity(user);
 	}
 
 	public UserViewModel updateUser(UserAdminUpdateViewModel vmodel) {
-		User user = userRepository.findById(vmodel.getUserId()).map(u -> u)
+		User user = Optional.ofNullable(userRepository.findOne(vmodel.getUserId())).map(u -> u)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
-		userRepository.save(userMapper.userAdminUpdateViewModelToUser(vmodel, user));
-		return userMapper.createFromEntity(user);
-	}								
+		return userMapper.createFromEntity(userRepository.save(userMapper.userAdminUpdateViewModelToUser(vmodel, user)));
+	}				
+	
+	public void banUser(long userId) {
+		User user = Optional.ofNullable(userRepository.findOne(userId)).map(u->u)
+				.orElseThrow(()->new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
+		user.setBanned(true);
+		userRepository.save(user);
+	}
 	
 }
