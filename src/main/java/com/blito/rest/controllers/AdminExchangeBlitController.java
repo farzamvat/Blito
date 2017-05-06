@@ -24,20 +24,20 @@ import com.blito.rest.viewmodels.exchangeblit.AdminChangeExchangeBlitStateViewMo
 import com.blito.rest.viewmodels.exchangeblit.AdminExchangeBlitViewModel;
 
 @RestController
-@RequestMapping("${api.base.url}" + "/admin")
+@RequestMapping("${api.base.url}" + "/admin/exchange-blits")
 public class AdminExchangeBlitController {
 	@Autowired
 	ExchangeBlitRepository exchangeBlitRepository;
 	@Autowired
 	ExchangeBlitMapper exchangeBlitMapper;
 
-	@GetMapping("/exchange-blits")
+	@GetMapping
 	public ResponseEntity<Page<AdminExchangeBlitViewModel>> getAll(Pageable pageable) {
 		return ResponseEntity.ok(exchangeBlitMapper.toPage(exchangeBlitRepository.findAll(pageable),
 				exchangeBlitMapper::exchangeBlitToAdminViewModel));
 	}
 	
-	@PutMapping("/exchange-blits/change-state")
+	@PutMapping("/change-state")
 	public ResponseEntity<?> changeExchangeBlitState(@Validated @RequestBody AdminChangeExchangeBlitStateViewModel vmodel)
 	{
 		ExchangeBlit exchangeBlit = Optional.ofNullable(exchangeBlitRepository.findOne(vmodel.getExchangeBlitId()))
