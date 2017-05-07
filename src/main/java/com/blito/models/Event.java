@@ -40,6 +40,7 @@ public class Event {
 	private List<Image> images; 
 	
 	@ElementCollection(fetch=FetchType.EAGER)
+	@Enumerated(EnumType.STRING)
 	List<OfferTypeEnum> offers;
 	
 	@Column(name="event_name")
@@ -65,8 +66,10 @@ public class Event {
 	
 	String eventLink;
 	
+	@Enumerated(EnumType.STRING)
 	State eventState;
 	
+	@Enumerated(EnumType.STRING)
 	OperatorState operatorState;
 	
 	String aparatDisplayCode;

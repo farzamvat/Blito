@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 
@@ -151,8 +150,10 @@ public class EventService {
 
 	public Page<Event> searchEvents(SearchViewModel<Event> searchViewModel, Pageable pageable) {
 		return searchViewModel.getRestrictions().stream().map(r -> r.action())
-				.reduce((s1, s2) -> Specifications.where(s1).and(s2))
-				.map(specification -> new PageImpl<>(eventRepository.findAll(specification).stream()
+				.reduce((s1, s2) ->
+				Specifications.where(s1).and(s2))
+				.map(specification -> 
+				new PageImpl<>(eventRepository.findAll(specification).stream()
 						.skip(pageable.getPageNumber() * pageable.getPageSize()).limit(pageable.getPageSize())
 						.collect(Collectors.toList())))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
