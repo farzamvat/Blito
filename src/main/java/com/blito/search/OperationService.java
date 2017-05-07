@@ -19,7 +19,7 @@ public class OperationService {
 		case le:
 			return cb.le(root.get(field), (double)value);
 		case like:
-			return cb.like(root.get(field), value.toString());
+			return cb.like(root.get(field), '%' + value.toString() + '%');
 		case lt:
 			return cb.lt(root.get(field), (double)value);
 		default:
