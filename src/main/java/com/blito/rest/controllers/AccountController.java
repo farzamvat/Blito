@@ -37,6 +37,7 @@ import com.blito.rest.viewmodels.account.LoginViewModel;
 import com.blito.rest.viewmodels.account.RegisterVm;
 import com.blito.rest.viewmodels.account.TokenModel;
 import com.blito.rest.viewmodels.account.UserInfoViewModel;
+import com.blito.rest.viewmodels.account.UserSimpleViewModel;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.UserAccountService;
@@ -175,9 +176,9 @@ public class AccountController {
 		@ApiResponses({@ApiResponse(code = 200, message = "get user info successful", response = UserInfoViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
 	@GetMapping("/account/user-info")
-	public ResponseEntity<UserInfoViewModel> getCurrentUserInfo()
+	public ResponseEntity<UserSimpleViewModel> getCurrentUserInfo()
 	{
-		return ResponseEntity.ok(userMapper.userToUserInfoViewModel(SecurityContextHolder.currentUser()));
+		return ResponseEntity.ok(userMapper.userToUserSimpleViewModel(SecurityContextHolder.currentUser()));
 	}
 	
 	// ***************** SWAGGER DOCS ***************** //
@@ -186,10 +187,10 @@ public class AccountController {
 			@ApiResponse(code = 400, message = "ValidationException", response = ExceptionViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
 	@PostMapping("/account/update-info")
-	public ResponseEntity<UserInfoViewModel> updateUserInfo(@Validated @RequestBody UserInfoViewModel vmodel)
+	public ResponseEntity<UserSimpleViewModel> updateUserInfo(@Validated @RequestBody UserInfoViewModel vmodel)
 	{
 		User user = userMapper.userInfoViewModelToUser(vmodel, SecurityContextHolder.currentUser());
-		return ResponseEntity.ok(userMapper.userToUserInfoViewModel(userRepository.save(user)));
+		return ResponseEntity.ok(userMapper.userToUserSimpleViewModel(userRepository.save(user)));
 	}
 	
 	@GetMapping("/refresh")

@@ -1,6 +1,5 @@
 package com.blito.services;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -35,9 +34,7 @@ public class ExcelService {
 						.collect(Collectors.toMap(k -> k.getUserId(), v -> Arrays.asList(Long.toString(v.getUserId()),
 								v.getFirstname(), v.getLastname(), v.getMobile(), v.getEmail()))));
 		// NumericsColumns
-		List<String> numericColumns = new ArrayList<String>();
-		numericColumns.add("Id");
-		model.put("numericcolumns", numericColumns);
+		model.put("numericcolumns", Arrays.asList("Id"));
 
 		return model;
 	}

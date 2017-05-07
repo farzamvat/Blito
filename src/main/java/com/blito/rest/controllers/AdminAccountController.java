@@ -32,7 +32,7 @@ public class AdminAccountController {
 	@Autowired RoleService roleService;
 	
 	@GetMapping("/all")
-	public ResponseEntity<Page<UserSimpleViewModel>> getAllUsers(Pageable pageable ){
+	public ResponseEntity<Page<UserSimpleViewModel>> getAllUsers(Pageable pageable){
 		return ResponseEntity.ok(adminAccountService.getAllUsers(pageable));
 	}
 	
@@ -59,7 +59,7 @@ public class AdminAccountController {
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
 	
-	@GetMapping("/get-all-excel")
+	@GetMapping("/all-users-excel.xlsx")
 	public ModelAndView getAllUsersExcel() {
  		return new ModelAndView(new ExcelView(), excelService.getUserExcelMap());
 	}
