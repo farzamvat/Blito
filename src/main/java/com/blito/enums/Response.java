@@ -35,7 +35,8 @@ public enum Response {
     BLIT_NOT_FOUND("error.blit.not.found"),
 	EVENT_NOT_FOUND("error.event.not.found"),
 	REFRESH_TOKEN_NOT_PRESENT("error.refresh.token.not.present"), 
-	EVENT_LINK_EXISTS("error.event.link.exists");
+	EVENT_LINK_EXISTS("error.event.link.exists"),
+	EVENT_DATE_NOT_FOUND("error.event.date.not.found");
     
 
     private final String message;

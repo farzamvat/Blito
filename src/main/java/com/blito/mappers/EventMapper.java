@@ -9,6 +9,7 @@ import com.blito.enums.OperatorState;
 import com.blito.enums.State;
 import com.blito.models.Event;
 import com.blito.rest.viewmodels.event.EventCreateViewModel;
+import com.blito.rest.viewmodels.event.EventSimpleViewModel;
 import com.blito.rest.viewmodels.event.EventUpdateViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
 
@@ -55,6 +56,18 @@ public class EventMapper implements GenericMapper<Event,EventViewModel> {
 		event.setOperatorState(OperatorState.PENDING);
 		event.setEventState(State.CLOSED);
 		return event;
+	}
+	
+	public EventSimpleViewModel eventToEventSimpleViewModel(Event event) {
+		EventSimpleViewModel vmodel = new EventSimpleViewModel();
+		vmodel.setEventId(event.getEventId());
+		vmodel.setEventName(event.getEventName());
+		vmodel.setEventType(event.getEventType());
+		vmodel.setBlitSaleStartDate(event.getBlitSaleStartDate());
+		vmodel.setBlitSaleEndDate(event.getBlitSaleEndDate());
+		vmodel.setEventState(event.getEventState());
+		vmodel.setOperatorState(event.getOperatorState());
+		return vmodel;
 	}
 
 	@Override

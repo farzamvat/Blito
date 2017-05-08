@@ -47,7 +47,7 @@ public class AdminAccountController {
 	}
 	
 	@PutMapping("/ban-user")
-	public ResponseEntity<ResultVm> banUser(long userId){
+	public ResponseEntity<ResultVm> banUser(@RequestParam long userId){
 		adminAccountService.banUser(userId);
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
