@@ -2,22 +2,12 @@ package com.blito.mappers;
 
 import org.springframework.stereotype.Component;
 
+import com.blito.enums.State;
 import com.blito.models.BlitType;
-import com.blito.rest.viewmodels.blittype.BlitTypeCreateViewModel;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 
 @Component
 public class BlitTypeMapper implements GenericMapper<BlitType,BlitTypeViewModel> {
-
-	public BlitType createFromBlitTypeCreateViewModel(BlitTypeCreateViewModel vmodel)
-	{
-		BlitType blitType = new BlitType();
-		blitType.setCapacity(vmodel.getCapacity());
-		blitType.setName(vmodel.getName());
-		blitType.setFree(vmodel.isFree());
-		blitType.setPrice(vmodel.getPrice());
-		return blitType;
-	}
 	
 	@Override
 	public BlitType createFromViewModel(BlitTypeViewModel vmodel) {
@@ -26,6 +16,7 @@ public class BlitTypeMapper implements GenericMapper<BlitType,BlitTypeViewModel>
 		blitType.setCapacity(vmodel.getCapacity());
 		blitType.setFree(vmodel.isFree());
 		blitType.setPrice(vmodel.getPrice());
+		blitType.setBlitTypeState(State.CLOSED);
 		return blitType;
 	}
 
@@ -39,12 +30,19 @@ public class BlitTypeMapper implements GenericMapper<BlitType,BlitTypeViewModel>
 		vmodel.setSoldCount(blitType.getSoldCount());
 		vmodel.setBlitTypeState(blitType.getBlitTypeState());
 		vmodel.setFree(blitType.isFree());
+		vmodel.setSoldCount(blitType.getSoldCount());
 		return vmodel;
 	}
 
 	@Override
-	public BlitType updateEntity(BlitTypeViewModel viewModel, BlitType entity) {
-		return null;
+	public BlitType updateEntity(BlitTypeViewModel vmodel, BlitType blitType) {
+		
+		blitType.setName(vmodel.getName());
+		blitType.setCapacity(vmodel.getCapacity());
+		blitType.setFree(vmodel.isFree());
+		blitType.setPrice(vmodel.getPrice());
+		blitType.setBlitTypeState(vmodel.getBlitTypeState());
+		return blitType;
 	}
 
 }

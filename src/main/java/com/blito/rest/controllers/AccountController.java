@@ -32,15 +32,16 @@ import com.blito.models.User;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
+import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.account.ChangePasswordViewModel;
 import com.blito.rest.viewmodels.account.LoginViewModel;
 import com.blito.rest.viewmodels.account.RegisterVm;
 import com.blito.rest.viewmodels.account.TokenModel;
-import com.blito.rest.viewmodels.account.UserInfoViewModel;
-import com.blito.rest.viewmodels.account.UserSimpleViewModel;
+import com.blito.rest.viewmodels.account.UserViewModel;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.UserAccountService;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -172,25 +173,27 @@ public class AccountController {
 	}
 	
 	// ***************** SWAGGER DOCS ***************** //
-		@ApiOperation(value = "get user info")
-		@ApiResponses({@ApiResponse(code = 200, message = "get user info successful", response = UserInfoViewModel.class)})
+	@ApiOperation(value = "get user info")
+	@ApiResponses({@ApiResponse(code = 200, message = "get user info successful", response = UserViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
+	@JsonView(View.SimpleUser.class)
 	@GetMapping("/account/user-info")
-	public ResponseEntity<UserSimpleViewModel> getCurrentUserInfo()
+	public ResponseEntity<UserViewModel> getCurrentUserInfo()
 	{
-		return ResponseEntity.ok(userMapper.userToUserSimpleViewModel(SecurityContextHolder.currentUser()));
+		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
+		return ResponseEntity.ok(userMapper.createFromEntity(user));
 	}
 	
 	// ***************** SWAGGER DOCS ***************** //
-		@ApiOperation(value = "update user info")
-		@ApiResponses({ @ApiResponse(code = 200, message = "update successful", response = UserInfoViewModel.class),
-			@ApiResponse(code = 400, message = "ValidationException", response = ExceptionViewModel.class)})
+	@ApiOperation(value = "update user info")
+	@ApiResponses({ @ApiResponse(code = 200, message = "update successful", response = UserViewModel.class),
+		@ApiResponse(code = 400, message = "ValidationException", response = ExceptionViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
+	@JsonView(View.SimpleUser.class)
 	@PostMapping("/account/update-info")
-	public ResponseEntity<UserSimpleViewModel> updateUserInfo(@Validated @RequestBody UserInfoViewModel vmodel)
+	public ResponseEntity<UserViewModel> updateUserInfo(@Validated @RequestBody UserViewModel vmodel)
 	{
-		User user = userMapper.userInfoViewModelToUser(vmodel, SecurityContextHolder.currentUser());
-		return ResponseEntity.ok(userMapper.userToUserSimpleViewModel(userRepository.save(user)));
+		return ResponseEntity.ok(userAccountService.updateUserInfo(vmodel));
 	}
 	
 	@GetMapping("/refresh")

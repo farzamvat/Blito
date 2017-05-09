@@ -14,60 +14,55 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.blito.enums.Response;
-import com.blito.repositories.EventRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
+import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.adminreport.BlitBuyerViewModel;
-import com.blito.rest.viewmodels.event.EventSimpleViewModel;
-import com.blito.rest.viewmodels.event.EventUpdateViewModel;
-import com.blito.rest.viewmodels.event.EventViewModel;
+import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.services.AdminEventService;
 import com.blito.services.ExcelService;
 import com.blito.view.ExcelView;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @RequestMapping("${api.base.url}" + "/admin/events")
 public class AdminEventController {
-	@Autowired EventRepository eventRepository;
 	@Autowired AdminEventService adminEventService;
 	@Autowired ExcelService excelService;
 	
-	@PutMapping("/close-event")
-	public ResponseEntity<?> closeEvent(@RequestParam long eventId){
+	@PutMapping("/change-event-state")
+	public ResponseEntity<ResultVm> closeEvent(@RequestParam long eventId){
 		adminEventService.closeEvent(eventId);
 		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
 	
-	@PutMapping("/accept-event")
-	public ResponseEntity<?> approveEvent(@RequestParam long eventId){
+	@PutMapping("/change-event-operator-state")
+	public ResponseEntity<ResultVm> approveEvent(@RequestParam long eventId){
 		adminEventService.approveEvent(eventId);
 		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
-	
-	@PutMapping("/reject-event")
-	public ResponseEntity<?> rejectEvent(@RequestParam long eventId){
-		adminEventService.rejectEvent(eventId);
-		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
-	}
-	
-	@PutMapping("/set-event-order-number")
-	public ResponseEntity<?> setEvetOrderNumvber(@PathVariable long eventId, @RequestParam int order ){
+
+	@PutMapping("/set-event-order-number/{eventId}")
+	public ResponseEntity<ResultVm> setEvetOrderNumvber(@PathVariable long eventId, @RequestParam int order ){
 		adminEventService.setEventOrderNumber(eventId, order);
 		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
 	
+	@JsonView(View.SimpleEvent.class)
 	@GetMapping("/all")
-	public ResponseEntity<Page<EventSimpleViewModel>> getAllEvents(Pageable page){
+	public ResponseEntity<Page<EventFlatViewModel>> getAllEvents(Pageable page){
 		return ResponseEntity.ok(adminEventService.getAllEvents(page));
 	}
 	
+	@JsonView(View.Event.class)
 	@GetMapping
-	public ResponseEntity<EventViewModel> getEvent(@RequestParam long eventId){
+	public ResponseEntity<EventFlatViewModel> getEvent(@RequestParam long eventId){
 		return ResponseEntity.ok(adminEventService.getEvent(eventId));
 	}
 	
+	@JsonView(View.Event.class)
 	@PutMapping
-	public ResponseEntity<EventViewModel> updateEvent(@Validated EventUpdateViewModel vmodel){
+	public ResponseEntity<EventFlatViewModel> updateEvent(@Validated EventFlatViewModel vmodel){
 		return ResponseEntity.ok(adminEventService.updateEvent(vmodel));
 	}
 	
@@ -76,7 +71,7 @@ public class AdminEventController {
 		return ResponseEntity.ok(adminEventService.getEventBlitBuyersByEventDate(eventDateId, page));
 	}
 	
-	@GetMapping("get-event-blit-buyers-by-date.xls")
+	@GetMapping("/get-event-blit-buyers-by-date.xls")
 	public ModelAndView getEventBlitBuyersExcel(@RequestParam long eventDateId) {
 		return new ModelAndView(new ExcelView(), excelService.getBlitBuyersMap(eventDateId));
 	}

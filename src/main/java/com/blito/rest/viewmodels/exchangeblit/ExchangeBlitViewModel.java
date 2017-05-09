@@ -6,39 +6,52 @@ import javax.validation.constraints.NotNull;
 
 import com.blito.annotations.Email;
 import com.blito.annotations.MobileNumber;
+import com.blito.enums.ExchangeBlitType;
 import com.blito.enums.OperatorState;
 import com.blito.enums.State;
-import com.blito.enums.ExchangeBlitType;
+import com.blito.rest.viewmodels.View;
+import com.fasterxml.jackson.annotation.JsonView;
 
 public class ExchangeBlitViewModel {
+	@JsonView(View.SimpleExchangeBlit.class)
 	private long exchangeBlitId;
 	@NotNull
+	@JsonView(View.SimpleExchangeBlit.class)
 	private String title;
 	@NotNull
+	@JsonView(View.ExchangeBlit.class)
 	private String firstname;
 	@NotNull
+	@JsonView(View.ExchangeBlit.class)
 	private String lastname;
 	@NotNull
+	@JsonView(View.SimpleExchangeBlit.class)
 	private Timestamp eventDate;
 	@NotNull
+	@JsonView(View.SimpleExchangeBlit.class)
 	private double blitCost;
 	@NotNull
+	@JsonView(View.ExchangeBlit.class)
 	private boolean isBlitoEvent;
 	@MobileNumber
+	@JsonView(View.ExchangeBlit.class)
 	private String phoneNumber;
 	@Email
+	@JsonView(View.ExchangeBlit.class)
 	private String email;
 	@NotNull
+	@JsonView(View.ExchangeBlit.class)
 	private String eventAddress;
 	@NotNull
+	@JsonView(View.ExchangeBlit.class)
 	private String vendorAddress;
-	
+	@JsonView(View.ExchangeBlit.class)
 	private String description;
-	
+	@JsonView(View.SimpleExchangeBlit.class)
 	private State state;
-	
+	@JsonView(View.SimpleExchangeBlit.class)
 	private ExchangeBlitType type;
-	
+	@JsonView(View.SimpleExchangeBlit.class)
 	private OperatorState operatorState;
 	
 	

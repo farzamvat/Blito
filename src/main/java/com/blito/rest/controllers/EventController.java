@@ -12,18 +12,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blito.enums.Response;
 import com.blito.models.Event;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
-import com.blito.rest.viewmodels.event.EventCreateViewModel;
-import com.blito.rest.viewmodels.event.EventUpdateViewModel;
+import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.event.EventViewModel;
+import com.blito.rest.viewmodels.event.EventUpdateViewModel;
+import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.services.EventService;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @RequestMapping("${api.base.url}" + "/events")
@@ -32,18 +33,27 @@ public class EventController {
 	@Autowired EventService eventService;
 	
 	@PostMapping
-	public ResponseEntity<Event> create (@Validated @RequestBody EventCreateViewModel vmodel) {
+	public ResponseEntity<Event> create (@Validated @RequestBody EventViewModel vmodel) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(eventService.create(vmodel));
 	}
 	
-	@GetMapping
-	public ResponseEntity<EventViewModel> getEvent(@RequestParam long eventId) 
+	@JsonView(View.Event.class)
+	@GetMapping("/flat/{eventId}")
+	public ResponseEntity<EventFlatViewModel> getFlatEvent(@PathVariable long eventId) 
 	{
-		return ResponseEntity.ok(eventService.getById(eventId));
+		return ResponseEntity.ok(eventService.getFlatEventById(eventId));
 	}
 	
+	@JsonView(View.Event.class)
+	@GetMapping("/{eventId}")
+	public ResponseEntity<EventUpdateViewModel> getEvent(@PathVariable long eventId)
+	{
+		return null;
+	}
+	
+	@JsonView(View.Event.class)
 	@PutMapping
-	public ResponseEntity<EventViewModel> updateEvent(@Validated @RequestBody EventUpdateViewModel vmodel)
+	public ResponseEntity<EventViewModel> updateEvent(@Validated @RequestBody EventViewModel vmodel)
 	{
 		return ResponseEntity.accepted().body(eventService.update(vmodel));
 	}
@@ -55,6 +65,7 @@ public class EventController {
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
 	
+	@JsonView(View.SimpleEvent.class)
 	@PostMapping("/search")
 	public ResponseEntity<?> search(@RequestBody SearchViewModel<Event> searchViewModel,Pageable pageable)
 	{

@@ -7,7 +7,7 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import com.blito.enums.EventType;
-import com.blito.rest.viewmodels.eventdate.EventDateCreateViewModel;
+import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
 
 public class EventUpdateViewModel {
@@ -25,7 +25,7 @@ public class EventUpdateViewModel {
 	private Double longitude;
 	private String aparatDisplayCode;
 	private String eventLink;
-	List<EventDateCreateViewModel> eventDates;
+	List<EventDateViewModel> eventDates;
 	List<ImageViewModel> images;
 	
 	public String getEventLink() {
@@ -130,11 +130,11 @@ public class EventUpdateViewModel {
 		this.eventHostId = eventHostId;
 	}
 
-	public List<EventDateCreateViewModel> getEventDates() {
+	public List<EventDateViewModel> getEventDates() {
 		return eventDates;
 	}
 
-	public void setEventDates(List<EventDateCreateViewModel> eventDates) {
+	public void setEventDates(List<EventDateViewModel> eventDates) {
 		this.eventDates = eventDates;
 	}
 

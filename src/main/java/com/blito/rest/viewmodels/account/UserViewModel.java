@@ -2,22 +2,36 @@ package com.blito.rest.viewmodels.account;
 
 import java.util.List;
 
+import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.blit.BlitViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 public class UserViewModel {
+	@JsonView(View.SimpleUser.class)
 	long userId;
+	@JsonView(View.SimpleUser.class)
 	String firstname;
+	@JsonView(View.SimpleUser.class)
 	String lastname;
+	@JsonView(View.SimpleUser.class)
 	String email;
+	@JsonView(View.SimpleUser.class)
 	String mobile;
+	@JsonIgnore
 	String password;
+	@JsonView(View.AdminUser.class)
 	boolean isActive;
+	@JsonView(View.AdminUser.class)
 	boolean banned;
 	
+	@JsonView(View.User.class)
 	List<EventHostViewModel> eventHosts;
+	@JsonView(View.User.class)
 	List<BlitViewModel> blits;
+	@JsonView(View.User.class)
 	List<ExchangeBlitViewModel> exchangeBlits;
 
 	public long getUserId() {

@@ -25,12 +25,11 @@ import com.blito.models.User;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
-import com.blito.rest.viewmodels.exchangeblit.ApprovedExchangeBlitViewModel;
+import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
-import com.blito.rest.viewmodels.exchangeblit.SimpleExchangeBlitViewModel;
-import com.blito.rest.viewmodels.exchangeblit.UserEditExchangeBlitViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.ExchangeBlitService;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @RequestMapping("${api.base.url}" + "/exchange-blits")
@@ -40,14 +39,16 @@ public class ExchangeBlitController {
 	@Autowired UserRepository userRepository;
 	@Autowired ExchangeBlitMapper exchangeBlitMapper;
 	
+	@JsonView(View.ExchangeBlit.class)
 	@PostMapping
-	public ResponseEntity<ExchangeBlitViewModel> create(@Validated @RequestBody UserEditExchangeBlitViewModel vmodel)
+	public ResponseEntity<ExchangeBlitViewModel> create(@Validated @RequestBody ExchangeBlitViewModel vmodel)
 	{
 		return ResponseEntity.status(HttpStatus.CREATED).body(exchangeBlitService.create(vmodel));
 	}
 	
+	@JsonView(View.ExchangeBlit.class)
 	@PutMapping
-	public ResponseEntity<ExchangeBlitViewModel> update(@Validated @RequestBody UserEditExchangeBlitViewModel vmodel)
+	public ResponseEntity<ExchangeBlitViewModel> update(@Validated @RequestBody ExchangeBlitViewModel vmodel)
 	{
 		return ResponseEntity.accepted().body(exchangeBlitService.update(vmodel));
 	}
@@ -59,19 +60,22 @@ public class ExchangeBlitController {
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
 	
+	@JsonView(View.SimpleExchangeBlit.class)
 	@GetMapping("/all")
-	public ResponseEntity<List<SimpleExchangeBlitViewModel>> currentUserExchangeBlits()
+	public ResponseEntity<List<ExchangeBlitViewModel>> currentUserExchangeBlits()
 	{
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
-		return ResponseEntity.ok(exchangeBlitMapper.exchangeBlitsToSimpleViewModels(user.getExchangeBlits()));
+		return ResponseEntity.ok(exchangeBlitMapper.createFromEntities(user.getExchangeBlits()));
 	}
 	
+	@JsonView(View.SimpleExchangeBlit.class)
 	@GetMapping("/approved")
-	public ResponseEntity<Page<ApprovedExchangeBlitViewModel>> approvedExchangeBlits(Pageable pageable)
+	public ResponseEntity<Page<ExchangeBlitViewModel>> approvedExchangeBlits(Pageable pageable)
 	{
 		return ResponseEntity.ok(exchangeBlitService.getApprovedAndNotClosedOrSoldBlits(pageable));
 	}
 	
+	@JsonView(View.ExchangeBlit.class)
 	@GetMapping("/{exchangeBlitId}")
 	public ResponseEntity<ExchangeBlitViewModel> getExchangeBlitById(@PathVariable long exchangeBlitId)
 	{

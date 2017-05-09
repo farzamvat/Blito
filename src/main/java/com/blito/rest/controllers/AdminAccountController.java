@@ -15,8 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.blito.enums.Response;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
-import com.blito.rest.viewmodels.account.UserAdminUpdateViewModel;
-import com.blito.rest.viewmodels.account.UserSimpleViewModel;
 import com.blito.rest.viewmodels.account.UserViewModel;
 import com.blito.services.AdminAccountService;
 import com.blito.services.ExcelService;
@@ -31,20 +29,20 @@ public class AdminAccountController {
 	@Autowired ExcelService excelService;
 	@Autowired RoleService roleService;
 	
-	@GetMapping("/all")
-	public ResponseEntity<Page<UserSimpleViewModel>> getAllUsers(Pageable pageable){
-		return ResponseEntity.ok(adminAccountService.getAllUsers(pageable));
-	}
+//	@GetMapping("/all")
+//	public ResponseEntity<Page<UserSimpleViewModel>> getAllUsers(Pageable pageable){
+//		return ResponseEntity.ok(adminAccountService.getAllUsers(pageable));
+//	}
 	
 	@GetMapping
 	public ResponseEntity<UserViewModel> getUser(@RequestParam long userId){
 		return ResponseEntity.ok(adminAccountService.getUser(userId));
 	}
 	
-	@PutMapping
-	public ResponseEntity<UserViewModel> updateUser(UserAdminUpdateViewModel vmodel){
-		return ResponseEntity.ok(adminAccountService.updateUser(vmodel));
-	}
+//	@PutMapping
+//	public ResponseEntity<UserViewModel> updateUser(UserAdminUpdateViewModel vmodel){
+//		return ResponseEntity.ok(adminAccountService.updateUser(vmodel));
+//	}
 	
 	@PutMapping("/ban-user")
 	public ResponseEntity<ResultVm> banUser(@RequestParam long userId){

@@ -35,12 +35,12 @@ public class RoleController {
 		return ResponseEntity.accepted().body(roleService.editRole(vmodel));
 	}
 	
-	@GetMapping
+	@GetMapping("/{roleId}")
 	public ResponseEntity<?> get(@PathVariable long roleId) {
 		return ResponseEntity.ok(roleService.getRoleById(roleId));
 	}
 	
-	@DeleteMapping
+	@DeleteMapping("/{roleId}")
 	public ResponseEntity<?> delete(@PathVariable long roleId) {
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}

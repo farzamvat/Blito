@@ -15,7 +15,7 @@ import com.blito.enums.Response;
 import com.blito.enums.State;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.AdminReportsMapper;
-import com.blito.mappers.EventMapper;
+import com.blito.mappers.EventFlatMapper;
 import com.blito.models.CommonBlit;
 import com.blito.models.Event;
 import com.blito.models.EventDate;
@@ -25,7 +25,7 @@ import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.adminreport.BlitBuyerViewModel;
 import com.blito.rest.viewmodels.event.EventSimpleViewModel;
 import com.blito.rest.viewmodels.event.EventUpdateViewModel;
-import com.blito.rest.viewmodels.event.EventViewModel;
+import com.blito.rest.viewmodels.event.EventFlatViewModel;
 
 @Service
 public class AdminEventService {
@@ -35,7 +35,7 @@ public class AdminEventService {
 	@Autowired
 	EventDateRepository eventDateRepository;
 	@Autowired
-	EventMapper eventMapper;
+	EventFlatMapper eventMapper;
 	@Autowired
 	AdminReportsMapper adminReportsMapper;
 
@@ -73,29 +73,29 @@ public class AdminEventService {
 		return;
 	}
 
-	public Page<EventSimpleViewModel> getAllEvents(Pageable page) {
-		return eventMapper.toPage(eventRepository.findAll(page), eventMapper::eventToEventSimpleViewModel);
+	public Page<EventFlatViewModel> getAllEvents(Pageable page) {
+		return eventMapper.toPage(eventRepository.findAll(page), eventMapper::createFromEntity);
 	}
 
 	// ViewModel Issues!!
-	public EventViewModel getEvent(long eventId) {
+	public EventFlatViewModel getEvent(long eventId) {
 		Event event = getEventFromRepository(eventId);
 		return eventMapper.createFromEntity(event);
 	}
 
-	// ViewModel Issues!!
-	public EventViewModel updateEvent(EventUpdateViewModel vmodel) {
+	public EventFlatViewModel updateEvent(EventFlatViewModel vmodel) {
 		Event event = getEventFromRepository(vmodel.getEventId());
 		return eventMapper
-				.createFromEntity(eventRepository.save(eventMapper.updateEventFromUpdateViewModel(vmodel, event)));
+				.createFromEntity(eventRepository.save(eventMapper.updateEntity(vmodel, event)));
 	}
 
 	public Page<BlitBuyerViewModel> getEventBlitBuyersByEventDate(long eventDateId, Pageable pageable) {
 		EventDate eventDate = Optional.ofNullable(eventDateRepository.findOne(eventDateId)).map(ed -> ed)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
-		List<CommonBlit> blits = eventDate.getBlitTypes().stream().flatMap(bt->bt.getCommonBlits().stream()).collect(Collectors.toList());
-		
-		Page<CommonBlit> page = new PageImpl<CommonBlit>(blits,pageable, blits.size());
+
+		Page<CommonBlit> page = new PageImpl<CommonBlit>(eventDate.getBlitTypes().stream()
+				.flatMap(bt -> bt.getCommonBlits().stream()).skip(pageable.getPageNumber() * pageable.getPageSize())
+				.limit(pageable.getPageSize()).collect(Collectors.toList()));
 		return adminReportsMapper.toPage(page, adminReportsMapper::toBlitBuyerReport);
 	}
 

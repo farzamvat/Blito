@@ -7,6 +7,7 @@ import java.util.concurrent.CompletableFuture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.enums.Response;
 import com.blito.exceptions.EmailAlreadyExistsException;
@@ -22,6 +23,7 @@ import com.blito.rest.viewmodels.account.ChangePasswordViewModel;
 import com.blito.rest.viewmodels.account.LoginViewModel;
 import com.blito.rest.viewmodels.account.RegisterVm;
 import com.blito.rest.viewmodels.account.TokenModel;
+import com.blito.rest.viewmodels.account.UserViewModel;
 import com.blito.security.SecurityContextHolder;
 
 
@@ -32,6 +34,7 @@ public class UserAccountService {
 	@Autowired PasswordEncoder encoder;
 	@Autowired MailService mailService;
 	@Autowired JwtService jwtService;
+	@Autowired UserMapper userMapper;
 	
 	public CompletableFuture<Void> createUser(RegisterVm vmodel)
 	{
@@ -48,6 +51,14 @@ public class UserAccountService {
 				.thenAcceptAsync(savedUser -> 
 					mailService.sendActivationEmail(savedUser)
 				);
+	}
+	
+	@Transactional
+	public UserViewModel updateUserInfo(UserViewModel vmodel)
+	{
+		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
+		user = userMapper.updateEntity(vmodel, user);
+		return userMapper.createFromEntity(user);
 	}
 	
 	public CompletableFuture<TokenModel> login(LoginViewModel vmodel)
