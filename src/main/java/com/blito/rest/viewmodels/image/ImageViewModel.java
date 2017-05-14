@@ -10,6 +10,13 @@ public class ImageViewModel {
 	@NotNull
 	ImageType type;
 	
+	public ImageViewModel() {}
+	
+	public ImageViewModel(String id,ImageType type)
+	{
+		this.type = type;
+		this.imageUUID = id;
+	}
 	
 	public String getImageUUID() {
 		return imageUUID;

@@ -68,19 +68,8 @@ public class EventService {
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 
 		Event event = eventMapper.createFromViewModel(vmodel);
-		event.setEventDates(vmodel.getEventDates().stream().map(ed -> {
-			EventDate eventDate = eventDateCreateMapper.createFromViewModel(ed);
-			eventDate.setBlitTypes(ed.getBlitTypes().stream().map(bt -> {
-				BlitType blitType = blitTypeMapper.createFromViewModel(bt);
-				blitType.setBlitTypeState(State.CLOSED);
-				return blitType;
-			}).collect(Collectors.toList()));
-			eventDate.setEventState(State.CLOSED);
-			return eventDate;
-		}).collect(Collectors.toList()));
 		event.setImages(images);
 		event.setEventHost(eventHost);
-		//
 		event.setEventLink(generateEventLink(event));
 		return eventRepository.save(event);
 	}
@@ -118,18 +107,7 @@ public class EventService {
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 
 		
-		//poooooooooooooooooooooooresh konim
 		event = eventMapper.updateEntity(vmodel, event);
-//		event.setEventDates(vmodel.getEventDates().stream().map(ed -> {
-//			EventDate eventDate = eventDateCreateMapper.createFromViewModel(ed);
-//			eventDate.setBlitTypes(ed.getBlitTypes().stream().map(bt -> {
-//				BlitType blitType = blitTypeMapper.createFromBlitTypeCreateViewModel(bt);
-//				blitType.setBlitTypeState(State.CLOSED);
-//				return blitType;
-//			}).collect(Collectors.toList()));
-//			eventDate.setEventState(State.CLOSED);
-//			return eventDate;
-//		}).collect(Collectors.toList()));
 		event.setImages(images);
 		event.setEventHost(eventHost);
 		Optional<Event> eventResult = eventRepository.findByEventLink(vmodel.getEventLink());

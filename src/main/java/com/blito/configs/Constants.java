@@ -30,6 +30,11 @@ public final class Constants {
     public static final String NOTIF_COMMUNICATION_VERSION = "1.0.0";
     public static final int MAX_ACTIVE_SMS_RETRY = 5;
     public static final int MAX_INCORRECT_PASSWORD_BEFORE_BAN = 3;
+    
+    public static final String DEFAULT_EVENT_BANNER = "EVENT-BANNER";
+    public static final String DEFAULT_HOST_PHOTO = "HOST-PHOTO";
+    public static final String DEFAULT_EVENT_PHOTO = "EVENT-PHOTO";
+    public static final String DEFAULT_EXCHANGEBLIT_PHOTO = "EXCHANGEBLIT_PHOTO";
 
     private Constants()
     {}

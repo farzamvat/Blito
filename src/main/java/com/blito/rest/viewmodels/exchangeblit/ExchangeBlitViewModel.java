@@ -10,6 +10,7 @@ import com.blito.enums.ExchangeBlitType;
 import com.blito.enums.OperatorState;
 import com.blito.enums.State;
 import com.blito.rest.viewmodels.View;
+import com.blito.rest.viewmodels.image.ImageViewModel;
 import com.fasterxml.jackson.annotation.JsonView;
 
 public class ExchangeBlitViewModel {
@@ -53,8 +54,17 @@ public class ExchangeBlitViewModel {
 	private ExchangeBlitType type;
 	@JsonView(View.SimpleExchangeBlit.class)
 	private OperatorState operatorState;
+	@JsonView(View.SimpleExchangeBlit.class)
+	private ImageViewModel image;
 	
-	
+	public ImageViewModel getImage() {
+		return image;
+	}
+
+	public void setImage(ImageViewModel image) {
+		this.image = image;
+	}
+
 	public String getTitle() {
 		return title;
 	}

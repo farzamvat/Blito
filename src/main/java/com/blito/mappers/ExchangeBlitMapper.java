@@ -1,5 +1,6 @@
 package com.blito.mappers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.blito.models.ExchangeBlit;
@@ -7,7 +8,8 @@ import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
 
 @Component
 public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit,ExchangeBlitViewModel> {
-
+	@Autowired ImageMapper imageMapper;
+	
 	@Override
 	public ExchangeBlit createFromViewModel(ExchangeBlitViewModel vmodel) {
 		ExchangeBlit exchangeBlit = new ExchangeBlit();
@@ -42,6 +44,7 @@ public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit,ExchangeBl
 		vmodel.setState(exchangeBlit.getState());
 		vmodel.setOperatorState(exchangeBlit.getOperatorState());
 		vmodel.setType(exchangeBlit.getType());
+		vmodel.setImage(imageMapper.createFromEntity(exchangeBlit.getImage()));
 		return vmodel;
 	}
 

@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.blito.configs.Constants;
+import com.blito.enums.ImageType;
 import com.blito.enums.OperatorState;
 import com.blito.enums.Response;
 import com.blito.enums.State;
@@ -17,9 +19,11 @@ import com.blito.mappers.ExchangeBlitMapper;
 import com.blito.models.ExchangeBlit;
 import com.blito.models.User;
 import com.blito.repositories.ExchangeBlitRepository;
+import com.blito.repositories.ImageRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
+import com.blito.rest.viewmodels.image.ImageViewModel;
 import com.blito.security.SecurityContextHolder;
 
 @Service
@@ -30,6 +34,8 @@ public class ExchangeBlitService {
 	ExchangeBlitRepository exchangeBlitRepository;
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	ImageRepository imageRepository;
 	
 	private ExchangeBlit findByExchangeBlitId(long id) 
 	{
@@ -43,6 +49,17 @@ public class ExchangeBlitService {
 		ExchangeBlit exchangeBlit = exchangeBlitMapper.createFromViewModel(vmodel);
 		exchangeBlit.setState(State.OPEN);
 		exchangeBlit.setOperatorState(OperatorState.PENDING);
+		if(vmodel.getImage() == null)
+		{
+			vmodel.setImage(new ImageViewModel(Constants.DEFAULT_EXCHANGEBLIT_PHOTO,ImageType.EXCHANGEBLIT_PHOTO));
+		}
+		exchangeBlit.setImage(imageRepository.findByImageUUID(vmodel.getImage().getImageUUID())
+				.map(i -> {
+					i.setImageType(vmodel.getImage().getType());
+					return i;
+				})
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))));
+		
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		exchangeBlit.setUser(user);
 		return exchangeBlitMapper.createFromEntity(exchangeBlitRepository.save(exchangeBlit));
@@ -56,6 +73,17 @@ public class ExchangeBlitService {
 				|| exchangeBlit.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
+		if(vmodel.getImage() == null)
+		{
+			vmodel.setImage(new ImageViewModel(Constants.DEFAULT_EXCHANGEBLIT_PHOTO,ImageType.EXCHANGEBLIT_PHOTO));
+		}
+		exchangeBlit.setImage(imageRepository.findByImageUUID(vmodel.getImage().getImageUUID())
+				.map(i -> {
+					i.setImageType(vmodel.getImage().getType());
+					return i;
+				})
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))));
+		
 		exchangeBlit = exchangeBlitMapper.updateEntity(vmodel, exchangeBlit);
 		exchangeBlit.setOperatorState(OperatorState.PENDING);
 

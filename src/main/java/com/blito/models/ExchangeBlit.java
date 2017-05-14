@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import com.blito.enums.OperatorState;
 import com.blito.enums.State;
@@ -52,7 +53,17 @@ public class ExchangeBlit {
 	@ManyToOne
 	@JoinColumn(name="userId")
 	private User user;
+	@OneToOne
+	Image image;
 	
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
 	public OperatorState getOperatorState() {
 		return operatorState;
 	}

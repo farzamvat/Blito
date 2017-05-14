@@ -1,5 +1,7 @@
 package com.blito.mappers;
 
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +29,7 @@ public class EventMapper implements GenericMapper<Event,EventViewModel> {
 		event.setLatitude(vmodel.getLatitude());
 		event.setLongitude(vmodel.getLongitude());
 		event.setOperatorState(OperatorState.PENDING);
+		event.setEventDates(vmodel.getEventDates().stream().map(eventDateMapper::createFromViewModel).collect(Collectors.toList()));
 		event.setEventState(State.CLOSED);
 		return event;
 	}
@@ -49,19 +52,32 @@ public class EventMapper implements GenericMapper<Event,EventViewModel> {
 		vmodel.setOperatorState(event.getOperatorState());
 		vmodel.setEventState(event.getEventState());
 		vmodel.setEventDates(eventDateMapper.createFromEntities(event.getEventDates()));
+		vmodel.setOffers(event.getOffers());
+		vmodel.setLatitude(event.getLatitude());
+		vmodel.setLongitude(event.getLongitude());
 		return vmodel;
 	}
 
 	@Override
-	public Event updateEntity(EventViewModel viewModel, Event entity) {
-		// TODO Auto-generated method stub
-		/////////////////////////////////////
-		/////////////////////////////////////
-		/////////////////////////////////////
-		/////////////////////////////////////
-		/////////////////////////////////////
-		/////////////////////////////////////
-		return null;
+	public Event updateEntity(EventViewModel vmodel, Event event) {
+		event.setAddress(vmodel.getAddress());
+		event.setAparatDisplayCode(event.getAparatDisplayCode());
+		event.setBlitSaleEndDate(vmodel.getBlitSaleStartDate());
+		event.setBlitSaleEndDate(vmodel.getBlitSaleEndDate());
+		event.setDescription(vmodel.getDescription());
+		event.setEventName(vmodel.getEventName());
+		event.setEventState(State.CLOSED);
+		event.setOperatorState(OperatorState.PENDING);
+		event.setLongitude(vmodel.getLongitude());
+		event.setLatitude(vmodel.getLatitude());
+		event.setEventLink(vmodel.getEventLink());
+		event.setEventType(vmodel.getEventType());
+		event.setEventDates(vmodel.getEventDates().stream().map(edvm -> {
+			return event.getEventDates().stream().filter(ed -> ed.getEventDateId() == edvm.getEventDateId()).findFirst()
+					.map(e -> eventDateMapper.updateEntity(edvm, e))
+					.orElseGet(() -> eventDateMapper.createFromViewModel(edvm));
+		}).collect(Collectors.toList()));
+		return event;
 	}
 
 }
