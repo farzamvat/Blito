@@ -33,6 +33,7 @@ public final class Constants {
     
     public static final String DEFAULT_EVENT_BANNER = "EVENT-BANNER";
     public static final String DEFAULT_HOST_PHOTO = "HOST-PHOTO";
+    public static final String DEFAULT_HOST_COVER_PHOTO = "HOST-COVER-PHOTO";
     public static final String DEFAULT_EVENT_PHOTO = "EVENT-PHOTO";
     public static final String DEFAULT_EXCHANGEBLIT_PHOTO = "EXCHANGEBLIT_PHOTO";
 

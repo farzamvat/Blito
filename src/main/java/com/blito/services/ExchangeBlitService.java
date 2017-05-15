@@ -68,8 +68,8 @@ public class ExchangeBlitService {
 	@Transactional
 	public ExchangeBlitViewModel update(ExchangeBlitViewModel vmodel) {
 		ExchangeBlit exchangeBlit = findByExchangeBlitId(vmodel.getExchangeBlitId());
-		if (exchangeBlit.getOperatorState().equals(OperatorState.PENDING)
-				|| exchangeBlit.getState().equals(State.SOLD) || exchangeBlit.getState().equals(State.CLOSED)
+		if (exchangeBlit.getState().equals(State.SOLD) || exchangeBlit.getOperatorState().equals(OperatorState.PENDING)
+				||exchangeBlit.getState().equals(State.CLOSED)
 				|| exchangeBlit.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
@@ -90,11 +90,13 @@ public class ExchangeBlitService {
 		return exchangeBlitMapper.createFromEntity(exchangeBlit);
 	}
 
+	@Transactional
 	public void delete(long exchangeBlitId) {
 		ExchangeBlit exchangeBlit = findByExchangeBlitId(exchangeBlitId);
 		exchangeBlitRepository.delete(exchangeBlit);
 	}
 
+	//test??
 	public Page<ExchangeBlitViewModel> getApprovedAndNotClosedOrSoldBlits(Pageable pageable) {
 		return exchangeBlitMapper.toPage(exchangeBlitRepository.findByStateAndOperatorState(State.OPEN,
 				OperatorState.APPROVED, pageable), exchangeBlitMapper::createFromEntity);

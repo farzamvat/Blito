@@ -20,12 +20,6 @@ public class ExchangeBlitViewModel {
 	@JsonView(View.SimpleExchangeBlit.class)
 	private String title;
 	@NotNull
-	@JsonView(View.ExchangeBlit.class)
-	private String firstname;
-	@NotNull
-	@JsonView(View.ExchangeBlit.class)
-	private String lastname;
-	@NotNull
 	@JsonView(View.SimpleExchangeBlit.class)
 	private Timestamp eventDate;
 	@NotNull
@@ -95,22 +89,6 @@ public class ExchangeBlitViewModel {
 
 	public void setExchangeBlitId(long exchangeBlitId) {
 		this.exchangeBlitId = exchangeBlitId;
-	}
-
-	public String getFirstname() {
-		return firstname;
-	}
-
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
-	public String getLastname() {
-		return lastname;
-	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
 	}
 
 	public Timestamp getEventDate() {

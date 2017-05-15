@@ -21,10 +21,6 @@ public class ExchangeBlit {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private long exchangeBlitId;
 	
-	private String firstname;
-	
-	private String lastname;
-	
 	private Timestamp eventDate;
 	
 	private String title;
@@ -53,6 +49,7 @@ public class ExchangeBlit {
 	@ManyToOne
 	@JoinColumn(name="userId")
 	private User user;
+	
 	@OneToOne
 	Image image;
 	
@@ -110,23 +107,6 @@ public class ExchangeBlit {
 
 	public void setExchangeBlitId(long exchangeBlitId) {
 		this.exchangeBlitId = exchangeBlitId;
-	}
-
-
-	public String getFirstname() {
-		return firstname;
-	}
-
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
-	public String getLastname() {
-		return lastname;
-	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
 	}
 
 	public Timestamp getEventDate() {

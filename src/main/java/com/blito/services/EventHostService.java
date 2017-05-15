@@ -1,5 +1,6 @@
 package com.blito.services;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -7,7 +8,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.blito.configs.Constants;
+import com.blito.enums.ImageType;
 import com.blito.enums.Response;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
@@ -22,6 +26,7 @@ import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.eventhost.EventHostSimpleViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
+import com.blito.rest.viewmodels.image.ImageViewModel;
 import com.blito.security.SecurityContextHolder;
 
 @Service
@@ -39,20 +44,27 @@ public class EventHostService {
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
 	}
 	
+	@Transactional
 	public EventHostViewModel create(EventHostViewModel vmodel)
 	{
-
+		if(vmodel.getImages() == null) {
+			vmodel.setImages(Arrays.asList(new ImageViewModel(Constants.DEFAULT_HOST_PHOTO,ImageType.HOST_COVER_PHOTO),
+					new ImageViewModel(Constants.DEFAULT_HOST_COVER_PHOTO, ImageType.HOST_COVER_PHOTO)));
+		}
 		List<Image> images = imageRepository.findByImageUUIDIn(
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 		
 		EventHost eventHost = eventHostMapper.createFromViewModel(vmodel);
 		eventHost.setImages(images);
+		eventHost.setUser(SecurityContextHolder.currentUser());
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
-		user.setEventHosts(Arrays.asList(eventHost));
+		user.setEventHosts(new ArrayList<EventHost>(Arrays.asList(eventHost))); ///check with fifi
+		userRepository.save(user);
 		return eventHostMapper.createFromEntity(eventHost);
 	}
 	
+	@Transactional
 	public EventHostViewModel update(EventHostViewModel vmodel)
 	{
 		EventHost eventHost = findEventHostById(vmodel.getEventHostId());

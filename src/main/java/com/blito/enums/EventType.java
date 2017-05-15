@@ -6,5 +6,7 @@ public enum EventType {
 	TOURISM,
 	CONCERT,
 	SPORT,
+	WORKSHOP,
+	EVENTO,
 	OTHER
 }

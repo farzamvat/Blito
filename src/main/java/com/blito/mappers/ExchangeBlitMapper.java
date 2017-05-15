@@ -16,8 +16,6 @@ public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit,ExchangeBl
 		exchangeBlit.setTitle(vmodel.getTitle());
 		exchangeBlit.setBlitCost(vmodel.getBlitCost());
 		exchangeBlit.setDescription(vmodel.getDescription());
-		exchangeBlit.setFirstname(vmodel.getFirstname());
-		exchangeBlit.setLastname(vmodel.getLastname());
 		exchangeBlit.setEmail(vmodel.getEmail());
 		exchangeBlit.setBlitoEvent(vmodel.isBlitoEvent());
 		exchangeBlit.setEventAddress(vmodel.getEventAddress());
@@ -30,11 +28,10 @@ public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit,ExchangeBl
 	@Override
 	public ExchangeBlitViewModel createFromEntity(ExchangeBlit exchangeBlit) {
 		ExchangeBlitViewModel vmodel = new ExchangeBlitViewModel();
+		vmodel.setExchangeBlitId(exchangeBlit.getExchangeBlitId());
 		vmodel.setTitle(exchangeBlit.getTitle());
 		vmodel.setBlitCost(exchangeBlit.getBlitCost());
 		vmodel.setDescription(exchangeBlit.getDescription());
-		vmodel.setFirstname(exchangeBlit.getFirstname());
-		vmodel.setLastname(exchangeBlit.getLastname());
 		vmodel.setEmail(exchangeBlit.getEmail());
 		vmodel.setBlitoEvent(exchangeBlit.isBlitoEvent());
 		vmodel.setEventAddress(exchangeBlit.getEventAddress());
@@ -53,8 +50,6 @@ public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit,ExchangeBl
 		exchangeBlit.setTitle(vmodel.getTitle());
 		exchangeBlit.setBlitCost(vmodel.getBlitCost());
 		exchangeBlit.setDescription(vmodel.getDescription());
-		exchangeBlit.setFirstname(vmodel.getFirstname());
-		exchangeBlit.setLastname(vmodel.getLastname());
 		exchangeBlit.setEmail(vmodel.getEmail());
 		exchangeBlit.setBlitoEvent(vmodel.isBlitoEvent());
 		exchangeBlit.setEventAddress(vmodel.getEventAddress());
