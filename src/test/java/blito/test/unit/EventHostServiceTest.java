@@ -8,10 +8,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.Application;
 import com.blito.configs.Constants;
@@ -30,6 +30,7 @@ import com.blito.services.EventHostService;
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
+@Transactional
 public class EventHostServiceTest {
 
 	@Autowired
@@ -79,13 +80,14 @@ public class EventHostServiceTest {
 		}
 	}
 
+	
 	@Test
 	public void create() {
 		createvmodel = hostService.create(createvmodel);
 		assertEquals(1, hostRepo.count());
 		assertEquals(SecurityContextHolder.currentUser().getUserId(),
 				hostRepo.findOne(createvmodel.getEventHostId()).getUser().getUserId());
-		assertEquals(SecurityContextHolder.currentUser().getEventHosts().size(), 1);
+		assertEquals(userRepo.findOne(SecurityContextHolder.currentUser().getUserId()).getEventHosts().size(), 1);
 	}
 
 //	@Test

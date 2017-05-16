@@ -53,15 +53,14 @@ public class EventHostService {
 		}
 		List<Image> images = imageRepository.findByImageUUIDIn(
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
+		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 		
 		EventHost eventHost = eventHostMapper.createFromViewModel(vmodel);
 		eventHost.setImages(images);
-		eventHost.setUser(SecurityContextHolder.currentUser());
-		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
-		user.setEventHosts(new ArrayList<EventHost>(Arrays.asList(eventHost))); ///check with fifi
-		userRepository.save(user);
-		return eventHostMapper.createFromEntity(eventHost);
+		eventHost.setUser(user);
+		user.getEventHosts().add(eventHost);
+		return eventHostMapper.createFromEntity(eventHostRepository.save(eventHost));
 	}
 	
 	@Transactional

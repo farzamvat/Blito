@@ -1,5 +1,6 @@
 package com.blito.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -59,7 +60,13 @@ public class User {
 	@OneToMany(mappedBy="user", targetEntity=ExchangeBlit.class, fetch=FetchType.LAZY)
 	private List<ExchangeBlit> exchangeBlits;
 	
-	
+	public User() {
+		roles = new ArrayList<>();
+		eventHosts = new ArrayList<>();
+		blits = new ArrayList<>();
+		exchangeBlits = new ArrayList<>();
+	}
+
 	public String getRefreshToken() {
 		return refreshToken;
 	}
