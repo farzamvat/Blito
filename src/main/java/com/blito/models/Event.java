@@ -1,6 +1,7 @@
 package com.blito.models;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -75,6 +76,12 @@ public class Event {
 	String aparatDisplayCode;
 	
 	int orderNumber;
+	
+	public Event() {
+		offers = new ArrayList<>();
+		images = new ArrayList<>();
+		eventDates = new ArrayList<>();
+	}
 	
 	public List<OfferTypeEnum> getOffers() {
 		return offers;

@@ -57,7 +57,7 @@ public class EventService {
 	ImageMapper imageMapper;
 
 	@Transactional
-	public Event create(EventViewModel vmodel) {
+	public EventViewModel create(EventViewModel vmodel) {
 		if (vmodel.getBlitSaleStartDate().after(vmodel.getBlitSaleEndDate())) {
 			throw new RuntimeException("start date is after end date");
 		}
@@ -71,7 +71,7 @@ public class EventService {
 		event.setImages(images);
 		event.setEventHost(eventHost);
 		event.setEventLink(generateEventLink(event));
-		return eventRepository.save(event);
+		return eventMapper.createFromEntity(eventRepository.save(event));
 	}
 
 	public EventFlatViewModel getFlatEventById(long eventId) {
@@ -105,13 +105,12 @@ public class EventService {
 
 		Event event = Optional.ofNullable(eventRepository.findOne(vmodel.getEventId())).map(e -> e)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
-
 		
 		event = eventMapper.updateEntity(vmodel, event);
 		event.setImages(images);
 		event.setEventHost(eventHost);
 		Optional<Event> eventResult = eventRepository.findByEventLink(vmodel.getEventLink());
-		if (eventResult.isPresent()) {
+		if (eventResult.isPresent() && eventResult.get().getEventId() != vmodel.getEventId()) {
 			throw new EventLinkAlreadyExistsException(ResourceUtil.getMessage(Response.EVENT_LINK_EXISTS));
 		}
 		event.setEventLink(vmodel.getEventLink());
