@@ -100,7 +100,6 @@ public class AdminAccountServiceTest {
 		adminAccService.unBanUser(user1.getUserId());
 		user1 = userRepo.findOne(user1.getUserId());
 		assertEquals(false, user1.isBanned());
-
 	}
 	
 
