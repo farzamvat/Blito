@@ -3,6 +3,8 @@ package com.blito.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.blito.enums.Response;
@@ -21,21 +23,15 @@ public class AdminAccountService {
 	@Autowired
 	UserMapper userMapper;
 
-//	public Page<UserSimpleViewModel> getAllUsers(Pageable pageable) {
-//		return userMapper.toPage(userRepository.findAll(pageable), userMapper::userToUserSimpleViewModel);
-//	}
+	public Page<UserViewModel> getAllUsers(Pageable pageable) {
+		return userMapper.toPage(userRepository.findAll(pageable), userMapper::createFromEntity);
+	}
 
 	public UserViewModel getUser(long userId) {
 		User user = Optional.ofNullable(userRepository.findOne(userId)).map(u -> u)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
 		return userMapper.createFromEntity(user);
-	}
-//
-//	public UserViewModel updateUser(UserAdminUpdateViewModel vmodel) {
-//		User user = Optional.ofNullable(userRepository.findOne(vmodel.getUserId())).map(u -> u)
-//				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
-//		return userMapper.createFromEntity(userRepository.save(userMapper.userAdminUpdateViewModelToUser(vmodel, user)));
-//	}				
+	}			
 	
 	public void banUser(long userId) {
 		User user = Optional.ofNullable(userRepository.findOne(userId)).map(u->u)
@@ -43,5 +39,18 @@ public class AdminAccountService {
 		user.setBanned(true);
 		userRepository.save(user);
 	}
+	
+	public void unBanUser(long userId) {
+		User user = Optional.ofNullable(userRepository.findOne(userId)).map(u->u)
+				.orElseThrow(()->new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
+		user.setBanned(false);
+		userRepository.save(user);
+	}
+	
+//	public UserViewModel updateUser(UserAdminUpdateViewModel vmodel) {
+//		User user = Optional.ofNullable(userRepository.findOne(vmodel.getUserId())).map(u -> u)
+//				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
+//		return userMapper.createFromEntity(userRepository.save(userMapper.userAdminUpdateViewModelToUser(vmodel, user)));
+//	}	
 	
 }

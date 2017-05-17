@@ -1,5 +1,6 @@
 package com.blito.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -62,6 +63,11 @@ public class EventHost {
 	List<Image> images;
 	
 	String description;
+	
+	public EventHost() {
+		images = new ArrayList<>();
+		events = new ArrayList<>();
+	}
 	
 	public List<Image> getImages() {
 		return images;

@@ -3,6 +3,7 @@ package com.blito.mappers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.blito.models.EventHost;
@@ -25,6 +26,9 @@ public class EventHostMapper implements GenericMapper<EventHost,EventHostViewMod
 		simple.setHostName(eventHost.getHostName());
 		return simple;
 	}
+	
+	@Autowired
+	ImageMapper imageMapper;
 
 	@Override
 	public EventHost createFromViewModel(EventHostViewModel vmodel) {
@@ -52,6 +56,7 @@ public class EventHostMapper implements GenericMapper<EventHost,EventHostViewMod
 		vmodel.setTwitterLink(eventHost.getTwitterLink());
 		vmodel.setWebsiteLink(eventHost.getWebsiteLink());
 		vmodel.setTelephone(eventHost.getTelephone());
+		vmodel.setImages(imageMapper.createFromEntities(eventHost.getImages()));
 		return vmodel;
 	}
 

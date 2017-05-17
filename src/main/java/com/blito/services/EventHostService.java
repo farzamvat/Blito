@@ -1,6 +1,5 @@
 package com.blito.services;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -47,7 +46,7 @@ public class EventHostService {
 	@Transactional
 	public EventHostViewModel create(EventHostViewModel vmodel)
 	{
-		if(vmodel.getImages() == null) {
+		if(vmodel.getImages().size()==0) {
 			vmodel.setImages(Arrays.asList(new ImageViewModel(Constants.DEFAULT_HOST_PHOTO,ImageType.HOST_COVER_PHOTO),
 					new ImageViewModel(Constants.DEFAULT_HOST_COVER_PHOTO, ImageType.HOST_COVER_PHOTO)));
 		}
@@ -75,7 +74,7 @@ public class EventHostService {
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 		eventHost.setImages(images);
-		return eventHostMapper.createFromEntity(eventHostRepository.save(eventHostMapper.updateEntity(vmodel,eventHost)));
+		return eventHostMapper.createFromEntity(eventHostMapper.updateEntity(vmodel,eventHost));
 	}
 	
 	public EventHostViewModel get(long id)
@@ -83,6 +82,7 @@ public class EventHostService {
 		return eventHostMapper.createFromEntity(findEventHostById(id));
 	}
 	
+	@Transactional
 	public void delete(long id)
 	{
 		EventHost eventHost = findEventHostById(id);
