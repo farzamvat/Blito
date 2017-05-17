@@ -70,6 +70,7 @@ public class AdminAccountServiceTest {
 			
 			isInit = true;
 		}
+		
 	}
 	
 	@Test
@@ -95,6 +96,7 @@ public class AdminAccountServiceTest {
 		adminAccService.banUser(user1.getUserId());
 		user1 = userRepo.findOne(user1.getUserId());
 		assertEquals(true, user1.isBanned());
+		assertEquals("Hasti", user1.getFirstname());
 		adminAccService.unBanUser(user1.getUserId());
 		user1 = userRepo.findOne(user1.getUserId());
 		assertEquals(false, user1.isBanned());
