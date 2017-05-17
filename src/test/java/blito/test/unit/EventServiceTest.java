@@ -1,6 +1,6 @@
 package blito.test.unit;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
@@ -19,22 +19,27 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.blito.Application;
+import com.blito.enums.DayOfWeek;
 import com.blito.enums.EventType;
 import com.blito.enums.HostType;
 import com.blito.enums.OfferTypeEnum;
 import com.blito.enums.OperatorState;
 import com.blito.enums.State;
+import com.blito.exceptions.NotFoundException;
 import com.blito.models.Event;
 import com.blito.models.EventHost;
 import com.blito.models.User;
 import com.blito.repositories.EventHostRepository;
 import com.blito.repositories.EventRepository;
 import com.blito.repositories.UserRepository;
+import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
+import com.blito.rest.viewmodels.event.EventViewModel;
+import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.search.Collection;
 import com.blito.search.Operation;
-import com.blito.search.Range;
 import com.blito.search.SearchViewModel;
 import com.blito.search.Simple;
+import com.blito.security.SecurityContextHolder;
 import com.blito.services.EventService;
 
 @ActiveProfiles("test")
@@ -55,11 +60,16 @@ public class EventServiceTest {
 	Event event2;
 	Event event3;
 	Event event4;
+	EventHost eventHost;
+	private static EventViewModel eventViewModel = null;
 	private static boolean isInit = false;
 
 	@Before
 	public void init() {
 		if (!isInit) {
+			
+			isInit = true;
+			
 			User user = new User();
 			user.setEmail("farzam.vat@gmail.com");
 			user.setActive(true);
@@ -69,13 +79,15 @@ public class EventServiceTest {
 
 			user = userRepository.save(user);
 
-			EventHost eventHost = new EventHost();
+			eventHost = new EventHost();
 			eventHost.setHostName("hostname12");
 			eventHost.setHostType(HostType.THEATER);
 			eventHost.setTelephone("02188002116");
 			eventHost.setUser(user);
 
 			eventHost = eventHostRepository.save(eventHost);
+			
+			SecurityContextHolder.setCurrentUser(user);
 
 			event = new Event();
 			event.setAddress("ABC");
@@ -91,35 +103,35 @@ public class EventServiceTest {
 			event1.setAddress("ABC");
 			event1.setEventState(State.OPEN);
 			event1.setOperatorState(OperatorState.APPROVED);
-			event1.setEventName("A");
+			event1.setEventName("B");
 			event1.setLatitude(1D);
 			event1.setEventType(EventType.CINEMA);
 			event1.setBlitSaleStartDate(Timestamp.from(ZonedDateTime.now().minusHours(10).toInstant()));
 			event1.setBlitSaleEndDate(Timestamp.from(ZonedDateTime.now().plusDays(1).toInstant()));
 
 			event2 = new Event();
-			event1.setAddress("ABC");
+			event2.setAddress("ABCD");
 			event2.setEventState(State.CLOSED);
 			event2.setOperatorState(OperatorState.PENDING);
-			event2.setEventName("A");
+			event2.setEventName("C");
 			event2.setLatitude(4D);
 			event2.setEventType(EventType.CINEMA);
 
 			event3 = new Event();
-			event3.setAddress("ABC");
+			event3.setAddress("DFG");
 			event3.setEventState(State.OPEN);
 			event3.setOperatorState(OperatorState.REJECTED);
 			event3.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER, OfferTypeEnum.SPECIAL_OFFER));
-			event3.setEventName("B");
+			event3.setEventName("D");
 			event3.setLatitude(1D);
-			event3.setEventType(EventType.CONCERT);
+			event3.setEventType(EventType.SPORT);
 
 			event4 = new Event();
 			event4.setAddress("ABC");
 			event4.setEventState(State.OPEN);
 			event4.setOperatorState(OperatorState.REJECTED);
 			event4.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER, OfferTypeEnum.SPECIAL_OFFER));
-			event4.setEventName("B");
+			event4.setEventName("E");
 			event4.setLatitude(1D);
 			event4.setEventType(EventType.CONCERT);
 
@@ -134,16 +146,119 @@ public class EventServiceTest {
 			eventRepository.save(event2);
 			eventRepository.save(event3);
 			eventRepository.save(event4);
-			isInit = true;
+			
+			eventViewModel = new EventViewModel();
+			eventViewModel.setAddress("Amirabad");
+			eventViewModel.setBlitSaleEndDate(Timestamp.from(ZonedDateTime.now().plusDays(9).toInstant()));
+			eventViewModel.setBlitSaleStartDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
+			eventViewModel.setDescription("Description");
+			eventViewModel.setEventHostId(eventHost.getEventHostId());
+			eventViewModel.setEventHostName(eventHost.getHostName());
+			eventViewModel.setEventName("My Event");
+			eventViewModel.setEventType(EventType.CONCERT);
+			
+			EventDateViewModel eventDateViewModel = new EventDateViewModel();
+			BlitTypeViewModel blitTypeViewModel1= new BlitTypeViewModel();
+			BlitTypeViewModel blitTypeViewModel2 = new BlitTypeViewModel();
+			eventDateViewModel.setDate(Timestamp.from(ZonedDateTime.now().plusDays(10).toInstant()));
+			eventDateViewModel.setDayOfWeek(DayOfWeek.SATURDAY);
+			
+			blitTypeViewModel1.setCapacity(20);
+			blitTypeViewModel1.setFree(false);
+			blitTypeViewModel1.setName("vaysade");
+			blitTypeViewModel1.setPrice(20000);
+			
+			blitTypeViewModel2.setCapacity(30);
+			blitTypeViewModel2.setFree(false);
+			blitTypeViewModel2.setName("neshaste");
+			blitTypeViewModel2.setPrice(40000);
+			
+			eventDateViewModel.setBlitTypes(Arrays.asList(blitTypeViewModel1,blitTypeViewModel2));
+			eventViewModel.setEventDates(Arrays.asList(eventDateViewModel));
+			
+			System.err.println(eventRepository.count() + "*************************");
 		}
+	}
+	
+	@Test
+	public void create()
+	{
+		eventViewModel = eventService.create(eventViewModel);
+		assertNotNull(eventRepository.findOne(eventViewModel.getEventHostId()));
+	}
+	
+	@Test
+	public void update()
+	{
+		EventViewModel vmodel = eventService.create(eventViewModel);
+		vmodel.setAddress("YousefAbad");
+		vmodel = eventService.update(vmodel);
+		assertEquals("YousefAbad", vmodel.getAddress());
+	}
+	
+	@Test(expected=NotFoundException.class)
+	public void getEventByIdNotFoundException()
+	{
+		eventService.getEventById(2000);
+	}
+	
+	@Test
+	public void getEventById()
+	{
+		EventViewModel vmodel = eventService.create(eventViewModel);
+		vmodel = eventService.getEventById(vmodel.getEventId());
+		assertNotNull(eventRepository.findOne(vmodel.getEventId()));
+	}
+	
+	@Test
+	public void delete()
+	{
+		EventViewModel vmodel = eventService.create(eventViewModel);
+		eventService.delete(vmodel.getEventId());
+		assertNull(eventRepository.findOne(vmodel.getEventId()));
+	}
+	
+	@Test(expected=NotFoundException.class)
+	public void createEventWithEventHostNotFoundException()
+	{
+		EventViewModel vmodel = null;
+		vmodel = new EventViewModel();
+		vmodel.setAddress("Amirabad");
+		vmodel.setBlitSaleEndDate(Timestamp.from(ZonedDateTime.now().plusDays(9).toInstant()));
+		vmodel.setBlitSaleStartDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
+		vmodel.setDescription("Description");
+		vmodel.setEventHostName("Mamad");
+		vmodel.setEventName("My Event");
+		vmodel.setEventType(EventType.CONCERT);
+		
+		EventDateViewModel eventDateViewModel = new EventDateViewModel();
+		BlitTypeViewModel blitTypeViewModel1= new BlitTypeViewModel();
+		BlitTypeViewModel blitTypeViewModel2 = new BlitTypeViewModel();
+		eventDateViewModel.setDate(Timestamp.from(ZonedDateTime.now().plusDays(10).toInstant()));
+		eventDateViewModel.setDayOfWeek(DayOfWeek.SATURDAY);
+		
+		blitTypeViewModel1.setCapacity(20);
+		blitTypeViewModel1.setFree(false);
+		blitTypeViewModel1.setName("vaysade");
+		blitTypeViewModel1.setPrice(20000);
+		
+		blitTypeViewModel2.setCapacity(30);
+		blitTypeViewModel2.setFree(false);
+		blitTypeViewModel2.setName("neshaste");
+		blitTypeViewModel2.setPrice(40000);
+		
+		eventDateViewModel.setBlitTypes(Arrays.asList(blitTypeViewModel1,blitTypeViewModel2));
+		vmodel.setEventDates(Arrays.asList(eventDateViewModel));
+		vmodel.setEventHostId(1000);
+		vmodel = eventService.create(vmodel);
 	}
 
 	@Test
 	public void search() {
 		SearchViewModel<Event> searchViewModel = new SearchViewModel<>();
 		Simple<Event> simple = new Simple<>();
-		simple.setField("eventName");
-		simple.setValue("A");
+		simple.setField("eventType");
+		simple.setValue(EventType.SPORT);
 		simple.setOperation(Operation.eq);
 
 		searchViewModel.setRestrictions(new ArrayList<>());
@@ -151,7 +266,7 @@ public class EventServiceTest {
 		Pageable pageable = new PageRequest(0, 5);
 
 		Page<Event> eventsPage = eventService.searchEvents(searchViewModel, pageable);
-		assertEquals(eventsPage.getNumberOfElements(), 3);
+		assertEquals(1,eventsPage.getNumberOfElements());
 	}
 
 	@Test
@@ -170,7 +285,7 @@ public class EventServiceTest {
 		Pageable pageable = new PageRequest(0, 5);
 
 		Page<Event> eventsPage = eventService.searchEvents(searchViewModel, pageable);
-		assertEquals(eventsPage.getNumberOfElements(), 2);
+		assertEquals(1,eventsPage.getNumberOfElements());
 	}
 	
 	@Test
@@ -186,7 +301,7 @@ public class EventServiceTest {
 		
 		Pageable pageable = new PageRequest(0,5);
 		Page<Event> eventsPage = eventService.searchEvents(searchViewModel, pageable);
-		assertEquals(eventsPage.getNumberOfElements(),4);
+		assertEquals(4,eventsPage.getNumberOfElements());
 	}
 
 //	@Test

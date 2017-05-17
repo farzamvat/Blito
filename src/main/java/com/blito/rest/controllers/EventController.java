@@ -32,8 +32,9 @@ public class EventController {
 	
 	@Autowired EventService eventService;
 	
+	@JsonView(View.Event.class)
 	@PostMapping
-	public ResponseEntity<Event> create (@Validated @RequestBody EventViewModel vmodel) {
+	public ResponseEntity<EventViewModel> create (@Validated @RequestBody EventViewModel vmodel) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(eventService.create(vmodel));
 	}
 	

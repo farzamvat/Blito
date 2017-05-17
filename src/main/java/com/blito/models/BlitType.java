@@ -1,6 +1,7 @@
 package com.blito.models;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -43,6 +44,11 @@ public class BlitType {
 	
 	@OneToMany(mappedBy="blitType",targetEntity=CommonBlit.class)
 	List<CommonBlit> commonBlits;
+	
+	public BlitType() {
+		blitTypeSeats = new ArrayList<>();
+		commonBlits = new ArrayList<>();
+	}
 	
 	public List<BlitTypeSeat> getBlitTypeSeats() {
 		return blitTypeSeats;

@@ -1,6 +1,7 @@
 package com.blito.models;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -41,6 +42,11 @@ public class EventDate {
 	@ManyToOne(optional=true)
 	@JoinColumn(name="salonId")
 	Salon salon;
+	
+	public EventDate()
+	{
+		blitTypes = new ArrayList<>();
+	}
 
 	public State getEventState() {
 		return eventState;
