@@ -20,6 +20,7 @@ angular.module('Blito',
     ])
     .config(function ($httpProvider) {
         $httpProvider.interceptors.push('AuthInterceptors');
+        
 
     })
     .constant('config', {
