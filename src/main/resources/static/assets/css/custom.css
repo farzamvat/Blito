@@ -713,24 +713,24 @@ dir-pagination-controls ul {
 }
 
 .recipe {
-    background-color:#ddd;
+    /*background-color:#ddd;*/
     /*max-width:300px;*/
     margin: 20px auto;
-    padding: 10px 15px;
+    /*padding: 10px 15px;*/
     cursor: pointer;
     /*margin:10px 20px;*/
-    -webkit-border-radius:7px;
-    border-radius:4px ;
-    -webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.3);
-    -moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.3);
-    box-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    /*-webkit-border-radius:7px;*/
+    /*border-radius:4px ;*/
+    /*-webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.3);*/
+    /*-moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.3);*/
+    /*box-shadow: 1px 1px 4px rgba(0,0,0,0.3);*/
     transition: 400ms;
     width: 300px;
 
 }
 .recipe:hover {
-    background-color:#aaa;
-    box-shadow: 4px 6px 6px rgba(0,0,0,0.7);
+    /*background-color:#aaa;*/
+    /*box-shadow: 4px 6px 6px rgba(0,0,0,0.7);*/
 }
 .recipe h3 {
     font-weight:900;
@@ -746,17 +746,22 @@ dir-pagination-controls ul {
     height: 100%;
     /*width:100%;*/
     transition: all 1s ease;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
     /*margin-top:-70px;*/
 }
 
 .recipe .name {
-    width:100%;
+    width:87%;
     height:50px;
     background: rgba(252, 183, 49, 0.9);
     zoom: 1; /* set "zoom", "width" or "height" to trigger "hasLayout" in IE 7 and lower */
     overflow:hidden;
     position:absolute;
     bottom:0;
+    left: 15px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
     padding-bottom: 60px;
     text-align: center;
     vertical-align: middle;
@@ -769,7 +774,8 @@ dir-pagination-controls ul {
     text-align: center;
     zoom: 1;
     top: 0px;
-    width: 100%;
+    width: 87%;
+    left: 15px;
     height: 265px;
     padding: 10px 5px;
     background: rgba(30,30,30, 0.8);
