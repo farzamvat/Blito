@@ -7,6 +7,5 @@ public enum EventType {
 	CONCERT,
 	SPORT,
 	WORKSHOP,
-	EVENTO,
 	OTHER
 }

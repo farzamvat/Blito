@@ -30,6 +30,7 @@ public final class RandomUtil {
     public static String generateActivationKey() {
         return RandomStringUtils.randomNumeric(DEF_COUNT);
     }
+    
 
     /**
     * Generates a reset key.

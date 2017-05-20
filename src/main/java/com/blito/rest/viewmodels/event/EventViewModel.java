@@ -75,6 +75,9 @@ public class EventViewModel {
 	@JsonView(View.AdminEvent.class)
 	private int orderNumber;
 	
+	@JsonView(View.SimpleEvent.class)
+	private boolean isEvento;
+	
 	
 	
 	public EventViewModel()
@@ -85,6 +88,16 @@ public class EventViewModel {
 	}
 	
 	
+	public boolean isEvento() {
+		return isEvento;
+	}
+
+
+	public void setEvento(boolean isEvento) {
+		this.isEvento = isEvento;
+	}
+
+
 	public String getEventHostName() {
 		return eventHostName;
 	}

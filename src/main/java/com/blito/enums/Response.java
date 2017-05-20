@@ -2,6 +2,7 @@ package com.blito.enums;
 
 public enum Response {
 	SUCCESS("success.operation"),
+	RESET_PASSWORD_EMAIL_SENT("success.reset.email.sent"),
     CONCURRENCY_FAILURE("error.concurrency.failure"),
     ACCESS_DENIED("error.access.denied"),
     VALIDATION("error.validation"),

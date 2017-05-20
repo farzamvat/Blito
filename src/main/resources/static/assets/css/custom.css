@@ -1,0 +1,1277 @@
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+}
+body, html {
+    font-family: "iranian Sans" !important;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-weight: bold;
+
+}
+
+a {
+    outline: none;
+}
+a:focus {
+    outline: none;
+}
+textarea, input, button {
+    outline: none !important;
+}
+textarea:focus, input:focus {
+    outline: none !important;
+    box-shadow:none !important;
+    border:1px solid #5cb85c !important;
+    transition: 400ms;
+}
+.table {
+    margin-bottom: 0 ;
+}
+.container {
+    font-family: "iranian Sans" !important;
+    width: 100%;
+    min-height: 800px;
+
+    padding: 0;
+}
+.carousel .item img {
+    max-height: 450px;
+}
+.carousel-indicators {
+    bottom: 2px ;
+}
+#firstCarousel {
+    background-color: #303030;
+}
+.dropdown-menu {
+    right: 0 !important;
+}
+
+/*.navbar-fixed-top {*/
+/*position: fixed;*/
+/*}*/
+.navbar {
+    margin-bottom: 0;
+    background-color: rgba(30,30,30, 1);
+    border : none;
+}
+/*------------------------green button--------------------*/
+.btn {
+    border-radius: 4px;
+    transition: 200ms;
+}
+.btn:hover {
+    box-shadow: 2px 2px  10px #303030;
+}
+.btn:active {
+color: white !important;
+}
+
+
+/*--------------------------------------------*/
+
+.midSection {
+    background: url('../img/th3.png') ;
+    background-size: 100% 500px;
+    height: 500px;
+}
+.marginTop10 {
+    margin-top: 10px;
+}
+.marginTop50 {
+    margin-top: 50px;
+}
+.marginTop60 {
+    margin-top: 60px;
+}
+.marginTop0 {
+    margin-top: 0;
+}
+.marginBottom20 {
+    margin-bottom: 20px;
+}
+.marginRight30 {
+    margin-right: 30px;
+}
+
+.carousel-caption {
+    border: 1px groove #eee;
+    background-color: rgba(30, 30, 30, 0.6);
+    padding: 20px 40px;
+    border-radius: 5px;
+    width: 20%;
+    left : 70% ;
+    bottom: 45%;
+}
+.slickSliders {
+    border-top: 3px solid rgb(252, 183, 49);
+    /*border-bottom: 3px solid rgb(252, 183, 49);*/
+    padding: 20px 5px;
+}
+.slick-next, .slick-prev {
+    top: 30%;
+    border-radius: 5px;
+    padding: 40px 20px;
+}
+.slick-next {
+    right: -45px;
+}
+.slick-next::before, .slick-next::after{
+    background-color: #303030;
+    border-radius: 5px;
+    padding: 40px 20px;
+    margin-left: -20px;
+}
+.slick-prev::before, .slick-prev::after{
+    background-color: #303030;
+    border-radius: 5px;
+    padding: 40px 20px;
+    margin-left: -20px;
+}
+.marginTop20 {
+    margin-top: 150px !important;
+}
+.marginTop30 {
+    margin-top: 30px;
+}
+.sliderSection {
+    margin-top: 0;
+    padding: 0 !important;
+}
+.slidingEvents {
+    /*background-color: #eee;*/
+    padding: 15px 20px;
+    height: 450px;
+}
+.slidingEvents h3 {
+    float: right;
+    display: inline-block;
+    cursor: pointer;
+    padding: 15px 15px;
+}
+.blitoOffer {
+    color : white;
+    height: 500px;
+    background: url('../img/pt.jpg') fixed repeat-y;
+    padding: 15px 20px;
+    border-left: 2px solid #404040;
+}
+.blitoOffer h4 {
+    /*display: inline-block;*/
+    /*cursor: pointer;*/
+    padding: 14px 15px;
+}
+.blitoOfferMain {
+    padding: 20px 5px;
+    border-top: 3px solid rgb(252, 183, 49);
+}
+.categorySection {
+    /*background: url("../img/movie.png") repeat-x;*/
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: #202020;
+}
+.categoryImage {
+    width: 200px;
+    height: 133px;
+    border-radius: 5px;
+}
+.categoryInside {
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(50,50,50,0.5);
+    transition: 200ms;
+}
+.categoryHeader {
+    color: white;
+}
+.categoryInside:hover {
+    cursor: pointer;
+    background-color: rgba(252,183,49,0.6);
+}
+.categoryCinema {
+    background: url('../img/cin.jpg') ;
+}
+.categoryTheatre {
+    background: url('../img/th.jpg') ;
+}
+.categorySport {
+    background: url('../img/sp.jpg') ;
+}
+.categoryConcert {
+    background: url('../img/con.jpg') ;
+}
+.categoryTitle {
+  text-align: center;
+    padding-top: 40px;
+    color: white;
+}
+.eventMore {
+    background-color: rgb(252, 183, 49);
+    margin-top: 35px;
+    margin-left: 10px;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: none;
+    border: none;
+    font-size: 18px;
+    transition: 200ms;
+}
+.eventMore:hover {
+    color: white;
+    background-color: rgb(252, 170, 49);
+    box-shadow: 2px 2px  10px #303030;
+}
+.eventMore:active {
+    color: white !important;
+    background-color: rgb(252, 160, 49);
+}
+.eventMore:checked {
+    color:white;
+}
+.slidingEvents h2:hover {
+    color: rgb(252,183, 49);
+}
+.sideBar {
+    background: transparent;
+}
+.slidingEventsRow {
+    /*background: url('../img/pt.jpg') fixed repeat-y;*/
+    /*background-size: 100% 600px;*/
+}
+
+.userProfileInfo {
+    height: 200px;
+    background: url('../img/orange1.png') fixed repeat-y;
+    background-size: 100% 400px;
+}
+.profilePage {
+    margin-top: 50px;
+}
+/*-----------------------make event form styles-------------------------------------*/
+.makeEventForm {
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border: 1px solid #909090;
+}
+.makeEventPlannerForm {
+    display: none;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border: 1px solid #909090;
+}
+
+.makeEventFormHeader {
+    color: white;
+    background-color: #777;
+}
+.makeEventFormHeader:hover {
+    cursor: pointer;
+}
+.legendStyle {
+    margin: 10px !important;
+    padding: 10px 20px;
+    width: 95%;
+    font-size: 28px;
+    border-radius: 3px;
+}
+.fieldsetStyle {
+
+}
+.dropDownList {
+    width: 100% !important;
+}
+.addDeleteBtn {
+    padding: 10px;
+    border-radius: 50%;
+}
+.addDeleteBtn:hover {
+    cursor: pointer;
+}
+.textAreaForm {
+    width: 100%;
+    height: 110px;
+    resize: none;
+}
+.mapInput {
+    margin-right: 20px;
+}
+/*------------------------------------------------------------*/
+/*-------------------------------- USER PROFILE PAGE -------------------------------- */
+
+.card.hovercard {
+    position: relative;
+    padding-top: 0;
+    /*overflow: hidden;*/
+    text-align: center;
+}
+.card.hovercard .card-background {
+    /*height: 130px;*/
+}
+
+.card.hovercard .useravatar {
+    position: absolute;
+    top: 15px;
+    left: 0;
+    right: 0;
+}
+.card.hovercard .useravatar img {
+    width: 100px;
+    height: 100px;
+    max-width: 100px;
+    max-height: 100px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 5px solid rgba(255, 255, 255, 0.5);
+}
+.card.hovercard .card-info {
+    position: absolute;
+    bottom: 25px;
+    left: 0;
+    right: 0;
+
+}
+.card.hovercard .card-info .card-title {
+    font-size: 20px;
+    line-height: 1;
+    color: #262626;
+
+}
+.card.hovercard .card-info {
+    /*overflow: hidden;*/
+    font-size: 12px;
+    line-height: 20px;
+    color: #737373;
+}
+.card.hovercard .bottom {
+    padding: 0 20px;
+    margin-bottom: 17px;
+}
+.btn-pref .btn {
+    -webkit-border-radius:0 !important;
+}
+.card-title {
+    background-color: #eee ;
+    padding: 10px 15px ;
+    border-radius: 3px ;
+}
+.profileTabs>li {
+    display: block;
+    width: 100%;
+}
+.paddingLeft0 {
+    padding-left: 0;
+}
+.profileTabs {
+    padding-left: 0;
+}
+.profileTabs>li>a {
+    border-radius: 0;
+    font-size: 14px !important;
+}
+.profileTabContent {
+    background-color: #eee;
+    border: 1px solid #aaa;
+}
+/*------------------------------------------------------------------------------------------------*/
+.slidingEventsBtn {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.exchangeTicketText {
+    margin-top: 120px;
+    padding: 50px 70px 20px 50px;
+}
+.exchangeTicketText h2 {
+    padding: 10px 20px;
+    border-bottom: 3px solid rgb(252, 183, 49);
+}
+.item>img {
+    display: block;
+    margin: 0px auto;
+}
+.blitImage {
+}
+.nav-tabs {
+}
+.nav-tabs a {
+    color: black;
+    font-size: 28px;
+}
+
+.nav-tabs>li>a {
+    background-color: #555;
+    cursor: pointer !important;
+    color: white;
+}
+.nav-tabs>li>a:hover {
+    background-color: #909090;
+    cursor: pointer !important;
+}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+    color: white;
+    background-color: rgb(252, 183, 49);
+    border-bottom: transparent !important;
+}
+.tabContent {
+    padding-right: 30px;
+    margin-bottom: 20px;
+}
+.nav-tabs > li {
+    float:none;
+    display:inline-block;
+    zoom:1;
+}
+
+.nav-tabs {
+    text-align:center;
+}
+.registerBody {
+    background-color: #eee;
+}
+.registerInput {
+    width: 100%;
+    border: 1px solid rgba(100, 100, 100, 0.4);
+    direction: rtl;
+    text-align: right;
+    border-radius: 3px;
+    height: 40px !important;
+    font-size: 16px;
+    padding-right: 5px;
+    color: black;
+}
+.editDataInput {
+    width: 50%;
+}
+.editDataInput::placeholder {
+    color: black;
+}
+.disabledInput {
+    background: none;
+    border: none;
+    color: black !important;
+}
+.searchListInput {
+    width: 15%;
+    font-family: FontAwesome;
+    direction: rtl;
+    text-align: right;
+    border-radius: 3px;
+    height: 40px !important;
+    font-size: 20px;
+    padding-right: 10px;
+    background: none;
+    border: none;
+    transition: 500ms;
+    cursor: pointer;
+    margin-right: 10px;
+
+}
+.searchListInput:active,.searchListInput:focus{
+    width: 35%;
+    border: none;
+    color: black;
+    background-color: white;
+}
+.dropDownInput {
+    height: 40px !important;
+    padding: 0 !important;
+    font-size: 16px;
+}
+.btnLogin {
+    margin-top: 30px !important;
+    padding: 15px 60px;
+}
+.btnReg {
+    margin-top: 20px !important;
+    padding: 15px 60px;
+}
+
+.eventPageHeaderTheatre {
+    background: url('../img/1.png') fixed ;
+    background-size: 100% 500px;
+    padding-top: 80px;
+    padding-bottom: 40px;
+}
+
+
+.eventPageHeaderCinema {
+    background: url('../img/2.png') fixed ;
+    background-size: 100% 500px;
+    padding-top: 80px;
+    padding-bottom: 40px;
+}
+.eventContent {
+    margin-right: 0;
+    padding-right: 50px;
+    padding-bottom: 20px;
+    background-color: rgba(50, 50, 50, 0.8);
+    border-radius: 0;
+    color: white;
+    height: 325px;
+}
+.eventPageImage {
+    padding-left: 0 ;
+    height: 325px;
+}
+.imgMobileSize {
+    height: 325px;
+}
+.eventContent button {
+    font-size: 24px;
+}
+.eventPageHeader p {
+    font-size: 18px;
+}
+.bioPageContentHeader p{
+    font-size: 16px;
+}
+.imgRelative {
+    border-top: 3px solid #303030;
+    border-bottom: 3px solid #303030;
+    position: relative;
+    overflow: hidden;
+    background-color: #eee
+}
+.imgRelative p {
+    font-size: 20px;
+}
+.btnExchangeTicket {
+    padding: 20px 40px;
+    margin: 10px 15px;
+}
+.blitFade {
+    z-index: 0;
+}
+.buyTicketBanner {
+    border: 1px solid #202020;
+    position: absolute;
+    z-index: 100;
+    bottom: 10%;
+    left: 15%;
+    font-size: 20px !important;
+    white-space: normal !important;
+
+}
+.buyTicketBanner :hover {
+    cursor: pointer;
+}
+.floatRight {
+    float: right !important;
+}
+.textAlignRight {
+    text-align: right;
+    direction: rtl;
+}
+
+.navbar {
+    transition: 500ms;
+}
+.navbar-nav li a {
+    color : white !important;
+    font-size: 14px;
+}
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+    background-color: rgb(252, 183, 49);
+}
+.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:focus {
+    background-color: rgba(252, 183, 49, 0.5);
+}
+.dropdown-menu {
+    background-color: #303030;
+}
+.dropdown-menu>li>a:hover {
+    background-color: rgba(252, 183, 49, 0.5);
+}
+.navbar-header>img {
+    height: 50px;
+    padding: 5px 40px;
+    width: auto;
+    cursor: pointer;
+    border: none;
+    background: #ddd;
+    border-radius: 5px;
+    transition: 500ms;
+    /*background-color: #ddd; !* For browsers that do not support gradients *!*/
+    /*background: -webkit-linear-gradient(#ddd 5%, #303030 25%, #1E90FF 50%); !* For Safari 5.1 to 6.0 *!*/
+    /*background: -o-linear-gradient(#ddd 5%, #303030 25%, #1E90FF 50%); !* For Opera 11.1 to 12.0 *!*/
+    /*background: -moz-linear-gradient(#ddd 5%, #303030 25%, #1E90FF 50%); !* For Firefox 3.6 to 15 *!*/
+    background: radial-gradient(circle at center, #ddd 80%, rgba(30,30,30, 0) 100%);
+
+}
+
+.navbar-header>img:hover {
+    cursor: pointer;
+
+}
+.footerAnchor {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+}
+.footerAnchor:hover {
+    text-decoration: none !important;
+    color: rgb(252, 183, 49);
+    cursor: pointer;
+}
+.verticalLine {
+    border-left: thick solid #808080;
+}
+.checkBoxInline {
+    display: inline;
+}
+#signInButton {
+    display: block;
+    margin: 10px auto;
+}
+#confirmsignup {
+    display: block;
+    margin: 10px auto;
+}
+#map {
+    border: 2px solid #303030;
+    width: 80%;
+    height: 300px;
+
+}
+#mapExchange {
+    border: 2px solid #303030;
+    width: 80%;
+    height: 300px;
+
+}
+.slick-dots li.slick-active button:before
+{
+    opacity: 1;
+    color: rgb(252, 183, 49);
+}
+.eventsPageRows {
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+.eventsPageRows h1 {
+    border-bottom: 3px solid rgb(252, 183, 49);
+    padding-bottom: 10px;
+}
+.dataCenter {
+    text-align: center;
+}
+dir-pagination-controls ul {
+    margin-left: 30% !important;
+}
+.eventContent  button {
+    padding: 20px 40px;
+}
+.eventVideo {
+    width: 80%;
+    display: block;
+    margin: 20px auto;
+}
+.registerLabel {
+    vertical-align: middle;
+    margin-top: 5px;
+    font-size: 16px;
+}
+/*-------------------tab slick fix-------------*/
+/* bootstrap hack: fix content width inside hidden tabs */
+.tab-content > .tab-pane, .pill-content > .pill-pane {
+    display: block;    /* undo display:none          */
+    height: 0;         /* height:0 is also invisible */
+    overflow: hidden;  /* no-overflow                */
+}
+.tab-content > .active, .pill-content > .active {
+    height: auto;      /* let the content decide it  */
+} /* bootstrap hack end */
+/*-------------------------------------------*/
+.userProfileTab>ul>li>a {
+    font-size: 22px;
+    background-color: #555;
+
+}
+.userProfileTab.panel {
+    background-color: rgba(252, 183, 49, 0.2);
+}
+.registerTab {
+    width: 200px;
+}
+/*----------event list style------------*/
+.eventListBtn {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.eventListSection {
+    background: url('../img/pt.jpg') fixed repeat-y;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.recipe {
+    background-color:#ddd;
+    /*max-width:300px;*/
+    margin: 20px auto;
+    padding: 10px 15px;
+    cursor: pointer;
+    /*margin:10px 20px;*/
+    -webkit-border-radius:7px;
+    border-radius:4px ;
+    -webkit-box-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    -moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    transition: 400ms;
+    width: 300px;
+
+}
+.recipe:hover {
+    background-color:#aaa;
+    box-shadow: 4px 6px 6px rgba(0,0,0,0.7);
+}
+.recipe h3 {
+    font-weight:900;
+    color:#FFF;
+}
+.recipe .image {
+    width: 230px;
+    height: 325px;
+    overflow:hidden;
+    position:relative;
+}
+.recipe .image img{
+    height: 100%;
+    /*width:100%;*/
+    transition: all 1s ease;
+    /*margin-top:-70px;*/
+}
+
+.recipe .name {
+    width:100%;
+    height:50px;
+    background: rgba(252, 183, 49, 0.9);
+    zoom: 1; /* set "zoom", "width" or "height" to trigger "hasLayout" in IE 7 and lower */
+    overflow:hidden;
+    position:absolute;
+    bottom:0;
+    padding-bottom: 60px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 30px;
+    border-bottom:1px dotted rgb(252, 183, 49);
+}
+.eventDescription {
+    color: white;
+    overflow: hidden;
+    text-align: center;
+    zoom: 1;
+    top: 0px;
+    width: 100%;
+    height: 265px;
+    padding: 10px 5px;
+    background: rgba(30,30,30, 0.8);
+    position: absolute;
+    display: none;
+    overflow-y: scroll;
+
+}
+/*--------------------*/
+
+/*----------------spinner animation-----------------*/
+#loading.close {display: none;}
+.spinner {
+    margin: 10px auto 0;
+    width: 100px;
+    text-align: center;
+}
+
+.spinner > div {
+    width: 16px;
+    height: 16px;
+    background-color: #fff;
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-animation: sk-bouncedelay 1.7s infinite ease-in-out both;
+    animation: sk-bouncedelay 1.7s infinite ease-in-out both;
+    margin-right: 5px;
+}
+
+.spinner--orange > div {
+    background: rgb(252, 183, 49);
+}
+
+.spinner .spinner__item1 {
+    -webkit-animation-delay: -0.60s;
+    animation-delay: -0.60s;
+}
+
+.spinner .spinner__item2 {
+    -webkit-animation-delay: -0.40s;
+    animation-delay: -0.40s;
+}
+
+.spinner .spinner__item3 {
+    -webkit-animation-delay: -0.20s;
+    animation-delay: -0.20s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+    0%, 80%, 100% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+        opacity: 0;
+    }
+    40% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes sk-bouncedelay {
+    0%, 80%, 100% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+        opacity: 0;
+    }
+    40% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+/*-------------------------------------------------*/
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+    z-index: 3;
+    color: #fff;
+    cursor: default;
+    background-color: rgb(252, 183, 49);
+    border-color: #303030;
+}
+.pagination>li>a, .pagination>li>span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #303030;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+.pagination li{
+    float: right;
+    text-align: right;
+    direction: rtl;
+}
+.pagination>li:last-child>a, .pagination>li:last-child>span {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.pagination>li:first-child>a, .pagination>li:first-child>span {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+/*-------------*/
+/*-----------------list group------------*/
+.trash { color:rgb(209, 91, 71); }
+.flag { color:rgb(248, 148, 6); }
+.panel-body { padding:0px; }
+.panel-footer .pagination { margin: 0; }
+.panel .glyphicon,.list-group-item .glyphicon { margin-right:5px; }
+.panel-body .radio, .checkbox { display:inline-block;margin:0px; }
+.panel-body input[type=checkbox]:checked + label { text-decoration: line-through;color: rgb(128, 144, 160); }
+.list-group-item:hover, a.list-group-item:focus {text-decoration: none;background-color: rgb(245, 245, 245);}
+.list-group { margin-bottom:0px; }
+.list-group {padding-right: 0}
+.customPanel {
+    display: block;
+    margin: 10px auto !important;
+    width: 100%;
+    /*padding: 10px 5px;*/
+}
+.customPanel .panel-heading {
+    background-color: #555;
+    text-align: right;
+    font-size: 18px;
+}
+
+.customPanel .panel-body {
+    height: 200px ;
+    overflow-y:scroll;
+}
+.showTimeList {
+
+}
+.customPanelUser {
+    max-height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border: none;
+
+}
+.customPanelUser .panel-body {
+    max-height: 90%;
+    overflow-y:scroll;
+    /*border: 1px solid #303030;*/
+}
+.userNameProfilePage {
+    font-size: 18px;
+}
+.profileSlick h4 {
+    color: #101010;
+}
+.customPanelEventPage {
+    border: none;
+}
+.bioPageCoverPhoto {
+    background-size: auto auto;
+}
+.customPanelEventPage .panel-body {
+    height: 248px ;
+    overflow-y:scroll;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+
+}
+.customPanelEventPage .panel-heading {
+    background-color: #555;
+    text-align: right;
+    font-size: 18px;
+    border-top-left-radius: 0 ;
+    border-top-right-radius: 0 ;
+}
+.eventPageShowTimeColor .panel-heading {
+    background-color: rgb(40, 40, 40);
+}
+.panelMidSize>.panel {
+    border-radius: 0 ;
+}
+.bioPageContent {
+    margin-top: 30px;
+    font-size: 16px;
+    margin-right: 30px;
+}
+.bioPageImage {
+    margin: 5px auto;
+}
+.orangeBackground {
+    transition: 400ms;
+    background-color: #404040;
+}
+.tabAnchor {
+    font-size: 18px !important;
+}
+.eventListImage {
+    width: 200px;
+    height: 250px;
+}
+/*----------------------------------wizard------------------------------------------*/
+/*.steps-indicator li.done a:before {*/
+    /*background-color: #08f !important;*/
+/*}*/
+/*.steps-indicator li.current a:before {*/
+    /*background-color: #08f !important;*/
+/*}*/
+/*----------------------------------------------------------------------------*/
+/*--------------------------------------*/
+footer {
+    background-color:#303030;
+    min-height:350px;
+    bottom: 0 !important;
+}
+
+.footerleft { margin-top:50px; padding: 5px 40px;}
+.logofooter { margin-bottom:10px; font-size:25px; color:#fff; font-weight:700;  }
+.logofooter img {
+    width: 150px ;
+}
+
+.footerleft p { color:#fff; font-size:16px !important;  margin-bottom:15px;}
+.footerleft p i { width:20px; color:#999;}
+
+
+.paddingtop-bottom {  margin-top:50px;  }
+.footer-ul { list-style-type:none;  padding-left:0px; margin-left:2px;}
+.footer-ul li { line-height:29px; font-size:12px;}
+.footer-ul li a { color:#a0a3a4; transition: color 0.2s linear 0s, background 0.2s linear 0s; }
+.footer-ul i { margin-right:10px;}
+.footer-ul li a:hover {transition: color 0.2s linear 0s, background 0.2s linear 0s; color:#ff670f; }
+
+.social:hover {
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -o-transform: scale(1.1);
+}
+
+
+
+
+.icon-ul { list-style-type:none !important; margin:0px; padding:0px;}
+.icon-ul li { line-height:75px; width:100%; float:left;}
+.icon { float:left; margin-right:5px;}
+
+
+.heading7 { font-size:28px; font-weight:700; color:#d9d6d6; margin-bottom:22px;}
+.post p { font-size:12px; color:#FFF; line-height:20px;}
+.post p span { display:block; color:#8f8f8f;}
+.bottom_ul { list-style-type:none; float:right; margin-bottom:0px;}
+.bottom_ul li { float:left; line-height:40px;}
+.bottom_ul li:after { content:"/"; color:#FFF; margin-right:8px; margin-left:8px;}
+.bottom_ul li a { color:#FFF;  font-size:12px;}
+@media (max-width: 570px) {
+    .carousel-caption h1 {
+        font-size: 18px;
+    }
+
+}
+@media (max-width: 675px) {
+
+}
+
+
+@media (max-width: 992px) {
+    .bioPageContentHeader h1{
+        text-align: center;
+    }
+    .bioPageContentHeader {
+        margin: 90px 15px;
+    }
+    .smallPageSize>ul>li>a {
+        font-size: 14px;
+        background-color: #555;
+
+    }
+    .navbar-nav li a {
+        color : white !important;
+        font-size: 13px;
+    }
+    .eventPageHeader {
+        background-size: 2000px auto;
+    }
+    dir-pagination-controls ul {
+        margin-left: 40% !important;
+    }
+    .recipe {
+        width: 300px;
+    }
+    #map {
+        width: 400px;
+        height: 300px;
+        margin: 10px auto;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    .bioPageContentHeader h1{
+        text-align: center;
+    }
+    .bioPageContentHeader {
+        margin: 90px 15px;
+    }
+    .bioPageContent{
+        margin: 10px 15px;
+    }
+    .eventPageImage {
+        margin-bottom: 20px;
+    }
+    .carousel .item img {
+        height: 200px !important;
+    }
+    .carousel-indicators {
+        margin-bottom: -10px;
+    }
+    .smallPageSize>ul>li>a {
+        font-size: 12px;
+        background-color: #555;
+
+    }
+    .profilePage {
+        margin-top: 50px;
+    }
+    .eventPageHeader {
+        background-size: 3000px auto;
+    }
+    .imgMobileSize {
+        display: block;
+        margin: 10px auto;
+    }
+    .eventContent {
+        text-align: center;
+    }
+    /*#map {*/
+        /*display: block;*/
+        /*margin: 10px auto;*/
+        /*width: 500px !important;*/
+        /*height: 300px;*/
+    /*}*/
+    .eventPageHeader h3{
+        margin-top: 40px;
+        text-align: center;
+    }
+    .eventPageHeader img{
+        display: block;
+        margin: 10px auto;
+    }
+    .bioPageCoverPhoto {
+        background-size: 3000px auto !important;
+    }
+    .bioPageHeaderInfo {
+
+    }
+    .recipe {
+        width: 300px;
+        margin: auto;
+    }
+    .navbar {
+
+        margin-bottom: 0;
+        background-color: rgba(30,30,30, 1);
+        border : none;
+    }
+
+    .eventsPageRows {
+        margin-top: 90px;
+    }
+    .slick-next, .slick-prev, .slick-next::before, .slick-prev::before {
+        display: none;
+    }
+    .slidingEventsTitle {
+        color: white;
+    }
+    .exchangeTicketText {
+        margin-top: 30px;
+    }
+    .carousel-caption {
+        width: 50%;
+        height: 35%;
+        bottom: 45%;
+        left: 40%;
+    }
+    .carousel-caption h1 {
+        margin-top: 5px;
+    }
+    .buyTicketBanner {
+        font-size:16px;
+        padding:10px 20px;
+    }
+
+    .slick-dots li button:before{
+        opacity: 1;
+        color: white;
+    }
+    dir-pagination-controls ul {
+        margin-left: 35% !important;
+    }
+    .sliderSection {
+        margin-top: 50px;
+    }
+    .navbar-nav li a {
+        color : white !important;
+        font-size: 14px;
+    }
+
+}
+@media (max-width: 991px) {
+    .customPanelEventPage {
+        width: 92% !important;
+        margin: 10px auto !important;
+    }
+}
+
+
+@media (min-width: 768px) {
+
+    .recipe .image {
+        width: 230px;
+        height: 325px;
+
+    }
+    .carousel-caption {
+        background-color: rgba(30, 30, 30, 0.6);
+        padding: 5px 40px;
+        border-radius: 5px;
+        width: 50%;
+        left :40% ;
+        bottom: 40%;
+    }
+    .carousel-caption p {
+        font-size: 18px;
+    }
+    .buyTicketBanner {
+        font-size:20px;
+        padding:20px 40px;
+    }
+
+}
+
+
+@media (min-width: 700px) {
+
+    .homePageImage {
+        width: 177px;
+        height: 250px;
+    }
+
+}
+@media (min-width: 992px) {
+    .paddingRight0 {
+        padding-right: 0;
+    }
+    .buyTicketBanner {
+        font-size:24px;
+        padding:20px 40px;
+    }
+
+}
+
+
+@media (max-width: 1200px) {
+    .eventContent p {
+        font-size: 16px;
+    }
+    .carousel .item img {
+        height: 300px;
+    }
+    dir-pagination-controls ul {
+        margin-left: 20% !important;
+    }
+    .recipe {
+        width: 300px;
+    }
+    .eventPageHeader h3 {
+        padding-right: 80px;
+    }
+    /*#map {*/
+        /*width: 350px;*/
+        /*height: 300px;*/
+        /*margin: 10px auto;*/
+    /*}*/
+}
+
+
+@media (min-width: 1200px) {
+
+    .carousel-caption {
+        background-color: rgba(30, 30, 30, 0.6);
+        padding: 5px 40px;
+        border-radius: 5px;
+        width: 50%;
+        left :30% ;
+        bottom: 40%;
+    }
+
+    .buyTicketBanner {
+        padding: 15px 20px;
+        font-size:26px;
+    }
+}

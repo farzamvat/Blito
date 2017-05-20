@@ -1,6 +1,8 @@
 package com.blito.models;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,6 +14,7 @@ public class Permission {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	long permissionId;
 	
+	@Enumerated(EnumType.STRING)
 	ApiBusinessName apiBusinessName;
 	
 	String description;
