@@ -100,6 +100,7 @@ public class EventFlatMapper implements GenericMapper<Event,EventFlatViewModel> 
 		event.setLongitude(vmodel.getLongitude());
 		event.setOperatorState(OperatorState.PENDING);
 		event.setEventState(State.CLOSED);
+		
 		return event;
 	}
 
