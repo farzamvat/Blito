@@ -168,6 +168,7 @@ color: white !important;
     border-top: 3px solid rgb(252, 183, 49);
 }
 .categorySection {
+    /*background: url("../img/movie.png") repeat-x;*/
     padding-top: 20px;
     padding-bottom: 20px;
     background-color: #202020;
@@ -176,6 +177,20 @@ color: white !important;
     width: 200px;
     height: 133px;
     border-radius: 5px;
+}
+.categoryInside {
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(50,50,50,0.5);
+    transition: 200ms;
+}
+.categoryHeader {
+    color: white;
+}
+.categoryInside:hover {
+    cursor: pointer;
+    background-color: rgba(252,183,49,0.6);
 }
 .categoryCinema {
     background: url('../img/cin.jpg') ;
