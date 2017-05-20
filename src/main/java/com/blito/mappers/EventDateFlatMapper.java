@@ -36,7 +36,8 @@ public class EventDateFlatMapper implements GenericMapper<EventDate,EventDateFla
 	}
 
 	@Override
-	public EventDate updateEntity(EventDateFlatViewModel viewModel, EventDate entity) {
+	public EventDate updateEntity(EventDateFlatViewModel vmodel, EventDate eventDate) {
+
 		return null;
 	}
 

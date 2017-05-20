@@ -21,6 +21,7 @@ import com.blito.rest.viewmodels.adminreport.BlitBuyerViewModel;
 import com.blito.rest.viewmodels.event.AdminChangeEventOperatorStateVm;
 import com.blito.rest.viewmodels.event.AdminChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
+import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.services.AdminEventService;
 import com.blito.services.ExcelService;
 import com.blito.view.ExcelView;
@@ -64,7 +65,7 @@ public class AdminEventController {
 	
 	@JsonView(View.Event.class)
 	@PutMapping
-	public ResponseEntity<EventFlatViewModel> updateEvent(@Validated EventFlatViewModel vmodel){
+	public ResponseEntity<EventFlatViewModel> updateEvent(@Validated EventViewModel vmodel){
 		return ResponseEntity.ok(adminEventService.updateEvent(vmodel));
 	}
 	
