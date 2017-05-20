@@ -8,3 +8,4 @@
 /.apt_generated/
 /images
 .scannerwork
+/src/main/resources/static/bower_components

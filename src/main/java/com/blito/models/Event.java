@@ -77,12 +77,22 @@ public class Event {
 	
 	int orderNumber;
 	
+	boolean isEvento = false;
+	
 	public Event() {
 		offers = new ArrayList<>();
 		images = new ArrayList<>();
 		eventDates = new ArrayList<>();
 	}
 	
+	public boolean isEvento() {
+		return isEvento;
+	}
+
+	public void setEvento(boolean isEvento) {
+		this.isEvento = isEvento;
+	}
+
 	public List<OfferTypeEnum> getOffers() {
 		return offers;
 	}

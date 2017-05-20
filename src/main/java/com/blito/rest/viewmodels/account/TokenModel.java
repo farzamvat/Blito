@@ -6,11 +6,21 @@ public class TokenModel {
 	Long accessTokenExipreTime;
 	Long refreshtokenExpireTime;
 	String tokenType = "Bearer";
+	String role;
 	boolean isFirstTime;
 	
 	public boolean isFirstTime() {
 		return isFirstTime;
 	}
+	
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	public void setFirstTime(boolean isFirstTime) {
 		this.isFirstTime = isFirstTime;
 	}
@@ -27,7 +37,6 @@ public class TokenModel {
 		this.refreshToken = refreshToken;
 	}
 
-	
 	public Long getAccessTokenExipreTime() {
 		return accessTokenExipreTime;
 	}

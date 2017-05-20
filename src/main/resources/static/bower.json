@@ -1,0 +1,25 @@
+{
+  "name": "Blito Frontend",
+  "authors": [
+    "soroush yousefi <soroush.ysf@gmail.com>"
+  ],
+  "description": "Blito frontend",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.2.1",
+    "angular": "angularjs#^1.6.4",
+    "angular-route": "^1.6.4",
+    "angularUtils-pagination": "angular-utils-pagination#^0.11.1",
+    "ngmap": "^1.18.4"
+  }
+}
