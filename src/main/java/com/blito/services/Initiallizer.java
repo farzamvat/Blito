@@ -6,12 +6,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.enums.ApiBusinessName;
 import com.blito.models.Permission;
@@ -32,6 +31,7 @@ public class Initiallizer {
 	@Autowired UserRepository userRepository;
 	@Autowired PasswordEncoder encoder;
 
+	@Transactional
 	public void importPermissionsToDataBase() {
 		if (permissionRepository.findAll().isEmpty()) {
 			List<Permission> permissions = new ArrayList<>();
@@ -42,8 +42,7 @@ public class Initiallizer {
 			});
 			permissionRepository.save(permissions);
 		} else {
-			List<Permission> permissions = permissionRepository.findAll();
-			List<Permission> finalPermissions = Arrays.asList(ApiBusinessName.values()).stream().map(e -> permissions
+			List<Permission> finalPermissions = Arrays.asList(ApiBusinessName.values()).stream().map(e -> permissionRepository.findAll()
 					.stream().filter(p -> p.getApiBusinessName().equals(e)).findFirst().map(p -> p).orElseGet(() -> {
 						Permission permission = new Permission();
 						permission.setApiBusinessName(e);
@@ -54,7 +53,7 @@ public class Initiallizer {
 	}
 	
 	@Transactional
-	public void insetAdminUserAndRole()
+	public void insertAdminUserAndRole()
 	{
 		Optional<User> adminResult = userRepository.findByEmail(admin_username);
 			
