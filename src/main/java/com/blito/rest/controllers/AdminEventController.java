@@ -18,6 +18,8 @@ import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.adminreport.BlitBuyerViewModel;
+import com.blito.rest.viewmodels.event.AdminChangeEventOperatorStateVm;
+import com.blito.rest.viewmodels.event.AdminChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.services.AdminEventService;
 import com.blito.services.ExcelService;
@@ -31,14 +33,14 @@ public class AdminEventController {
 	@Autowired ExcelService excelService;
 	
 	@PutMapping("/change-event-state")
-	public ResponseEntity<ResultVm> closeEvent(@RequestParam long eventId){
-		adminEventService.closeEvent(eventId);
+	public ResponseEntity<ResultVm> changeEventState(AdminChangeEventStateVm vmodel){
+		adminEventService.changeEventState(vmodel);
 		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
 	
 	@PutMapping("/change-event-operator-state")
-	public ResponseEntity<ResultVm> approveEvent(@RequestParam long eventId){
-		adminEventService.approveEvent(eventId);
+	public ResponseEntity<ResultVm> changeEventOperatorState(AdminChangeEventOperatorStateVm vmodel){
+		adminEventService.changeOperatorState(vmodel);
 		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
 
