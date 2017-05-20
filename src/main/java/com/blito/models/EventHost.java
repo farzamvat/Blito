@@ -99,6 +99,7 @@ public class EventHost {
 
 	public void setUser(User user) {
 		this.user = user;
+		user.getEventHosts().add(this);
 	}
 
 	public long getEventHostId() {

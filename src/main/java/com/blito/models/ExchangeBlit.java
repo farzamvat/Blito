@@ -99,6 +99,7 @@ public class ExchangeBlit {
 
 	public void setUser(User user) {
 		this.user = user;
+		user.getExchangeBlits().add(this);
 	}
 
 	public long getExchangeBlitId() {

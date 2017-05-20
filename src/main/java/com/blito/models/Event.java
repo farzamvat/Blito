@@ -187,6 +187,7 @@ public class Event {
 
 	public void setEventHost(EventHost eventHost) {
 		this.eventHost = eventHost;
+		eventHost.getEvents().add(this);
 	}
 
 	public String getEventName() {

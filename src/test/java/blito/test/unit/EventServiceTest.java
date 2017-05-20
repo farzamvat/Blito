@@ -1,6 +1,8 @@
 package blito.test.unit;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.Application;
 import com.blito.enums.DayOfWeek;
@@ -42,9 +45,10 @@ import com.blito.search.Simple;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.EventService;
 
-@ActiveProfiles("test")
+//@ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
+@Transactional
 public class EventServiceTest {
 
 	@Autowired
@@ -61,14 +65,12 @@ public class EventServiceTest {
 	Event event3;
 	Event event4;
 	EventHost eventHost;
-	private static EventViewModel eventViewModel = null;
-	private static boolean isInit = false;
+	private EventViewModel eventViewModel = null;
+	private boolean isInit = false;
 
 	@Before
 	public void init() {
-		if (!isInit) {
 			
-			isInit = true;
 			
 			User user = new User();
 			user.setEmail("farzam.vat@gmail.com");
@@ -177,14 +179,15 @@ public class EventServiceTest {
 			eventViewModel.setEventDates(Arrays.asList(eventDateViewModel));
 			
 			System.err.println(eventRepository.count() + "*************************");
-		}
 	}
 	
 	@Test
 	public void create()
 	{
 		eventViewModel = eventService.create(eventViewModel);
-		assertNotNull(eventRepository.findOne(eventViewModel.getEventHostId()));
+		System.out.println(eventViewModel.getEventLink() + "ASJKDASJKDAJKSDJAKSJDAKSJDAKSJDKAJSDKJASKDJAKSJDAKSJDAKSJDKAJSDKAJSDKJ");
+		assertNotNull(eventRepository.findOne(eventViewModel.getEventId()));
+		assertEquals(6,eventHostRepository.findOne(eventHost.getEventHostId()).getEvents().size());
 	}
 	
 	@Test
