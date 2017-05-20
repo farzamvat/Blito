@@ -43,6 +43,17 @@ public class MailService {
         System.out.println(content);
         sendEmail(user.getEmail(), content);
     }
+	
+	public void sendPasswordResetEmail(User user)
+	{
+		log.debug("Sending user reset password e-mail to '{}'", user.getEmail());
+		Context context = new Context();
+		context.setVariable("user", user);
+		context.setVariable("baseUrl", baseUrl);
+		context.setVariable("serverAddress", serverAddress);
+		String content = templateEngine.process("resetPasswordEmail", context);
+		sendEmail(user.getEmail(), content);
+	}
 
 	public void sendEmail(String to,  String content) {
 

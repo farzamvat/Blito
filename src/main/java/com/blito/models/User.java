@@ -38,6 +38,10 @@ public class User {
 	
 	private String activationKey;
 	
+	private String resetKey;
+	
+	private Integer wrongTry;
+	
 	private boolean banned = false;
 	
 	private boolean isActive = false;
@@ -65,6 +69,22 @@ public class User {
 		eventHosts = new ArrayList<>();
 		blits = new ArrayList<>();
 		exchangeBlits = new ArrayList<>();
+	}
+	
+	public String getResetKey() {
+		return resetKey;
+	}
+
+	public void setResetKey(String resetKey) {
+		this.resetKey = resetKey;
+	}
+
+	public Integer getWrongTry() {
+		return wrongTry;
+	}
+
+	public void setWrongTry(Integer wrongTry) {
+		this.wrongTry = wrongTry;
 	}
 
 	public String getRefreshToken() {

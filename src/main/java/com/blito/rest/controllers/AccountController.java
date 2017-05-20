@@ -1,5 +1,7 @@
 package com.blito.rest.controllers;
 
+import java.util.regex.Pattern;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ValidationException;
 
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.blito.configs.Constants;
 import com.blito.enums.Response;
 import com.blito.enums.validation.AccountControllerEnumValidation;
 import com.blito.exceptions.EmailAlreadyExistsException;
@@ -107,9 +110,9 @@ public class AccountController {
 	
 	
 	@GetMapping("/activate")
-	public ModelAndView activateAccount(@RequestParam String key)
+	public ModelAndView activateAccount(@RequestParam String key,@RequestParam String email)
 	{
-		return userRepository.findByActivationKey(key)
+		return userRepository.findByEmailAndActivationKey(email,key)
 		.map(u -> {
 			u.setActive(true);
 			u.setActivationKey(null);
@@ -164,6 +167,25 @@ public class AccountController {
 		return userAccountService.changePassword(vmodel)
 				.thenApply(user -> {
 					deferred.setResult(ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS))));
+					return deferred;
+				})
+				.exceptionally(throwable -> {
+					deferred.setErrorResult(throwable.getCause());
+					return deferred;
+				}).join();
+	}
+	
+	@GetMapping("/forget-password")
+	public DeferredResult<ResponseEntity<?>> forgetPassword(@RequestParam String email)
+	{
+		DeferredResult<ResponseEntity<?>> deferred = new DeferredResult<ResponseEntity<?>>();
+		if(!Pattern.compile(Constants.EMAIL_REGEX).matcher(email).matches()) {
+			deferred.setErrorResult(new ValidationException(ResourceUtil.getMessage(AccountControllerEnumValidation.EMAIL)));
+			return deferred;
+		}
+		return userAccountService.forgetPassword(email)
+				.thenApply(result -> {
+					deferred.setResult(ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.RESET_PASSWORD_EMAIL_SENT))));
 					return deferred;
 				})
 				.exceptionally(throwable -> {

@@ -61,6 +61,7 @@ public class UserAccountService {
 		return userMapper.createFromEntity(user);
 	}
 	
+	@Transactional
 	public CompletableFuture<TokenModel> login(LoginViewModel vmodel)
 	{
 		User user = userRepository.findByEmail(vmodel.getEmail())
@@ -82,13 +83,24 @@ public class UserAccountService {
 							asyncTokenResult.setFirstTime(false);
 						}
 						user.setRefreshToken(asyncTokenResult.getRefreshToken());
-						userRepository.save(user);
+						user.setResetKey(null);
 						return asyncTokenResult;
 					}
 					else {
 						throw new WrongPasswordException(ResourceUtil.getMessage(Response.INCORRECT_PASSWORD));
 					}
 				});
+	}
+	
+	@Transactional
+	public CompletableFuture<Void> forgetPassword(String email)
+	{
+		User user = userRepository.findByEmail(email)
+				.map(u -> u)
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
+		user.setResetKey(RandomUtil.generatePassword());
+		user.setPassword(encoder.encode(user.getResetKey()));
+		return CompletableFuture.runAsync(() -> mailService.sendPasswordResetEmail(user));
 	}
 	
 	public CompletableFuture<User> changePassword(ChangePasswordViewModel vmodel)

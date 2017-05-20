@@ -7,6 +7,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import com.blito.annotations.Email;
+import com.blito.configs.Constants;
 
 
 public class EmailValidation implements ConstraintValidator<Email, String> {
@@ -15,7 +16,7 @@ public class EmailValidation implements ConstraintValidator<Email, String> {
 	public boolean isValid(String email, ConstraintValidatorContext context) {
 		if (email == null) return false;
 		Pattern pattern = Pattern.compile(
-				"^[-!#$%&'*+/0-9=?A-Z^_a-z{|}~](\\.?[-!#$%&'*+/0-9=?A-Z^_a-z{|}~])*@[a-zA-Z](-?[a-zA-Z0-9])*(\\.[a-zA-Z](-?[a-zA-Z0-9])*)+$");
+				Constants.EMAIL_REGEX);
 		Matcher matcher = pattern.matcher(email);
 		return matcher.matches();
 	}
