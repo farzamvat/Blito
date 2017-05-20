@@ -31,6 +31,7 @@ public class EventMapper implements GenericMapper<Event,EventViewModel> {
 		event.setOperatorState(OperatorState.PENDING);
 		event.setEventDates(vmodel.getEventDates().stream().map(eventDateMapper::createFromViewModel).collect(Collectors.toList()));
 		event.setEventState(State.CLOSED);
+		event.setEvento(false);
 		return event;
 	}
 
@@ -55,6 +56,7 @@ public class EventMapper implements GenericMapper<Event,EventViewModel> {
 		vmodel.setOffers(event.getOffers());
 		vmodel.setLatitude(event.getLatitude());
 		vmodel.setLongitude(event.getLongitude());
+		vmodel.setEvento(event.isEvento());
 		return vmodel;
 	}
 

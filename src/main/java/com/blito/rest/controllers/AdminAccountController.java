@@ -1,25 +1,24 @@
 package com.blito.rest.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.blito.enums.Response;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
+import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.account.UserViewModel;
 import com.blito.services.AdminAccountService;
 import com.blito.services.ExcelService;
 import com.blito.services.RoleService;
 import com.blito.view.ExcelView;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @RequestMapping("${api.base.url}" + "/admin/user-accounts")
@@ -34,18 +33,14 @@ public class AdminAccountController {
 //		return ResponseEntity.ok(adminAccountService.getAllUsers(pageable));
 //	}
 	
-	@GetMapping
-	public ResponseEntity<UserViewModel> getUser(@RequestParam long userId){
+	@JsonView(View.AdminUser.class)
+	@GetMapping("/{userId}")
+	public ResponseEntity<UserViewModel> getUser(@PathVariable long userId){
 		return ResponseEntity.ok(adminAccountService.getUser(userId));
 	}
 	
-//	@PutMapping
-//	public ResponseEntity<UserViewModel> updateUser(UserAdminUpdateViewModel vmodel){
-//		return ResponseEntity.ok(adminAccountService.updateUser(vmodel));
-//	}
-	
-	@PutMapping("/ban-user")
-	public ResponseEntity<ResultVm> banUser(@RequestParam long userId){
+	@PutMapping("/ban-user/{userId}")
+	public ResponseEntity<ResultVm> banUser(@PathVariable long userId){
 		adminAccountService.banUser(userId);
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
