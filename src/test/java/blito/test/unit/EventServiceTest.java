@@ -8,6 +8,8 @@ import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -93,7 +94,7 @@ public class EventServiceTest {
 
 			event = new Event();
 			event.setAddress("ABC");
-			event.setEventState(State.OPEN);
+			event.setEventState(State.SOLD);
 			event.setOperatorState(OperatorState.PENDING);
 			event.setEventName("A");
 			event.setEventType(EventType.CINEMA);
@@ -268,8 +269,27 @@ public class EventServiceTest {
 		searchViewModel.getRestrictions().add(simple);
 		Pageable pageable = new PageRequest(0, 5);
 
-		Page<Event> eventsPage = eventService.searchEvents(searchViewModel, pageable);
+		Page<EventViewModel> eventsPage = eventService.searchEvents(searchViewModel, pageable);
 		assertEquals(1,eventsPage.getNumberOfElements());
+	}
+	
+//	@Test
+//	public void emptySearch() {
+//		SearchViewModel<Event> searchViewModel = new SearchViewModel<>();
+//		searchViewModel.setRestrictions(new ArrayList<>());
+//		Pageable pageable = new PageRequest(0, 5);
+//
+//		Page<EventViewModel> eventsPage = eventService.searchEvents(searchViewModel, pageable);
+//		
+//	}
+	
+	@Test
+	public void getAllEventsTest() {
+		Pageable pageable = new PageRequest(0,5);
+		Page<EventViewModel> allEvents = eventService.getAllEvents(pageable);
+		assertEquals(4, allEvents.getNumberOfElements());
+		String names = new String();
+		allEvents.getContent().stream().forEach(e -> System.err.print(e.getEventName()));
 	}
 
 	@Test
@@ -287,7 +307,7 @@ public class EventServiceTest {
 		searchViewModel.getRestrictions().add(simple);
 		Pageable pageable = new PageRequest(0, 5);
 
-		Page<Event> eventsPage = eventService.searchEvents(searchViewModel, pageable);
+		Page<EventViewModel> eventsPage = eventService.searchEvents(searchViewModel, pageable);
 		assertEquals(1,eventsPage.getNumberOfElements());
 	}
 	
@@ -303,9 +323,11 @@ public class EventServiceTest {
 		searchViewModel.getRestrictions().add(simple);
 		
 		Pageable pageable = new PageRequest(0,5);
-		Page<Event> eventsPage = eventService.searchEvents(searchViewModel, pageable);
+		Page<EventViewModel> eventsPage = eventService.searchEvents(searchViewModel, pageable);
 		assertEquals(4,eventsPage.getNumberOfElements());
 	}
+	
+	
 
 //	@Test
 //	public void rangeSearch() {

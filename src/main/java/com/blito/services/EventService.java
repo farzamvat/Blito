@@ -1,5 +1,7 @@
 package com.blito.services;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -12,6 +14,8 @@ import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.blito.configs.Constants;
+import com.blito.enums.ImageType;
 import com.blito.enums.Response;
 import com.blito.enums.State;
 import com.blito.exceptions.EventLinkAlreadyExistsException;
@@ -22,9 +26,7 @@ import com.blito.mappers.EventDateMapper;
 import com.blito.mappers.EventFlatMapper;
 import com.blito.mappers.EventMapper;
 import com.blito.mappers.ImageMapper;
-import com.blito.models.BlitType;
 import com.blito.models.Event;
-import com.blito.models.EventDate;
 import com.blito.models.EventHost;
 import com.blito.models.Image;
 import com.blito.repositories.EventHostRepository;
@@ -32,8 +34,8 @@ import com.blito.repositories.EventRepository;
 import com.blito.repositories.ImageRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
-import com.blito.rest.viewmodels.event.EventUpdateViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
+import com.blito.rest.viewmodels.image.ImageViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.security.SecurityContextHolder;
 
@@ -61,6 +63,10 @@ public class EventService {
 		if (vmodel.getBlitSaleStartDate().after(vmodel.getBlitSaleEndDate())) {
 			throw new RuntimeException("start date is after end date");
 		}
+		if (vmodel.getImages().size() == 0) {
+			vmodel.setImages(Arrays.asList(new ImageViewModel(Constants.DEFAULT_EVENT_PHOTO, ImageType.EVENT_PHOTO),
+					new ImageViewModel(Constants.DEFAULT_EVENT_BANNER, ImageType.BANNER)));
+		}
 		EventHost eventHost = Optional.ofNullable(eventHostRepository.findOne(vmodel.getEventHostId())).map(eh -> eh)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
 		List<Image> images = imageRepository.findByImageUUIDIn(
@@ -79,9 +85,8 @@ public class EventService {
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 		return eventFlatMapper.createFromEntity(event);
 	}
-	
-	public EventViewModel getEventById(long eventId)
-	{
+
+	public EventViewModel getEventById(long eventId) {
 		Event event = Optional.ofNullable(eventRepository.findOne(eventId)).map(e -> e)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 		return eventMapper.createFromEntity(event);
@@ -105,7 +110,7 @@ public class EventService {
 
 		Event event = Optional.ofNullable(eventRepository.findOne(vmodel.getEventId())).map(e -> e)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
-		
+
 		event = eventMapper.updateEntity(vmodel, event);
 		event.setImages(images);
 		event.setEventHost(eventHost);
@@ -129,7 +134,12 @@ public class EventService {
 				eventRepository.delete(eventId);
 			}
 		}
+	}
 
+	public Page<EventViewModel> getAllEvents(Pageable pageable) {
+		return eventMapper.toPage(new PageImpl<>(eventRepository.findAll().stream()
+				.filter(e -> e.getEventState() == State.OPEN || e.getEventState() == State.SOLD).skip(pageable.getPageNumber()*pageable.getPageSize()).limit(pageable.getPageSize())
+				.collect(Collectors.toList())), eventMapper::createFromEntity);
 	}
 
 	private String generateEventLink(Event event) {
@@ -140,14 +150,16 @@ public class EventService {
 		return eventLink;
 	}
 
-	public Page<Event> searchEvents(SearchViewModel<Event> searchViewModel, Pageable pageable) {
+	public Page<EventViewModel> searchEvents(SearchViewModel<Event> searchViewModel, Pageable pageable) {
+		/*empty search handling
+		...
+		*/
 		return searchViewModel.getRestrictions().stream().map(r -> r.action())
-				.reduce((s1, s2) ->
-				Specifications.where(s1).and(s2))
-				.map(specification -> 
-				new PageImpl<>(eventRepository.findAll(specification).stream()
-						.skip(pageable.getPageNumber() * pageable.getPageSize()).limit(pageable.getPageSize())
-						.collect(Collectors.toList())))
-				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+				.reduce((s1, s2) -> Specifications.where(s1).and(s2))
+				.map(specification -> new PageImpl<>(
+						eventMapper.createFromEntities(eventRepository.findAll(specification)).stream()
+								.skip(pageable.getPageNumber() * pageable.getPageSize()).limit(pageable.getPageSize())
+								.collect(Collectors.toList())))
+						.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
 	}
 }

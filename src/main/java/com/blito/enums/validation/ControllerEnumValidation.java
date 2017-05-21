@@ -2,8 +2,14 @@ package com.blito.enums.validation;
 
 import com.blito.validators.ValidationInterface;
 
-public enum EventHostControllerEnumValidation implements ValidationInterface {
-	
+public enum ControllerEnumValidation implements ValidationInterface {
+	FIRSTNAME("validation.register.firstname"),
+	LASTNAME("validation.register.lastname"),
+	EMAIL("validation.register.email"),
+	PASSWORD("validation.register.password"),
+	MOBILE("validation.register.mobile"),
+	EVENT_NAME("validation.create.event.name"),
+	EVENT_TYPE("validation.create.event.type"),
 	HOSTNAME("validation.eventhost.hostname"),
 	TELEPHONE("validation.eventhost.telephone"),
 	TELEGRAM_LINK("validation.eventhost.telegram.link"),
@@ -14,14 +20,13 @@ public enum EventHostControllerEnumValidation implements ValidationInterface {
 	HOST_TYPE("validation.eventhost.host.type");
 	
 	private final String message;
-	private EventHostControllerEnumValidation(String value) {
+	
+	private ControllerEnumValidation(String value)
+	{
 		this.message = value;
-		
 	}
-
 	@Override
 	public String get() {
 		return this.message;
 	}
-
 }

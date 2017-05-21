@@ -37,7 +37,8 @@ public enum Response {
 	EVENT_NOT_FOUND("error.event.not.found"),
 	REFRESH_TOKEN_NOT_PRESENT("error.refresh.token.not.present"), 
 	EVENT_LINK_EXISTS("error.event.link.exists"),
-	EVENT_DATE_NOT_FOUND("error.event.date.not.found");
+	EVENT_DATE_NOT_FOUND("error.event.date.not.found"),
+	SEARCH_UNSUCCESSFUL("error.search.unsuccessful");
     
 
     private final String message;

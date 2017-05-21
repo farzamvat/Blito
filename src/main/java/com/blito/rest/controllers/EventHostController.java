@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blito.enums.Response;
-import com.blito.enums.validation.EventHostControllerEnumValidation;
+import com.blito.enums.validation.ControllerEnumValidation;
 import com.blito.exceptions.ExceptionUtil;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
@@ -45,7 +45,7 @@ public class EventHostController {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ExceptionViewModel argumentValidation(HttpServletRequest request,
 			MethodArgumentNotValidException exception) {
-		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception, EventHostControllerEnumValidation.class);
+		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception, ControllerEnumValidation.class);
 	}
 	
 	@ResponseStatus(HttpStatus.NOT_FOUND)

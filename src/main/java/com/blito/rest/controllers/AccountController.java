@@ -23,7 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.blito.configs.Constants;
 import com.blito.enums.Response;
-import com.blito.enums.validation.AccountControllerEnumValidation;
+import com.blito.enums.validation.ControllerEnumValidation;
 import com.blito.exceptions.EmailAlreadyExistsException;
 import com.blito.exceptions.ExceptionUtil;
 import com.blito.exceptions.NotFoundException;
@@ -63,7 +63,7 @@ public class AccountController {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ExceptionViewModel argumentValidation(HttpServletRequest request,
 			MethodArgumentNotValidException exception) {
-		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception, AccountControllerEnumValidation.class);
+		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception, ControllerEnumValidation.class);
 	}
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -180,7 +180,7 @@ public class AccountController {
 	{
 		DeferredResult<ResponseEntity<?>> deferred = new DeferredResult<ResponseEntity<?>>();
 		if(!Pattern.compile(Constants.EMAIL_REGEX).matcher(email).matches()) {
-			deferred.setErrorResult(new ValidationException(ResourceUtil.getMessage(AccountControllerEnumValidation.EMAIL)));
+			deferred.setErrorResult(new ValidationException(ResourceUtil.getMessage(ControllerEnumValidation.EMAIL)));
 			return deferred;
 		}
 		return userAccountService.forgetPassword(email)
