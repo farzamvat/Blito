@@ -1,32 +1,14 @@
 package com.blito.mappers;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.blito.models.EventHost;
-import com.blito.rest.viewmodels.eventhost.EventHostSimpleViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 
 @Component
 public class EventHostMapper implements GenericMapper<EventHost,EventHostViewModel> {
 
-	
-	public List<EventHostSimpleViewModel> eventHostsToViewModels(List<EventHost> eventHosts)
-	{
-		return eventHosts.stream().map(this::eventHostToSimpleViewModel).collect(Collectors.toList());
-	}
-	
-	public EventHostSimpleViewModel eventHostToSimpleViewModel(EventHost eventHost)
-	{
-		EventHostSimpleViewModel simple = new EventHostSimpleViewModel();
-		simple.setEventHostId(eventHost.getEventHostId());
-		simple.setHostName(eventHost.getHostName());
-		return simple;
-	}
-	
 	@Autowired
 	ImageMapper imageMapper;
 

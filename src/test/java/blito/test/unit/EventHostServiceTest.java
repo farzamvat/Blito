@@ -5,13 +5,14 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,6 @@ import com.blito.models.User;
 import com.blito.repositories.EventHostRepository;
 import com.blito.repositories.ImageRepository;
 import com.blito.repositories.UserRepository;
-import com.blito.rest.viewmodels.eventhost.EventHostSimpleViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.EventHostService;
@@ -183,9 +183,11 @@ public class EventHostServiceTest {
 		
 		assertEquals(4, SecurityContextHolder.currentUser().getEventHosts().size());
 		
-		List<EventHostSimpleViewModel> hosts = hostService.getCurrentUserEventHosts();
+		Pageable pageable = new PageRequest(0,5);
 		
-		assertEquals(4, hosts.size());
+		Page<EventHostViewModel> hosts = hostService.getCurrentUserEventHosts(pageable);
+		
+		assertEquals(4, hosts.getNumberOfElements());
 
 	}
 

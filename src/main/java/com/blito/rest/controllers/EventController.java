@@ -44,112 +44,105 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping("${api.base.url}" + "/events")
 public class EventController {
-	
-	@Autowired EventService eventService;
-	
+
+	@Autowired
+	EventService eventService;
+
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ExceptionViewModel argumentValidation(HttpServletRequest request,
 			MethodArgumentNotValidException exception) {
 		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception, ControllerEnumValidation.class);
 	}
-	
+
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	@ExceptionHandler({NotFoundException.class})
+	@ExceptionHandler({ NotFoundException.class })
 	public ExceptionViewModel notFounds(HttpServletRequest request, RuntimeException exception) {
 		return ExceptionUtil.generate(HttpStatus.NOT_FOUND, request, exception);
 	}
-	
+
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler({NotAllowedException.class, EventLinkAlreadyExistsException.class})
+	@ExceptionHandler({ NotAllowedException.class, EventLinkAlreadyExistsException.class })
 	public ExceptionViewModel notAllowed(HttpServletRequest request, RuntimeException exception) {
 		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception);
 	}
-	
 
 	// ***************** SWAGGER DOCS ***************** //
-		@ApiOperation(value = "create event")
-		@ApiResponses({ @ApiResponse(code = 201, message = "created successfully", response = EventViewModel.class),
-				@ApiResponse(code = 400, message = "ValidationException", response = ExceptionViewModel.class),
-				@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
+	@ApiOperation(value = "create event")
+	@ApiResponses({ @ApiResponse(code = 201, message = "created successfully", response = EventViewModel.class),
+			@ApiResponse(code = 400, message = "ValidationException", response = ExceptionViewModel.class),
+			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.Event.class)
 	@PostMapping
-	public ResponseEntity<EventViewModel> create (@Validated @RequestBody EventViewModel vmodel) {
+	public ResponseEntity<EventViewModel> create(@Validated @RequestBody EventViewModel vmodel) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(eventService.create(vmodel));
 	}
-	
+
 	// ***************** SWAGGER DOCS ***************** //
-		@ApiOperation(value = "get flat event")
-		@ApiResponses({ @ApiResponse(code = 200, message = "get flat event ok", response = EventFlatViewModel.class),
-				@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
-	// ***************** SWAGGER DOCS ***************** //	
+	@ApiOperation(value = "get flat event")
+	@ApiResponses({ @ApiResponse(code = 200, message = "get flat event ok", response = EventFlatViewModel.class),
+			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
+	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.Event.class)
 	@GetMapping("/flat/{eventId}")
-	public ResponseEntity<EventFlatViewModel> getFlatEvent(@PathVariable long eventId) 
-	{
+	public ResponseEntity<EventFlatViewModel> getFlatEvent(@PathVariable long eventId) {
 		return ResponseEntity.ok(eventService.getFlatEventById(eventId));
 	}
-	
+
 	// ***************** SWAGGER DOCS ***************** //
-		@ApiOperation(value = "get event")
-		@ApiResponses({ @ApiResponse(code = 200, message = "get event ok", response = EventViewModel.class),
-				@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
-	// ***************** SWAGGER DOCS ***************** //		
+	@ApiOperation(value = "get event")
+	@ApiResponses({ @ApiResponse(code = 200, message = "get event ok", response = EventViewModel.class),
+			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
+	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.Event.class)
 	@GetMapping("/{eventId}")
-	public ResponseEntity<EventViewModel> getEvent(@PathVariable long eventId)
-	{
+	public ResponseEntity<EventViewModel> getEvent(@PathVariable long eventId) {
 		return ResponseEntity.ok(eventService.getEventById(eventId));
 	}
-	
+
 	// ***************** SWAGGER DOCS ***************** //
-		@ApiOperation(value = "update event")
-		@ApiResponses({ @ApiResponse(code = 202, message = "update event accepted", response = EventViewModel.class),
-			    @ApiResponse(code = 400, message = "ValidationException", response = ExceptionViewModel.class),
-				@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class),
-				@ApiResponse(code = 400, message = "NotAllowedException", response = ExceptionViewModel.class),
-				@ApiResponse(code = 400, message = "EventLinkAlreadyExistsException", response = ExceptionViewModel.class)})
-	// ***************** SWAGGER DOCS ***************** //		
+	@ApiOperation(value = "update event")
+	@ApiResponses({ @ApiResponse(code = 202, message = "update event accepted", response = EventViewModel.class),
+			@ApiResponse(code = 400, message = "ValidationException or NotAllowedException" 
+												+ " or EventLinkAlreadyExistsException", response = ExceptionViewModel.class),
+			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
+	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.Event.class)
 	@PutMapping
-	public ResponseEntity<EventViewModel> updateEvent(@Validated @RequestBody EventViewModel vmodel)
-	{
+	public ResponseEntity<EventViewModel> updateEvent(@Validated @RequestBody EventViewModel vmodel) {
 		return ResponseEntity.accepted().body(eventService.update(vmodel));
 	}
-	
+
 	// ***************** SWAGGER DOCS ***************** //
-		@ApiOperation(value = "delete event")
-		@ApiResponses({ @ApiResponse(code = 202, message = "delete event accepted", response = EventViewModel.class),
-				@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class),
-				@ApiResponse(code = 400, message = "NotAllowedException", response = ExceptionViewModel.class)})
-	// ***************** SWAGGER DOCS ***************** //			
+	@ApiOperation(value = "delete event")
+	@ApiResponses({ @ApiResponse(code = 202, message = "delete event accepted", response = EventViewModel.class),
+			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class),
+			@ApiResponse(code = 400, message = "NotAllowedException", response = ExceptionViewModel.class) })
+	// ***************** SWAGGER DOCS ***************** //
 	@DeleteMapping
-	public ResponseEntity<ResultVm> delete(@PathVariable long eventId)
-	{
+	public ResponseEntity<ResultVm> delete(@PathVariable long eventId) {
 		eventService.delete(eventId);
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
-	
+
 	// ***************** SWAGGER DOCS ***************** //
-		@ApiOperation(value = "get all events")
-		@ApiResponses({ @ApiResponse(code = 200, message = "get all event ok", response = EventViewModel.class)})
-	// ***************** SWAGGER DOCS ***************** //			
+	@ApiOperation(value = "get all events")
+	@ApiResponses({ @ApiResponse(code = 200, message = "get all event ok", response = EventViewModel.class) })
+	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.SimpleEvent.class)
 	@GetMapping("/all")
-	public ResponseEntity<Page<EventViewModel>> getAllEvents(Pageable pageable){
+	public ResponseEntity<Page<EventViewModel>> getAllEvents(Pageable pageable) {
 		return ResponseEntity.ok(eventService.getAllEvents(pageable));
 	}
-	
-	
+
 	// ***************** SWAGGER DOCS ***************** //
-		@ApiOperation(value = "search events")
-		@ApiResponses({ @ApiResponse(code = 202, message = "search events ok", response = EventViewModel.class)})
-	// ***************** SWAGGER DOCS ***************** //		
+	@ApiOperation(value = "search events")
+	@ApiResponses({ @ApiResponse(code = 202, message = "search events ok", response = EventViewModel.class) })
+	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.SimpleEvent.class)
 	@PostMapping("/search")
-	public ResponseEntity<?> search(@RequestBody SearchViewModel<Event> searchViewModel,Pageable pageable)
-	{
+	public ResponseEntity<?> search(@RequestBody SearchViewModel<Event> searchViewModel, Pageable pageable) {
 		return ResponseEntity.ok(eventService.searchEvents(searchViewModel, pageable));
 	}
 }

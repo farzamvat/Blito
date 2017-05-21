@@ -1,10 +1,10 @@
 package com.blito.rest.controllers;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -27,10 +27,11 @@ import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
-import com.blito.rest.viewmodels.eventhost.EventHostSimpleViewModel;
+import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.services.EventHostService;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -54,20 +55,18 @@ public class EventHostController {
 		return ExceptionUtil.generate(HttpStatus.NOT_FOUND, request, exception);
 	}
 	
-	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(NotAllowedException.class)
 	public ExceptionViewModel notAllowed(HttpServletRequest request, RuntimeException exception) {
-		return ExceptionUtil.generate(HttpStatus.UNAUTHORIZED, request, exception);
+		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception);
 	}
-	
-	
 	
 	// ***************** SWAGGER DOCS ***************** //
 		@ApiOperation(value = "create event host")
 		@ApiResponses({ @ApiResponse(code = 201, message = "created successfully", response = EventHostViewModel.class),
-				@ApiResponse(code = 400, message = "ValidationException", response = ExceptionViewModel.class),
-				@ApiResponse(code = 404, message = "Image not found exception", response = ExceptionViewModel.class)})
+				@ApiResponse(code = 400, message = "ValidationException", response = ExceptionViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
+	@JsonView(View.EventHost.class)
 	@PostMapping
 	public ResponseEntity<EventHostViewModel> createEventHost(@Validated @RequestBody EventHostViewModel vmodel)
 	{
@@ -77,11 +76,10 @@ public class EventHostController {
 	// ***************** SWAGGER DOCS ***************** //
 		@ApiOperation(value = "update event host")
 		@ApiResponses({ @ApiResponse(code = 202, message = "update accepted", response = EventHostViewModel.class),
-				@ApiResponse(code = 400, message = "ValidationException", response = ExceptionViewModel.class),
-				@ApiResponse(code = 404, message = "Image not found exception" + " or EventHostNotFoundException", 
-					response = ExceptionViewModel.class),
-				@ApiResponse(code = 401, message = "Not allowed exception", response = ExceptionViewModel.class)})
+				@ApiResponse(code = 400, message = "ValidationException or NotAllowedException", response = ExceptionViewModel.class),
+				@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
+	@JsonView(View.EventHost.class)
 	@PutMapping
 	public ResponseEntity<EventHostViewModel> updateEventHost(@Validated @RequestBody EventHostViewModel vmodel)
 	{
@@ -90,9 +88,10 @@ public class EventHostController {
 	
 	// ***************** SWAGGER DOCS ***************** //
 		@ApiOperation(value = "get event host")
-		@ApiResponses({ @ApiResponse(code = 200, message = "get event host successful", response = EventHostViewModel.class),
-				@ApiResponse(code = 404, message = "EventHostNotFoundException", response = ExceptionViewModel.class)})
+		@ApiResponses({ @ApiResponse(code = 200, message = "get eventHost ok", response = EventHostViewModel.class),
+				@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
+	@JsonView(View.EventHost.class)
 	@GetMapping
 	public ResponseEntity<EventHostViewModel> getEventHost(@RequestParam long eventHostId)
 	{
@@ -101,8 +100,8 @@ public class EventHostController {
 	
 	// ***************** SWAGGER DOCS ***************** //
 		@ApiOperation(value = "delete event host")
-		@ApiResponses({ @ApiResponse(code = 202, message = "event host deletion successful", response = EventHostViewModel.class),
-				@ApiResponse(code = 404, message = "EventHostNotFoundException", response = ExceptionViewModel.class)})
+		@ApiResponses({ @ApiResponse(code = 202, message = "event host deletion accespted", response = ResultVm.class),
+				@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
 	@DeleteMapping
 	public ResponseEntity<?> deleteEventHost(@RequestParam long eventHostId)
@@ -115,9 +114,10 @@ public class EventHostController {
 		@ApiOperation(value = "get all of user's event hosts")
 		@ApiResponses({ @ApiResponse(code = 200, message = "get all user's event hosts successful", response = EventHostViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
+	@JsonView(View.SimpleEventHost.class)
 	@GetMapping("/all")
-	public ResponseEntity<List<EventHostSimpleViewModel>> getCurrentUserEventHosts()
+	public ResponseEntity<Page<EventHostViewModel>> getCurrentUserEventHosts(Pageable pageable)
 	{
-		return ResponseEntity.ok(eventHostService.getCurrentUserEventHosts());
+		return ResponseEntity.ok(eventHostService.getCurrentUserEventHosts(pageable));
 	}
 }

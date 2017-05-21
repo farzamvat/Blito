@@ -11,4 +11,7 @@ public class View {
 	public interface SimpleEvent {}
 	public interface Event extends SimpleEvent {}
 	public interface AdminEvent extends Event {}
+	
+	public interface SimpleEventHost{}
+	public interface EventHost extends SimpleEventHost {}
 }

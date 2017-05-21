@@ -7,26 +7,47 @@ import javax.validation.constraints.NotNull;
 
 import com.blito.annotations.Url;
 import com.blito.enums.HostType;
+import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.image.ImageViewModel;
+import com.fasterxml.jackson.annotation.JsonView;
 
 public class EventHostViewModel {
+	@JsonView(View.SimpleEventHost.class)
 	long eventHostId;
+	
+	@JsonView(View.SimpleEventHost.class)
 	@NotNull
 	String hostName;
+	
+	@JsonView(View.EventHost.class)
 	@NotNull
 	String telephone;
+	
+	@JsonView(View.EventHost.class)
 	@Url
 	String telegramLink;
+	
+	@JsonView(View.EventHost.class)
 	@Url
 	String instagramLink;
+	
+	@JsonView(View.EventHost.class)
 	@Url
 	String twitterLink;
+	
+	@JsonView(View.EventHost.class)
 	@Url
 	String linkedinLink;
+	
+	@JsonView(View.EventHost.class)
 	@Url
 	String websiteLink;
+	
+	@JsonView(View.EventHost.class)
 	@NotNull
 	HostType hostType;
+	
+	@JsonView(View.SimpleEventHost.class)
 	List<ImageViewModel> images;
 	
 	public EventHostViewModel()

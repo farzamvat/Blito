@@ -6,6 +6,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,78 +26,76 @@ import com.blito.repositories.EventHostRepository;
 import com.blito.repositories.ImageRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
-import com.blito.rest.viewmodels.eventhost.EventHostSimpleViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
 import com.blito.security.SecurityContextHolder;
 
 @Service
 public class EventHostService {
-	@Autowired EventHostMapper eventHostMapper;
-	@Autowired ImageRepository imageRepository;
-	@Autowired UserRepository userRepository;
-	@Autowired EventHostRepository eventHostRepository;
-	@Autowired ImageMapper imageMapper;
-	
-	private EventHost findEventHostById(long id)
-	{
-		return Optional.ofNullable(eventHostRepository.findOne(id))
-				.map(e -> e)
+	@Autowired
+	EventHostMapper eventHostMapper;
+	@Autowired
+	ImageRepository imageRepository;
+	@Autowired
+	UserRepository userRepository;
+	@Autowired
+	EventHostRepository eventHostRepository;
+	@Autowired
+	ImageMapper imageMapper;
+
+	private EventHost findEventHostById(long id) {
+		return Optional.ofNullable(eventHostRepository.findOne(id)).map(e -> e)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
 	}
-	
+
 	@Transactional
-	public EventHostViewModel create(EventHostViewModel vmodel)
-	{
-		if(vmodel.getImages().size()==0) {
-			vmodel.setImages(Arrays.asList(new ImageViewModel(Constants.DEFAULT_HOST_PHOTO,ImageType.HOST_COVER_PHOTO),
+	public EventHostViewModel create(EventHostViewModel vmodel) {
+		if (vmodel.getImages().size() == 0) {
+			vmodel.setImages(Arrays.asList(new ImageViewModel(Constants.DEFAULT_HOST_PHOTO, ImageType.HOST_COVER_PHOTO),
 					new ImageViewModel(Constants.DEFAULT_HOST_COVER_PHOTO, ImageType.HOST_COVER_PHOTO)));
 		}
 		List<Image> images = imageRepository.findByImageUUIDIn(
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
-		
+
 		EventHost eventHost = eventHostMapper.createFromViewModel(vmodel);
 		eventHost.setImages(images);
 		eventHost.setUser(user);
 		return eventHostMapper.createFromEntity(eventHostRepository.save(eventHost));
 	}
-	
+
 	@Transactional
-	public EventHostViewModel update(EventHostViewModel vmodel)
-	{
+	public EventHostViewModel update(EventHostViewModel vmodel) {
 		EventHost eventHost = findEventHostById(vmodel.getEventHostId());
-		if(eventHost.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId())
-		{
+		if (eventHost.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
 		List<Image> images = imageRepository.findByImageUUIDIn(
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 		eventHost.setImages(images);
-		return eventHostMapper.createFromEntity(eventHostMapper.updateEntity(vmodel,eventHost));
+		return eventHostMapper.createFromEntity(eventHostMapper.updateEntity(vmodel, eventHost));
 	}
-	
-	public EventHostViewModel get(long id)
-	{
+
+	public EventHostViewModel get(long id) {
 		return eventHostMapper.createFromEntity(findEventHostById(id));
 	}
-	
+
 	@Transactional
-	public void delete(long id)
-	{
+	public void delete(long id) {
 		EventHost eventHost = findEventHostById(id);
-		if(eventHost.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId())
-		{
+		if (eventHost.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
 		eventHostRepository.delete(eventHost);
 	}
-	
-	public List<EventHostSimpleViewModel> getCurrentUserEventHosts()
-	{
+
+	public Page<EventHostViewModel> getCurrentUserEventHosts(Pageable pageable) {
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
-		return eventHostMapper.eventHostsToViewModels(user.getEventHosts());
+		return eventHostMapper.toPage(
+				new PageImpl<>(user.getEventHosts().stream().skip(pageable.getPageNumber() * pageable.getPageSize())
+						.limit(pageable.getPageSize()).collect(Collectors.toList())),
+				eventHostMapper::createFromEntity);
 	}
 }
