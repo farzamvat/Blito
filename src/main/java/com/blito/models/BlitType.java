@@ -96,6 +96,7 @@ public class BlitType {
 
 	public void setEventDate(EventDate eventDate) {
 		this.eventDate = eventDate;
+		eventDate.getBlitTypes().add(this);
 	}
 
 	public long getBlitTypeId() {

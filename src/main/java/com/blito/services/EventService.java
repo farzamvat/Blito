@@ -133,9 +133,9 @@ public class EventService {
 	}
 
 	private String generateEventLink(Event event) {
-		String eventLink = event.getEventName().replaceAll(" ", "-") + '-' + RandomUtil.generateLinkRandomNumber();
+		String eventLink = event.getEventName().replaceAll(" ", "") + RandomUtil.generateLinkRandomNumber();
 		while (eventRepository.findByEventLink(eventLink).isPresent()) {
-			eventLink = event.getEventName().replaceAll(" ", "-") + '-' + RandomUtil.generateLinkRandomNumber();
+			eventLink = event.getEventName().replaceAll(" ", "") + RandomUtil.generateLinkRandomNumber();
 		}
 		return eventLink;
 	}

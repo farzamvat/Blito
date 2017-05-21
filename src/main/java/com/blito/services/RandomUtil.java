@@ -43,7 +43,7 @@ public final class RandomUtil {
     
     public static String generateLinkRandomNumber()
     {
-    	return RandomStringUtils.random(EVENT_LINK);
+    	return RandomStringUtils.randomNumeric(EVENT_LINK);
     }
 
     /**

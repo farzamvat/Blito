@@ -58,7 +58,6 @@ public class EventHostService {
 		EventHost eventHost = eventHostMapper.createFromViewModel(vmodel);
 		eventHost.setImages(images);
 		eventHost.setUser(user);
-		user.getEventHosts().add(eventHost);
 		return eventHostMapper.createFromEntity(eventHostRepository.save(eventHost));
 	}
 	

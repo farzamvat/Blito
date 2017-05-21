@@ -92,6 +92,7 @@ public class Blit {
 
 	public void setUser(User user) {
 		this.user = user;
+		user.getBlits().add(this);
 	}
 
 	public long getBlitId() {

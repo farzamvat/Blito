@@ -56,12 +56,14 @@ public class BlitTypeSeat {
 	}
 	public void setBlitType(BlitType blitType) {
 		this.blitType = blitType;
+		blitType.getBlitTypeSeats().add(this);
 	}
 	public SeatBlit getSeatBlit() {
 		return seatBlit;
 	}
 	public void setSeatBlit(SeatBlit seatBlit) {
 		this.seatBlit = seatBlit;
+		seatBlit.getBlitTypeSeats().add(this);
 	}
 	
 }
