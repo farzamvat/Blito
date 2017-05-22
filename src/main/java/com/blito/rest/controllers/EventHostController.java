@@ -38,86 +38,83 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@RequestMapping("${api.base.url}"+"/event-host")
+@RequestMapping("${api.base.url}" + "/event-hosts")
 public class EventHostController {
-	@Autowired EventHostService eventHostService;
-	
+	@Autowired
+	EventHostService eventHostService;
+
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ExceptionViewModel argumentValidation(HttpServletRequest request,
 			MethodArgumentNotValidException exception) {
 		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception, ControllerEnumValidation.class);
 	}
-	
+
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	@ExceptionHandler({NotFoundException.class})
+	@ExceptionHandler({ NotFoundException.class })
 	public ExceptionViewModel notFound(HttpServletRequest request, RuntimeException exception) {
 		return ExceptionUtil.generate(HttpStatus.NOT_FOUND, request, exception);
 	}
-	
+
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(NotAllowedException.class)
 	public ExceptionViewModel notAllowed(HttpServletRequest request, RuntimeException exception) {
 		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception);
 	}
-	
+
 	// ***************** SWAGGER DOCS ***************** //
-		@ApiOperation(value = "create event host")
-		@ApiResponses({ @ApiResponse(code = 201, message = "created successfully", response = EventHostViewModel.class),
-				@ApiResponse(code = 400, message = "ValidationException", response = ExceptionViewModel.class)})
+	@ApiOperation(value = "create event host")
+	@ApiResponses({ @ApiResponse(code = 201, message = "created successfully", response = EventHostViewModel.class),
+			@ApiResponse(code = 400, message = "ValidationException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.EventHost.class)
 	@PostMapping
-	public ResponseEntity<EventHostViewModel> createEventHost(@Validated @RequestBody EventHostViewModel vmodel)
-	{
+	public ResponseEntity<EventHostViewModel> createEventHost(@Validated @RequestBody EventHostViewModel vmodel) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(eventHostService.create(vmodel));
 	}
-	
+
 	// ***************** SWAGGER DOCS ***************** //
-		@ApiOperation(value = "update event host")
-		@ApiResponses({ @ApiResponse(code = 202, message = "update accepted", response = EventHostViewModel.class),
-				@ApiResponse(code = 400, message = "ValidationException or NotAllowedException", response = ExceptionViewModel.class),
-				@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
+	@ApiOperation(value = "update event host")
+	@ApiResponses({ @ApiResponse(code = 202, message = "update accepted", response = EventHostViewModel.class),
+			@ApiResponse(code = 400, message = "ValidationException or NotAllowedException", response = ExceptionViewModel.class),
+			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.EventHost.class)
 	@PutMapping
-	public ResponseEntity<EventHostViewModel> updateEventHost(@Validated @RequestBody EventHostViewModel vmodel)
-	{
+	public ResponseEntity<EventHostViewModel> updateEventHost(@Validated @RequestBody EventHostViewModel vmodel) {
 		return ResponseEntity.accepted().body(eventHostService.update(vmodel));
 	}
-	
+
 	// ***************** SWAGGER DOCS ***************** //
-		@ApiOperation(value = "get event host")
-		@ApiResponses({ @ApiResponse(code = 200, message = "get eventHost ok", response = EventHostViewModel.class),
-				@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
+	@ApiOperation(value = "get event host")
+	@ApiResponses({ @ApiResponse(code = 200, message = "get eventHost ok", response = EventHostViewModel.class),
+			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.EventHost.class)
 	@GetMapping
-	public ResponseEntity<EventHostViewModel> getEventHost(@RequestParam long eventHostId)
-	{
+	public ResponseEntity<EventHostViewModel> getEventHost(@RequestParam long eventHostId) {
 		return ResponseEntity.ok(eventHostService.get(eventHostId));
 	}
-	
+
 	// ***************** SWAGGER DOCS ***************** //
-		@ApiOperation(value = "delete event host")
-		@ApiResponses({ @ApiResponse(code = 202, message = "event host deletion accespted", response = ResultVm.class),
-				@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
+	@ApiOperation(value = "delete event host")
+	@ApiResponses({ @ApiResponse(code = 202, message = "event host deletion accespted", response = ResultVm.class),
+			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
 	@DeleteMapping
-	public ResponseEntity<?> deleteEventHost(@RequestParam long eventHostId)
-	{
+	public ResponseEntity<?> deleteEventHost(@RequestParam long eventHostId) {
 		eventHostService.delete(eventHostId);
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
-	
+
 	// ***************** SWAGGER DOCS ***************** //
-		@ApiOperation(value = "get all of user's event hosts")
-		@ApiResponses({ @ApiResponse(code = 200, message = "get all user's event hosts successful", response = EventHostViewModel.class)})
+	@ApiOperation(value = "get all of user's event hosts")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "get all user's event hosts successful", response = EventHostViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.SimpleEventHost.class)
 	@GetMapping("/all")
-	public ResponseEntity<Page<EventHostViewModel>> getCurrentUserEventHosts(Pageable pageable)
-	{
+	public ResponseEntity<Page<EventHostViewModel>> getCurrentUserEventHosts(Pageable pageable) {
 		return ResponseEntity.ok(eventHostService.getCurrentUserEventHosts(pageable));
 	}
 }

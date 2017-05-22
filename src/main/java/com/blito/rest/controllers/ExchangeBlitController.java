@@ -4,8 +4,6 @@ package com.blito.rest.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -25,6 +23,7 @@ import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
+import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitChangeStateViewModel;
 import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.ExchangeBlitService;
@@ -66,6 +65,11 @@ public class ExchangeBlitController {
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		return ResponseEntity.ok(exchangeBlitMapper.createFromEntities(user.getExchangeBlits()));
 	}
-	
+
+	@PostMapping("/change-state")
+	public ResponseEntity<ResultVm> changeExchangeBlitState(@RequestBody @Validated ExchangeBlitChangeStateViewModel vmodel)
+	{
+		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
+	}
 	
 }

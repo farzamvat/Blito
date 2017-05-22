@@ -22,6 +22,7 @@ import com.blito.repositories.ExchangeBlitRepository;
 import com.blito.repositories.ImageRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitChangeStateViewModel;
 import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
 import com.blito.security.SecurityContextHolder;
@@ -95,7 +96,17 @@ public class ExchangeBlitService {
 		ExchangeBlit exchangeBlit = findByExchangeBlitId(exchangeBlitId);
 		exchangeBlitRepository.delete(exchangeBlit);
 	}
-
+	
+	@Transactional
+	public void changeState(ExchangeBlitChangeStateViewModel vmodel)
+	{
+		ExchangeBlit exchangeBlit = findByExchangeBlitId(vmodel.getExchangeBlitId());
+		if(exchangeBlit.getOperatorState() == OperatorState.PENDING)
+		{
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
+		}
+		exchangeBlit.setState(vmodel.getState());
+	}
 	//test??
 	public Page<ExchangeBlitViewModel> getApprovedAndNotClosedOrSoldBlits(Pageable pageable) {
 		return exchangeBlitMapper.toPage(exchangeBlitRepository.findByStateAndOperatorState(State.OPEN,

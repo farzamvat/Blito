@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
+import com.blito.search.SearchViewModel;
 import com.blito.security.SecurityContextHolder;
 
 @Service
@@ -90,6 +92,11 @@ public class EventHostService {
 		}
 		eventHostRepository.delete(eventHost);
 	}
+	
+	public Page<EventHostViewModel> getAllEventHosts(Pageable pageable)
+	{
+		return eventHostMapper.toPage(eventHostRepository.findAll(pageable));
+	}
 
 	public Page<EventHostViewModel> getCurrentUserEventHosts(Pageable pageable) {
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
@@ -97,5 +104,18 @@ public class EventHostService {
 				new PageImpl<>(user.getEventHosts().stream().skip(pageable.getPageNumber() * pageable.getPageSize())
 						.limit(pageable.getPageSize()).collect(Collectors.toList())),
 				eventHostMapper::createFromEntity);
+	}
+	
+	public Page<EventHostViewModel> searchEventHosts(SearchViewModel<EventHost> searchViewModel, Pageable pageable) {
+		/*empty search handling
+		...
+		*/
+		return searchViewModel.getRestrictions().stream().map(r -> r.action())
+				.reduce((s1, s2) -> Specifications.where(s1).and(s2))
+				.map(specification -> new PageImpl<>(
+						eventHostMapper.createFromEntities(eventHostRepository.findAll(specification)).stream()
+								.skip(pageable.getPageNumber() * pageable.getPageSize()).limit(pageable.getPageSize())
+								.collect(Collectors.toList())))
+						.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
 	}
 }
