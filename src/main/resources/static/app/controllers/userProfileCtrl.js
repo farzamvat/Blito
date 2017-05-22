@@ -3,7 +3,7 @@
  */
 
 angular.module('User')
-    .controller('userProfileCtrl', function ($scope, userInfo, Auth, $timeout, mapMarkerService, updateInfo, userInfo) {
+    .controller('userProfileCtrl', function ($scope, userInfo, Auth, $timeout, mapMarkerService, updateInfo, userInfo, Upload, $base64) {
         var userProfile = this;
         var markers = [], markersExchange = [], map, mapExhange;
         $scope.userData = userInfo.getData();
@@ -19,6 +19,9 @@ angular.module('User')
         $scope.updateFailNotif = false;
         $scope.ticketTypes = [{}];
         $scope.showTimeForms = [{}];
+
+        $scope.picFile = null;
+        $scope.coverFile = null;
 
         $scope.initMapExchange = function () {
             mapMarkerService.initMap(document.getElementById('mapExchange'));
@@ -51,9 +54,26 @@ angular.module('User')
         }
 
 
+        $scope.uploadPic = function(file) {
+            file.upload = Upload.upload({
+                url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
+                data: { file: file}
+            });
+            var bs64 = $base64.encode(file);
+            console.log(bs64);
 
-
-
+            file.upload.then(function (response) {
+                $timeout(function () {
+                    file.result = response.data;
+                });
+            }, function (response) {
+                if (response.status > 0)
+                    $scope.errorMsg = response.status + ': ' + response.data;
+            }, function (evt) {
+                // Math.min is to fix IE which reports 200% sometimes
+                file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+            });
+        }
 
 
 

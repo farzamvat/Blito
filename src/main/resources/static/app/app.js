@@ -15,7 +15,9 @@ angular.module('Blito',
         'User',
         'blitoDirectives',
         'animationServices',
-        'mapServices'
+        'mapServices',
+        'ngFileUpload',
+        'base64'
     ])
     .config(function ($httpProvider) {
         $httpProvider.interceptors.push('AuthInterceptors');
