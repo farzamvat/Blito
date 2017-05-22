@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blito.enums.Response;
@@ -53,8 +52,8 @@ public class ExchangeBlitController {
 		return ResponseEntity.accepted().body(exchangeBlitService.update(vmodel));
 	}
 	
-	@DeleteMapping
-	public ResponseEntity<ResultVm> delete(@RequestParam long exchangeBlitId)
+	@DeleteMapping("/{exchangeBlitId}")
+	public ResponseEntity<ResultVm> delete(@PathVariable long exchangeBlitId)
 	{
 		exchangeBlitService.delete(exchangeBlitId);
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));

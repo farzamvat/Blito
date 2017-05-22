@@ -46,7 +46,6 @@ import com.blito.search.Simple;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.EventService;
 
-//@ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 @Transactional
