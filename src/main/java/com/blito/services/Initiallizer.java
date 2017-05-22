@@ -22,9 +22,9 @@ import com.blito.repositories.UserRepository;
 
 @Service
 public class Initiallizer {
-	@Value("${blit.admin.username}")
+	@Value("${blito.admin.username}")
 	String admin_username;
-	@Value("${blit.admin.password}")
+	@Value("${blito.admin.password}")
 	String admin_password;
 	@Autowired PermissionRepository permissionRepository;
 	@Autowired RoleRepository roleRepository;
@@ -77,6 +77,8 @@ public class Initiallizer {
 					r.setName("USER"); r.setPermissions(permissionRepository.findAll());
 					return r;
 				});
+		
+		roleRepository.save(userRole);
 		
 		if(!adminResult.isPresent()) {
 			User user = new User();
