@@ -25,5 +25,4 @@ public class BlitMapper implements GenericMapper<Blit, BlitViewModel>{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }
