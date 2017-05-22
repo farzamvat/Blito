@@ -66,4 +66,6 @@ public class ExchangeBlitController {
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		return ResponseEntity.ok(exchangeBlitMapper.createFromEntities(user.getExchangeBlits()));
 	}
+	
+	
 }
