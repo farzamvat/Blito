@@ -92,7 +92,8 @@ public class UserAccountService {
 						}
 						user.setRefreshToken(asyncTokenResult.getRefreshToken());
 						user.setResetKey(null);
-						asyncTokenResult.setRole(user.getRoles().stream().findFirst().get().getName());
+						User savedUser = userRepository.save(user);
+						asyncTokenResult.setRole(savedUser.getRoles().stream().findFirst().get().getName());
 						return asyncTokenResult;
 					}
 					else {

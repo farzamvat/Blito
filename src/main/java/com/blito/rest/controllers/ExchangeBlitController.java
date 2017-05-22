@@ -66,19 +66,4 @@ public class ExchangeBlitController {
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		return ResponseEntity.ok(exchangeBlitMapper.createFromEntities(user.getExchangeBlits()));
 	}
-	
-	@JsonView(View.SimpleExchangeBlit.class)
-	@GetMapping("/approved")
-	public ResponseEntity<Page<ExchangeBlitViewModel>> approvedExchangeBlits(Pageable pageable)
-	{
-		return ResponseEntity.ok(exchangeBlitService.getApprovedAndNotClosedOrSoldBlits(pageable));
-	}
-	
-	@JsonView(View.ExchangeBlit.class)
-	@GetMapping("/{exchangeBlitId}")
-	public ResponseEntity<ExchangeBlitViewModel> getExchangeBlitById(@PathVariable long exchangeBlitId)
-	{
-		return ResponseEntity.ok(exchangeBlitService.getExchangeBlitById(exchangeBlitId));
-	}
-	
 }
