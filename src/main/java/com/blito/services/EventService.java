@@ -1,6 +1,5 @@
 package com.blito.services;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -78,6 +77,13 @@ public class EventService {
 		event.setEventHost(eventHost);
 		event.setEventLink(generateEventLink(event));
 		return eventMapper.createFromEntity(eventRepository.save(event));
+ 	}
+	
+	public EventFlatViewModel getFlatEventByLink(String link)
+	{
+		return eventRepository.findByEventLink(link)
+				.map(eventFlatMapper::createFromEntity)
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 	}
 
 	public EventFlatViewModel getFlatEventById(long eventId) {
@@ -143,9 +149,9 @@ public class EventService {
 	}
 
 	private String generateEventLink(Event event) {
-		String eventLink = event.getEventName().replaceAll(" ", "") + RandomUtil.generateLinkRandomNumber();
+		String eventLink = event.getEventName().replaceAll(" ", "-") + "-" + RandomUtil.generateLinkRandomNumber();
 		while (eventRepository.findByEventLink(eventLink).isPresent()) {
-			eventLink = event.getEventName().replaceAll(" ", "") + RandomUtil.generateLinkRandomNumber();
+			eventLink = event.getEventName().replaceAll(" ", "-") + "-" + RandomUtil.generateLinkRandomNumber();
 		}
 		return eventLink;
 	}

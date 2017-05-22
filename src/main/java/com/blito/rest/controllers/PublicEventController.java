@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blito.enums.validation.ControllerEnumValidation;
 import com.blito.exceptions.EventLinkAlreadyExistsException;
 import com.blito.exceptions.ExceptionUtil;
 import com.blito.exceptions.NotAllowedException;
@@ -82,6 +80,14 @@ public class PublicEventController {
 	@GetMapping("/flat/{eventId}")
 	public ResponseEntity<EventFlatViewModel> getFlatEvent(@PathVariable long eventId) {
 		return ResponseEntity.ok(eventService.getFlatEventById(eventId));
+	}
+	
+	
+	@JsonView(View.Event.class)
+	@GetMapping("/flat/link/{eventLink}")
+	public ResponseEntity<EventFlatViewModel> getFlatEventByLink(@PathVariable String eventLink)
+	{
+		return ResponseEntity.ok(eventService.getFlatEventByLink(eventLink));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //

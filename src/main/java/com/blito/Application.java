@@ -33,4 +33,10 @@ public class Application {
 	{
 		return new ModelAndView("index");
 	}
+	
+	@GetMapping("/eventPage")
+	public ModelAndView event()
+	{
+		return new ModelAndView("index");
+	}
 }
