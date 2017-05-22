@@ -3,7 +3,7 @@
  */
 
 angular.module('User')
-    .controller('userProfileCtrl', function ($scope, userInfo, Auth, $timeout, mapMarkerService) {
+    .controller('userProfileCtrl', function ($scope, userInfo, Auth, $timeout, mapMarkerService, updateInfo, userInfo) {
         var userProfile = this;
         var markers = [], markersExchange = [], map, mapExhange;
         $scope.userData = userInfo.getData();
@@ -13,8 +13,10 @@ angular.module('User')
         $scope.showAdvertiseListEvent = false;
         $scope.showContentPlanner = false;
         $scope.showContentList = false;
+        $scope.updateInfoSpinner = false;
 
-
+        $scope.updateSuccessNotif = false;
+        $scope.updateFailNotif = false;
         $scope.ticketTypes = [{}];
         $scope.showTimeForms = [{}];
 
@@ -28,7 +30,25 @@ angular.module('User')
 
         }
 
-
+        $scope.updateInfo = function (editInfo) {
+            $scope.updateInfoSpinner = true;
+            delete editInfo["email"];
+            updateInfo.updateData(editInfo)
+                .then(function (status, data) {
+                    $scope.updateInfoSpinner = false;
+                    $scope.updateSuccessNotif = true;
+                    $timeout(function () {
+                        $scope.updateSuccessNotif = false;
+                    }, 3000);
+                })
+                .catch(function (status, data) {
+                    $scope.updateInfoSpinner = false;
+                    $scope.updateFailNotif = true;
+                    $timeout(function () {
+                        $scope.updateFailNotif = false;
+                    }, 3000);
+                })
+        }
 
 
 

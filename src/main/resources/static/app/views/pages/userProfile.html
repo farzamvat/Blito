@@ -77,8 +77,7 @@
                 <div class="tab-pane tabProfile  fade" id="2">
                     <form name="editUserData" class="form-inline textAlignRight">
                         <fieldset class="fieldsetStyle ">
-                            <!-- Sign In Form -->
-                            <!-- Text input-->
+
                             <legend class="legendStyle marginTop30 text-center">اطلاعات کاربر   </legend>
                             <div class="row marginTop30">
                                 <div class="form-group col-xs-12  formRegGroup floatRight">
@@ -86,7 +85,7 @@
                                         <label class="registerLabel" for="firstname" >نام  :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input height="60" id="firstname" name="userid" ng-model="editInfo.firstname"  value="{{firstname}}"  type="text"  class="form-group registerInput editDataInput" required>
+                                        <input height="60" id="firstname" name="firstname" ng-model="editInfo.firstname"  value="{{firstname}}"  type="text"  class="form-group registerInput editDataInput" required>
                                     </div>
                                 </div>
                                 <div class="form-group col-xs-12 marginTop30  formRegGroup floatRight">
@@ -94,7 +93,7 @@
                                         <label class="registerLabel" for="lastname" >نام خانوادگی  :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input height="60" id="lastname" name="userid"  value="{{lastname}}" ng-model="editInfo.lastname"  type="text"  class="form-group registerInput editDataInput" required>
+                                        <input height="60" id="lastname" name="lastname"  value="{{lastname}}" ng-model="editInfo.lastname"  type="text"  class="form-group registerInput editDataInput" required>
                                     </div>
                                 </div>
                             </div>
@@ -104,15 +103,23 @@
                                         <label class="registerLabel" for="mobile" > شماره موبایل  :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input height="60" id="mobile" name="userid"  value="{{mobile}}" ng-model="editInfo.mobile"  type="text"  class="form-group registerInput editDataInput" required>
+                                        <input height="60" id="mobile" name="mobile"  value="{{mobile}}" ng-model="editInfo.mobile"  type="text"  class="form-group registerInput editDataInput" required>
                                     </div>
                                 </div>
 
                             </div>
+                            <div ng-show="updateSuccessNotif" class="alert alert-success text-center notificationStyle" >
+                                تغییرات با موفقیت ثبت شد
+                            </div>
+                            <div ng-show="updateFailNotif" class="alert alert-danger text-center notificationStyle">
+                                تغییرات ثبت نشد
+                            </div>
                         </fieldset>
+
+
                         <div class="control-group text-center marginBottom20">
                             <div class="controls">
-                                <button id="editInfo" ng-click="" ng-disabled="editUserData.$invalid" name="signin" class="btn btn-success btn-lg btnLogin">ثبت تغییرات</button>
+                                <button id="editInfo" ng-click="updateInfo(editInfo)" ng-disabled="editUserData.$invalid" name="signin" class="btn btn-success btn-lg btnLogin">ثبت تغییرات<i ng-show="updateInfoSpinner" class="fa fa-circle-o-notch" aria-hidden="true"></i></button>
                             </div>
                         </div>
                     </form>

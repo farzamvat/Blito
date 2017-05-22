@@ -785,7 +785,10 @@ dir-pagination-controls ul {
 
 }
 /*--------------------*/
-
+.notificationStyle {
+    width: 80%;
+    margin: 10px auto;
+}
 /*----------------spinner animation-----------------*/
 #loading.close {display: none;}
 .spinner {

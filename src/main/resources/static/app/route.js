@@ -13,62 +13,51 @@ var app = angular.module('appRoutes', ['ngRoute'])
 
         $routeProvider
             .when('/', {
-                templateUrl : 'app/views/pages/home.html',
-                authenticated: false
+                templateUrl : 'app/views/pages/home.html'
             })
             .when('/recentEvents', {
-                templateUrl : 'app/views/pages/eventList.html',
-                authenticated: false
+                templateUrl : 'app/views/pages/eventList.html'
 
             })
             .when('/cinema', {
-                templateUrl : 'app/views/pages/eventList.html',
-                authenticated: false
+                templateUrl : 'app/views/pages/eventList.html'
 
             })
             .when('/theatre', {
-                templateUrl : 'app/views/pages/eventList.html',
-                authenticated: false
+                templateUrl : 'app/views/pages/eventList.html'
 
             })
             .when('/cafe', {
-                templateUrl : 'app/views/pages/eventList.html',
-                authenticated: false
+                templateUrl : 'app/views/pages/eventList.html'
 
             })
             .when('/cinemaExchange', {
-                templateUrl : 'app/views/pages/eventList.html',
-                authenticated: false
+                templateUrl : 'app/views/pages/eventList.html'
 
             })
             .when('/theatreExchange', {
-                templateUrl : 'app/views/pages/eventList.html',
-                authenticated: false
+                templateUrl : 'app/views/pages/eventList.html'
 
             })
             .when('/cafeExchange', {
-                templateUrl : 'app/views/pages/eventList.html',
-                authenticated: false
+                templateUrl : 'app/views/pages/eventList.html'
 
             })
             .when('/eventPage', {
-                templateUrl : 'app/views/pages/eventPage.html',
-                authenticated: false
+                templateUrl : 'app/views/pages/eventPage.html'
 
             })
             .when('/bioPage', {
-                templateUrl : 'app/views/pages/bioPage.html',
-                authenticated: false
+                templateUrl : 'app/views/pages/bioPage.html'
 
             })
             .when('/activateUser', {
-                templateUrl : 'app/views/pages/activateUser.html',
-                authenticated: false
+                templateUrl : 'app/views/pages/activateUser.html'
 
             })
             .when('/profile', {
                 templateUrl : 'app/views/pages/userProfile.html',
-                authenticated: false
+                authenticated: true
             })
 
             .otherwise({redirectTo: '/'})
