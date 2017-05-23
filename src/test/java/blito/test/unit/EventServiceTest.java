@@ -216,9 +216,12 @@ public class EventServiceTest {
 	@Test
 	public void delete()
 	{
+		assertEquals(5, eventRepository.count());
+		assertEquals(5, eventHostRepository.findOne(eventViewModel.getEventHostId()).getEvents().size());
 		EventViewModel vmodel = eventService.create(eventViewModel);
 		eventService.delete(vmodel.getEventId());
 		assertNull(eventRepository.findOne(vmodel.getEventId()));
+		assertEquals(5, eventHostRepository.findOne(eventViewModel.getEventHostId()).getEvents().size());
 	}
 	
 	@Test(expected=NotFoundException.class)

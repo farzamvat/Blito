@@ -53,7 +53,7 @@ public class EventHost {
 	@Enumerated(EnumType.STRING)
 	private HostType hostType;
 	
-	@ManyToOne(targetEntity=User.class)
+	@ManyToOne(targetEntity=User.class, optional=false)
 	@JoinColumn(name="userId")
 	User user;
 	

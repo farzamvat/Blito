@@ -128,6 +128,7 @@ public class EventService {
 		return eventMapper.createFromEntity(event);
 	}
 
+	@Transactional
 	public void delete(long eventId) {
 		Optional<Event> eventResult = Optional.ofNullable(eventRepository.findOne(eventId));
 		if (!eventResult.isPresent()) {
@@ -137,6 +138,7 @@ public class EventService {
 					.getUserId()) {
 				throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 			} else {
+				eventResult.get().getEventHost().getEvents().remove(eventResult.get());////check check check check check
 				eventRepository.delete(eventId);
 			}
 		}

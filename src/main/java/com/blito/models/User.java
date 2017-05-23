@@ -55,7 +55,7 @@ public class User {
     inverseJoinColumns=@JoinColumn(name="role_id"))
     private List<Role> roles;
 	
-	@OneToMany(mappedBy="user",targetEntity=EventHost.class, cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="user",targetEntity=EventHost.class, cascade=CascadeType.ALL, orphanRemoval = true)
 	private List<EventHost> eventHosts;
 	
 	@OneToMany(mappedBy="user",targetEntity=Blit.class, cascade=CascadeType.ALL)

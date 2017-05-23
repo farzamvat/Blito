@@ -17,7 +17,11 @@ public enum ControllerEnumValidation implements ValidationInterface {
 	TWITTER_LINK("validation.eventhost.twitter.link"),
 	LINKEDIN_LINK("validation.eventhost.linkedin.link"),
 	WEBSITE_LINK("validation.eventhost.website.link"),
-	HOST_TYPE("validation.eventhost.host.type");
+	HOST_TYPE("validation.eventhost.host.type"),
+	TITLE("validation.exchangeblit.title"),
+	EVENT_DATE("validation.exchangeblit.event.date"),
+	IS_BLITO_EVENT("validation.exchangeblit.is.blito.event"),
+	PHONE_NUMBER("validation.exchangeblit.phone.number");
 	
 	private final String message;
 	

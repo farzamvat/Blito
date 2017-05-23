@@ -90,6 +90,7 @@ public class EventHostService {
 		if (eventHost.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
+		SecurityContextHolder.currentUser().getEventHosts().remove(eventHost);
 		eventHostRepository.delete(eventHost);
 	}
 	

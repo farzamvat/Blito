@@ -22,7 +22,6 @@ public class ExchangeBlitViewModel {
 	@NotNull
 	@JsonView(View.SimpleExchangeBlit.class)
 	private Timestamp eventDate;
-	@NotNull
 	@JsonView(View.SimpleExchangeBlit.class)
 	private double blitCost;
 	@NotNull
@@ -34,10 +33,8 @@ public class ExchangeBlitViewModel {
 	@Email
 	@JsonView(View.ExchangeBlit.class)
 	private String email;
-	@NotNull
 	@JsonView(View.ExchangeBlit.class)
 	private String eventAddress;
-	@NotNull
 	@JsonView(View.ExchangeBlit.class)
 	private String vendorAddress;
 	@JsonView(View.ExchangeBlit.class)
