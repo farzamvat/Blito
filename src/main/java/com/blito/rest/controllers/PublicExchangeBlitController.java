@@ -1,21 +1,15 @@
 package com.blito.rest.controllers;
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blito.exceptions.ExceptionUtil;
-import com.blito.exceptions.NotFoundException;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
@@ -31,12 +25,6 @@ import io.swagger.annotations.ApiResponses;
 public class PublicExchangeBlitController {
 	
 	@Autowired ExchangeBlitService exchangeBlitService;
-	
-//	@ResponseStatus(HttpStatus.NOT_FOUND)
-//	@ExceptionHandler({ NotFoundException.class })
-//	public ExceptionViewModel notFound(HttpServletRequest request, RuntimeException exception) {
-//		return ExceptionUtil.generate(HttpStatus.NOT_FOUND, request, exception);
-//	}
 	
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "get approved exchange blits")

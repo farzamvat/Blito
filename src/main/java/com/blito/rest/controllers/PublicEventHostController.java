@@ -14,15 +14,24 @@ import org.springframework.web.bind.annotation.RestController;
 import com.blito.models.EventHost;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
+import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.services.EventHostService;
 import com.fasterxml.jackson.annotation.JsonView;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("${api.base.url}" + "/public/event-hosts")
 public class PublicEventHostController {
 	@Autowired EventHostService eventHostService;
 	
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "get all event hosts")
+	@ApiResponses({@ApiResponse(code = 200, message="get all event hosts ok", response = EventHostViewModel.class)})
+	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.SimpleEventHost.class)
 	@GetMapping
 	public ResponseEntity<Page<EventHostViewModel>> getAllEventHosts(Pageable pageable)
@@ -30,6 +39,11 @@ public class PublicEventHostController {
 		return ResponseEntity.ok(eventHostService.getAllEventHosts(pageable));
 	}
 	
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "get event host by ID")
+	@ApiResponses({@ApiResponse(code = 200, message="get event host by ID ok", response = EventHostViewModel.class),
+				   @ApiResponse(code = 404, message="NotFoundException", response = ExceptionViewModel.class)})
+	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.EventHost.class)
 	@GetMapping("/{eventHostId}")
 	public ResponseEntity<EventHostViewModel> getEventHostById(@PathVariable long eventHostId)
@@ -37,6 +51,11 @@ public class PublicEventHostController {
 		return ResponseEntity.ok(eventHostService.get(eventHostId));
 	}
 	
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "search event hosts")
+	@ApiResponses({@ApiResponse(code = 200, message="search ok", response = EventHostViewModel.class),
+				   @ApiResponse(code = 404, message="NotFoundException", response = ExceptionViewModel.class)})
+	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.SimpleEventHost.class)
 	@PostMapping("/search")
 	public ResponseEntity<Page<EventHostViewModel>> search(@RequestBody SearchViewModel<EventHost> searchViewModel,Pageable pageable)

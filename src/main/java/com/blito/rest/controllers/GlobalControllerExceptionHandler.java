@@ -15,6 +15,7 @@ import com.blito.exceptions.EmailAlreadyExistsException;
 import com.blito.exceptions.EventLinkAlreadyExistsException;
 import com.blito.exceptions.ExceptionUtil;
 import com.blito.exceptions.InconsistentDataException;
+import com.blito.exceptions.InternalServerException;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.exceptions.UnauthorizedException;
@@ -47,6 +48,13 @@ public class GlobalControllerExceptionHandler {
 	@ExceptionHandler({ NotFoundException.class })
 	public ExceptionViewModel notFounds(HttpServletRequest request, RuntimeException exception) {
 		return ExceptionUtil.generate(HttpStatus.NOT_FOUND, request, exception);
+	}
+	
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	@ResponseBody
+	@ExceptionHandler({ InternalServerException.class })
+	public ExceptionViewModel internal(HttpServletRequest request, InternalServerException exception) {
+		return ExceptionUtil.generate(HttpStatus.INTERNAL_SERVER_ERROR, request, exception);
 	}
 
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
