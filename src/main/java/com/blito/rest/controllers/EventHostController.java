@@ -43,24 +43,24 @@ public class EventHostController {
 	@Autowired
 	EventHostService eventHostService;
 
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ExceptionViewModel argumentValidation(HttpServletRequest request,
-			MethodArgumentNotValidException exception) {
-		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception, ControllerEnumValidation.class);
-	}
-
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	@ExceptionHandler({ NotFoundException.class })
-	public ExceptionViewModel notFound(HttpServletRequest request, RuntimeException exception) {
-		return ExceptionUtil.generate(HttpStatus.NOT_FOUND, request, exception);
-	}
-
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(NotAllowedException.class)
-	public ExceptionViewModel notAllowed(HttpServletRequest request, RuntimeException exception) {
-		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception);
-	}
+//	@ResponseStatus(HttpStatus.BAD_REQUEST)
+//	@ExceptionHandler(MethodArgumentNotValidException.class)
+//	public ExceptionViewModel argumentValidation(HttpServletRequest request,
+//			MethodArgumentNotValidException exception) {
+//		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception, ControllerEnumValidation.class);
+//	}
+//
+//	@ResponseStatus(HttpStatus.NOT_FOUND)
+//	@ExceptionHandler({ NotFoundException.class })
+//	public ExceptionViewModel notFound(HttpServletRequest request, RuntimeException exception) {
+//		return ExceptionUtil.generate(HttpStatus.NOT_FOUND, request, exception);
+//	}
+//
+//	@ResponseStatus(HttpStatus.BAD_REQUEST)
+//	@ExceptionHandler(NotAllowedException.class)
+//	public ExceptionViewModel notAllowed(HttpServletRequest request, RuntimeException exception) {
+//		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception);
+//	}
 
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "create event host")

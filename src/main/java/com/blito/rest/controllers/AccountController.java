@@ -59,32 +59,32 @@ public class AccountController {
 	UserRepository userRepository;
 	@Autowired UserMapper userMapper;
 
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ExceptionViewModel argumentValidation(HttpServletRequest request,
-			MethodArgumentNotValidException exception) {
-		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception, ControllerEnumValidation.class);
-	}
-
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler({ EmailAlreadyExistsException.class, UserNotActivatedException.class, 
-		WrongPasswordException.class, ValidationException.class })
-	public ExceptionViewModel badRequests(HttpServletRequest request, RuntimeException exception) {
-		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception);
-	}
-	
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	@ExceptionHandler({NotFoundException.class})
-	public ExceptionViewModel notFounds(HttpServletRequest request, RuntimeException exception) {
-		return ExceptionUtil.generate(HttpStatus.NOT_FOUND, request, exception);
-	}
-	
-	@ResponseStatus(HttpStatus.UNAUTHORIZED)
-	@ExceptionHandler(UnauthorizedException.class)
-	public ExceptionViewModel unauthorized(HttpServletRequest request,UnauthorizedException exception)
-	{
-		return ExceptionUtil.generate(HttpStatus.UNAUTHORIZED, request, exception);
-	}
+//	@ResponseStatus(HttpStatus.BAD_REQUEST)
+//	@ExceptionHandler(MethodArgumentNotValidException.class)
+//	public ExceptionViewModel argumentValidation(HttpServletRequest request,
+//			MethodArgumentNotValidException exception) {
+//		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception, ControllerEnumValidation.class);
+//	}
+//
+//	@ResponseStatus(HttpStatus.BAD_REQUEST)
+//	@ExceptionHandler({ EmailAlreadyExistsException.class, UserNotActivatedException.class, 
+//		WrongPasswordException.class, ValidationException.class })
+//	public ExceptionViewModel badRequests(HttpServletRequest request, RuntimeException exception) {
+//		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception);
+//	}
+//	
+//	@ResponseStatus(HttpStatus.NOT_FOUND)
+//	@ExceptionHandler({NotFoundException.class})
+//	public ExceptionViewModel notFounds(HttpServletRequest request, RuntimeException exception) {
+//		return ExceptionUtil.generate(HttpStatus.NOT_FOUND, request, exception);
+//	}
+//	
+//	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+//	@ExceptionHandler(UnauthorizedException.class)
+//	public ExceptionViewModel unauthorized(HttpServletRequest request,UnauthorizedException exception)
+//	{
+//		return ExceptionUtil.generate(HttpStatus.UNAUTHORIZED, request, exception);
+//	}
 
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "user registration")
@@ -232,7 +232,4 @@ public class AccountController {
 					return deferred;
 				}).join();
 	}
-	
-	
-	
 }

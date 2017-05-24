@@ -18,6 +18,7 @@ import com.blito.enums.ImageType;
 import com.blito.enums.Response;
 import com.blito.enums.State;
 import com.blito.exceptions.EventLinkAlreadyExistsException;
+import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.BlitTypeMapper;
@@ -60,7 +61,7 @@ public class EventService {
 	@Transactional
 	public EventViewModel create(EventViewModel vmodel) {
 		if (vmodel.getBlitSaleStartDate().after(vmodel.getBlitSaleEndDate())) {
-			throw new RuntimeException("start date is after end date");
+			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_DATES));
 		}
 		if (vmodel.getImages().size() == 0) {
 			vmodel.setImages(Arrays.asList(new ImageViewModel(Constants.DEFAULT_EVENT_PHOTO, ImageType.EVENT_PHOTO),

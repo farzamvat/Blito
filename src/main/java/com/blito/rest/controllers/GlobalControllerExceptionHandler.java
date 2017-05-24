@@ -1,0 +1,58 @@
+package com.blito.rest.controllers;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ValidationException;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import com.blito.enums.validation.ControllerEnumValidation;
+import com.blito.exceptions.EmailAlreadyExistsException;
+import com.blito.exceptions.EventLinkAlreadyExistsException;
+import com.blito.exceptions.ExceptionUtil;
+import com.blito.exceptions.InconsistentDataException;
+import com.blito.exceptions.NotAllowedException;
+import com.blito.exceptions.NotFoundException;
+import com.blito.exceptions.UnauthorizedException;
+import com.blito.exceptions.UserNotActivatedException;
+import com.blito.exceptions.WrongPasswordException;
+import com.blito.rest.viewmodels.exception.ExceptionViewModel;
+
+@ControllerAdvice
+public class GlobalControllerExceptionHandler {
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ExceptionViewModel argumentValidation(HttpServletRequest request,
+			MethodArgumentNotValidException exception) {
+		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception, ControllerEnumValidation.class);
+	}
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	@ExceptionHandler({ EmailAlreadyExistsException.class, UserNotActivatedException.class,
+			WrongPasswordException.class, ValidationException.class, NotAllowedException.class,
+			EventLinkAlreadyExistsException.class, InconsistentDataException.class })
+	public ExceptionViewModel badRequests(HttpServletRequest request, RuntimeException exception) {
+		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception);
+	}
+
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ResponseBody
+	@ExceptionHandler({ NotFoundException.class })
+	public ExceptionViewModel notFounds(HttpServletRequest request, RuntimeException exception) {
+		return ExceptionUtil.generate(HttpStatus.NOT_FOUND, request, exception);
+	}
+
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	@ResponseBody
+	@ExceptionHandler(UnauthorizedException.class)
+	public ExceptionViewModel unauthorized(HttpServletRequest request, UnauthorizedException exception) {
+		return ExceptionUtil.generate(HttpStatus.UNAUTHORIZED, request, exception);
+	}
+}

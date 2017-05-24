@@ -32,11 +32,11 @@ public class PublicExchangeBlitController {
 	
 	@Autowired ExchangeBlitService exchangeBlitService;
 	
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	@ExceptionHandler({ NotFoundException.class })
-	public ExceptionViewModel notFound(HttpServletRequest request, RuntimeException exception) {
-		return ExceptionUtil.generate(HttpStatus.NOT_FOUND, request, exception);
-	}
+//	@ResponseStatus(HttpStatus.NOT_FOUND)
+//	@ExceptionHandler({ NotFoundException.class })
+//	public ExceptionViewModel notFound(HttpServletRequest request, RuntimeException exception) {
+//		return ExceptionUtil.generate(HttpStatus.NOT_FOUND, request, exception);
+//	}
 	
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "get approved exchange blits")
