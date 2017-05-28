@@ -102,7 +102,7 @@ public class EventService {
 	@Transactional
 	public EventViewModel update(EventViewModel vmodel) {
 		if (vmodel.getBlitSaleStartDate().after(vmodel.getBlitSaleEndDate())) {
-			throw new RuntimeException("start date is after end date");
+			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_DATES));
 		}
 		EventHost eventHost = Optional.ofNullable(eventHostRepository.findOne(vmodel.getEventHostId())).map(eh -> eh)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));

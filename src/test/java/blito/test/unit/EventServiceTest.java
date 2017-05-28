@@ -8,8 +8,6 @@ import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +27,7 @@ import com.blito.enums.HostType;
 import com.blito.enums.OfferTypeEnum;
 import com.blito.enums.OperatorState;
 import com.blito.enums.State;
+import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.models.Event;
 import com.blito.models.EventHost;
@@ -257,6 +256,13 @@ public class EventServiceTest {
 		vmodel.setEventDates(Arrays.asList(eventDateViewModel));
 		vmodel.setEventHostId(1000);
 		vmodel = eventService.create(vmodel);
+	}
+	
+	@Test(expected = InconsistentDataException.class)
+	public void createEventWithInconsistentData() {
+		eventViewModel.setBlitSaleEndDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
+		eventViewModel.setBlitSaleStartDate(Timestamp.from(ZonedDateTime.now().plusDays(9).toInstant()));
+		eventViewModel = eventService.create(eventViewModel);
 	}
 
 	@Test

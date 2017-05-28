@@ -53,7 +53,7 @@ public class AccountController {
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "user registration")
 	@ApiResponses({ @ApiResponse(code = 201, message = "created successfully", response = ResultVm.class),
-			@ApiResponse(code = 400, message = "ValidationException()"
+			@ApiResponse(code = 400, message = "ValidationException"
 					+ "or EmailAlreadyExistsException", response = ExceptionViewModel.class),
 			@ApiResponse(code = 500, message = "InternalServerException", response = ExceptionViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
