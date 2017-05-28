@@ -15,7 +15,7 @@ var app = angular.module('appRoutes', ['ngRoute'])
             .when('/', {
                 templateUrl : 'app/views/pages/home.html'
             })
-            .when('/recentEvents', {
+            .when('/recent-events', {
                 templateUrl : 'app/views/pages/eventList.html'
 
             })
@@ -31,31 +31,31 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 templateUrl : 'app/views/pages/eventList.html'
 
             })
-            .when('/cinemaExchange', {
+            .when('/cinema-exchange', {
                 templateUrl : 'app/views/pages/eventList.html'
 
             })
-            .when('/theatreExchange', {
+            .when('/theatre-exchange', {
                 templateUrl : 'app/views/pages/eventList.html'
 
             })
-            .when('/cafeExchange', {
+            .when('/cafe-exchange', {
                 templateUrl : 'app/views/pages/eventList.html'
 
             })
-            .when('/eventPage', {
+            .when('/event-page', {
                 templateUrl : 'app/views/pages/eventPage.html'
 
             })
-            .when('/bioPage', {
+            .when('/bio-page', {
                 templateUrl : 'app/views/pages/bioPage.html'
 
             })
-            .when('/activateUser', {
+            .when('/activate-user', {
                 templateUrl : 'app/views/pages/activateUser.html'
 
             })
-            .when('/profile', {
+            .when('/user-profile', {
                 templateUrl : 'app/views/pages/userProfile.html',
                 authenticated: false
             })

@@ -1,7 +1,7 @@
 /**
  * Created by soroush on 5/17/17.
  */
-angular.module('mapServices', [])
+angular.module('UiServices', [])
     .service('mapMarkerService', function ($timeout) {
         var mapMarkerService = this;
         var markers = [], markersExchange = [], map;
@@ -56,5 +56,12 @@ angular.module('mapServices', [])
                 }
 
             }
+        }
+    })
+    .service('photoUploadService', function () {
+        var photoUploadService = this;
+
+        photoUploadService.uploadPic = function () {
+
         }
     })

@@ -3,9 +3,9 @@
  */
 
 angular.module('User')
-    .controller('userProfileCtrl', function ($scope, userInfo, Auth, $timeout, mapMarkerService, updateInfo, userInfo, Upload, $base64) {
+    .controller('userProfileCtrl', function ($scope, userInfo, Auth, $timeout, mapMarkerService, updateInfo, $location, scrollAnimation) {
         var userProfile = this;
-        var markers = [], markersExchange = [], map, mapExhange;
+
         $scope.userData = userInfo.getData();
         $scope.showContentEvent = true;
         $scope.showAdvertiseEvent = true;
@@ -17,12 +17,37 @@ angular.module('User')
 
         $scope.updateSuccessNotif = false;
         $scope.updateFailNotif = false;
-        $scope.ticketTypes = [{}];
-        $scope.showTimeForms = [{}];
+        $scope.showTimeForms = [{ticketTypes : [{}]}];
 
-        $scope.picFile = null;
-        $scope.coverFile = null;
+        $scope.showThumbnailProfile = false;
+        $scope.showThumbnailEventPlanner = false;
+        $scope.showThumbnailEventExchange = false;
+        $scope.showThumbnailCover = false;
 
+
+        $scope.picData = null;
+
+        userProfile.showTimeNumber = 0;
+
+        userProfile.setDate = function (i) {
+            $timeout(function () {
+                $(".persianTime").pDatepicker({
+                    timePicker: {
+                        enabled: true
+                    },
+                    altField: '#persianDigitAlt',
+                    altFormat: "YYYY MM DD HH:mm:ss",
+                    altFieldFormatter: function (unixDate) {
+                        $scope.showTimeForms[i].timeStamp = unixDate;
+                    }
+                });
+                console.log($scope.showTimeForms);
+            }, 1000);
+
+        }
+        userProfile.setDate(userProfile.showTimeNumber);
+        // $(angular.element(document.getElementsByClassName("eventShowTime"))).pDatepicker();
+        // console.log($(angular.element(document.getElementsByClassName("eventShowTime"))));
         $scope.initMapExchange = function () {
             mapMarkerService.initMap(document.getElementById('mapExchange'));
         }
@@ -53,29 +78,120 @@ angular.module('User')
                 })
         }
 
+        $scope.convertToBase64 = function (pic) {
 
-        $scope.uploadPic = function(file) {
-            file.upload = Upload.upload({
-                url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
-                data: { file: file}
-            });
-            var bs64 = $base64.encode(file);
-            console.log(bs64);
 
-            file.upload.then(function (response) {
-                $timeout(function () {
-                    file.result = response.data;
-                });
-            }, function (response) {
-                if (response.status > 0)
-                    $scope.errorMsg = response.status + ': ' + response.data;
-            }, function (evt) {
-                // Math.min is to fix IE which reports 200% sometimes
-                file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-            });
+
         }
 
 
+        var fileSelectProfile = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
+        fileSelectProfile.type = 'file';
+        fileSelectProfile.setAttribute('id', 'profileUpload') ;
+
+        var fileSelectCover = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
+        fileSelectCover.type = 'file';
+
+        var fileSelectEventPlanner = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
+        fileSelectEventPlanner.type = 'file';
+
+        var fileSelectEventExchange = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
+        fileSelectEventExchange.type = 'file';
+
+        $scope.uploadPicProfile = function() {
+            fileSelectProfile.click();
+        }
+        $scope.deleteProfilePic = function () {
+            fileSelectProfile.value = "" ;
+            $scope.showThumbnailProfile = false;
+        }
+        $scope.deleteCoverPic = function () {
+            fileSelectCover.value = "" ;
+            $scope.showThumbnailCover = false;
+        }
+        $scope.uploadPicCover = function() {
+            fileSelectCover.click();
+        }
+        $scope.uploadPicEventPlanner = function() {
+            fileSelectEventPlanner.click();
+        }
+        $scope.deletePicEventPlanner = function () {
+            fileSelectEventPlanner.value = "" ;
+            $scope.showThumbnailEventPlanner = false;
+        }
+        $scope.uploadPicEventExchange = function() {
+            console.log("A");
+            fileSelectEventExchange.click();
+        }
+        $scope.deletePicEventExchange = function () {
+            fileSelectEventExchange.value = "" ;
+            $scope.showThumbnailEventExchange = false;
+        }
+
+        fileSelectProfile.onchange = function() { //set callback to action after choosing file
+            var f = fileSelectProfile.files[0], r = new FileReader();
+            $scope.showThumbnailProfile = true;
+
+            r.onloadend = function(e) { //callback after files finish loading
+                var base64Data = e.target.result;
+                $scope.$apply();
+                // console.log(base64Data.replace(/^data:image\/(png|jpg);base64,/, "")); //replace regex if you want to rip off the base 64 "header"
+                angular.element(document.getElementsByClassName("profilePhotoUpload"))[0].src = base64Data;
+                //here you can send data over your server as desired
+            }
+
+            r.readAsDataURL(f); //once defined all callbacks, begin reading the file
+
+        };
+
+        fileSelectCover.onchange = function() { //set callback to action after choosing file
+            var f = fileSelectCover.files[0], r = new FileReader();
+            $scope.showThumbnailCover = true;
+
+            r.onloadend = function(e) { //callback after files finish loading
+                var base64Data = e.target.result;
+                $scope.$apply();
+                // console.log(base64Data.replace(/^data:image\/(png|jpg);base64,/, "")); //replace regex if you want to rip off the base 64 "header"
+                angular.element(document.getElementsByClassName("coverPhotoUpload"))[0].src = base64Data;
+                //here you can send data over your server as desired
+            }
+
+            r.readAsDataURL(f); //once defined all callbacks, begin reading the file
+
+        };
+
+        fileSelectEventPlanner.onchange = function() { //set callback to action after choosing file
+            var f = fileSelectEventPlanner.files[0], r = new FileReader();
+            $scope.showThumbnailEventPlanner = true;
+
+            r.onloadend = function(e) { //callback after files finish loading
+                var base64Data = e.target.result;
+                $scope.$apply();
+                // console.log(base64Data.replace(/^data:image\/(png|jpg);base64,/, "")); //replace regex if you want to rip off the base 64 "header"
+                angular.element(document.getElementById("eventPlannerPhotoUpload"))[0].src = base64Data;
+                console.log(base64Data);
+                //here you can send data over your server as desired
+            }
+
+            r.readAsDataURL(f); //once defined all callbacks, begin reading the file
+
+        };
+        fileSelectEventExchange.onchange = function() { //set callback to action after choosing file
+            var f = fileSelectEventExchange.files[0], r = new FileReader();
+            $scope.showThumbnailEventExchange = true;
+
+            r.onloadend = function(e) { //callback after files finish loading
+                var base64Data = e.target.result;
+                $scope.$apply();
+                // console.log(base64Data.replace(/^data:image\/(png|jpg);base64,/, "")); //replace regex if you want to rip off the base 64 "header"
+                angular.element(document.getElementsByClassName("exchangePhotoUpload"))[0].src = base64Data;
+                console.log(base64Data);
+                //here you can send data over your server as desired
+            }
+
+            r.readAsDataURL(f); //once defined all callbacks, begin reading the file
+
+        };
 
 
         $scope.editUserInfo = function () {
@@ -95,23 +211,40 @@ angular.module('User')
 
 
         $scope.editInfo = angular.copy(userInfo.getData());
-        $scope.addFieldTicketType=function(){
-            if($scope.ticketTypes.length < 5) {
-                $scope.ticketTypes.push({})
+
+        $scope.scrollTo = function(id) {
+            var old = $location.hash();
+            $location.hash(id);
+            $location.hash(old);
+            scrollAnimation.scrollTo(id);
+
+
+
+            $(angular.element(document.getElementById('PlannerSection')).siblings()[0]).slideDown(300);
+            $(angular.element(document.getElementById('PlannerSection'))).addClass('orangeBackground');
+            $scope.showContentPlanner = true;
+        }
+
+        $scope.addFieldTicketType=function(i){
+            if($scope.showTimeForms[i].ticketTypes.length < 5) {
+                $scope.showTimeForms[i].ticketTypes.push({})
             }
         };
-        $scope.deleteFieldTicketType=function(){
-            if( 1 < $scope.ticketTypes.length) {
-                $scope.ticketTypes.splice(-1,1);
+        $scope.deleteFieldTicketType=function(i){
+            if( 1 < $scope.showTimeForms[i].ticketTypes.length) {
+                $scope.showTimeForms[i].ticketTypes.splice(-1,1);
             }
         };
         $scope.addFieldShowTime=function(){
             if($scope.showTimeForms.length < 10) {
-                $scope.showTimeForms.push({})
+                userProfile.showTimeNumber++;
+                userProfile.setDate(userProfile.showTimeNumber);
+                $scope.showTimeForms.push({ticketTypes : [{}]})
             }
         };
         $scope.deleteFieldShowTime=function(){
             if( 1 < $scope.showTimeForms.length) {
+                userProfile.showTimeNumber--;
                 $scope.showTimeForms.splice(-1,1);
             }
         };

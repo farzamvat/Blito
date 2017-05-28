@@ -2,7 +2,7 @@
  * Created by soroush on 4/18/17.
  */
 angular.module('menuPagesModule', [])
-    .controller('mainCtrl', function ($rootScope, $scope, Auth, userCreate, $window, $timeout, $interval, $location, userInfo, AuthToken, refresh, config, scrollAnimation) {
+    .controller('mainCtrl', function ($rootScope, $scope, Auth, userCreate, $window, $timeout, $interval, $location, userInfo, AuthToken, refresh, config) {
         var main = this;
         main.checkingSession = false;
         $scope.loadPage = false;
@@ -158,14 +158,7 @@ angular.module('menuPagesModule', [])
             return viewLocation === $location.path();
         }
 
-        $scope.scrollTo = function(id) {
-            var old = $location.hash();
-            $location.hash(id);
-            $location.hash(old);
 
-            // call $anchorScroll()
-            scrollAnimation.scrollTo(id);
-        }
         $scope.showDescription = function (event) {
             $(event.target).find('.eventDescription').slideDown(150);
         }
