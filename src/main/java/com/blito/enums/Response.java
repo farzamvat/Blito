@@ -39,6 +39,8 @@ public enum Response {
 	EVENT_LINK_EXISTS("error.event.link.exists"),
 	EVENT_DATE_NOT_FOUND("error.event.date.not.found"),
 	SEARCH_UNSUCCESSFUL("error.search.unsuccessful"),
+	BLIT_TYPE_NOT_FOUND("error.blit.type.not.found"),
+	DISCOUNT_CODE_ALREADY_EXISTS("error.discount.code.exists"),
 	INCONSISTENT_DATES("error.inconsistent.dates");
     
 

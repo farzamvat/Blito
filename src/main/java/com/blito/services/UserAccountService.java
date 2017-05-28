@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.enums.Response;
-import com.blito.exceptions.EmailAlreadyExistsException;
+import com.blito.exceptions.AlreadyExistsException;
 import com.blito.exceptions.InternalServerException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.exceptions.UnauthorizedException;
@@ -46,7 +46,7 @@ public class UserAccountService {
 		Optional<User> result = userRepository.findByEmail(vmodel.getEmail());
 		if(result.isPresent())
 		{
-			throw new EmailAlreadyExistsException(ResourceUtil.getMessage(Response.EMAIL_ALREADY_IN_USE));
+			throw new AlreadyExistsException(ResourceUtil.getMessage(Response.EMAIL_ALREADY_IN_USE));
 		}
 		Role userRole = roleRepository.findByName("USER")
 				.map(r -> r)

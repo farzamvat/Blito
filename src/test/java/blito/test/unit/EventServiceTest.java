@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -32,10 +33,13 @@ import com.blito.exceptions.NotFoundException;
 import com.blito.models.Event;
 import com.blito.models.EventHost;
 import com.blito.models.User;
+import com.blito.repositories.BlitTypeRepository;
+import com.blito.repositories.DiscountRepository;
 import com.blito.repositories.EventHostRepository;
 import com.blito.repositories.EventRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
+import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.search.Collection;
@@ -58,6 +62,10 @@ public class EventServiceTest {
 	UserRepository userRepository;
 	@Autowired
 	EventHostRepository eventHostRepository;
+	@Autowired
+	DiscountRepository discountRepo;
+	@Autowired
+	BlitTypeRepository blitTypeRepo;
 	Event event;
 	Event event1;
 	Event event2;
@@ -333,6 +341,27 @@ public class EventServiceTest {
 		Pageable pageable = new PageRequest(0,5);
 		Page<EventViewModel> eventsPage = eventService.searchEvents(searchViewModel, pageable);
 		assertEquals(4,eventsPage.getNumberOfElements());
+	}
+	
+	@Test
+	public void setDiscountCodeTest() {
+		assertEquals(0, discountRepo.count());
+		eventViewModel = eventService.create(eventViewModel);
+		
+		DiscountViewModel vmodel = new DiscountViewModel();
+		
+		vmodel.setBlitTypeIds(eventViewModel.getEventDates().stream().flatMap(ed->ed.getBlitTypes().stream().map(bt->bt.getBlitTypeId())).collect(Collectors.toList()));
+		vmodel.setCode("TAKHFIF!@#$");
+		vmodel.setReusability(5);
+		vmodel.setEffectDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
+		vmodel.setExpirationDate(Timestamp.from(ZonedDateTime.now().plusDays(6).toInstant()));
+		vmodel.setPercent(true);
+		vmodel.setPercent(30);
+		
+		vmodel = eventService.setDiscountCode(vmodel); 
+		assertEquals(2, vmodel.getBlitTypeIds().size());
+		assertEquals(1, blitTypeRepo.findOne(vmodel.getBlitTypeIds().get(0)).getDiscounts().size());
+		assertEquals(1, blitTypeRepo.findOne(vmodel.getBlitTypeIds().get(1)).getDiscounts().size());
 	}
 	
 	

@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.enums.Response;
+import com.blito.exceptions.AlreadyExistsException;
 import com.blito.exceptions.NotFoundException;
-import com.blito.exceptions.RoleAlreadyExistsException;
 import com.blito.mappers.RoleMapper;
 import com.blito.models.Role;
 import com.blito.models.User;
@@ -42,7 +42,7 @@ public class RoleService {
 	public RoleViewModel createRole(RoleViewModel vmodel) {
 		Optional<Role> result = roleRepository.findByName(vmodel.getName());
 		if (result.isPresent()) {
-			throw new RoleAlreadyExistsException(ResourceUtil.getMessage(Response.ROLE_ALREADY_EXISTS));
+			throw new AlreadyExistsException(ResourceUtil.getMessage(Response.ROLE_ALREADY_EXISTS));
 		}
 		return roleMapper.createFromEntity(roleRepository.save(roleMapper.createFromViewModel(vmodel)));
 	}
@@ -53,7 +53,7 @@ public class RoleService {
 			if (r.getRoleId() == roleById.getRoleId()) {
 				return roleMapper.createFromEntity(roleRepository.save(roleMapper.updateEntity(vmodel, r)));
 			}
-			throw new RoleAlreadyExistsException(ResourceUtil.getMessage(Response.ROLE_ALREADY_EXISTS));
+			throw new AlreadyExistsException(ResourceUtil.getMessage(Response.ROLE_ALREADY_EXISTS));
 		}).orElseGet(() -> roleMapper.createFromEntity(roleRepository.save(roleMapper.createFromViewModel(vmodel))));
 	}
 	
