@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -45,9 +46,21 @@ public class BlitType {
 	@OneToMany(mappedBy="blitType",targetEntity=CommonBlit.class)
 	List<CommonBlit> commonBlits;
 	
+	@ManyToMany
+	private List<Discount> discounts;
+	
+	public List<Discount> getDiscounts() {
+		return discounts;
+	}
+
+	public void setDiscounts(List<Discount> discounts) {
+		this.discounts = discounts;
+	}
+
 	public BlitType() {
 		blitTypeSeats = new ArrayList<>();
 		commonBlits = new ArrayList<>();
+		discounts = new ArrayList<>();
 	}
 	
 	public List<BlitTypeSeat> getBlitTypeSeats() {

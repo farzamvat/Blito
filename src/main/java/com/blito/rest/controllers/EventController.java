@@ -17,6 +17,7 @@ import com.blito.enums.Response;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
+import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.services.EventService;
@@ -69,5 +70,11 @@ public class EventController {
 		eventService.delete(eventId);
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
+	
+	@PostMapping("/set-discount-code")
+	public ResponseEntity<DiscountViewModel> setDiscountCode(@Validated @RequestBody DiscountViewModel vmodel) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(eventService.setDiscountCode(vmodel));
+	}
 
+	
 }

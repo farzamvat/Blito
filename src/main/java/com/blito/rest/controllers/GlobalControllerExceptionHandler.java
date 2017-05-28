@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.blito.enums.validation.ControllerEnumValidation;
-import com.blito.exceptions.EmailAlreadyExistsException;
-import com.blito.exceptions.EventLinkAlreadyExistsException;
+import com.blito.exceptions.AlreadyExistsException;
 import com.blito.exceptions.ExceptionUtil;
 import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.InternalServerException;
@@ -36,9 +35,9 @@ public class GlobalControllerExceptionHandler {
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ResponseBody
-	@ExceptionHandler({ EmailAlreadyExistsException.class, UserNotActivatedException.class,
+	@ExceptionHandler({ AlreadyExistsException.class, UserNotActivatedException.class,
 			WrongPasswordException.class, ValidationException.class, NotAllowedException.class,
-			EventLinkAlreadyExistsException.class, InconsistentDataException.class })
+			InconsistentDataException.class })
 	public ExceptionViewModel badRequests(HttpServletRequest request, RuntimeException exception) {
 		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception);
 	}

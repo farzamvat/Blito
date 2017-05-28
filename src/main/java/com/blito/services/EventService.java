@@ -17,22 +17,29 @@ import com.blito.configs.Constants;
 import com.blito.enums.ImageType;
 import com.blito.enums.Response;
 import com.blito.enums.State;
-import com.blito.exceptions.EventLinkAlreadyExistsException;
+import com.blito.exceptions.AlreadyExistsException;
 import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.BlitTypeMapper;
+import com.blito.mappers.DiscountMapper;
 import com.blito.mappers.EventDateMapper;
 import com.blito.mappers.EventFlatMapper;
 import com.blito.mappers.EventMapper;
 import com.blito.mappers.ImageMapper;
+import com.blito.models.BlitType;
+import com.blito.models.Discount;
 import com.blito.models.Event;
 import com.blito.models.EventHost;
 import com.blito.models.Image;
+import com.blito.repositories.BlitTypeRepository;
+import com.blito.repositories.DiscountRepository;
 import com.blito.repositories.EventHostRepository;
 import com.blito.repositories.EventRepository;
 import com.blito.repositories.ImageRepository;
+import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
@@ -57,6 +64,14 @@ public class EventService {
 	EventRepository eventRepository;
 	@Autowired
 	ImageMapper imageMapper;
+	@Autowired
+	DiscountMapper discountMapper;
+	@Autowired
+	BlitTypeRepository blitTypeRepository;
+	@Autowired
+	DiscountRepository discountRepository;
+	@Autowired
+	UserRepository userRepository;
 
 	@Transactional
 	public EventViewModel create(EventViewModel vmodel) {
@@ -78,12 +93,10 @@ public class EventService {
 		event.setEventHost(eventHost);
 		event.setEventLink(generateEventLink(event));
 		return eventMapper.createFromEntity(eventRepository.save(event));
- 	}
-	
-	public EventFlatViewModel getFlatEventByLink(String link)
-	{
-		return eventRepository.findByEventLink(link)
-				.map(eventFlatMapper::createFromEntity)
+	}
+
+	public EventFlatViewModel getFlatEventByLink(String link) {
+		return eventRepository.findByEventLink(link).map(eventFlatMapper::createFromEntity)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 	}
 
@@ -123,7 +136,7 @@ public class EventService {
 		event.setEventHost(eventHost);
 		Optional<Event> eventResult = eventRepository.findByEventLink(vmodel.getEventLink());
 		if (eventResult.isPresent() && eventResult.get().getEventId() != vmodel.getEventId()) {
-			throw new EventLinkAlreadyExistsException(ResourceUtil.getMessage(Response.EVENT_LINK_EXISTS));
+			throw new AlreadyExistsException(ResourceUtil.getMessage(Response.EVENT_LINK_EXISTS));
 		}
 		event.setEventLink(vmodel.getEventLink());
 		return eventMapper.createFromEntity(event);
@@ -139,7 +152,11 @@ public class EventService {
 					.getUserId()) {
 				throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 			} else {
-				eventResult.get().getEventHost().getEvents().remove(eventResult.get());////check check check check check
+				eventResult.get().getEventHost().getEvents().remove(eventResult.get());//// check
+																						//// check
+																						//// check
+																						//// check
+																						//// check
 				eventRepository.delete(eventId);
 			}
 		}
@@ -147,7 +164,8 @@ public class EventService {
 
 	public Page<EventViewModel> getAllEvents(Pageable pageable) {
 		return eventMapper.toPage(new PageImpl<>(eventRepository.findAll().stream()
-				.filter(e -> e.getEventState() == State.OPEN || e.getEventState() == State.SOLD).skip(pageable.getPageNumber()*pageable.getPageSize()).limit(pageable.getPageSize())
+				.filter(e -> e.getEventState() == State.OPEN || e.getEventState() == State.SOLD)
+				.skip(pageable.getPageNumber() * pageable.getPageSize()).limit(pageable.getPageSize())
 				.collect(Collectors.toList())), eventMapper::createFromEntity);
 	}
 
@@ -160,15 +178,36 @@ public class EventService {
 	}
 
 	public Page<EventViewModel> searchEvents(SearchViewModel<Event> searchViewModel, Pageable pageable) {
-		/*empty search handling
-		...
-		*/
+		/*
+		 * empty search handling ...
+		 */
 		return searchViewModel.getRestrictions().stream().map(r -> r.action())
 				.reduce((s1, s2) -> Specifications.where(s1).and(s2))
 				.map(specification -> new PageImpl<>(
 						eventMapper.createFromEntities(eventRepository.findAll(specification)).stream()
 								.skip(pageable.getPageNumber() * pageable.getPageSize()).limit(pageable.getPageSize())
 								.collect(Collectors.toList())))
-						.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
+	}
+
+	@Transactional
+	public BlitType getBlitTypeFromRepository(long blitTypeId) {
+		return Optional.ofNullable(blitTypeRepository.findOne(blitTypeId)).map(e -> e)
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
+	}
+
+	@Transactional
+	public DiscountViewModel setDiscountCode(DiscountViewModel vmodel) {
+		if (vmodel.getEffectDate().after(vmodel.getExpirationDate()))
+			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_DATES));
+		if(discountRepository.findByCode(vmodel.getCode()).isPresent())
+			throw new AlreadyExistsException(ResourceUtil.getMessage(Response.DISCOUNT_CODE_ALREADY_EXISTS));
+		Discount discount = discountMapper.createFromViewModel(vmodel);
+		discount.setUser(userRepository.findOne(SecurityContextHolder.currentUser().getUserId()));
+		discount.setBlitTypes(
+				vmodel.getBlitTypeIds().stream().map(bt -> getBlitTypeFromRepository(bt)).collect(Collectors.toList()));
+		
+		discount = discountRepository.save(discount);
+		return discountMapper.createFromEntity(discount);
 	}
 }

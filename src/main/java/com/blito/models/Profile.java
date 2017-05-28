@@ -10,7 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.blito.enums.ProfileType;
@@ -41,14 +43,16 @@ public class Profile {
 	
 	String twitter;
 	
-	String imagePath;
+	@OneToMany
+	@JoinColumn(name="profileId")
+	private List<Image> images; 
 
-	public String getImagePath() {
-		return imagePath;
+	public List<Image> getImages() {
+		return images;
 	}
 
-	public void setImagePath(String imagePath) {
-		this.imagePath = imagePath;
+	public void setImages(List<Image> images) {
+		this.images = images;
 	}
 
 	public String getWebsite() {
