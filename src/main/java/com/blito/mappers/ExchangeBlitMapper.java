@@ -21,7 +21,6 @@ public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit,ExchangeBl
 		exchangeBlit.setEventAddress(vmodel.getEventAddress());
 		exchangeBlit.setPhoneNumber(vmodel.getPhoneNumber());
 		exchangeBlit.setEventDate(vmodel.getEventDate());
-		exchangeBlit.setVendorAddress(vmodel.getVendorAddress());
 		return exchangeBlit;
 	}
 
@@ -37,7 +36,6 @@ public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit,ExchangeBl
 		vmodel.setEventAddress(exchangeBlit.getEventAddress());
 		vmodel.setPhoneNumber(exchangeBlit.getPhoneNumber());
 		vmodel.setEventDate(exchangeBlit.getEventDate());
-		vmodel.setVendorAddress(exchangeBlit.getVendorAddress());
 		vmodel.setState(exchangeBlit.getState());
 		vmodel.setOperatorState(exchangeBlit.getOperatorState());
 		vmodel.setType(exchangeBlit.getType());
@@ -55,7 +53,6 @@ public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit,ExchangeBl
 		exchangeBlit.setEventAddress(vmodel.getEventAddress());
 		exchangeBlit.setPhoneNumber(vmodel.getPhoneNumber());
 		exchangeBlit.setEventDate(vmodel.getEventDate());
-		exchangeBlit.setVendorAddress(vmodel.getVendorAddress());
 		return exchangeBlit;
 	}
 }

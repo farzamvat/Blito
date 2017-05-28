@@ -35,8 +35,6 @@ public class ExchangeBlit {
 	
 	private String eventAddress;
 	
-	private String vendorAddress;
-	
 	private String description;
 	
 	@Enumerated(EnumType.STRING)
@@ -156,14 +154,6 @@ public class ExchangeBlit {
 
 	public void setEventAddress(String eventAddress) {
 		this.eventAddress = eventAddress;
-	}
-
-	public String getVendorAddress() {
-		return vendorAddress;
-	}
-
-	public void setVendorAddress(String vendorAddress) {
-		this.vendorAddress = vendorAddress;
 	}
 
 	public String getDescription() {

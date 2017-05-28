@@ -22,6 +22,7 @@ public class UserMapper implements GenericMapper <User, UserViewModel> {
 		user.setEmail(vmodel.getEmail());
 		user.setPassword(vmodel.getPassword());
 		user.setMobile(vmodel.getMobile());
+		user.setOldUser(false);
 		return user;
 	}
 

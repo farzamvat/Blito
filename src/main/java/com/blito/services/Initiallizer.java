@@ -1,5 +1,8 @@
 package com.blito.services;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,6 +22,9 @@ import com.blito.models.User;
 import com.blito.repositories.PermissionRepository;
 import com.blito.repositories.RoleRepository;
 import com.blito.repositories.UserRepository;
+import com.blito.rest.viewmodels.OldUser;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 
 @Service
 public class Initiallizer {
@@ -30,6 +36,8 @@ public class Initiallizer {
 	@Autowired RoleRepository roleRepository;
 	@Autowired UserRepository userRepository;
 	@Autowired PasswordEncoder encoder;
+	@Autowired ObjectMapper objectMapper;
+	@Autowired UserAccountService userAccountService;
 
 	@Transactional
 	public void importPermissionsToDataBase() {
@@ -53,7 +61,7 @@ public class Initiallizer {
 	}
 	
 	@Transactional
-	public void insertAdminUserAndRole()
+	public void insertAdminUserAndRoleAndOldBlitoUsers()
 	{
 		Optional<User> adminResult = userRepository.findByEmail(admin_username);
 			
@@ -78,16 +86,42 @@ public class Initiallizer {
 					return r;
 				});
 		
-		roleRepository.save(userRole);
+		final Role persistedUserRole = roleRepository.save(userRole);
+		String blitoOldUsers = null;
+		try {
+			blitoOldUsers = new String(Files.readAllBytes(Paths.get("blito_old_users.txt")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		List<OldUser> olds = null;
+		try {
+			olds = objectMapper.readValue(blitoOldUsers, TypeFactory.defaultInstance().constructCollectionType(List.class, OldUser.class));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		List<User> oldUsers = olds.stream().map(u -> {
+			User user = new User();
+			user.setEmail(u.getEmail_address());
+			user.setMobile(u.getCell_number());
+			user.setOldUser(true);
+			user.setActive(true);
+			user.getRoles().add(persistedUserRole);
+			return user;
+		}).collect(Collectors.toList());
+		
+		userRepository.save(oldUsers);
 		
 		if(!adminResult.isPresent()) {
 			User user = new User();
 			user.setEmail(admin_username);
 			user.setPassword(encoder.encode(admin_password));
 			user.setActive(true);
-			user.setRoles(Arrays.asList(adminRole));
+			user.getRoles().add(adminRole);
 			userRepository.save(user);
 		}
+		
+		olds.forEach(u -> userAccountService.forgetPassword(u.getEmail_address()));
 	}
 	
 }

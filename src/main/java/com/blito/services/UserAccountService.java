@@ -110,7 +110,8 @@ public class UserAccountService {
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
 		user.setResetKey(RandomUtil.generatePassword());
 		user.setPassword(encoder.encode(user.getResetKey()));
-		return CompletableFuture.runAsync(() -> mailService.sendPasswordResetEmail(user));
+		return CompletableFuture.runAsync(() -> mailService.sendPasswordResetEmail(user))
+				.thenAccept(result -> user.setResetKey(null));
 	}
 	
 	public CompletableFuture<User> changePassword(ChangePasswordViewModel vmodel)

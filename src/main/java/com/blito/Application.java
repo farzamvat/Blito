@@ -25,7 +25,7 @@ public class Application {
 	public void init()
 	{
 		initializer.importPermissionsToDataBase();
-		initializer.insertAdminUserAndRole();
+		initializer.insertAdminUserAndRoleAndOldBlitoUsers();
 	}
 	
 	@GetMapping("/")

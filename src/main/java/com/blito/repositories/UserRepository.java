@@ -1,5 +1,6 @@
 package com.blito.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -13,5 +14,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
 	Optional<User> findByMobile(String mobile);
 	Optional<User> findByEmailAndActivationKey(String email,String key);
 	Optional<User> findByRefreshToken(String refreshToken);
+	List<User> findByIsOldUser(boolean isOld);
 	Page<User> findAll(Pageable pageable);
 }
