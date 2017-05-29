@@ -15,11 +15,11 @@
     "tests"
   ],
   "dependencies": {
-    "bootstrap": "^3.3.7",
-    "jquery": "^3.2.1",
-    "angular": "angularjs#^1.6.4",
-    "angular-route": "^1.6.4",
-    "angularUtils-pagination": "angular-utils-pagination#^0.11.1",
+    "bootstrap": "3.3.7",
+    "jquery": "3.2.1",
+    "angular": "angularjs#1.6.4",
+    "angular-route": "1.6.4",
+    "angularUtils-pagination": "angular-utils-pagination#0.11.1",
     "slick-carousel": "1.4.1",
     "angular-slick": "0.2.0"
   }
