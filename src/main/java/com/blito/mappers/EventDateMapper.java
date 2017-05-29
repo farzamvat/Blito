@@ -21,7 +21,10 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 		EventDate eventDate = new EventDate();
 		eventDate.setDate(vmodel.getDate());
 		eventDate.setDayOfWeek(vmodel.getDayOfWeek());
-		eventDate.setBlitTypes(vmodel.getBlitTypes().stream().map(blitTypeMapper::createFromViewModel).collect(Collectors.toList()));
+		vmodel.getBlitTypes().forEach(bt -> {
+			eventDate.getBlitTypes().add(blitTypeMapper.createFromViewModel(bt));
+		});
+//		eventDate.setBlitTypes(vmodel.getBlitTypes().stream().map(blitTypeMapper::createFromViewModel).collect(Collectors.toList()));
 		return eventDate;
 	}
 

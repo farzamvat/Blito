@@ -12,7 +12,7 @@ public class UserMapper implements GenericMapper <User, UserViewModel> {
 	
 	@Autowired EventHostMapper eventHostMapper; 
 	@Autowired ExchangeBlitMapper exchangeBlitMapper;
-	@Autowired BlitMapper blitMapper;
+	@Autowired BlitMapper BlitMapper;
 	
 	public User registerViewModeltoUser(RegisterVm vmodel)
 	{
@@ -48,7 +48,7 @@ public class UserMapper implements GenericMapper <User, UserViewModel> {
 		vmodel.setBanned(user.isBanned());
 		vmodel.setEventHosts(eventHostMapper.createFromEntities(user.getEventHosts()));
 		vmodel.setExchangeBlits(exchangeBlitMapper.createFromEntities(user.getExchangeBlits()));
-		vmodel.setBlits(blitMapper.createFromEntities(user.getBlits()));
+		vmodel.setBlits(BlitMapper.createFromEntities(user.getBlits()));
 		return vmodel;
 	}
 

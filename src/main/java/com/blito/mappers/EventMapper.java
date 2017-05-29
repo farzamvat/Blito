@@ -29,7 +29,10 @@ public class EventMapper implements GenericMapper<Event,EventViewModel> {
 		event.setLatitude(vmodel.getLatitude());
 		event.setLongitude(vmodel.getLongitude());
 		event.setOperatorState(OperatorState.PENDING);
-		event.setEventDates(vmodel.getEventDates().stream().map(eventDateMapper::createFromViewModel).collect(Collectors.toList()));
+		vmodel.getEventDates().forEach(ed -> {
+			event.getEventDates().add(eventDateMapper.createFromViewModel(ed));
+		});
+//		event.setEventDates(vmodel.getEventDates().stream().map(eventDateMapper::createFromViewModel).collect(Collectors.toList()));
 		event.setEventState(State.CLOSED);
 		event.setEvento(false);
 		return event;

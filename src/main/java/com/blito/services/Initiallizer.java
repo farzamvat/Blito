@@ -87,30 +87,30 @@ public class Initiallizer {
 				});
 		
 		final Role persistedUserRole = roleRepository.save(userRole);
-		String blitoOldUsers = null;
-		try {
-			blitoOldUsers = new String(Files.readAllBytes(Paths.get("blito_old_users.txt")));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		List<OldUser> olds = null;
-		try {
-			olds = objectMapper.readValue(blitoOldUsers, TypeFactory.defaultInstance().constructCollectionType(List.class, OldUser.class));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		List<User> oldUsers = olds.stream().map(u -> {
-			User user = new User();
-			user.setEmail(u.getEmail_address());
-			user.setMobile(u.getCell_number());
-			user.setOldUser(true);
-			user.setActive(true);
-			user.getRoles().add(persistedUserRole);
-			return user;
-		}).collect(Collectors.toList());
-		
-		userRepository.save(oldUsers);
+//		String blitoOldUsers = null;
+//		try {
+//			blitoOldUsers = new String(Files.readAllBytes(Paths.get("blito_old_users.txt")));
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		List<OldUser> olds = null;
+//		try {
+//			olds = objectMapper.readValue(blitoOldUsers, TypeFactory.defaultInstance().constructCollectionType(List.class, OldUser.class));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		
+//		List<User> oldUsers = olds.stream().map(u -> {
+//			User user = new User();
+//			user.setEmail(u.getEmail_address());
+//			user.setMobile(u.getCell_number());
+//			user.setOldUser(true);
+//			user.setActive(true);
+//			user.getRoles().add(persistedUserRole);
+//			return user;
+//		}).collect(Collectors.toList());
+//		
+//		userRepository.save(oldUsers);
 		
 		if(!adminResult.isPresent()) {
 			User user = new User();
@@ -121,7 +121,7 @@ public class Initiallizer {
 			userRepository.save(user);
 		}
 		
-		olds.forEach(u -> userAccountService.forgetPassword(u.getEmail_address()));
+//		olds.forEach(u -> userAccountService.forgetPassword(u.getEmail_address()));
 	}
 	
 }

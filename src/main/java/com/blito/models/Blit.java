@@ -19,7 +19,7 @@ public class Blit {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	long blitId;
 	int count;
-	long totalAmount;
+	double totalAmount;
 	@ManyToOne
 	@JoinColumn(name="userId")
 	User user;
@@ -38,11 +38,11 @@ public class Blit {
 		this.type = type;
 	}
 
-	public long getTotalAmount() {
+	public double getTotalAmount() {
 		return totalAmount;
 	}
 
-	public void setTotalAmount(long totalAmount) {
+	public void setTotalAmount(double totalAmount) {
 		this.totalAmount = totalAmount;
 	}
 

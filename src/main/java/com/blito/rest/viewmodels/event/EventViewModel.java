@@ -20,95 +20,87 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class EventViewModel {
 	@JsonView(View.SimpleEvent.class)
 	private long eventId;
-	
+
 	@NotNull
 	@JsonView(View.SimpleEvent.class)
-	private String EventName;
-	
+	private String eventName;
+
 	@NotNull
 	@JsonView(View.SimpleEvent.class)
 	private EventType eventType;
-	
+
 	@JsonView(View.SimpleEvent.class)
 	private Timestamp blitSaleStartDate;
-	
+
 	@JsonView(View.SimpleEvent.class)
 	private Timestamp blitSaleEndDate;
-	
+
 	@JsonView(View.Event.class)
 	private String address;
-	
+
 	@JsonView(View.Event.class)
 	private String description;
-	
+
 	@JsonView(View.Event.class)
 	private Double latitude;
-	
+
 	@JsonView(View.Event.class)
 	private Double longitude;
-	
+
 	@JsonView(View.Event.class)
 	private String aparatDisplayCode;
-	
+
 	@JsonView(View.SimpleEvent.class)
 	long eventHostId;
-	
+
 	@JsonView(View.SimpleEvent.class)
 	String eventHostName;
-	
+
 	@JsonView(View.SimpleEvent.class)
 	List<OfferTypeEnum> offers;
-	
+
 	@JsonView(View.Event.class)
 	List<EventDateViewModel> eventDates;
-	
+
 	@JsonView(View.SimpleEvent.class)
 	List<ImageViewModel> images;
-	
+
 	@JsonView(View.Event.class)
 	private String eventLink;
-	
+
 	@JsonView(View.Event.class)
 	private State eventState;
-	
+
 	@JsonView(View.Event.class)
 	private OperatorState operatorState;
-	
+
 	@JsonView(View.AdminEvent.class)
 	private int orderNumber;
-	
+
 	@JsonView(View.SimpleEvent.class)
 	private boolean isEvento;
-	
-	
-	
-	public EventViewModel()
-	{
+
+	public EventViewModel() {
 		eventDates = new ArrayList<>();
 		images = new ArrayList<>();
 		offers = new ArrayList<>();
 	}
-	
-	
+
 	public boolean isEvento() {
 		return isEvento;
 	}
-
 
 	public void setEvento(boolean isEvento) {
 		this.isEvento = isEvento;
 	}
 
-
 	public String getEventHostName() {
 		return eventHostName;
 	}
 
-
 	public void setEventHostName(String eventHostName) {
 		this.eventHostName = eventHostName;
 	}
-
 
 	public List<OfferTypeEnum> getOffers() {
 		return offers;
@@ -159,11 +151,11 @@ public class EventViewModel {
 	}
 
 	public String getEventName() {
-		return EventName;
+		return eventName;
 	}
 
 	public void setEventName(String eventName) {
-		EventName = eventName;
+		this.eventName = eventName;
 	}
 
 	public EventType getEventType() {

@@ -13,7 +13,6 @@ public class DiscountMapper implements GenericMapper<Discount, DiscountViewModel
 	@Override
 	public Discount createFromViewModel(DiscountViewModel vmodel) {
 		Discount discount = new Discount();
-		discount.setDiscountId(vmodel.getDiscountId());
 		discount.setCode(vmodel.getCode());
 		discount.setReusability(vmodel.getReusability());
 		discount.setEffectDate(vmodel.getEffectDate());

@@ -29,7 +29,8 @@ public class SecurityConfig {
 		filterRegistration.setUrlPatterns(
 				PathBuilder.build()
 					.setBaseUrl(baseUrl)
-					.addMatcher("/event-host/*")
+					.addMatcher("/events/*")
+					.addMatcher("/event-hosts/*")
 					.addMatcher("/account/*")
 					.addMatcher("/operator/*")
 					.addMatcher("/enums/*")
