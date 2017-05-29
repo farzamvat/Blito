@@ -368,6 +368,7 @@ color: white !important;
     padding-left: 0;
 }
 .profileTabs {
+    background-color: #555;
     padding-left: 0;
     position: fixed;
 }
@@ -378,6 +379,15 @@ color: white !important;
 .profileTabContent {
     background-color: #eee;
     border: 1px solid #aaa;
+}
+.showPlus {
+    display: block;
+}
+.showMinus {
+    display: none;
+}
+.exchangePhotoUpload {
+    max-width: 50%;
 }
 /*------------------------------------------------------------------------------------------------*/
 .slidingEventsBtn {
@@ -829,7 +839,28 @@ dir-pagination-controls ul {
 .checkboxStyle {
     margin-left: 10px !important;
 }
-/*--------------------*/
+.tabDropDown {
+    display: none;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+    background-color: #333;
+}
+.tabDropDown>li>a {
+    color: white;
+    font-size: 13px;
+    text-decoration: none;
+    text-align: center !important;
+}
+.tabDropDown>li {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.tabDropDown>li:hover {
+    background-color: #666;
+    cursor: pointer;
+}
+    /*--------------------*/
 .notificationStyle {
     width: 80%;
     margin: 10px auto;

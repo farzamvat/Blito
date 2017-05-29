@@ -54,9 +54,10 @@
 
 
     <!-- angular services-->
-    <script type="text/javascript" src="app/services/authServices.js"></script>
-    <script type="text/javascript" src="app/services/animateServices.js"></script>
-    <script type="text/javascript" src="app/services/uiServices.js"></script>
+    <script type="text/javascript" src="app/services/auth-services.js"></script>
+    <script type="text/javascript" src="app/services/animate-services.js"></script>
+    <script type="text/javascript" src="app/services/ui-services.js"></script>
+    <script type="text/javascript" src="app/services/user-profile-api-services.js"></script>
 
     <!-- angular directives-->
     <script type="text/javascript" src="app/directives/changeClassBySize.js"></script>
@@ -81,12 +82,12 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse ">
             <ul class="nav navbar-nav floatRight textAlignRight">
-                <li ng-show="logoutMenu" class="floatRight" ng-class="{ active: isActive('/profile')}"><a class="" href="/profile"><i class="fa fa-user" aria-hidden="true"></i>  {{firstname}} {{lastname}} </a></li>
+                <li ng-show="logoutMenu" class="floatRight" ng-class="{ active: isActive('/user-profile')}"><a class="" href="/user-profile"><i class="fa fa-user" aria-hidden="true"></i>  {{firstname}} {{lastname}} </a></li>
                 <li class="floatRight" ng-class="{ active: isActive('/')}"><a class="" href="/"><i class="fa fa-home" aria-hidden="true"></i> خانه </a></li>
-                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema') || isActive('/recentEvents') || isActive('/theatre')} || isActive('/cafe')">
+                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema') || isActive('/recent-events') || isActive('/theatre')} || isActive('/cafe')">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-calendar" aria-hidden="true"></i> رویداد ها   <span class="caret"></span></a>
                     <ul class="dropdown-menu textAlignRight">
-                        <li><a href="/recentEvents">آخرین رویدادها</a></li>
+                        <li><a href="/recent-events">آخرین رویدادها</a></li>
                         <li><a href="/cinema">سینما</a></li>
                         <!--<li role="separator" class="divider"></li>-->
                         <li><a href="/theatre">تئاتر</a></li>
@@ -96,13 +97,13 @@
                         <!--<li><a href="#">One more separated link</a></li>-->
                     </ul>
                 </li>
-                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinemaExchange') || isActive('/theatreExchange') || isActive('/cafeExchange')}">
+                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema-exchange') || isActive('/theatre-exchange') || isActive('/cafe-exchange')}">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ticket" aria-hidden="true"></i> بلیت های تعویضی   <span class="caret"></span></a>
                     <ul class="dropdown-menu textAlignRight">
-                        <li><a href="/cinemaExchange">سینما</a></li>
+                        <li><a href="/cinema-exchange">سینما</a></li>
                         <!--<li role="separator" class="divider"></li>-->
-                        <li><a href="/theatreExchange">تئاتر</a></li>
-                        <li><a href="/cafeExchange">کافه</a></li>
+                        <li><a href="/theatre-exchange">تئاتر</a></li>
+                        <li><a href="/cafe-exchange">کافه</a></li>
                         <!--<li class="dropdown-header">Nav header</li>-->
                         <!--<li><a href="#">Separated link</a></li>-->
                         <!--<li><a href="#">One more separated link</a></li>-->

@@ -4,8 +4,17 @@
 angular.module('UiServices', [])
     .service('mapMarkerService', function ($timeout) {
         var mapMarkerService = this;
-        var markers = [], markersExchange = [], map;
+        var markers = [], markersExchange = [], map, latLng;
 
+        mapMarkerService.getMarker = function () {
+            return latLng;
+        }
+        mapMarkerService.setMarker = function (lat, lng) {
+            latLng = {
+                lat : lat,
+                lng : lng
+            }
+        }
 
         var mapOptions = {
             zoom: 14,
@@ -32,6 +41,8 @@ angular.module('UiServices', [])
             },300);
 
             map.addListener('click', function (e) {
+                console.log(e.latLng.lng());
+                mapMarkerService.setMarker(e.latLng.lat(), e.latLng.lng());
                 placeMarker(e.latLng, map);
             })
 
@@ -56,12 +67,5 @@ angular.module('UiServices', [])
                 }
 
             }
-        }
-    })
-    .service('photoUploadService', function () {
-        var photoUploadService = this;
-
-        photoUploadService.uploadPic = function () {
-
         }
     })

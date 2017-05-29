@@ -160,8 +160,8 @@ angular.module('authServices', [])
                     defer.reject(rejection);
                     break;
                 case 400 :
-                    $location.path('/');
-                    AuthToken.setToken();
+                    // $location.path('/');
+                    // AuthToken.setToken();
                     console.dir("400");
                     defer.reject(rejection);
                     break;
