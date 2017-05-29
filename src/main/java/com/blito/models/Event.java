@@ -237,4 +237,10 @@ public class Event {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	public void addEventDate(EventDate eventDate)
+	{
+		this.eventDates.add(eventDate);
+		eventDate.setEvent(this);
+	}
 }

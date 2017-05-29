@@ -70,7 +70,6 @@ public class EventDate {
 
 	public void setEvent(Event event) {
 		this.event = event;
-		event.getEventDates().add(this);
 	}
 
 	public long getEventDateId() {
@@ -103,5 +102,11 @@ public class EventDate {
 
 	public void setBlitTypes(List<BlitType> blitTypes) {
 		this.blitTypes = blitTypes;
+	}
+	
+	public void addBlitType(BlitType blitType)
+	{
+		this.blitTypes.add(blitType);
+		blitType.setEventDate(this);
 	}
 }

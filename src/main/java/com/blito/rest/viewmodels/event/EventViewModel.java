@@ -29,9 +29,11 @@ public class EventViewModel {
 	@JsonView(View.SimpleEvent.class)
 	private EventType eventType;
 
+	@NotNull
 	@JsonView(View.SimpleEvent.class)
 	private Timestamp blitSaleStartDate;
 
+	@NotNull
 	@JsonView(View.SimpleEvent.class)
 	private Timestamp blitSaleEndDate;
 
