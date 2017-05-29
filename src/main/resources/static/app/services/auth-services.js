@@ -54,18 +54,18 @@ angular.module('authServices', [])
 
 
     })
-
+    .service('updateInfo', function ($http, config) {
+        var updateInfo = this;
+        updateInfo.updateData = function (updateData) {
+            return $http.post(config.baseUrl + '/api/blito/v1.0/account/update-info', updateData);
+        }
+    })
     .service('userCreate', function ($http, config) {
         var userService = this;
 
 
         userService.create = function (regData) {
-            return $http.post(config.baseUrl+'/api/blito/v1.0/register', regData)
-                .catch(function (data, status) {
-                    console.log("error 401");
-                })
-
-                ;
+            return $http.post(config.baseUrl+'/api/blito/v1.0/register', regData);
         }
 
     })
@@ -89,34 +89,24 @@ angular.module('authServices', [])
 
         authTokenService.setToken = function (data) {
             if(data) {
-                // try{
                     $window.localStorage.setItem('token', data.accessToken);
                     $window.localStorage.setItem('refresh-token', data.refreshToken);
-                // } catch(exception) {
-                //     $cookies.put('token', data.accessToken);
-                //     $cookies.put('refresh-token', data.refreshToken);
-                // }
+
             } else {
                     $window.localStorage.removeItem('token');
                     $window.localStorage.removeItem('refresh-token');
-                    // $cookies.remove('token');
-                    // $cookies.remove('refresh-token');
+
 
             }
         };
         authTokenService.getToken = function () {
-            // if($window.localStorage.getItem('token')) {
+
                 return $window.localStorage.getItem('token');
-            // } else {
-            //     return $cookies.get('token');
-            // }
+
         };
         authTokenService.getRefreshToken = function () {
-            // if($window.localStorage.getItem('refresh-token')) {
+
                 return $window.localStorage.getItem('refresh-token');
-            // } else {
-            //     return $cookies.get('refresh-token');
-            // }
         }
     })
 
@@ -167,10 +157,11 @@ angular.module('authServices', [])
                     break;
                 case 404 :
                     console.dir("404");
+                    defer.reject(rejection);
                     break;
                 case 400 :
-                    $location.path('/');
-                    AuthToken.setToken();
+                    // $location.path('/');
+                    // AuthToken.setToken();
                     console.dir("400");
                     defer.reject(rejection);
                     break;

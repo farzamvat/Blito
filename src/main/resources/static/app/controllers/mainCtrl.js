@@ -2,7 +2,7 @@
  * Created by soroush on 4/18/17.
  */
 angular.module('menuPagesModule', [])
-    .controller('mainCtrl', function ($rootScope, $scope, Auth, userCreate, $window, $timeout, $interval, $location, userInfo, AuthToken, refresh, config, scrollAnimation) {
+    .controller('mainCtrl', function ($rootScope, $scope, Auth, userCreate, $window, $timeout, $interval, $location, userInfo, AuthToken, refresh, config) {
         var main = this;
         main.checkingSession = false;
         $scope.loadPage = false;
@@ -10,7 +10,7 @@ angular.module('menuPagesModule', [])
 
 
 
-        //checks users refresh-token every x second
+        //checks users refresh-token every 10 second
         main.checkSession = function () {
             if(AuthToken.getRefreshToken()) {
                 main.checkingSession = true;
@@ -82,7 +82,9 @@ angular.module('menuPagesModule', [])
         // on route change
         $rootScope.$on("$locationChangeStart", function(event, next, current) {
             main.checkRefreshTokenValue();
-
+            if(Auth.isLoggedIn()) {
+                main.setUserData();
+            }
 
         });
 
@@ -91,22 +93,25 @@ angular.module('menuPagesModule', [])
         $scope.regUser = function (regData) {
             main.loading = true;
             main.errorMsg = false;
-
-            userCreate.create(regData)
-                .then(function (data, status) {
-                    main.successMsg = data.data.message;
-                    userInfo.setData(data.config.data);
-                    $('#registrationModal').modal('hide');
-                    $location.path('/activateUser');
-                    // $window.location.assign('/activateUser');
-                    // $timeout(function () {
-                    // }, 2000)
-                })
-                .catch(function (data, status) {
-                    main.errorMsg = data.data.message;
-                    console.log(data);
-                    console.log(main.errorMsg);
-                })
+            $("#loading").modal("show");
+            $("#registrationModal").modal("hide");
+            $timeout(function () {
+                userCreate.create(regData)
+                    .then(function (data, status) {
+                        $("#loading").modal("hide");
+                        main.successMsg = data.data.message;
+                        userInfo.setData(data.config.data);
+                        $('#registrationModal').modal('hide');
+                        $location.path('/activateUser');
+                    })
+                    .catch(function (data, status) {
+                        $scope.Msg = data.data.message;
+                        $("#loading").modal("hide");
+                        $("#notification").modal("show");
+                        console.log(data);
+                        console.log(main.errorMsg);
+                    })
+            },200)
         };
 
         $scope.login = function (loginData) {
@@ -136,8 +141,7 @@ angular.module('menuPagesModule', [])
                 .catch(function (data, status) {
                     $("#loading").modal("hide");
                     $("#notification").modal("show");
-                    // console.log(data);
-                    // $scope.Msg = data.data.message;
+                    $scope.Msg = data.data.message;
                 })
             }, 2000)
             ;
@@ -154,14 +158,7 @@ angular.module('menuPagesModule', [])
             return viewLocation === $location.path();
         }
 
-        $scope.scrollTo = function(id) {
-            var old = $location.hash();
-            $location.hash(id);
-            $location.hash(old);
 
-            // call $anchorScroll()
-            scrollAnimation.scrollTo(id);
-        }
         $scope.showDescription = function (event) {
             $(event.target).find('.eventDescription').slideDown(150);
         }

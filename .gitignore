@@ -9,3 +9,5 @@
 /images
 .scannerwork
 /src/main/resources/static/bower_components
+src/main/resources/node_modules/
+src/main/resources/server.js

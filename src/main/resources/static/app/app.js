@@ -14,16 +14,15 @@ angular.module('Blito',
         'bioPageModule',
         'User',
         'blitoDirectives',
-        'ngMap',
         'animationServices',
-        'mapServices'
+        'UiServices',
+        'userProfileApi'
     ])
     .config(function ($httpProvider) {
         $httpProvider.interceptors.push('AuthInterceptors');
-
     })
     .constant('config', {
-        baseUrl : 'http://192.168.200.167:8085',
+        baseUrl : 'http://192.168.201.145:8085',
         redirectToUrlAfterLogin : {url : '/'}
     })
 ;

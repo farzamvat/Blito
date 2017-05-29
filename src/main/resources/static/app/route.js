@@ -16,7 +16,7 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 templateUrl : 'app/views/pages/home.html',
                 authenticated: false
             })
-            .when('/recentEvents', {
+            .when('/recent-events', {
                 templateUrl : 'app/views/pages/eventList.html',
                 authenticated: false
 
@@ -36,39 +36,38 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 authenticated: false
 
             })
-            .when('/cinemaExchange', {
+            .when('/cinema-exchange', {
                 templateUrl : 'app/views/pages/eventList.html',
                 authenticated: false
 
             })
-            .when('/theatreExchange', {
+            .when('/theatre-exchange', {
                 templateUrl : 'app/views/pages/eventList.html',
                 authenticated: false
 
             })
-            .when('/cafeExchange', {
+            .when('/cafe-exchange', {
                 templateUrl : 'app/views/pages/eventList.html',
                 authenticated: false
 
             })
-            .when('/eventPage', {
+            .when('/event-page', {
                 templateUrl : 'app/views/pages/eventPage.html',
                 authenticated: false
 
             })
-            .when('/bioPage', {
+            .when('/bio-page', {
                 templateUrl : 'app/views/pages/bioPage.html',
                 authenticated: false
-
             })
-            .when('/activateUser', {
+            .when('/activate-user', {
                 templateUrl : 'app/views/pages/activateUser.html',
                 authenticated: false
 
             })
-            .when('/profile', {
+            .when('/user-profile', {
                 templateUrl : 'app/views/pages/userProfile.html',
-                authenticated: false
+                authenticated: true
             })
 
             .otherwise({redirectTo: '/'})
@@ -76,22 +75,22 @@ var app = angular.module('appRoutes', ['ngRoute'])
 
     });
 
-app.run(['$rootScope', 'Auth', '$location', 'AuthToken', function ($rootScope, Auth, $location) {
+app.run(['$rootScope', 'Auth', '$location', function ($rootScope, Auth, $location) {
     $rootScope.$on('$routeChangeStart', function (event, next) {
-
         if(next.$$route.authenticated === true) {
             if(!Auth.isLoggedIn() && !Auth.loggedInRefresh()) {
                 event.preventDefault();
                 $location.path('/');
             }
 
-        } else if (next.$$route.authenticated === false) {
-            if(Auth.isLoggedIn() || Auth.loggedInRefresh()) {
-                event.preventDefault();
-                $location.path('/');
-            }
-
         }
+        // else if (next.$$route.authenticated === false) {
+        //     if(Auth.isLoggedIn() || Auth.loggedInRefresh()) {
+        //         event.preventDefault();
+        //         $location.path('/');
+        //     }
+        //
+        // }
 
     });
 }]);

@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="Blito" ng-controller="mainCtrl as main">
 <head>
-    <base href="/"></base>
-    <meta charset="UTF-8"></meta>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
-    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1, user-scalable=0.5" ></meta>
+    <base href="/">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1, user-scalable=0.5" >
     <title>بلیتو</title>
 
     <!-- external css libraries-->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"></link>
-    <link rel="stylesheet" href="assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css"></link>
-    <link rel="stylesheet" href="bower_components/slick-carousel/slick/slick.css"></link>
-    <link rel="stylesheet" href="bower_components/slick-carousel/slick/slick-theme.css"></link>
-    <link rel="stylesheet" href="assets/css/wizardStyle.css"></link>
-    <link rel="stylesheet" href="assets/css/custom.css"></link>
-    <link rel="stylesheet" href="assets/css/tabProfile.css"></link>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="bower_components/slick-carousel/slick/slick.css">
+    <link rel="stylesheet" href="bower_components/slick-carousel/slick/slick-theme.css">
+    <link rel="stylesheet" href="assets/css/wizardStyle.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+    <link rel="stylesheet" href="assets/css/tabProfile.css">
 
 
 
     <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+
+
 
     <!-- angular js libraries-->
     <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
@@ -29,11 +31,13 @@
     <script type="text/javascript" src="bower_components/angular-slick/dist/slick.min.js"></script>
     <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="bower_components/slick-carousel/slick/slick.min.js"></script>
-    <script type="text/javascript" src="bower_components/ngmap/build/scripts/ng-map.min.js"></script>
-
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu5nZKbeK-WHQ70oqOWo-_4VmwOwKP9YQ"></script>
     <script type="text/javascript" src="assets/js/script.js"></script>
 
+    <!-- jalali date-picker -->
+    <link rel="stylesheet" href="bower_components/persian-datepicker/dist/css/persian-datepicker-0.4.5.min.css"/>
+    <script src="bower_components/persian-datepicker/lib/persian-date.js"></script>
+    <script src="bower_components/persian-datepicker/dist/js/persian-datepicker-0.4.5.min.js"></script>
 
     <!-- angular modules-->
     <script type="text/javascript" src="app/app.js"></script>
@@ -50,9 +54,10 @@
 
 
     <!-- angular services-->
-    <script type="text/javascript" src="app/services/authServices.js"></script>
-    <script type="text/javascript" src="app/services/animateServices.js"></script>
-    <script type="text/javascript" src="app/services/mapServices.js"></script>
+    <script type="text/javascript" src="app/services/auth-services.js"></script>
+    <script type="text/javascript" src="app/services/animate-services.js"></script>
+    <script type="text/javascript" src="app/services/ui-services.js"></script>
+    <script type="text/javascript" src="app/services/user-profile-api-services.js"></script>
 
     <!-- angular directives-->
     <script type="text/javascript" src="app/directives/changeClassBySize.js"></script>
@@ -77,12 +82,12 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse ">
             <ul class="nav navbar-nav floatRight textAlignRight">
-                <li ng-show="logoutMenu" class="floatRight" ng-class="{ active: isActive('/profile')}"><a class="" href="/profile"><i class="fa fa-user" aria-hidden="true"></i>  {{firstname}} {{lastname}} </a></li>
+                <li ng-show="logoutMenu" class="floatRight" ng-class="{ active: isActive('/user-profile')}"><a class="" href="/user-profile"><i class="fa fa-user" aria-hidden="true"></i>  {{firstname}} {{lastname}} </a></li>
                 <li class="floatRight" ng-class="{ active: isActive('/')}"><a class="" href="/"><i class="fa fa-home" aria-hidden="true"></i> خانه </a></li>
-                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema') || isActive('/recentEvents') || isActive('/theatre')} || isActive('/cafe')">
+                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema') || isActive('/recent-events') || isActive('/theatre')} || isActive('/cafe')">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-calendar" aria-hidden="true"></i> رویداد ها   <span class="caret"></span></a>
                     <ul class="dropdown-menu textAlignRight">
-                        <li><a href="/recentEvents">آخرین رویدادها</a></li>
+                        <li><a href="/recent-events">آخرین رویدادها</a></li>
                         <li><a href="/cinema">سینما</a></li>
                         <!--<li role="separator" class="divider"></li>-->
                         <li><a href="/theatre">تئاتر</a></li>
@@ -92,13 +97,13 @@
                         <!--<li><a href="#">One more separated link</a></li>-->
                     </ul>
                 </li>
-                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinemaExchange') || isActive('/theatreExchange') || isActive('/cafeExchange')}">
+                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema-exchange') || isActive('/theatre-exchange') || isActive('/cafe-exchange')}">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ticket" aria-hidden="true"></i> بلیت های تعویضی   <span class="caret"></span></a>
                     <ul class="dropdown-menu textAlignRight">
-                        <li><a href="/cinemaExchange">سینما</a></li>
+                        <li><a href="/cinema-exchange">سینما</a></li>
                         <!--<li role="separator" class="divider"></li>-->
-                        <li><a href="/theatreExchange">تئاتر</a></li>
-                        <li><a href="/cafeExchange">کافه</a></li>
+                        <li><a href="/theatre-exchange">تئاتر</a></li>
+                        <li><a href="/cafe-exchange">کافه</a></li>
                         <!--<li class="dropdown-header">Nav header</li>-->
                         <!--<li><a href="#">Separated link</a></li>-->
                         <!--<li><a href="#">One more separated link</a></li>-->
