@@ -17,8 +17,12 @@ import com.blito.exceptions.NotFoundException;
 import com.blito.models.Image;
 import com.blito.repositories.ImageRepository;
 import com.blito.resourceUtil.ResourceUtil;
-import com.blito.rest.viewmodels.image.ImageUploadViewModel;
-import com.blito.services.ImageService;
+import com.blito.rest.viewmodels.View;
+import com.blito.rest.viewmodels.View;
+import com.blito.rest.viewmodels.image.ImageBase64ViewModel;
+import com.blito.rest.viewmodels.image.ImageViewModel;
+
+import com.fasterxml.jackson.annotation.JsonView;import com.blito.services.ImageService;
 
 @RestController
 @RequestMapping("${api.base.url}")
@@ -29,18 +33,19 @@ public class ImageController {
 	@Autowired
 	ImageRepository imageRepository;
 	
+	@JsonView(View.DefaultView.class)
 	@PostMapping("/images/upload")
-	public DeferredResult<ResponseEntity<?>> upload(@RequestBody ImageUploadViewModel vmodel)
+	public DeferredResult<ResponseEntity<ImageViewModel>> upload(@RequestBody ImageBase64ViewModel vmodel)
 	{
-		DeferredResult<ResponseEntity<?>> deferred = new DeferredResult<>();
+		DeferredResult<ResponseEntity<ImageViewModel>> deferred = new DeferredResult<>();
 		return imageService.save(vmodel.getEncodedBase64())
 				.thenApply(uuid -> {
 					Image image = new Image();
 					image.setImageUUID(uuid);
 					imageRepository.save(image);
-					JSONObject json = new JSONObject();
-					json.put("imageId",image.getImageUUID());
-					deferred.setResult(ResponseEntity.status(HttpStatus.CREATED).body(json.toString()));
+					ImageViewModel responseVmodel = new ImageViewModel();
+					responseVmodel.setImageUUID(image.getImageUUID());
+					deferred.setResult(ResponseEntity.status(HttpStatus.CREATED).body(responseVmodel));
 					return deferred;
 				})
 				.exceptionally(throwable -> {
@@ -49,19 +54,20 @@ public class ImageController {
 				}).join();
 	}
 	
+	@JsonView(View.DefaultView.class)
 	@GetMapping("/images/download")
-	public DeferredResult<ResponseEntity<String>> download(@RequestParam String id)
+	public DeferredResult<ResponseEntity<ImageBase64ViewModel>> download(@RequestParam String id)
 	{
-		DeferredResult<ResponseEntity<String>> deferred = new DeferredResult<>();
+		DeferredResult<ResponseEntity<ImageBase64ViewModel>> deferred = new DeferredResult<>();
 		Image image = imageRepository.findByImageUUID(id)
 			.map(i -> i)
 			.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
 		
 		return imageService.getFileEncodedBase64(image.getImageUUID())
 				.thenApply(imageEncodedBase64 -> {
-					JSONObject json = new JSONObject();
-					json.put("imageBase64", imageEncodedBase64);
-					deferred.setResult(ResponseEntity.ok(json.toString()));
+					ImageBase64ViewModel responseViewModel = new ImageBase64ViewModel();
+					responseViewModel.setEncodedBase64(imageEncodedBase64);
+					deferred.setResult(ResponseEntity.ok(responseViewModel));
 					return deferred;
 				})
 				.exceptionally(throwable -> {

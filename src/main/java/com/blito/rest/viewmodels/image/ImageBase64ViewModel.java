@@ -1,6 +1,10 @@
 package com.blito.rest.viewmodels.image;
 
-public class ImageUploadViewModel {
+import com.blito.rest.viewmodels.View;
+import com.fasterxml.jackson.annotation.JsonView;
+
+public class ImageBase64ViewModel {
+	@JsonView(View.DefaultView.class)
 	String encodedBase64;
 
 	public String getEncodedBase64() {

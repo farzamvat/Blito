@@ -2,10 +2,13 @@ package com.blito.rest.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -74,6 +77,16 @@ public class EventController {
 	@PostMapping("/set-discount-code")
 	public ResponseEntity<DiscountViewModel> setDiscountCode(@Validated @RequestBody DiscountViewModel vmodel) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(eventService.setDiscountCode(vmodel));
+	}
+	
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "get all user's events")
+	@ApiResponses({ @ApiResponse(code = 200, message = "get all user's events ok", response = EventViewModel.class)})
+	// ***************** SWAGGER DOCS ***************** //
+	@JsonView(View.SimpleEvent.class)
+	@GetMapping("/all-user-events")
+	public ResponseEntity<Page<EventViewModel>> getAllUserEvents(Pageable pageable){
+		return ResponseEntity.ok(eventService.getUserEvents(pageable));
 	}
 
 	

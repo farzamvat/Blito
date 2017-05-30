@@ -103,8 +103,9 @@ public class EventHostService {
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		return eventHostMapper.toPage(
 				new PageImpl<>(user.getEventHosts().stream().skip(pageable.getPageNumber() * pageable.getPageSize())
-						.limit(pageable.getPageSize()).collect(Collectors.toList())),
+						.limit(pageable.getPageSize()).collect(Collectors.toList()),pageable,user.getEventHosts().size()),
 				eventHostMapper::createFromEntity);
+//		return eventHostMapper.createFromEntities(user.getEventHosts());
 	}
 	
 	public Page<EventHostViewModel> searchEventHosts(SearchViewModel<EventHost> searchViewModel, Pageable pageable) {

@@ -36,7 +36,9 @@ public class ExchangeBlitViewModel {
 	@JsonView(View.ExchangeBlit.class)
 	private String eventAddress;
 	@JsonView(View.ExchangeBlit.class)
-	private String vendorAddress;
+	private double latitude;
+	@JsonView(View.ExchangeBlit.class)
+	private double longitude;
 	@JsonView(View.ExchangeBlit.class)
 	private String description;
 	@JsonView(View.SimpleExchangeBlit.class)
@@ -136,14 +138,6 @@ public class ExchangeBlitViewModel {
 		this.eventAddress = eventAddress;
 	}
 
-	public String getVendorAddress() {
-		return vendorAddress;
-	}
-
-	public void setVendorAddress(String vendorAddress) {
-		this.vendorAddress = vendorAddress;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -159,4 +153,21 @@ public class ExchangeBlitViewModel {
 	public void setState(State state) {
 		this.state = state;
 	}
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+	
 }

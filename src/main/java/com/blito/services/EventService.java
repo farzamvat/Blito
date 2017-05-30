@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +33,7 @@ import com.blito.models.Discount;
 import com.blito.models.Event;
 import com.blito.models.EventHost;
 import com.blito.models.Image;
+import com.blito.models.User;
 import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.DiscountRepository;
 import com.blito.repositories.EventHostRepository;
@@ -200,14 +202,22 @@ public class EventService {
 	public DiscountViewModel setDiscountCode(DiscountViewModel vmodel) {
 		if (vmodel.getEffectDate().after(vmodel.getExpirationDate()))
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_DATES));
-		if(discountRepository.findByCode(vmodel.getCode()).isPresent())
+		if (discountRepository.findByCode(vmodel.getCode()).isPresent())
 			throw new AlreadyExistsException(ResourceUtil.getMessage(Response.DISCOUNT_CODE_ALREADY_EXISTS));
 		Discount discount = discountMapper.createFromViewModel(vmodel);
 		discount.setUser(userRepository.findOne(SecurityContextHolder.currentUser().getUserId()));
 		discount.setBlitTypes(
 				vmodel.getBlitTypeIds().stream().map(bt -> getBlitTypeFromRepository(bt)).collect(Collectors.toList()));
-		
+
 		discount = discountRepository.save(discount);
 		return discountMapper.createFromEntity(discount);
+	}
+
+	@Transactional
+	public Page<EventViewModel> getUserEvents(Pageable pageable) {
+		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
+		Stream<Event> events = user.getEventHosts().stream().flatMap(eh -> eh.getEvents().stream());
+		return eventMapper.toPage(new PageImpl<>(events.skip(pageable.getPageNumber() * pageable.getPageSize()).limit(pageable.getPageSize())
+				.collect(Collectors.toList()), pageable, events.count()), eventMapper::createFromEntity);
 	}
 }
