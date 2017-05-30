@@ -16,13 +16,14 @@ public class ImageMapper implements GenericMapper<Image,ImageViewModel> {
 	
 	public List<Image> setImageTypeFromImageViewModels(List<Image> images,List<ImageViewModel> vmodels)
 	{
-		return images.stream().map(im -> vmodels.stream()
+		images = images.stream().map(im -> vmodels.stream()
 				.filter(imv -> imv.getImageUUID().equals(im.getImageUUID())).map(imageViewModel -> {
 					im.setImageType(imageViewModel.getType());
 					return im;
-				}).findFirst().map(i -> i)
-				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))))
+				}).findFirst().orElse(null))
 				.collect(Collectors.toList());
+		images.removeIf(im -> im == null);
+		return images;
 	}
 
 	@Override
