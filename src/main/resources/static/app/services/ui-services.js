@@ -69,3 +69,93 @@ angular.module('UiServices', [])
             }
         }
     })
+    .service('dataService', function () {
+        var data = this;
+
+        data.eventTypePersian = function (type) {
+            var persianType = ''
+            switch (type) {
+                case "CINEMA" :
+                    persianType = 'سینما';
+                    break;
+                case "THEATER" :
+                    persianType = 'تئاتر';
+                    break;
+                case "TOURISM" :
+                    persianType = 'تور';
+                    break;
+                case "CONCERT" :
+                    persianType = 'کنسرت';
+                    break;
+                case "SPORT" :
+                    persianType = 'ورزشی';
+                    break;
+                case "DISCOUNT_TICKET" :
+                    persianType = 'بن تخفیف';
+                    break;
+                case "WORKSHOP" :
+                    persianType = 'کارگاه';
+                    break;
+                case "INDIVIDUAL" :
+                    persianType = 'فرد';
+                    break;
+                case "CULTURALCENTER" :
+                    persianType = 'فرهنگسرا';
+                    break;
+                case "ORGANIZATION" :
+                    persianType = 'نهاد';
+                    break;
+                case "INSTITUTION" :
+                    persianType = 'مؤسسه';
+                    break;
+                case "COFFEESHOP" :
+                    persianType = 'کافی شاپ';
+                    break;
+                default :
+                    persianType = 'گونه'
+                    break;
+            }
+            return persianType;
+        }
+
+        data.stateTypePersian = function (state) {
+            var persianState = '';
+            switch (state) {
+                case "SOLD" :
+                    persianState = 'فروخته شده';
+                    break;
+                case "OPEN" :
+                    persianState = 'فعال';
+                    break;
+                case "CLOSED" :
+                    persianState = 'بسته';
+                    break;
+                default :
+                    persianState = 'گونه'
+                    break;
+
+            }
+            return persianState;
+        }
+
+        data.operatorStatePersian = function (operatorState) {
+            var persianOperatorState = '';
+            switch (operatorState) {
+                case "REJECTED" :
+                    persianOperatorState = 'رد شده';
+                    break;
+                case "PENDING" :
+                    persianOperatorState = 'انتظار';
+                    break;
+                case "APPROVED" :
+                    persianOperatorState = 'تأیید شده';
+                    break;
+                default :
+                    persianOperatorState = 'گونه'
+                    break;
+
+            }
+            return persianOperatorState;
+        }
+
+    })

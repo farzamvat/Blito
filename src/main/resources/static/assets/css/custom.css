@@ -245,7 +245,7 @@ color: white !important;
 }
 
 .userProfileInfo {
-    height: 200px;
+    height: 170px;
     background: url('../img/orange1.png') fixed repeat-y;
     background-size: 100% 400px;
 }
@@ -345,7 +345,7 @@ color: white !important;
 .card.hovercard .card-info {
     /*overflow: hidden;*/
     font-size: 12px;
-    line-height: 20px;
+    line-height: 15px;
     color: #737373;
 }
 .card.hovercard .bottom {
@@ -371,6 +371,7 @@ color: white !important;
     background-color: #555;
     padding-left: 0;
     position: fixed;
+    z-index: 100;
 }
 .profileTabs>li>a {
     border-radius: 0;
@@ -388,6 +389,13 @@ color: white !important;
 }
 .exchangePhotoUpload {
     max-width: 50%;
+}
+.persianTimeExchange {
+    text-align: center;
+    direction: ltr;
+    height: 30px;
+    border: none;
+    width: 100%;
 }
 /*------------------------------------------------------------------------------------------------*/
 .slidingEventsBtn {

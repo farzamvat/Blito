@@ -168,7 +168,7 @@
                                                     <label class="registerLabel floatRight" for="exchangeName" >نام رویداد :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input height="60" id="exchangeName"   type="text"  class="form-group registerInput" >
+                                                    <input height="60" id="exchangeName" ng-model="exchange.name"  type="text"  class="form-group registerInput" >
                                                 </div>
                                             </div>
 
@@ -177,15 +177,8 @@
                                                     <label class="registerLabel floatRight" for="exchangeType">نوع رویداد :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <select id="exchangeType" class="form-control dropDownList">
-                                                        <option>تئاتر</option>
-                                                        <option>سینما</option>
-                                                        <option>کنسرت</option>
-                                                        <option>تور</option>
-                                                        <option>ورزشی</option>
-                                                        <option>کارگاه</option>
-                                                        <option>بن تخفیف</option>
-                                                        <option>سایر</option>
+                                                    <select id="exchangeType" ng-model="exchange.type" class="form-control dropDownList" ng-options="o.v as o.n for o in [{n : 'تئاتر', v: 'THEATER'},{n : 'سینما', v: 'CINEMA'},{n : 'کنسرت', v: 'CONCERT'},{n : 'تور', v: 'TOURISM'},{n : 'ورزشی', v: 'SPORT'},{n : 'کارگاه', v: 'WORKSHOP'}, {n : 'بن تخفیف', v: 'DISCOUNT_TICKET'}, {n : 'سایر', v: 'OTHER'}]">
+
 
                                                     </select>
                                                 </div>
@@ -197,7 +190,7 @@
                                                     <label class="registerLabel floatRight" for="eventExchangeDate" >تاریخ و ساعت رویداد  :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input type="text" id="eventExchangeDate" ng-model="showTime.eventTime" class="persianTime datePickerFormat" readonly/>
+                                                    <input type="text" id="eventExchangeDate" ng-model="showTime.eventTime" class="persianExchangeTime datePickerFormat" readonly/>
                                                 </div>
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
@@ -205,7 +198,7 @@
                                                     <label class="registerLabel floatRight" for="exchangePrice" >قیمت بلیت  :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input height="60" id="exchangePrice"   type="text"  class="form-group registerInput" >
+                                                    <input height="60" id="exchangePrice" ng-model="exchange.price"   type="number"  class="form-group registerInput" >
                                                 </div>
                                             </div>
                                         </div>
@@ -215,11 +208,11 @@
                                                     <label class="registerLabel floatRight" for="exchangeDescription" >توضیحات رویداد :</label>
                                                 </div>
                                                 <div class="col-xs-11  floatRight ">
-                                                    <textarea ng-model="eventFields.description"  id="exchangeDescription"   type="text"  class="form-group textAreaForm" ></textarea>
+                                                    <textarea ng-model="exchange.description"  id="exchangeDescription"   type="text"  class="form-group textAreaForm" ></textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
-                                                <label  class="marginRight30"><input class="checkboxStyle"    type="checkbox" value=""> رویداد در وبسایت بلیتو بوده</label>
+                                                <label  class="marginRight30"><input class="checkboxStyle" ng-model="exchange.isBlito"    type="checkbox" value=""> رویداد در وبسایت بلیتو بوده</label>
                                             </div>
                                         </div>
 
@@ -256,7 +249,7 @@
                                                     <label class="registerLabel floatRight" for="exchangeAddress" >آدرس :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <textarea ng-model="eventFields.address"  id="exchangeAddress"   type="text"  class="form-group textAreaForm marginTop30" ></textarea>
+                                                    <textarea ng-model="exchange.address"  id="exchangeAddress"   type="text"  class="form-group textAreaForm marginTop30" ></textarea>
                                                 </div>
                                             </div>
 
@@ -279,9 +272,13 @@
                                     </fieldset>
                                     <div class="control-group text-center marginBottom20">
                                         <label class="control-label" for="signInButton"></label>
-                                        <div class="controls">
-                                            <button id="exchangeEventSubmit" ng-click="" name="signin" class="btn btn-success btn-lg btnLogin">ثبت آگهی</button>
+                                        <div ng-show="submitExchangeNotif" class="text-center alert alert-success col-xs-12 marginTop10">
+                                            <strong>آگهی با موفقیت ثبت شد</strong>
                                         </div>
+                                        <div class="controls">
+                                            <button id="exchangeEventSubmit" ng-click="submitExchangeTicket(exchange)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت آگهی <i ng-show="submitExchangeSpinner" class="fa fa-spinner fa-spin"></i></button>
+                                        </div>
+
                                     </div>
 
                                 </form>
@@ -302,23 +299,27 @@
 
                                                 <th class="dataCenter">نام رویداد
                                                 </th>
-                                                <th class="dataCenter" >تاریخ
+                                                <th class="dataCenter" >تاریخ و ساعت
                                                 </th>
-                                                <th class="dataCenter" >روز
+                                                <th class="dataCenter" >وضعیت ثبت
                                                 </th>
-                                                <th class="dataCenter" >ساعت
+                                                <th class="dataCenter" >نوع
+                                                </th>
+                                                <th class="dataCenter" >وضعیت رویداد
                                                 </th>
                                                 <th class="dataCenter" >قیمت
                                                 </th>
                                             </tr>
                                             </thead>
                                             <tbody class="showTimeList">
-                                            <tr ng-repeat="item in showTime">
+                                            <tr ng-repeat="item in exchangeTickets">
                                                 <td class="dataCenter">{{ item.title}}</td>
-                                                <td class="dataCenter">{{ item.time}}</td>
-                                                <td class="dataCenter">{{ item.weekDay}}</td>
-                                                <td class="dataCenter">{{ item.date}}</td>
-                                                <td class="dataCenter">{{ item.price}}</td>
+                                                <td><input value="{{ item.eventDate}}" class="dataCenter persianTimeExchange" disabled readonly/></td>
+                                                <td class="dataCenter">{{ item.operatorState}}</td>
+                                                <td class="dataCenter">{{ item.type}}</td>
+                                                <td class="dataCenter">{{ item.state}}</td>
+
+                                                <td class="dataCenter">{{ item.blitCost}}</td>
 
                                             </tr>
                                             </tbody>
@@ -478,10 +479,8 @@
                                                     <label class="registerLabel" for="eventPlanner">انتخاب برگذار کننده   :</label>
                                                 </div>
                                                 <div class="col-xs-7 col-sm-6 floatRight ">
-                                                    <select id="eventPlanner" ng-model="eventFields.eventPlanner" class="form-control dropDownList">
-                                                        <option>برگذار کننده ۱</option>
-                                                        <option>برگذار کننده ۲</option>
-                                                        <option>برگذار کننده ۳</option>
+                                                    <select id="eventPlanner" ng-model="eventFields.eventPlanner" ng-options="obj.hostName for obj in eventHosts track by obj.eventHostId" class="form-control dropDownList">
+
                                                     </select>
                                                 </div>
 
@@ -735,7 +734,7 @@
                             <div class="panel-body makeEventPlannerForm">
                                 <form class="form-inline textAlignRight">
                                     <fieldset class="fieldsetStyle">
-                                        <div class="col-xs-12 col-sm-6 floatRight">
+                                        <div class="col-xs-12 col-sm-12 floatRight">
                                             <div class="panel panel-primary customPanel customPanelUser">
 
                                                 <div class="panel-heading">
@@ -774,7 +773,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-xs-12 col-sm-6 floatRight">
+                                        <div class="col-xs-12 col-sm-12 floatRight">
                                             <div class="panel panel-primary customPanel customPanelUser">
                                                 <div class="panel-heading">
                                                     <span class="glyphicon glyphicon-list"></span> لیست برگذار کننده ها
@@ -788,16 +787,17 @@
 
                                                             <th class="dataCenter">نام برگذار کننده
                                                             </th>
-                                                            <th class="dataCenter" >نوع
+                                                            <th class="dataCenter" >تلفن
                                                             </th>
-                                                            <th class="dataCenter" >آدرس
+                                                            <th class="dataCenter" >آدرس وبسایت
                                                             </th>
                                                         </tr>
                                                         </thead>
                                                         <tbody class="showTimeList">
-                                                        <tr ng-repeat="item in showTime">
-                                                            <td class="dataCenter">{{ item.title}}</td>
-                                                            <td class="dataCenter">{{ item.time}}</td>
+                                                        <tr ng-repeat="item in eventHosts">
+                                                            <td class="dataCenter">{{ item.hostName}}</td>
+                                                            <td class="dataCenter">{{ item.telephone}}</td>
+                                                            <td class="dataCenter">{{ item.websiteLink}}</td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
