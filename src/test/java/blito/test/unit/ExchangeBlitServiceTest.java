@@ -29,7 +29,6 @@ import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.ExchangeBlitService;
 
-@ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 @Transactional
@@ -42,7 +41,6 @@ public class ExchangeBlitServiceTest {
 	private ExchangeBlitService exService;
 	@Autowired
 	private ImageRepository imageRepository; 
-	private boolean isInit = false;
 	User user = new User();
 	User user2 = new User();
 	ExchangeBlitViewModel createExBlitVmodel1 = new ExchangeBlitViewModel();
@@ -57,8 +55,6 @@ public class ExchangeBlitServiceTest {
 	@Before
 	public void init()
 	{
-		if(!isInit)
-		{
 			Image image = new Image();
 			image.setImageUUID(Constants.DEFAULT_EXCHANGEBLIT_PHOTO);
 			image.setImageType(ImageType.EXCHANGEBLIT_PHOTO);
@@ -96,9 +92,7 @@ public class ExchangeBlitServiceTest {
 			myExBlitVmodel3.setDescription("my3");
 			myExBlitVmodel3.setEmail("hasti.sahabi@gmail.com");
 
-			isInit = true;
 
-		}
 	}
 	
 	@Test

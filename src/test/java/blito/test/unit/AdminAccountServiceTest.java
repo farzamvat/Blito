@@ -22,7 +22,7 @@ import com.blito.rest.viewmodels.account.UserViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.AdminAccountService;
 
-@ActiveProfiles("test")
+//@ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 @Transactional
@@ -33,7 +33,6 @@ public class AdminAccountServiceTest {
 	@Autowired
 	AdminAccountService adminAccService;
 	
-	private boolean isInit = false;
 	private User admin = new User();
 	private User user1 = new User();
 	private User user2 = new User();
@@ -42,7 +41,6 @@ public class AdminAccountServiceTest {
 	
 	@Before
 	public void init() {
-		if(!isInit) {
 			admin.setFirstname("Admin");
 			admin.setEmail("admin@gamil.com");
 			admin.setActive(true);
@@ -68,8 +66,6 @@ public class AdminAccountServiceTest {
 			user4.setActive(true);
 			user4 = userRepo.save(user4);
 			
-			isInit = true;
-		}
 		
 	}
 	
@@ -88,7 +84,7 @@ public class AdminAccountServiceTest {
 	public void getAll() {
 		Pageable pageable = new PageRequest(0,10);
 		Page<UserViewModel> users = adminAccService.getAllUsers(pageable);
-		assertEquals(5, users.getNumberOfElements());
+		assertEquals(6, users.getNumberOfElements());
 	}
 	
 	@Test

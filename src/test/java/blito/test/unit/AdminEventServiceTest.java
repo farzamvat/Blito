@@ -72,7 +72,6 @@ public class AdminEventServiceTest {
 	@Autowired
 	CommonBlitRepository cBlitRepo;
 	
-	private  boolean isInit = false;
 	private User user = new User();
 	
 	private EventHost eventHost= new EventHost();
@@ -105,7 +104,6 @@ public class AdminEventServiceTest {
 
 	@Before
 	public void init() {
-		if(!isInit) {
 			user.setFirstname("hasti");
 			user.setEmail("hasti.sahabi@gmail.com");
 			user.setActive(true);
@@ -114,6 +112,7 @@ public class AdminEventServiceTest {
 			eventHost.setHostName("paliz theater");
 			eventHost.setHostType(HostType.CULTURALCENTER);
 			eventHost.setTelephone("22431103");
+			eventHost.setUser(user);
 			eventHost = eventHostRepo.save(eventHost);
 			
 			event1.setEventName("akharin naameh");
@@ -207,8 +206,6 @@ public class AdminEventServiceTest {
 			cblit4.setUser(user);
 			cblit4 = cBlitRepo.save(cblit4);
 			
-			isInit = true;
-		}
 	}
 	
 	@Test

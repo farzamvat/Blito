@@ -32,7 +32,7 @@ import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.EventHostService;
 
-@ActiveProfiles("test")
+//@ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 @Transactional
@@ -47,7 +47,6 @@ public class EventHostServiceTest {
 	@Autowired
 	private EventHostService hostService;
 	
-	private boolean isInit = true;
 	private User user = new User();
 	private EventHostViewModel createVmodel = new EventHostViewModel();
 	private EventHostViewModel updateVmodel = new EventHostViewModel();
@@ -61,7 +60,6 @@ public class EventHostServiceTest {
 
 	@Before
 	public void init() {
-		if (isInit) {
 			user.setFirstname("hasti");
 			user.setEmail("hasti.sahabi@gmail.com");
 			user = userRepo.save(user);
@@ -97,8 +95,6 @@ public class EventHostServiceTest {
 			deleteVmodel.setTelephone("22412345");
 			deleteVmodel.setHostType(HostType.CULTURALCENTER);
 			
-			isInit = false;
-		}
 	}
 
 	@Test
