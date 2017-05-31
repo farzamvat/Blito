@@ -11,17 +11,50 @@ angular.module('userProfileApi', [])
         }
     })
 
-    .service('eventCreateService', function ($http, config) {
-        var eventCreate = this;
+    .service('eventService', function ($http, config) {
+        var event = this;
+        var queryParam = {
+            params : {page: 0, size: 100}
+        }
 
-        eventCreate.submitEventForm = function (eventData) {
+        event.submitEventForm = function (eventData) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/events', eventData)
         }
-    })
-    .service('plannerCreateService', function ($http, config) {
-        var plannerCreate = this;
 
-        plannerCreate.submitPlanenerForm = function (eventData) {
+        event.getUserEvents = function () {
+            return $http.get(config.baseUrl+'/api/blito/v1.0/events/all-user-events', queryParam)
+        }
+    })
+    .service('exchangeService', function ($http, config) {
+        var exchange = this;
+
+        var queryParam = {
+            params : {page: 0, size: 100}
+        }
+
+        exchange.submitExchangeForm = function (exchangeData) {
+            return $http.post(config.baseUrl+'/api/blito/v1.0/exchange-blits', exchangeData)
+        }
+        exchange.getExchangeTickets = function () {
+            return $http.get(config.baseUrl+'/api/blito/v1.0/exchange-blits/all', queryParam)
+        }
+    })
+    .service('plannerService', function ($http, config) {
+        var planner = this;
+        var planners = [];
+        planner.setPlanners = function (p) {
+            planners = p;
+        }
+        planner.getPlanners = function () {
+            return planners;
+        }
+        planner.getPlanners = function () {
+            var queryParam = {
+                params : {page: 0, size: 100}
+            }
+            return $http.get(config.baseUrl+'/api/blito/v1.0/event-hosts/all', queryParam)
+        }
+        planner.submitPlannerForm = function (eventData) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/event-hosts', eventData)
         }
     })
