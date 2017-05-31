@@ -26,7 +26,7 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 authenticated: false
 
             })
-            .when('/theatre', {
+            .when('/theater', {
                 templateUrl : 'app/views/pages/eventList.html',
                 authenticated: false
 
@@ -41,7 +41,7 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 authenticated: false
 
             })
-            .when('/theatre-exchange', {
+            .when('/theater-exchange', {
                 templateUrl : 'app/views/pages/eventList.html',
                 authenticated: false
 
@@ -67,7 +67,7 @@ var app = angular.module('appRoutes', ['ngRoute'])
             })
             .when('/user-profile', {
                 templateUrl : 'app/views/pages/userProfile.html',
-                authenticated: true
+                authenticated: false
             })
 
             .otherwise({redirectTo: '/'})
