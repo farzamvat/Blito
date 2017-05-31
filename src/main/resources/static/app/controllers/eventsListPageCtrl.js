@@ -8,22 +8,26 @@ angular.module('eventsPageModule', [])
 
 
         switch($location.path()) {
-            case '/recentEvents':
-                $scope.pageTitle = "آخرین رویدادها";
+            case '/recent-events':
+                $scope.pageTitle = "ورزشی";
+                $scope.pageHeaderMenu = [{title : "سینما", link : '/cinema'},{title : "تئاتر", link : '/theater'},{title : "کافه", link : '/cafe'} , {title : "تور", link : '/cinema'}, {title : "ورزشی", link : '/cinema'}];
                 break;
             case '/cinema':
                 $scope.pageTitle = "سینما";
+                $scope.pageHeaderMenu = [{title : "ورزشی", link : '/recent-events'},{title : "تئاتر", link : '/theater'},{title : "کافه", link : '/cafe'} , {title : "تور", link : '/cinema'}, {title : "ورزشی", link : '/cinema'}];
                 break;
-            case '/theatre':
+            case '/theater':
                 $scope.pageTitle = "تئاتر";
+                $scope.pageHeaderMenu = [{title : "ورزشی", link : '/recent-events'},{title : "سینما", link : '/cinema'},{title : "کافه", link : '/cafe'} , {title : "تور", link : '/cinema'}, {title : "ورزشی", link : '/cinema'}];
                 break;
             case '/cafe':
                 $scope.pageTitle = "کافه";
+                $scope.pageHeaderMenu = [{title : "ورزشی", link : '/recent-events'},{title : "سینما", link : '/cinema'},{title : "تئاتر", link : '/theater'} , {title : "تور", link : '/cinema'}, {title : "ورزشی", link : '/cinema'}];
                 break;
             case '/cinemaExchange':
                 $scope.pageTitle = "بلیت های تعویض سینما";
                 break;
-            case '/theatreExchange':
+            case '/theaterExchange':
                 $scope.pageTitle = "بلیت های تعویض تئاتر";
                 break;
             case '/cafeExchange':

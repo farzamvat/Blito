@@ -252,6 +252,25 @@ color: white !important;
 .profilePage {
     margin-top: 50px;
 }
+.eventListAnchor {
+    margin-top: 10px;
+    text-decoration: none;
+    color: #777;
+}
+.pageHeaderLinks {
+    border-bottom: 2px solid #303030;
+    padding-bottom: 10px;
+}
+.eventListAnchor:hover {
+    text-decoration: none;
+    color: rgb(252, 183, 49);
+}
+.eventListAnchor:active{
+    color: #777 !important;
+}
+.eventListAnchor:visited {
+    color: #777 !important;
+}
 /*-----------------------make event form styles-------------------------------------*/
 .makeEventForm {
     border-bottom-left-radius: 3px;
@@ -755,7 +774,7 @@ dir-pagination-controls ul {
     /*-moz-box-shadow: 1px 1px 4px rgba(0,0,0,0.3);*/
     /*box-shadow: 1px 1px 4px rgba(0,0,0,0.3);*/
     transition: 400ms;
-    width: 300px;
+    width: 100% !important;
 
 }
 .recipe:hover {

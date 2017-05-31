@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="Blito" ng-controller="mainCtrl as main">
 <head>
-    <base href="/">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1, user-scalable=0.5" >
+    <base href="/"/>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1, user-scalable=0.5" />
     <title>بلیتو</title>
 
     <!-- external css libraries-->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="bower_components/slick-carousel/slick/slick.css">
-    <link rel="stylesheet" href="bower_components/slick-carousel/slick/slick-theme.css">
-    <link rel="stylesheet" href="assets/css/wizardStyle.css">
-    <link rel="stylesheet" href="assets/css/custom.css">
-    <link rel="stylesheet" href="assets/css/tabProfile.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="bower_components/slick-carousel/slick/slick.css"/>
+    <link rel="stylesheet" href="bower_components/slick-carousel/slick/slick-theme.css"/>
+    <link rel="stylesheet" href="assets/css/wizardStyle.css"/>
+    <link rel="stylesheet" href="assets/css/custom.css"/>
+    <link rel="stylesheet" href="assets/css/tabProfile.css"/>
 
 
 
@@ -84,25 +84,25 @@
             <ul class="nav navbar-nav floatRight textAlignRight">
                 <li ng-show="logoutMenu" class="floatRight" ng-class="{ active: isActive('/user-profile')}"><a class="" href="/user-profile"><i class="fa fa-user" aria-hidden="true"></i>  {{firstname}} {{lastname}} </a></li>
                 <li class="floatRight" ng-class="{ active: isActive('/')}"><a class="" href="/"><i class="fa fa-home" aria-hidden="true"></i> خانه </a></li>
-                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema') || isActive('/recent-events') || isActive('/theatre')} || isActive('/cafe')">
+                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema') || isActive('/recent-events') || isActive('/theater')} || isActive('/cafe')">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-calendar" aria-hidden="true"></i> رویداد ها   <span class="caret"></span></a>
                     <ul class="dropdown-menu textAlignRight">
-                        <li><a href="/recent-events">آخرین رویدادها</a></li>
+                        <li><a href="/recent-events"> ورزشی</a></li>
                         <li><a href="/cinema">سینما</a></li>
                         <!--<li role="separator" class="divider"></li>-->
-                        <li><a href="/theatre">تئاتر</a></li>
+                        <li><a href="/theater">تئاتر</a></li>
                         <li><a href="/cafe">کافه</a></li>
                         <!--<li class="dropdown-header">Nav header</li>-->
                         <!--<li><a href="#">Separated link</a></li>-->
                         <!--<li><a href="#">One more separated link</a></li>-->
                     </ul>
                 </li>
-                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema-exchange') || isActive('/theatre-exchange') || isActive('/cafe-exchange')}">
+                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema-exchange') || isActive('/theater-exchange') || isActive('/cafe-exchange')}">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ticket" aria-hidden="true"></i> بلیت های تعویضی   <span class="caret"></span></a>
                     <ul class="dropdown-menu textAlignRight">
                         <li><a href="/cinema-exchange">سینما</a></li>
                         <!--<li role="separator" class="divider"></li>-->
-                        <li><a href="/theatre-exchange">تئاتر</a></li>
+                        <li><a href="/theater-exchange">تئاتر</a></li>
                         <li><a href="/cafe-exchange">کافه</a></li>
                         <!--<li class="dropdown-header">Nav header</li>-->
                         <!--<li><a href="#">Separated link</a></li>-->
