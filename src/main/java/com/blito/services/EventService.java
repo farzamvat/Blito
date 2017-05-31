@@ -216,8 +216,8 @@ public class EventService {
 	@Transactional
 	public Page<EventViewModel> getUserEvents(Pageable pageable) {
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
-		Stream<Event> events = user.getEventHosts().stream().flatMap(eh -> eh.getEvents().stream());
-		return eventMapper.toPage(new PageImpl<>(events.skip(pageable.getPageNumber() * pageable.getPageSize()).limit(pageable.getPageSize())
-				.collect(Collectors.toList()), pageable, events.count()), eventMapper::createFromEntity);
+		List<Event> events = user.getEventHosts().stream().flatMap(eh -> eh.getEvents().stream()).collect(Collectors.toList());
+		return eventMapper.toPage(new PageImpl<>(events.stream().skip(pageable.getPageNumber() * pageable.getPageSize()).limit(pageable.getPageSize())
+				.collect(Collectors.toList()), pageable, events.size()), eventMapper::createFromEntity);
 	}
 }
