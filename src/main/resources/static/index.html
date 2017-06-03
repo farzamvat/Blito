@@ -51,6 +51,7 @@
     <script type="text/javascript" src="app/controllers/bioPageCtrl.js"></script>
     <script type="text/javascript" src="app/controllers/activateUserCtrl.js"></script>
     <script type="text/javascript" src="app/controllers/userProfileCtrl.js"></script>
+    <script type="text/javascript" src="app/controllers/exchangeList.js"></script>
 
 
     <!-- angular services-->
@@ -83,7 +84,7 @@
             <ul class="nav navbar-nav floatRight textAlignRight">
                 <li ng-show="logoutMenu" class="floatRight" ng-class="{ active: isActive('/user-profile')}"><a class="" href="/user-profile"><i class="fa fa-user" aria-hidden="true"></i>  {{firstname}} {{lastname}} </a></li>
                 <li class="floatRight" ng-class="{ active: isActive('/')}"><a class="" href="/"><i class="fa fa-home" aria-hidden="true"></i> خانه </a></li>
-                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema') || isActive('/recent-events') || isActive('/theater')} || isActive('/cafe')">
+                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema') || isActive('/recent-events') || isActive('/theater') || isActive('/cafe')}">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-calendar" aria-hidden="true"></i> رویداد ها   <span class="caret"></span></a>
                     <ul class="dropdown-menu textAlignRight">
                         <li><a href="/recent-events"> ورزشی</a></li>

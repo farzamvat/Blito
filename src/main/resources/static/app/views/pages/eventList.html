@@ -18,13 +18,16 @@
         </div>
         </div>
         <div class="col-xs-6 col-sm-6 col-md-3 floatRight marginTop10" dir-paginate="item in eventList | itemsPerPage: 12" current-page="currentPage">
-            <div class="recipe" ng-mouseenter="showDescription($event)" ng-mouseleave="hideDescription()">
-                <div class="image center-block">
-                    <img ng-src="{{item.img}}" class="center-block eventListImage">
+            <div class="recipe"  >
+                <div class="image center-block" ng-mouseenter="showDescription($event)" ng-mouseleave="hideDescription($event)">
+                    <img ng-src="{{item.img}}" class="center-block eventListImage"  >
 
 
                     <div class="name">
                         <h3>{{ item.title }}</h3>
+                        <h5>{{ item.sold }}: تعداد فروش </h5>
+                        <h5>{{ item.view }}: تعداد بازدید ‌</h5>
+
                     </div>
                     <div class="eventDescription center-block">
                         {{item.desc}}

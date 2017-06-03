@@ -16,7 +16,8 @@ angular.module('Blito',
         'blitoDirectives',
         'animationServices',
         'UiServices',
-        'userProfileApi'
+        'userProfileApi',
+        'exchangesPageModule'
     ])
     .config(function ($httpProvider) {
         $httpProvider.interceptors.push('AuthInterceptors');

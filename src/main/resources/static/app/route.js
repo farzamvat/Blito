@@ -37,17 +37,17 @@ var app = angular.module('appRoutes', ['ngRoute'])
 
             })
             .when('/cinema-exchange', {
-                templateUrl : 'app/views/pages/eventList.html',
+                templateUrl : 'app/views/pages/exchangeList.html',
                 authenticated: false
 
             })
             .when('/theater-exchange', {
-                templateUrl : 'app/views/pages/eventList.html',
+                templateUrl : 'app/views/pages/exchangeList.html',
                 authenticated: false
 
             })
             .when('/cafe-exchange', {
-                templateUrl : 'app/views/pages/eventList.html',
+                templateUrl : 'app/views/pages/exchangeList.html',
                 authenticated: false
 
             })

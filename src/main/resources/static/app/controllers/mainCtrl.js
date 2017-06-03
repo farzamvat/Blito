@@ -159,12 +159,7 @@ angular.module('menuPagesModule', [])
         }
 
 
-        $scope.showDescription = function (event) {
-            $(event.target).find('.eventDescription').slideDown(150);
-        }
-        $scope.hideDescription = function () {
-            $('.eventDescription').slideUp(150);
-        }
+
         $scope.nextStep1 = function (eventInfo) {
             $scope.totalPrice = eventInfo.ticketNumber * 10000;
             angular.element(document.getElementsByClassName('progress-bar')).css('width', '50%');

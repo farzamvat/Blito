@@ -280,6 +280,10 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 .pageHeaderLinks {
     border-bottom: 2px solid #303030;
     padding-bottom: 10px;
+    font-size: 14px;
+}
+.eventListHeader {
+    font-size: 22px;
 }
 .eventListAnchor:hover {
     text-decoration: none;
@@ -594,11 +598,27 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     background-color: rgba(50, 50, 50, 0.8);
     border-radius: 0;
     color: white;
-    height: 325px;
+    height: 250px;
+}
+.eventContent h1 {
+    font-size: 18px;
+}
+.eventContent p {
+    font-size: 12px !important;
 }
 .eventPageImage {
     padding-left: 0 ;
-    height: 325px;
+    height: 250px;
+}
+.eventPageShowTimeColor .panel-body {
+    height: 200px !important;
+}
+.panelMidSize {
+    height: 250px ;
+}
+
+.eventPageImage img {
+    height: 250px;
 }
 .imgMobileSize {
     height: 325px;
@@ -641,8 +661,12 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     white-space: normal !important;
 
 }
+
 .buyTicketBanner :hover {
     cursor: pointer;
+}
+.buyTicket {
+    font-size: 14px !important;
 }
 .floatRight {
     float: right !important;
@@ -755,6 +779,7 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
 }
 .dataCenter {
     text-align: center;
+    font-size: 12px;
 }
 dir-pagination-controls ul {
     margin-left: 30% !important;
@@ -813,7 +838,7 @@ dir-pagination-controls ul {
 .recipe {
     /*background-color:#ddd;*/
     /*max-width:300px;*/
-    margin: 20px auto;
+    margin: 10px auto;
     /*padding: 10px 15px;*/
     cursor: pointer;
     /*margin:10px 20px;*/
@@ -835,51 +860,58 @@ dir-pagination-controls ul {
     color:#FFF;
 }
 .recipe .image {
-    width: 230px;
-    height: 325px;
+    width: 150px;
+    height: 228px;
+    padding: 5px 10px;
     overflow:hidden;
     position:relative;
 }
 .recipe .image img{
-    height: 100%;
+    width: 150px;
+    height: 228px;
     /*width:100%;*/
     transition: all 1s ease;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+
     /*margin-top:-70px;*/
 }
 
 .recipe .name {
-    width:87%;
+    width:150px;
     height:50px;
     background: rgba(252, 183, 49, 0.9);
     zoom: 1; /* set "zoom", "width" or "height" to trigger "hasLayout" in IE 7 and lower */
     overflow:hidden;
     position:absolute;
-    bottom:0;
-    left: 15px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    padding-bottom: 60px;
+    bottom:125px;
+    left: 40px;
+
+    padding-bottom: 80px;
     text-align: center;
     vertical-align: middle;
     line-height: 30px;
     border-bottom:1px dotted rgb(252, 183, 49);
 }
+.recipe .name h3 {
+    font-size: 14px;
+}
+.recipe .name h5 {
+    font-size: 10px;
+}
 .eventDescription {
     color: white;
     overflow: hidden;
     text-align: center;
-    zoom: 1;
-    top: 0px;
-    width: 87%;
-    left: 15px;
-    height: 265px;
-    padding: 10px 5px;
+    top: 60px;
+    width:150px;
+    left: 40px;
+    height: 150px;
+    padding: 10px 15px;
     background: rgba(30,30,30, 0.8);
     position: absolute;
     display: none;
+    font-size: 10px;
     overflow-y: scroll;
+
 
 }
 .profilePhotoUpload {
@@ -1091,6 +1123,7 @@ dir-pagination-controls ul {
 }
 .customPanelEventPage {
     border: none;
+    height: 250px;
 }
 .bioPageCoverPhoto {
     background-size: auto auto;
@@ -1110,6 +1143,11 @@ dir-pagination-controls ul {
     border-top-right-radius: 0 ;
 }
 .eventPageShowTimeColor .panel-heading {
+    height: 50px;
+    font-size: 16px;
+    padding-bottom: 20px;
+    padding-top: 10px;
+
     background-color: rgb(40, 40, 40);
 }
 .panelMidSize>.panel {
