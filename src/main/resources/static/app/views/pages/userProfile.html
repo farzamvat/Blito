@@ -309,6 +309,8 @@
                                                 </th>
                                                 <th class="dataCenter" >قیمت
                                                 </th>
+                                                <th class="dataCenter" >ویرایش آگهی
+                                                </th>
                                             </tr>
                                             </thead>
                                             <tbody class="showTimeList">
@@ -318,8 +320,8 @@
                                                 <td class="dataCenter">{{ item.operatorState}}</td>
                                                 <td class="dataCenter">{{ item.type}}</td>
                                                 <td class="dataCenter">{{ item.state}}</td>
-
                                                 <td class="dataCenter">{{ item.blitCost}}</td>
+                                                <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editExchange($index)">ویرایش</button></td>
 
                                             </tr>
                                             </tbody>
@@ -757,6 +759,8 @@
                                                             </th>
                                                             <th class="dataCenter" >نام برگزارکننده
                                                             </th>
+                                                            <th class="dataCenter" >ویرایش  رویداد
+                                                            </th>
 
                                                         </tr>
                                                         </thead>
@@ -767,7 +771,7 @@
                                                             <td><input value="{{ item.blitSaleEndDate}}" class="dataCenter persianTimeExchange" disabled readonly/></td>
                                                             <td class="dataCenter">{{ item.eventType}}</td>
                                                             <td class="dataCenter">{{ item.eventHostName}}</td>
-
+                                                            <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editEvent($index)">ویرایش</button></td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
@@ -792,6 +796,8 @@
                                                             </th>
                                                             <th class="dataCenter" >آدرس وبسایت
                                                             </th>
+                                                            <th class="dataCenter" >ویرایش برگزارکننده
+                                                            </th>
                                                         </tr>
                                                         </thead>
                                                         <tbody class="showTimeList">
@@ -799,6 +805,7 @@
                                                             <td class="dataCenter">{{ item.hostName}}</td>
                                                             <td class="dataCenter">{{ item.telephone}}</td>
                                                             <td class="dataCenter">{{ item.websiteLink}}</td>
+                                                            <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editHost($index)">ویرایش</button></td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
@@ -815,3 +822,6 @@
         </div>
     </div>
 </div>
+<div ng-include="'app/views/partials/edit-event.html'"></div>
+<div ng-include="'app/views/partials/edit-host.html'"></div>
+<div ng-include="'app/views/partials/edit-exchange.html'"></div>

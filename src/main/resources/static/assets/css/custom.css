@@ -260,7 +260,10 @@ div.row.slidingEventsRow {
 div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     height: 460px;
 }
-
+.editButton {
+    padding: 2px 4px;
+    font-size: 12px;
+}
 .userProfileInfo {
     height: 170px;
     background: url('../img/orange1.png') fixed repeat-y;

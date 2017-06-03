@@ -3,7 +3,7 @@
  */
 
 angular.module('User')
-    .controller('userProfileCtrl', function ($scope, userInfo, Auth, $timeout, mapMarkerService, updateInfo, $location, scrollAnimation, uploadPhotoService, eventService, plannerService, exchangeService, dataService) {
+    .controller('userProfileCtrl', function ($scope, userInfo, Auth, $timeout, mapMarkerService, updateInfo, $location, scrollAnimation, uploadPhotoService, eventService, plannerService, exchangeService, dataService, $window) {
         var userProfile = this;
 
         $scope.userData = userInfo.getData();
@@ -433,7 +433,7 @@ angular.module('User')
         }
         $scope.showTime = [];
 
-     
+
         $scope.dropDownTabToggleEvent = function (event) {
             $scope.getPlannersData();
             $scope.getUserEvents();
@@ -486,6 +486,62 @@ angular.module('User')
                     console.log(data);
                 })
         }
+
+
+        $scope.editEvent = function (index) {
+            console.log(index);
+            mapMarkerService.initMap(document.getElementById('editEventMap'));
+            mapMarkerService.setMarker($scope.userEvents[index].latitude,$scope.userEvents[index].longitude);
+            $scope.editEventFields = {
+                name : $scope.userEvents[index].eventName,
+                eventType : $scope.userEvents[index].eventType,
+                description : $scope.userEvents[index].description,
+                ticketStartTime : persianDate($scope.userEvents[index].blitSaleStartDate).pDate,
+                ticketEndTime : persianDate($scope.userEvents[index].blitSaleEndDate).pDate,
+                address : $scope.userEvents[index].address,
+                aparatLink : $scope.userEvents[index].aparatDisplayCode,
+                eventPlanner : $scope.userEvents[index].eventHostName,
+            };
+            $scope.showTimeEditForms = $scope.userEvents[index].blitTypes;
+            $("#editEvent").modal("show");
+
+        }
+        $scope.editHost = function (index) {
+
+            $("#editHost").modal("show");
+        }
+
+        $scope.editExchange = function (index) {
+            $("#editExchange").modal("show");
+
+        }
+
+
+        $scope.userEvents = [
+            {
+                eventName : 'رویداد',
+                blitSaleStartDate : 12124,
+                blitSaleEndDate : 123123,
+                eventType : "CINEMA",
+                eventHostName : "soroush",
+                latitude : 35.7023,
+                longitude : 51.3957
+            }
+        ];
+        $scope.eventHosts = [
+            {
+                hostName : 'سروش',
+                telephone : '۰۱۲۳',
+                websiteLink : 'www.ww.ww'
+            }
+        ];
+        $scope.exchangeTickets = [
+            {
+                title : 'سروش',
+                telephone : '۰۱۲۳',
+                websiteLink : 'www.ww.ww'
+            }
+        ];
         $scope.getUserEvents = function () {
             eventService.getUserEvents()
                 .then(function (data, status) {
@@ -522,4 +578,22 @@ angular.module('User')
                     console.log(data);
                 })
         }
+
+
+        // angular.element($window).bind("scroll", function() {
+        //     checkOffset();
+        // })
+        // function checkOffset() {
+        //     if($('.profileTabs').offset().top + $('.profileTabs').height()
+        //         >= $('#footer').offset().top - 100) {
+        //         $('.profileTabs').css('position', 'absolute');
+        //         $('.profileTabs').css('top', $('#footer').offset().top - 400);
+        //     }
+        //
+        //     if($(document).scrollTop() + window.innerHeight < $('#footer').offset().top) {
+        //         $('.profileTabs').css('position', 'fixed'); // restore when you scroll up
+        //         $('.profileTabs').css('top', $('#footer').offset().top - 320);
+        //     }
+        // }
+
     })
