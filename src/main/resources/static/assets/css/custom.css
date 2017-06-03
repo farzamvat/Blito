@@ -95,7 +95,9 @@ color: white !important;
 .marginRight30 {
     margin-right: 30px;
 }
-
+.homePage {
+    margin-top: 30px;
+}
 .carousel-caption {
     border: 1px groove #eee;
     background-color: rgba(30, 30, 30, 0.6);
@@ -111,12 +113,15 @@ color: white !important;
     padding: 20px 5px;
 }
 .slick-next, .slick-prev {
-    top: 30%;
+    top: 10%;
     border-radius: 5px;
     padding: 40px 20px;
 }
 .slick-next {
-    right: -45px;
+    right: -25px;
+}
+.slick-prev {
+    left: 15px;
 }
 .slick-next::before, .slick-next::after{
     background-color: #303030;
@@ -142,13 +147,20 @@ color: white !important;
 }
 .slidingEvents {
     /*background-color: #eee;*/
-    padding: 15px 20px;
-    height: 450px;
+    padding: 15px 60px;
+}
+.slidingEventsTitle {
+    font-size: 14px;
+}
+.slidingEvents button {
+    margin-top: 15px;
+    font-size: 12px;
 }
 .slidingEvents h3 {
     float: right;
     display: inline-block;
     cursor: pointer;
+    font-size: 18px;
     padding: 15px 15px;
 }
 .blitoOffer {
@@ -158,10 +170,11 @@ color: white !important;
     padding: 15px 20px;
     border-left: 2px solid #404040;
 }
-.blitoOffer h4 {
+.blitoOffer>h4 {
     /*display: inline-block;*/
     /*cursor: pointer;*/
-    padding: 14px 15px;
+    font-size: 14px;
+    padding: 11px 15px;
 }
 .blitoOfferMain {
     padding: 20px 5px;
@@ -169,13 +182,13 @@ color: white !important;
 }
 .categorySection {
     /*background: url("../img/movie.png") repeat-x;*/
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     background-color: #202020;
 }
 .categoryImage {
-    width: 200px;
-    height: 133px;
+    width: 100px;
+    height: 67px;
     border-radius: 5px;
 }
 .categoryInside {
@@ -206,7 +219,7 @@ color: white !important;
 }
 .categoryTitle {
   text-align: center;
-    padding-top: 40px;
+    padding-top: 20px;
     color: white;
 }
 .eventMore {
@@ -239,9 +252,13 @@ color: white !important;
 .sideBar {
     background: transparent;
 }
-.slidingEventsRow {
+div.row.slidingEventsRow {
+    height: 460px;
     /*background: url('../img/pt.jpg') fixed repeat-y;*/
     /*background-size: 100% 600px;*/
+}
+div.hidden-xs.col-sm-3.floatRight.blitoOffer {
+    height: 460px;
 }
 
 .userProfileInfo {
@@ -250,7 +267,7 @@ color: white !important;
     background-size: 100% 400px;
 }
 .profilePage {
-    margin-top: 50px;
+    margin-top: 30px;
 }
 .eventListAnchor {
     margin-top: 10px;
@@ -295,7 +312,7 @@ color: white !important;
     margin: 10px !important;
     padding: 10px 20px;
     width: 95%;
-    font-size: 28px;
+    font-size: 20px;
     border-radius: 3px;
 }
 .fieldsetStyle {
@@ -356,7 +373,7 @@ color: white !important;
 
 }
 .card.hovercard .card-info .card-title {
-    font-size: 20px;
+    font-size: 14px;
     line-height: 1;
     color: #262626;
 
@@ -394,7 +411,7 @@ color: white !important;
 }
 .profileTabs>li>a {
     border-radius: 0;
-    font-size: 14px !important;
+    font-size: 11px !important;
 }
 .profileTabContent {
     background-color: #eee;
@@ -420,21 +437,30 @@ color: white !important;
 .slidingEventsBtn {
     margin-top: 10px;
     margin-bottom: 10px;
+    font-size: 14px;
 }
 
 .exchangeTicketText {
-    margin-top: 120px;
+    margin-top: 0;
     padding: 50px 70px 20px 50px;
 }
 .exchangeTicketText h2 {
     padding: 10px 20px;
+    font-size: 18px;
     border-bottom: 3px solid rgb(252, 183, 49);
+}
+.exchangeTicketText p {
+    font-size: 12px !important;
 }
 .item>img {
     display: block;
     margin: 0px auto;
 }
+.blitImageOne {
+    margin-top: -400px;
+}
 .blitImage {
+    margin-top: 200px;
 }
 .nav-tabs {
 }
@@ -536,10 +562,12 @@ color: white !important;
 .btnLogin {
     margin-top: 30px !important;
     padding: 15px 60px;
+    font-size: 14px;
 }
 .btnReg {
     margin-top: 20px !important;
     padding: 15px 60px;
+    font-size: 14px;
 }
 
 .eventPageHeaderTheatre {
@@ -586,14 +614,16 @@ color: white !important;
     border-bottom: 3px solid #303030;
     position: relative;
     overflow: hidden;
-    background-color: #eee
+    background-color: #eee;
+    height: 400px;
 }
-.imgRelative p {
-    font-size: 20px;
-}
+
 .btnExchangeTicket {
-    padding: 20px 40px;
+    font-size: 14px;
     margin: 10px 15px;
+    width: 200px;
+    padding: 10px 15px;
+    text-align: center;
 }
 .blitFade {
     z-index: 0;
@@ -604,7 +634,7 @@ color: white !important;
     z-index: 100;
     bottom: 10%;
     left: 15%;
-    font-size: 20px !important;
+    font-size: 16px !important;
     white-space: normal !important;
 
 }
@@ -622,9 +652,21 @@ color: white !important;
 .navbar {
     transition: 500ms;
 }
+
+nav.navbar.navbar-inverse.navbar-fixed-top {
+    min-height: 30px !important;
+}
+.navbar-nav > li > a {padding-top:5px ; padding-bottom:5px ;}
+
+.navbar-header {
+    height: 30px ;
+}
+.navbar-brand {
+    height: 30px ;
+}
 .navbar-nav li a {
     color : white !important;
-    font-size: 14px;
+    font-size: 13px;
 }
 .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
     background-color: rgb(252, 183, 49);
@@ -639,7 +681,7 @@ color: white !important;
     background-color: rgba(252, 183, 49, 0.5);
 }
 .navbar-header>img {
-    height: 50px;
+    height: 30px;
     padding: 5px 40px;
     width: auto;
     cursor: pointer;
@@ -725,7 +767,7 @@ dir-pagination-controls ul {
 .registerLabel {
     vertical-align: middle;
     margin-top: 5px;
-    font-size: 16px;
+    font-size: 14px;
 }
 /*-------------------tab slick fix-------------*/
 /* bootstrap hack: fix content width inside hidden tabs */
@@ -747,7 +789,11 @@ dir-pagination-controls ul {
     background-color: rgba(252, 183, 49, 0.2);
 }
 .registerTab {
-    width: 200px;
+    font-size: 14px;
+    width: 100px;
+}
+.formRegGroup>div>li {
+    font-size: 14px;
 }
 /*----------event list style------------*/
 .eventListBtn {
@@ -875,7 +921,7 @@ dir-pagination-controls ul {
 }
 .tabDropDown>li>a {
     color: white;
-    font-size: 13px;
+    font-size: 10px;
     text-decoration: none;
     text-align: center !important;
 }
@@ -1085,6 +1131,10 @@ dir-pagination-controls ul {
     width: 200px;
     height: 250px;
 }
+.btn {
+    border-radius: 4px;
+}
+
 /*----------------------------------wizard------------------------------------------*/
 /*.steps-indicator li.done a:before {*/
     /*background-color: #08f !important;*/
@@ -1150,6 +1200,10 @@ footer {
 
 
 @media (max-width: 992px) {
+    .navbar-nav li a {
+        color : white !important;
+        font-size: 11px !important;
+    }
     .bioPageContentHeader h1{
         text-align: center;
     }
@@ -1183,7 +1237,28 @@ footer {
 
 
 @media (max-width: 768px) {
+    .slidingEvents {
+        /*background-color: #eee;*/
+        padding: 15px 20px;
+        height: 400px !important;
+    }
+    .homePage {
+        margin-top: 50px;
+    }
+    .profilePage {
+        margin-top: 70px !important;
+    }
+    .navbar-nav > li > a {padding-top:10px ; padding-bottom:10px ;}
 
+    .navbar-header {
+        height: 50px ;
+    }
+    .navbar-brand {
+        height: 50px ;
+    }
+    .navbar-header>img {
+        height: 50px;
+    }
     .bioPageContentHeader h1{
         text-align: center;
     }
@@ -1207,9 +1282,7 @@ footer {
         background-color: #555;
 
     }
-    .profilePage {
-        margin-top: 50px;
-    }
+
     .eventPageHeader {
         background-size: 3000px auto;
     }
@@ -1273,7 +1346,7 @@ footer {
         margin-top: 5px;
     }
     .buyTicketBanner {
-        font-size:16px;
+        font-size:11px !important;
         padding:10px 20px;
     }
 
@@ -1330,8 +1403,8 @@ footer {
 @media (min-width: 700px) {
 
     .homePageImage {
-        width: 177px;
-        height: 250px;
+        width: 106px;
+        height: 150px;
     }
 
 }
@@ -1340,7 +1413,7 @@ footer {
         padding-right: 0;
     }
     .buyTicketBanner {
-        font-size:24px;
+        font-size:16px;
         padding:20px 40px;
     }
 
@@ -1348,6 +1421,7 @@ footer {
 
 
 @media (max-width: 1200px) {
+
     .eventContent p {
         font-size: 16px;
     }
@@ -1383,7 +1457,7 @@ footer {
     }
 
     .buyTicketBanner {
-        padding: 15px 20px;
-        font-size:26px;
+        padding: 20px 40px;
+        font-size:16px;
     }
 }

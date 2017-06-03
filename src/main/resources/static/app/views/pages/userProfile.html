@@ -54,7 +54,7 @@
                         <legend class="legendStyle marginTop30 text-center"> بلیت های خریداری شده   </legend>
 
                         <div class="panel ">
-                            <div class="panel-heading makeEventFormHeader text-center orangeBackground" id="myTicketSection" ng-click="toggleBody('myTicketSection')"><h5>  <i   class="fa fa-arrow-circle-down" aria-hidden="true"></i>  لیست آگهی ها </h5></div>
+                            <div class="panel-heading makeEventFormHeader text-center orangeBackground" id="myTicketSection" ng-click="toggleBody('myTicketSection')"><h6>  <i   class="fa fa-arrow-circle-down" aria-hidden="true"></i>  لیست آگهی ها </h6></div>
                             <div class="panel-body makeEventForm textAlignRight">
                                 <div class="col-xs-12 col-sm-12 floatRight">
 
@@ -155,7 +155,7 @@
 
                         <div class="panel marginTop10" id="exchangeTicket">
 
-                            <div class="panel-heading makeEventFormHeader text-center orangeBackground" id="exchangeTicketSection" ng-click="toggleBody('exchangeTicketSection')"><h5>  <i   class="fa fa-arrow-circle-down" aria-hidden="true"></i>  آگهی جدید </h5></div>
+                            <div class="panel-heading makeEventFormHeader text-center orangeBackground" id="exchangeTicketSection" ng-click="toggleBody('exchangeTicketSection')"><h6>  <i   class="fa fa-arrow-circle-down" aria-hidden="true"></i>  آگهی جدید </h6></div>
                             <div class="panel-body makeEventForm">
                                 <form class="form-inline textAlignRight ">
                                     <fieldset class="fieldsetStyle">
@@ -287,7 +287,7 @@
                     </div>
                     <div class="col-xs-12 marginTop10">
                         <div class="panel " id="exchangeTicketList">
-                            <div class="panel-heading makeEventFormHeader text-center" id="exchangeTicketListSection" ng-click="toggleBody('exchangeTicketListSection')"><h5>  <i    class="fa fa-arrow-circle-down " aria-hidden="true"></i>  لیست آگهی ها </h5></div>
+                            <div class="panel-heading makeEventFormHeader text-center" id="exchangeTicketListSection" ng-click="toggleBody('exchangeTicketListSection')"><h6>  <i    class="fa fa-arrow-circle-down " aria-hidden="true"></i>  لیست آگهی ها </h6></div>
                             <div class="panel-body makeEventPlannerForm textAlignRight">
                                 <div class="col-xs-12 col-sm-12 floatRight">
 
@@ -334,7 +334,7 @@
                     <legend class="legendStyle marginTop30 text-center"> مدیریت رویداد   </legend>
                     <div class="col-xs-12 marginTop10">
                         <div class="panel " id="makeEvent">
-                            <div class="panel-heading makeEventFormHeader text-center orangeBackground" id="makeEventSection" ng-click="toggleBody('makeEventSection')"><h5>  <i   class="fa fa-arrow-circle-down" aria-hidden="true"></i>  ایجاد رویداد </h5></div>
+                            <div class="panel-heading makeEventFormHeader text-center orangeBackground" id="makeEventSection" ng-click="toggleBody('makeEventSection')"><h6>  <i   class="fa fa-arrow-circle-down" aria-hidden="true"></i>  ایجاد رویداد </h6></div>
                             <div class="panel-body makeEventForm">
                                 <form class="form-inline textAlignRight">
                                     <fieldset class="fieldsetStyle">
@@ -593,7 +593,7 @@
                     </div>
                     <div class="col-xs-12 marginTop10">
                         <div class="panel " id="eventPlannerSection">
-                            <div class="panel-heading makeEventFormHeader text-center" id="PlannerSection" ng-click="toggleBody('PlannerSection')"><h5> <i  class="fa fa-arrow-circle-down " aria-hidden="true"></i>  ایجاد برگذار کننده </h5></div>
+                            <div class="panel-heading makeEventFormHeader text-center" id="PlannerSection" ng-click="toggleBody('PlannerSection')"><h6> <i  class="fa fa-arrow-circle-down " aria-hidden="true"></i>  ایجاد برگذار کننده </h6></div>
                             <div class="panel-body makeEventPlannerForm">
                                 <form class="form-inline textAlignRight">
                                     <fieldset class="marginBottom20 fieldsetStyle">
@@ -611,7 +611,7 @@
                                                 <label class="registerLabel floatRight" for="eventPlannerTelephone" > شماره تلفن برگذار کننده  :</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
-                                                <input height="60" id="eventPlannerTelephone" ng-model="eventPlanner.mobile"   type="number"  class="form-group registerInput" >
+                                                <input height="60" id="eventPlannerTelephone" ng-model="eventPlanner.mobile"   type="text"  class="form-group registerInput" >
                                             </div>
                                         </div>
                                         <div class="form-group col-xs-12 col-sm-6 formRegGroup marginTop30 floatRight">
@@ -730,7 +730,7 @@
                     </div>
                     <div class="col-xs-12 marginTop10">
                         <div class="panel " id="eventList">
-                            <div class="panel-heading makeEventFormHeader text-center" id="eventListSection" ng-click="toggleBody('eventListSection')"><h5> <i  class="fa fa-arrow-circle-down " aria-hidden="true"></i>  لسیت رویداد ها و برگذارکننده ها </h5></div>
+                            <div class="panel-heading makeEventFormHeader text-center" id="eventListSection" ng-click="toggleBody('eventListSection')"><h6> <i  class="fa fa-arrow-circle-down " aria-hidden="true"></i>  لسیت رویداد ها و برگذارکننده ها </h6></div>
                             <div class="panel-body makeEventPlannerForm">
                                 <form class="form-inline textAlignRight">
                                     <fieldset class="fieldsetStyle">
@@ -749,23 +749,24 @@
 
                                                             <th class="dataCenter">نام رویداد
                                                             </th>
-                                                            <th class="dataCenter" >تاریخ
+                                                            <th class="dataCenter" > زمان شروع بلیت
                                                             </th>
-                                                            <th class="dataCenter" >روز
+                                                            <th class="dataCenter" > زمان پایان بلیت
                                                             </th>
-                                                            <th class="dataCenter" >ساعت
+                                                            <th class="dataCenter" >نوع
                                                             </th>
-                                                            <th class="dataCenter" >قیمت
+                                                            <th class="dataCenter" >نام برگزارکننده
                                                             </th>
+
                                                         </tr>
                                                         </thead>
                                                         <tbody class="showTimeList">
-                                                        <tr ng-repeat="item in showTime">
-                                                            <td class="dataCenter">{{ item.title}}</td>
-                                                            <td class="dataCenter">{{ item.time}}</td>
-                                                            <td class="dataCenter">{{ item.weekDay}}</td>
-                                                            <td class="dataCenter">{{ item.date}}</td>
-                                                            <td class="dataCenter">{{ item.price}}</td>
+                                                        <tr ng-repeat="item in userEvents">
+                                                            <td class="dataCenter">{{ item.eventName}}</td>
+                                                            <td><input value="{{ item.blitSaleStartDate}}" class="dataCenter persianTimeExchange" disabled readonly/></td>
+                                                            <td><input value="{{ item.blitSaleEndDate}}" class="dataCenter persianTimeExchange" disabled readonly/></td>
+                                                            <td class="dataCenter">{{ item.eventType}}</td>
+                                                            <td class="dataCenter">{{ item.eventHostName}}</td>
 
                                                         </tr>
                                                         </tbody>

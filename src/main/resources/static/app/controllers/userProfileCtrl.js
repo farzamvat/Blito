@@ -431,18 +431,7 @@ angular.module('User')
                 })
             console.log(exchangeData);
         }
-        $scope.showTime = [
-            {title : "نام رویداد", weekDay: "یکشنبه", price: "1000", date:"22/2", time: "۱۰:۳۰", sansState: true, expired: true},
-            {title : "نام رویداد", weekDay: "سه شنبه", price: "2000", date:"23/2", time: "۹:۰۰",  sansState: false, expired: false},
-            {title : "نام رویداد", weekDay: "جمعه", price: "1000", date:"24/2", time: "۸:۰۰",  sansState: true, expired: true},
-            {title : "نام رویداد", weekDay: "جمعه", price: "1000", date:"24/2", time: "۸:۰۰",  sansState: false, expired: true},
-            {title : "نام رویداد", weekDay: "جمعه", price: "1000", date:"24/2", time: "۸:۰۰",  sansState: true, expired: true},
-            {title : "نام رویداد", weekDay: "جمعه", price: "1000", date:"24/2", time: "۸:۰۰",  sansState: false, expired: true},
-            {title : "نام رویداد", weekDay: "جمعه", price: "1000", date:"24/2", time: "۸:۰۰",  sansState: true, expired: true},
-            {title : "نام رویداد", weekDay: "جمعه", price: "1000", date:"24/2", time: "۸:۰۰",  sansState: true, expired: true},
-            {title : "نام رویداد", weekDay: "جمعه", price: "1000", date:"24/2", time: "۸:۰۰",  sansState: true, expired: true},
-            {title : "نام رویداد", weekDay: "شنبه", price: "4000", date:"25/2", time: "۸:۳۰",  sansState: true, expired: false}
-        ];
+        $scope.showTime = [];
 
      
         $scope.dropDownTabToggleEvent = function (event) {
@@ -501,6 +490,24 @@ angular.module('User')
             eventService.getUserEvents()
                 .then(function (data, status) {
                     console.log(data);
+                    $scope.userEvents = data.data.content;
+                    $scope.userEvents = $scope.userEvents.map(function (event) {
+                        event.eventType = dataService.eventTypePersian(event.eventType);
+                        event.blitSaleEndDate = persianDate(event.blitSaleEndDate).pDate;
+                        event.blitSaleStartDate = persianDate(event.blitSaleStartDate).pDate;
+                        return event;
+                    })
+                    $timeout(function () {
+                        $(".persianTimeExchange").pDatepicker({
+                            timePicker: {
+                                enabled: true
+                            },
+                            altField: '#persianDigitAlt',
+                            altFormat: "YYYY MM DD HH:mm:ss",
+                            altFieldFormatter: function (unixDate) {
+                            }
+                        });
+                    },1000)
                 }, function (data, status) {
                     console.log(data);
                 })

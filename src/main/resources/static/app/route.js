@@ -67,7 +67,7 @@ var app = angular.module('appRoutes', ['ngRoute'])
             })
             .when('/user-profile', {
                 templateUrl : 'app/views/pages/userProfile.html',
-                authenticated: false
+                authenticated: true
             })
 
             .otherwise({redirectTo: '/'})
