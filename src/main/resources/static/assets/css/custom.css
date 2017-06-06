@@ -186,6 +186,9 @@ color: white !important;
     padding-bottom: 10px;
     background-color: #202020;
 }
+.categorySection a {
+    text-decoration: none;
+}
 .categoryImage {
     width: 100px;
     height: 67px;
@@ -215,7 +218,7 @@ color: white !important;
     background: url('../img/sp.jpg') ;
 }
 .categoryConcert {
-    background: url('../img/con.jpg') ;
+    background: url('../img/concert.jpg') ;
 }
 .categoryTitle {
   text-align: center;
@@ -758,6 +761,12 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
 
 }
 #mapExchange {
+    border: 2px solid #303030;
+    width: 80%;
+    height: 300px;
+
+}
+#mapExchangeEdit {
     border: 2px solid #303030;
     width: 80%;
     height: 300px;

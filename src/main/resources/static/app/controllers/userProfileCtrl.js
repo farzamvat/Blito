@@ -369,6 +369,7 @@ angular.module('User')
         }
 
         $scope.submitEvent = function (eventFields) {
+
             var latLng = mapMarkerService.getMarker();
             var eventSubmitData = {
                 eventName : eventFields.name,
@@ -390,6 +391,7 @@ angular.module('User')
                     $scope.createEventSpinner = false;
                     $scope.createEventNotif = true;
                     console.log(data);
+                    $scope.getUserEvents();
                 }, function (data, status) {
                     console.log(data);
                     $scope.createEventSpinner = false;
@@ -425,6 +427,7 @@ angular.module('User')
                     console.log(data);
                     $scope.submitExchangeSpinner = false;
                     $scope.submitExchangeNotif = true;
+                    $scope.getExchangeData();
 
                 }, function (data, status) {
                     console.log(data);
@@ -511,37 +514,54 @@ angular.module('User')
             $("#editHost").modal("show");
         }
 
+
+        $scope.editExchangeNotif = false;
+        $scope.editExchangeSpinner = false;
         $scope.editExchange = function (index) {
+            $timeout(function () {
+                $(".persianExchangeTimeEdit").pDatepicker({
+                    timePicker: {
+                        enabled: true
+                    },
+                    altField: '#persianDigitAlt',
+                    altFormat: "YYYY MM DD HH:mm:ss",
+                    altFieldFormatter: function (unixDate) {
+                    }
+                });
+            }, 1000);
+
+            mapMarkerService.initMap(document.getElementById('mapExchangeEdit'));
+            angular.element(document.getElementsByClassName("exchangePhotoUploadEdit"))[0].src = '';
             $("#editExchange").modal("show");
 
         }
 
 
-        $scope.userEvents = [
-            {
-                eventName : 'رویداد',
-                blitSaleStartDate : 12124,
-                blitSaleEndDate : 123123,
-                eventType : "CINEMA",
-                eventHostName : "soroush",
-                latitude : 35.7023,
-                longitude : 51.3957
-            }
-        ];
-        $scope.eventHosts = [
-            {
-                hostName : 'سروش',
-                telephone : '۰۱۲۳',
-                websiteLink : 'www.ww.ww'
-            }
-        ];
-        $scope.exchangeTickets = [
-            {
-                title : 'سروش',
-                telephone : '۰۱۲۳',
-                websiteLink : 'www.ww.ww'
-            }
-        ];
+        // $scope.userEvents = [
+        //     {
+        //         eventName : 'رویداد',
+        //         blitSaleStartDate : 12124,
+        //         blitSaleEndDate : 123123,
+        //         eventType : "CINEMA",
+        //         eventHostName : "soroush",
+        //         latitude : 35.7023,
+        //         longitude : 51.3957
+        //     }
+        // ];
+        // $scope.eventHosts = [
+        //     {
+        //         hostName : 'سروش',
+        //         telephone : '۰۱۲۳',
+        //         websiteLink : 'www.ww.ww'
+        //     }
+        // ];
+        // $scope.exchangeTickets = [
+        //     {
+        //         title : 'سروش',
+        //         telephone : '۰۱۲۳',
+        //         websiteLink : 'www.ww.ww'
+        //     }
+        // ];
         $scope.getUserEvents = function () {
             eventService.getUserEvents()
                 .then(function (data, status) {
@@ -580,20 +600,6 @@ angular.module('User')
         }
 
 
-        // angular.element($window).bind("scroll", function() {
-        //     checkOffset();
-        // })
-        // function checkOffset() {
-        //     if($('.profileTabs').offset().top + $('.profileTabs').height()
-        //         >= $('#footer').offset().top - 100) {
-        //         $('.profileTabs').css('position', 'absolute');
-        //         $('.profileTabs').css('top', $('#footer').offset().top - 400);
-        //     }
-        //
-        //     if($(document).scrollTop() + window.innerHeight < $('#footer').offset().top) {
-        //         $('.profileTabs').css('position', 'fixed'); // restore when you scroll up
-        //         $('.profileTabs').css('top', $('#footer').offset().top - 320);
-        //     }
-        // }
+
 
     })

@@ -64,13 +64,13 @@ angular.module('eventsPageModule', [])
 
         ];
 
-        $scope.showDescription = function (event) {
-            console.log(angular.element(event.target).children());
-            $(angular.element(event.target).children()[2]).slideDown(150);
-        }
-        $scope.hideDescription = function (event) {
-            $(angular.element(event.target).children()[2]).slideUp(150);
-        }
+        // $scope.showDescription = function (event) {
+        //     console.log(angular.element(event.target).children());
+        //     $(angular.element(event.target).children()[2]).slideDown(150);
+        // }
+        // $scope.hideDescription = function (event) {
+        //     $(angular.element(event.target).children()[2]).slideUp(150);
+        // }
 
         $scope.currentPage = 1;
     });

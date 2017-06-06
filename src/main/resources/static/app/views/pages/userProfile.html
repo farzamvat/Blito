@@ -54,7 +54,7 @@
                         <legend class="legendStyle marginTop30 text-center"> بلیت های خریداری شده   </legend>
 
                         <div class="panel ">
-                            <div class="panel-heading makeEventFormHeader text-center orangeBackground" id="myTicketSection" ng-click="toggleBody('myTicketSection')"><h6>  <i   class="fa fa-arrow-circle-down" aria-hidden="true"></i>  لیست آگهی ها </h6></div>
+                            <div class="panel-heading makeEventFormHeader text-center orangeBackground" id="myTicketSection" ng-click="toggleBody('myTicketSection')"><h6>  <i   class="fa fa-arrow-circle-down" aria-hidden="true"></i>  بلیت های خریداری شده </h6></div>
                             <div class="panel-body makeEventForm textAlignRight">
                                 <div class="col-xs-12 col-sm-12 floatRight">
 
@@ -85,7 +85,7 @@
                                                 <td class="dataCenter">{{ item.weekDay}}</td>
                                                 <td class="dataCenter">{{ item.date}}</td>
                                                 <td class="dataCenter">{{ item.price}}</td>
-                                                <td class="dataCenter"><button class="btn btn-success" href="{{item.link}}">پیگری سفارش</button></td>
+                                                <td class="dataCenter">{{ item.code}}</td>
 
                                             </tr>
                                             </tbody>

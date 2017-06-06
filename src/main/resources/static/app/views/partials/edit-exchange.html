@@ -17,7 +17,7 @@
                                     <label class="registerLabel floatRight" for="exchangeName" >نام رویداد :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <input height="60" id="exchangeName" ng-model="exchange.name"  type="text"  class="form-group registerInput" >
+                                    <input height="60" id="exchangeName" ng-model="exchange.title"  type="text"  class="form-group registerInput" >
                                 </div>
                             </div>
 
@@ -39,7 +39,7 @@
                                     <label class="registerLabel floatRight" for="eventExchangeDate" >تاریخ و ساعت رویداد  :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <input type="text" id="eventExchangeDate" ng-model="showTime.eventTime" class="persianExchangeTime datePickerFormat" readonly/>
+                                    <input type="text" id="eventExchangeDate" ng-model="showTime.eventDate" class="persianExchangeTimeEdit datePickerFormat"/>
                                 </div>
                             </div>
                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
@@ -47,7 +47,7 @@
                                     <label class="registerLabel floatRight" for="exchangePrice" >قیمت بلیت  :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <input height="60" id="exchangePrice" ng-model="exchange.price"   type="number"  class="form-group registerInput" >
+                                    <input height="60" id="exchangePrice" ng-model="exchange.blitCost"   type="number"  class="form-group registerInput" >
                                 </div>
                             </div>
                         </div>
@@ -77,7 +77,7 @@
                                 <label class="marginRight30"> عکس رویداد :</label>
                                 <button class="btn btn-default " ng-click='uploadPicEventExchange()'>انتخاب <i class="fa fa-image"></i></button>
                                 <div class="col-xs-12" ng-show="showThumbnailEventExchange">
-                                    <img class="img-responsive exchangePhotoUpload marginTop30"  src="" alt="">
+                                    <img class="img-responsive exchangePhotoUploadEdit marginTop30"  src="" alt="">
                                     <div class="col-xs-12">
                                         <button class="btn btn-success marginTop10" ng-click="photoUploadExchange()">بارگذاری   <i ng-show="uploadExchangePhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></button>
                                         <button ng-click="deletePicEventExchange()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>
@@ -93,7 +93,7 @@
 
                         <legend class="legendStyle">  اطلاعات مکانی </legend>
                         <div class="row">
-                            <div class="form-group col-xs-12 col-md-6 formRegGroup floatRight">
+                            <div class="form-group col-xs-12 col-md-12 formRegGroup floatRight">
                                 <div class="col-xs-10   floatRight text-center">
                                     <label class="registerLabel floatRight" for="exchangeAddress" >آدرس :</label>
                                 </div>
@@ -102,15 +102,14 @@
                                 </div>
                             </div>
 
-                            <div class="form-group col-xs-12 col-md-6 formRegGroup floatRight">
+                            <div class="form-group col-xs-12 col-md-12 formRegGroup floatRight">
                                 <div class="col-xs-10 floatRight text-center">
                                     <label class="registerLabel floatRight" >مختصات جغرافیایی رویداد :</label>
-                                    <label>با کلیک روی نقشه مکان را مشخص کنید</label>
+                                    <label class="col-xs-12">با کلیک روی نقشه مکان را مشخص کنید</label>
                                 </div>
                                 <div class="col-xs-12 floatRight ">
-                                    <div id="mapExchange" ng-click="addMarker()" >
+                                    <div id="mapExchangeEdit" ng-click="addMarker()" >
                                     </div>
-                                    <!--<input class="btn btn-danger marginTop10" ng-click="deleteMarkersExchange();" type=button value="پاک کردن پین">-->
                                 </div>
 
                             </div>
@@ -121,11 +120,11 @@
                     </fieldset>
                     <div class="control-group text-center marginBottom20">
                         <label class="control-label" for="signInButton"></label>
-                        <div ng-show="submitExchangeNotif" class="text-center alert alert-success col-xs-12 marginTop10">
-                            <strong>آگهی با موفقیت ثبت شد</strong>
+                        <div ng-show="editExchangeNotif" class="text-center alert alert-success col-xs-12 marginTop10">
+                            <strong>آگهی با موفقیت ویرایش شد</strong>
                         </div>
                         <div class="controls">
-                            <button id="exchangeEventSubmit" ng-click="submitExchangeTicket(exchange)" name="signin" class="btn btn-success btn-lg btnLogin">ویرایش آگهی <i ng-show="submitExchangeSpinner" class="fa fa-spinner fa-spin"></i></button>
+                            <button id="exchangeEventSubmit" ng-click="submitExchangeTicket(exchange)" name="signin" class="btn btn-success btn-lg btnLogin">ویرایش آگهی <i ng-show="editExchangeSpinner" class="fa fa-spinner fa-spin"></i></button>
                         </div>
 
                     </div>
