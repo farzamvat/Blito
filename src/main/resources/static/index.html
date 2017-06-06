@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="Blito" ng-controller="mainCtrl as main">
+<head>
+    <base href="/"/>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1, user-scalable=0.5" />
+    <title>بلیتو</title>
+
+    <!-- external css libraries-->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="bower_components/slick-carousel/slick/slick.css"/>
+    <link rel="stylesheet" href="bower_components/slick-carousel/slick/slick-theme.css"/>
+    <link rel="stylesheet" href="assets/css/wizardStyle.css"/>
+    <link rel="stylesheet" href="assets/css/custom.css"/>
+    <link rel="stylesheet" href="assets/css/tabProfile.css"/>
+
+
+
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+
+
+
+    <!-- angular js libraries-->
+    <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
+    <script type="text/javascript" src="bower_components/angularUtils-pagination/dirPagination.js"></script>
+
+    <!-- external js libraries-->
+    <script type="text/javascript" src="bower_components/angular-slick/dist/slick.min.js"></script>
+    <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="bower_components/slick-carousel/slick/slick.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu5nZKbeK-WHQ70oqOWo-_4VmwOwKP9YQ"></script>
+    <script type="text/javascript" src="assets/js/script.js"></script>
+
+    <!-- jalali date-picker -->
+    <link rel="stylesheet" href="bower_components/persian-datepicker/dist/css/persian-datepicker-0.4.5.min.css"/>
+    <script src="bower_components/persian-datepicker/lib/persian-date.js"></script>
+    <script src="bower_components/persian-datepicker/dist/js/persian-datepicker-0.4.5.min.js"></script>
+
+    <!-- angular modules-->
+    <script type="text/javascript" src="app/app.js"></script>
+    <script type="text/javascript" src="app/route.js"></script>
+
+    <!-- angular controllers-->
+    <script type="text/javascript" src="app/controllers/mainCtrl.js"></script>
+    <script type="text/javascript" src="app/controllers/homeCtrl.js"></script>
+    <script type="text/javascript" src="app/controllers/eventsListPageCtrl.js"></script>
+    <script type="text/javascript" src="app/controllers/eventPageCtrl.js"></script>
+    <script type="text/javascript" src="app/controllers/bioPageCtrl.js"></script>
+    <script type="text/javascript" src="app/controllers/activateUserCtrl.js"></script>
+    <script type="text/javascript" src="app/controllers/userProfileCtrl.js"></script>
+
+
+    <!-- angular services-->
+    <script type="text/javascript" src="app/services/auth-services.js"></script>
+    <script type="text/javascript" src="app/services/animate-services.js"></script>
+    <script type="text/javascript" src="app/services/ui-services.js"></script>
+    <script type="text/javascript" src="app/services/user-profile-api-services.js"></script>
+
+    <!-- angular directives-->
+    <script type="text/javascript" src="app/directives/changeClassBySize.js"></script>
+
+
+</head>
+<body ng-cloak="">
+
+<!-- Fixed navbar -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="">
+        <div class="navbar-header">
+            <button  type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <img href="/" src="assets/img/logo.png" alt=""/>
+            <a class="navbar-brand" href="/" ></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse ">
+            <ul class="nav navbar-nav floatRight textAlignRight">
+                <li ng-show="logoutMenu" class="floatRight" ng-class="{ active: isActive('/user-profile')}"><a class="" href="/user-profile"><i class="fa fa-user" aria-hidden="true"></i>  {{firstname}} {{lastname}} </a></li>
+                <li class="floatRight" ng-class="{ active: isActive('/')}"><a class="" href="/"><i class="fa fa-home" aria-hidden="true"></i> خانه </a></li>
+                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema') || isActive('/recent-events') || isActive('/theater')} || isActive('/cafe')">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-calendar" aria-hidden="true"></i> رویداد ها   <span class="caret"></span></a>
+                    <ul class="dropdown-menu textAlignRight">
+                        <li><a href="/recent-events"> ورزشی</a></li>
+                        <li><a href="/cinema">سینما</a></li>
+                        <!--<li role="separator" class="divider"></li>-->
+                        <li><a href="/theater">تئاتر</a></li>
+                        <li><a href="/cafe">کافه</a></li>
+                        <!--<li class="dropdown-header">Nav header</li>-->
+                        <!--<li><a href="#">Separated link</a></li>-->
+                        <!--<li><a href="#">One more separated link</a></li>-->
+                    </ul>
+                </li>
+                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema-exchange') || isActive('/theater-exchange') || isActive('/cafe-exchange')}">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ticket" aria-hidden="true"></i> بلیت های تعویضی   <span class="caret"></span></a>
+                    <ul class="dropdown-menu textAlignRight">
+                        <li><a href="/cinema-exchange">سینما</a></li>
+                        <!--<li role="separator" class="divider"></li>-->
+                        <li><a href="/theater-exchange">تئاتر</a></li>
+                        <li><a href="/cafe-exchange">کافه</a></li>
+                        <!--<li class="dropdown-header">Nav header</li>-->
+                        <!--<li><a href="#">Separated link</a></li>-->
+                        <!--<li><a href="#">One more separated link</a></li>-->
+                    </ul>
+                </li>
+                <li ng-hide="logoutMenu" class="floatRight signInButton"><a href="" data-toggle="modal" data-target="#registrationModal"><i class="fa fa-sign-in" aria-hidden="true"></i> ورود/ثبت نام  </a></li>
+
+                <li ng-show="logoutMenu" ng-click="logout()" class="floatRight signInButton"><a href=""><i class="fa fa-sign-out" aria-hidden="true"></i> خروج</a></li>
+
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+<div class="container">
+
+<div ng-view="">
+
+
+</div>
+
+
+</div><!-- container-->
+<footer>
+    <div class="row">
+        <div class="col-md-4 col-sm-4 paddingtop-bottom footerleft floatRight textAlignRight ">
+            <div class="logofooter"> <img href="#" src="assets/img/logo.png" alt=""/>
+            </div>
+            <p><i class="fa fa-info"></i><a class="footerAnchor">درباره ما</a></p>
+            <p><i class="fa fa-users"></i><a class="footerAnchor">تیم ما</a></p>
+            <p><i class="fa fa-file-text-o"></i><a class="footerAnchor">قوانین بلیتو</a></p>
+            <p><i class="fa fa-map-pin"></i>آدرس بلیتو</p>
+            <p><i class="fa fa-phone"></i>شماره تماس : ۰۲۱-۲۲۲۲۲۲۲</p>
+            <p><i class="fa fa-envelope"></i>پست الکترونیکی : example@example.com</p>
+
+        </div>
+        <div class="verticalLine">
+
+        </div>
+        <div class="col-md-4 col-sm-4 paddingtop-bottom footerleft floatRight textAlignRight">
+
+            <h6 class="heading7">امکانات</h6>
+            <p><i class="fa fa-info"></i><a class="footerAnchor">درباره ما</a></p>
+            <p><i class="fa fa-users"></i><a class="footerAnchor">تیم ما</a></p>
+            <p><i class="fa fa-file-text-o"></i><a class="footerAnchor">قوانین بلیتو</a></p>
+        </div>
+        <div class="col-md-4 col-sm-4 paddingtop-bottom footerleft floatRight textAlignRight">
+            <div class="logofooter"> <img href="#" src="assets/img/logoE.png" alt=""/>
+            </div>
+        </div>
+
+
+    </div>
+</footer>
+<div ng-include="'app/views/partials/registerModal.html'"></div>
+<div ng-include="'app/views/partials/loading.html'"></div>
+<div ng-include="'app/views/partials/showNotif.html'"></div>
+
+</body>
+</html>

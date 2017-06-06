@@ -38,7 +38,7 @@ public class JwtFilter extends GenericFilterBean {
 		final HttpServletResponse servletResponse = (HttpServletResponse) response;
 		final String authHeader = servletRequest.getHeader("X-AUTH-TOKEN");
 		if (authHeader == null || !authHeader.startsWith("Bearer")) {
-			servletResponse.sendError(HttpStatus.BAD_REQUEST.value(), "Invalid token syntax");
+			servletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
 			return;
 		}
 		final String token = authHeader.substring(7);

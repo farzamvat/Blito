@@ -2,6 +2,7 @@ package com.blito.enums;
 
 public enum Response {
 	SUCCESS("success.operation"),
+	RESET_PASSWORD_EMAIL_SENT("success.reset.email.sent"),
     CONCURRENCY_FAILURE("error.concurrency.failure"),
     ACCESS_DENIED("error.access.denied"),
     VALIDATION("error.validation"),
@@ -26,7 +27,22 @@ public enum Response {
     MERCHANT_TYPE_NOT_FOUND("error.merchant.type.not.found"),
     SERVICE_REQUEST_NOT_FOUND("error.service.request.not.found"),
     OPERATION_NOT_ALLOWED("operation.not.allowed"),
-    IDP_CONFLICT("error.idp.conflict");
+    IDP_CONFLICT("error.idp.conflict"),
+    REGISTER_SUCCESS("success.registration.operation"),
+    ACTIVATE_ACCOUNT_EMAIL("activation.account.email"),
+    IMAGE_NOT_FOUND("error.not.found.image"), 
+    EVENT_HOST_NOT_FOUND("error.event.host.not.found"), 
+    NOT_ALLOWED("error.operation.not.allowed"), 
+    BLIT_NOT_FOUND("error.blit.not.found"),
+	EVENT_NOT_FOUND("error.event.not.found"),
+	REFRESH_TOKEN_NOT_PRESENT("error.refresh.token.not.present"), 
+	EVENT_LINK_EXISTS("error.event.link.exists"),
+	EVENT_DATE_NOT_FOUND("error.event.date.not.found"),
+	SEARCH_UNSUCCESSFUL("error.search.unsuccessful"),
+	BLIT_TYPE_NOT_FOUND("error.blit.type.not.found"),
+	DISCOUNT_CODE_ALREADY_EXISTS("error.discount.code.exists"),
+	INCONSISTENT_DATES("error.inconsistent.dates");
+    
 
     private final String message;
 

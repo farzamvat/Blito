@@ -1,0 +1,11 @@
+package com.blito.enums;
+
+public enum ImageType {
+	BANNER,
+	GALLERY,
+	HOST_PHOTO,
+	HOST_COVER_PHOTO,
+	INDEX_BANNER,
+	EVENT_PHOTO,
+	EXCHANGEBLIT_PHOTO
+}

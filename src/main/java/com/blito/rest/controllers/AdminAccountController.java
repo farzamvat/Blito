@@ -1,0 +1,90 @@
+package com.blito.rest.controllers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.blito.enums.Response;
+import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.viewmodels.ResultVm;
+import com.blito.rest.viewmodels.View;
+import com.blito.rest.viewmodels.account.UserViewModel;
+import com.blito.rest.viewmodels.exception.ExceptionViewModel;
+import com.blito.services.AdminAccountService;
+import com.blito.services.ExcelService;
+import com.blito.services.RoleService;
+import com.blito.view.ExcelView;
+import com.fasterxml.jackson.annotation.JsonView;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
+@RestController
+@RequestMapping("${api.base.url}" + "/admin/user-accounts")
+public class AdminAccountController {
+	
+	@Autowired AdminAccountService adminAccountService;
+	@Autowired ExcelService excelService;
+	@Autowired RoleService roleService;
+	
+	
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "get all users")
+	@ApiResponses({ @ApiResponse(code = 200, message = "get all users ok", response = UserViewModel.class)})
+	// ***************** SWAGGER DOCS ***************** //
+	@JsonView(View.SimpleUser.class)
+	@GetMapping("/all")
+	public ResponseEntity<Page<UserViewModel>> getAllUsers(Pageable pageable){
+		return ResponseEntity.ok(adminAccountService.getAllUsers(pageable));
+	}
+	
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "get user")
+	@ApiResponses({ @ApiResponse(code = 200, message = "get user ok", response = UserViewModel.class),
+				    @ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
+	// ***************** SWAGGER DOCS ***************** //
+	@JsonView(View.AdminUser.class)
+	@GetMapping("/{userId}")
+	public ResponseEntity<UserViewModel> getUser(@PathVariable long userId){
+		return ResponseEntity.ok(adminAccountService.getUser(userId));
+	}
+	
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "ban user")
+	@ApiResponses({ @ApiResponse(code = 202, message = "ban user accepted", response = ResultVm.class),
+					@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
+	// ***************** SWAGGER DOCS ***************** //
+	@PutMapping("/ban-user/{userId}")
+	public ResponseEntity<ResultVm> banUser(@PathVariable long userId){
+		adminAccountService.banUser(userId);
+		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
+	}
+	
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "assign role to user")
+	@ApiResponses({ @ApiResponse(code = 202, message = "role accepted", response = ResultVm.class)})
+	// ***************** SWAGGER DOCS ***************** //
+	@GetMapping("/assign/{userId}/{roleId}")
+	public ResponseEntity<?> assignRoleToUser(@PathVariable long userId,@PathVariable long roleId)
+	{
+		roleService.assignRole(roleId, userId);
+		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
+	}
+	
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "get all users with excel")
+	@ApiResponses({ @ApiResponse(code = 200, message = "get all users ok", response = ModelAndView.class)})
+	// ***************** SWAGGER DOCS ***************** //
+	@GetMapping("/all-users-excel.xlsx")
+	public ModelAndView getAllUsersExcel() {
+ 		return new ModelAndView(new ExcelView(), excelService.getUserExcelMap());
+	}
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>بلیتو</title>
+    <style type="text/css">
+        html, body , .container{
+            width: 100% !important;
+            height: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            font-family: "B Nazanin+ Bold";
+        }
+
+        .logoSection {
+            background-color: #eee;
+            width: 100%;
+        }
+        .logoImg img {
+            display: block;
+            margin: 0px auto;
+            padding: 20px 40px;
+        }
+        .textSection {
+            height: 400px;
+        }
+        .textSection h2 {
+            font-family: "XB Zar";
+            text-align: right;
+            direction: rtl;
+            margin: 100px 80px 20px 0 ;
+        }
+        .textSection p {
+            text-align: right;
+            direction: rtl;
+            margin: 10px 80px 20px 0 ;
+        }
+        .textSection a {
+            background-color: #00ADD8;
+            padding: 20px 40px;
+            font-size: 20px;
+            text-decoration: none;
+            color: white;
+            display: block;
+            text-align: center;
+            margin: 50px auto 10px auto;
+            width: 20%;
+            border-radius: 5px;
+        }
+        .textSection a:hover {
+            background-color: #0fA1D8;
+        }
+        .bottomSection {
+            height: 100%;
+            background-color: #303030;
+            margin-top: 20px;
+            margin-bottom: 0 !important;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="logoSection">
+    <div class="logoImg">
+        <a href="">
+        <img align="center" alt="" src="https://gallery.mailchimp.com/1306cce44028ddafd3be236cd/images/b0960aba-69f5-49f2-87c1-3ac872cd8201.png" width="564"  class="mcnImage"></img>
+        </a>
+    </div>
+</div>
+<div class="textSection">
+    <h2>سلام کاربر عزیز</h2>
+    <p>
+        از طريق لينک زير حساب کاربری خود را فعال کنيد
+    </p>
+
+    <a th:href=" @{|${serverAddress}${baseUrl}/activate?key=${user.activationKey}&amp;email=${user.email}|}">فعال کردن حساب کاربری</a>
+</div>
+<footer class="bottomSection">
+
+</footer>
+</div>
+</body>
+</html>

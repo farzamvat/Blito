@@ -1,5 +1,6 @@
 package com.blito.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,12 +18,17 @@ public class Role {
 	long roleId;
 
 	String name;
+	
 	@ManyToMany(cascade=CascadeType.ALL)
-	@JoinTable(name="permission")
+	@JoinTable(name="role_permission")
 	List<Permission> permissions;
+	
+	public Role() {
+		permissions = new ArrayList<>();
+	}
 	public long getRoleId() {
 		return roleId;
-	}
+	}	
 	public void setRoleId(long roleId) {
 		this.roleId = roleId;
 	}

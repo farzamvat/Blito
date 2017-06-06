@@ -1,0 +1,163 @@
+<div ng-controller="eventPageCtrl as eventPage">
+    <div class="row eventPageHeader" ng-class="{'eventPageHeaderCinema': eventType === 'cinema', 'eventPageHeaderTheatre': eventType === 'theatre'}">
+        <div class="col-xs-12 col-sm-4 col-md-3 floatRight eventPageImage">
+            <img ng-src="assets/img/a.jpeg"   class="img-responsive imgMobileSize ">
+        </div>
+        <div class="col-xs-12 col-sm-7 col-md-4 floatRight textAlignRight eventContent" >
+            <h1>نام رویداد</h1>
+            <p> توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد</p>
+            <p> توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد</p>
+
+            <button data-toggle="modal" data-target="#buyTicket" class="btn btn-success btn-lg marginTop10"><i class="fa fa-ticket" aria-hidden="true"></i>  خرید بلیت
+
+            </button>
+
+        </div>
+        <div class="col-xs-12   col-sm-12   col-md-4 floatRight  textAlignRight paddingRight0 panelMidSize" >
+
+            <div class="panel panel-primary  customPanelEventPage eventPageShowTimeColor">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-list"></span> لیست سانس ها
+                    <input height="60" id="searchShowTime" placeholder="&#xf002;" ng-model="search"   type="text"  class="form-group searchListInput" >
+                </div>
+                <!--<div class="form-group col-xs-12  formRegGroup floatRight">-->
+                    <!--<div class="col-xs-5 col-sm-6 floatRight text-center">-->
+                    <!--</div>-->
+                    <!--<div class="col-xs-7 col-sm-6 floatRight ">-->
+                    <!--</div>-->
+
+                <!--</div>-->
+                <div class="panel-body textAlignRight">
+
+                    <table class="table">
+                        <thead class="tableHeader">
+                        <tr>
+
+                            <th class="dataCenter">ساعت
+                            </th>
+                            <th class="dataCenter" >روز
+                            </th>
+                            <th class="dataCenter" >تاریخ
+                            </th>
+                            <th class="dataCenter" >قیمت
+                            </th>
+                            <th class="dataCenter" >وضعیت بلیت
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="showTimeList">
+                        <tr ng-repeat="item in showTime | filter:search">
+                            <td class="dataCenter">{{ item.time}}</td>
+                            <td class="dataCenter">{{ item.weekDay}}</td>
+                            <td class="dataCenter">{{ item.date}}</td>
+                            <td class="dataCenter">{{ item.price}}</td>
+                            <td class="dataCenter" ng-class="{ 'btn-success': item.sansState && item.expired, 'btn-danger': !item.sansState || !item.expired}">
+                                {{ item.showTimeStateTitle}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-10 col-md-10 floatRight">
+        <ul class="nav nav-tabs marginTop10">
+            <li class="floatRight active"><a class="tabAnchor" data-toggle="tab" data-target="#home">اطلاعات رویداد <i class="fa fa-info"></i></a></li>
+            <li class="floatRight "><a class="tabAnchor" data-toggle="tab" data-target="#menu1">تیزر <i class="fa fa-film"></i></a></li>
+            <li class="floatRight"><a class="tabAnchor" data-toggle="tab" data-target="#menu2"> گالری تصویر <i class="fa fa-photo"></i></a></li>
+        </ul>
+
+        <div class="tab-content  tabContent">
+            <div id="home" class="tab-pane fade in active">
+                <div class="row">
+                <div class="col-xs-12 col-sm-12  floatRight textAlignRight">
+                    <h3 class="textAlignRight">عوامل </h3>
+                    <h5 class="marginTop30">کارگردان</h5>
+                    <p>توضحیات</p>
+                    <h5>تهیه کننده</h5>
+                    <p>توضحیات</p>
+                    <h5>بازیگران</h5>
+                    <p>توضحیات</p>
+                </div>
+                <div class="col-xs-12 col-sm-12  floatRight textAlignRight">
+                    <h3 class="textAlignRight">مکان رویداد</h3>
+                    <p>منطقه فلان، آدرس فلان، کوچه فلان، پلاک۲</p>
+                    <div id="map" >
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div id="menu1" class="tab-pane fade">
+                <div class="eventVideo"  id="14931147738924580"><script type="text/JavaScript" src="https://www.aparat.com/embed/nv7Xg?data[rnddiv]=14931147738924580&data[responsive]=yes"></script></div>
+            </div>
+            <div id="menu2" class="tab-pane fade slickFix marginTop30">
+                <div ng-include="'app/views/partials/slickSlider.html'"></div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-2 col-md-2 floatRight">
+
+    </div>
+</div>
+
+<div ng-include="'app/views/partials/buyTicket.html'"></div>
+
+
+
+<!-- Modal -->
+<!--<div id="myModal" class="modal fade" role="dialog">-->
+    <!--<div class="modal-dialog">-->
+
+        <!--&lt;!&ndash; Modal content&ndash;&gt;-->
+        <!--<div class="modal-content">-->
+            <!--<div class="panel panel-primary  customPanelEventPage eventPageShowTimeColor">-->
+                <!--<div class="panel-heading">-->
+                    <!--<span class="glyphicon glyphicon-list"></span> لیست سانس ها-->
+                    <!--<input height="60" id="searchShowTime" placeholder="&#xf002;" ng-model="search"   type="text"  class="form-group searchListInput" >-->
+                <!--</div>-->
+                <!--&lt;!&ndash;<div class="form-group col-xs-12  formRegGroup floatRight">&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="col-xs-5 col-sm-6 floatRight text-center">&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="col-xs-7 col-sm-6 floatRight ">&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--<div class="panel-body textAlignRight">-->
+
+                    <!--<table class="table">-->
+                        <!--<thead class="tableHeader">-->
+                        <!--<tr>-->
+
+                            <!--<th class="dataCenter">ساعت-->
+                            <!--</th>-->
+                            <!--<th class="dataCenter" >روز-->
+                            <!--</th>-->
+                            <!--<th class="dataCenter" >تاریخ-->
+                            <!--</th>-->
+                            <!--<th class="dataCenter" >قیمت-->
+                            <!--</th>-->
+                            <!--<th class="dataCenter" >وضعیت بلیت-->
+                            <!--</th>-->
+                        <!--</tr>-->
+                        <!--</thead>-->
+                        <!--<tbody class="showTimeList">-->
+                        <!--<tr ng-repeat="item in showTime | filter:search">-->
+                            <!--<td class="dataCenter">{{ item.time}}</td>-->
+                            <!--<td class="dataCenter">{{ item.weekDay}}</td>-->
+                            <!--<td class="dataCenter">{{ item.date}}</td>-->
+                            <!--<td class="dataCenter">{{ item.price}}</td>-->
+                            <!--<td class="dataCenter" ng-class="{ 'btn-success': item.sansState && item.expired, 'btn-danger': !item.sansState || !item.expired}">-->
+                                <!--{{ item.showTimeStateTitle}}</td>-->
+                        <!--</tr>-->
+                        <!--</tbody>-->
+                    <!--</table>-->
+                <!--</div>-->
+
+            <!--</div>-->
+        <!--</div>-->
+
+    <!--</div>-->
+<!--</div>-->
