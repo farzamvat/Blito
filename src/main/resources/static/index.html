@@ -31,7 +31,7 @@
     <script type="text/javascript" src="bower_components/angular-slick/dist/slick.min.js"></script>
     <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="bower_components/slick-carousel/slick/slick.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu5nZKbeK-WHQ70oqOWo-_4VmwOwKP9YQ"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0K9LZjvsK4TGAOLzQVVnGfY20eyO5nbY"></script>
     <script type="text/javascript" src="assets/js/script.js"></script>
 
     <!-- jalali date-picker -->
@@ -51,6 +51,7 @@
     <script type="text/javascript" src="app/controllers/bioPageCtrl.js"></script>
     <script type="text/javascript" src="app/controllers/activateUserCtrl.js"></script>
     <script type="text/javascript" src="app/controllers/userProfileCtrl.js"></script>
+    <script type="text/javascript" src="app/controllers/exchangeList.js"></script>
 
 
     <!-- angular services-->
@@ -68,7 +69,6 @@
 
 <!-- Fixed navbar -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="">
         <div class="navbar-header">
             <button  type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
@@ -84,7 +84,7 @@
             <ul class="nav navbar-nav floatRight textAlignRight">
                 <li ng-show="logoutMenu" class="floatRight" ng-class="{ active: isActive('/user-profile')}"><a class="" href="/user-profile"><i class="fa fa-user" aria-hidden="true"></i>  {{firstname}} {{lastname}} </a></li>
                 <li class="floatRight" ng-class="{ active: isActive('/')}"><a class="" href="/"><i class="fa fa-home" aria-hidden="true"></i> خانه </a></li>
-                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema') || isActive('/recent-events') || isActive('/theater')} || isActive('/cafe')">
+                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema') || isActive('/recent-events') || isActive('/theater') || isActive('/cafe')}">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-calendar" aria-hidden="true"></i> رویداد ها   <span class="caret"></span></a>
                     <ul class="dropdown-menu textAlignRight">
                         <li><a href="/recent-events"> ورزشی</a></li>
@@ -97,17 +97,7 @@
                         <!--<li><a href="#">One more separated link</a></li>-->
                     </ul>
                 </li>
-                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema-exchange') || isActive('/theater-exchange') || isActive('/cafe-exchange')}">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ticket" aria-hidden="true"></i> بلیت های تعویضی   <span class="caret"></span></a>
-                    <ul class="dropdown-menu textAlignRight">
-                        <li><a href="/cinema-exchange">سینما</a></li>
-                        <!--<li role="separator" class="divider"></li>-->
-                        <li><a href="/theater-exchange">تئاتر</a></li>
-                        <li><a href="/cafe-exchange">کافه</a></li>
-                        <!--<li class="dropdown-header">Nav header</li>-->
-                        <!--<li><a href="#">Separated link</a></li>-->
-                        <!--<li><a href="#">One more separated link</a></li>-->
-                    </ul>
+                <li class="floatRight" ng-class="{ active: isActive('/exchange-tickets')}"><a href="/exchange-tickets"><i class="fa fa-ticket" aria-hidden="true"></i> بلیت های تعویضی   </a>
                 </li>
                 <li ng-hide="logoutMenu" class="floatRight signInButton"><a href="" data-toggle="modal" data-target="#registrationModal"><i class="fa fa-sign-in" aria-hidden="true"></i> ورود/ثبت نام  </a></li>
 
@@ -115,7 +105,6 @@
 
             </ul>
         </div><!--/.nav-collapse -->
-    </div>
 </nav>
 <div class="container">
 
@@ -126,17 +115,17 @@
 
 
 </div><!-- container-->
-<footer>
+<footer id="footer">
     <div class="row">
         <div class="col-md-4 col-sm-4 paddingtop-bottom footerleft floatRight textAlignRight ">
             <div class="logofooter"> <img href="#" src="assets/img/logo.png" alt=""/>
             </div>
-            <p><i class="fa fa-info"></i><a class="footerAnchor">درباره ما</a></p>
-            <p><i class="fa fa-users"></i><a class="footerAnchor">تیم ما</a></p>
-            <p><i class="fa fa-file-text-o"></i><a class="footerAnchor">قوانین بلیتو</a></p>
-            <p><i class="fa fa-map-pin"></i>آدرس بلیتو</p>
-            <p><i class="fa fa-phone"></i>شماره تماس : ۰۲۱-۲۲۲۲۲۲۲</p>
-            <p><i class="fa fa-envelope"></i>پست الکترونیکی : example@example.com</p>
+            <p><i class="fa fa-info"></i><a class="footerAnchor footerP">درباره ما</a></p>
+            <p><i class="fa fa-users"></i> <a class="footerAnchor footerP">تیم ما</a></p>
+            <p><i class="fa fa-file-text-o"></i><a class="footerAnchor footerP">قوانین بلیتو</a></p>
+            <p class="footerP"><i class="fa fa-map-pin"></i>آدرس بلیتو</p>
+            <p class="footerP"><i class="fa fa-phone"></i>شماره تماس : ۰۲۱-۲۲۲۲۲۲۲</p>
+            <p class="footerP" style="font-size: 11px"><i class="fa fa-envelope"></i>پست الکترونیکی : example@example.com</p>
 
         </div>
         <div class="verticalLine">
@@ -145,9 +134,9 @@
         <div class="col-md-4 col-sm-4 paddingtop-bottom footerleft floatRight textAlignRight">
 
             <h6 class="heading7">امکانات</h6>
-            <p><i class="fa fa-info"></i><a class="footerAnchor">درباره ما</a></p>
-            <p><i class="fa fa-users"></i><a class="footerAnchor">تیم ما</a></p>
-            <p><i class="fa fa-file-text-o"></i><a class="footerAnchor">قوانین بلیتو</a></p>
+            <p><i class="fa fa-info"></i><a class="footerAnchor footerP">درباره ما</a></p>
+            <p><i class="fa fa-users"></i><a class="footerAnchor footerP">تیم ما</a></p>
+            <p><i class="fa fa-file-text-o"></i><a class="footerAnchor footerP">قوانین بلیتو</a></p>
         </div>
         <div class="col-md-4 col-sm-4 paddingtop-bottom footerleft floatRight textAlignRight">
             <div class="logofooter"> <img href="#" src="assets/img/logoE.png" alt=""/>

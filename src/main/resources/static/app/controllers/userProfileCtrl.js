@@ -3,7 +3,7 @@
  */
 
 angular.module('User')
-    .controller('userProfileCtrl', function ($scope, userInfo, Auth, $timeout, mapMarkerService, updateInfo, $location, scrollAnimation, uploadPhotoService, eventService, plannerService, exchangeService, dataService) {
+    .controller('userProfileCtrl', function ($scope, userInfo, Auth, $timeout, mapMarkerService, updateInfo, $location, scrollAnimation, uploadPhotoService, eventService, plannerService, exchangeService, dataService, $window) {
         var userProfile = this;
 
         $scope.userData = userInfo.getData();
@@ -369,6 +369,7 @@ angular.module('User')
         }
 
         $scope.submitEvent = function (eventFields) {
+
             var latLng = mapMarkerService.getMarker();
             var eventSubmitData = {
                 eventName : eventFields.name,
@@ -390,6 +391,7 @@ angular.module('User')
                     $scope.createEventSpinner = false;
                     $scope.createEventNotif = true;
                     console.log(data);
+                    $scope.getUserEvents();
                 }, function (data, status) {
                     console.log(data);
                     $scope.createEventSpinner = false;
@@ -425,26 +427,16 @@ angular.module('User')
                     console.log(data);
                     $scope.submitExchangeSpinner = false;
                     $scope.submitExchangeNotif = true;
+                    $scope.getExchangeData();
 
                 }, function (data, status) {
                     console.log(data);
                 })
             console.log(exchangeData);
         }
-        $scope.showTime = [
-            {title : "نام رویداد", weekDay: "یکشنبه", price: "1000", date:"22/2", time: "۱۰:۳۰", sansState: true, expired: true},
-            {title : "نام رویداد", weekDay: "سه شنبه", price: "2000", date:"23/2", time: "۹:۰۰",  sansState: false, expired: false},
-            {title : "نام رویداد", weekDay: "جمعه", price: "1000", date:"24/2", time: "۸:۰۰",  sansState: true, expired: true},
-            {title : "نام رویداد", weekDay: "جمعه", price: "1000", date:"24/2", time: "۸:۰۰",  sansState: false, expired: true},
-            {title : "نام رویداد", weekDay: "جمعه", price: "1000", date:"24/2", time: "۸:۰۰",  sansState: true, expired: true},
-            {title : "نام رویداد", weekDay: "جمعه", price: "1000", date:"24/2", time: "۸:۰۰",  sansState: false, expired: true},
-            {title : "نام رویداد", weekDay: "جمعه", price: "1000", date:"24/2", time: "۸:۰۰",  sansState: true, expired: true},
-            {title : "نام رویداد", weekDay: "جمعه", price: "1000", date:"24/2", time: "۸:۰۰",  sansState: true, expired: true},
-            {title : "نام رویداد", weekDay: "جمعه", price: "1000", date:"24/2", time: "۸:۰۰",  sansState: true, expired: true},
-            {title : "نام رویداد", weekDay: "شنبه", price: "4000", date:"25/2", time: "۸:۳۰",  sansState: true, expired: false}
-        ];
+        $scope.showTime = [];
 
-     
+
         $scope.dropDownTabToggleEvent = function (event) {
             $scope.getPlannersData();
             $scope.getUserEvents();
@@ -497,10 +489,101 @@ angular.module('User')
                     console.log(data);
                 })
         }
+
+
+        $scope.editEvent = function (index) {
+            console.log(index);
+            mapMarkerService.initMap(document.getElementById('editEventMap'));
+            mapMarkerService.setMarker($scope.userEvents[index].latitude,$scope.userEvents[index].longitude);
+            $scope.editEventFields = {
+                name : $scope.userEvents[index].eventName,
+                eventType : $scope.userEvents[index].eventType,
+                description : $scope.userEvents[index].description,
+                ticketStartTime : persianDate($scope.userEvents[index].blitSaleStartDate).pDate,
+                ticketEndTime : persianDate($scope.userEvents[index].blitSaleEndDate).pDate,
+                address : $scope.userEvents[index].address,
+                aparatLink : $scope.userEvents[index].aparatDisplayCode,
+                eventPlanner : $scope.userEvents[index].eventHostName,
+            };
+            $scope.showTimeEditForms = $scope.userEvents[index].blitTypes;
+            $("#editEvent").modal("show");
+
+        }
+        $scope.editHost = function (index) {
+
+            $("#editHost").modal("show");
+        }
+
+
+        $scope.editExchangeNotif = false;
+        $scope.editExchangeSpinner = false;
+        $scope.editExchange = function (index) {
+            $timeout(function () {
+                $(".persianExchangeTimeEdit").pDatepicker({
+                    timePicker: {
+                        enabled: true
+                    },
+                    altField: '#persianDigitAlt',
+                    altFormat: "YYYY MM DD HH:mm:ss",
+                    altFieldFormatter: function (unixDate) {
+                    }
+                });
+            }, 1000);
+
+            mapMarkerService.initMap(document.getElementById('mapExchangeEdit'));
+            angular.element(document.getElementsByClassName("exchangePhotoUploadEdit"))[0].src = '';
+            $("#editExchange").modal("show");
+
+        }
+
+
+        // $scope.userEvents = [
+        //     {
+        //         eventName : 'رویداد',
+        //         blitSaleStartDate : 12124,
+        //         blitSaleEndDate : 123123,
+        //         eventType : "CINEMA",
+        //         eventHostName : "soroush",
+        //         latitude : 35.7023,
+        //         longitude : 51.3957
+        //     }
+        // ];
+        // $scope.eventHosts = [
+        //     {
+        //         hostName : 'سروش',
+        //         telephone : '۰۱۲۳',
+        //         websiteLink : 'www.ww.ww'
+        //     }
+        // ];
+        // $scope.exchangeTickets = [
+        //     {
+        //         title : 'سروش',
+        //         telephone : '۰۱۲۳',
+        //         websiteLink : 'www.ww.ww'
+        //     }
+        // ];
         $scope.getUserEvents = function () {
             eventService.getUserEvents()
                 .then(function (data, status) {
                     console.log(data);
+                    $scope.userEvents = data.data.content;
+                    $scope.userEvents = $scope.userEvents.map(function (event) {
+                        event.eventType = dataService.eventTypePersian(event.eventType);
+                        event.blitSaleEndDate = persianDate(event.blitSaleEndDate).pDate;
+                        event.blitSaleStartDate = persianDate(event.blitSaleStartDate).pDate;
+                        return event;
+                    })
+                    $timeout(function () {
+                        $(".persianTimeExchange").pDatepicker({
+                            timePicker: {
+                                enabled: true
+                            },
+                            altField: '#persianDigitAlt',
+                            altFormat: "YYYY MM DD HH:mm:ss",
+                            altFieldFormatter: function (unixDate) {
+                            }
+                        });
+                    },1000)
                 }, function (data, status) {
                     console.log(data);
                 })
@@ -515,4 +598,8 @@ angular.module('User')
                     console.log(data);
                 })
         }
+
+
+
+
     })

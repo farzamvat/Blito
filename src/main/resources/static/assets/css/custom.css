@@ -95,7 +95,9 @@ color: white !important;
 .marginRight30 {
     margin-right: 30px;
 }
-
+.homePage {
+    margin-top: 30px;
+}
 .carousel-caption {
     border: 1px groove #eee;
     background-color: rgba(30, 30, 30, 0.6);
@@ -111,12 +113,15 @@ color: white !important;
     padding: 20px 5px;
 }
 .slick-next, .slick-prev {
-    top: 30%;
+    top: 10%;
     border-radius: 5px;
     padding: 40px 20px;
 }
 .slick-next {
-    right: -45px;
+    right: -25px;
+}
+.slick-prev {
+    left: 15px;
 }
 .slick-next::before, .slick-next::after{
     background-color: #303030;
@@ -142,13 +147,20 @@ color: white !important;
 }
 .slidingEvents {
     /*background-color: #eee;*/
-    padding: 15px 20px;
-    height: 450px;
+    padding: 15px 60px;
+}
+.slidingEventsTitle {
+    font-size: 14px;
+}
+.slidingEvents button {
+    margin-top: 15px;
+    font-size: 12px;
 }
 .slidingEvents h3 {
     float: right;
     display: inline-block;
     cursor: pointer;
+    font-size: 18px;
     padding: 15px 15px;
 }
 .blitoOffer {
@@ -158,10 +170,11 @@ color: white !important;
     padding: 15px 20px;
     border-left: 2px solid #404040;
 }
-.blitoOffer h4 {
+.blitoOffer>h4 {
     /*display: inline-block;*/
     /*cursor: pointer;*/
-    padding: 14px 15px;
+    font-size: 14px;
+    padding: 11px 15px;
 }
 .blitoOfferMain {
     padding: 20px 5px;
@@ -169,13 +182,16 @@ color: white !important;
 }
 .categorySection {
     /*background: url("../img/movie.png") repeat-x;*/
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     background-color: #202020;
 }
+.categorySection a {
+    text-decoration: none;
+}
 .categoryImage {
-    width: 200px;
-    height: 133px;
+    width: 100px;
+    height: 67px;
     border-radius: 5px;
 }
 .categoryInside {
@@ -202,11 +218,11 @@ color: white !important;
     background: url('../img/sp.jpg') ;
 }
 .categoryConcert {
-    background: url('../img/con.jpg') ;
+    background: url('../img/concert.jpg') ;
 }
 .categoryTitle {
   text-align: center;
-    padding-top: 40px;
+    padding-top: 20px;
     color: white;
 }
 .eventMore {
@@ -239,18 +255,25 @@ color: white !important;
 .sideBar {
     background: transparent;
 }
-.slidingEventsRow {
+div.row.slidingEventsRow {
+    height: 460px;
     /*background: url('../img/pt.jpg') fixed repeat-y;*/
     /*background-size: 100% 600px;*/
 }
-
+div.hidden-xs.col-sm-3.floatRight.blitoOffer {
+    height: 460px;
+}
+.editButton {
+    padding: 2px 4px;
+    font-size: 12px;
+}
 .userProfileInfo {
     height: 170px;
     background: url('../img/orange1.png') fixed repeat-y;
     background-size: 100% 400px;
 }
 .profilePage {
-    margin-top: 50px;
+    margin-top: 30px;
 }
 .eventListAnchor {
     margin-top: 10px;
@@ -260,6 +283,10 @@ color: white !important;
 .pageHeaderLinks {
     border-bottom: 2px solid #303030;
     padding-bottom: 10px;
+    font-size: 14px;
+}
+.eventListHeader {
+    font-size: 22px;
 }
 .eventListAnchor:hover {
     text-decoration: none;
@@ -295,7 +322,7 @@ color: white !important;
     margin: 10px !important;
     padding: 10px 20px;
     width: 95%;
-    font-size: 28px;
+    font-size: 20px;
     border-radius: 3px;
 }
 .fieldsetStyle {
@@ -356,7 +383,7 @@ color: white !important;
 
 }
 .card.hovercard .card-info .card-title {
-    font-size: 20px;
+    font-size: 14px;
     line-height: 1;
     color: #262626;
 
@@ -394,7 +421,7 @@ color: white !important;
 }
 .profileTabs>li>a {
     border-radius: 0;
-    font-size: 14px !important;
+    font-size: 11px !important;
 }
 .profileTabContent {
     background-color: #eee;
@@ -420,21 +447,30 @@ color: white !important;
 .slidingEventsBtn {
     margin-top: 10px;
     margin-bottom: 10px;
+    font-size: 14px;
 }
 
 .exchangeTicketText {
-    margin-top: 120px;
+    margin-top: 0;
     padding: 50px 70px 20px 50px;
 }
 .exchangeTicketText h2 {
     padding: 10px 20px;
+    font-size: 18px;
     border-bottom: 3px solid rgb(252, 183, 49);
+}
+.exchangeTicketText p {
+    font-size: 12px !important;
 }
 .item>img {
     display: block;
     margin: 0px auto;
 }
+.blitImageOne {
+    margin-top: -400px;
+}
 .blitImage {
+    margin-top: 200px;
 }
 .nav-tabs {
 }
@@ -536,10 +572,12 @@ color: white !important;
 .btnLogin {
     margin-top: 30px !important;
     padding: 15px 60px;
+    font-size: 14px;
 }
 .btnReg {
     margin-top: 20px !important;
     padding: 15px 60px;
+    font-size: 14px;
 }
 
 .eventPageHeaderTheatre {
@@ -563,11 +601,27 @@ color: white !important;
     background-color: rgba(50, 50, 50, 0.8);
     border-radius: 0;
     color: white;
-    height: 325px;
+    height: 250px;
+}
+.eventContent h1 {
+    font-size: 18px;
+}
+.eventContent p {
+    font-size: 12px !important;
 }
 .eventPageImage {
     padding-left: 0 ;
-    height: 325px;
+    height: 250px;
+}
+.eventPageShowTimeColor .panel-body {
+    height: 200px !important;
+}
+.panelMidSize {
+    height: 250px ;
+}
+
+.eventPageImage img {
+    height: 250px;
 }
 .imgMobileSize {
     height: 325px;
@@ -586,14 +640,16 @@ color: white !important;
     border-bottom: 3px solid #303030;
     position: relative;
     overflow: hidden;
-    background-color: #eee
+    background-color: #eee;
+    height: 400px;
 }
-.imgRelative p {
-    font-size: 20px;
-}
+
 .btnExchangeTicket {
-    padding: 20px 40px;
+    font-size: 14px;
     margin: 10px 15px;
+    width: 200px;
+    padding: 10px 15px;
+    text-align: center;
 }
 .blitFade {
     z-index: 0;
@@ -604,12 +660,16 @@ color: white !important;
     z-index: 100;
     bottom: 10%;
     left: 15%;
-    font-size: 20px !important;
+    font-size: 16px !important;
     white-space: normal !important;
 
 }
+
 .buyTicketBanner :hover {
     cursor: pointer;
+}
+.buyTicket {
+    font-size: 14px !important;
 }
 .floatRight {
     float: right !important;
@@ -622,9 +682,21 @@ color: white !important;
 .navbar {
     transition: 500ms;
 }
+
+nav.navbar.navbar-inverse.navbar-fixed-top {
+    min-height: 30px !important;
+}
+.navbar-nav > li > a {padding-top:5px ; padding-bottom:5px ;}
+
+.navbar-header {
+    height: 30px ;
+}
+.navbar-brand {
+    height: 30px ;
+}
 .navbar-nav li a {
     color : white !important;
-    font-size: 14px;
+    font-size: 13px;
 }
 .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
     background-color: rgb(252, 183, 49);
@@ -639,7 +711,7 @@ color: white !important;
     background-color: rgba(252, 183, 49, 0.5);
 }
 .navbar-header>img {
-    height: 50px;
+    height: 30px;
     padding: 5px 40px;
     width: auto;
     cursor: pointer;
@@ -662,7 +734,6 @@ color: white !important;
 .footerAnchor {
     text-decoration: none;
     color: white;
-    font-size: 18px;
 }
 .footerAnchor:hover {
     text-decoration: none !important;
@@ -695,6 +766,12 @@ color: white !important;
     height: 300px;
 
 }
+#mapExchangeEdit {
+    border: 2px solid #303030;
+    width: 80%;
+    height: 300px;
+
+}
 .slick-dots li.slick-active button:before
 {
     opacity: 1;
@@ -710,9 +787,21 @@ color: white !important;
 }
 .dataCenter {
     text-align: center;
+    font-size: 12px;
+}
+dir-pagination-controls {
+    margin: 10px 0;
+}
+dir-pagination-controls .pagination {
+    text-align: center;
+    align-content: center;
+    justify-content: center;
 }
 dir-pagination-controls ul {
-    margin-left: 30% !important;
+    display: block !important;
+    margin: 0 auto !important;
+    width: 200px;
+    height: 40px;
 }
 .eventContent  button {
     padding: 20px 40px;
@@ -725,7 +814,7 @@ dir-pagination-controls ul {
 .registerLabel {
     vertical-align: middle;
     margin-top: 5px;
-    font-size: 16px;
+    font-size: 14px;
 }
 /*-------------------tab slick fix-------------*/
 /* bootstrap hack: fix content width inside hidden tabs */
@@ -747,7 +836,11 @@ dir-pagination-controls ul {
     background-color: rgba(252, 183, 49, 0.2);
 }
 .registerTab {
-    width: 200px;
+    font-size: 14px;
+    width: 100px;
+}
+.formRegGroup>div>li {
+    font-size: 14px;
 }
 /*----------event list style------------*/
 .eventListBtn {
@@ -764,7 +857,7 @@ dir-pagination-controls ul {
 .recipe {
     /*background-color:#ddd;*/
     /*max-width:300px;*/
-    margin: 20px auto;
+    margin: 10px auto;
     /*padding: 10px 15px;*/
     cursor: pointer;
     /*margin:10px 20px;*/
@@ -786,51 +879,59 @@ dir-pagination-controls ul {
     color:#FFF;
 }
 .recipe .image {
-    width: 230px;
-    height: 325px;
+    width: 150px;
+    height: 228px;
+    padding: 5px 10px;
     overflow:hidden;
     position:relative;
 }
 .recipe .image img{
-    height: 100%;
+    width: 150px;
+    height: 228px;
     /*width:100%;*/
     transition: all 1s ease;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+
     /*margin-top:-70px;*/
 }
 
 .recipe .name {
-    width:87%;
-    height:50px;
+    width:150px;
+    height:70px;
     background: rgba(252, 183, 49, 0.9);
     zoom: 1; /* set "zoom", "width" or "height" to trigger "hasLayout" in IE 7 and lower */
     overflow:hidden;
     position:absolute;
-    bottom:0;
-    left: 15px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    padding-bottom: 60px;
+    bottom:125px;
+    left: 40px;
+
+    padding-bottom: 90px;
     text-align: center;
     vertical-align: middle;
     line-height: 30px;
     border-bottom:1px dotted rgb(252, 183, 49);
 }
+.recipe .name h3 {
+    font-size: 14px;
+    margin-top: 5px;
+}
+.recipe .name h5 {
+    font-size: 10px;
+}
 .eventDescription {
     color: white;
     overflow: hidden;
     text-align: center;
-    zoom: 1;
-    top: 0px;
-    width: 87%;
-    left: 15px;
-    height: 265px;
-    padding: 10px 5px;
+    top: 60px;
+    width:150px;
+    left: 40px;
+    height: 150px;
+    padding: 10px 15px;
     background: rgba(30,30,30, 0.8);
     position: absolute;
     display: none;
+    font-size: 10px;
     overflow-y: scroll;
+
 
 }
 .profilePhotoUpload {
@@ -875,7 +976,7 @@ dir-pagination-controls ul {
 }
 .tabDropDown>li>a {
     color: white;
-    font-size: 13px;
+    font-size: 10px;
     text-decoration: none;
     text-align: center !important;
 }
@@ -993,16 +1094,39 @@ dir-pagination-controls ul {
 }
 /*-------------*/
 /*-----------------list group------------*/
-.trash { color:rgb(209, 91, 71); }
-.flag { color:rgb(248, 148, 6); }
-.panel-body { padding:0px; }
-.panel-footer .pagination { margin: 0; }
-.panel .glyphicon,.list-group-item .glyphicon { margin-right:5px; }
-.panel-body .radio, .checkbox { display:inline-block;margin:0px; }
-.panel-body input[type=checkbox]:checked + label { text-decoration: line-through;color: rgb(128, 144, 160); }
-.list-group-item:hover, a.list-group-item:focus {text-decoration: none;background-color: rgb(245, 245, 245);}
-.list-group { margin-bottom:0px; }
-.list-group {padding-right: 0}
+.trash {
+    color:rgb(209, 91, 71);
+}
+.flag {
+    color:rgb(248, 148, 6);
+}
+.panel-body {
+    padding:0px;
+}
+.panel-footer .pagination {
+    margin: 0;
+}
+.panel .glyphicon,.list-group-item .glyphicon {
+    margin-right:5px;
+}
+.panel-body .radio, .checkbox {
+    display:inline-block;
+    margin:0px;
+}
+.panel-body input[type=checkbox]:checked + label {
+    text-decoration: line-through;
+    color: rgb(128, 144, 160);
+}
+.list-group-item:hover, a.list-group-item:focus {
+    text-decoration: none;
+    background-color: rgb(245, 245, 245);
+}
+.list-group {
+    margin-bottom:0px;
+}
+.list-group {
+    padding-right: 0;
+}
 .customPanel {
     display: block;
     margin: 10px auto !important;
@@ -1042,6 +1166,7 @@ dir-pagination-controls ul {
 }
 .customPanelEventPage {
     border: none;
+    height: 250px;
 }
 .bioPageCoverPhoto {
     background-size: auto auto;
@@ -1061,6 +1186,11 @@ dir-pagination-controls ul {
     border-top-right-radius: 0 ;
 }
 .eventPageShowTimeColor .panel-heading {
+    height: 50px;
+    font-size: 16px;
+    padding-bottom: 20px;
+    padding-top: 10px;
+
     background-color: rgb(40, 40, 40);
 }
 .panelMidSize>.panel {
@@ -1085,6 +1215,10 @@ dir-pagination-controls ul {
     width: 200px;
     height: 250px;
 }
+.btn {
+    border-radius: 4px;
+}
+
 /*----------------------------------wizard------------------------------------------*/
 /*.steps-indicator li.done a:before {*/
     /*background-color: #08f !important;*/
@@ -1099,14 +1233,16 @@ footer {
     min-height:350px;
     bottom: 0 !important;
 }
-
+footer h6 {
+    font-size: 16px !important;
+}
 .footerleft { margin-top:50px; padding: 5px 40px;}
 .logofooter { margin-bottom:10px; font-size:25px; color:#fff; font-weight:700;  }
 .logofooter img {
     width: 150px ;
 }
 
-.footerleft p { color:#fff; font-size:16px !important;  margin-bottom:15px;}
+.footerleft p { color:#fff; font-size:11px !important;  margin-bottom:15px;}
 .footerleft p i { width:20px; color:#999;}
 
 
@@ -1138,6 +1274,7 @@ footer {
 .bottom_ul li { float:left; line-height:40px;}
 .bottom_ul li:after { content:"/"; color:#FFF; margin-right:8px; margin-left:8px;}
 .bottom_ul li a { color:#FFF;  font-size:12px;}
+
 @media (max-width: 570px) {
     .carousel-caption h1 {
         font-size: 18px;
@@ -1150,6 +1287,10 @@ footer {
 
 
 @media (max-width: 992px) {
+    .navbar-nav li a {
+        color : white !important;
+        font-size: 11px !important;
+    }
     .bioPageContentHeader h1{
         text-align: center;
     }
@@ -1168,9 +1309,7 @@ footer {
     .eventPageHeader {
         background-size: 2000px auto;
     }
-    dir-pagination-controls ul {
-        margin-left: 40% !important;
-    }
+
     .recipe {
         width: 300px;
     }
@@ -1183,7 +1322,32 @@ footer {
 
 
 @media (max-width: 768px) {
+    .recipe .name {
+        bottom:20px;
+        left: 10px;
+    }
+    .slidingEvents {
+        /*background-color: #eee;*/
+        padding: 15px 20px;
+        height: 400px !important;
+    }
+    .homePage {
+        margin-top: 50px;
+    }
+    .profilePage {
+        margin-top: 70px !important;
+    }
+    .navbar-nav > li > a {padding-top:10px ; padding-bottom:10px ;}
 
+    .navbar-header {
+        height: 50px ;
+    }
+    .navbar-brand {
+        height: 50px ;
+    }
+    .navbar-header>img {
+        height: 50px;
+    }
     .bioPageContentHeader h1{
         text-align: center;
     }
@@ -1207,9 +1371,7 @@ footer {
         background-color: #555;
 
     }
-    .profilePage {
-        margin-top: 50px;
-    }
+
     .eventPageHeader {
         background-size: 3000px auto;
     }
@@ -1273,7 +1435,7 @@ footer {
         margin-top: 5px;
     }
     .buyTicketBanner {
-        font-size:16px;
+        font-size:11px !important;
         padding:10px 20px;
     }
 
@@ -1281,9 +1443,7 @@ footer {
         opacity: 1;
         color: white;
     }
-    dir-pagination-controls ul {
-        margin-left: 35% !important;
-    }
+
     .sliderSection {
         margin-top: 50px;
     }
@@ -1330,8 +1490,8 @@ footer {
 @media (min-width: 700px) {
 
     .homePageImage {
-        width: 177px;
-        height: 250px;
+        width: 106px;
+        height: 150px;
     }
 
 }
@@ -1340,7 +1500,7 @@ footer {
         padding-right: 0;
     }
     .buyTicketBanner {
-        font-size:24px;
+        font-size:16px;
         padding:20px 40px;
     }
 
@@ -1348,15 +1508,14 @@ footer {
 
 
 @media (max-width: 1200px) {
+
     .eventContent p {
         font-size: 16px;
     }
     .carousel .item img {
         height: 300px;
     }
-    dir-pagination-controls ul {
-        margin-left: 20% !important;
-    }
+
     .recipe {
         width: 300px;
     }
@@ -1383,7 +1542,7 @@ footer {
     }
 
     .buyTicketBanner {
-        padding: 15px 20px;
-        font-size:26px;
+        padding: 20px 40px;
+        font-size:16px;
     }
 }

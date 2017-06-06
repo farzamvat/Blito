@@ -15,15 +15,22 @@ angular.module('UiServices', [])
                 lng : lng
             }
         }
-
-        var mapOptions = {
-            zoom: 14,
-            center: new google.maps.LatLng(35.7023, 51.3957),
-            mapTypeId: google.maps.MapTypeId.TERRAIN
-        };
+        try {
+            var mapOptions = {
+                zoom: 14,
+                center: new google.maps.LatLng(35.7023, 51.3957),
+                mapTypeId: google.maps.MapTypeId.TERRAIN
+            };
+        } catch (err) {
+            console.log(err);
+        }
         mapMarkerService.initMap = function (mapInput) {
 
-            map = new google.maps.Map(mapInput, mapOptions);
+            try {
+                map = new google.maps.Map(mapInput, mapOptions);
+            } catch(err) {
+                console.log(err);
+            }
             mapMarker(map, 1);
 
         }
@@ -35,37 +42,44 @@ angular.module('UiServices', [])
         // }
 
         var mapMarker = function (map, type) {
-
-            $timeout(function(){
-                google.maps.event.trigger(map, 'resize');
-            },300);
-
-            map.addListener('click', function (e) {
-                console.log(e.latLng.lng());
-                mapMarkerService.setMarker(e.latLng.lat(), e.latLng.lng());
-                placeMarker(e.latLng, map);
-            })
-
-            var placeMarker = function (latLng, map) {
-
-                var marker = new google.maps.Marker({
-                    position: latLng,
-                    map: map
-                });
-                if(type === 1) {
-                    markersExchange.push(marker);
-                    if(markersExchange.length > 1) {
-                        markersExchange[0].setMap(null);
-                        markersExchange.shift();
+            try {
+                $timeout(function () {
+                    try {
+                        google.maps.event.trigger(map, 'resize');
+                    } catch (err) {
+                        console.log(err);
                     }
-                } else if(type === 2) {
-                    markers.push(marker);
-                    if(markers.length > 1) {
-                        markers[0].setMap(null);
-                        markers.shift();
+                }, 300);
+
+                map.addListener('click', function (e) {
+                    console.log(e.latLng.lng());
+                    mapMarkerService.setMarker(e.latLng.lat(), e.latLng.lng());
+                    placeMarker(e.latLng, map);
+                })
+
+                var placeMarker = function (latLng, map) {
+
+                    var marker = new google.maps.Marker({
+                        position: latLng,
+                        map: map
+                    });
+                    if (type === 1) {
+                        markersExchange.push(marker);
+                        if (markersExchange.length > 1) {
+                            markersExchange[0].setMap(null);
+                            markersExchange.shift();
+                        }
+                    } else if (type === 2) {
+                        markers.push(marker);
+                        if (markers.length > 1) {
+                            markers[0].setMap(null);
+                            markers.shift();
+                        }
                     }
+
                 }
-
+            } catch (err) {
+                console.log(err);
             }
         }
     })

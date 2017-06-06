@@ -16,13 +16,14 @@ angular.module('Blito',
         'blitoDirectives',
         'animationServices',
         'UiServices',
-        'userProfileApi'
+        'userProfileApi',
+        'exchangesPageModule'
     ])
     .config(function ($httpProvider) {
         $httpProvider.interceptors.push('AuthInterceptors');
     })
     .constant('config', {
-        baseUrl : 'http://192.168.201.145:8085',
+        baseUrl : 'http://192.168.201.228:8085',
         redirectToUrlAfterLogin : {url : '/'}
     })
 ;
