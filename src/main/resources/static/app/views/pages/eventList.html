@@ -17,14 +17,17 @@
             <h4 class="text-center pageHeaderLinks"><a class="eventListAnchor" href="{{pageHeaderMenu[3].link}}">{{pageHeaderMenu[3].title}}</a></h4>
         </div>
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-3 floatRight marginTop10" dir-paginate="item in eventList | itemsPerPage: 12" current-page="currentPage">
-            <div class="recipe" ng-mouseenter="showDescription($event)" ng-mouseleave="hideDescription()">
-                <div class="image center-block">
-                    <img ng-src="{{item.img}}" class="center-block eventListImage">
+        <div class="col-xs-6 col-sm-4 col-md-3 floatRight marginTop10" dir-paginate="item in eventList | itemsPerPage: 12" current-page="currentPage">
+            <div class="recipe"  >
+                <div class="image center-block" ng-mouseenter="showDescription($event)" ng-mouseleave="hideDescription($event)">
+                    <img ng-src="{{item.img}}" class="center-block eventListImage"  >
 
 
                     <div class="name">
                         <h3>{{ item.title }}</h3>
+                        <h5>{{ item.sold }}: تعداد فروش <i class="fa fa-calendar-check-o"></i></h5>
+                        <h5>{{ item.view }}: تعداد بازدید <i class="fa fa-eye"></i>‌</h5>
+
                     </div>
                     <div class="eventDescription center-block">
                         {{item.desc}}
@@ -43,7 +46,7 @@
 
     <div class="col-xs-12">
         <div class="col-md-4 col-md-offset-4">
-            <dir-pagination-controls
+            <dir-pagination-controls class="col-xs-12"
                     max-size="9"
                     direction-links="true"
                     boundary-links="true">

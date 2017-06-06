@@ -1,0 +1,49 @@
+<div class="row" ng-controller="exchangeListCtrl as events">
+    <div class="col-md-12 eventsPageRows">
+        <div class="row">
+
+            <div>
+                <h1 class="text-center eventListHeader">{{pageTitle}}</h1>
+            </div>
+
+
+        </div>
+        <div class="col-xs-6 col-sm-4 col-md-3 floatRight marginTop10" dir-paginate="item in exchangeList | itemsPerPage: 12" current-page="currentPage">
+            <div class="recipe"  >
+                <div class="image center-block" ng-mouseenter="showDescription($event)" ng-mouseleave="hideDescription($event)">
+                    <img ng-src="{{item.img}}" class="center-block eventListImage"  >
+
+
+                    <div class="name">
+                        <h3>{{ item.title }}</h3>
+                        <h5>{{ item.numberRemaining }}: تعداد بلیت  <i class="fa fa-list"></i></h5>
+                        <h5>{{ item.data }}:  سانس ‌ <i class="fa fa-calendar"></i></h5>
+                        <h5>  نوع رویداد ‌ :{{ item.type }} <i class="fa fa-star"></i></h5>
+
+                    </div>
+                    <div class="eventDescription center-block">
+                        {{item.desc}}
+                    </div>
+                </div>
+
+                <!--<a href="{{item.link}}" class="btn btn-lg btn-success center-block eventListBtn">مشاهده رویداد</a>-->
+            </div>
+            <!--<div class="col-xs-12 eventListSection" ng-show="$index % 4 === 0" style="height: 20px; background-color: #303030">-->
+            <!--{{$index}}-->
+            <!--</div>-->
+        </div>
+
+    </div>
+
+
+    <div class="col-xs-12">
+        <div class="col-md-4 col-md-offset-4">
+            <dir-pagination-controls
+                    max-size="9"
+                    direction-links="true"
+                    boundary-links="true">
+            </dir-pagination-controls>
+        </div>
+    </div>
+
+</div>
