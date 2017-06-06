@@ -731,7 +731,6 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
 .footerAnchor {
     text-decoration: none;
     color: white;
-    font-size: 18px;
 }
 .footerAnchor:hover {
     text-decoration: none !important;
@@ -781,8 +780,19 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
     text-align: center;
     font-size: 12px;
 }
+dir-pagination-controls {
+    margin: 10px 0;
+}
+dir-pagination-controls .pagination {
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+}
 dir-pagination-controls ul {
-    margin-left: 30% !important;
+    display: block !important;
+    margin: 0 auto !important;
+    width: 200px;
+    height: 40px;
 }
 .eventContent  button {
     padding: 20px 40px;
@@ -877,7 +887,7 @@ dir-pagination-controls ul {
 
 .recipe .name {
     width:150px;
-    height:50px;
+    height:70px;
     background: rgba(252, 183, 49, 0.9);
     zoom: 1; /* set "zoom", "width" or "height" to trigger "hasLayout" in IE 7 and lower */
     overflow:hidden;
@@ -885,7 +895,7 @@ dir-pagination-controls ul {
     bottom:125px;
     left: 40px;
 
-    padding-bottom: 80px;
+    padding-bottom: 90px;
     text-align: center;
     vertical-align: middle;
     line-height: 30px;
@@ -893,6 +903,7 @@ dir-pagination-controls ul {
 }
 .recipe .name h3 {
     font-size: 14px;
+    margin-top: 5px;
 }
 .recipe .name h5 {
     font-size: 10px;
@@ -1074,16 +1085,39 @@ dir-pagination-controls ul {
 }
 /*-------------*/
 /*-----------------list group------------*/
-.trash { color:rgb(209, 91, 71); }
-.flag { color:rgb(248, 148, 6); }
-.panel-body { padding:0px; }
-.panel-footer .pagination { margin: 0; }
-.panel .glyphicon,.list-group-item .glyphicon { margin-right:5px; }
-.panel-body .radio, .checkbox { display:inline-block;margin:0px; }
-.panel-body input[type=checkbox]:checked + label { text-decoration: line-through;color: rgb(128, 144, 160); }
-.list-group-item:hover, a.list-group-item:focus {text-decoration: none;background-color: rgb(245, 245, 245);}
-.list-group { margin-bottom:0px; }
-.list-group {padding-right: 0}
+.trash {
+    color:rgb(209, 91, 71);
+}
+.flag {
+    color:rgb(248, 148, 6);
+}
+.panel-body {
+    padding:0px;
+}
+.panel-footer .pagination {
+    margin: 0;
+}
+.panel .glyphicon,.list-group-item .glyphicon {
+    margin-right:5px;
+}
+.panel-body .radio, .checkbox {
+    display:inline-block;
+    margin:0px;
+}
+.panel-body input[type=checkbox]:checked + label {
+    text-decoration: line-through;
+    color: rgb(128, 144, 160);
+}
+.list-group-item:hover, a.list-group-item:focus {
+    text-decoration: none;
+    background-color: rgb(245, 245, 245);
+}
+.list-group {
+    margin-bottom:0px;
+}
+.list-group {
+    padding-right: 0;
+}
 .customPanel {
     display: block;
     margin: 10px auto !important;
@@ -1190,14 +1224,16 @@ footer {
     min-height:350px;
     bottom: 0 !important;
 }
-
+footer h6 {
+    font-size: 16px !important;
+}
 .footerleft { margin-top:50px; padding: 5px 40px;}
 .logofooter { margin-bottom:10px; font-size:25px; color:#fff; font-weight:700;  }
 .logofooter img {
     width: 150px ;
 }
 
-.footerleft p { color:#fff; font-size:16px !important;  margin-bottom:15px;}
+.footerleft p { color:#fff; font-size:11px !important;  margin-bottom:15px;}
 .footerleft p i { width:20px; color:#999;}
 
 
@@ -1229,6 +1265,7 @@ footer {
 .bottom_ul li { float:left; line-height:40px;}
 .bottom_ul li:after { content:"/"; color:#FFF; margin-right:8px; margin-left:8px;}
 .bottom_ul li a { color:#FFF;  font-size:12px;}
+
 @media (max-width: 570px) {
     .carousel-caption h1 {
         font-size: 18px;
@@ -1263,9 +1300,7 @@ footer {
     .eventPageHeader {
         background-size: 2000px auto;
     }
-    dir-pagination-controls ul {
-        margin-left: 40% !important;
-    }
+
     .recipe {
         width: 300px;
     }
@@ -1278,6 +1313,10 @@ footer {
 
 
 @media (max-width: 768px) {
+    .recipe .name {
+        bottom:20px;
+        left: 10px;
+    }
     .slidingEvents {
         /*background-color: #eee;*/
         padding: 15px 20px;
@@ -1395,9 +1434,7 @@ footer {
         opacity: 1;
         color: white;
     }
-    dir-pagination-controls ul {
-        margin-left: 35% !important;
-    }
+
     .sliderSection {
         margin-top: 50px;
     }
@@ -1469,9 +1506,7 @@ footer {
     .carousel .item img {
         height: 300px;
     }
-    dir-pagination-controls ul {
-        margin-left: 20% !important;
-    }
+
     .recipe {
         width: 300px;
     }

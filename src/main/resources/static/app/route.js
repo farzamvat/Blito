@@ -36,17 +36,7 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 authenticated: false
 
             })
-            .when('/cinema-exchange', {
-                templateUrl : 'app/views/pages/exchangeList.html',
-                authenticated: false
-
-            })
-            .when('/theater-exchange', {
-                templateUrl : 'app/views/pages/exchangeList.html',
-                authenticated: false
-
-            })
-            .when('/cafe-exchange', {
+            .when('/exchange-tickets', {
                 templateUrl : 'app/views/pages/exchangeList.html',
                 authenticated: false
 
