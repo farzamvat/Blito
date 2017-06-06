@@ -26,7 +26,7 @@
                                     <label class="registerLabel floatRight" for="eventType">نوع رویداد :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <select id="eventType" ng-model="editEventFields.eventType" class="form-control dropDownList"
+                                    <select id="eventType" ng-model="editEventFields.eventType" placeholder="editEventFields.eventType" class="form-control dropDownList"
                                             ng-options="o.v as o.n for o in [{n : 'تئاتر', v: 'THEATER'},{n : 'سینما', v: 'CINEMA'},{n : 'کنسرت', v: 'CONCERT'},{n : 'تور', v: 'TOURISM'},{n : 'ورزشی', v: 'SPORT'},{n : 'کارگاه', v: 'WORKSHOP'}, {n : 'سایر', v: 'OTHER'}]">
                                     </select>
 
@@ -77,7 +77,7 @@
 
                         <legend class="legendStyle">  اطلاعات مکانی </legend>
                         <div class="row">
-                            <div class="form-group col-xs-12 col-md-6 formRegGroup floatRight">
+                            <div class="form-group col-xs-12 col-md-12 formRegGroup floatRight">
                                 <div class="col-xs-10   floatRight text-center">
                                     <label class="registerLabel floatRight" for="eventAddress" >آدرس :</label>
                                 </div>
@@ -86,10 +86,10 @@
                                 </div>
                             </div>
 
-                            <div class="form-group col-xs-12 col-md-6 formRegGroup floatRight">
+                            <div class="form-group col-xs-12 col-md-12 formRegGroup floatRight">
                                 <div class="col-xs-10 floatRight text-center">
                                     <label class="registerLabel floatRight" >مختصات جغرافیایی رویداد :</label>
-                                    <label>با کلیک روی نقشه مکان را مشخص کنید</label>
+                                    <label class="col-xs-12">با کلیک روی نقشه مکان را مشخص کنید</label>
                                 </div>
                                 <div class="col-xs-12 floatRight ">
                                     <div id="editEventMap" ng-click="addMarker()" >
@@ -149,7 +149,7 @@
                                     <label class="registerLabel" for="eventPlanner">انتخاب برگذار کننده   :</label>
                                 </div>
                                 <div class="col-xs-7 col-sm-6 floatRight ">
-                                    <select id="eventPlanner" ng-model="editEventFields.eventPlanner" ng-options="obj.hostName for obj in eventHosts track by obj.eventHostId" class="form-control dropDownList">
+                                    <select id="eventPlanner" ng-model="editEventFields.eventPlanner" placeholder="editEventFields.eventPlanner" value="editEventFields.eventPlanner" ng-options="obj.hostName for obj in eventHosts track by obj.eventHostId" class="form-control dropDownList">
 
                                     </select>
                                 </div>

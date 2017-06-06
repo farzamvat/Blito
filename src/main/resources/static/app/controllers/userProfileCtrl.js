@@ -3,7 +3,7 @@
  */
 
 angular.module('User')
-    .controller('userProfileCtrl', function ($scope, userInfo, Auth, $timeout, mapMarkerService, updateInfo, $location, scrollAnimation, uploadPhotoService, eventService, plannerService, exchangeService, dataService, $window) {
+    .controller('userProfileCtrl', function ($scope, userInfo, Auth, $timeout, mapMarkerService, updateInfo, $location, scrollAnimation, photoService, eventService, plannerService, exchangeService, dataService) {
         var userProfile = this;
 
         $scope.userData = userInfo.getData();
@@ -147,7 +147,7 @@ angular.module('User')
                 encodedBase64 : angular.element(document.getElementsByClassName("exchangePhotoUpload"))[0].src
             }
             $scope.uploadExchangePhoto = true;
-            uploadPhotoService.upload(imageData)
+            photoService.upload(imageData)
                 .then(function (data, status) {
                     $scope.uploadExchangePhoto = false;
                     $scope.exchangePhotoSuccess = true;
@@ -162,7 +162,7 @@ angular.module('User')
                 encodedBase64 : angular.element(document.getElementsByClassName("profilePhotoUpload"))[0].src
             }
             $scope.uploadEventPhoto = true;
-            uploadPhotoService.upload(imageData)
+            photoService.upload(imageData)
                 .then(function (data, status) {
                     $scope.uploadEventPhoto = false;
                     $scope.eventPhotoSuccess = true;
@@ -180,7 +180,7 @@ angular.module('User')
                 encodedBase64 : angular.element(document.getElementById("eventPlannerPhotoUpload"))[0].src
             }
             $scope.uploadPlannerPhoto = true;
-            uploadPhotoService.upload(imageData)
+            photoService.upload(imageData)
                 .then(function (data, status) {
                     $scope.uploadPlannerPhoto = false;
                     $scope.plannerPhotoSuccess = true;
@@ -200,7 +200,7 @@ angular.module('User')
             }
             $scope.uploadCoverPhoto = true;
 
-            uploadPhotoService.upload(imageData)
+            photoService.upload(imageData)
                 .then(function (data, status) {
                     $scope.uploadCoverPhoto = false;
                     $scope.coverPhotoSuccess = true;
@@ -464,7 +464,7 @@ angular.module('User')
             exchangeService.getExchangeTickets()
                 .then(function (data, status) {
                     $scope.exchangeTickets = data.data.content;
-                    console.log(data.data);
+                    $scope.exchangeEditTickets = angular.copy(data.data.content);
                     $scope.exchangeTickets = $scope.exchangeTickets.map(function (ticket) {
                         ticket.operatorState = dataService.operatorStatePersian(ticket.operatorState);
                         ticket.state = dataService.stateTypePersian(ticket.state);
@@ -483,29 +483,31 @@ angular.module('User')
                             }
                         });
                     },1000)
-                    console.log($scope.exchangeTickets);
 
                 }, function (data, status) {
                     console.log(data);
                 })
         }
 
-
+        $scope.editEventFields = {};
         $scope.editEvent = function (index) {
             console.log(index);
             mapMarkerService.initMap(document.getElementById('editEventMap'));
-            mapMarkerService.setMarker($scope.userEvents[index].latitude,$scope.userEvents[index].longitude);
+            mapMarkerService.setMarker($scope.userEventsEdit[index].latitude,$scope.userEventsEdit[index].longitude);
             $scope.editEventFields = {
-                name : $scope.userEvents[index].eventName,
-                eventType : $scope.userEvents[index].eventType,
-                description : $scope.userEvents[index].description,
-                ticketStartTime : persianDate($scope.userEvents[index].blitSaleStartDate).pDate,
-                ticketEndTime : persianDate($scope.userEvents[index].blitSaleEndDate).pDate,
-                address : $scope.userEvents[index].address,
-                aparatLink : $scope.userEvents[index].aparatDisplayCode,
-                eventPlanner : $scope.userEvents[index].eventHostName,
+                name : $scope.userEventsEdit[index].eventName,
+                eventType : $scope.userEventsEdit[index].eventType,
+                description : $scope.userEventsEdit[index].description,
+                ticketStartTime : persianDate($scope.userEventsEdit[index].blitSaleStartDate).pDate,
+                ticketEndTime : persianDate($scope.userEventsEdit[index].blitSaleEndDate).pDate,
+                address : $scope.userEventsEdit[index].address,
+                aparatLink : $scope.userEventsEdit[index].aparatDisplayCode,
+                eventPlanner : $scope.userEventsEdit[index].eventHostId
             };
-            $scope.showTimeEditForms = $scope.userEvents[index].blitTypes;
+            $scope.showTimeEditForms = $scope.userEvents[index].eventDates;
+            console.log($scope.userEventsEdit[index]);
+            console.log($scope.editEventFields);
+
             $("#editEvent").modal("show");
 
         }
@@ -517,56 +519,73 @@ angular.module('User')
 
         $scope.editExchangeNotif = false;
         $scope.editExchangeSpinner = false;
-        $scope.editExchange = function (index) {
-            $timeout(function () {
-                $(".persianExchangeTimeEdit").pDatepicker({
-                    timePicker: {
-                        enabled: true
-                    },
-                    altField: '#persianDigitAlt',
-                    altFormat: "YYYY MM DD HH:mm:ss",
-                    altFieldFormatter: function (unixDate) {
-                    }
-                });
-            }, 1000);
 
+        $scope.editExchange = function (index) {
+            console.log($scope.exchangeEditTickets[index]);
+            $scope.exchangeEdit = {
+                title : $scope.exchangeEditTickets[index].title,
+                blitCost : $scope.exchangeEditTickets[index].blitCost,
+                isBlitoEvent : $scope.exchangeEditTickets[index].blitoEvent,
+                eventDate : persianDate($scope.exchangeEditTickets[index].eventDate).pDate,
+                type : $scope.exchangeEditTickets[index].type,
+                exchangeBlitId : $scope.exchangeEditTickets[index].exchangeBlitId
+
+            }
+
+            $(".persianEditExchangeTime").pDatepicker({
+                timePicker: {
+                    enabled: true
+                },
+                altField: '#persianDigitAlt',
+                altFormat: "YYYY MM DD HH:mm:ss",
+                altFieldFormatter: function (unixDate) {
+                    $scope.editExchangeDate = unixDate;
+                }
+            });
+
+            console.log($scope.exchangeEditTickets[index]);
+            photoService.download($scope.exchangeEditTickets[index].image.imageUUID)
+                .then(function (data, status) {
+                    console.log( angular.element(document.getElementsByClassName("exchangePhotoUploadEdit"))[0]);
+                    angular.element(document.getElementsByClassName("exchangePhotoUploadEdit"))[0].src = data.data.encodedBase64;
+                }, function (data, status) {
+                    console.log(data);
+                })
             mapMarkerService.initMap(document.getElementById('mapExchangeEdit'));
-            angular.element(document.getElementsByClassName("exchangePhotoUploadEdit"))[0].src = '';
             $("#editExchange").modal("show");
 
         }
 
+        $scope.editExchangeTicket = function (editExchangeData) {
+            var latLng = mapMarkerService.getMarker();
+            $scope.editExchangeSpinner = true;
+            editExchangeData.eventDate = $scope.editExchangeDate;
+            editExchangeData.email = $scope.userData.email;
+            editExchangeData.exchangeBlitId = $scope.exchangeEdit.exchangeBlitId;
+            editExchangeData.latitude = latLng.lat;
+            editExchangeData.longitude = latLng.lng;
+            editExchangeData.phoneNumber = $scope.userData.mobile;
+            console.log(editExchangeData);
 
-        // $scope.userEvents = [
-        //     {
-        //         eventName : 'رویداد',
-        //         blitSaleStartDate : 12124,
-        //         blitSaleEndDate : 123123,
-        //         eventType : "CINEMA",
-        //         eventHostName : "soroush",
-        //         latitude : 35.7023,
-        //         longitude : 51.3957
-        //     }
-        // ];
-        // $scope.eventHosts = [
-        //     {
-        //         hostName : 'سروش',
-        //         telephone : '۰۱۲۳',
-        //         websiteLink : 'www.ww.ww'
-        //     }
-        // ];
-        // $scope.exchangeTickets = [
-        //     {
-        //         title : 'سروش',
-        //         telephone : '۰۱۲۳',
-        //         websiteLink : 'www.ww.ww'
-        //     }
-        // ];
+            exchangeService.editExchangeForm(editExchangeData)
+                .then(function (data, status) {
+                    $scope.editExchangeNotif = true;
+                    $scope.editExchangeSpinner = false;
+                    console.log(data);
+                }, function (data, status) {
+                    console.log(data);
+                })
+        }
+
+
+
+
         $scope.getUserEvents = function () {
             eventService.getUserEvents()
                 .then(function (data, status) {
                     console.log(data);
                     $scope.userEvents = data.data.content;
+                    $scope.userEventsEdit = angular.copy(data.data.content);
                     $scope.userEvents = $scope.userEvents.map(function (event) {
                         event.eventType = dataService.eventTypePersian(event.eventType);
                         event.blitSaleEndDate = persianDate(event.blitSaleEndDate).pDate;

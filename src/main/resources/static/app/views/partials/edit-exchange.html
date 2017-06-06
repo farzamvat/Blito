@@ -17,7 +17,7 @@
                                     <label class="registerLabel floatRight" for="exchangeName" >نام رویداد :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <input height="60" id="exchangeName" ng-model="exchange.title"  type="text"  class="form-group registerInput" >
+                                    <input height="60" id="exchangeName" ng-model="exchangeEdit.title"  type="text"  class="form-group registerInput" >
                                 </div>
                             </div>
 
@@ -26,7 +26,7 @@
                                     <label class="registerLabel floatRight" for="exchangeType">نوع رویداد :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <select id="exchangeType" ng-model="exchange.type" class="form-control dropDownList" ng-options="o.v as o.n for o in [{n : 'تئاتر', v: 'THEATER'},{n : 'سینما', v: 'CINEMA'},{n : 'کنسرت', v: 'CONCERT'},{n : 'تور', v: 'TOURISM'},{n : 'ورزشی', v: 'SPORT'},{n : 'کارگاه', v: 'WORKSHOP'}, {n : 'بن تخفیف', v: 'DISCOUNT_TICKET'}, {n : 'سایر', v: 'OTHER'}]">
+                                    <select id="exchangeType" ng-model="exchangeEdit.type" placeholder="exchangeEdit.type" class="form-control dropDownList" ng-options="o.v as o.n for o in [{n : 'تئاتر', v: 'THEATER'},{n : 'سینما', v: 'CINEMA'},{n : 'کنسرت', v: 'CONCERT'},{n : 'تور', v: 'TOURISM'},{n : 'ورزشی', v: 'SPORT'},{n : 'کارگاه', v: 'WORKSHOP'}, {n : 'بن تخفیف', v: 'DISCOUNT_TICKET'}, {n : 'سایر', v: 'OTHER'}]">
 
 
                                     </select>
@@ -39,7 +39,7 @@
                                     <label class="registerLabel floatRight" for="eventExchangeDate" >تاریخ و ساعت رویداد  :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <input type="text" id="eventExchangeDate" ng-model="showTime.eventDate" class="persianExchangeTimeEdit datePickerFormat"/>
+                                    <input type="text" id="eventExchangeDate" ng-model="editExchangeDate" class="persianEditExchangeTime datePickerFormat" readonly/>
                                 </div>
                             </div>
                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
@@ -47,7 +47,7 @@
                                     <label class="registerLabel floatRight" for="exchangePrice" >قیمت بلیت  :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <input height="60" id="exchangePrice" ng-model="exchange.blitCost"   type="number"  class="form-group registerInput" >
+                                    <input height="60" id="exchangePrice" ng-model="exchangeEdit.blitCost"   type="number"  class="form-group registerInput" >
                                 </div>
                             </div>
                         </div>
@@ -57,11 +57,11 @@
                                     <label class="registerLabel floatRight" for="exchangeDescription" >توضیحات رویداد :</label>
                                 </div>
                                 <div class="col-xs-11  floatRight ">
-                                    <textarea ng-model="exchange.description"  id="exchangeDescription"   type="text"  class="form-group textAreaForm" ></textarea>
+                                    <textarea ng-model="exchangeEdit.description"  id="exchangeDescription"   type="text"  class="form-group textAreaForm" ></textarea>
                                 </div>
                             </div>
                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
-                                <label  class="marginRight30"><input class="checkboxStyle" ng-model="exchange.isBlito"    type="checkbox" value=""> رویداد در وبسایت بلیتو بوده</label>
+                                <label  class="marginRight30"><input class="checkboxStyle" ng-model="exchangeEdit.isBlitoEvent"    type="checkbox" value=""> رویداد در وبسایت بلیتو بوده</label>
                             </div>
                         </div>
 
@@ -76,8 +76,8 @@
 
                                 <label class="marginRight30"> عکس رویداد :</label>
                                 <button class="btn btn-default " ng-click='uploadPicEventExchange()'>انتخاب <i class="fa fa-image"></i></button>
-                                <div class="col-xs-12" ng-show="showThumbnailEventExchange">
-                                    <img class="img-responsive exchangePhotoUploadEdit marginTop30"  src="" alt="">
+                                <div class="col-xs-12">
+                                    <img class=" exchangePhotoUploadEdit marginTop30"  src="" alt="">
                                     <div class="col-xs-12">
                                         <button class="btn btn-success marginTop10" ng-click="photoUploadExchange()">بارگذاری   <i ng-show="uploadExchangePhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></button>
                                         <button ng-click="deletePicEventExchange()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>
@@ -98,7 +98,7 @@
                                     <label class="registerLabel floatRight" for="exchangeAddress" >آدرس :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <textarea ng-model="exchange.address"  id="exchangeAddress"   type="text"  class="form-group textAreaForm marginTop30" ></textarea>
+                                    <textarea ng-model="exchangeEdit.eventAddress"  id="exchangeAddress"   type="text"  class="form-group textAreaForm marginTop30" ></textarea>
                                 </div>
                             </div>
 
@@ -124,7 +124,7 @@
                             <strong>آگهی با موفقیت ویرایش شد</strong>
                         </div>
                         <div class="controls">
-                            <button id="exchangeEventSubmit" ng-click="submitExchangeTicket(exchange)" name="signin" class="btn btn-success btn-lg btnLogin">ویرایش آگهی <i ng-show="editExchangeSpinner" class="fa fa-spinner fa-spin"></i></button>
+                            <button id="exchangeEventSubmit" ng-click="editExchangeTicket(exchangeEdit)" name="signin" class="btn btn-success btn-lg btnLogin">ویرایش آگهی <i ng-show="editExchangeSpinner" class="fa fa-spinner fa-spin"></i></button>
                         </div>
 
                     </div>

@@ -255,6 +255,7 @@ color: white !important;
 .sideBar {
     background: transparent;
 }
+.datepicker-plot-area { z-index: 1151 !important; }
 div.row.slidingEventsRow {
     height: 460px;
     /*background: url('../img/pt.jpg') fixed repeat-y;*/
@@ -435,6 +436,9 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 }
 .exchangePhotoUpload {
     max-width: 50%;
+}
+.exchangePhotoUploadEdit {
+    max-width: 20%;
 }
 .persianTimeExchange {
     text-align: center;
@@ -771,6 +775,11 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
     width: 80%;
     height: 300px;
 
+}
+#editEventMap {
+    border: 2px solid #303030;
+    width: 80%;
+    height: 300px;
 }
 .slick-dots li.slick-active button:before
 {
