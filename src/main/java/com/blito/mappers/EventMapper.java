@@ -1,5 +1,8 @@
 package com.blito.mappers;
 
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +14,13 @@ import com.blito.models.Event;
 import com.blito.rest.viewmodels.event.EventViewModel;
 
 @Component
-public class EventMapper implements GenericMapper<Event,EventViewModel> {
+public class EventMapper implements GenericMapper<Event, EventViewModel> {
 
 	@Autowired
 	EventDateMapper eventDateMapper;
-	
+	@Autowired
+	ImageMapper imageMapper;
+
 	@Override
 	public Event createFromViewModel(EventViewModel vmodel) {
 		Event event = new Event();
@@ -32,7 +37,7 @@ public class EventMapper implements GenericMapper<Event,EventViewModel> {
 		vmodel.getEventDates().forEach(ed -> {
 			event.addEventDate(eventDateMapper.createFromViewModel(ed));
 		});
-//		event.setEventDates(vmodel.getEventDates().stream().map(eventDateMapper::createFromViewModel).collect(Collectors.toList()));
+		event.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 		event.setEventState(State.CLOSED);
 		event.setEvento(false);
 		return event;
@@ -60,6 +65,7 @@ public class EventMapper implements GenericMapper<Event,EventViewModel> {
 		vmodel.setLatitude(event.getLatitude());
 		vmodel.setLongitude(event.getLongitude());
 		vmodel.setEvento(event.isEvento());
+		vmodel.setImages(imageMapper.createFromEntities(event.getImages()));
 		return vmodel;
 	}
 

@@ -15,4 +15,7 @@ public class View {
 	
 	public interface SimpleEventHost extends DefaultView {}
 	public interface EventHost extends SimpleEventHost {}
+	
+	public interface IndexBanner extends DefaultView {}
+	public interface AdminIndexBanner extends IndexBanner {}
 }

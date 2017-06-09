@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -89,7 +88,6 @@ public class EventService {
 		List<Image> images = imageRepository.findByImageUUIDIn(
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
-
 		Event event = eventMapper.createFromViewModel(vmodel);
 		event.setImages(images);
 		event.setEventHost(eventHost);

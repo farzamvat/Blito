@@ -83,7 +83,7 @@ public class EventController {
 	@ApiOperation(value = "get all user's events")
 	@ApiResponses({ @ApiResponse(code = 200, message = "get all user's events ok", response = EventViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
-	@JsonView(View.SimpleEvent.class)
+	@JsonView(View.Event.class)
 	@GetMapping("/all-user-events")
 	public ResponseEntity<Page<EventViewModel>> getAllUserEvents(Pageable pageable){
 		return ResponseEntity.ok(eventService.getUserEvents(pageable));

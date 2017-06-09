@@ -1,6 +1,5 @@
 package com.blito.rest.controllers;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,6 @@ import com.blito.exceptions.NotFoundException;
 import com.blito.models.Image;
 import com.blito.repositories.ImageRepository;
 import com.blito.resourceUtil.ResourceUtil;
-import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.image.ImageBase64ViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;

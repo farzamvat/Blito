@@ -73,7 +73,6 @@ public class EventServiceTest {
 	Event event4;
 	EventHost eventHost;
 	private EventViewModel eventViewModel = null;
-	private boolean isInit = false;
 
 	@Before
 	public void init() {

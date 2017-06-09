@@ -57,6 +57,12 @@ public class Event {
 	@Column(name="blit_sale_end_date")
 	private Timestamp blitSaleEndDate;
 	
+	@Column(name="sold_date")
+	private Timestamp eventSoldDate;
+	
+	@Column(name="created_at")
+	private Timestamp createdAt;
+	
 	private String address;
 	
 	private String description;
@@ -85,6 +91,22 @@ public class Event {
 		eventDates = new ArrayList<>();
 	}
 	
+	public Timestamp getEventSoldDate() {
+		return eventSoldDate;
+	}
+
+	public void setEventSoldDate(Timestamp eventSoldDate) {
+		this.eventSoldDate = eventSoldDate;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
 	public boolean isEvento() {
 		return isEvento;
 	}
