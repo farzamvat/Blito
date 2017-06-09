@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,6 +52,7 @@ import com.blito.services.EventService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
+@ActiveProfiles("test")
 @Transactional
 public class EventServiceTest {
 
@@ -303,7 +305,6 @@ public class EventServiceTest {
 		Pageable pageable = new PageRequest(0,5);
 		Page<EventViewModel> allEvents = eventService.getAllEvents(pageable);
 		assertEquals(4, allEvents.getNumberOfElements());
-		String names = new String();
 		allEvents.getContent().stream().forEach(e -> System.err.print(e.getEventName()));
 	}
 
@@ -356,6 +357,89 @@ public class EventServiceTest {
 		vmodel.setExpirationDate(Timestamp.from(ZonedDateTime.now().plusDays(6).toInstant()));
 		vmodel.setPercent(true);
 		vmodel.setPercent(30);
+		
+		vmodel = eventService.setDiscountCode(vmodel); 
+		assertEquals(2, vmodel.getBlitTypeIds().size());
+		assertEquals(1, blitTypeRepo.findOne(vmodel.getBlitTypeIds().get(0)).getDiscounts().size());
+		assertEquals(1, blitTypeRepo.findOne(vmodel.getBlitTypeIds().get(1)).getDiscounts().size());
+	}
+	
+	@Test(expected=InconsistentDataException.class)
+	public void setDiscountCodeTestInvalidPercentage()
+	{
+		assertEquals(0, discountRepo.count());
+		eventViewModel = eventService.create(eventViewModel);
+		
+		DiscountViewModel vmodel = new DiscountViewModel();
+		
+		vmodel.setBlitTypeIds(eventViewModel.getEventDates().stream().flatMap(ed->ed.getBlitTypes().stream().map(bt->bt.getBlitTypeId())).collect(Collectors.toList()));
+		vmodel.setCode("TAKHFIF!@#$");
+		vmodel.setReusability(5);
+		vmodel.setEffectDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
+		vmodel.setExpirationDate(Timestamp.from(ZonedDateTime.now().plusDays(6).toInstant()));
+		vmodel.setPercent(true);
+		vmodel.setPercent(0);
+		
+		vmodel = eventService.setDiscountCode(vmodel); 
+	}
+	
+	@Test(expected=InconsistentDataException.class)
+	public void setDiscountCodeTestInvalidPercentageWithAmount()
+	{
+		assertEquals(0, discountRepo.count());
+		eventViewModel = eventService.create(eventViewModel);
+		
+		DiscountViewModel vmodel = new DiscountViewModel();
+		
+		vmodel.setBlitTypeIds(eventViewModel.getEventDates().stream().flatMap(ed->ed.getBlitTypes().stream().map(bt->bt.getBlitTypeId())).collect(Collectors.toList()));
+		vmodel.setCode("TAKHFIF!@#$");
+		vmodel.setReusability(5);
+		vmodel.setEffectDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
+		vmodel.setExpirationDate(Timestamp.from(ZonedDateTime.now().plusDays(6).toInstant()));
+		vmodel.setPercent(true);
+		vmodel.setPercent(30);
+		vmodel.setAmount(100);
+		vmodel = eventService.setDiscountCode(vmodel); 
+	}
+	
+	@Test(expected=InconsistentDataException.class)
+	public void setDiscountCodeTestInvalidAmount()
+	{
+		assertEquals(0, discountRepo.count());
+		eventViewModel = eventService.create(eventViewModel);
+		
+		DiscountViewModel vmodel = new DiscountViewModel();
+		
+		vmodel.setBlitTypeIds(eventViewModel.getEventDates().stream().flatMap(ed->ed.getBlitTypes().stream().map(bt->bt.getBlitTypeId())).collect(Collectors.toList()));
+		vmodel.setCode("TAKHFIF!@#$");
+		vmodel.setReusability(5);
+		vmodel.setEffectDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
+		vmodel.setExpirationDate(Timestamp.from(ZonedDateTime.now().plusDays(6).toInstant()));
+		vmodel.setPercent(false);
+		vmodel.setAmount(-20);
+		
+		vmodel = eventService.setDiscountCode(vmodel); 
+		assertEquals(2, vmodel.getBlitTypeIds().size());
+		assertEquals(1, blitTypeRepo.findOne(vmodel.getBlitTypeIds().get(0)).getDiscounts().size());
+		assertEquals(1, blitTypeRepo.findOne(vmodel.getBlitTypeIds().get(1)).getDiscounts().size());
+	}
+	
+	@Test(expected=InconsistentDataException.class)
+	public void setDiscountCodeTestInvalidPercentageWhenIsPercentIsFalse()
+	{
+		assertEquals(0, discountRepo.count());
+		eventViewModel = eventService.create(eventViewModel);
+		
+		DiscountViewModel vmodel = new DiscountViewModel();
+		
+		vmodel.setBlitTypeIds(eventViewModel.getEventDates().stream().flatMap(ed->ed.getBlitTypes().stream().map(bt->bt.getBlitTypeId())).collect(Collectors.toList()));
+		vmodel.setCode("TAKHFIF!@#$");
+		vmodel.setReusability(5);
+		vmodel.setEffectDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
+		vmodel.setExpirationDate(Timestamp.from(ZonedDateTime.now().plusDays(6).toInstant()));
+		vmodel.setPercent(false);
+		vmodel.setPercent(30);
+		vmodel.setAmount(1000);
 		
 		vmodel = eventService.setDiscountCode(vmodel); 
 		assertEquals(2, vmodel.getBlitTypeIds().size());

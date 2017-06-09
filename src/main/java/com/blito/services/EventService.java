@@ -163,10 +163,8 @@ public class EventService {
 	}
 
 	public Page<EventViewModel> getAllEvents(Pageable pageable) {
-		return eventMapper.toPage(new PageImpl<>(eventRepository.findAll().stream()
-				.filter(e -> e.getEventState() == State.OPEN || e.getEventState() == State.SOLD)
-				.skip(pageable.getPageNumber() * pageable.getPageSize()).limit(pageable.getPageSize())
-				.collect(Collectors.toList())), eventMapper::createFromEntity);
+		return eventRepository.findByEventStateOrEventStateOrderByCreatedAtDesc(State.SOLD, State.OPEN, pageable)
+				.map(eventMapper::createFromEntity);
 	}
 
 	private String generateEventLink(Event event) {
@@ -192,7 +190,7 @@ public class EventService {
 
 	@Transactional
 	public BlitType getBlitTypeFromRepository(long blitTypeId) {
-		return Optional.ofNullable(blitTypeRepository.findOne(blitTypeId)).map(e -> e)
+		return Optional.ofNullable(blitTypeRepository.findOne(blitTypeId))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
 	}
 
@@ -200,6 +198,19 @@ public class EventService {
 	public DiscountViewModel setDiscountCode(DiscountViewModel vmodel) {
 		if (vmodel.getEffectDate().after(vmodel.getExpirationDate()))
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_DATES));
+		if (vmodel.isPercent()) {
+			if (!(vmodel.getPercent() > 0 && vmodel.getPercent() < 100))
+				throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_PERCENT));
+			if (vmodel.getAmount() != 0)
+				throw new InconsistentDataException(
+						ResourceUtil.getMessage(Response.INCONSISTENT_AMOUNT_WHEN_PERCENT_IS_TRUE));
+		} else {
+			if (vmodel.getAmount() <= 0)
+				throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_AMOUNT));
+			if (vmodel.getPercent() > 0)
+				throw new InconsistentDataException(
+						ResourceUtil.getMessage(Response.INCONSISTENT_PERCENTAGE_WHEN_PERCENT_IS_FALSE));
+		}
 		if (discountRepository.findByCode(vmodel.getCode()).isPresent())
 			throw new AlreadyExistsException(ResourceUtil.getMessage(Response.DISCOUNT_CODE_ALREADY_EXISTS));
 		Discount discount = discountMapper.createFromViewModel(vmodel);
@@ -214,8 +225,11 @@ public class EventService {
 	@Transactional
 	public Page<EventViewModel> getUserEvents(Pageable pageable) {
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
-		List<Event> events = user.getEventHosts().stream().flatMap(eh -> eh.getEvents().stream()).collect(Collectors.toList());
-		return eventMapper.toPage(new PageImpl<>(events.stream().skip(pageable.getPageNumber() * pageable.getPageSize()).limit(pageable.getPageSize())
-				.collect(Collectors.toList()), pageable, events.size()), eventMapper::createFromEntity);
+		List<Event> events = user.getEventHosts().stream().flatMap(eh -> eh.getEvents().stream())
+				.collect(Collectors.toList());
+		return eventMapper.toPage(
+				new PageImpl<>(events.stream().skip(pageable.getPageNumber() * pageable.getPageSize())
+						.limit(pageable.getPageSize()).collect(Collectors.toList()), pageable, events.size()),
+				eventMapper::createFromEntity);
 	}
 }

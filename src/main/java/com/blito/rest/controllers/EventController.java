@@ -94,6 +94,4 @@ public class EventController {
 	public ResponseEntity<Page<EventViewModel>> getAllUserEvents(Pageable pageable){
 		return ResponseEntity.ok(eventService.getUserEvents(pageable));
 	}
-
-	
 }

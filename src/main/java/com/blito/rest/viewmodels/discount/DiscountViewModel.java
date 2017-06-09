@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class DiscountViewModel {
 	
 	long discountId;
@@ -13,7 +15,6 @@ public class DiscountViewModel {
 	String code;
 	@NotNull
 	int reusability;
-	
 	int used;
 	@NotNull
 	Timestamp effectDate;
@@ -27,7 +28,7 @@ public class DiscountViewModel {
 	double amount;
 	
 	long userId;
-	@NotNull
+	@NotEmpty
 	List<Long> blitTypeIds;
 	
 	public long getDiscountId() {

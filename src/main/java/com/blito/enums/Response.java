@@ -42,7 +42,11 @@ public enum Response {
 	BLIT_TYPE_NOT_FOUND("error.blit.type.not.found"),
 	INDEX_BANNER_NOT_FOUND("error.index.banner.not.found"),
 	DISCOUNT_CODE_ALREADY_EXISTS("error.discount.code.exists"),
-	INCONSISTENT_DATES("error.inconsistent.dates");
+	INCONSISTENT_DATES("error.inconsistent.dates"),
+	INCONSISTENT_PERCENT("error.inconsistent.percentage"),
+	INCONSISTENT_AMOUNT_WHEN_PERCENT_IS_TRUE("error.inconsistent.data.is.percentage"),
+	INCONSISTENT_AMOUNT("error.inconsistent.data.amount"),
+	INCONSISTENT_PERCENTAGE_WHEN_PERCENT_IS_FALSE("error.inconsistent.data.is.not.percentage");
     
 
     private final String message;
