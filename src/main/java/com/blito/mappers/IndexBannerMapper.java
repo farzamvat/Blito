@@ -35,8 +35,10 @@ public class IndexBannerMapper implements GenericMapper<IndexBanner,BannerViewMo
 
 	@Override
 	public IndexBanner updateEntity(BannerViewModel viewModel, IndexBanner entity) {
-		// TODO Auto-generated method stub
-		return null;
+		entity.setActive(viewModel.isActive());
+		entity.setDescription(viewModel.getDescription());
+		entity.setTitle(viewModel.getTitle());
+		return entity;
 	}
 
 }

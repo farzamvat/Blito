@@ -2,19 +2,21 @@ package com.blito.rest.viewmodels.account;
 
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.blito.annotations.Email;
 import com.blito.annotations.MobileNumber;
 
 public class RegisterVm {
-	@NotNull
+	@NotEmpty
 	String firstname;
-	@NotNull
+	@NotEmpty
 	String lastname;
 	@Email
 	String email;
-	@NotNull
+	@NotEmpty
 	String password;
-	@NotNull
+	@NotEmpty
 	String confirmPassword;
 	@MobileNumber
 	String mobile;

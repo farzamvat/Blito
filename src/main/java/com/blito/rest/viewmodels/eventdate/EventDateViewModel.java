@@ -4,6 +4,10 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.blito.enums.DayOfWeek;
 import com.blito.enums.State;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
@@ -11,7 +15,9 @@ import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 public class EventDateViewModel {
 	long eventDateId;
 	DayOfWeek dayOfWeek;
+	@NotEmpty
 	Timestamp date;
+	@NotNull
 	List<BlitTypeViewModel> blitTypes;
 	State state;
 	

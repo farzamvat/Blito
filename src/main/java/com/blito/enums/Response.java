@@ -40,6 +40,7 @@ public enum Response {
 	EVENT_DATE_NOT_FOUND("error.event.date.not.found"),
 	SEARCH_UNSUCCESSFUL("error.search.unsuccessful"),
 	BLIT_TYPE_NOT_FOUND("error.blit.type.not.found"),
+	INDEX_BANNER_NOT_FOUND("error.index.banner.not.found"),
 	DISCOUNT_CODE_ALREADY_EXISTS("error.discount.code.exists"),
 	INCONSISTENT_DATES("error.inconsistent.dates");
     

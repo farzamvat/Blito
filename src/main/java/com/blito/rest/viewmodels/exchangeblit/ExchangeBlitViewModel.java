@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.blito.annotations.Email;
 import com.blito.annotations.MobileNumber;
 import com.blito.enums.ExchangeBlitType;
@@ -16,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class ExchangeBlitViewModel {
 	@JsonView(View.SimpleExchangeBlit.class)
 	private long exchangeBlitId;
-	@NotNull
+	@NotEmpty
 	@JsonView(View.SimpleExchangeBlit.class)
 	private String title;
 	@NotNull
@@ -33,6 +35,7 @@ public class ExchangeBlitViewModel {
 	@Email
 	@JsonView(View.ExchangeBlit.class)
 	private String email;
+	@NotEmpty
 	@JsonView(View.ExchangeBlit.class)
 	private String eventAddress;
 	@JsonView(View.ExchangeBlit.class)
@@ -43,6 +46,7 @@ public class ExchangeBlitViewModel {
 	private String description;
 	@JsonView(View.SimpleExchangeBlit.class)
 	private State state;
+	@NotNull
 	@JsonView(View.SimpleExchangeBlit.class)
 	private ExchangeBlitType type;
 	@JsonView(View.SimpleExchangeBlit.class)

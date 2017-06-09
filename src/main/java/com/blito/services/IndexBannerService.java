@@ -1,6 +1,7 @@
 package com.blito.services;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,16 +28,37 @@ public class IndexBannerService {
 	@Autowired
 	EventRepository eventRepository;
 	@Autowired
-	IndexBannerRepository indexBanenrRepository;
+	IndexBannerRepository indexBannerRepository;
+	@Autowired
+	ImageService imageService;
 
 	@Transactional
 	public BannerViewModel create(BannerViewModel vmodel) {
 		IndexBanner indexBanner = indexBannerMapper.createFromViewModel(vmodel);
+		indexBanner = setIndexBannerImageAndEvent(indexBanner,vmodel);
+		return indexBannerMapper.createFromEntity(indexBannerRepository.save(indexBanner));
+	}
+
+	@Transactional
+	public CompletableFuture<?> update(BannerViewModel vmodel) {
+		IndexBanner indexBanner = Optional.ofNullable(indexBannerRepository.findOne(vmodel.getIndexBannerId()))
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.INDEX_BANNER_NOT_FOUND)));
+		if(!vmodel.getImage().getImageUUID().equals(indexBanner.getImage().getImageUUID()))
+		{
+			return imageService.delete(indexBanner.getImage().getImageUUID());
+		}
+		indexBanner = indexBannerMapper.updateEntity(vmodel, indexBanner);
+		indexBanner = setIndexBannerImageAndEvent(indexBanner,vmodel);
+		return CompletableFuture.completedFuture(indexBannerMapper.createFromEntity(indexBanner));
+	}
+	
+	private IndexBanner setIndexBannerImageAndEvent(IndexBanner indexBanner,BannerViewModel vmodel)
+	{
 		indexBanner.setImage(imageRepository.findByImageUUID(vmodel.getImage().getImageUUID())
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))));
 		Event event = Optional.ofNullable(eventRepository.findOne(vmodel.getEventId()))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 		indexBanner.setEvent(event);
-		return indexBannerMapper.createFromEntity(indexBanenrRepository.save(indexBanner));
+		return indexBanner;
 	}
 }

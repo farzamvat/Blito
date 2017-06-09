@@ -1,14 +1,21 @@
 package com.blito.rest.viewmodels.blittype;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.blito.enums.State;
 
 public class BlitTypeViewModel {
 	long blitTypeId;
+	@NotEmpty
 	String name;
+	@NotNull
 	int capacity;
 	int soldCount;
 	long price;
 	State blitTypeState;
+	@NotNull
 	boolean isFree;
 	public long getBlitTypeId() {
 		return blitTypeId;

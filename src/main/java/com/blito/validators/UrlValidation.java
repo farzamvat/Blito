@@ -20,7 +20,7 @@ public class UrlValidation implements ConstraintValidator<Url, String> {
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 		if(value == null)
 			return true;
-		return Pattern.compile(Constants.LINK_REGEX).matcher(value).matches();
+		return !Pattern.compile(Constants.LINK_REGEX).matcher(value).matches();
 	}
 
 }

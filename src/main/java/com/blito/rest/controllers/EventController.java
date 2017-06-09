@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blito.enums.Response;
+import com.blito.exceptions.NotAllowedException;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
@@ -46,6 +47,11 @@ public class EventController {
 	@JsonView(View.Event.class)
 	@PostMapping
 	public ResponseEntity<EventViewModel> create(@Validated @RequestBody EventViewModel vmodel) {
+		if(vmodel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream()).anyMatch(bt -> {
+			return bt.isFree() ? bt.getPrice() != 0 : bt.getPrice() <= 0;
+		})) {
+			throw new NotAllowedException("");
+		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(eventService.create(vmodel));
 	}
 

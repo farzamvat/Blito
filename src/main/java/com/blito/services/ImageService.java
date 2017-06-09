@@ -7,14 +7,20 @@ import java.nio.file.Paths;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.blito.enums.Response;
 import com.blito.exceptions.NotFoundException;
+import com.blito.models.Image;
+import com.blito.repositories.ImageRepository;
 import com.blito.resourceUtil.ResourceUtil;
 
 @Service
 public class ImageService {
+	
+	@Autowired
+	ImageRepository imageRepository;
 
 	public CompletableFuture<String> save(String encodedBase64) {
 		return CompletableFuture.supplyAsync(() -> {
@@ -41,5 +47,17 @@ public class ImageService {
 		});
 	}
 	
+	public CompletableFuture<Void> delete(String uuid)
+	{
+		return CompletableFuture.runAsync(() -> {
+			Image image = imageRepository.findByImageUUID(uuid).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
+			try {
+				if(!Files.deleteIfExists(Paths.get("images/" + image.getImageUUID() + ".txt")))
+					throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
+			} catch (IOException e) {
+				throw new RuntimeException(e.getMessage());
+			}
+		});
+	}
 	
 }

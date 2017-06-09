@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.blito.enums.EventType;
 import com.blito.enums.OfferTypeEnum;
 import com.blito.enums.OperatorState;
@@ -19,7 +21,7 @@ public class EventViewModel {
 	@JsonView(View.SimpleEvent.class)
 	private long eventId;
 
-	@NotNull
+	@NotEmpty
 	@JsonView(View.SimpleEvent.class)
 	private String eventName;
 
@@ -36,6 +38,7 @@ public class EventViewModel {
 	private Timestamp blitSaleEndDate;
 
 	@JsonView(View.Event.class)
+	@NotEmpty
 	private String address;
 
 	@JsonView(View.Event.class)
