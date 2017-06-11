@@ -14,7 +14,7 @@
             <div class="modal-body ">
                 <div id="myTabContent" class="tab-content">
                     <div class="tab-pane fade active in" id="signin">
-                        <form class="form-inline textAlignRight">
+                        <form class="form-inline textAlignRight" name="signInForm">
                             <fieldset>
                                 <!-- Sign In Form -->
                                 <!-- Text input-->
@@ -23,9 +23,10 @@
                                         <label class="registerLabel" for="userIdSingIn" >پست الکترونيکی :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input height="60" id="userIdSingIn" name="userid" ng-model="loginFields.email" type="text"  class="form-group registerInput" >
+                                        <input height="60" id="userIdSingIn" name="email" ng-model="loginFields.email" type="email"  class="form-group registerInput" required>
                                     </div>
                                 </div>
+                                <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signInForm.email.$touched && signInForm.email.$invalid">پست الکترونیکی نا معتبر است</div>
 
                                 <!-- Password input-->
                                 <div class="form-group col-xs-12 marginTop10 formRegGroup">
@@ -37,6 +38,7 @@
                                     </div>
 
                                 </div>
+                                <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signInForm.passwordinput.$touched && signInForm.passwordinput.$invalid">رمز خود را وارد کنید</div>
 
                                 <!-- Multiple Checkboxes (inline) -->
                                 <!--<div class="control-group">-->
@@ -53,7 +55,7 @@
                                 <div class="control-group ">
                                     <label class="control-label" for="signInButton"></label>
                                     <div class="controls">
-                                        <button id="signInButton" ng-click="login(loginFields)" name="signin" class="btn btn-success btn-lg btnLogin">ورود</button>
+                                        <button id="signInButton" ng-disabled="signInForm.$invalid" ng-click="login(loginFields)" name="signin" class="btn btn-success btn-lg btnLogin">ورود</button>
                                     </div>
                                 </div>
                             </fieldset>
@@ -61,7 +63,7 @@
 
                     </div>
                     <div class="tab-pane fade" id="signup">
-                        <form class="form-inline textAlignRight">
+                        <form class="form-inline textAlignRight" name="signupForm">
                             <fieldset>
                                 <!-- Sign Up Form -->
                                 <!-- Text input-->
@@ -70,7 +72,7 @@
                                     <label class="registerLabel" for="name">نام :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input id="name" name="userid" class="form-group  registerInput" type="text" ng-model="fields.firstname" >
+                                        <input id="name" name="name" class="form-group  registerInput" type="text" ng-model="fields.firstname"  required>
                                     </div>
                                 </div>
                                 <!-- Text input-->
@@ -79,7 +81,7 @@
                                     <label class="registerLabel" for="familyName">نام خانوادگی :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input id="familyName" name="userid" class="form-group  registerInput"  type="text" ng-model="fields.lastname" >
+                                        <input id="familyName" name="familyName" class="form-group  registerInput"  type="text" ng-model="fields.lastname" required>
                                     </div>
                                 </div>
                                 <!-- Text input-->
@@ -88,7 +90,7 @@
                                     <label class="registerLabel" for="mobile">شماره تلفن همراه :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input id="mobile" name="mobile" class="form-group  registerInput" type="text" ng-model="fields.mobile" >
+                                        <input id="mobile" name="mobile" class="form-group  registerInput" type="text" ng-model="fields.mobile" required>
                                     </div>
                                 </div>
                                 <div class="form-group col-xs-12 marginTop10 formRegGroup">
@@ -96,7 +98,7 @@
                                     <label class="registerLabel" for="Email">پست الکترونیکی :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input id="Email" name="Email" class="form-group  registerInput" type="text" ng-model="fields.email" >
+                                        <input id="Email" name="email" class="form-group  registerInput" type="email" ng-model="fields.email" required>
                                     </div>
                                 </div>
 
@@ -108,9 +110,10 @@
                                     <label class="registerLabel" for="password">رموز عبور :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input id="password" name="password" class="form-group  registerInput" type="password" ng-model="fields.password">
+                                        <input id="password" name="password" class="form-group  registerInput" type="password" ng-model="fields.password"  length-validation required>
                                     </div>
                                 </div>
+                                <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signupForm.password.$touched && signupForm.password.$invalid" >رمز نا معتبر است</div>
 
                                 <!-- Text input-->
                                 <div class="form-group col-xs-12 marginTop10 formRegGroup">
@@ -118,9 +121,12 @@
                                     <label class="registerLabel" for="reenterpassword">تکرار رمز عبور :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input id="reenterpassword" class="form-group  registerInput" name="reenterpassword" type="password" ng-model="fields.confirmPassword" >
+                                        <input id="reenterpassword" class="form-group  registerInput" name="reenterpassword" type="password" password-validation="password" length-validation ng-model="fields.confirmPassword" required>
                                     </div>
                                 </div>
+
+                                <span data-ng-show="signupForm.reenterpassword.$error.match">Emails have to match!</span>
+                                <div class="col-xs-12 form-control-static text-center colorRed" ng-match="fields.password" ng-show="signupForm.reenterpassword.$touched && signupForm.reenterpassword.$invalid">رمز نا معتبر است</div>
 
                                 <!-- Multiple Radios (inline) -->
                                 <br>
@@ -130,7 +136,7 @@
                                 <div class="control-group">
                                     <label class="registerLabel" for="confirmsignup"></label>
                                     <div class="controls">
-                                        <button id="confirmsignup" ng-click="regUser(fields)" name="confirmsignup" class="btn btn-success btn-lg btnReg">ثبت نام</button>
+                                        <button ng-disabled="signupForm.$invalid" id="confirmsignup" ng-click="regUser(fields)" name="confirmsignup" class="btn btn-success btn-lg btnReg">ثبت نام</button>
                                     </div>
                                 </div>
                             </fieldset>

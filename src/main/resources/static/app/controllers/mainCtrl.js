@@ -102,11 +102,12 @@ angular.module('menuPagesModule', [])
                         main.successMsg = data.data.message;
                         userInfo.setData(data.config.data);
                         $('#registrationModal').modal('hide');
-                        $location.path('/activateUser');
+                        $location.path('/activate-user');
                     })
                     .catch(function (data, status) {
                         $scope.Msg = data.data.message;
                         $("#loading").modal("hide");
+                        $scope.Msg = "ثبت نام شما نا موفق بوده است";
                         $("#notification").modal("show");
                         console.log(data);
                         console.log(main.errorMsg);
@@ -119,7 +120,7 @@ angular.module('menuPagesModule', [])
             main.errorMsg = false;
             $("#loading").modal("show");
             $("#registrationModal").modal("hide");
-            $timeout(function () {
+            // $timeout(function () {
 
 
             Auth.login(loginData)
@@ -135,15 +136,24 @@ angular.module('menuPagesModule', [])
                         $("#notification").modal("hide");
                     }, 2000);
 
+                    console.log("ok");
 
 
-                    })
-                .catch(function (data, status) {
+                    },function (data, status) {
+                    $scope.Msg = "ورود نا موفق بود";
                     $("#loading").modal("hide");
+                    console.log("not ok");
                     $("#notification").modal("show");
-                    $scope.Msg = data.data.message;
+                    // $scope.Msg = data.data.message;
                 })
-            }, 2000)
+                .catch(function (data, status) {
+                    $scope.Msg = "ورود نا موفق بود";
+                    $("#loading").modal("hide");
+                    console.log("not ok");
+                    $("#notification").modal("show");
+                    // $scope.Msg = data.data.message;
+                })
+            // }, 2000)
             ;
         };
 
