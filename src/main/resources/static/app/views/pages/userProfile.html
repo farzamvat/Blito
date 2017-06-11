@@ -168,7 +168,7 @@
                                                     <label class="registerLabel floatRight" for="exchangeName" >نام رویداد :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input height="60" id="exchangeName" ng-model="exchange.name"  type="text"  class="form-group registerInput" >
+                                                    <input height="60" id="exchangeName" ng-model="exchange.name"  type="text"  class="form-group registerInput" required>
                                                 </div>
                                             </div>
 
@@ -177,7 +177,7 @@
                                                     <label class="registerLabel floatRight" for="exchangeType">نوع رویداد :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <select id="exchangeType" ng-model="exchange.type" class="form-control dropDownList" ng-options="o.v as o.n for o in [{n : 'تئاتر', v: 'THEATER'},{n : 'سینما', v: 'CINEMA'},{n : 'کنسرت', v: 'CONCERT'},{n : 'تور', v: 'TOURISM'},{n : 'ورزشی', v: 'SPORT'},{n : 'کارگاه', v: 'WORKSHOP'}, {n : 'بن تخفیف', v: 'DISCOUNT_TICKET'}, {n : 'سایر', v: 'OTHER'}]">
+                                                    <select id="exchangeType" ng-model="exchange.type" required class="form-control dropDownList" ng-options="o.v as o.n for o in [{n : 'تئاتر', v: 'THEATER'},{n : 'سینما', v: 'CINEMA'},{n : 'کنسرت', v: 'CONCERT'},{n : 'تور', v: 'TOURISM'},{n : 'ورزشی', v: 'SPORT'},{n : 'کارگاه', v: 'WORKSHOP'}, {n : 'بن تخفیف', v: 'DISCOUNT_TICKET'}, {n : 'سایر', v: 'OTHER'}]">
 
 
                                                     </select>
@@ -190,7 +190,7 @@
                                                     <label class="registerLabel floatRight" for="eventExchangeDate" >تاریخ و ساعت رویداد  :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input type="text" id="eventExchangeDate" ng-model="showTime.eventTime" class="persianExchangeTime datePickerFormat" readonly/>
+                                                    <input type="text" id="eventExchangeDate" required ng-model="showTime.eventTime" class="persianExchangeTime datePickerFormat" readonly/>
                                                 </div>
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
@@ -198,7 +198,7 @@
                                                     <label class="registerLabel floatRight" for="exchangePrice" >قیمت بلیت  :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input height="60" id="exchangePrice" ng-model="exchange.price"   type="number"  class="form-group registerInput" >
+                                                    <input height="60" id="exchangePrice" required ng-model="exchange.price"   type="number"  class="form-group registerInput" >
                                                 </div>
                                             </div>
                                         </div>
@@ -208,7 +208,7 @@
                                                     <label class="registerLabel floatRight" for="exchangeDescription" >توضیحات رویداد :</label>
                                                 </div>
                                                 <div class="col-xs-11  floatRight ">
-                                                    <textarea ng-model="exchange.description"  id="exchangeDescription"   type="text"  class="form-group textAreaForm" ></textarea>
+                                                    <textarea ng-model="exchange.description" required  id="exchangeDescription"   type="text"  class="form-group textAreaForm" ></textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
@@ -249,7 +249,7 @@
                                                     <label class="registerLabel floatRight" for="exchangeAddress" >آدرس :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <textarea ng-model="exchange.address"  id="exchangeAddress"   type="text"  class="form-group textAreaForm marginTop30" ></textarea>
+                                                    <textarea ng-model="exchange.address"  required id="exchangeAddress"   type="text"  class="form-group textAreaForm marginTop30" ></textarea>
                                                 </div>
                                             </div>
 
