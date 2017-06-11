@@ -9,6 +9,8 @@ public final class RandomUtil {
     private static final int SMS_ACTIVATE=6;
     
     private static final int EVENT_LINK=5;
+    
+    private static final int TRACK_CODE=8;
 
     private RandomUtil() {
     }
@@ -20,6 +22,10 @@ public final class RandomUtil {
      */
     public static String generatePassword() {
         return RandomStringUtils.randomAlphanumeric(DEF_COUNT);
+    }
+    
+    public static String generateTrackCode() {
+    	return RandomStringUtils.random(TRACK_CODE);
     }
 
     /**

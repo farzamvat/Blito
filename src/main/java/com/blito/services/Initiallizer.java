@@ -76,10 +76,6 @@ public class Initiallizer {
 		});
 		
 		Role userRole = roleRepository.findByName("USER")
-				.map(r -> {
-					r.setPermissions(permissionRepository.findAll());
-					return r;
-				})
 				.orElseGet(() -> {
 					Role r = new Role();
 					r.setName("USER"); r.setPermissions(permissionRepository.findAll());

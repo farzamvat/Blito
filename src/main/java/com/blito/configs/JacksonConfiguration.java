@@ -24,7 +24,6 @@ public class JacksonConfiguration extends WebMvcConfigurerAdapter {
         protected DefaultSerializerProvider _serializerProvider(SerializationConfig config) {
           // replace the configuration with my modified configuration.
           // calling "withView" should keep previous config and just add my changes.
-        	
           return super._serializerProvider(config.withView(View.DefaultView.class));
         }        
       };

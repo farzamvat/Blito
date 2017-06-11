@@ -27,8 +27,26 @@ public class Blit {
 	String eventName;
 	String eventDateAndTime;
 	String customerName;
+	String customerMobileNumber;
+	String cutomerEmail;
 	String address;
 	BlitTypeEnum type;
+
+	public String getCustomerMobileNumber() {
+		return customerMobileNumber;
+	}
+
+	public void setCustomerMobileNumber(String customerMobileNumber) {
+		this.customerMobileNumber = customerMobileNumber;
+	}
+
+	public String getCutomerEmail() {
+		return cutomerEmail;
+	}
+
+	public void setCutomerEmail(String cutomerEmail) {
+		this.cutomerEmail = cutomerEmail;
+	}
 
 	public BlitTypeEnum getType() {
 		return type;

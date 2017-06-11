@@ -1,12 +1,16 @@
 package com.blito.rest.viewmodels.blit;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.blito.enums.BlitTypeEnum;
 
 public class BlitViewModel {
 	long blitId;
-	
 	long blitTypeId;
-	
+	@Min(1)
 	int count;
 	
 	double totalAmount;
@@ -17,12 +21,14 @@ public class BlitViewModel {
 	
 	String eventName;
 	
+	@NotEmpty
 	String eventDateAndTime;
 	
 	String customerName;
 	
 	String address;
 	
+	@NotNull
 	BlitTypeEnum type;
 
 	public long getBlitId() {
