@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.configs.Constants;
 import com.blito.enums.ImageType;
+import com.blito.enums.OperatorState;
 import com.blito.enums.Response;
 import com.blito.enums.State;
 import com.blito.exceptions.AlreadyExistsException;
@@ -119,19 +120,22 @@ public class EventService {
 		if (vmodel.getBlitSaleStartDate().after(vmodel.getBlitSaleEndDate())) {
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_DATES));
 		}
+
+		Event event = Optional.ofNullable(eventRepository.findOne(vmodel.getEventId())).map(e -> e)
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+
 		EventHost eventHost = Optional.ofNullable(eventHostRepository.findOne(vmodel.getEventHostId())).map(eh -> eh)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
 
-		if (eventHost.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
+		if (eventHost.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()
+				|| event.getOperatorState() == OperatorState.PENDING || event.getEventState() == State.CLOSED
+				|| event.getEventState() == State.SOLD) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
 
 		List<Image> images = imageRepository.findByImageUUIDIn(
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
-
-		Event event = Optional.ofNullable(eventRepository.findOne(vmodel.getEventId())).map(e -> e)
-				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 
 		event = eventMapper.updateEntity(vmodel, event);
 		event.setImages(images);
@@ -141,6 +145,8 @@ public class EventService {
 			throw new AlreadyExistsException(ResourceUtil.getMessage(Response.EVENT_LINK_EXISTS));
 		}
 		event.setEventLink(vmodel.getEventLink());
+		event.setOperatorState(OperatorState.PENDING);
+		event.setEventState(State.CLOSED);
 		return eventMapper.createFromEntity(event);
 	}
 
@@ -216,8 +222,11 @@ public class EventService {
 	@Transactional
 	public Page<EventViewModel> getUserEvents(Pageable pageable) {
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
-		List<Event> events = user.getEventHosts().stream().flatMap(eh -> eh.getEvents().stream()).collect(Collectors.toList());
-		return eventMapper.toPage(new PageImpl<>(events.stream().skip(pageable.getPageNumber() * pageable.getPageSize()).limit(pageable.getPageSize())
-				.collect(Collectors.toList()), pageable, events.size()), eventMapper::createFromEntity);
+		List<Event> events = user.getEventHosts().stream().flatMap(eh -> eh.getEvents().stream())
+				.collect(Collectors.toList());
+		return eventMapper.toPage(
+				new PageImpl<>(events.stream().skip(pageable.getPageNumber() * pageable.getPageSize())
+						.limit(pageable.getPageSize()).collect(Collectors.toList()), pageable, events.size()),
+				eventMapper::createFromEntity);
 	}
 }
