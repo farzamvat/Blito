@@ -9,7 +9,7 @@ public final class Constants {
     public static final String POSTAL_CODE_REGEX = "[0-9]{10}";
     public static final String NATIONAL_ID = "[0-9]{10}";
     public static final String DATE_REGEX = "(13|14)\\d\\d/([1-9]|0[1-9]|1[012])/(0[1-9]|1[0-9]|2[0-9]|3[0-1]|[1-9])";
-    public static final String LINK_REGEX = "^(http:\\/\\/|https:\\/\\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}.?([a-z]+)?$";
+    public static final String LINK_REGEX = "^(http:\\/\\/|https:\\/\\/)?(wwa-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}.?([a-z]+)?$";
     public static final String EMAIL_REGEX = "^[-!#$%&'*+/0-9=?A-Z^_a-z{|}~](\\.?[-!#$%&'*+/0-9=?A-Z^_a-z{|}~])*@[a-zA-Z](-?[a-zA-Z0-9])*(\\.[a-zA-Z](-?[a-zA-Z0-9])*)+$";
 
     public static final int PASSWORD_MIN_LENGTH = 8;

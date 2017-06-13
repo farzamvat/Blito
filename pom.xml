@@ -190,26 +190,25 @@
 			<version>3.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.saman.payment</groupId>
+			<artifactId>saman-payment</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-ws</artifactId>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
-			<!-- <plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>native2ascii-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>native2ascii-utf8</id>
-						<goals>
-							<goal>native2ascii</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<src>src/main/resources/messages</src>
-					<dest>target/classes/messages</dest>
-					<encoding>UTF8</encoding>
-				</configuration>
-			</plugin> -->
+			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>native2ascii-maven-plugin</artifactId> 
+				<executions> <execution> <id>native2ascii-utf8</id> <goals> <goal>native2ascii</goal> 
+				</goals> </execution> </executions> <configuration> <src>src/main/resources/messages</src> 
+				<dest>target/classes/messages</dest> <encoding>UTF8</encoding> </configuration> 
+				</plugin> -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -224,10 +223,28 @@
 
 			</plugin>
 
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-compiler-plugin</artifactId> 
-				<version>3.5.1</version> <configuration> <source>1.8</source> <target>1.8</target> 
-				<compilerArgument>-proc:none</compilerArgument> </configuration> </plugin> -->
-
+			<plugin>
+				<groupId>org.jvnet.jaxb2.maven2</groupId>
+				<artifactId>maven-jaxb2-plugin</artifactId>
+				<version>0.12.3</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<schemaLanguage>WSDL</schemaLanguage>
+					<generatePackage>saman.wsdl</generatePackage>
+					<!-- <schemas> <schema> <url>https://sep.shaparak.ir/payments/referencepayment.asmx?wsdl</url> 
+						</schema> </schemas> -->
+					<schemaDirectory>${project.basedir}/src/main/resources/bank</schemaDirectory>
+					<schemaIncludes>
+						<include>*.wsdl</include>
+					</schemaIncludes>
+				</configuration>
+			</plugin>
 
 		</plugins>
 	</build>

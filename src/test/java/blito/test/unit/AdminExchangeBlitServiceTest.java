@@ -32,7 +32,7 @@ import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.AdminExchangeBlitService;
 
-//@ActiveProfiles("test")
+@ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 @Transactional

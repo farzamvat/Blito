@@ -43,7 +43,7 @@ import com.blito.rest.viewmodels.image.ImageViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.IndexBannerService;
 
-@ActiveProfiles("me")
+@ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes=Application.class)
 @Transactional

@@ -47,7 +47,7 @@ import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.AdminEventService;
 
-//@ActiveProfiles("test")
+@ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 @Transactional

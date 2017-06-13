@@ -32,7 +32,7 @@ import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.EventHostService;
 
-//@ActiveProfiles("test")
+@ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 @Transactional

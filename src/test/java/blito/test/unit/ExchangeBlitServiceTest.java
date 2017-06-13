@@ -31,6 +31,7 @@ import com.blito.services.ExchangeBlitService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
+@ActiveProfiles("test")
 @Transactional
 public class ExchangeBlitServiceTest {
 	@Autowired 
