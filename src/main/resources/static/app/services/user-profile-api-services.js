@@ -31,6 +31,9 @@ angular.module('userProfileApi', [])
         event.getUserEvents = function () {
             return $http.get(config.baseUrl+'/api/blito/v1.0/events/all-user-events', queryParam)
         }
+        event.editEvent = function (editData) {
+            return $http.put(config.baseUrl+'/api/blito/v1.0/events', editData)
+        }
     })
     .service('exchangeService', function ($http, config) {
         var exchange = this;

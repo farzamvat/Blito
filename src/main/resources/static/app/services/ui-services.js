@@ -4,7 +4,7 @@
 angular.module('UiServices', [])
     .service('mapMarkerService', function ($timeout) {
         var mapMarkerService = this;
-        var markers = [], markersExchange = [], map, latLng;
+        var markers = [], map, latLng = {lat : 35.7023, lng : 51.3957};
 
         mapMarkerService.getMarker = function () {
             return latLng;
@@ -18,7 +18,7 @@ angular.module('UiServices', [])
         try {
             var mapOptions = {
                 zoom: 14,
-                center: new google.maps.LatLng(35.7023, 51.3957),
+                center: new google.maps.LatLng(latLng.lat, latLng.lng),
                 mapTypeId: google.maps.MapTypeId.TERRAIN
             };
         } catch (err) {
@@ -31,7 +31,7 @@ angular.module('UiServices', [])
             } catch(err) {
                 console.log(err);
             }
-            mapMarker(map, 1);
+            mapMarker(map);
 
         }
         // mapMarkerService.deleteMarkers = function () {
@@ -41,7 +41,7 @@ angular.module('UiServices', [])
         //     markers = [];
         // }
 
-        var mapMarker = function (map, type) {
+        var mapMarker = function (map) {
             try {
                 $timeout(function () {
                     try {
@@ -51,31 +51,29 @@ angular.module('UiServices', [])
                     }
                 }, 300);
 
+                $timeout(function () {
+                    mapMarkerService.placeMarker(latLng, map);
+                }, 600);
+
                 map.addListener('click', function (e) {
-                    console.log(e.latLng.lng());
                     mapMarkerService.setMarker(e.latLng.lat(), e.latLng.lng());
-                    placeMarker(e.latLng, map);
+                    mapMarkerService.placeMarker(e.latLng, map);
                 })
 
-                var placeMarker = function (latLng, map) {
+                mapMarkerService.placeMarker = function (latlng, map) {
 
                     var marker = new google.maps.Marker({
-                        position: latLng,
+                        position: latlng,
+                        center: new google.maps.LatLng(latLng.lat, latLng.lng),
                         map: map
                     });
-                    if (type === 1) {
-                        markersExchange.push(marker);
-                        if (markersExchange.length > 1) {
-                            markersExchange[0].setMap(null);
-                            markersExchange.shift();
-                        }
-                    } else if (type === 2) {
-                        markers.push(marker);
-                        if (markers.length > 1) {
-                            markers[0].setMap(null);
-                            markers.shift();
-                        }
+
+                    markers.push(marker);
+                    if (markers.length > 1) {
+                        markers[0].setMap(null);
+                        markers.shift();
                     }
+
 
                 }
             } catch (err) {

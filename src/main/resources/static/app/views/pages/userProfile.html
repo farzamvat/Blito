@@ -157,7 +157,7 @@
 
                             <div class="panel-heading makeEventFormHeader text-center orangeBackground" id="exchangeTicketSection" ng-click="toggleBody('exchangeTicketSection')"><h6>  <i   class="fa fa-arrow-circle-down" aria-hidden="true"></i>  آگهی جدید </h6></div>
                             <div class="panel-body makeEventForm">
-                                <form class="form-inline textAlignRight ">
+                                <form class="form-inline textAlignRight " name="exchangeBlitForm">
                                     <fieldset class="fieldsetStyle">
                                         <!-- Sign In Form -->
                                         <!-- Text input-->
@@ -228,7 +228,7 @@
                                                 <label class="marginRight30"> عکس رویداد :</label>
                                                 <button class="btn btn-default " ng-click='uploadPicEventExchange()'>انتخاب <i class="fa fa-image"></i></button>
                                                 <div class="col-xs-12" ng-show="showThumbnailEventExchange">
-                                                    <img class="img-responsive exchangePhotoUpload marginTop30"  src="" alt="">
+                                                    <img id="exchangePhotoUpload" class="img-responsive exchangePhotoUpload marginTop30"  src="" alt="">
                                                     <div class="col-xs-12">
                                                         <button class="btn btn-success marginTop10" ng-click="photoUploadExchange()">بارگذاری   <i ng-show="uploadExchangePhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></button>
                                                         <button ng-click="deletePicEventExchange()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>
@@ -276,7 +276,7 @@
                                             <strong>آگهی با موفقیت ثبت شد</strong>
                                         </div>
                                         <div class="controls">
-                                            <button id="exchangeEventSubmit" ng-click="submitExchangeTicket(exchange)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت آگهی <i ng-show="submitExchangeSpinner" class="fa fa-spinner fa-spin"></i></button>
+                                            <button id="exchangeEventSubmit" ng-disabled="exchangeBlitForm.$invalid" ng-click="submitExchangeTicket(exchange)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت آگهی <i ng-show="submitExchangeSpinner" class="fa fa-spinner fa-spin"></i></button>
                                         </div>
 
                                     </div>

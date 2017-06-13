@@ -139,13 +139,7 @@ angular.module('menuPagesModule', [])
                     console.log("ok");
 
 
-                    },function (data, status) {
-                    $scope.Msg = "ورود نا موفق بود";
-                    $("#loading").modal("hide");
-                    console.log("not ok");
-                    $("#notification").modal("show");
-                    // $scope.Msg = data.data.message;
-                })
+                    })
                 .catch(function (data, status) {
                     $scope.Msg = "ورود نا موفق بود";
                     $("#loading").modal("hide");

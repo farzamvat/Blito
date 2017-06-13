@@ -171,7 +171,7 @@ angular.module('authServices', [])
                     break;
                 default :
                     console.dir("default");
-                    defer.reject();
+                    defer.reject(rejection);
                     break;
             }
 

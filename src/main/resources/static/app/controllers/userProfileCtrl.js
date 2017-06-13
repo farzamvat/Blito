@@ -12,6 +12,7 @@ angular.module('User')
         $scope.updateSuccessNotif = false;
         $scope.updateFailNotif = false;
         $scope.showTimeForms = [{blitTypes : [{}]}];
+        $scope.showTimeEditForms = [{blitTypes : [{}]}];
 
         $scope.showThumbnailProfile = false;
         $scope.showThumbnailEventPlanner = false;
@@ -23,11 +24,13 @@ angular.module('User')
         $scope.eventPhotoSuccess = false;
         $scope.createEventSpinner = false;
         $scope.createEventNotif = false;
+        $
 
 
         $scope.picData = null;
 
         userProfile.showTimeNumber = 0;
+
 
         userProfile.setDate = function (i) {
             $timeout(function () {
@@ -43,7 +46,8 @@ angular.module('User')
                 });
             }, 1000);
 
-        }
+        };
+
         $timeout(function () {
             $(".persianTimeEventStart").pDatepicker({
                 timePicker: {
@@ -116,6 +120,10 @@ angular.module('User')
 
         var fileSelectEventExchange = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
         fileSelectEventExchange.type = 'file';
+        var fileSelectEditExchange = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
+        fileSelectEditExchange.type = 'file';
+        var fileSelectEditEvent = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
+        fileSelectEditEvent.type = 'file';
 
         $scope.uploadPicProfile = function() {
             fileSelectProfile.click();
@@ -139,8 +147,49 @@ angular.module('User')
             $scope.showThumbnailEventPlanner = false;
         }
         $scope.uploadPicEventExchange = function() {
-            console.log("A");
             fileSelectEventExchange.click();
+        }
+        $scope.uploadPicEditExchange = function() {
+            fileSelectEditExchange.click();
+        }
+        $scope.uploadPicEditEvent = function() {
+            fileSelectEditEvent.click();
+        }
+        $scope.deletePicEventEdit = function () {
+            fileSelectEditEvent.value = "" ;
+        }
+        $scope.photoUploadEditEvent= function () {
+            var imageData = {
+                encodedBase64 : angular.element(document.getElementsByClassName("profilePhotoUploadEditEvent"))[0].src
+            }
+
+            photoService.upload(imageData)
+                .then(function (data, status) {
+                    $scope.eventEditPhotoSuccess = true;
+                    $scope.eventEditImageId = data.data.imageUUID;
+                }, function (data, status) {
+                    console.log(data);
+                })
+        }
+        $scope.photoUploadEditExchange = function () {
+            var imageData = {
+                encodedBase64 : angular.element(document.getElementsByClassName("exchangePhotoUploadEdit"))[0].src
+            }
+            $scope.showThumbnailProfile = true;
+            $scope.uploadExchangePhoto = true;
+            photoService.upload(imageData)
+                .then(function (data, status) {
+                    $scope.uploadEditExchangePhoto = false;
+                    $scope.exchangeEditPhotoSuccess = true;
+                    $scope.exchangeEditImageId = data.data.imageUUID;
+                }, function (data, status) {
+                    console.log(data);
+                })
+        }
+
+        $scope.deletePicEditExchange = function () {
+            fileSelectEditExchange.value = "" ;
+            $scope.showThumbnailEditExchange = false;
         }
         $scope.photoUploadExchange = function () {
             var imageData = {
@@ -213,7 +262,34 @@ angular.module('User')
             fileSelectEventExchange.value = "" ;
             $scope.showThumbnailEventExchange = false;
         }
+        fileSelectEditEvent.onchange = function() { //set callback to action after choosing file
+            var f = fileSelectEditEvent.files[0], r = new FileReader();
+            $scope.showThumbnailProfile = true;
 
+            r.onloadend = function(e) { //callback after files finish loading
+                var base64Data = e.target.result;
+                $scope.$apply();
+                angular.element(document.getElementsByClassName("profilePhotoUploadEditEvent"))[0].src = base64Data;
+                //here you can send data over your server as desired
+            }
+
+            r.readAsDataURL(f); //once defined all callbacks, begin reading the file
+
+        };
+        fileSelectEditExchange.onchange = function() { //set callback to action after choosing file
+            var f = fileSelectEditExchange.files[0], r = new FileReader();
+            $scope.showThumbnailProfile = true;
+
+            r.onloadend = function(e) { //callback after files finish loading
+                var base64Data = e.target.result;
+                $scope.$apply();
+                angular.element(document.getElementsByClassName("exchangePhotoUploadEdit"))[0].src = base64Data;
+                //here you can send data over your server as desired
+            }
+
+            r.readAsDataURL(f); //once defined all callbacks, begin reading the file
+
+        };
         fileSelectProfile.onchange = function() { //set callback to action after choosing file
             var f = fileSelectProfile.files[0], r = new FileReader();
             $scope.showThumbnailProfile = true;
@@ -221,7 +297,6 @@ angular.module('User')
             r.onloadend = function(e) { //callback after files finish loading
                 var base64Data = e.target.result;
                 $scope.$apply();
-                // console.log(base64Data.replace(/^data:image\/(png|jpg);base64,/, "")); //replace regex if you want to rip off the base 64 "header"
                 angular.element(document.getElementsByClassName("profilePhotoUpload"))[0].src = base64Data;
                 //here you can send data over your server as desired
             }
@@ -237,7 +312,6 @@ angular.module('User')
             r.onloadend = function(e) { //callback after files finish loading
                 var base64Data = e.target.result;
                 $scope.$apply();
-                // console.log(base64Data.replace(/^data:image\/(png|jpg);base64,/, "")); //replace regex if you want to rip off the base 64 "header"
                 angular.element(document.getElementsByClassName("coverPhotoUpload"))[0].src = base64Data;
                 //here you can send data over your server as desired
             }
@@ -253,7 +327,6 @@ angular.module('User')
             r.onloadend = function(e) { //callback after files finish loading
                 var base64Data = e.target.result;
                 $scope.$apply();
-                // console.log(base64Data.replace(/^data:image\/(png|jpg);base64,/, "")); //replace regex if you want to rip off the base 64 "header"
                 angular.element(document.getElementById("eventPlannerPhotoUpload"))[0].src = base64Data;
                 //here you can send data over your server as desired
             }
@@ -268,7 +341,6 @@ angular.module('User')
             r.onloadend = function(e) { //callback after files finish loading
                 var base64Data = e.target.result;
                 $scope.$apply();
-                // console.log(base64Data.replace(/^data:image\/(png|jpg);base64,/, "")); //replace regex if you want to rip off the base 64 "header"
                 angular.element(document.getElementsByClassName("exchangePhotoUpload"))[0].src = base64Data;
                 //here you can send data over your server as desired
             }
@@ -312,9 +384,20 @@ angular.module('User')
                 $scope.showTimeForms[i].blitTypes.push({})
             }
         };
+        $scope.addFieldTicketTypeEdit=function(i){
+            if($scope.showTimeEditForms[i].blitTypes.length < 5) {
+                $scope.showTimeEditForms[i].blitTypes.push({})
+            }
+        };
+
+        $scope.deleteFieldTicketTypeEdit=function(i){
+            if( 1 < $scope.showTimeEditForms[i].blitTypes.length) {
+                $scope.showTimeEditForms[i].blitTypes.splice(-1,1);
+            }
+        };
         $scope.deleteFieldTicketType=function(i){
-            if( 1 < $scope.showTimeForms[i].blitTypes.length) {
-                $scope.showTimeForms[i].blitTypes.splice(-1,1);
+            if( 1 < $scope.showTimeEditForms[i].blitTypes.length) {
+                $scope.showTimeEditForms[i].blitTypes.splice(-1,1);
             }
         };
         $scope.addFieldShowTime=function(){
@@ -322,6 +405,19 @@ angular.module('User')
                 userProfile.showTimeNumber++;
                 userProfile.setDate(userProfile.showTimeNumber);
                 $scope.showTimeForms.push({blitTypes : [{}]})
+            }
+        };
+        $scope.addFieldShowTimeEdit=function(){
+            if($scope.showTimeEditForms.length < 10) {
+                userProfile.showTimeEditForms++;
+                userProfile.setDateEdit();
+                $scope.showTimeEditForms.push({blitTypes : [{}]})
+            }
+        };
+        $scope.deleteFieldShowTimeEdit=function(){
+            if( 1 < $scope.showTimeEditForms.length) {
+                userProfile.showTimeEditForms--;
+                $scope.showTimeEditForms.splice(-1,1);
             }
         };
         $scope.deleteFieldShowTime=function(){
@@ -365,7 +461,6 @@ angular.module('User')
                     $scope.submitPlannerSpinner = false;
                     console.log(data);
                 })
-            console.log(eventPlannerData);
         }
 
         $scope.submitEvent = function (eventFields) {
@@ -432,7 +527,6 @@ angular.module('User')
                 }, function (data, status) {
                     console.log(data);
                 })
-            console.log(exchangeData);
         }
         $scope.showTime = [];
 
@@ -441,12 +535,14 @@ angular.module('User')
             $scope.getPlannersData();
             $scope.getUserEvents();
             mapMarkerService.initMap(document.getElementById('map'));
+            mapMarkerService.setMarker(mapMarkerService.getMarker().lat, mapMarkerService.getMarker().lng);
             $(angular.element(document.getElementById('toggleExchange'))).slideUp(300);
             $(angular.element(event.currentTarget).siblings()[0]).slideDown(300);
         }
         $scope.dropDownTabToggleExchange = function (event) {
             $scope.getExchangeData();
             mapMarkerService.initMap(document.getElementById('mapExchange'));
+            mapMarkerService.setMarker(mapMarkerService.getMarker().lat, mapMarkerService.getMarker().lng);
             $(angular.element(document.getElementById('toggleEvent'))).slideUp(300);
             $(angular.element(event.currentTarget).siblings()[0]).slideDown(300);
         }
@@ -491,25 +587,121 @@ angular.module('User')
 
         $scope.editEventFields = {};
         $scope.editEvent = function (index) {
-            console.log(index);
-            mapMarkerService.initMap(document.getElementById('editEventMap'));
-            mapMarkerService.setMarker($scope.userEventsEdit[index].latitude,$scope.userEventsEdit[index].longitude);
+            userProfile.showTimeEditForms = $scope.showTimeEditForms.length;
+
+
             $scope.editEventFields = {
-                name : $scope.userEventsEdit[index].eventName,
+                eventId : $scope.userEventsEdit[index].eventId,
+                eventName : $scope.userEventsEdit[index].eventName,
                 eventType : $scope.userEventsEdit[index].eventType,
                 description : $scope.userEventsEdit[index].description,
-                ticketStartTime : persianDate($scope.userEventsEdit[index].blitSaleStartDate).pDate,
-                ticketEndTime : persianDate($scope.userEventsEdit[index].blitSaleEndDate).pDate,
+                blitSaleStartDate : persianDate($scope.userEventsEdit[index].blitSaleStartDate).pDate,
+                blitSaleEndDate : persianDate($scope.userEventsEdit[index].blitSaleEndDate).pDate,
                 address : $scope.userEventsEdit[index].address,
-                aparatLink : $scope.userEventsEdit[index].aparatDisplayCode,
-                eventPlanner : $scope.userEventsEdit[index].eventHostId
+                aparatDisplayCode : $scope.userEventsEdit[index].aparatDisplayCode,
+                eventHostId : $scope.userEventsEdit[index].eventHostId
             };
-            $scope.showTimeEditForms = $scope.userEvents[index].eventDates;
-            console.log($scope.userEventsEdit[index]);
-            console.log($scope.editEventFields);
+
+
+            $scope.showTimeEditForms = angular.copy($scope.userEvents[index].eventDates.map(function (item) {
+                item.date = persianDate(item.dat).pDate;
+                return item;
+            }));
 
             $("#editEvent").modal("show");
+            var imageUUID;
+            $scope.userEventsEdit[index].images.forEach(function (image) {
+                if(image.type === "EVENT_PHOTO") {
+                    imageUUID = image.imageUUID;
+                }
+            });
+            $scope.eventEditImageId = imageUUID;
+            photoService.download(imageUUID)
+                .then(function (data, status) {
+                    angular.element(document.getElementsByClassName("profilePhotoUploadEditEvent"))[0].src = data.data.encodedBase64;
+                }, function (data, status) {
+                    console.log(data);
+                })
+                .catch(function (data, status) {
+                    console.log(status);
+                })
+            $timeout(function () {
+                $(".persianEditEventTime").pDatepicker({
+                    timePicker: {
+                        enabled: true
+                    },
+                    altField: '#persianDigitAlt',
+                    altFormat: "YYYY MM DD HH:mm:ss",
+                    altFieldFormatter: function (unixDate) {
+                    }
+                });
+            }, 500);
+            userProfile.setDateEdit = function () {
+                $timeout(function () {
+                    $(".persianEditEventTimeShowTime").pDatepicker({
+                        timePicker: {
+                            enabled: true
+                        },
+                        altField: '#persianDigitAlt',
+                        altFormat: "YYYY MM DD HH:mm:ss",
+                        altFieldFormatter: function (unixDate) {
 
+                        }
+                    });
+                }, 1000)
+            };
+            userProfile.setDateEdit();
+
+            $timeout(function () {
+                mapMarkerService.initMap(document.getElementById('editEventMap'));
+                mapMarkerService.setMarker($scope.userEventsEdit[index].latitude, $scope.userEventsEdit[index].longitude);
+            },500);
+
+
+        }
+        $scope.editEventSubmit = function (editEventData) {
+            var sendingData = angular.copy(editEventData);
+            $scope.newShowTimeEditForms = angular.copy($scope.showTimeEditForms);
+
+            $scope.newShowTimeEditForms.map(function (item) {
+                var newData = item.date.replace(/[^\w\s]/gi , ' ').split(" ");
+                newData.pop();
+                newData = newData.map(function (item) {
+                    return parseInt(item);
+                });
+                item.date = persianDate(newData).gDate.getTime();
+                return item;
+            });
+            sendingData.blitSaleEndDate = $scope.persianToMs(editEventData.blitSaleEndDate);
+            sendingData.blitSaleStartDate = $scope.persianToMs(editEventData.blitSaleStartDate);
+
+            sendingData.eventDates = $scope.newShowTimeEditForms;
+
+            sendingData.images = [{
+                imageUUID : $scope.eventEditImageId,
+                type : "EVENT_PHOTO"
+            }]
+
+            eventService.editEvent(sendingData)
+                .then(function (data, status) {
+                    console.log(data);
+                    $scope.getUserEvents();
+                })
+                .catch(function (data, status) {
+                    console.log(data);
+                })
+
+        }
+
+
+        $scope.persianToMs = function (date) {
+            var newData = date.replace(/[^\w\s]/gi , ' ').split(" ");
+            newData.pop();
+            newData = newData.map(function (item) {
+                return parseInt(item);
+            });
+            date = persianDate(newData).gDate.getTime();
+            return date;
         }
         $scope.editHost = function (index) {
 
@@ -521,15 +713,19 @@ angular.module('User')
         $scope.editExchangeSpinner = false;
 
         $scope.editExchange = function (index) {
-            console.log($scope.exchangeEditTickets[index]);
             $scope.exchangeEdit = {
                 title : $scope.exchangeEditTickets[index].title,
                 blitCost : $scope.exchangeEditTickets[index].blitCost,
                 isBlitoEvent : $scope.exchangeEditTickets[index].blitoEvent,
                 eventDate : persianDate($scope.exchangeEditTickets[index].eventDate).pDate,
                 type : $scope.exchangeEditTickets[index].type,
-                exchangeBlitId : $scope.exchangeEditTickets[index].exchangeBlitId
-
+                exchangeBlitId : $scope.exchangeEditTickets[index].exchangeBlitId,
+                description :  $scope.exchangeEditTickets[index].description,
+                eventAddress : $scope.exchangeEditTickets[index].eventAddress
+            }
+            var latlng = {
+                lat : $scope.exchangeEditTickets[index].latitude,
+                lng : $scope.exchangeEditTickets[index].longitude
             }
 
             $(".persianEditExchangeTime").pDatepicker({
@@ -542,17 +738,24 @@ angular.module('User')
                     $scope.editExchangeDate = unixDate;
                 }
             });
+            $scope.exchangeEditImageId = $scope.exchangeEditTickets[index].image.imageUUID;
 
-            console.log($scope.exchangeEditTickets[index]);
             photoService.download($scope.exchangeEditTickets[index].image.imageUUID)
                 .then(function (data, status) {
-                    console.log( angular.element(document.getElementsByClassName("exchangePhotoUploadEdit"))[0]);
+
                     angular.element(document.getElementsByClassName("exchangePhotoUploadEdit"))[0].src = data.data.encodedBase64;
                 }, function (data, status) {
                     console.log(data);
                 })
+                .catch(function (data, status) {
+                    console.log(status);
+                })
+            console.log(latlng);
             mapMarkerService.initMap(document.getElementById('mapExchangeEdit'));
+            mapMarkerService.setMarker(latlng.lat, latlng.lng);
+
             $("#editExchange").modal("show");
+
 
         }
 
@@ -565,12 +768,16 @@ angular.module('User')
             editExchangeData.latitude = latLng.lat;
             editExchangeData.longitude = latLng.lng;
             editExchangeData.phoneNumber = $scope.userData.mobile;
-            console.log(editExchangeData);
+            editExchangeData.image = {
+                imageUUID : $scope.exchangeEditImageId,
+                type : "EXCHANGEBLIT_PHOTO"
+            }
 
             exchangeService.editExchangeForm(editExchangeData)
                 .then(function (data, status) {
                     $scope.editExchangeNotif = true;
                     $scope.editExchangeSpinner = false;
+                    $scope.getExchangeData();
                     console.log(data);
                 }, function (data, status) {
                     console.log(data);
@@ -583,7 +790,6 @@ angular.module('User')
         $scope.getUserEvents = function () {
             eventService.getUserEvents()
                 .then(function (data, status) {
-                    console.log(data);
                     $scope.userEvents = data.data.content;
                     $scope.userEventsEdit = angular.copy(data.data.content);
                     $scope.userEvents = $scope.userEvents.map(function (event) {
@@ -612,7 +818,6 @@ angular.module('User')
                 .then(function (data, status) {
                     plannerService.setPlanners(data.data.content)
                     $scope.eventHosts = data.data.content;
-                    console.log($scope.eventHosts)
                 }, function (data, status) {
                     console.log(data);
                 })
