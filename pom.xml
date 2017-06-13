@@ -201,6 +201,36 @@
 			<artifactId>spring-boot-starter-ws</artifactId>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.apache.axis/axis -->
+		<dependency>
+			<groupId>org.apache.axis</groupId>
+			<artifactId>axis</artifactId>
+			<version>1.4</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/javax.xml/jaxrpc-api -->
+		<dependency>
+			<groupId>javax.xml</groupId>
+			<artifactId>jaxrpc-api</artifactId>
+			<version>1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-discovery</groupId>
+			<artifactId>commons-discovery</artifactId>
+			<version>0.4</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/axis/axis-wsdl4j -->
+		<dependency>
+			<groupId>axis</groupId>
+			<artifactId>axis-wsdl4j</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+
+
+
 	</dependencies>
 	<build>
 		<plugins>
@@ -223,7 +253,7 @@
 
 			</plugin>
 
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.jvnet.jaxb2.maven2</groupId>
 				<artifactId>maven-jaxb2-plugin</artifactId>
 				<version>0.12.3</version>
@@ -237,14 +267,14 @@
 				<configuration>
 					<schemaLanguage>WSDL</schemaLanguage>
 					<generatePackage>saman.wsdl</generatePackage>
-					<!-- <schemas> <schema> <url>https://sep.shaparak.ir/payments/referencepayment.asmx?wsdl</url> 
-						</schema> </schemas> -->
+					<schemas> <schema> <url>https://sep.shaparak.ir/payments/referencepayment.asmx?wsdl</url> 
+						</schema> </schemas>
 					<schemaDirectory>${project.basedir}/src/main/resources/bank</schemaDirectory>
 					<schemaIncludes>
 						<include>*.wsdl</include>
 					</schemaIncludes>
 				</configuration>
-			</plugin>
+			</plugin> -->
 
 		</plugins>
 	</build>

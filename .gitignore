@@ -13,3 +13,4 @@ src/main/resources/node_modules/
 src/main/resources/server.js
 /nohup.out
 /.DS_Store
+src/main/webapp
