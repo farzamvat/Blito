@@ -4,21 +4,24 @@
 angular.module('UiServices', [])
     .service('mapMarkerService', function ($timeout) {
         var mapMarkerService = this;
-        var markers = [], map, latLng = {lat : 35.7023, lng : 51.3957};
+        var markers = [], map, latitudeLongtitude = {lat : 35.7023, lng : 51.3957};
 
         mapMarkerService.getMarker = function () {
-            return latLng;
+            return latitudeLongtitude;
         }
         mapMarkerService.setMarker = function (lat, lng) {
-            latLng = {
+            latitudeLongtitude = {
                 lat : lat,
                 lng : lng
             }
         }
+        mapMarkerService.getMarkerArray = function () {
+            return markers;
+        }
         try {
             var mapOptions = {
                 zoom: 14,
-                center: new google.maps.LatLng(latLng.lat, latLng.lng),
+                center: new google.maps.LatLng(latitudeLongtitude.lat, latitudeLongtitude.lng),
                 mapTypeId: google.maps.MapTypeId.TERRAIN
             };
         } catch (err) {
@@ -42,6 +45,7 @@ angular.module('UiServices', [])
         // }
 
         var mapMarker = function (map) {
+            markers = [];
             try {
                 $timeout(function () {
                     try {
@@ -52,7 +56,7 @@ angular.module('UiServices', [])
                 }, 300);
 
                 $timeout(function () {
-                    mapMarkerService.placeMarker(latLng, map);
+                    mapMarkerService.placeMarker(latitudeLongtitude, map);
                 }, 600);
 
                 map.addListener('click', function (e) {
@@ -60,11 +64,11 @@ angular.module('UiServices', [])
                     mapMarkerService.placeMarker(e.latLng, map);
                 })
 
-                mapMarkerService.placeMarker = function (latlng, map) {
+                mapMarkerService.placeMarker = function (latLong, map) {
 
                     var marker = new google.maps.Marker({
-                        position: latlng,
-                        center: new google.maps.LatLng(latLng.lat, latLng.lng),
+                        position: latLong,
+                        center: new google.maps.LatLng(latLong.lat, latLong.lng),
                         map: map
                     });
 

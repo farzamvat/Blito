@@ -448,6 +448,9 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     width: 100%;
 }
 /*------------------------------------------------------------------------------------------------*/
+.modal-dialog {
+    width: 80%;
+}
 .slidingEventsBtn {
     margin-top: 10px;
     margin-bottom: 10px;

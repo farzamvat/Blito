@@ -114,14 +114,20 @@ angular.module('User')
 
         var fileSelectCover = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
         fileSelectCover.type = 'file';
+        var fileSelectCoverEdit = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
+        fileSelectCoverEdit.type = 'file';
 
         var fileSelectEventPlanner = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
         fileSelectEventPlanner.type = 'file';
+        var fileSelectEventPlannerEdit = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
+        fileSelectEventPlannerEdit.type = 'file';
 
         var fileSelectEventExchange = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
         fileSelectEventExchange.type = 'file';
+
         var fileSelectEditExchange = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
         fileSelectEditExchange.type = 'file';
+
         var fileSelectEditEvent = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
         fileSelectEditEvent.type = 'file';
 
@@ -136,6 +142,12 @@ angular.module('User')
             fileSelectCover.value = "" ;
             $scope.showThumbnailCover = false;
         }
+        $scope.uploadPicCoverEdit = function() {
+            fileSelectCoverEdit.click();
+        }
+        $scope.deleteCoverPicEdit = function () {
+            fileSelectCoverEdit.value = "" ;
+        }
         $scope.uploadPicCover = function() {
             fileSelectCover.click();
         }
@@ -143,8 +155,7 @@ angular.module('User')
             fileSelectEventPlanner.click();
         }
         $scope.deletePicEventPlanner = function () {
-            fileSelectEventPlanner.value = "" ;
-            $scope.showThumbnailEventPlanner = false;
+            fileSelectEventPlannerEdit.value = "" ;
         }
         $scope.uploadPicEventExchange = function() {
             fileSelectEventExchange.click();
@@ -240,6 +251,21 @@ angular.module('User')
                 })
         }
 
+        $scope.photoUploadPlannerEdit = function () {
+            var imageData = {
+                encodedBase64 : angular.element(document.getElementById("eventPlannerPhotoUploadEdit"))[0].src
+            }
+            $scope.uploadPlannerPhoto = true;
+            photoService.upload(imageData)
+                .then(function (data, status) {
+                    $scope.uploadPlannerPhoto = false;
+                    $scope.plannerPhotoSuccess = true;
+                    $scope.plannerImageId = data.data.imageUUID;
+
+                }, function (data, status) {
+                    console.log(data);
+                })
+        }
         $scope.uploadCoverPhoto = false;
         $scope.coverPhotoSuccess = false;
 
@@ -258,6 +284,23 @@ angular.module('User')
                     console.log(data);
                 })
         }
+
+        $scope.photoUploadPlannerCoverEdit = function () {
+            var imageData = {
+                encodedBase64 : angular.element(document.getElementsByClassName("coverPhotoUploadEdit"))[0].src
+            }
+            $scope.uploadCoverPhoto = true;
+
+            photoService.upload(imageData)
+                .then(function (data, status) {
+                    $scope.uploadCoverPhoto = false;
+                    $scope.coverPhotoSuccess = true;
+                    $scope.coverImageId = data.data.imageUUID;
+                }, function (data, status) {
+                    console.log(data);
+                })
+        }
+
         $scope.deletePicEventExchange = function () {
             fileSelectEventExchange.value = "" ;
             $scope.showThumbnailEventExchange = false;
@@ -270,6 +313,34 @@ angular.module('User')
                 var base64Data = e.target.result;
                 $scope.$apply();
                 angular.element(document.getElementsByClassName("profilePhotoUploadEditEvent"))[0].src = base64Data;
+                //here you can send data over your server as desired
+            }
+
+            r.readAsDataURL(f); //once defined all callbacks, begin reading the file
+
+        };
+        fileSelectEventPlannerEdit.onchange = function() { //set callback to action after choosing file
+            var f = fileSelectEventPlannerEdit.files[0], r = new FileReader();
+            $scope.showThumbnailProfile = true;
+
+            r.onloadend = function(e) { //callback after files finish loading
+                var base64Data = e.target.result;
+                $scope.$apply();
+                angular.element(document.getElementsByClassName("eventPlannerPhotoUploadEdit"))[0].src = base64Data;
+                //here you can send data over your server as desired
+            }
+
+            r.readAsDataURL(f); //once defined all callbacks, begin reading the file
+
+        };
+        fileSelectCoverEdit.onchange = function() { //set callback to action after choosing file
+            var f = fileSelectCoverEdit.files[0], r = new FileReader();
+            $scope.showThumbnailProfile = true;
+
+            r.onloadend = function(e) { //callback after files finish loading
+                var base64Data = e.target.result;
+                $scope.$apply();
+                angular.element(document.getElementsByClassName("coverPhotoUploadEdit"))[0].src = base64Data;
                 //here you can send data over your server as desired
             }
 
@@ -535,14 +606,14 @@ angular.module('User')
             $scope.getPlannersData();
             $scope.getUserEvents();
             mapMarkerService.initMap(document.getElementById('map'));
-            mapMarkerService.setMarker(mapMarkerService.getMarker().lat, mapMarkerService.getMarker().lng);
+            mapMarkerService.setMarker(35.7023, 51.3957);
             $(angular.element(document.getElementById('toggleExchange'))).slideUp(300);
             $(angular.element(event.currentTarget).siblings()[0]).slideDown(300);
         }
         $scope.dropDownTabToggleExchange = function (event) {
             $scope.getExchangeData();
             mapMarkerService.initMap(document.getElementById('mapExchange'));
-            mapMarkerService.setMarker(mapMarkerService.getMarker().lat, mapMarkerService.getMarker().lng);
+            mapMarkerService.setMarker(35.7023,51.3957);
             $(angular.element(document.getElementById('toggleEvent'))).slideUp(300);
             $(angular.element(event.currentTarget).siblings()[0]).slideDown(300);
         }
@@ -654,6 +725,7 @@ angular.module('User')
 
             $timeout(function () {
                 mapMarkerService.initMap(document.getElementById('editEventMap'));
+                console.log($scope.userEventsEdit[index]);
                 mapMarkerService.setMarker($scope.userEventsEdit[index].latitude, $scope.userEventsEdit[index].longitude);
             },500);
 
@@ -661,6 +733,7 @@ angular.module('User')
         }
         $scope.editEventSubmit = function (editEventData) {
             var sendingData = angular.copy(editEventData);
+            var latLong = mapMarkerService.getMarker();
             $scope.newShowTimeEditForms = angular.copy($scope.showTimeEditForms);
 
             $scope.newShowTimeEditForms.map(function (item) {
@@ -674,16 +747,20 @@ angular.module('User')
             });
             sendingData.blitSaleEndDate = $scope.persianToMs(editEventData.blitSaleEndDate);
             sendingData.blitSaleStartDate = $scope.persianToMs(editEventData.blitSaleStartDate);
-
             sendingData.eventDates = $scope.newShowTimeEditForms;
+            sendingData.latitude = latLong.lat;
+            sendingData.longitude = latLong.lng;
 
             sendingData.images = [{
                 imageUUID : $scope.eventEditImageId,
                 type : "EVENT_PHOTO"
             }]
-
+            console.log(sendingData);
+            $scope.editEventSpinner = true;
             eventService.editEvent(sendingData)
                 .then(function (data, status) {
+                    $scope.editEventSpinner = false;
+                    $scope.editEventNotif = true;
                     console.log(data);
                     $scope.getUserEvents();
                 })
@@ -703,10 +780,36 @@ angular.module('User')
             date = persianDate(newData).gDate.getTime();
             return date;
         }
-        $scope.editHost = function (index) {
 
+        //==================================================== EDIT HOST =================================
+        $scope.eventPlannerEdit = {};
+        $scope.editHost = function (index) {
+            $scope.eventPlannerEdit = $scope.eventHosts[index];
+            console.log($scope.eventHosts[index]);
             $("#editHost").modal("show");
+            photoService.download($scope.eventHosts[index].images[0].imageUUID)
+                .then(function (data, status) {
+
+                    angular.element(document.getElementsByClassName("eventPlannerPhotoUploadEdit"))[0].src = data.data.encodedBase64;
+                }, function (data, status) {
+                    console.log(data);
+                })
+                .catch(function (data, status) {
+                    console.log(status);
+                })
+
+            photoService.download($scope.eventHosts[index].images[1].imageUUID)
+                .then(function (data, status) {
+
+                    angular.element(document.getElementsByClassName("coverPhotoUploadEdit"))[0].src = data.data.encodedBase64;
+                }, function (data, status) {
+                    console.log(data);
+                })
+                .catch(function (data, status) {
+                    console.log(status);
+                })
         }
+        //==================================================== ********* =================================
 
 
         $scope.editExchangeNotif = false;
