@@ -435,7 +435,10 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     display: none;
 }
 .exchangePhotoUpload {
-    max-width: 50%;
+    width: 100px;
+}
+.galleryOne {
+    width: 100px;
 }
 .profilePhotoUploadEditEventexchangePhotoUploadEdit {
     max-width: 20%;
@@ -448,8 +451,20 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     width: 100%;
 }
 /*------------------------------------------------------------------------------------------------*/
-.modal-dialog {
+.editForm {
     width: 80%;
+}
+.eventPlannerPhotoUploadEdit {
+    width: 100px;
+}
+.exchangePhotoUploadEdit {
+    width: 100px;
+}
+.profilePhotoUploadEditEvent {
+    width: 100px;
+}
+.alert {
+    margin-top: 10px;
 }
 .slidingEventsBtn {
     margin-top: 10px;

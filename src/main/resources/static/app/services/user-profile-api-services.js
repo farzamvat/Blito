@@ -60,17 +60,20 @@ angular.module('userProfileApi', [])
         var planners = [];
         planner.setPlanners = function (p) {
             planners = p;
-        }
+        };
         planner.getPlanners = function () {
             return planners;
-        }
+        };
         planner.getPlanners = function () {
             var queryParam = {
                 params : {page: 0, size: 100}
-            }
+            };
             return $http.get(config.baseUrl+'/api/blito/v1.0/event-hosts/all', queryParam)
-        }
+        };
         planner.submitPlannerForm = function (eventData) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/event-hosts', eventData)
+        };
+        planner.editPlannerForm = function (editData) {
+            return $http.put(config.baseUrl+'/api/blito/v1.0/event-hosts', editData)
         }
-    })
+    });

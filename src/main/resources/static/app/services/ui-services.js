@@ -45,6 +45,7 @@ angular.module('UiServices', [])
         // }
 
         var mapMarker = function (map) {
+
             markers = [];
             try {
                 $timeout(function () {
@@ -57,6 +58,7 @@ angular.module('UiServices', [])
 
                 $timeout(function () {
                     mapMarkerService.placeMarker(latitudeLongtitude, map);
+                    map.setCenter(new google.maps.LatLng(latitudeLongtitude.lat, latitudeLongtitude.lng));
                 }, 600);
 
                 map.addListener('click', function (e) {
@@ -68,7 +70,6 @@ angular.module('UiServices', [])
 
                     var marker = new google.maps.Marker({
                         position: latLong,
-                        center: new google.maps.LatLng(latLong.lat, latLong.lng),
                         map: map
                     });
 

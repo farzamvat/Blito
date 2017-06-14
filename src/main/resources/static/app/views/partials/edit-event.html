@@ -1,12 +1,12 @@
 <!-- Modal -->
 <div id="editEvent" class="modal fade" role="dialog">
-    <div class="modal-dialog ">
+    <div class="modal-dialog editForm">
 
         <!-- Modal content-->
         <div class="modal-content registerBody">
 
             <div class="modal-body ">
-                <form class="form-inline textAlignRight">
+                <form class="form-inline textAlignRight" name="editEventForm">
                     <fieldset class="fieldsetStyle">
 
                         <legend class="legendStyle text-center">اطلاعات رویداد</legend>
@@ -16,7 +16,7 @@
                                     <label class="registerLabel floatRight" for="eventName" >نام رویداد :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <input height="60" id="eventName" ng-model="editEventFields.eventName"   type="text"  class="form-group registerInput" >
+                                    <input height="60" id="eventName" ng-model="editEventFields.eventName" required   type="text"  class="form-group registerInput" >
                                 </div>
                             </div>
 
@@ -25,7 +25,7 @@
                                     <label class="registerLabel floatRight" for="eventType">نوع رویداد :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <select id="eventType" ng-model="editEventFields.eventType" placeholder="editEventFields.eventType" class="form-control dropDownList"
+                                    <select  id="eventType" ng-model="editEventFields.eventType" placeholder="editEventFields.eventType" class="form-control dropDownList"
                                             ng-options="o.v as o.n for o in [{n : 'تئاتر', v: 'THEATER'},{n : 'سینما', v: 'CINEMA'},{n : 'کنسرت', v: 'CONCERT'},{n : 'تور', v: 'TOURISM'},{n : 'ورزشی', v: 'SPORT'},{n : 'کارگاه', v: 'WORKSHOP'}, {n : 'سایر', v: 'OTHER'}]">
                                     </select>
 
@@ -39,7 +39,7 @@
                                     <label class="registerLabel floatRight" for="eventDescription" >توضیحات رویداد :</label>
                                 </div>
                                 <div class="col-xs-11  floatRight ">
-                                    <textarea ng-model="editEventFields.description"  id="eventDescription"  type="text"  class="form-group textAreaForm" ></textarea>
+                                    <textarea ng-model="editEventFields.description" required  id="eventDescription"  type="text"  class="form-group textAreaForm" ></textarea>
                                 </div>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                                     <label class="registerLabel floatRight" for="eventTicketStartTime">زمان شروع :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <input height="60" id="eventTicketStartTime"  ng-model="editEventFields.blitSaleStartDate" type="text"  class="form-group datePickerFormat persianEditEventTime" readonly>
+                                    <input height="60" id="eventTicketStartTime" required ng-model="editEventFields.blitSaleStartDate" type="text"  class="form-group datePickerFormat persianEditEventTime" readonly>
                                 </div>
 
                             </div>
@@ -66,7 +66,7 @@
                                     <label class="registerLabel floatRight" for="eventTicketEndTime" > زمان پایان :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <input height="60" id="eventTicketEndTime" ng-model="editEventFields.blitSaleEndDate"  type="text"  class="form-group datePickerFormat persianEditEventTime" readonly>
+                                    <input height="60" id="eventTicketEndTime" required ng-model="editEventFields.blitSaleEndDate"  type="text"  class="form-group datePickerFormat persianEditEventTime" readonly>
                                 </div>
                             </div>
                         </div>
@@ -81,7 +81,7 @@
                                     <label class="registerLabel floatRight" for="eventAddress" >آدرس :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <textarea ng-model="editEventFields.address"  id="eventAddress"  type="text"  class="form-group textAreaForm marginTop30" ></textarea>
+                                    <textarea ng-model="editEventFields.address" required  id="eventAddress"  type="text"  class="form-group textAreaForm marginTop30" ></textarea>
                                 </div>
                             </div>
 
@@ -109,13 +109,13 @@
                             </div>
                             <div class="col-xs-12 col-sm-12 floatRight marginTop30">
 
-                                <label class="marginRight30"> عکس پروفایل :</label>
+                                <label class="marginRight30"> عکس رویداد :</label>
                                 <button class="btn btn-default " ng-click='uploadPicEditEvent()'>انتخاب <i class="fa fa-image"></i></button>
                                 <div class="col-xs-12" >
                                     <img class="img-responsive profilePhotoUploadEditEvent marginTop30"  src="" alt="">
                                     <div class="col-xs-12">
-                                        <button class="btn btn-success marginTop10" ng-click="photoUploadEditEvent()">بارگذاری   <i ng-show="uploadEventPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></button>
-                                        <button ng-click="deletePicEventEdit()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>
+                                        <button class="btn btn-success marginTop10" ng-click="photoUploadEditEvent()">بارگذاری   <i ng-show="uploadEditEventPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></button>
+                                        <!--<button ng-click="deletePicEventEdit()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                     </div>
                                     <div ng-show="eventEditPhotoSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
                                         <strong>عکس با موفقیت بارگذاری شد</strong>
@@ -134,7 +134,7 @@
                                     <label class="registerLabel" for="aparatVideo">لینک آپارات  :</label>
                                 </div>
                                 <div class="col-xs-7 col-sm-6 floatRight ">
-                                    <input height="60" id="aparatVideo" ng-model="editEventFields.aparatDisplayCode"  type="text"  class="form-group registerInput" >
+                                    <input height="60" id="aparatVideo" url-validation  ng-model="editEventFields.aparatDisplayCode"  type="text"  class="form-group registerInput" >
                                 </div>
 
                             </div>
@@ -148,7 +148,7 @@
                                     <label class="registerLabel" for="eventPlanner">انتخاب برگذار کننده   :</label>
                                 </div>
                                 <div class="col-xs-7 col-sm-6 floatRight ">
-                                    <select id="eventPlanner" ng-model="editEventFields.eventPlanner" ng-value="editEventFields.eventHostId"  ng-options="obj.hostName for obj in eventHosts track by obj.eventHostId" class="form-control dropDownList">
+                                    <select id="eventPlanner" ng-model="editEventFields.eventHostId"  ng-value="editEventFields.eventHostId"  ng-options="obj.hostName for obj in eventHosts track by obj.eventHostId" class="form-control dropDownList">
 
                                     </select>
                                 </div>
@@ -180,7 +180,7 @@
                                             <label class="registerLabel" >تاریخ و ساعت : </label>
                                         </div>
                                         <div class="col-xs-7 col-sm-6 floatRight ">
-                                            <input type="text" ng-model="showTime.date"  class="persianEditEventTimeShowTime datePickerFormat" readonly/>
+                                            <input type="text" ng-model="showTime.date" required class="persianEditEventTimeShowTime datePickerFormat" readonly/>
 
                                             <!--<input height="60"     type="text"  class="form-group registerInput floatRight eventShowTime" >-->
                                         </div>
@@ -198,7 +198,7 @@
 
                                         </div>
                                         <div class="col-xs-7 col-sm-6 floatRight ">
-                                            <select id="eventTicket" ng-model="ticketType.free" class="form-control dropDownInput" ng-options="o.v as o.n for o in [{n : 'رایگان', v: true}, {n : 'پولی', v: false}]">
+                                            <select id="eventTicket" ng-model="ticketType.free" required class="form-control dropDownInput" ng-options="o.v as o.n for o in [{n : 'رایگان', v: true}, {n : 'پولی', v: false}]">
 
                                             </select>
                                         </div>
@@ -207,7 +207,7 @@
                                                 <label class="registerLabel" for="ticketName">نام بلیت :</label>
                                             </div>
                                             <div class="col-xs-7 col-sm-6 floatRight ">
-                                                <input height="60" id="ticketName" ng-model="ticketType.name"   type="text"  class="form-group registerInput" >
+                                                <input height="60" id="ticketName" ng-model="ticketType.name" required  type="text"  class="form-group registerInput" >
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 floatRight marginTop10">
@@ -215,7 +215,7 @@
                                                 <label class="registerLabel" for="ticketCapacity">ظرفیت بلیت :</label>
                                             </div>
                                             <div class="col-xs-7 col-sm-6 floatRight ">
-                                                <input height="60" id="ticketCapacity" ng-model="ticketType.capacity"   type="number"  class="form-group registerInput" >
+                                                <input height="60" id="ticketCapacity" required ng-model="ticketType.capacity"   type="number"  class="form-group registerInput" >
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 floatRight marginTop10">
@@ -224,7 +224,7 @@
                                                     <label class="registerLabel" for="ticketPurchaseAmount">قیمت بلیت :</label>
                                                 </div>
                                                 <div class="col-xs-7 col-sm-6 floatRight ">
-                                                    <input height="60" id="ticketPurchaseAmount" ng-model="ticketType.price"   type="number"  class="form-group registerInput" >
+                                                    <input height="60" id="ticketPurchaseAmount" required ng-model="ticketType.price"   type="number"  class="form-group registerInput" >
                                                 </div>
 
                                             </div>
@@ -247,7 +247,7 @@
                             <strong>رویداد با موفقیت ویرایش شد!</strong>
                         </div>
                         <div class="controls">
-                            <button id="signInButton" ng-click="editEventSubmit(editEventFields)" name="signin" class="btn btn-success btn-lg btnLogin">ویرایش رویداد <i ng-show="editEventSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
+                            <button id="signInButton" ng-disabled="editEventForm.$invalid" ng-click="editEventSubmit(editEventFields)" name="signin" class="btn btn-success btn-lg btnLogin">ویرایش رویداد <i ng-show="editEventSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
                         </div>
 
                     </div>
