@@ -18,4 +18,10 @@ public class View {
 	
 	public interface IndexBanner extends DefaultView {}
 	public interface AdminIndexBanner extends IndexBanner {}
+	
+	public interface SimpleBlit extends DefaultView {}
+	public interface CommonBlit extends SimpleBlit {}
+	public interface SeatBlit extends SimpleBlit {}
+	public interface Blit extends SeatBlit,CommonBlit {}
+	public interface AdminBlit extends Blit {}
 }

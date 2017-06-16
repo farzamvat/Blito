@@ -3,7 +3,7 @@ package com.blito.rest.viewmodels.account;
 import java.util.List;
 
 import com.blito.rest.viewmodels.View;
-import com.blito.rest.viewmodels.blit.BlitViewModel;
+import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -30,7 +30,7 @@ public class UserViewModel {
 	@JsonView(View.User.class)
 	List<EventHostViewModel> eventHosts;
 	@JsonView(View.User.class)
-	List<BlitViewModel> blits;
+	List<CommonBlitViewModel> blits;
 	@JsonView(View.User.class)
 	List<ExchangeBlitViewModel> exchangeBlits;
 
@@ -88,10 +88,10 @@ public class UserViewModel {
 	public void setEventHosts(List<EventHostViewModel> eventHosts) {
 		this.eventHosts = eventHosts;
 	}
-	public List<BlitViewModel> getBlits() {
+	public List<CommonBlitViewModel> getBlits() {
 		return blits;
 	}
-	public void setBlits(List<BlitViewModel> blits) {
+	public void setBlits(List<CommonBlitViewModel> blits) {
 		this.blits = blits;
 	}
 	public List<ExchangeBlitViewModel> getExchangeBlits() {

@@ -25,7 +25,7 @@ public final class RandomUtil {
     }
     
     public static String generateTrackCode() {
-    	return RandomStringUtils.random(TRACK_CODE);
+    	return RandomStringUtils.randomNumeric(TRACK_CODE);
     }
 
     /**

@@ -1,32 +1,47 @@
 package com.blito.mappers;
 
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 import org.springframework.stereotype.Component;
 
-import com.blito.enums.BlitTypeEnum;
 import com.blito.models.Blit;
 import com.blito.models.CommonBlit;
-import com.blito.rest.viewmodels.blit.BlitViewModel;
+import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 
 @Component
-public class BlitMapper implements GenericMapper<Blit, BlitViewModel>{
+public class CommonBlitMapper implements GenericMapper<CommonBlit, CommonBlitViewModel>{
 
 	@Override
-	public Blit createFromViewModel(BlitViewModel vmodel) {
-		CommonBlit cBlit = new CommonBlit();
-		cBlit.setCount(vmodel.getCount());
-		cBlit.setType(BlitTypeEnum.COMMON);
-		return null;
+	public CommonBlit createFromViewModel(CommonBlitViewModel vmodel) {
+		CommonBlit blit = new CommonBlit();
+		blit.setCount(vmodel.getCount());
+		blit.setTotalAmount(vmodel.getTotalAmount());
+		blit.setEventName(vmodel.getEventName());
+		blit.setEventDateAndTime(vmodel.getEventDateAndTime());
+		blit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+		blit.setEventDate(vmodel.getEventDate());
+		
+		blit.setCustomerName(vmodel.getCustomerName());
+		blit.setCustomerMobileNumber(vmodel.getCustomerMobileNumber());
+		blit.setCustomerEmail(vmodel.getCustomerEmail());
+		blit.setEventAddress(vmodel.getEventAddress());
+		blit.setBlitTypeName(vmodel.getBlitTypeName());
+		blit.setType(vmodel.getType());
+		return blit;
 	}
 
 	@Override
-	public BlitViewModel createFromEntity(Blit entity) {
+	public CommonBlitViewModel createFromEntity(CommonBlit entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CommonBlit updateEntity(BlitViewModel viewModel, Blit entity) {
+	public CommonBlit updateEntity(CommonBlitViewModel viewModel, CommonBlit entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 }

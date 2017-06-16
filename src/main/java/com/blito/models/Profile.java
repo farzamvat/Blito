@@ -11,8 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.blito.enums.ProfileType;
@@ -43,8 +43,9 @@ public class Profile {
 	
 	String twitter;
 	
-	@OneToMany
-	@JoinColumn(name="profileId")
+	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+    @JoinTable(name="profile_image" , joinColumns=@JoinColumn(name="profile_id"), 
+    inverseJoinColumns=@JoinColumn(name="image_id"))
 	private List<Image> images; 
 
 	public List<Image> getImages() {

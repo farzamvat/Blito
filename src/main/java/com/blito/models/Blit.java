@@ -1,5 +1,7 @@
 package com.blito.models;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.blito.enums.BlitTypeEnum;
+import com.blito.enums.PaymentStatus;
 
 @Entity(name="blit")
 @Table
@@ -19,114 +22,145 @@ public class Blit {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	long blitId;
 	int count;
-	double totalAmount;
-	@ManyToOne
+	long totalAmount;
+	@ManyToOne(optional=true)
 	@JoinColumn(name="userId")
 	User user;
 	String trackCode;
 	String eventName;
 	String eventDateAndTime;
+	Timestamp createdAt;
+	Timestamp eventDate;
 	String customerName;
 	String customerMobileNumber;
-	String cutomerEmail;
-	String address;
+	String customerEmail;
+	String eventAddress;
+	String blitTypeName;
 	BlitTypeEnum type;
-
-	public String getCustomerMobileNumber() {
-		return customerMobileNumber;
+	PaymentStatus paymentStatus;
+	String paymentError;
+	String samanBankToken;
+	String samanBankRefNumber;
+	boolean used = false;
+	
+	public boolean isUsed() {
+		return used;
 	}
-
-	public void setCustomerMobileNumber(String customerMobileNumber) {
-		this.customerMobileNumber = customerMobileNumber;
+	public void setUsed(boolean used) {
+		this.used = used;
 	}
-
-	public String getCutomerEmail() {
-		return cutomerEmail;
-	}
-
-	public void setCutomerEmail(String cutomerEmail) {
-		this.cutomerEmail = cutomerEmail;
-	}
-
-	public BlitTypeEnum getType() {
-		return type;
-	}
-
-	public void setType(BlitTypeEnum type) {
-		this.type = type;
-	}
-
-	public double getTotalAmount() {
-		return totalAmount;
-	}
-
-	public void setTotalAmount(double totalAmount) {
-		this.totalAmount = totalAmount;
-	}
-
-	public String getTrackCode() {
-		return trackCode;
-	}
-
-	public void setTrackCode(String trackCode) {
-		this.trackCode = trackCode;
-	}
-
-	public String getEventName() {
-		return eventName;
-	}
-
-	public void setEventName(String eventName) {
-		this.eventName = eventName;
-	}
-
-	public String getEventDateAndTime() {
-		return eventDateAndTime;
-	}
-
-	public void setEventDateAndTime(String eventDateAndTime) {
-		this.eventDateAndTime = eventDateAndTime;
-	}
-
-	public String getCustomerName() {
-		return customerName;
-	}
-
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-		user.getBlits().add(this);
-	}
-
 	public long getBlitId() {
 		return blitId;
 	}
-
 	public void setBlitId(long blitId) {
 		this.blitId = blitId;
 	}
-
 	public int getCount() {
 		return count;
 	}
-
 	public void setCount(int count) {
 		this.count = count;
 	}
-
+	public long getTotalAmount() {
+		return totalAmount;
+	}
+	public void setTotalAmount(long totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public String getTrackCode() {
+		return trackCode;
+	}
+	public void setTrackCode(String trackCode) {
+		this.trackCode = trackCode;
+	}
+	public String getEventName() {
+		return eventName;
+	}
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
+	}
+	public String getEventDateAndTime() {
+		return eventDateAndTime;
+	}
+	public void setEventDateAndTime(String eventDateAndTime) {
+		this.eventDateAndTime = eventDateAndTime;
+	}
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+	public Timestamp getEventDate() {
+		return eventDate;
+	}
+	public void setEventDate(Timestamp eventDate) {
+		this.eventDate = eventDate;
+	}
+	public String getCustomerName() {
+		return customerName;
+	}
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+	public String getCustomerMobileNumber() {
+		return customerMobileNumber;
+	}
+	public void setCustomerMobileNumber(String customerMobileNumber) {
+		this.customerMobileNumber = customerMobileNumber;
+	}
+	public String getCustomerEmail() {
+		return customerEmail;
+	}
+	public void setCustomerEmail(String customerEmail) {
+		this.customerEmail = customerEmail;
+	}
+	public String getEventAddress() {
+		return eventAddress;
+	}
+	public void setEventAddress(String eventAddress) {
+		this.eventAddress = eventAddress;
+	}
+	public String getBlitTypeName() {
+		return blitTypeName;
+	}
+	public void setBlitTypeName(String blitTypeName) {
+		this.blitTypeName = blitTypeName;
+	}
+	public BlitTypeEnum getType() {
+		return type;
+	}
+	public void setType(BlitTypeEnum type) {
+		this.type = type;
+	}
+	public PaymentStatus getPaymentStatus() {
+		return paymentStatus;
+	}
+	public void setPaymentStatus(PaymentStatus paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
+	public String getPaymentError() {
+		return paymentError;
+	}
+	public void setPaymentError(String paymentError) {
+		this.paymentError = paymentError;
+	}
+	public String getSamanBankToken() {
+		return samanBankToken;
+	}
+	public void setSamanBankToken(String samanBankToken) {
+		this.samanBankToken = samanBankToken;
+	}
+	public String getSamanBankRefNumber() {
+		return samanBankRefNumber;
+	}
+	public void setSamanBankRefNumber(String samanBankRefNumber) {
+		this.samanBankRefNumber = samanBankRefNumber;
+	}
 }

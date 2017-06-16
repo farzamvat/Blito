@@ -1,6 +1,5 @@
 package com.blito.services;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -10,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,14 +79,17 @@ public class EventService {
 		if (vmodel.getBlitSaleStartDate().after(vmodel.getBlitSaleEndDate())) {
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_DATES));
 		}
-		if (vmodel.getImages().size() == 0) {
-			vmodel.setImages(Arrays.asList(new ImageViewModel(Constants.DEFAULT_EVENT_PHOTO, ImageType.EVENT_PHOTO),
-					new ImageViewModel(Constants.DEFAULT_EVENT_BANNER, ImageType.BANNER)));
+		if (vmodel.getImages().stream().filter(i -> i.getType().equals(ImageType.EVENT_PHOTO)).count() == 0) {
+			vmodel.getImages().add(new ImageViewModel(Constants.DEFAULT_EVENT_PHOTO, ImageType.EVENT_PHOTO));
 		}
 		EventHost eventHost = Optional.ofNullable(eventHostRepository.findOne(vmodel.getEventHostId())).map(eh -> eh)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
 		List<Image> images = imageRepository.findByImageUUIDIn(
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
+		if(images.size() != vmodel.getImages().size())
+		{
+			throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
+		}
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 		Event event = eventMapper.createFromViewModel(vmodel);
 		event.setImages(images);

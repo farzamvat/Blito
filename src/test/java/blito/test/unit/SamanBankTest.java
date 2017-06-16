@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.blito.payments.saman.webservice.client.InitPaymentSoap;
 import com.blito.payments.saman.webservice.client.InitPaymentSoapProxy;
+import com.blito.services.RandomUtil;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
@@ -33,5 +34,7 @@ public class SamanBankTest {
 			e.printStackTrace();
 		}
 		System.out.println(result);
+		
+		System.out.println(RandomUtil.generateTrackCode());
 	}
 }

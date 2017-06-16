@@ -1,6 +1,5 @@
 package com.blito.services;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -52,12 +51,17 @@ public class EventHostService {
 
 	@Transactional
 	public EventHostViewModel create(EventHostViewModel vmodel) {
-		if (vmodel.getImages().size() == 0) {
-			vmodel.setImages(Arrays.asList(new ImageViewModel(Constants.DEFAULT_HOST_PHOTO, ImageType.HOST_COVER_PHOTO),
-					new ImageViewModel(Constants.DEFAULT_HOST_COVER_PHOTO, ImageType.HOST_COVER_PHOTO)));
-		}
+		if (vmodel.getImages().stream().filter(i -> i.getType().equals(ImageType.HOST_PHOTO)).count() == 0) 
+			vmodel.getImages().add(new ImageViewModel(Constants.DEFAULT_HOST_PHOTO, ImageType.HOST_PHOTO));
+		if (vmodel.getImages().stream().filter(i -> i.getType().equals(ImageType.HOST_COVER_PHOTO)).count() == 0) 
+			vmodel.getImages().add(new ImageViewModel(Constants.DEFAULT_HOST_COVER_PHOTO, ImageType.HOST_COVER_PHOTO));
 		List<Image> images = imageRepository.findByImageUUIDIn(
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
+		
+		if(images.size() != vmodel.getImages().size())
+		{
+			throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
+		}
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 

@@ -73,6 +73,12 @@ public class User {
 		exchangeBlits = new ArrayList<>();
 	}
 	
+	public void addBlits(Blit blit)
+	{
+		this.blits.add(blit);
+		blit.setUser(this);
+	}
+	
 	
 	public boolean isOldUser() {
 		return isOldUser;

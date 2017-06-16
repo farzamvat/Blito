@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blito.rest.viewmodels.blit.BlitViewModel;
+import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 
 @RestController
 @RequestMapping("${api.base.url}" + "/blits")
 public class BlitController {
 	
 	@PostMapping
-	public ResponseEntity<BlitViewModel> buyBlit(@Validated @RequestBody BlitViewModel vmodel) {
+	public ResponseEntity<CommonBlitViewModel> buyBlit(@Validated @RequestBody CommonBlitViewModel vmodel) {
 		return null;
 	}
 
