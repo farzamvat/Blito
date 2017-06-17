@@ -82,6 +82,7 @@ public class ExchangeBlitService {
 
 		exchangeBlit = exchangeBlitMapper.updateEntity(vmodel, exchangeBlit);
 		exchangeBlit.setOperatorState(OperatorState.PENDING);
+		exchangeBlit.setState(State.CLOSED);
 
 		return exchangeBlitMapper.createFromEntity(exchangeBlit);
 	}
