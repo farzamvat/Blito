@@ -253,46 +253,31 @@
 
 			</plugin>
 
-			<plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-dependency-plugin</artifactId>
-	<version>2.9</version>
-	<executions>
-		<execution>
-			<id>build-classpath</id>
-			<phase>generate-sources</phase>
-			<goals>
-				<goal>build-classpath</goal>
-			</goals>
-		</execution>
-	</executions>
-	<configuration>
-		<outputFile>classpath.txt</outputFile>
-	</configuration>
-</plugin>
-
 			<!-- <plugin>
-				<groupId>org.jvnet.jaxb2.maven2</groupId>
-				<artifactId>maven-jaxb2-plugin</artifactId>
-				<version>0.12.3</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.9</version>
 				<executions>
 					<execution>
+						<id>build-classpath</id>
+						<phase>generate-sources</phase>
 						<goals>
-							<goal>generate</goal>
+							<goal>build-classpath</goal>
 						</goals>
 					</execution>
 				</executions>
 				<configuration>
-					<schemaLanguage>WSDL</schemaLanguage>
-					<generatePackage>saman.wsdl</generatePackage>
-					<schemas> <schema> <url>https://sep.shaparak.ir/payments/referencepayment.asmx?wsdl</url> 
-						</schema> </schemas>
-					<schemaDirectory>${project.basedir}/src/main/resources/bank</schemaDirectory>
-					<schemaIncludes>
-						<include>*.wsdl</include>
-					</schemaIncludes>
+					<outputFile>classpath.txt</outputFile>
 				</configuration>
-			</plugin> -->
+			</plugin>
+ -->
+			<!-- <plugin> <groupId>org.jvnet.jaxb2.maven2</groupId> <artifactId>maven-jaxb2-plugin</artifactId> 
+				<version>0.12.3</version> <executions> <execution> <goals> <goal>generate</goal> 
+				</goals> </execution> </executions> <configuration> <schemaLanguage>WSDL</schemaLanguage> 
+				<generatePackage>saman.wsdl</generatePackage> <schemas> <schema> <url>https://sep.shaparak.ir/payments/referencepayment.asmx?wsdl</url> 
+				</schema> </schemas> <schemaDirectory>${project.basedir}/src/main/resources/bank</schemaDirectory> 
+				<schemaIncludes> <include>*.wsdl</include> </schemaIncludes> </configuration> 
+				</plugin> -->
 
 		</plugins>
 	</build>
