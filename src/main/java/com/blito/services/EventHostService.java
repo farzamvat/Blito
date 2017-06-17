@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.blito.configs.Constants;
 import com.blito.enums.ImageType;
 import com.blito.enums.Response;
+import com.blito.exceptions.AlreadyExistsException;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.EventHostMapper;
@@ -51,17 +52,18 @@ public class EventHostService {
 
 	@Transactional
 	public EventHostViewModel create(EventHostViewModel vmodel) {
-		if (vmodel.getImages().stream().filter(i -> i.getType().equals(ImageType.HOST_PHOTO)).count() == 0) 
+		eventHostRepository.findByHostName(vmodel.getHostName()).map(h -> h).orElseThrow(
+				() -> new AlreadyExistsException(ResourceUtil.getMessage(Response.EVENT_HOST_ALREADY_EXISTS)));
+		if (vmodel.getImages().stream().filter(i -> i.getType().equals(ImageType.HOST_PHOTO)).count() == 0)
 			vmodel.getImages().add(new ImageViewModel(Constants.DEFAULT_HOST_PHOTO, ImageType.HOST_PHOTO));
-		if (vmodel.getImages().stream().filter(i -> i.getType().equals(ImageType.HOST_COVER_PHOTO)).count() == 0) 
+		if (vmodel.getImages().stream().filter(i -> i.getType().equals(ImageType.HOST_COVER_PHOTO)).count() == 0)
 			vmodel.getImages().add(new ImageViewModel(Constants.DEFAULT_HOST_COVER_PHOTO, ImageType.HOST_COVER_PHOTO));
 		List<Image> images = imageRepository.findByImageUUIDIn(
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
-		
-		if(images.size() != vmodel.getImages().size())
-		{
+		if (images.size() != vmodel.getImages().size()) {
 			throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
 		}
+
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 
@@ -97,31 +99,30 @@ public class EventHostService {
 		SecurityContextHolder.currentUser().getEventHosts().remove(eventHost);
 		eventHostRepository.delete(eventHost);
 	}
-	
-	public Page<EventHostViewModel> getAllEventHosts(Pageable pageable)
-	{
+
+	public Page<EventHostViewModel> getAllEventHosts(Pageable pageable) {
 		return eventHostMapper.toPage(eventHostRepository.findAll(pageable));
 	}
 
 	public Page<EventHostViewModel> getCurrentUserEventHosts(Pageable pageable) {
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
-		return eventHostMapper.toPage(
-				new PageImpl<>(user.getEventHosts().stream().skip(pageable.getPageNumber() * pageable.getPageSize())
-						.limit(pageable.getPageSize()).collect(Collectors.toList()),pageable,user.getEventHosts().size()),
-				eventHostMapper::createFromEntity);
-//		return eventHostMapper.createFromEntities(user.getEventHosts());
+		return eventHostMapper.toPage(new PageImpl<>(
+				user.getEventHosts().stream().skip(pageable.getPageNumber() * pageable.getPageSize())
+						.limit(pageable.getPageSize()).collect(Collectors.toList()),
+				pageable, user.getEventHosts().size()), eventHostMapper::createFromEntity);
+		// return eventHostMapper.createFromEntities(user.getEventHosts());
 	}
-	
+
 	public Page<EventHostViewModel> searchEventHosts(SearchViewModel<EventHost> searchViewModel, Pageable pageable) {
-		/*empty search handling
-		...
-		*/
+		/*
+		 * empty search handling ...
+		 */
 		return searchViewModel.getRestrictions().stream().map(r -> r.action())
 				.reduce((s1, s2) -> Specifications.where(s1).and(s2))
 				.map(specification -> new PageImpl<>(
 						eventHostMapper.createFromEntities(eventHostRepository.findAll(specification)).stream()
 								.skip(pageable.getPageNumber() * pageable.getPageSize()).limit(pageable.getPageSize())
 								.collect(Collectors.toList())))
-						.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
 	}
 }
