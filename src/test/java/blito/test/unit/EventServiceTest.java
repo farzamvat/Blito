@@ -23,9 +23,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.Application;
+import com.blito.configs.Constants;
 import com.blito.enums.DayOfWeek;
 import com.blito.enums.EventType;
 import com.blito.enums.HostType;
+import com.blito.enums.ImageType;
 import com.blito.enums.OfferTypeEnum;
 import com.blito.enums.OperatorState;
 import com.blito.enums.State;
@@ -33,11 +35,13 @@ import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.models.Event;
 import com.blito.models.EventHost;
+import com.blito.models.Image;
 import com.blito.models.User;
 import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.DiscountRepository;
 import com.blito.repositories.EventHostRepository;
 import com.blito.repositories.EventRepository;
+import com.blito.repositories.ImageRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.discount.DiscountViewModel;
@@ -68,6 +72,8 @@ public class EventServiceTest {
 	DiscountRepository discountRepo;
 	@Autowired
 	BlitTypeRepository blitTypeRepo;
+	@Autowired
+	ImageRepository imageRepository;
 	Event event;
 	Event event1;
 	Event event2;
@@ -185,6 +191,27 @@ public class EventServiceTest {
 			
 			eventDateViewModel.setBlitTypes(Arrays.asList(blitTypeViewModel1,blitTypeViewModel2));
 			eventViewModel.setEventDates(Arrays.asList(eventDateViewModel));
+			
+			Image image = new Image();
+			image.setImageType(ImageType.EVENT_PHOTO);
+			image.setImageUUID(Constants.DEFAULT_HOST_PHOTO);
+			
+			Image hostCoverPhoto = new Image();
+			image.setImageType(ImageType.HOST_COVER_PHOTO);
+			image.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO);
+			
+			Image exchangeBlitPhoto = new Image();
+			image.setImageType(ImageType.EXCHANGEBLIT_PHOTO);
+			image.setImageUUID(Constants.DEFAULT_EXCHANGEBLIT_PHOTO);
+			
+			Image eventPhoto = new Image();
+			image.setImageType(ImageType.EVENT_PHOTO);
+			image.setImageUUID(Constants.DEFAULT_EVENT_PHOTO);
+			
+			imageRepository.save(image);
+			imageRepository.save(hostCoverPhoto);
+			imageRepository.save(exchangeBlitPhoto);
+			imageRepository.save(eventPhoto);
 			
 			System.err.println(eventRepository.count() + "*************************");
 	}

@@ -40,7 +40,7 @@ public class UserAccountService {
 	@Autowired UserMapper userMapper;
 	@Autowired RoleRepository roleRepository;
 	
-	public CompletableFuture<Void> createUser(RegisterVm vmodel)
+	public CompletableFuture<User> createUser(RegisterVm vmodel)
 	{
 
 		Optional<User> result = userRepository.findByEmail(vmodel.getEmail());
@@ -55,10 +55,12 @@ public class UserAccountService {
 		user.setActivationKey(UUID.randomUUID().toString());
 		user.setPassword(encoder.encode(user.getPassword()));
 		user.getRoles().add(userRole);
-		return CompletableFuture.completedFuture(userRepository.save(user))
+		return CompletableFuture.completedFuture(user)
 				.thenAcceptAsync(savedUser -> 
 					mailService.sendActivationEmail(savedUser)
-				);
+				).thenApply((res) -> {
+					return userRepository.save(user);
+				});
 	}
 	
 	@Transactional

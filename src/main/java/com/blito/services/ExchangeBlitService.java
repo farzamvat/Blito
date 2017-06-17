@@ -67,8 +67,7 @@ public class ExchangeBlitService {
 	@Transactional
 	public ExchangeBlitViewModel update(ExchangeBlitViewModel vmodel) {
 		ExchangeBlit exchangeBlit = findByExchangeBlitId(vmodel.getExchangeBlitId());
-		if (exchangeBlit.getState().equals(State.SOLD) || exchangeBlit.getOperatorState().equals(OperatorState.PENDING)
-				|| exchangeBlit.getState().equals(State.CLOSED)
+		if (exchangeBlit.getState().equals(State.SOLD) 
 				|| exchangeBlit.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}

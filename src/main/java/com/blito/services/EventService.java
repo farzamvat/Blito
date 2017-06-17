@@ -129,7 +129,6 @@ public class EventService {
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
 
 		if (eventHost.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()
-				|| event.getOperatorState() == OperatorState.PENDING || event.getEventState() == State.CLOSED
 				|| event.getEventState() == State.SOLD) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
