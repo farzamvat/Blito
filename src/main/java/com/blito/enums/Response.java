@@ -46,6 +46,7 @@ public enum Response {
 	INCONSISTENT_PERCENT("error.inconsistent.percentage"),
 	INCONSISTENT_AMOUNT_WHEN_PERCENT_IS_TRUE("error.inconsistent.data.is.percentage"),
 	INCONSISTENT_AMOUNT("error.inconsistent.data.amount"),
+	EVENT_HOST_ALREADY_EXISTS("event.host.exists"),
 	INCONSISTENT_PERCENTAGE_WHEN_PERCENT_IS_FALSE("error.inconsistent.data.is.not.percentage");
     
 

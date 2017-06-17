@@ -190,11 +190,11 @@
 			<version>3.0</version>
 		</dependency>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.saman.payment</groupId>
 			<artifactId>saman-payment</artifactId>
 			<version>1.0.0</version>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
