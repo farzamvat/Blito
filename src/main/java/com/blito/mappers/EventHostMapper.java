@@ -17,6 +17,7 @@ public class EventHostMapper implements GenericMapper<EventHost,EventHostViewMod
 		EventHost eventHost = new EventHost();
 		eventHost.setHostName(vmodel.getHostName());
 		eventHost.setHostType(vmodel.getHostType());
+		eventHost.setDescription(vmodel.getDescription());
 		eventHost.setInstagramLink(vmodel.getInstagramLink());
 		eventHost.setLinkedinLink(vmodel.getLinkedinLink());
 		eventHost.setTelegramLink(vmodel.getTelegramLink());
@@ -32,6 +33,7 @@ public class EventHostMapper implements GenericMapper<EventHost,EventHostViewMod
 		vmodel.setEventHostId(eventHost.getEventHostId());
 		vmodel.setHostName(eventHost.getHostName());
 		vmodel.setHostType(eventHost.getHostType());
+		vmodel.setDescription(eventHost.getDescription());
 		vmodel.setInstagramLink(eventHost.getInstagramLink());
 		vmodel.setLinkedinLink(eventHost.getLinkedinLink());
 		vmodel.setTelegramLink(eventHost.getTelegramLink());
@@ -46,6 +48,7 @@ public class EventHostMapper implements GenericMapper<EventHost,EventHostViewMod
 	public EventHost updateEntity(EventHostViewModel vmodel, EventHost eventHost) {
 		eventHost.setHostName(vmodel.getHostName());
 		eventHost.setHostType(vmodel.getHostType());
+		eventHost.setDescription(vmodel.getDescription());
 		eventHost.setInstagramLink(vmodel.getInstagramLink());
 		eventHost.setLinkedinLink(vmodel.getLinkedinLink());
 		eventHost.setTelegramLink(vmodel.getTelegramLink());

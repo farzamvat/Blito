@@ -47,7 +47,9 @@ public enum Response {
 	INCONSISTENT_AMOUNT_WHEN_PERCENT_IS_TRUE("error.inconsistent.data.is.percentage"),
 	INCONSISTENT_AMOUNT("error.inconsistent.data.amount"),
 	EVENT_HOST_ALREADY_EXISTS("event.host.exists"),
-	INCONSISTENT_PERCENTAGE_WHEN_PERCENT_IS_FALSE("error.inconsistent.data.is.not.percentage");
+	ISFREE_AND_PRICE_NOT_MATCHED("error.is.free.price.not.matched"),
+	INCONSISTENT_PERCENTAGE_WHEN_PERCENT_IS_FALSE("error.inconsistent.data.is.not.percentage"),
+	EVENT_IS_SOLD("error.event.is.sold");
     
 
     private final String message;

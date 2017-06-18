@@ -47,11 +47,6 @@ public class EventController {
 	@JsonView(View.Event.class)
 	@PostMapping
 	public ResponseEntity<EventViewModel> create(@Validated @RequestBody EventViewModel vmodel) {
-		if(vmodel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream()).anyMatch(bt -> {
-			return bt.isFree() ? bt.getPrice() != 0 : bt.getPrice() <= 0;
-		})) {
-			throw new NotAllowedException("");
-		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(eventService.create(vmodel));
 	}
 

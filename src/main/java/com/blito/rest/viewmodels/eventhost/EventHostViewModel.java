@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import com.blito.annotations.Telephone;
 import com.blito.annotations.Url;
 import com.blito.enums.HostType;
 import com.blito.rest.viewmodels.View;
@@ -20,7 +21,10 @@ public class EventHostViewModel {
 	String hostName;
 	
 	@JsonView(View.EventHost.class)
-	@NotNull
+	String description;
+	
+	@JsonView(View.EventHost.class)
+	@Telephone
 	String telephone;
 	
 	@JsonView(View.EventHost.class)
@@ -78,6 +82,13 @@ public class EventHostViewModel {
 	}
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
+	}
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	public String getTelegramLink() {
 		return telegramLink;

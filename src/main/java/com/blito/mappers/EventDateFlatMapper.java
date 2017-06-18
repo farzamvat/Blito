@@ -14,7 +14,7 @@ public class EventDateFlatMapper implements GenericMapper<EventDate,EventDateFla
 		vmodel.setEventDateId(eventDate.getEventDateId());
 		vmodel.setDate(eventDate.getDate());
 		vmodel.setDayOfWeek(eventDate.getDayOfWeek());
-		vmodel.setEventState(eventDate.getEventState());
+		vmodel.setEventState(eventDate.getEventDateState());
 		vmodel.setBlitTypeId(blitType.getBlitTypeId());
 		vmodel.setName(blitType.getName());
 		vmodel.setPrice(blitType.getPrice());

@@ -80,11 +80,15 @@ public class EventService {
 		if (vmodel.getBlitSaleStartDate().after(vmodel.getBlitSaleEndDate())) {
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_DATES));
 		}
+		if(vmodel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream()).anyMatch(bt -> {
+			return bt.isFree() ? bt.getPrice() != 0 : bt.getPrice() <= 0;
+		})) {
+			throw new InconsistentDataException(ResourceUtil.getMessage(Response.ISFREE_AND_PRICE_NOT_MATCHED));
+		}
 		if (vmodel.getImages().stream().filter(i -> i.getType().equals(ImageType.EVENT_PHOTO)).count() == 0) {
 			vmodel.getImages().add(new ImageViewModel(Constants.DEFAULT_EVENT_PHOTO, ImageType.EVENT_PHOTO));
 		}
-		EventHost eventHost = Optional.ofNullable(eventHostRepository.findOne(vmodel.getEventHostId())).map(eh -> eh)
-				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
+		
 		List<Image> images = imageRepository.findByImageUUIDIn(
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
 		if(images.size() != vmodel.getImages().size())
@@ -92,6 +96,10 @@ public class EventService {
 			throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
 		}
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
+		
+		EventHost eventHost = Optional.ofNullable(eventHostRepository.findOne(vmodel.getEventHostId())).map(eh -> eh)
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
+		
 		Event event = eventMapper.createFromViewModel(vmodel);
 		event.setImages(images);
 		event.setEventHost(eventHost);
@@ -122,17 +130,31 @@ public class EventService {
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_DATES));
 		}
 
+		if(vmodel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream()).anyMatch(bt -> {
+			return bt.isFree() ? bt.getPrice() != 0 : bt.getPrice() <= 0;
+		})) {
+			throw new InconsistentDataException(ResourceUtil.getMessage(Response.ISFREE_AND_PRICE_NOT_MATCHED));
+		}
+		
 		Event event = Optional.ofNullable(eventRepository.findOne(vmodel.getEventId())).map(e -> e)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 
 		EventHost eventHost = Optional.ofNullable(eventHostRepository.findOne(vmodel.getEventHostId())).map(eh -> eh)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
 
-		if (eventHost.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()
-				|| event.getEventState() == State.SOLD) {
+		if (eventHost.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
+		
+		if(event.getEventState() == State.SOLD) {
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_IS_SOLD));
+		}
 
+		Optional<Event> eventResult = eventRepository.findByEventLink(vmodel.getEventLink());
+		if (eventResult.isPresent() && eventResult.get().getEventId() != vmodel.getEventId()) {
+			throw new AlreadyExistsException(ResourceUtil.getMessage(Response.EVENT_LINK_EXISTS));
+		}
+		
 		List<Image> images = imageRepository.findByImageUUIDIn(
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
@@ -140,13 +162,6 @@ public class EventService {
 		event = eventMapper.updateEntity(vmodel, event);
 		event.setImages(images);
 		event.setEventHost(eventHost);
-		Optional<Event> eventResult = eventRepository.findByEventLink(vmodel.getEventLink());
-		if (eventResult.isPresent() && eventResult.get().getEventId() != vmodel.getEventId()) {
-			throw new AlreadyExistsException(ResourceUtil.getMessage(Response.EVENT_LINK_EXISTS));
-		}
-		event.setEventLink(vmodel.getEventLink());
-		event.setOperatorState(OperatorState.PENDING);
-		event.setEventState(State.CLOSED);
 		return eventMapper.createFromEntity(event);
 	}
 

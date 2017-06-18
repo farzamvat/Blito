@@ -54,6 +54,7 @@ public class EventViewModel {
 	private String aparatDisplayCode;
 
 	@JsonView(View.SimpleEvent.class)
+	@NotNull
 	long eventHostId;
 
 	@JsonView(View.SimpleEvent.class)

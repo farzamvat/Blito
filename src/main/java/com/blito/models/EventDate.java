@@ -30,7 +30,7 @@ public class EventDate {
 	Timestamp date;
 	
 	@Enumerated(EnumType.STRING)
-	State eventState;
+	State eventDateState;
 	
 	@OneToMany(mappedBy="eventDate", targetEntity=BlitType.class,fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	List<BlitType> blitTypes;
@@ -48,12 +48,12 @@ public class EventDate {
 		blitTypes = new ArrayList<>();
 	}
 
-	public State getEventState() {
-		return eventState;
+	public State getEventDateState() {
+		return eventDateState;
 	}
 
-	public void setEventState(State eventState) {
-		this.eventState = eventState;
+	public void setEventDateState(State eventDateState) {
+		this.eventDateState = eventDateState;
 	}
 
 	public Salon getSalon() {
@@ -102,6 +102,7 @@ public class EventDate {
 
 	public void setBlitTypes(List<BlitType> blitTypes) {
 		this.blitTypes = blitTypes;
+		blitTypes.forEach(bt->bt.setEventDate(this));
 	}
 	
 	public void addBlitType(BlitType blitType)

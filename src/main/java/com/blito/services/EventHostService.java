@@ -63,9 +63,10 @@ public class EventHostService {
 		if (images.size() != vmodel.getImages().size()) {
 			throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
 		}
-
-		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
+		
+		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
+		
 
 		EventHost eventHost = eventHostMapper.createFromViewModel(vmodel);
 		eventHost.setImages(images);
