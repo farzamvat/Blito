@@ -51,7 +51,9 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 				return blitTypeMapper.updateEntity(bvm, optionalBlitType.get());
 			}
 			else {
-				return blitTypeMapper.createFromViewModel(bvm);
+				BlitType bt = blitTypeMapper.createFromViewModel(bvm);
+				bt.setEventDate(eventDate);
+				return bt;
 			}
 		}).collect(Collectors.toList()));
 		eventDate.setEventDateState(vmodel.getState());

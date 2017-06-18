@@ -102,7 +102,7 @@ public class EventDate {
 
 	public void setBlitTypes(List<BlitType> blitTypes) {
 		this.blitTypes = blitTypes;
-		blitTypes.forEach(bt->bt.setEventDate(this));
+//		blitTypes.forEach(bt->bt.setEventDate(this));
 	}
 	
 	public void addBlitType(BlitType blitType)

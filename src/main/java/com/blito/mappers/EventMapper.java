@@ -11,7 +11,9 @@ import org.springframework.stereotype.Component;
 import com.blito.enums.OperatorState;
 import com.blito.enums.State;
 import com.blito.models.Event;
+import com.blito.models.EventDate;
 import com.blito.rest.viewmodels.event.EventViewModel;
+import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 
 @Component
 public class EventMapper implements GenericMapper<Event, EventViewModel> {
@@ -86,9 +88,10 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
 		event.setEventDates(vmodel.getEventDates().stream().map(edvm -> {
 			return event.getEventDates().stream().filter(ed -> ed.getEventDateId() == edvm.getEventDateId()).findFirst()
 					.map(e -> eventDateMapper.updateEntity(edvm, e))
-					.orElseGet(() -> eventDateMapper.createFromViewModel(edvm));
+					.orElseGet(() -> {EventDate ed = eventDateMapper.createFromViewModel(edvm);
+										ed.setEvent(event);
+										return ed;});
 		}).collect(Collectors.toList()));
 		return event;
 	}
-
 }

@@ -204,7 +204,7 @@ public class Event {
 
 	public void setEventDates(List<EventDate> eventDates) {
 		this.eventDates = eventDates;
-		eventDates.forEach(ed->ed.setEvent(this));
+//		eventDates.forEach(ed->ed.setEvent(this));
 	}
 
 	public EventHost getEventHost() {
