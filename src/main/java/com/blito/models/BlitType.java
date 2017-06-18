@@ -29,6 +29,8 @@ public class BlitType {
 	
 	private int soldCount;
 	
+	private int reservedCount;
+	
 	private long price;
 	
 	@Enumerated(EnumType.STRING)
@@ -49,6 +51,15 @@ public class BlitType {
 	@ManyToMany
 	private List<Discount> discounts;
 	
+	
+	public int getReservedCount() {
+		return reservedCount;
+	}
+
+	public void setReservedCount(int reservedCount) {
+		this.reservedCount = reservedCount;
+	}
+
 	public List<Discount> getDiscounts() {
 		return discounts;
 	}
