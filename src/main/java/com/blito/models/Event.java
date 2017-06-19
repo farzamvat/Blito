@@ -82,6 +82,8 @@ public class Event {
 	@Enumerated(EnumType.STRING)
 	OperatorState operatorState;
 	
+	boolean isDeleted = false;
+	
 	String aparatDisplayCode;
 	
 	int orderNumber;
@@ -150,6 +152,14 @@ public class Event {
 		this.eventState = eventState;
 	}
 
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
 	public OperatorState getOperatorState() {
 		return operatorState;
 	}
@@ -204,7 +214,6 @@ public class Event {
 
 	public void setEventDates(List<EventDate> eventDates) {
 		this.eventDates = eventDates;
-//		eventDates.forEach(ed->ed.setEvent(this));
 	}
 
 	public EventHost getEventHost() {

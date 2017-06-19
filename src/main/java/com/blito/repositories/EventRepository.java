@@ -18,4 +18,5 @@ public interface EventRepository
 	Optional<Event> findByEventLink(String link);
 	List<Event> findByEventType(EventType type,Pageable pageable);
 	Page<Event> findByEventStateOrEventStateOrderByCreatedAtDesc(State state,State secondState,Pageable pageable);
+	List<Event> findByEventHostUserUserIdAndIsDeletedFalse(long userId);
 }

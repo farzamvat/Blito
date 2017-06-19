@@ -66,6 +66,8 @@ public class EventHost {
 	
 	String description;
 	
+	boolean isDeleted = false;
+	
 	public EventHost() {
 		images = new ArrayList<>();
 		events = new ArrayList<>();
@@ -175,4 +177,14 @@ public class EventHost {
 	public void setHostType(HostType hostType) {
 		this.hostType = hostType;
 	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+	
 }

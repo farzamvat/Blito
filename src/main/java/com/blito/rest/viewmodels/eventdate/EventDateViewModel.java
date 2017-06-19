@@ -17,7 +17,7 @@ public class EventDateViewModel {
 	DayOfWeek dayOfWeek;
 	@NotEmpty
 	Timestamp date;
-	@NotNull
+	@NotEmpty
 	List<BlitTypeViewModel> blitTypes;
 	State state;
 	

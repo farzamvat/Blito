@@ -64,6 +64,7 @@ public class EventViewModel {
 	List<OfferTypeEnum> offers;
 
 	@JsonView(View.Event.class)
+	@NotEmpty
 	List<EventDateViewModel> eventDates;
 
 	@JsonView(View.SimpleEvent.class)

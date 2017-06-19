@@ -175,12 +175,7 @@ public class EventService {
 					.getUserId()) {
 				throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 			} else {
-				eventResult.get().getEventHost().getEvents().remove(eventResult.get());//// check
-																						//// check
-																						//// check
-																						//// check
-																						//// check
-				eventRepository.delete(eventId);
+				eventResult.get().setDeleted(true);
 			}
 		}
 	}
@@ -248,8 +243,7 @@ public class EventService {
 	@Transactional
 	public Page<EventViewModel> getUserEvents(Pageable pageable) {
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
-		List<Event> events = user.getEventHosts().stream().flatMap(eh -> eh.getEvents().stream())
-				.collect(Collectors.toList());
+		List<Event> events = eventRepository.findByEventHostUserUserIdAndIsDeletedFalse(user.getUserId());
 		return eventMapper.toPage(
 				new PageImpl<>(events.stream().skip(pageable.getPageNumber() * pageable.getPageSize())
 						.limit(pageable.getPageSize()).collect(Collectors.toList()), pageable, events.size()),
