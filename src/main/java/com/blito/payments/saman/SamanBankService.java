@@ -43,17 +43,24 @@ public class SamanBankService {
 		}).thenApply(this::responseStatusChecker);
 	}
 
-	private String responseStatusChecker(String result) {
+	public String responseStatusChecker(String result) {
 		if (IntStream.range(-18, 0)
-				.filter(i -> i != -2)
+				.filter(i -> (i != -2)||(i != -5))
 				.mapToObj(String::valueOf)
 				.filter(result::equals)
 				.findFirst()
 				.isPresent()) {
 			log.error("Error in result of requestToken Saman bank '{}'", result);
-			throw new SamanBankException(result);
+			throw new SamanBankException(SamanBankException.getError(result));
 		}
 		log.debug("Saman bank requestToken result '{}'", result);
 		return result;
 	}
+	
+//	public CompletableFuture<?> verifyTransaction(String refNumber)
+//	{
+//		return CompletableFuture.supplyAsync(() -> {
+//			
+//		})
+//	}
 }

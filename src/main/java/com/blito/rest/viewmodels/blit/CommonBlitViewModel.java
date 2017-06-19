@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.blito.annotations.Email;
 import com.blito.annotations.MobileNumber;
+import com.blito.enums.BankGateway;
 import com.blito.enums.BlitTypeEnum;
 import com.blito.enums.PaymentStatus;
 import com.blito.rest.viewmodels.View;
@@ -64,7 +65,15 @@ public class CommonBlitViewModel {
 	String samanBankToken;
 	@JsonView(View.AdminBlit.class)
 	String samanBankRefNumber;
+	@JsonView(View.Blit.class)
+	BankGateway bankGateway;
 	
+	public BankGateway getBankGateway() {
+		return bankGateway;
+	}
+	public void setBankGateway(BankGateway bankGateway) {
+		this.bankGateway = bankGateway;
+	}
 	public Timestamp getEventDate() {
 		return eventDate;
 	}
