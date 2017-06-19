@@ -7,7 +7,7 @@ public final class Constants {
     public static final String PHONE_REGEX = "09[0-9]{9}";
     public static final String PHONE_NUMBER_REGEX = "0[0-9]{6,10}";
     public static final String POSTAL_CODE_REGEX = "[0-9]{10}";
-    public static final String TEL_REGEX = "[1-9]{1}[0-9]{7}";
+    public static final String TEL_REGEX = "[0-9]*";
     public static final String NATIONAL_ID = "[0-9]{10}";
     public static final String DATE_REGEX = "(13|14)\\d\\d/([1-9]|0[1-9]|1[012])/(0[1-9]|1[0-9]|2[0-9]|3[0-1]|[1-9])";
     public static final String LINK_REGEX = "^(http:\\/\\/|https:\\/\\/)?(wwa-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}.?([a-z]+)?$";

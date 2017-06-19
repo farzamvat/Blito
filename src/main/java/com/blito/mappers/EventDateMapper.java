@@ -36,6 +36,7 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 		vmodel.setDayOfWeek(eventDate.getDayOfWeek());
 		vmodel.setBlitTypes(eventDate.getBlitTypes().stream().map(blitTypeMapper::createFromEntity).collect(Collectors.toList()));
 		vmodel.setEventDateId(eventDate.getEventDateId());
+		vmodel.setState(eventDate.getEventDateState());
 		return vmodel;
 	}
 
@@ -56,7 +57,7 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 				return bt;
 			}
 		}).collect(Collectors.toList()));
-		eventDate.setEventDateState(vmodel.getState());
+		eventDate.setEventDateState(State.CLOSED);
 		return eventDate;
 	}
 

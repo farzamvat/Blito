@@ -1,11 +1,12 @@
 package com.blito.rest.viewmodels.account;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.blito.annotations.Email;
 import com.blito.annotations.MobileNumber;
+import com.blito.configs.Constants;
 
 public class RegisterVm {
 	@NotEmpty
@@ -14,9 +15,9 @@ public class RegisterVm {
 	String lastname;
 	@Email
 	String email;
-	@NotEmpty
+	@Size(min=Constants.PASSWORD_MIN_LENGTH, max=Constants.PASSWORD_MAX_LENGTH)
 	String password;
-	@NotEmpty
+	@Size(min=Constants.PASSWORD_MIN_LENGTH, max=Constants.PASSWORD_MAX_LENGTH)
 	String confirmPassword;
 	@MobileNumber
 	String mobile;

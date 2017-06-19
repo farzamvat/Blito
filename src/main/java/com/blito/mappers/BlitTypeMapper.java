@@ -41,7 +41,7 @@ public class BlitTypeMapper implements GenericMapper<BlitType,BlitTypeViewModel>
 		blitType.setCapacity(vmodel.getCapacity());
 		blitType.setFree(vmodel.isFree());
 		blitType.setPrice(vmodel.getPrice());
-		blitType.setBlitTypeState(vmodel.getBlitTypeState());
+		blitType.setBlitTypeState(State.CLOSED);
 		return blitType;
 	}
 
