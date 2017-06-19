@@ -63,7 +63,8 @@ public class BlitService {
 		if (blitType.isFree()) {
 			System.out.println("Thread with id : " + Thread.currentThread().getId()
 					+ " is running inside createCommonBlit method");
-			return CompletableFuture.completedFuture(commonBlitMapper.createFromEntity(reserveFreeBlit(blitType, commonBlit, user)));
+			return CompletableFuture
+					.completedFuture(commonBlitMapper.createFromEntity(reserveFreeBlit(blitType, commonBlit, user)));
 		} else {
 			if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getTotalAmount())
 				throw new InconsistentDataException("total amount is not equal to blitType * count");
@@ -73,21 +74,23 @@ public class BlitService {
 				samanResponse.setRedirectURL("http://localhost:8085/ws");
 				return samanResponse;
 			});
-			
+
 		}
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
 	private CompletableFuture<CommonBlit> buyCommonBlit(BlitType blitType, CommonBlit commonBlit, User user) {
 		checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
-		blitType.setReservedCount(blitType.getReservedCount() + commonBlit.getCount());
-		commonBlit.setTrackCode(generateTrackCode());
-		commonBlit.setBlitType(blitType);
-		user.addBlits(commonBlit);
+		String trackCode = generateTrackCode();
 
-		return paymentService.samanBankRequestToken(commonBlit.getTrackCode(), commonBlit.getTotalAmount())
+		return paymentService.samanBankRequestToken(trackCode, commonBlit.getTotalAmount())
 				.thenApply(token -> {
+					BlitType attachedBlitType = blitTypeRepository.findOne(blitType.getBlitTypeId());
+					User attachedUser = userRepository.findOne(user.getUserId());
+					commonBlit.setBlitType(attachedBlitType);
+					attachedUser.addBlits(commonBlit);
 					commonBlit.setSamanBankToken(token);
+					commonBlit.setTrackCode(trackCode);
 					commonBlit.setPaymentStatus(PaymentStatus.PENDING);
 					return commonBlitRepository.save(commonBlit);
 				});
@@ -96,11 +99,15 @@ public class BlitService {
 	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
 	private CommonBlit reserveFreeBlit(BlitType blitType, CommonBlit commonBlit, User user) {
 		checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
-		blitType.setSoldCount(blitType.getSoldCount() + commonBlit.getCount());
+		BlitType attachedBlitType = blitTypeRepository.findOne(blitType.getBlitTypeId());
+		User attachedUser = userRepository.findOne(user.getUserId());
+		attachedBlitType.setSoldCount(attachedBlitType.getSoldCount() + commonBlit.getCount());
+		if(attachedBlitType.getSoldCount() == attachedBlitType.getCapacity())
+			attachedBlitType.setBlitTypeState(State.SOLD);
 		commonBlit.setTrackCode(generateTrackCode());
-		commonBlit.setBlitType(blitType);
+		commonBlit.setBlitType(attachedBlitType);
 		commonBlit.setPaymentStatus(PaymentStatus.FREE);
-		user.addBlits(commonBlit);
+		attachedUser.addBlits(commonBlit);
 		//
 		//
 		//
@@ -117,14 +124,8 @@ public class BlitService {
 
 		if (blitType.getBlitTypeState().equals(State.CLOSED))
 			throw new RuntimeException("closed");
-		
-		if(blitType.isFree())
-			if(commonBlit.getCount() + blitType.getSoldCount() > blitType.getCapacity())
-				throw new InconsistentDataException("more than blit type capacity");
-		else
-			if (commonBlit.getCount() + blitType.getSoldCount() + blitType.getReservedCount() > blitType.getCapacity())
-				throw new InconsistentDataException("more than blit type capacity");
-		
+		if (commonBlit.getCount() + blitType.getSoldCount() > blitType.getCapacity())
+			throw new InconsistentDataException("more than blit type capacity");
 	}
 
 	private String generateTrackCode() {
