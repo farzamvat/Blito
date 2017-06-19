@@ -21,7 +21,6 @@ import com.blito.mappers.CommonBlitMapper;
 import com.blito.models.BlitType;
 import com.blito.models.CommonBlit;
 import com.blito.models.User;
-import com.blito.payments.saman.SamanBankService;
 import com.blito.repositories.BlitRepository;
 import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.CommonBlitRepository;
@@ -45,7 +44,7 @@ public class BlitService {
 	@Autowired
 	private BlitRepository blitRepository;
 	@Autowired
-	private SamanBankService samanBankService;
+	private PaymentService paymentService;
 	@Value("{saman.bank.merchantCode}")
 	String samanMerchantCode;
 
@@ -86,7 +85,7 @@ public class BlitService {
 		commonBlit.setBlitType(blitType);
 		user.addBlits(commonBlit);
 
-		return samanBankService.requestToken(commonBlit.getTrackCode(), commonBlit.getTotalAmount())
+		return paymentService.samanBankRequestToken(commonBlit.getTrackCode(), commonBlit.getTotalAmount())
 				.thenApply(token -> {
 					commonBlit.setSamanBankToken(token);
 					commonBlit.setPaymentStatus(PaymentStatus.PENDING);
