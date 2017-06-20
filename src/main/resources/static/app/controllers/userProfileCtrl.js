@@ -123,6 +123,9 @@ angular.module('User')
 
         //==================================================== ********* =================================
 
+        $scope.test = function () {
+            $("#editEvent").modal("show");
+        }
 
 
 
@@ -153,8 +156,69 @@ angular.module('User')
         var fileSelectEventGalleryOne = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
         fileSelectEventGalleryOne.type = 'file';
 
+        var fileSelectEventGalleryTwo = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
+        fileSelectEventGalleryTwo.type = 'file';
+
+        var fileSelectEventGalleryThree = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
+        fileSelectEventGalleryThree.type = 'file';
+
+        var fileSelectEventGalleryFour = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
+        fileSelectEventGalleryFour.type = 'file';
+
+        var fileSelectEventGalleryFive = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
+        fileSelectEventGalleryFive.type = 'file';
+        var fileSelectEventGallerySix = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
+        fileSelectEventGallerySix.type = 'file';
+
+        var fileSelectEventGalleryOneEdit = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
+        fileSelectEventGalleryOneEdit.type = 'file';
+        var fileSelectEventGalleryTwoEdit = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
+        fileSelectEventGalleryTwoEdit.type = 'file';
+
+        var fileSelectEventGalleryThreeEdit = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
+        fileSelectEventGalleryThreeEdit.type = 'file';
+        var fileSelectEventGalleryFourEdit = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
+        fileSelectEventGalleryFourEdit.type = 'file';
+        var fileSelectEventGalleryFiveEdit = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
+        fileSelectEventGalleryFiveEdit.type = 'file';
+        var fileSelectEventGallerySixEdit = document.createElement('input'); //input it's not displayed in html, I want to trigger it form other elements
+        fileSelectEventGallerySixEdit.type = 'file';
+
+        $scope.uploadGallerySixEdit = function() {
+            fileSelectEventGallerySixEdit.click();
+        }
+        $scope.uploadGalleryFiveEdit = function() {
+            fileSelectEventGalleryFiveEdit.click();
+        }
+        $scope.uploadGalleryFourEdit = function() {
+            fileSelectEventGalleryFourEdit.click();
+        }
+        $scope.uploadGalleryThreeEdit = function() {
+            fileSelectEventGalleryThreeEdit.click();
+        }
+        $scope.uploadGalleryTwoEdit = function() {
+            fileSelectEventGalleryTwoEdit.click();
+        }
+        $scope.uploadGalleryOneEdit = function() {
+            fileSelectEventGalleryOneEdit.click();
+        }
+        $scope.uploadGallerySix = function() {
+            fileSelectEventGallerySix.click();
+        }
+        $scope.uploadGalleryFive = function() {
+            fileSelectEventGalleryFive.click();
+        }
+        $scope.uploadGalleryFour = function() {
+            fileSelectEventGalleryFour.click();
+        }
+        $scope.uploadGalleryThree = function() {
+            fileSelectEventGalleryThree.click();
+        }
         $scope.uploadGalleryOne = function() {
             fileSelectEventGalleryOne.click();
+        }
+        $scope.uploadGalleryTwo = function() {
+            fileSelectEventGalleryTwo.click();
         }
         $scope.uploadPicProfile = function() {
             fileSelectProfile.click();
@@ -184,6 +248,144 @@ angular.module('User')
         // $scope.deletePicEventEdit = function () {
         //     fileSelectEditEvent.value = "" ;
         // }
+        $scope.photoGallerySixEdit = function () {
+            var imageData = {
+                encodedBase64 : angular.element(document.getElementsByClassName("gallerySixEdit"))[0].src
+            }
+            $scope.uploadEditEventPhoto = true;
+            photoService.upload(imageData)
+                .then(function (data, status) {
+                    $scope.gallerySixUUID = data.data.imageUUID;
+                }, function (data, status) {
+                    console.log(data);
+                })
+        }
+        $scope.photoGalleryFiveEdit = function () {
+            var imageData = {
+                encodedBase64 : angular.element(document.getElementsByClassName("galleryFiveEdit"))[0].src
+            }
+            $scope.uploadEditEventPhoto = true;
+            photoService.upload(imageData)
+                .then(function (data, status) {
+                    $scope.galleryFiveUUID = data.data.imageUUID;
+                }, function (data, status) {
+                    console.log(data);
+                })
+        }
+        $scope.photoGalleryFourEdit = function () {
+            var imageData = {
+                encodedBase64 : angular.element(document.getElementsByClassName("galleryFourEdit"))[0].src
+            }
+            $scope.uploadEditEventPhoto = true;
+            photoService.upload(imageData)
+                .then(function (data, status) {
+                    $scope.galleryFourUUID = data.data.imageUUID;
+                }, function (data, status) {
+                    console.log(data);
+                })
+        }
+        $scope.photoGalleryThreeEdit = function () {
+            var imageData = {
+                encodedBase64 : angular.element(document.getElementsByClassName("galleryThreeEdit"))[0].src
+            }
+            $scope.uploadEditEventPhoto = true;
+            photoService.upload(imageData)
+                .then(function (data, status) {
+                    $scope.galleryThreeUUID = data.data.imageUUID;
+                }, function (data, status) {
+                    console.log(data);
+                })
+        }
+        $scope.photoGalleryTwoEdit = function () {
+            var imageData = {
+                encodedBase64 : angular.element(document.getElementsByClassName("galleryTwoEdit"))[0].src
+            }
+            $scope.uploadEditEventPhoto = true;
+            photoService.upload(imageData)
+                .then(function (data, status) {
+                    $scope.galleryTwoUUID = data.data.imageUUID;
+                }, function (data, status) {
+                    console.log(data);
+                })
+        }
+        $scope.photoGalleryOneEdit = function () {
+            var imageData = {
+                encodedBase64 : angular.element(document.getElementsByClassName("galleryOneEdit"))[0].src
+            }
+            $scope.uploadEditEventPhoto = true;
+            photoService.upload(imageData)
+                .then(function (data, status) {
+
+
+                    $scope.galleryOneUUID = data.data.imageUUID;
+                }, function (data, status) {
+                    console.log(data);
+                })
+        }
+        $scope.photoGallerySix = function () {
+            var imageData = {
+                encodedBase64 : angular.element(document.getElementsByClassName("gallerySix"))[0].src
+            }
+            $scope.uploadEditEventPhoto = true;
+            photoService.upload(imageData)
+                .then(function (data, status) {
+                    $scope.galerrySixUUID = data.data.imageUUID;
+                }, function (data, status) {
+                    console.log(data);
+                })
+        }
+        $scope.photoGalleryFive = function () {
+            var imageData = {
+                encodedBase64 : angular.element(document.getElementsByClassName("galleryFive"))[0].src
+            }
+            $scope.uploadEditEventPhoto = true;
+            photoService.upload(imageData)
+                .then(function (data, status) {
+                    $scope.galerryFiveUUID = data.data.imageUUID;
+                }, function (data, status) {
+                    console.log(data);
+                })
+        }
+
+        $scope.photoGalleryFour = function () {
+            var imageData = {
+                encodedBase64 : angular.element(document.getElementsByClassName("galleryFour"))[0].src
+            }
+            $scope.uploadEditEventPhoto = true;
+            photoService.upload(imageData)
+                .then(function (data, status) {
+                    $scope.galerryFourUUID = data.data.imageUUID;
+                }, function (data, status) {
+                    console.log(data);
+                })
+        }
+
+        $scope.photoGalleryThree= function () {
+            var imageData = {
+                encodedBase64 : angular.element(document.getElementsByClassName("galleryThree"))[0].src
+            }
+            $scope.uploadEditEventPhoto = true;
+            photoService.upload(imageData)
+                .then(function (data, status) {
+                    $scope.galerryThreeUUID = data.data.imageUUID;
+                }, function (data, status) {
+                    console.log(data);
+                })
+        }
+
+        $scope.photoGalleryTwo= function () {
+            var imageData = {
+                encodedBase64 : angular.element(document.getElementsByClassName("galleryTwo"))[0].src
+            }
+            $scope.uploadEditEventPhoto = true;
+            photoService.upload(imageData)
+                .then(function (data, status) {
+                    $scope.galerryTwoUUID = data.data.imageUUID;
+                }, function (data, status) {
+                    console.log(data);
+                })
+        }
+
         $scope.photoGalleryOne= function () {
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryOne"))[0].src
@@ -191,9 +393,7 @@ angular.module('User')
             $scope.uploadEditEventPhoto = true;
             photoService.upload(imageData)
                 .then(function (data, status) {
-
-
-                    $scope.eventEditImageId = data.data.imageUUID;
+                    $scope.galleryOneUUID = data.data.imageUUID;
                 }, function (data, status) {
                     console.log(data);
                 })
@@ -328,9 +528,158 @@ angular.module('User')
                     console.log(data);
                 })
         }
+        fileSelectEventGallerySixEdit.onchange = function() { //set callback to action after choosing file
+            var f = fileSelectEventGallerySixEdit.files[0], r = new FileReader();
+
+            r.onloadend = function(e) { //callback after files finish loading
+                var base64Data = e.target.result;
+                $scope.$apply();
+                angular.element(document.getElementsByClassName("gallerySixEdit"))[0].src = base64Data;
+                //here you can send data over your server as desired
+            }
+
+            r.readAsDataURL(f); //once defined all callbacks, begin reading the file
+
+        };
+        fileSelectEventGalleryFiveEdit.onchange = function() { //set callback to action after choosing file
+            var f = fileSelectEventGalleryFiveEdit.files[0], r = new FileReader();
+
+            r.onloadend = function(e) { //callback after files finish loading
+                var base64Data = e.target.result;
+                $scope.$apply();
+                angular.element(document.getElementsByClassName("galleryFiveEdit"))[0].src = base64Data;
+                //here you can send data over your server as desired
+            }
+
+            r.readAsDataURL(f); //once defined all callbacks, begin reading the file
+
+        };
+        fileSelectEventGalleryFourEdit.onchange = function() { //set callback to action after choosing file
+            var f = fileSelectEventGalleryFourEdit.files[0], r = new FileReader();
+
+            r.onloadend = function(e) { //callback after files finish loading
+                var base64Data = e.target.result;
+                $scope.$apply();
+                angular.element(document.getElementsByClassName("galleryFourEdit"))[0].src = base64Data;
+                //here you can send data over your server as desired
+            }
+
+            r.readAsDataURL(f); //once defined all callbacks, begin reading the file
+
+        };
+        fileSelectEventGalleryThreeEdit.onchange = function() { //set callback to action after choosing file
+            var f = fileSelectEventGalleryThreeEdit.files[0], r = new FileReader();
+
+            r.onloadend = function(e) { //callback after files finish loading
+                var base64Data = e.target.result;
+                $scope.$apply();
+                angular.element(document.getElementsByClassName("galleryThreeEdit"))[0].src = base64Data;
+                //here you can send data over your server as desired
+            }
+
+            r.readAsDataURL(f); //once defined all callbacks, begin reading the file
+
+        };
+        fileSelectEventGalleryTwoEdit.onchange = function() { //set callback to action after choosing file
+            var f = fileSelectEventGalleryTwoEdit.files[0], r = new FileReader();
+
+            r.onloadend = function(e) { //callback after files finish loading
+                var base64Data = e.target.result;
+                $scope.$apply();
+                angular.element(document.getElementsByClassName("galleryTwoEdit"))[0].src = base64Data;
+                //here you can send data over your server as desired
+            }
+
+            r.readAsDataURL(f); //once defined all callbacks, begin reading the file
+
+        };
+
+        fileSelectEventGalleryOneEdit.onchange = function() { //set callback to action after choosing file
+            var f = fileSelectEventGalleryOneEdit.files[0], r = new FileReader();
+
+            r.onloadend = function(e) { //callback after files finish loading
+                var base64Data = e.target.result;
+                $scope.$apply();
+                angular.element(document.getElementsByClassName("galleryOneEdit"))[0].src = base64Data;
+                //here you can send data over your server as desired
+            }
+
+            r.readAsDataURL(f); //once defined all callbacks, begin reading the file
+
+        };
+        fileSelectEventGallerySix.onchange = function() { //set callback to action after choosing file
+            var f = fileSelectEventGallerySix.files[0], r = new FileReader();
+            $scope.showThumbnailSix = true;
+
+            r.onloadend = function(e) { //callback after files finish loading
+                var base64Data = e.target.result;
+                $scope.$apply();
+                angular.element(document.getElementsByClassName("gallerySix"))[0].src = base64Data;
+                //here you can send data over your server as desired
+            }
+
+            r.readAsDataURL(f); //once defined all callbacks, begin reading the file
+
+        };
+        fileSelectEventGalleryFive.onchange = function() { //set callback to action after choosing file
+            var f = fileSelectEventGalleryFive.files[0], r = new FileReader();
+            $scope.showThumbnailFive = true;
+
+            r.onloadend = function(e) { //callback after files finish loading
+                var base64Data = e.target.result;
+                $scope.$apply();
+                angular.element(document.getElementsByClassName("galleryFive"))[0].src = base64Data;
+                //here you can send data over your server as desired
+            }
+
+            r.readAsDataURL(f); //once defined all callbacks, begin reading the file
+
+        };
+        fileSelectEventGalleryFour.onchange = function() { //set callback to action after choosing file
+            var f = fileSelectEventGalleryFour.files[0], r = new FileReader();
+            $scope.showThumbnailFour = true;
+
+            r.onloadend = function(e) { //callback after files finish loading
+                var base64Data = e.target.result;
+                $scope.$apply();
+                angular.element(document.getElementsByClassName("galleryFour"))[0].src = base64Data;
+                //here you can send data over your server as desired
+            }
+
+            r.readAsDataURL(f); //once defined all callbacks, begin reading the file
+
+        };
+        fileSelectEventGalleryThree.onchange = function() { //set callback to action after choosing file
+            var f = fileSelectEventGalleryThree.files[0], r = new FileReader();
+            $scope.showThumbnailThree = true;
+
+            r.onloadend = function(e) { //callback after files finish loading
+                var base64Data = e.target.result;
+                $scope.$apply();
+                angular.element(document.getElementsByClassName("galleryThree"))[0].src = base64Data;
+                //here you can send data over your server as desired
+            }
+
+            r.readAsDataURL(f); //once defined all callbacks, begin reading the file
+
+        };
+        fileSelectEventGalleryTwo.onchange = function() { //set callback to action after choosing file
+            var f = fileSelectEventGalleryTwo.files[0], r = new FileReader();
+            $scope.showThumbnailTwo = true;
+
+            r.onloadend = function(e) { //callback after files finish loading
+                var base64Data = e.target.result;
+                $scope.$apply();
+                angular.element(document.getElementsByClassName("galleryTwo"))[0].src = base64Data;
+                //here you can send data over your server as desired
+            }
+
+            r.readAsDataURL(f); //once defined all callbacks, begin reading the file
+
+        };
         fileSelectEventGalleryOne.onchange = function() { //set callback to action after choosing file
             var f = fileSelectEventGalleryOne.files[0], r = new FileReader();
-            $scope.showThumbnailProfile = true;
+            $scope.showThumbnailOne = true;
 
             r.onloadend = function(e) { //callback after files finish loading
                 var base64Data = e.target.result;

@@ -2,17 +2,18 @@
     <!--<div class="userProfileInfo">-->
 
     <!--</div>-->
-    <div class="card hovercard userProfileInfo">
+    <!--<div class="card hovercard userProfileInfo">-->
 
-        <div class="useravatar">
-            <img alt="" src="assets/img/profile.jpeg">
-        </div>
-        <div class="card-info"> <span class="card-title">{{userData.firstname}} {{userData.lastname}}</span>
+        <!--<div class="useravatar">-->
+            <!--<img alt="" src="assets/img/profile.jpeg">-->
+        <!--</div>-->
+        <!--<div class="card-info"> <span class="card-title">{{userData.firstname}} {{userData.lastname}}</span>-->
 
-        </div>
-    </div>
+        <!--</div>-->
+    <!--</div>-->
     <!-- tabs right -->
-    <div class="tabbable smallPageSize userProfileTab marginTop30"  >
+    <div class="tabbable smallPageSize userProfileTab marginTop60"  >
+        <button ng-click="test()">test</button>
         <div class="col-xs-3 col-sm-2  floatRight ">
 
             <ul class="nav nav-tabs profileTabs">
@@ -458,11 +459,12 @@
                                             </div>
                                             <div class="col-xs-12 col-sm-12 floatRight marginTop30">
                                                 <h3 class="textAlignRight marginRight30 marginBottom20">عکس های گالری</h3>
-
+                                                <div class="row">
+                                                <div class="col-sm-4 floatRight marginTop10">
                                                 <label class="marginRight30"> عکس اول :</label>
                                                 <button class="btn btn-default " ng-click='uploadGalleryOne()'>انتخاب <i class="fa fa-image"></i></button>
-                                                <div class="col-xs-12" ng-show="showThumbnailProfile">
-                                                    <img class="img-responsive galleryOne marginTop30"  src="" alt="">
+                                                <div class="col-xs-12" ng-show="showThumbnailOne">
+                                                    <img class="img-responsive gallery galleryOne marginTop30"  src="" alt="">
                                                     <div class="col-xs-12">
                                                         <div class="btn btn-success marginTop10" ng-click="photoGalleryOne()">بارگذاری   <i ng-show="uploadEventPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
                                                         <!--<button ng-click="deleteProfilePic()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
@@ -471,65 +473,79 @@
                                                         <strong>عکس با موفقیت بارگذاری شد</strong>
                                                     </div>
                                                 </div>
+                                                </div>
+                                                <div class="col-sm-4 floatRight marginTop10">
                                                 <label class="marginRight30"> عکس دوم :</label>
-                                                <button class="btn btn-default " ng-click='uploadPicProfile()'>انتخاب <i class="fa fa-image"></i></button>
-                                                <div class="col-xs-12" ng-show="showThumbnailProfile">
-                                                    <img class="img-responsive profilePhotoUpload marginTop30"  src="" alt="">
+                                                <button class="btn btn-default " ng-click='uploadGalleryTwo()'>انتخاب <i class="fa fa-image"></i></button>
+                                                <div class="col-xs-12" ng-show="showThumbnailTwo">
+                                                    <img class="img-responsive gallery galleryTwo marginTop30"  src="" alt="">
                                                     <div class="col-xs-12">
-                                                        <div class="btn btn-success marginTop10" ng-click="photoUploadEvent()">بارگذاری   <i ng-show="uploadEventPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
+                                                        <div class="btn btn-success marginTop10" ng-click="photoGalleryTwo()">بارگذاری   <i ng-show="uploadEventPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
                                                         <!--<button ng-click="deleteProfilePic()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                                     </div>
                                                     <div ng-show="eventPhotoSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
                                                         <strong>عکس با موفقیت بارگذاری شد</strong>
                                                     </div>
                                                 </div>
+                                                </div>
+                                                <div class="col-sm-4 floatRight marginTop10">
                                                 <label class="marginRight30"> عکس سوم :</label>
-                                                <button class="btn btn-default " ng-click='uploadPicProfile()'>انتخاب <i class="fa fa-image"></i></button>
-                                                <div class="col-xs-12" ng-show="showThumbnailProfile">
-                                                    <img class="img-responsive profilePhotoUpload marginTop30"  src="" alt="">
+                                                <button class="btn btn-default " ng-click='uploadGalleryThree()'>انتخاب <i class="fa fa-image"></i></button>
+                                                <div class="col-xs-12" ng-show="showThumbnailThree">
+                                                    <img class="img-responsive gallery galleryThree marginTop30"  src="" alt="">
                                                     <div class="col-xs-12">
-                                                        <div class="btn btn-success marginTop10" ng-click="photoUploadEvent()">بارگذاری   <i ng-show="uploadEventPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
+                                                        <div class="btn btn-success marginTop10" ng-click="photoGalleryThree()">بارگذاری   <i ng-show="uploadEventPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
                                                         <!--<button ng-click="deleteProfilePic()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                                     </div>
                                                     <div ng-show="eventPhotoSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
                                                         <strong>عکس با موفقیت بارگذاری شد</strong>
                                                     </div>
                                                 </div>
+                                                </div>
+                                                </div>
+                                                <div class="row">
+                                                <div class="col-sm-4 floatRight marginTop10">
                                                 <label class="marginRight30"> عکس چهارم :</label>
-                                                <button class="btn btn-default " ng-click='uploadPicProfile()'>انتخاب <i class="fa fa-image"></i></button>
-                                                <div class="col-xs-12" ng-show="showThumbnailProfile">
-                                                    <img class="img-responsive profilePhotoUpload marginTop30"  src="" alt="">
+                                                <button class="btn btn-default " ng-click='uploadGalleryFour()'>انتخاب <i class="fa fa-image"></i></button>
+                                                <div class="col-xs-12" ng-show="showThumbnailFour">
+                                                    <img class="img-responsive gallery galleryFour marginTop30"  src="" alt="">
                                                     <div class="col-xs-12">
-                                                        <div class="btn btn-success marginTop10" ng-click="photoUploadEvent()">بارگذاری   <i ng-show="uploadEventPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
+                                                        <div class="btn btn-success marginTop10" ng-click="photoGalleryFour()">بارگذاری   <i ng-show="uploadEventPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
                                                         <!--<button ng-click="deleteProfilePic()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                                     </div>
                                                     <div ng-show="eventPhotoSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
                                                         <strong>عکس با موفقیت بارگذاری شد</strong>
                                                     </div>
                                                 </div>
+                                                </div>
+                                                <div class="col-sm-4 floatRight marginTop10">
                                                 <label class="marginRight30"> عکس پنجم :</label>
-                                                <button class="btn btn-default " ng-click='uploadPicProfile()'>انتخاب <i class="fa fa-image"></i></button>
-                                                <div class="col-xs-12" ng-show="showThumbnailProfile">
-                                                    <img class="img-responsive profilePhotoUpload marginTop30"  src="" alt="">
+                                                <button class="btn btn-default " ng-click='uploadGalleryFive()'>انتخاب <i class="fa fa-image"></i></button>
+                                                <div class="col-xs-12" ng-show="showThumbnailFive">
+                                                    <img class="img-responsive gallery galleryFive marginTop30"  src="" alt="">
                                                     <div class="col-xs-12">
-                                                        <div class="btn btn-success marginTop10" ng-click="photoUploadEvent()">بارگذاری   <i ng-show="uploadEventPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
+                                                        <div class="btn btn-success marginTop10" ng-click="photoGalleryFive()">بارگذاری   <i ng-show="uploadEventPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
                                                         <!--<button ng-click="deleteProfilePic()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                                     </div>
                                                     <div ng-show="eventPhotoSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
                                                         <strong>عکس با موفقیت بارگذاری شد</strong>
                                                     </div>
                                                 </div>
+                                                </div>
+                                                <div class="col-sm-4 floatRight marginTop10">
                                                 <label class="marginRight30"> عکس ششم :</label>
-                                                <button class="btn btn-default " ng-click='uploadPicProfile()'>انتخاب <i class="fa fa-image"></i></button>
-                                                <div class="col-xs-12" ng-show="showThumbnailProfile">
-                                                    <img class="img-responsive profilePhotoUpload marginTop30"  src="" alt="">
+                                                <button class="btn btn-default " ng-click='uploadGallerySix()'>انتخاب <i class="fa fa-image"></i></button>
+                                                <div class="col-xs-12" ng-show="showThumbnailSix">
+                                                    <img class="img-responsive gallery gallerySix marginTop30"  src="" alt="">
                                                     <div class="col-xs-12">
-                                                        <div class="btn btn-success marginTop10" ng-click="photoUploadEvent()">بارگذاری   <i ng-show="uploadEventPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
+                                                        <div class="btn btn-success marginTop10" ng-click="photoGallerySix()">بارگذاری   <i ng-show="uploadEventPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
                                                         <!--<button ng-click="deleteProfilePic()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                                     </div>
                                                     <div ng-show="eventPhotoSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
                                                         <strong>عکس با موفقیت بارگذاری شد</strong>
                                                     </div>
+                                                </div>
+                                                </div>
                                                 </div>
 
                                             </div>
