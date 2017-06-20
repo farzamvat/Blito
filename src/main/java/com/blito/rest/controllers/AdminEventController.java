@@ -38,6 +38,17 @@ public class AdminEventController {
 	@Autowired AdminEventService adminEventService;
 	@Autowired ExcelService excelService;
 	
+	
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "get all pending events")
+	@ApiResponses({ @ApiResponse(code = 200, message = "get all pending ok", response = EventViewModel.class)})
+	// ***************** SWAGGER DOCS ***************** //
+	@JsonView(View.SimpleEvent.class)
+	@GetMapping("/pending")
+	public ResponseEntity<Page<EventViewModel>> getAllPendingEvents(Pageable pageable){
+		return ResponseEntity.ok(adminEventService.getAllPendingEvents(pageable));
+	}
+	
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "change event state")
 	@ApiResponses({ @ApiResponse(code = 200, message = "change event state ok", response = ResultVm.class),
@@ -66,7 +77,7 @@ public class AdminEventController {
 					@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
 	@PutMapping("/set-event-order-number/{eventId}")
-	public ResponseEntity<ResultVm> setEvetOrderNumvber(@PathVariable long eventId, @RequestParam int order ){
+	public ResponseEntity<ResultVm> setEvetOrderNumber(@PathVariable long eventId, @RequestParam int order ){
 		adminEventService.setEventOrderNumber(eventId, order);
 		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}

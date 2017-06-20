@@ -24,7 +24,7 @@ public class EventHostViewModel {
 	String description;
 	
 	@JsonView(View.EventHost.class)
-	@Telephone
+	//@Telephone
 	String telephone;
 	
 	@JsonView(View.EventHost.class)

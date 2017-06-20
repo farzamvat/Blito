@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.blito.enums.EventType;
+import com.blito.enums.OperatorState;
 import com.blito.enums.State;
 import com.blito.models.Event;
 
@@ -19,4 +20,5 @@ public interface EventRepository
 	List<Event> findByEventType(EventType type,Pageable pageable);
 	Page<Event> findByEventStateOrEventStateOrderByCreatedAtDesc(State state,State secondState,Pageable pageable);
 	List<Event> findByEventHostUserUserIdAndIsDeletedFalse(long userId);
+	Page<Event> findByOperatorState(OperatorState operatorState, Pageable pageable);
 }

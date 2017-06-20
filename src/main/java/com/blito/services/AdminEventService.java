@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.blito.enums.OperatorState;
 import com.blito.enums.Response;
 import com.blito.exceptions.AlreadyExistsException;
 import com.blito.exceptions.InconsistentDataException;
@@ -133,6 +134,11 @@ public class AdminEventService {
 		
 		discount = discountRepository.save(discount);
 		return discountMapper.createFromEntity(discount);
+	}
+	
+	
+	public Page<EventViewModel> getAllPendingEvents(Pageable pageable) {
+		return eventMapper.toPage(eventRepository.findByOperatorState(OperatorState.PENDING, pageable));
 	}
 
 }
