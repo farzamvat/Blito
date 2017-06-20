@@ -92,7 +92,11 @@ public class EventHostService {
 	}
 
 	public EventHostViewModel get(long id) {
-		return eventHostMapper.createFromEntity(findEventHostById(id));
+		EventHost eventHost = findEventHostById(id);
+		if(eventHost.isDeleted()) {
+			throw new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND));
+		}
+		return eventHostMapper.createFromEntity(eventHost);
 	}
 
 	@Transactional

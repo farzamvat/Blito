@@ -121,6 +121,9 @@ public class EventService {
 	public EventViewModel getEventById(long eventId) {
 		Event event = Optional.ofNullable(eventRepository.findOne(eventId)).map(e -> e)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+		if(event.isDeleted()) {
+			throw new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND));
+		}
 		return eventMapper.createFromEntity(event);
 	}
 
