@@ -4,11 +4,15 @@ import static org.junit.Assert.assertEquals;
 
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -16,16 +20,21 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.Application;
+import com.blito.configs.Constants;
 import com.blito.enums.DayOfWeek;
 import com.blito.enums.EventType;
 import com.blito.enums.HostType;
+import com.blito.enums.ImageType;
+import com.blito.enums.State;
 import com.blito.models.BlitType;
 import com.blito.models.EventHost;
+import com.blito.models.Image;
 import com.blito.models.User;
 import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.DiscountRepository;
 import com.blito.repositories.EventHostRepository;
 import com.blito.repositories.EventRepository;
+import com.blito.repositories.ImageRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
@@ -54,10 +63,14 @@ public class BlitServiceTest {
 	DiscountRepository discountRepo;
 	@Autowired
 	BlitTypeRepository blitTypeRepo;
+	@Autowired
+	ImageRepository imageRepository;
 	EventHost eventHost;
 	private EventViewModel eventViewModel = null;
 	private BlitTypeViewModel blitTypeViewModel = null;
 	private User user = null;
+
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	@Before
 	public void init() {
@@ -113,15 +126,40 @@ public class BlitServiceTest {
 		System.err.println(eventRepository.count() + "*************************");
 		blitTypeViewModel = blitTypeViewModel1;
 
+		Image image = new Image();
+		image.setImageType(ImageType.EVENT_PHOTO);
+		image.setImageUUID(Constants.DEFAULT_HOST_PHOTO);
+
+		Image hostCoverPhoto = new Image();
+		image.setImageType(ImageType.HOST_COVER_PHOTO);
+		image.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO);
+
+		Image exchangeBlitPhoto = new Image();
+		image.setImageType(ImageType.EXCHANGEBLIT_PHOTO);
+		image.setImageUUID(Constants.DEFAULT_EXCHANGEBLIT_PHOTO);
+
+		Image eventPhoto = new Image();
+		image.setImageType(ImageType.EVENT_PHOTO);
+		image.setImageUUID(Constants.DEFAULT_EVENT_PHOTO);
+
+		imageRepository.save(image);
+		imageRepository.save(hostCoverPhoto);
+		imageRepository.save(exchangeBlitPhoto);
+		imageRepository.save(eventPhoto);
+
 	}
 
 	@Test
-	public void testFreeBlit()
-	{
+	public void testFreeBlit() throws InterruptedException {
 		eventViewModel = eventService.create(eventViewModel);
-		
+		blitTypeRepo.save(blitTypeRepo.findAll().stream().map(b -> {
+			b.setBlitTypeState(State.OPEN);
+			return b;
+		}).collect(Collectors.toList()));
+
 		CommonBlitViewModel vmodel = new CommonBlitViewModel();
-		vmodel.setBlitTypeId(eventViewModel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream()).filter(bt -> bt.isFree()).findFirst().get().getBlitTypeId());
+		vmodel.setBlitTypeId(eventViewModel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream())
+				.filter(bt -> bt.isFree()).findFirst().get().getBlitTypeId());
 		vmodel.setBlitTypeName(blitTypeViewModel.getName());
 		vmodel.setCount(11);
 		vmodel.setCustomerEmail(user.getEmail());
@@ -131,11 +169,12 @@ public class BlitServiceTest {
 		vmodel.setEventAddress(eventViewModel.getAddress());
 		vmodel.setEventDate(eventViewModel.getEventDates().get(0).getDate());
 		vmodel.setEventName(eventViewModel.getEventName());
-		IntStream.range(0,100).parallel().forEach(i -> {
+		IntStream.range(0, 3).parallel().forEach(i -> {
+			log.debug("Thread with id : " + Thread.currentThread().getId() + " is running");
 			blitService.createCommonBlit(vmodel);
 		});
-		
 		BlitType blitType = blitTypeRepo.findOne(vmodel.getBlitTypeId());
-		assertEquals(11,blitType.getSoldCount());
+		assertEquals(11, blitType.getSoldCount());
+		Thread.sleep(10000);
 	}
 }

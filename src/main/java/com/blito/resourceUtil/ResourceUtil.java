@@ -4,6 +4,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import com.blito.enums.Response;
+import com.blito.exceptions.SamanBankException;
 import com.blito.validators.ValidationInterface;
 
 public class ResourceUtil {
@@ -11,6 +12,11 @@ public class ResourceUtil {
 
 	public static String getMessage(Response response) {
 		return resourceBundle.getString(response.getMessage());
+	}
+	
+	public static String getMessage(SamanBankException.ResponseStatus status)
+	{
+		return resourceBundle.getString(status.getErrorMessage());
 	}
 
 	public static String getMessage(ValidationInterface iValid) {

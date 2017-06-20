@@ -1,5 +1,6 @@
 package com.blito.models;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +53,8 @@ public class User {
 	
 	private boolean isOldUser = false;
 	
+	private Timestamp createdAt;
+	
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
     @JoinTable(name="user_role" , joinColumns=@JoinColumn(name="user_id"), 
     inverseJoinColumns=@JoinColumn(name="role_id"))
@@ -66,6 +69,14 @@ public class User {
 	@OneToMany(mappedBy="user", targetEntity=ExchangeBlit.class, fetch=FetchType.LAZY)
 	private List<ExchangeBlit> exchangeBlits;
 	
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
 	public User() {
 		roles = new ArrayList<>();
 		eventHosts = new ArrayList<>();

@@ -6,7 +6,6 @@ import java.time.ZonedDateTime;
 
 import org.springframework.stereotype.Component;
 
-import com.blito.models.Blit;
 import com.blito.models.CommonBlit;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 

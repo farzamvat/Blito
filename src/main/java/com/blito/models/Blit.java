@@ -41,8 +41,16 @@ public class Blit {
 	String paymentError;
 	String samanBankToken;
 	String samanBankRefNumber;
+	String samanTraceNo;
 	boolean used = false;
 	
+	
+	public String getSamanTraceNo() {
+		return samanTraceNo;
+	}
+	public void setSamanTraceNo(String samanTraceNo) {
+		this.samanTraceNo = samanTraceNo;
+	}
 	public boolean isUsed() {
 		return used;
 	}
