@@ -1,10 +1,14 @@
 package com.blito.services;
 
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.ZoneIdEditor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +44,7 @@ public class UserAccountService {
 	@Autowired UserMapper userMapper;
 	@Autowired RoleRepository roleRepository;
 	
-	public CompletableFuture<Void> createUser(RegisterVm vmodel)
+	public CompletableFuture<User> createUser(RegisterVm vmodel)
 	{
 
 		Optional<User> result = userRepository.findByEmail(vmodel.getEmail());
@@ -55,11 +59,13 @@ public class UserAccountService {
 		user.setActivationKey(UUID.randomUUID().toString());
 		user.setPassword(encoder.encode(user.getPassword()));
 		user.getRoles().add(userRole);
-		return CompletableFuture.completedFuture(userRepository.save(user))
+		user.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+		return CompletableFuture.completedFuture(user)
 				.thenAcceptAsync(savedUser -> 
 					mailService.sendActivationEmail(savedUser)
-				);
-
+				).thenApply((res) -> {
+					return userRepository.save(user);
+				});
 	}
 	
 	@Transactional

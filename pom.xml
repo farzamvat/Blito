@@ -60,10 +60,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework.integration/spring-integration-test -->
 		<dependency>
 			<groupId>org.springframework.integration</groupId>
@@ -128,19 +124,10 @@
 			<artifactId>spring-security-crypto</artifactId>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-amqp -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-amqp</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>1.9.13</version>
-		</dependency>
-		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-activemq</artifactId> 
-			</dependency> -->
+			<artifactId>spring-boot-starter-activemq</artifactId>
+		</dependency> -->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
@@ -198,7 +185,11 @@
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-ws</artifactId>
+			<artifactId>spring-boot-starter-web-services</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>wsdl4j</groupId>
+			<artifactId>wsdl4j</artifactId>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.apache.axis/axis -->
@@ -253,24 +244,30 @@
 
 			</plugin>
 
-			<!-- <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.9</version>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxb2-maven-plugin</artifactId>
+				<version>1.6</version>
 				<executions>
 					<execution>
-						<id>build-classpath</id>
-						<phase>generate-sources</phase>
+						<id>xjc</id>
 						<goals>
-							<goal>build-classpath</goal>
+							<goal>xjc</goal>
 						</goals>
 					</execution>
 				</executions>
 				<configuration>
-					<outputFile>classpath.txt</outputFile>
+					<schemaDirectory>${project.basedir}/src/main/resources/bank/</schemaDirectory>
+					<outputDirectory>${project.basedir}/src/main/java/com/blito/payments/</outputDirectory>
+					<clearOutputDir>false</clearOutputDir>
 				</configuration>
 			</plugin>
- -->
+
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-dependency-plugin</artifactId> 
+				<version>2.9</version> <executions> <execution> <id>build-classpath</id> 
+				<phase>generate-sources</phase> <goals> <goal>build-classpath</goal> </goals> 
+				</execution> </executions> <configuration> <outputFile>classpath.txt</outputFile> 
+				</configuration> </plugin> -->
 			<!-- <plugin> <groupId>org.jvnet.jaxb2.maven2</groupId> <artifactId>maven-jaxb2-plugin</artifactId> 
 				<version>0.12.3</version> <executions> <execution> <goals> <goal>generate</goal> 
 				</goals> </execution> </executions> <configuration> <schemaLanguage>WSDL</schemaLanguage> 

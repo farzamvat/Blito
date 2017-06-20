@@ -1,5 +1,6 @@
 package com.blito.services;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -26,6 +27,10 @@ public class ImageService {
 		return CompletableFuture.supplyAsync(() -> {
 			String uuid = UUID.randomUUID().toString();
 			try {
+				File file = new File("images/");
+				if (!file.exists()) {
+					file.mkdir();
+				}
 				PrintWriter writer = new PrintWriter("images/"+uuid+".txt", "UTF-8");
 				writer.write(encodedBase64);
 				writer.close();
