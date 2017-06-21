@@ -27,7 +27,7 @@ public class CommonBlitMapper implements GenericMapper<CommonBlit, CommonBlitVie
 		blit.setCustomerEmail(vmodel.getCustomerEmail());
 		blit.setEventAddress(vmodel.getEventAddress());
 		blit.setBlitTypeName(vmodel.getBlitTypeName());
-		blit.setType(vmodel.getType());
+		blit.setSeatType(vmodel.getSeatType());
 		blit.setBankGateway(vmodel.getBankGateway());
 		return blit;
 	}

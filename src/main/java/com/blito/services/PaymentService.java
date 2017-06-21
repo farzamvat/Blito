@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.blito.enums.BlitTypeEnum;
+import com.blito.enums.SeatType;
 import com.blito.enums.PaymentStatus;
 import com.blito.enums.State;
 import com.blito.models.Blit;
@@ -37,7 +37,7 @@ public class PaymentService {
 	{
 		blitRepository.findByTrackCode(paymentRequestArgs.getRequest().getResNum())
 		.ifPresent(blit -> {
-			if(blit.getType().equals(BlitTypeEnum.COMMON))
+			if(blit.getSeatType().equals(SeatType.COMMON))
 			{
 				samanBankService.verifyTransaction(paymentRequestArgs.getRequest().getRefNum())
 				.thenAccept(res -> {

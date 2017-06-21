@@ -23,7 +23,7 @@ public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit,ExchangeBl
 		exchangeBlit.setEventDate(vmodel.getEventDate());
 		exchangeBlit.setLatitude(vmodel.getLatitude());
 		exchangeBlit.setLongitude(vmodel.getLongitude());
-		exchangeBlit.setType(vmodel.getType());
+		exchangeBlit.setExchangeBlitType(vmodel.getType());
 		return exchangeBlit;
 	}
 
@@ -41,7 +41,7 @@ public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit,ExchangeBl
 		vmodel.setEventDate(exchangeBlit.getEventDate());
 		vmodel.setState(exchangeBlit.getState());
 		vmodel.setOperatorState(exchangeBlit.getOperatorState());
-		vmodel.setType(exchangeBlit.getType());
+		vmodel.setType(exchangeBlit.getExchangeBlitType());
 		vmodel.setImage(imageMapper.createFromEntity(exchangeBlit.getImage()));
 		vmodel.setLatitude(exchangeBlit.getLatitude());
 		vmodel.setLongitude(exchangeBlit.getLongitude());

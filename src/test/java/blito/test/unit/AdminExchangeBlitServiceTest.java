@@ -77,7 +77,7 @@ public class AdminExchangeBlitServiceTest {
 		exBlit1.setTitle("ExBlit1");
 		exBlit1.setImage(image);
 		exBlit1.setUser(user);
-		exBlit1.setType(ExchangeBlitType.CONCERT);
+		exBlit1.setExchangeBlitType(ExchangeBlitType.CONCERT);
 		exBlit1.setOperatorState(OperatorState.PENDING);
 		exBlit1.setState(State.CLOSED);
 		exBlit1 = exRepo.save(exBlit1);
@@ -86,7 +86,7 @@ public class AdminExchangeBlitServiceTest {
 		exBlit2.setTitle("ExBlit2");
 		exBlit2.setImage(image);
 		exBlit2.setUser(user);
-		exBlit2.setType(ExchangeBlitType.CONCERT);
+		exBlit2.setExchangeBlitType(ExchangeBlitType.CONCERT);
 		exBlit2.setOperatorState(OperatorState.APPROVED);
 		exBlit2.setState(State.OPEN);
 		exBlit2 = exRepo.save(exBlit2);
@@ -95,7 +95,7 @@ public class AdminExchangeBlitServiceTest {
 		exBlit3.setTitle("ExBlit3");
 		exBlit3.setImage(image);
 		exBlit3.setUser(user);
-		exBlit3.setType(ExchangeBlitType.CONCERT);
+		exBlit3.setExchangeBlitType(ExchangeBlitType.CONCERT);
 		exBlit3.setOperatorState(OperatorState.APPROVED);
 		exBlit3.setState(State.OPEN);
 		exBlit3 = exRepo.save(exBlit3);
@@ -104,7 +104,7 @@ public class AdminExchangeBlitServiceTest {
 		exBlit4.setTitle("ExBlit4");
 		exBlit4.setImage(image);
 		exBlit4.setUser(user);
-		exBlit4.setType(ExchangeBlitType.CONCERT);
+		exBlit4.setExchangeBlitType(ExchangeBlitType.CONCERT);
 		exBlit4.setOperatorState(OperatorState.APPROVED);
 		exBlit4.setState(State.OPEN);
 		exBlit4 = exRepo.save(exBlit4);

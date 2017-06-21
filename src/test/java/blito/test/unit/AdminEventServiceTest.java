@@ -19,7 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.blito.Application;
-import com.blito.enums.BlitTypeEnum;
+import com.blito.enums.SeatType;
 import com.blito.enums.HostType;
 import com.blito.enums.OperatorState;
 import com.blito.enums.State;
@@ -186,7 +186,7 @@ public class AdminEventServiceTest {
 			
 			cblit1.setCount(5);
 			cblit1.setEventName(event1.getEventName());
-			cblit1.setType(BlitTypeEnum.COMMON);
+			cblit1.setSeatType(SeatType.COMMON);
 			cblit1.setBlitType(blitType1_1_1);
 			cblit1.setUser(user);
 			cblit1 = cBlitRepo.save(cblit1);
@@ -194,7 +194,7 @@ public class AdminEventServiceTest {
 			
 			cblit2.setCount(2);
 			cblit2.setEventName(event1.getEventName());
-			cblit2.setType(BlitTypeEnum.COMMON);
+			cblit2.setSeatType(SeatType.COMMON);
 			cblit2.setBlitType(blitType1_1_1);
 			cblit2.setUser(user);
 			cblit2 = cBlitRepo.save(cblit2);
@@ -203,14 +203,14 @@ public class AdminEventServiceTest {
 			
 			cblit3.setCount(4);
 			cblit3.setEventName(event1.getEventName());
-			cblit3.setType(BlitTypeEnum.COMMON);
+			cblit3.setSeatType(SeatType.COMMON);
 			cblit3.setBlitType(blitType1_2_1);
 			cblit3.setUser(user);
 			cblit3 = cBlitRepo.save(cblit3);
 			
 			cblit4.setCount(7);
 			cblit4.setEventName(event1.getEventName());
-			cblit4.setType(BlitTypeEnum.COMMON);
+			cblit4.setSeatType(SeatType.COMMON);
 			cblit4.setBlitType(blitType1_2_1);
 			cblit4.setUser(user);
 			cblit4 = cBlitRepo.save(cblit4);
