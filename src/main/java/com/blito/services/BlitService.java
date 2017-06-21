@@ -82,7 +82,7 @@ public class BlitService {
 	private CompletableFuture<CommonBlit> buyCommonBlit(BlitType blitType, CommonBlit commonBlit, User user) {
 		checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
 		String trackCode = generateTrackCode();
-
+		// bankgateway condition
 		return paymentService.samanBankRequestToken(trackCode, commonBlit.getTotalAmount())
 				.thenApply(token -> {
 					BlitType attachedBlitType = blitTypeRepository.findOne(blitType.getBlitTypeId());
@@ -128,7 +128,7 @@ public class BlitService {
 			throw new InconsistentDataException("more than blit type capacity");
 	}
 
-	private String generateTrackCode() {
+	public String generateTrackCode() {
 		String trackCode = RandomUtil.generateTrackCode();
 		while (blitRepository.findByTrackCode(trackCode).isPresent()) {
 			return generateTrackCode();

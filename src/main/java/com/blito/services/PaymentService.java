@@ -32,6 +32,7 @@ public class PaymentService {
 		return samanBankService.requestToken(reservationNumber, totalAmount);
 	}
 	
+	@Transactional(propagation=Propagation.REQUIRES_NEW,isolation=Isolation.SERIALIZABLE)
 	private void completePaymentOperation(FinalizePaymentRequest paymentRequestArgs)
 	{
 		blitRepository.findByTrackCode(paymentRequestArgs.getRequest().getResNum())
@@ -58,7 +59,7 @@ public class PaymentService {
 		});
 	}
 
-	@Transactional(propagation=Propagation.REQUIRES_NEW,isolation=Isolation.SERIALIZABLE)
+	@Transactional
 	public void samanPaymentCallback(FinalizePaymentRequest paymentRequestCallbackArguments)
 	{
 		if(paymentRequestCallbackArguments.getRequest().getState().equals("OK"))

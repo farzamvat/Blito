@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.blito.enums.BankGateway;
 import com.blito.enums.BlitTypeEnum;
 import com.blito.enums.PaymentStatus;
 
@@ -43,8 +44,14 @@ public class Blit {
 	String samanBankRefNumber;
 	String samanTraceNo;
 	boolean used = false;
+	BankGateway bankGateway;
 	
-	
+	public BankGateway getBankGateway() {
+		return bankGateway;
+	}
+	public void setBankGateway(BankGateway bankGateway) {
+		this.bankGateway = bankGateway;
+	}
 	public String getSamanTraceNo() {
 		return samanTraceNo;
 	}
