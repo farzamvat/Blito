@@ -97,7 +97,7 @@ public class EventService {
 		}
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 		
-		EventHost eventHost = Optional.ofNullable(eventHostRepository.findOne(vmodel.getEventHostId())).map(eh -> eh)
+		EventHost eventHost =eventHostRepository.findByEventHostIdAndIsDeletedFalse(vmodel.getEventHostId()).map(eh -> eh)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
 		
 		Event event = eventMapper.createFromViewModel(vmodel);
@@ -108,22 +108,24 @@ public class EventService {
 	}
 
 	public EventFlatViewModel getFlatEventByLink(String link) {
-		return eventRepository.findByEventLink(link).map(eventFlatMapper::createFromEntity)
+		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(link).map(e -> e)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+		if(event.isDeleted()) {
+			throw new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND));
+		}
+		return eventFlatMapper.createFromEntity(event);
 	}
 
 	public EventFlatViewModel getFlatEventById(long eventId) {
-		Event event = Optional.ofNullable(eventRepository.findOne(eventId)).map(e -> e)
+		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId).map(e -> e)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 		return eventFlatMapper.createFromEntity(event);
 	}
 
 	public EventViewModel getEventById(long eventId) {
-		Event event = Optional.ofNullable(eventRepository.findOne(eventId)).map(e -> e)
+		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId).map(e -> e)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
-		if(event.isDeleted()) {
-			throw new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND));
-		}
+		
 		return eventMapper.createFromEntity(event);
 	}
 
@@ -139,10 +141,10 @@ public class EventService {
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.ISFREE_AND_PRICE_NOT_MATCHED));
 		}
 		
-		Event event = Optional.ofNullable(eventRepository.findOne(vmodel.getEventId())).map(e -> e)
+		Event event = eventRepository.findByEventIdAndIsDeletedFalse(vmodel.getEventId()).map(e -> e)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 
-		EventHost eventHost = Optional.ofNullable(eventHostRepository.findOne(vmodel.getEventHostId())).map(eh -> eh)
+		EventHost eventHost = eventHostRepository.findByEventHostIdAndIsDeletedFalse(vmodel.getEventHostId()).map(eh -> eh)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
 
 		if (eventHost.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
@@ -153,7 +155,7 @@ public class EventService {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_IS_SOLD));
 		}
 
-		Optional<Event> eventResult = eventRepository.findByEventLink(vmodel.getEventLink());
+		Optional<Event> eventResult = eventRepository.findByEventLinkAndIsDeletedFalse(vmodel.getEventLink());
 		if (eventResult.isPresent() && eventResult.get().getEventId() != vmodel.getEventId()) {
 			throw new AlreadyExistsException(ResourceUtil.getMessage(Response.EVENT_LINK_EXISTS));
 		}
@@ -170,7 +172,7 @@ public class EventService {
 
 	@Transactional
 	public void delete(long eventId) {
-		Optional<Event> eventResult = Optional.ofNullable(eventRepository.findOne(eventId));
+		Optional<Event> eventResult = eventRepository.findByEventIdAndIsDeletedFalse(eventId);
 		if (!eventResult.isPresent()) {
 			throw new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND));
 		} else {
@@ -190,7 +192,7 @@ public class EventService {
 
 	private String generateEventLink(Event event) {
 		String eventLink = event.getEventName().replaceAll(" ", "-") + "-" + RandomUtil.generateLinkRandomNumber();
-		while (eventRepository.findByEventLink(eventLink).isPresent()) {
+		while (eventRepository.findByEventLinkAndIsDeletedFalse(eventLink).isPresent()) {
 			eventLink = event.getEventName().replaceAll(" ", "-") + "-" + RandomUtil.generateLinkRandomNumber();
 		}
 		return eventLink;
@@ -203,7 +205,7 @@ public class EventService {
 		return searchViewModel.getRestrictions().stream().map(r -> r.action())
 				.reduce((s1, s2) -> Specifications.where(s1).and(s2))
 				.map(specification -> new PageImpl<>(
-						eventMapper.createFromEntities(eventRepository.findAll(specification)).stream()
+						eventMapper.createFromEntities(eventRepository.findAll(specification).stream().filter(eh->!eh.isDeleted()).collect(Collectors.toList())).stream()
 								.skip(pageable.getPageNumber() * pageable.getPageSize()).limit(pageable.getPageSize())
 								.collect(Collectors.toList())))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));

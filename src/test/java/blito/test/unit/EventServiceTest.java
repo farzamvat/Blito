@@ -244,8 +244,8 @@ public class EventServiceTest {
 	{
 		eventViewModel = eventService.create(eventViewModel);
 		System.out.println(eventViewModel.getEventLink() + "ASJKDASJKDAJKSDJAKSJDAKSJDAKSJDKAJSDKJASKDJAKSJDAKSJDAKSJDKAJSDKAJSDKJ");
-		assertNotNull(eventRepository.findOne(eventViewModel.getEventId()));
-		assertEquals(6,eventHostRepository.findOne(eventHost1.getEventHostId()).getEvents().size());
+		assertNotNull(eventRepository.findByEventIdAndIsDeletedFalse(eventViewModel.getEventId()));
+		assertEquals(6,eventHostRepository.findByEventHostIdAndIsDeletedFalse(eventHost1.getEventHostId()).get().getEvents().size());
 	}
 	
 	@Test
@@ -284,17 +284,17 @@ public class EventServiceTest {
 	{
 		EventViewModel vmodel = eventService.create(eventViewModel);
 		vmodel = eventService.getEventById(vmodel.getEventId());
-		assertNotNull(eventRepository.findOne(vmodel.getEventId()));
+		assertNotNull(eventRepository.findByEventIdAndIsDeletedFalse(vmodel.getEventId()));
 	}
 	
 	@Test
 	public void delete()
 	{
 		assertEquals(5, eventRepository.count());
-		assertEquals(5, eventHostRepository.findOne(eventViewModel.getEventHostId()).getEvents().size());
+		assertEquals(5, eventHostRepository.findByEventHostIdAndIsDeletedFalse(eventViewModel.getEventHostId()).get().getEvents().size());
 		EventViewModel vmodel = eventService.create(eventViewModel);
 		eventService.delete(vmodel.getEventId());
-		assertEquals(6, eventHostRepository.findOne(eventViewModel.getEventHostId()).getEvents().size());
+		assertEquals(6, eventHostRepository.findByEventHostIdAndIsDeletedFalse(eventViewModel.getEventHostId()).get().getEvents().size());
 		assertEquals(true, eventRepository.findOne(vmodel.getEventId()).isDeleted());
 	}
 	

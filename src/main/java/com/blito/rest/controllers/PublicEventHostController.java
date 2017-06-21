@@ -46,7 +46,7 @@ public class PublicEventHostController {
 	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.EventHost.class)
 	@GetMapping("/{eventHostId}")
-	public ResponseEntity<EventHostViewModel> getEventHostById(@PathVariable long eventHostId)
+	public ResponseEntity<EventHostViewModel> getEventHost(@PathVariable long eventHostId)
 	{
 		return ResponseEntity.ok(eventHostService.get(eventHostId));
 	}

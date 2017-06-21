@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.sql.Timestamp;
 import java.util.Arrays;
 
+import javax.transaction.Transactional;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.Application;
 import com.blito.enums.BlitTypeEnum;
@@ -46,6 +47,7 @@ import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.AdminEventService;
+import com.blito.services.EventService;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
@@ -66,6 +68,8 @@ public class AdminEventServiceTest {
 	@Autowired
 	AdminEventService adminEventService;
 	@Autowired
+	EventService eventService;
+	@Autowired
 	EventDateMapper dateMapper;
 	@Autowired
 	BlitTypeMapper blitTypeMapper;
@@ -78,6 +82,9 @@ public class AdminEventServiceTest {
 	
 	private Event event1 = new Event();
 	private Event event2 = new Event();
+	
+	private EventViewModel eventVm1 = new EventViewModel();
+	private EventViewModel eventVm2 = new EventViewModel();
 	
 	private EventDate sans1_1 = new EventDate();
 	private EventDate sans1_2 = new EventDate();
@@ -117,9 +124,11 @@ public class AdminEventServiceTest {
 			
 			event1.setEventName("akharin naameh");
 			event1.setEventHost(eventHost);
+			event1.setOperatorState(OperatorState.PENDING);
 			
 			event2.setEventName("jashne piroozi");
 			event2.setEventHost(eventHost);
+			event2.setOperatorState(OperatorState.PENDING);
 			
 			sans1_1.setDate(new Timestamp(1495264909518L));
 			sans1_2.setDate(new Timestamp(1495264909518L));
@@ -211,24 +220,24 @@ public class AdminEventServiceTest {
 	@Test
 	public void changeEventStateTest() {
 		adminEventService.changeEventState(changeEventStateTestVmodel);
-		assertEquals(State.CLOSED, eventRepo.findOne(event1.getEventId()).getEventState());
+		assertEquals(State.CLOSED, eventRepo.findByEventIdAndIsDeletedFalse(event1.getEventId()).get().getEventState());
 		changeEventStateTestVmodel.setState(State.OPEN);
 		adminEventService.changeEventState(changeEventStateTestVmodel);
-		assertEquals(State.OPEN, eventRepo.findOne(event1.getEventId()).getEventState());
+		assertEquals(State.OPEN, eventRepo.findByEventIdAndIsDeletedFalse(event1.getEventId()).get().getEventState());
 	}
 	
 	@Test
 	public void changeOperatorStateTest() {
 		adminEventService.changeOperatorState(changeEventOperatorStateTestVmodel);
-		assertEquals(OperatorState.APPROVED, eventRepo.findOne(event1.getEventId()).getOperatorState());
+		assertEquals(OperatorState.APPROVED, eventRepo.findByEventIdAndIsDeletedFalse(event1.getEventId()).get().getOperatorState());
 	}
 	
 	@Test
 	public void setEventOrderNumberTest() {
 		adminEventService.setEventOrderNumber(event1.getEventId(), 1);
 		adminEventService.setEventOrderNumber(event2.getEventId(), 2);
-		assertEquals(1, eventRepo.findOne(event1.getEventId()).getOrderNumber());
-		assertEquals(2, eventRepo.findOne(event2.getEventId()).getOrderNumber());
+		assertEquals(1, eventRepo.findByEventIdAndIsDeletedFalse(event1.getEventId()).get().getOrderNumber());
+		assertEquals(2, eventRepo.findByEventIdAndIsDeletedFalse(event2.getEventId()).get().getOrderNumber());
 	}
 	
 	@Test
@@ -240,7 +249,7 @@ public class AdminEventServiceTest {
 	
 	@Test
 	public void getEventTest() {
-		EventFlatViewModel vmodel = adminEventService.getEvent(event2.getEventId());
+		EventFlatViewModel vmodel = adminEventService.getFlatEvent(event2.getEventId());
 		assertEquals(event2.getEventId(), vmodel.getEventId());
 		assertEquals(1000, vmodel.getEventDates().get(0).getPrice());
 	}
@@ -249,7 +258,7 @@ public class AdminEventServiceTest {
 	public void updateEventTest() {
 		EventFlatViewModel vmodel = adminEventService.updateEvent(eventUpdateVmodel);
 		assertEquals("jashne banafsh", vmodel.getEventName());
-		assertEquals("jashne banafsh", eventRepo.findOne(event1.getEventId()).getEventName());
+		assertEquals("jashne banafsh", eventRepo.findByEventIdAndIsDeletedFalse(event1.getEventId()).get().getEventName());
 		assertEquals("VIP", vmodel.getEventDates().get(0).getName());
 	}
 	
@@ -263,5 +272,15 @@ public class AdminEventServiceTest {
 		Pageable pageable = new PageRequest(0,5);
 		Page<BlitBuyerViewModel> lists = adminEventService.getEventBlitBuyersByEventDate(sans1_1.getEventDateId(), pageable);
 		assertEquals(2, lists.getNumberOfElements());
+	}
+	
+	@Test
+	public void getAllPendingEventsTest() {
+		Pageable pageable = new PageRequest(0,5);
+		Page<EventViewModel> pendingEvents = adminEventService.getAllPendingEvents(pageable);
+		assertEquals(2, pendingEvents.getNumberOfElements());
+		adminEventService.changeOperatorState(changeEventOperatorStateTestVmodel);
+		pendingEvents = adminEventService.getAllPendingEvents(pageable);
+		assertEquals(1, pendingEvents.getNumberOfElements());
 	}
 }

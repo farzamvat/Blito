@@ -85,6 +85,7 @@ public class EventHostServiceTest {
 		createVmodel.setTelephone("22431103");
 		createVmodel.setHostType(HostType.COFFEESHOP);
 
+
 		updateVmodel.setHostName("Lucky Clover Cafe");
 		updateVmodel.setTelephone("22431103");
 		updateVmodel.setHostType(HostType.COFFEESHOP);
@@ -234,6 +235,12 @@ public class EventHostServiceTest {
 		Pageable pageable = new PageRequest(0,5);
 		Page<EventHostViewModel> eventHosts = hostService.getAllEventHosts(pageable);
 		assertEquals(4, eventHosts.getNumberOfElements());
+		
+		hostService.delete(vmodel4.getEventHostId());
+		
+		eventHosts = hostService.getAllEventHosts(pageable);
+		assertEquals(3, eventHosts.getNumberOfElements());
+		
 	}
 
 }

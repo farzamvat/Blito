@@ -47,7 +47,7 @@ public class EventHostService {
 	ImageMapper imageMapper;
 
 	private EventHost findEventHostById(long id) {
-		return Optional.ofNullable(eventHostRepository.findOne(id)).map(e -> e)
+		return eventHostRepository.findByEventHostIdAndIsDeletedFalse(id).map(e -> e)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
 	}
 
@@ -101,7 +101,7 @@ public class EventHostService {
 
 	@Transactional
 	public void delete(long id) {
-		Optional<EventHost> eventHostResult = Optional.ofNullable(eventHostRepository.findOne(id));
+		Optional<EventHost> eventHostResult = eventHostRepository.findByEventHostIdAndIsDeletedFalse(id);
 		if (!eventHostResult.isPresent()) {
 			throw new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND));
 		} else {
@@ -115,7 +115,7 @@ public class EventHostService {
 	}
 
 	public Page<EventHostViewModel> getAllEventHosts(Pageable pageable) {
-		return eventHostMapper.toPage(eventHostRepository.findAll(pageable));
+		return eventHostMapper.toPage(eventHostRepository.findByIsDeletedFalse(pageable));
 	}
 
 	public Page<EventHostViewModel> getCurrentUserEventHosts(Pageable pageable) {
@@ -133,7 +133,7 @@ public class EventHostService {
 		return searchViewModel.getRestrictions().stream().map(r -> r.action())
 				.reduce((s1, s2) -> Specifications.where(s1).and(s2))
 				.map(specification -> new PageImpl<>(
-						eventHostMapper.createFromEntities(eventHostRepository.findAll(specification)).stream()
+						eventHostMapper.createFromEntities(eventHostRepository.findAll(specification).stream().filter(eh->!eh.isDeleted()).collect(Collectors.toList())).stream()
 								.skip(pageable.getPageNumber() * pageable.getPageSize()).limit(pageable.getPageSize())
 								.collect(Collectors.toList())))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));

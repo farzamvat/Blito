@@ -14,6 +14,7 @@ import com.blito.enums.OperatorState;
 import com.blito.enums.Response;
 import com.blito.exceptions.AlreadyExistsException;
 import com.blito.exceptions.InconsistentDataException;
+import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.AdminReportsMapper;
 import com.blito.mappers.DiscountMapper;
@@ -34,6 +35,8 @@ import com.blito.rest.viewmodels.adminreport.BlitBuyerViewModel;
 import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.event.AdminChangeEventOperatorStateVm;
 import com.blito.rest.viewmodels.event.AdminChangeEventStateVm;
+import com.blito.rest.viewmodels.event.AdminChangeOfferTypeViewModel;
+import com.blito.rest.viewmodels.event.AdminSetIsEventoViewModel;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.security.SecurityContextHolder;
@@ -63,8 +66,9 @@ public class AdminEventService {
 	
 	
 	public Event getEventFromRepository(long eventId) {
-		Event event = Optional.ofNullable(eventRepository.findOne(eventId)).map(e -> e)
+		Event event =eventRepository.findByEventIdAndIsDeletedFalse(eventId).map(e -> e)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+		
 		return event;
 	}
 	@Transactional
@@ -82,6 +86,30 @@ public class AdminEventService {
 	}
 	
 	@Transactional
+	public void setIsEvento(AdminSetIsEventoViewModel vmodel) {
+		Event event = getEventFromRepository(vmodel.getEventId());
+		event.setEvento(vmodel.isEvento());
+		return;
+	}
+	
+	@Transactional
+	public void deleteEvent(long eventId) {
+		Optional<Event> eventResult = eventRepository.findByEventIdAndIsDeletedFalse(eventId);
+		if (!eventResult.isPresent()) {
+			throw new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND));
+		} else {
+			eventResult.get().setDeleted(true);
+		}
+	}
+	
+	@Transactional
+	public void setEventOffers(AdminChangeOfferTypeViewModel vmodel) {
+		Event event = getEventFromRepository(vmodel.getEventId());
+		event.setOffers(vmodel.getOffers());
+		return;
+	}
+	
+	@Transactional
 	public void setEventOrderNumber(long eventId, int order) {
 		Event event = getEventFromRepository(eventId);
 		event.setOrderNumber(order);
@@ -89,11 +117,12 @@ public class AdminEventService {
 	}
 
 	public Page<EventFlatViewModel> getAllEvents(Pageable page) {
-		return eventFlatMapper.toPage(eventRepository.findAll(page), eventFlatMapper::createFromEntity);
+		return eventFlatMapper.toPage(eventRepository.findByIsDeletedFalse(page), eventFlatMapper::createFromEntity);
 	}
 
-	public EventFlatViewModel getEvent(long eventId) {
+	public EventFlatViewModel getFlatEvent(long eventId) {
 		Event event = getEventFromRepository(eventId);
+
 		return eventFlatMapper.createFromEntity(event);
 	}
 
@@ -138,7 +167,8 @@ public class AdminEventService {
 	
 	
 	public Page<EventViewModel> getAllPendingEvents(Pageable pageable) {
-		return eventMapper.toPage(eventRepository.findByOperatorState(OperatorState.PENDING, pageable));
+		return eventMapper.toPage(eventRepository.findByOperatorStateAndIsDeletedFalse(OperatorState.PENDING, pageable));
 	}
 
+	
 }
