@@ -153,9 +153,12 @@ public class EventService {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_IS_SOLD));
 		}
 
-		Optional<Event> eventResult = eventRepository.findByEventLinkAndIsDeletedFalse(vmodel.getEventLink());
-		if (eventResult.isPresent() && eventResult.get().getEventId() != vmodel.getEventId()) {
-			throw new AlreadyExistsException(ResourceUtil.getMessage(Response.EVENT_LINK_EXISTS));
+		if(!vmodel.getEventLink().equals(event.getEventLink()))
+		{
+			Optional<Event> eventResult = eventRepository.findByEventLinkAndIsDeletedFalse(vmodel.getEventLink());
+			if (eventResult.isPresent() && eventResult.get().getEventId() != vmodel.getEventId()) {
+				throw new AlreadyExistsException(ResourceUtil.getMessage(Response.EVENT_LINK_EXISTS));
+			}
 		}
 		
 		List<Image> images = imageRepository.findByImageUUIDIn(

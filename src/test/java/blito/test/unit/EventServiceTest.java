@@ -2,19 +2,15 @@ package blito.test.unit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,11 +21,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -64,6 +55,7 @@ import com.blito.search.SearchViewModel;
 import com.blito.search.Simple;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.EventService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class,webEnvironment=WebEnvironment.RANDOM_PORT)
@@ -362,7 +354,7 @@ public class EventServiceTest {
 		SearchViewModel<Event> searchViewModel = new SearchViewModel<>();
 		Simple<Event> simple = new Simple<>();
 		simple.setField("eventType");
-		simple.setValue(EventType.SPORT);
+		simple.setValue(EventType.SPORT.name());
 		simple.setOperation(Operation.eq);
 
 		searchViewModel.setRestrictions(new ArrayList<>());
