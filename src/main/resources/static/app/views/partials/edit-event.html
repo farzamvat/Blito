@@ -42,6 +42,14 @@
                                     <textarea ng-model="editEventFields.description" required  id="eventDescription"  type="text"  class="form-group textAreaForm" ></textarea>
                                 </div>
                             </div>
+                            <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
+                                <div class="col-xs-10 floatRight text-center">
+                                    <label class="registerLabel floatRight" for="eventName" >لینک رویداد :</label>
+                                </div>
+                                <div class="col-xs-11 floatRight ">
+                                    <input height="60" id="eventLink" ng-model="editEventFields.eventLink" required   type="text"  class="form-group registerInput" >
+                                </div>
+                            </div>
                         </div>
 
 
@@ -56,7 +64,7 @@
                                     <label class="registerLabel floatRight" for="eventTicketStartTime">زمان شروع :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <input height="60" id="eventTicketStartTime" required ng-model="editEventFields.blitSaleStartDate" type="text"  class="form-group datePickerFormat persianEditEventTime" readonly>
+                                    <input height="60" id="eventTicketStartTime" required  ng-model="editEventFields.blitSaleStartDate" type="text"  class="form-group datePickerFormat blitSaleStartDate" readonly>
                                 </div>
 
                             </div>
@@ -66,7 +74,7 @@
                                     <label class="registerLabel floatRight" for="eventTicketEndTime" > زمان پایان :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <input height="60" id="eventTicketEndTime" required ng-model="editEventFields.blitSaleEndDate"  type="text"  class="form-group datePickerFormat persianEditEventTime" readonly>
+                                    <input height="60" id="eventTicketEndTime" required  ng-model="editEventFields.blitSaleEndDate"  type="text"  class="form-group datePickerFormat blitSaleEndDate" readonly>
                                 </div>
                             </div>
                         </div>
@@ -132,10 +140,10 @@
                                         <div class="col-xs-12" >
                                             <img class="img-responsive gallery galleryOneEdit marginTop30"  src="" alt="">
                                             <div class="col-xs-12">
-                                                <div class="btn btn-success marginTop10" ng-click="photoGalleryOneEdit()">بارگذاری   <i ng-show="uploadEventPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
+                                                <div class="btn btn-success marginTop10" ng-click="photoGalleryOneEdit()">بارگذاری   <i ng-show="uploadEventTwoEditPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
                                                 <!--<button ng-click="deleteProfilePic()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                             </div>
-                                            <div ng-show="eventPhotoSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
+                                            <div ng-show="eventPhotoOneEditSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
                                                 <strong>عکس با موفقیت بارگذاری شد</strong>
                                             </div>
                                         </div>
@@ -146,10 +154,10 @@
                                         <div class="col-xs-12">
                                             <img class="img-responsive gallery galleryTwoEdit marginTop30"  src="" alt="">
                                             <div class="col-xs-12">
-                                                <div class="btn btn-success marginTop10" ng-click="photoGalleryTwoEdit()">بارگذاری   <i ng-show="uploadEventPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
+                                                <div class="btn btn-success marginTop10" ng-click="photoGalleryTwoEdit()">بارگذاری   <i ng-show="uploadEventTwoEditPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
                                                 <!--<button ng-click="deleteProfilePic()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                             </div>
-                                            <div ng-show="eventPhotoSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
+                                            <div ng-show="eventPhotoTwoEditSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
                                                 <strong>عکس با موفقیت بارگذاری شد</strong>
                                             </div>
                                         </div>
@@ -160,10 +168,10 @@
                                         <div class="col-xs-12" >
                                             <img class="img-responsive gallery galleryThreeEdit marginTop30"  src="" alt="">
                                             <div class="col-xs-12">
-                                                <div class="btn btn-success marginTop10" ng-click="photoGalleryThreeEdit()">بارگذاری   <i ng-show="uploadEventPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
+                                                <div class="btn btn-success marginTop10" ng-click="photoGalleryThreeEdit()">بارگذاری   <i ng-show="uploadEventThreeEditPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
                                                 <!--<button ng-click="deleteProfilePic()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                             </div>
-                                            <div ng-show="eventPhotoSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
+                                            <div ng-show="eventPhotoThreeEditSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
                                                 <strong>عکس با موفقیت بارگذاری شد</strong>
                                             </div>
                                         </div>
@@ -176,10 +184,10 @@
                                         <div class="col-xs-12" >
                                             <img class="img-responsive gallery galleryFourEdit marginTop30"  src="" alt="">
                                             <div class="col-xs-12">
-                                                <div class="btn btn-success marginTop10" ng-click="photoGalleryFourEdit()">بارگذاری   <i ng-show="uploadEventPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
+                                                <div class="btn btn-success marginTop10" ng-click="photoGalleryFourEdit()">بارگذاری   <i ng-show="uploadEventFourEditPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
                                                 <!--<button ng-click="deleteProfilePic()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                             </div>
-                                            <div ng-show="eventPhotoSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
+                                            <div ng-show="eventPhotoFourEditSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
                                                 <strong>عکس با موفقیت بارگذاری شد</strong>
                                             </div>
                                         </div>
@@ -190,10 +198,10 @@
                                         <div class="col-xs-12" >
                                             <img class="img-responsive gallery galleryFiveEdit marginTop30"  src="" alt="">
                                             <div class="col-xs-12">
-                                                <div class="btn btn-success marginTop10" ng-click="photoGalleryFiveEdit()">بارگذاری   <i ng-show="uploadEventPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
+                                                <div class="btn btn-success marginTop10" ng-click="photoGalleryFiveEdit()">بارگذاری   <i ng-show="uploadEventFiveEditPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
                                                 <!--<button ng-click="deleteProfilePic()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                             </div>
-                                            <div ng-show="eventPhotoSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
+                                            <div ng-show="eventPhotoFiveEditSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
                                                 <strong>عکس با موفقیت بارگذاری شد</strong>
                                             </div>
                                         </div>
@@ -204,10 +212,10 @@
                                         <div class="col-xs-12" >
                                             <img class="img-responsive gallery gallerySixEdit marginTop30"  src="" alt="">
                                             <div class="col-xs-12">
-                                                <div class="btn btn-success marginTop10" ng-click="photoGallerySixEdit()">بارگذاری   <i ng-show="uploadEventPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
+                                                <div class="btn btn-success marginTop10" ng-click="photoGallerySixEdit()">بارگذاری   <i ng-show="uploadEventSixEditPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
                                                 <!--<button ng-click="deleteProfilePic()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                             </div>
-                                            <div ng-show="eventPhotoSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
+                                            <div ng-show="eventPhotoSixEditSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
                                                 <strong>عکس با موفقیت بارگذاری شد</strong>
                                             </div>
                                         </div>
@@ -272,7 +280,7 @@
                                             <label class="registerLabel" >تاریخ و ساعت : </label>
                                         </div>
                                         <div class="col-xs-7 col-sm-6 floatRight ">
-                                            <input type="text" ng-model="showTime.date" required class="persianEditEventTimeShowTime datePickerFormat" readonly/>
+                                            <input type="text" ng-model="showTime.date" required class=" datePickerFormat" ng-class="dateClass($index)" readonly/>
 
                                             <!--<input height="60"     type="text"  class="form-group registerInput floatRight eventShowTime" >-->
                                         </div>

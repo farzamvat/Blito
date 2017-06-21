@@ -14,7 +14,8 @@ angular.module('userProfileApi', [])
             var queryParam = {
                 params : { id : imageData}
             }
-            return $http.get(config.baseUrl+'/api/blito/v1.0/images/download', queryParam)
+                return $http.get(config.baseUrl + '/api/blito/v1.0/images/download', queryParam);
+
         }
     })
 

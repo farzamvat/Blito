@@ -81,7 +81,7 @@ angular.module('User')
                     altField: '#persianDigitAlt',
                     altFormat: "YYYY MM DD HH:mm:ss",
                     altFieldFormatter: function (unixDate) {
-                        $scope.showTimeForms[i].date = unixDate;
+                        // $scope.showTimeForms[i].date = unixDate;
                     }
                 });
             }, 1000);
@@ -252,9 +252,12 @@ angular.module('User')
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("gallerySixEdit"))[0].src
             }
-            $scope.uploadEditEventPhoto = true;
+            $scope.uploadEventSixEditPhoto = true;
             photoService.upload(imageData)
                 .then(function (data, status) {
+                    $scope.uploadEventSixEditPhoto = false;
+                    $scope.eventPhotoSixEditSuccess = true;
+
                     $scope.gallerySixUUID = data.data.imageUUID;
                 }, function (data, status) {
                     console.log(data);
@@ -264,9 +267,12 @@ angular.module('User')
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryFiveEdit"))[0].src
             }
-            $scope.uploadEditEventPhoto = true;
+            $scope.uploadEventFiveEditPhoto = true;
             photoService.upload(imageData)
                 .then(function (data, status) {
+                    $scope.uploadEventFiveEditPhoto = false;
+                    $scope.eventPhotoFiveEditSuccess = true;
+
                     $scope.galleryFiveUUID = data.data.imageUUID;
                 }, function (data, status) {
                     console.log(data);
@@ -276,9 +282,11 @@ angular.module('User')
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryFourEdit"))[0].src
             }
-            $scope.uploadEditEventPhoto = true;
+            $scope.uploadEventFourEditPhoto = true;
             photoService.upload(imageData)
                 .then(function (data, status) {
+                    $scope.uploadEventFourEditPhoto = false;
+                    $scope.eventPhotoFourEditSuccess = true;
                     $scope.galleryFourUUID = data.data.imageUUID;
                 }, function (data, status) {
                     console.log(data);
@@ -288,9 +296,13 @@ angular.module('User')
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryThreeEdit"))[0].src
             }
-            $scope.uploadEditEventPhoto = true;
+            $scope.uploadEventThreeEditPhoto = true;
             photoService.upload(imageData)
                 .then(function (data, status) {
+                    $scope.uploadEventThreeEditPhoto = false;
+
+                    $scope.eventPhotoThreeEditSuccess = true;
+
                     $scope.galleryThreeUUID = data.data.imageUUID;
                 }, function (data, status) {
                     console.log(data);
@@ -300,9 +312,12 @@ angular.module('User')
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryTwoEdit"))[0].src
             }
-            $scope.uploadEditEventPhoto = true;
+            $scope.uploadEventTwoEditPhoto = true;
             photoService.upload(imageData)
                 .then(function (data, status) {
+                    $scope.uploadEventTwoEditPhoto = false;
+                    $scope.eventPhotoTwoEditSuccess = true;
+
                     $scope.galleryTwoUUID = data.data.imageUUID;
                 }, function (data, status) {
                     console.log(data);
@@ -312,10 +327,12 @@ angular.module('User')
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryOneEdit"))[0].src
             }
-            $scope.uploadEditEventPhoto = true;
+            $scope.uploadEventTwoEditPhoto = true;
             photoService.upload(imageData)
                 .then(function (data, status) {
+                    $scope.uploadEventTwoEditPhoto = false;
 
+                    $scope.eventPhotoOneEditSuccess = true;
 
                     $scope.galleryOneUUID = data.data.imageUUID;
                 }, function (data, status) {
@@ -326,10 +343,12 @@ angular.module('User')
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("gallerySix"))[0].src
             }
-            $scope.uploadEditEventPhoto = true;
+            $scope.uploadEventSixPhoto = true;
             photoService.upload(imageData)
                 .then(function (data, status) {
-                    $scope.galerrySixUUID = data.data.imageUUID;
+                    $scope.uploadEventSixPhoto = false;
+                    $scope.eventPhotoSixSuccess = true;
+                    $scope.gallerySixUUID = data.data.imageUUID;
                 }, function (data, status) {
                     console.log(data);
                 })
@@ -338,10 +357,12 @@ angular.module('User')
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryFive"))[0].src
             }
-            $scope.uploadEditEventPhoto = true;
+            $scope.uploadEventFivePhoto = true;
             photoService.upload(imageData)
                 .then(function (data, status) {
-                    $scope.galerryFiveUUID = data.data.imageUUID;
+                    $scope.uploadEventFivePhoto = false;
+                    $scope.eventPhotoFiveSuccess = true;
+                    $scope.galleryFiveUUID = data.data.imageUUID;
                 }, function (data, status) {
                     console.log(data);
                 })
@@ -351,10 +372,12 @@ angular.module('User')
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryFour"))[0].src
             }
-            $scope.uploadEditEventPhoto = true;
+            $scope.uploadEventFourPhoto = true;
             photoService.upload(imageData)
                 .then(function (data, status) {
-                    $scope.galerryFourUUID = data.data.imageUUID;
+                    $scope.uploadEventFourPhoto = false;
+                    $scope.eventPhotoFourSuccess = true;
+                    $scope.galleryFourUUID = data.data.imageUUID;
                 }, function (data, status) {
                     console.log(data);
                 })
@@ -364,10 +387,12 @@ angular.module('User')
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryThree"))[0].src
             }
-            $scope.uploadEditEventPhoto = true;
+            $scope.uploadEventThreePhoto = true;
             photoService.upload(imageData)
                 .then(function (data, status) {
-                    $scope.galerryThreeUUID = data.data.imageUUID;
+                    $scope.eventPhotoThreeSuccess = true;
+                    $scope.uploadEventThreePhoto = false;
+                    $scope.galleryThreeUUID = data.data.imageUUID;
                 }, function (data, status) {
                     console.log(data);
                 })
@@ -377,10 +402,14 @@ angular.module('User')
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryTwo"))[0].src
             }
-            $scope.uploadEditEventPhoto = true;
+            $scope.uploadEventTwoPhoto = true;
             photoService.upload(imageData)
                 .then(function (data, status) {
-                    $scope.galerryTwoUUID = data.data.imageUUID;
+                    $scope.eventPhotoTwoSuccess = true;
+                    $scope.uploadEventTwoPhoto = false;
+                    $scope.galleryTwoUUID = data.data.imageUUID;
+                    console.log($scope.galerryTwoUUID);
+                    console.log(data);
                 }, function (data, status) {
                     console.log(data);
                 })
@@ -390,11 +419,16 @@ angular.module('User')
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryOne"))[0].src
             }
-            $scope.uploadEditEventPhoto = true;
+
+            $scope.uploadEventOnePhoto = true;
+
             photoService.upload(imageData)
                 .then(function (data, status) {
+                    $scope.eventPhotoOneSuccess = true;
+                    $scope.uploadEventOnePhoto = false;
                     $scope.galleryOneUUID = data.data.imageUUID;
                 }, function (data, status) {
+                    $scope.uploadEventOnePhoto = false;
                     console.log(data);
                 })
         }
@@ -457,6 +491,7 @@ angular.module('User')
                     $scope.eventImageId = data.data.imageUUID;
                 }, function (data, status) {
                     console.log(data);
+                    $scope.uploadEventPhoto = false;
                 })
         }
 
@@ -875,7 +910,7 @@ angular.module('User')
         };
         //==================================================== ********* =================================
 
-        //==================================================== EVENT SUBMIT =================================
+        //==================================================== EVENT PLANNER SUBMIT =================================
 
         $scope.submitPlannerSpinner = false;
         $scope.submitPlannerNotif = false;
@@ -914,7 +949,7 @@ angular.module('User')
                     $scope.submitPlannerSpinner = false;
                     console.log(data);
                 })
-        }
+        };
         //==================================================== ********* =================================
 
 
@@ -923,20 +958,41 @@ angular.module('User')
         $scope.submitEvent = function (eventFields) {
 
             var latLng = mapMarkerService.getMarker();
+            var newShowTime = angular.copy($scope.showTimeForms);
+            newShowTime = newShowTime.map(function (item) {
+                item.date = $scope.persianToMs(item.date);
+                return item;
+            });
             var eventSubmitData = {
                 eventName : eventFields.name,
                 eventType : eventFields.eventType,
                 eventHostId : eventFields.eventPlanner.eventHostId,
                 address : eventFields.address,
                 aparatDisplayCode : eventFields.aparatLink,
-                blitSaleEndDate : $scope.eventEndTime,
-                blitSaleStartDate : $scope.eventStartTime,
+                blitSaleEndDate : $scope.persianToMs(eventFields.ticketEndTime),
+                blitSaleStartDate : $scope.persianToMs(eventFields.ticketStartTime),
                 description : eventFields.description,
-                eventDates : $scope.showTimeForms,
-                images : [ {imageUUID : $scope.eventImageId, type : "EVENT_PHOTO"}],
+                eventDates : newShowTime,
+                images : [
+                    {imageUUID : $scope.eventImageId, type : "EVENT_PHOTO"},
+                    {imageUUID : $scope.galleryOneUUID, type : "GALLERY"},
+                    {imageUUID : $scope.galleryTwoUUID, type : "GALLERY"},
+                    {imageUUID : $scope.galleryThreeUUID, type : "GALLERY"},
+                    {imageUUID : $scope.galleryFourUUID, type : "GALLERY"},
+                    {imageUUID : $scope.galleryFiveUUID, type : "GALLERY"},
+                    {imageUUID : $scope.gallerySixUUID, type : "GALLERY"}
+                ],
                 latitude : latLng.lat,
                 longitude : latLng.lng
-            }
+            };
+            eventSubmitData.images = eventSubmitData.images.filter(function (item) {
+               if(item.imageUUID === null || item.imageUUID === undefined) {
+                   return false;
+               } else {
+                   return true;
+               }
+            });
+            console.log(eventSubmitData);
             if(!$scope.eventImageId){
                 delete eventSubmitData.images;
             }
@@ -1028,38 +1084,42 @@ angular.module('User')
         //==================================================== EDIT EVENT =================================
 
         $scope.editEventFields = {};
+
         $scope.editEvent = function (index) {
+            console.log($scope.userEventsEdit[index]);
             $scope.eventEditPhotoSuccess = false;
 
-            userProfile.showTimeEditForms = $scope.showTimeEditForms.length;
-
+            $scope.showTimeEditForms = angular.copy($scope.userEventsEdit[index].eventDates);
 
             $scope.editEventFields = {
                 eventId : $scope.userEventsEdit[index].eventId,
                 eventName : $scope.userEventsEdit[index].eventName,
                 eventType : $scope.userEventsEdit[index].eventType,
                 description : $scope.userEventsEdit[index].description,
-                blitSaleStartDate : persianDate($scope.userEventsEdit[index].blitSaleStartDate).pDate,
-                blitSaleEndDate : persianDate($scope.userEventsEdit[index].blitSaleEndDate).pDate,
                 address : $scope.userEventsEdit[index].address,
                 aparatDisplayCode : $scope.userEventsEdit[index].aparatDisplayCode,
-                eventHostId : $scope.userEventsEdit[index].eventHostId
+                eventHostId : $scope.userEventsEdit[index].eventHostId,
+                eventLink : $scope.userEventsEdit[index].eventLink
             };
 
 
-            $scope.showTimeEditForms = angular.copy($scope.userEvents[index].eventDates.map(function (item) {
-                item.date = persianDate(item.dat).pDate;
-                return item;
-            }));
+            $scope.dateClass = function (classNumber) {
+                return "classDate"+classNumber;
+            };
+
 
             $("#editEvent").modal("show");
-            var imageUUID;
+            var imageUUID, gallery = [];
             $scope.userEventsEdit[index].images.forEach(function (image) {
                 if(image.type === "EVENT_PHOTO") {
                     imageUUID = image.imageUUID;
+                } else {
+                    gallery.push(image.imageUUID);
                 }
             });
+
             $scope.eventEditImageId = imageUUID;
+
             photoService.download(imageUUID)
                 .then(function (data, status) {
                     angular.element(document.getElementsByClassName("profilePhotoUploadEditEvent"))[0].src = data.data.encodedBase64;
@@ -1068,9 +1128,98 @@ angular.module('User')
                 })
                 .catch(function (data, status) {
                     console.log(status);
-                })
+                });
+            if(gallery.length >= 1) {
+                $scope.galleryOneUUID = gallery[0];
+                console.log(gallery[0]);
+                photoService.download(gallery[0])
+                    .then(function (data, status) {
+                        angular.element(document.getElementsByClassName("galleryOneEdit"))[0].src = data.data.encodedBase64;
+                    }, function (data, status) {
+                        console.log(data);
+                    })
+                    .catch(function (data, status) {
+                        console.log(status);
+                    });
+            }
+            if(gallery.length >= 2) {
+                $scope.galleryTwoUUID = gallery[1];
+                photoService.download(gallery[1])
+                    .then(function (data, status) {
+                        angular.element(document.getElementsByClassName("galleryTwoEdit"))[0].src = data.data.encodedBase64;
+                    }, function (data, status) {
+                        console.log(data);
+                    })
+                    .catch(function (data, status) {
+                        console.log(status);
+                    });
+            }
+            if(gallery.length >= 3) {
+                $scope.galleryThreeUUID = gallery[2];
+                photoService.download(gallery[2])
+                    .then(function (data, status) {
+                        angular.element(document.getElementsByClassName("galleryThreeEdit"))[0].src = data.data.encodedBase64;
+                    }, function (data, status) {
+                        console.log(data);
+                    })
+                    .catch(function (data, status) {
+                        console.log(status);
+                    });
+            }
+            if(gallery.length >= 4) {
+                console.log("photo");
+                $scope.galleryFourUUID = gallery[3];
+                photoService.download(gallery[3])
+                    .then(function (data, status) {
+                        angular.element(document.getElementsByClassName("galleryFourEdit"))[0].src = data.data.encodedBase64;
+                    }, function (data, status) {
+                        console.log(data);
+                    })
+                    .catch(function (data, status) {
+                        console.log(status);
+                    });
+            }
+            if(gallery.length >= 5) {
+                console.log("photo");
+                $scope.galleryFiveUUID = gallery[4];
+                photoService.download(gallery[4])
+                    .then(function (data, status) {
+                        angular.element(document.getElementsByClassName("galleryFiveEdit"))[0].src = data.data.encodedBase64;
+                    }, function (data, status) {
+                        console.log(data);
+                    })
+                    .catch(function (data, status) {
+                        console.log(status);
+                    });
+            }
+            if(gallery.length === 6) {
+                console.log("photo");
+                $scope.gallerySixUUID = gallery[5];
+                photoService.download(gallery[5])
+                    .then(function (data, status) {
+                        angular.element(document.getElementsByClassName("gallerySixEdit"))[0].src = data.data.encodedBase64;
+                    }, function (data, status) {
+                        console.log(data);
+                    })
+                    .catch(function (data, status) {
+                        console.log(status);
+                    });
+            }
             $timeout(function () {
-                $(".persianEditEventTime").pDatepicker({
+                for(var i = 0 ; i < $scope.userEventsEdit[index].eventDates.length; i++) {
+                    $(".classDate"+i).pDatepicker({
+                        timePicker: {
+                            enabled: true
+                        },
+                        altField: '#persianDigitAlt',
+                        altFormat: "YYYY MM DD HH:mm:ss",
+                        altFieldFormatter: function (unixDate) {
+                        }
+                    });
+                    console.log(persianDate($scope.userEventsEdit[index].eventDates[i].date).toArray());
+                    $(".classDate"+i).pDatepicker("setDate",$scope.persianToArray(persianDate($scope.userEventsEdit[index].eventDates[i].date).toArray()));
+                }
+                $(".blitSaleEndDate").pDatepicker({
                     timePicker: {
                         enabled: true
                     },
@@ -1079,6 +1228,20 @@ angular.module('User')
                     altFieldFormatter: function (unixDate) {
                     }
                 });
+                $(".blitSaleStartDate").pDatepicker({
+                    timePicker: {
+                        enabled: true
+                    },
+                    altField: '#persianDigitAlt',
+                    altFormat: "YYYY MM DD HH:mm:ss",
+                    altFieldFormatter: function (unixDate) {
+                    }
+            });
+                $(".blitSaleEndDate").pDatepicker("setDate",$scope.persianToArray(persianDate($scope.userEventsEdit[index].blitSaleEndDate).toArray()));
+                $(".blitSaleStartDate").pDatepicker("setDate",$scope.persianToArray(persianDate($scope.userEventsEdit[index].blitSaleStartDate).toArray()));
+
+
+
             }, 500);
             userProfile.setDateEdit = function () {
                 $timeout(function () {
@@ -1125,13 +1288,25 @@ angular.module('User')
             sendingData.latitude = latLong.lat;
             sendingData.longitude = latLong.lng;
 
-            sendingData.images = [{
-                imageUUID : $scope.eventEditImageId,
-                type : "EVENT_PHOTO"
-            }];
+            sendingData.images = [
+                {imageUUID : $scope.eventEditImageId, type : "EVENT_PHOTO"},
+                {imageUUID : $scope.galleryOneUUID, type : "GALLERY"},
+                {imageUUID : $scope.galleryTwoUUID, type : "GALLERY"},
+                {imageUUID : $scope.galleryThreeUUID, type : "GALLERY"},
+                {imageUUID : $scope.galleryFourUUID, type : "GALLERY"},
+                {imageUUID : $scope.galleryFiveUUID, type : "GALLERY"},
+                {imageUUID : $scope.gallerySixUUID, type : "GALLERY"}
+                ];
             if(!$scope.eventEditImageId){
                 delete sendingData.images;
             }
+            sendingData.images = sendingData.images.filter(function (item) {
+                if(item.imageUUID === null || item.imageUUID === undefined) {
+                    return false;
+                } else {
+                    return true;
+                }
+            });
             console.log(sendingData);
             $scope.editEventSpinner = true;
             eventService.editEvent(sendingData)
@@ -1148,7 +1323,13 @@ angular.module('User')
         };
 
         //==================================================== ********* =================================
+        $scope.persianToArray = function (date) {
+            date = date.map(function (item) {
+                return parseInt(item);
+            });
 
+            return date;
+        }
         $scope.persianToMs = function (date) {
             var newData = date.replace(/[^\w\s]/gi , ' ').split(" ");
             newData.pop();
@@ -1256,6 +1437,8 @@ angular.module('User')
                     $scope.editExchangeDate = unixDate;
                 }
             });
+            $(".persianEditExchangeTime").pDatepicker("setDate",$scope.persianToArray(persianDate($scope.exchangeEditTickets[index].eventDate).toArray()));
+
             $scope.exchangeEditImageId = $scope.exchangeEditTickets[index].image.imageUUID;
 
             photoService.download($scope.exchangeEditTickets[index].image.imageUUID)
@@ -1345,11 +1528,12 @@ angular.module('User')
                     $scope.userEvents = data.data.content;
                     $scope.userEventsEdit = angular.copy(data.data.content);
                     $scope.userEvents = $scope.userEvents.map(function (event) {
+                        console.log(persianDate(event.blitSaleStartDate).pDate);
                         event.eventType = dataService.eventTypePersian(event.eventType);
                         event.blitSaleEndDate = persianDate(event.blitSaleEndDate).pDate;
                         event.blitSaleStartDate = persianDate(event.blitSaleStartDate).pDate;
                         return event;
-                    })
+                    });
                     $timeout(function () {
                         $(".persianTimeExchange").pDatepicker({
                             timePicker: {
@@ -1360,7 +1544,7 @@ angular.module('User')
                             altFieldFormatter: function (unixDate) {
                             }
                         });
-                    },1000)
+                    },200)
                 }, function (data, status) {
                     console.log(data);
                 })
