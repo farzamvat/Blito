@@ -57,7 +57,10 @@ public class ImageService {
 		return CompletableFuture.runAsync(() -> {
 			Image image = imageRepository.findByImageUUID(uuid).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
 			try {
-				if(!Files.deleteIfExists(Paths.get("images/" + image.getImageUUID() + ".txt")))
+				
+				if(Files.deleteIfExists(Paths.get("images/" + image.getImageUUID() + ".txt")))
+					imageRepository.delete(image);
+				else
 					throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
 			} catch (IOException e) {
 				throw new RuntimeException(e.getMessage());
