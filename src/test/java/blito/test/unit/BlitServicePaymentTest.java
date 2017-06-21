@@ -1,23 +1,19 @@
 package blito.test.unit;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
-import java.util.concurrent.CompletableFuture;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.Application;
 import com.blito.configs.Constants;
@@ -26,10 +22,11 @@ import com.blito.enums.EventType;
 import com.blito.enums.HostType;
 import com.blito.enums.ImageType;
 import com.blito.enums.State;
-import com.blito.models.BlitType;
+import com.blito.models.Blit;
 import com.blito.models.EventHost;
 import com.blito.models.Image;
 import com.blito.models.User;
+import com.blito.repositories.BlitRepository;
 import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.DiscountRepository;
 import com.blito.repositories.EventHostRepository;
@@ -37,44 +34,53 @@ import com.blito.repositories.EventRepository;
 import com.blito.repositories.ImageRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
+import com.blito.rest.viewmodels.blit.SamanPaymentRequestResponseViewModel;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.BlitService;
 import com.blito.services.EventService;
+import com.blito.services.PaymentService;
+
+import mockit.Expectations;
+import mockit.Injectable;
+import mockit.Tested;
+import mockit.integration.junit4.JMockit;
 
 @ActiveProfiles("test")
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class)
-@Transactional
-public class BlitServiceTest {
-	@Autowired
+@RunWith(JMockit.class)
+@SpringBootTest(classes=Application.class)
+public class BlitServicePaymentTest {
+	
+	@Tested
 	BlitService blitService;
-	@Autowired
+	@Injectable
+	BlitRepository blitRepository;
+	@Injectable
 	EventRepository eventRepository;
-	@Autowired
+	@Injectable
 	EventService eventService;
-	@Autowired
+	@Injectable
 	UserRepository userRepository;
-	@Autowired
+	@Injectable
 	EventHostRepository eventHostRepository;
-	@Autowired
+	@Injectable
 	DiscountRepository discountRepo;
-	@Autowired
+	@Injectable
 	BlitTypeRepository blitTypeRepo;
-	@Autowired
+	@Injectable
 	ImageRepository imageRepository;
+	@Injectable
+	PaymentService paymentService;
 	EventHost eventHost;
 	private EventViewModel eventViewModel = null;
 	private BlitTypeViewModel blitTypeViewModel = null;
 	private User user = null;
 
-	private Logger log = LoggerFactory.getLogger(getClass());
-
 	@Before
-	public void init() {
-
+	public void init()
+	{
 		user = new User();
 		user.setEmail("farzam.vat@gmail.com");
 		user.setActive(true);
@@ -149,8 +155,17 @@ public class BlitServiceTest {
 
 	}
 
+	
 	@Test
-	public void testFreeBlit() throws InterruptedException {
+	public void buyCommonBlitTest()
+	{
+		new Expectations(paymentService) {{
+			blitService.generateTrackCode();
+			result = "85394723";
+			paymentService.samanBankRequestToken("85394723", 440000);
+			result = "myToken";
+		}};
+		
 		eventViewModel = eventService.create(eventViewModel);
 		blitTypeRepo.save(blitTypeRepo.findAll().stream().map(b -> {
 			b.setBlitTypeState(State.OPEN);
@@ -159,7 +174,7 @@ public class BlitServiceTest {
 
 		CommonBlitViewModel vmodel = new CommonBlitViewModel();
 		vmodel.setBlitTypeId(eventViewModel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream())
-				.filter(bt -> bt.isFree()).findFirst().get().getBlitTypeId());
+				.filter(bt -> !bt.isFree()).findFirst().get().getBlitTypeId());
 		vmodel.setBlitTypeName(blitTypeViewModel.getName());
 		vmodel.setCount(11);
 		vmodel.setCustomerEmail(user.getEmail());
@@ -169,9 +184,23 @@ public class BlitServiceTest {
 		vmodel.setEventAddress(eventViewModel.getAddress());
 		vmodel.setEventDate(eventViewModel.getEventDates().get(0).getDate());
 		vmodel.setEventName(eventViewModel.getEventName());
-		blitService.createCommonBlit(vmodel);
-		BlitType blitType = blitTypeRepo.findOne(vmodel.getBlitTypeId());
-		assertEquals(11, blitType.getSoldCount());
-		Thread.sleep(10000);
+		
+		blitService.createCommonBlit(vmodel)
+		.thenAccept(res -> {
+			SamanPaymentRequestResponseViewModel samanRes = 
+					(SamanPaymentRequestResponseViewModel)res;
+			assertEquals("myToken",samanRes.getToken());
+			Optional<Blit> blitRes = blitRepository.findBySamanBankToken(samanRes.getToken());
+			if(blitRes.isPresent())
+			{
+				assertEquals("85394723",blitRes.get().getTrackCode());
+			} else {
+				assertTrue(false);
+			}
+			
+			
+		});
+		
 	}
+	
 }
