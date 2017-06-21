@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blito.models.Event;
+import com.blito.repositories.EventRepository;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
@@ -30,6 +31,7 @@ import io.swagger.annotations.ApiResponses;
 public class PublicEventController {
 	
 	@Autowired EventService eventService;
+	@Autowired EventRepository eventRepository;
 	
 
 	// ***************** SWAGGER DOCS ***************** //
@@ -49,7 +51,8 @@ public class PublicEventController {
 	@JsonView(View.SimpleEvent.class)
 	@PostMapping("/search")
 	public ResponseEntity<?> search(@RequestBody SearchViewModel<Event> searchViewModel, Pageable pageable) {
-		return ResponseEntity.ok(eventService.searchEvents(searchViewModel, pageable));
+		Page<EventViewModel> page = eventService.searchEvents(searchViewModel, pageable);
+		return ResponseEntity.ok(page);
 	}
 
 	// ***************** SWAGGER DOCS ***************** //

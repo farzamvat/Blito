@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
-import com.blito.enums.BlitTypeEnum;
+import com.blito.enums.SeatType;
 import com.blito.enums.PaymentStatus;
 import com.blito.models.Blit;
 
@@ -17,7 +17,7 @@ public interface BlitBaseRepository <T extends Blit> extends JpaRepository<T,Lon
 	Optional<T> findBySamanBankToken(String token);
 	Optional<T> findByTrackCode(String trackCode);
 	List<T> findByPaymentStatus(PaymentStatus status);
-	List<T> findByType(BlitTypeEnum type);
+	List<T> findBySeatType(SeatType type);
 	Optional<T> findByTrackCodeAndPaymentStatus(String trackCode,PaymentStatus status);
 	List<T> findByUserUserId(long userId);
 	

@@ -44,7 +44,7 @@ public class ExchangeBlit {
 	@Enumerated(EnumType.STRING)
 	private State state;
 	@Enumerated(EnumType.STRING)
-	private ExchangeBlitType type;
+	private ExchangeBlitType exchangeBlitType;
 	@Enumerated(EnumType.STRING)
 	private OperatorState operatorState;
 	
@@ -55,6 +55,15 @@ public class ExchangeBlit {
 	@OneToOne
 	Image image;
 	
+	
+	public ExchangeBlitType getExchangeBlitType() {
+		return exchangeBlitType;
+	}
+
+	public void setExchangeBlitType(ExchangeBlitType exchangeBlitType) {
+		this.exchangeBlitType = exchangeBlitType;
+	}
+
 	public Image getImage() {
 		return image;
 	}
@@ -71,20 +80,12 @@ public class ExchangeBlit {
 		this.operatorState = operatorState;
 	}
 
-	public ExchangeBlitType getType() {
-		return type;
-	}
-
 	public String getTitle() {
 		return title;
 	}
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public void setType(ExchangeBlitType type) {
-		this.type = type;
 	}
 
 	public State getState() {

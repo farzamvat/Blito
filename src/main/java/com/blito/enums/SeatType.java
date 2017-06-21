@@ -1,5 +1,5 @@
 package com.blito.enums;
 
-public enum BlitTypeEnum {
+public enum SeatType {
 	COMMON,SEAT_BLIT
 }

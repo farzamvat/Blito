@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.blito.annotations.Email;
 import com.blito.annotations.MobileNumber;
 import com.blito.enums.BankGateway;
-import com.blito.enums.BlitTypeEnum;
+import com.blito.enums.SeatType;
 import com.blito.enums.PaymentStatus;
 import com.blito.rest.viewmodels.View;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -56,7 +56,7 @@ public class CommonBlitViewModel {
 	String blitTypeName;
 	@JsonView(View.Blit.class)
 	@NotNull
-	BlitTypeEnum type;
+	SeatType seatType;
 	@JsonView(View.Blit.class)
 	PaymentStatus paymentStatus;
 	@JsonView(View.AdminBlit.class)
@@ -152,11 +152,11 @@ public class CommonBlitViewModel {
 	public void setBlitTypeName(String blitTypeName) {
 		this.blitTypeName = blitTypeName;
 	}
-	public BlitTypeEnum getType() {
-		return type;
+	public SeatType getSeatType() {
+		return seatType;
 	}
-	public void setType(BlitTypeEnum type) {
-		this.type = type;
+	public void setSeatType(SeatType seatType) {
+		this.seatType = seatType;
 	}
 	public PaymentStatus getPaymentStatus() {
 		return paymentStatus;

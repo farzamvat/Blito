@@ -9,13 +9,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specifications;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.configs.Constants;
 import com.blito.enums.ImageType;
-import com.blito.enums.OperatorState;
 import com.blito.enums.Response;
 import com.blito.enums.State;
 import com.blito.exceptions.AlreadyExistsException;

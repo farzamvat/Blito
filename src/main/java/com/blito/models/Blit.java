@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.blito.enums.BankGateway;
-import com.blito.enums.BlitTypeEnum;
+import com.blito.enums.SeatType;
 import com.blito.enums.PaymentStatus;
 
 @Entity(name="blit")
@@ -37,7 +37,7 @@ public class Blit {
 	String customerEmail;
 	String eventAddress;
 	String blitTypeName;
-	BlitTypeEnum type;
+	SeatType seatType;
 	PaymentStatus paymentStatus;
 	String paymentError;
 	String samanBankToken;
@@ -148,11 +148,11 @@ public class Blit {
 	public void setBlitTypeName(String blitTypeName) {
 		this.blitTypeName = blitTypeName;
 	}
-	public BlitTypeEnum getType() {
-		return type;
+	public SeatType getSeatType() {
+		return seatType;
 	}
-	public void setType(BlitTypeEnum type) {
-		this.type = type;
+	public void setSeatType(SeatType seatType) {
+		this.seatType = seatType;
 	}
 	public PaymentStatus getPaymentStatus() {
 		return paymentStatus;
