@@ -275,6 +275,9 @@
                                         <div ng-show="submitExchangeNotif" class="text-center alert alert-success col-xs-12 marginTop10">
                                             <strong>آگهی با موفقیت ثبت شد</strong>
                                         </div>
+                                        <div id="submitExchangeErrorNotif" ng-show="submitExchangeErrorNotif" class="text-center alert alert-danger col-xs-12">
+                                            <strong></strong>
+                                        </div>
                                         <div class="controls">
                                             <button id="exchangeEventSubmit" ng-disabled="exchangeBlitForm.$invalid" ng-click="submitExchangeTicket(exchange)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت آگهی <i ng-show="submitExchangeSpinner" class="fa fa-spinner fa-spin"></i></button>
                                         </div>
@@ -674,6 +677,9 @@
                                         <div ng-show="createEventNotif" class="text-center alert alert-success col-xs-12">
                                             <strong>رویداد با موفقیت ثبت شد!</strong>
                                         </div>
+                                        <div id="createEventErrorNotif" ng-show="createEventErrorNotif" class="text-center alert alert-danger col-xs-12">
+                                            <strong></strong>
+                                        </div>
                                         <div class="controls">
                                             <button id="signInButton" type="submit"  ng-disabled="submitEventForm.$invalid" ng-click="submitEvent(eventFields)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت رویداد <i ng-show="createEventSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
                                         </div>
@@ -813,6 +819,9 @@
                                         <div ng-show="submitPlannerNotif" class="text-center alert alert-success col-xs-12" >
                                             <strong>برگزار کننده با موفقیت ثبت شد!</strong>
                                         </div>
+                                        <div id="submitPlannerErrorNotif" ng-show="submitPlannerErrorNotif" class="text-center alert alert-danger col-xs-12">
+                                            <strong></strong>
+                                        </div>
                                         <div class="controls">
                                             <button id="eventPlannerSubmit" ng-disabled="submitPlannerForm.$invalid" ng-click="submitEventPlanner(eventPlanner)"  class="btn btn-success btn-lg btnLogin">ثبت برگذارکننده <i ng-show="submitPlannerSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
                                         </div>
@@ -843,13 +852,13 @@
 
                                                             <th class="dataCenter">نام رویداد
                                                             </th>
-                                                            <th class="dataCenter" > زمان شروع بلیت
-                                                            </th>
-                                                            <th class="dataCenter" > زمان پایان بلیت
-                                                            </th>
                                                             <th class="dataCenter" >نوع
                                                             </th>
                                                             <th class="dataCenter" >نام برگزارکننده
+                                                            </th>
+                                                            <th class="dataCenter" >وضعیت ثبت
+                                                            </th>
+                                                            <th class="dataCenter" >وضعیت رویداد
                                                             </th>
                                                             <th class="dataCenter" >ویرایش  رویداد
                                                             </th>
@@ -857,12 +866,12 @@
                                                         </tr>
                                                         </thead>
                                                         <tbody class="showTimeList">
-                                                        <tr ng-repeat="item in userEvents">
+                                                        <tr ng-repeat="item in getDataUserEvents">
                                                             <td class="dataCenter">{{ item.eventName}}</td>
-                                                            <td><input value="{{ item.blitSaleStartDate}}" class="dataCenter persianTimeExchange" disabled readonly/></td>
-                                                            <td><input value="{{ item.blitSaleEndDate}}" class="dataCenter persianTimeExchange" disabled readonly/></td>
                                                             <td class="dataCenter">{{ item.eventType}}</td>
                                                             <td class="dataCenter">{{ item.eventHostName}}</td>
+                                                            <td class="dataCenter">{{ item.operatorState}}</td>
+                                                            <td class="dataCenter">{{ item.eventState}}</td>
                                                             <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editEvent($index)">ویرایش</button></td>
                                                         </tr>
                                                         </tbody>

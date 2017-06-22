@@ -1189,7 +1189,7 @@ dir-pagination-controls ul {
 .customPanelUser .panel-body {
     max-height: 90%;
     overflow-y:scroll;
-    /*border: 1px solid #303030;*/
+    border: 1px solid #303030;
 }
 .userNameProfilePage {
     font-size: 18px;

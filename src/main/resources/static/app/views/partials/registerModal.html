@@ -44,9 +44,15 @@
 
                                 <!-- Button -->
                                 <div class="control-group ">
+                                    <div ng-show="loginSuccessNotif" class="text-center alert alert-success col-xs-12" >
+                                        <strong>با موفقیت وارد شدید !</strong>
+                                    </div>
+                                    <div id="loginError" ng-show="loginErrorNotif" class="text-center alert alert-danger col-xs-12" >
+                                        <strong></strong>
+                                    </div>
                                     <label class="control-label" for="signInButton"></label>
                                     <div class="controls">
-                                        <button id="signInButton" ng-disabled="signInForm.$invalid" ng-click="login(loginFields)" name="signin" class="btn btn-success btn-lg btnLogin">ورود</button>
+                                        <button id="signInButton" ng-disabled="signInForm.$invalid" ng-click="login(loginFields)" name="signin" class="btn btn-success btn-lg btnLogin">ورود <i ng-show="submitLogin" class="fa fa-spinner fa-spin"></i></button>
                                     </div>
                                 </div>
                             </fieldset>
@@ -123,11 +129,14 @@
                                 <br>
 
 
+                                <div id="registerError" ng-show="registerErrorNotif" class="text-center alert alert-danger col-xs-12" >
+                                    <strong></strong>
+                                </div>
                                 <!-- Button -->
                                 <div class="control-group">
                                     <label class="registerLabel" for="confirmsignup"></label>
                                     <div class="controls">
-                                        <button ng-disabled="signupForm.$invalid" id="confirmsignup" ng-click="regUser(fields)" name="confirmsignup" class="btn btn-success btn-lg btnReg">ثبت نام</button>
+                                        <button ng-disabled="signupForm.$invalid" id="confirmsignup" ng-click="regUser(fields)" name="confirmsignup" class="btn btn-success btn-lg btnReg">ثبت نام <i ng-show="submitRegister" class="fa fa-spinner fa-spin"></i></button>
                                     </div>
                                 </div>
                             </fieldset>

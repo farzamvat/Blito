@@ -46,6 +46,11 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 authenticated: false
 
             })
+            .when('/exchange-page', {
+                templateUrl : 'app/views/pages/exchange-page.html',
+                authenticated: false
+
+            })
             .when('/bio-page', {
                 templateUrl : 'app/views/pages/bioPage.html',
                 authenticated: false

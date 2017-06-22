@@ -93,24 +93,22 @@ angular.module('menuPagesModule', [])
         $scope.regUser = function (regData) {
             main.loading = true;
             main.errorMsg = false;
-            $("#loading").modal("show");
-            $("#registrationModal").modal("hide");
+            $scope.registerErrorNotif = false;
+            $scope.submitRegister = true;
             $timeout(function () {
                 userCreate.create(regData)
                     .then(function (data, status) {
-                        $("#loading").modal("hide");
+                        $scope.submitRegister = false;
                         main.successMsg = data.data.message;
                         userInfo.setData(data.config.data);
-                        $('#registrationModal').modal('hide');
                         $location.path('/activate-user');
                     })
                     .catch(function (data, status) {
-                        $scope.Msg = data.data.message;
-                        $("#loading").modal("hide");
-                        $scope.Msg = "ثبت نام شما نا موفق بوده است";
-                        $("#notification").modal("show");
+                        $scope.submitRegister = false;
+                        $scope.registerErrorNotif = true;
+
+                        document.getElementById("registerError").innerHTML= data.data.message;
                         console.log(data);
-                        console.log(main.errorMsg);
                     })
             },200)
         };
@@ -118,36 +116,30 @@ angular.module('menuPagesModule', [])
         $scope.login = function (loginData) {
             main.loading = true;
             main.errorMsg = false;
-            $("#loading").modal("show");
-            $("#registrationModal").modal("hide");
-            // $timeout(function () {
+            $scope.loginErrorNotif = false;
+            $scope.loginSuccessNotif = false;
 
+            $scope.submitLogin = true;
 
             Auth.login(loginData)
                 .then(function (data, status) {
-                    $("#loading").modal("hide");
-                    $scope.Msg = "با موفقیت وارد شدید";
+                    $scope.loginSuccessNotif = true;
+                    $scope.submitLogin = false;
                     main.checkSession();
-
+                    console.log(data);
                     $location.path(config.redirectToUrlAfterLogin.url);
-                    $("#notification").modal("show");
                     main.setUserData();
-                    $timeout(function () {
-                        $("#notification").modal("hide");
-                    }, 2000);
-
                     console.log("ok");
-
-
                     })
                 .catch(function (data, status) {
+                    $scope.loginErrorNotif = true;
+                    $scope.submitLogin = false;
+                    console.log(data.data.message);
+                    console.log(document.getElementById("loginError"));
+                    document.getElementById("loginError").innerHTML = data.data.message;
+                    $scope.submitLogin = false;
                     $scope.Msg = "ورود نا موفق بود";
-                    $("#loading").modal("hide");
-                    console.log("not ok");
-                    $("#notification").modal("show");
-                    // $scope.Msg = data.data.message;
                 })
-            // }, 2000)
             ;
         };
 

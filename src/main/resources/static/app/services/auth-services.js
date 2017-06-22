@@ -16,9 +16,7 @@ angular.module('authServices', [])
                     AuthToken.setToken(data.data);
                     return data;
                 })
-                .catch(function (data, status) {
-                    console.log("cant login");
-                })
+
         };
 
         authService.isLoggedIn = function () {
