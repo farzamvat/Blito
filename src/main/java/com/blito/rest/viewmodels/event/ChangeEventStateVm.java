@@ -4,7 +4,7 @@ import javax.validation.constraints.NotNull;
 
 import com.blito.enums.State;
 
-public class AdminChangeEventStateVm {
+public class ChangeEventStateVm {
 	@NotNull
 	long eventId;
 	@NotNull

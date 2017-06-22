@@ -29,19 +29,24 @@ import com.blito.mappers.ImageMapper;
 import com.blito.models.BlitType;
 import com.blito.models.Discount;
 import com.blito.models.Event;
+import com.blito.models.EventDate;
 import com.blito.models.EventHost;
 import com.blito.models.Image;
 import com.blito.models.User;
 import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.DiscountRepository;
+import com.blito.repositories.EventDateRepository;
 import com.blito.repositories.EventHostRepository;
 import com.blito.repositories.EventRepository;
 import com.blito.repositories.ImageRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
 import com.blito.rest.viewmodels.discount.DiscountViewModel;
+import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
+import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
 import com.blito.rest.viewmodels.image.ImageViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.security.SecurityContextHolder;
@@ -72,13 +77,15 @@ public class EventService {
 	DiscountRepository discountRepository;
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	EventDateRepository eventDateRepository;
 
 	@Transactional
 	public EventViewModel create(EventViewModel vmodel) {
 		if (vmodel.getBlitSaleStartDate().after(vmodel.getBlitSaleEndDate())) {
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_DATES));
 		}
-		if(vmodel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream()).anyMatch(bt -> {
+		if (vmodel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream()).anyMatch(bt -> {
 			return bt.isFree() ? bt.getPrice() != 0 : bt.getPrice() <= 0;
 		})) {
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.ISFREE_AND_PRICE_NOT_MATCHED));
@@ -86,18 +93,18 @@ public class EventService {
 		if (vmodel.getImages().stream().filter(i -> i.getType().equals(ImageType.EVENT_PHOTO)).count() == 0) {
 			vmodel.getImages().add(new ImageViewModel(Constants.DEFAULT_EVENT_PHOTO, ImageType.EVENT_PHOTO));
 		}
-		
+
 		List<Image> images = imageRepository.findByImageUUIDIn(
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
-		if(images.size() != vmodel.getImages().size())
-		{
+		if (images.size() != vmodel.getImages().size()) {
 			throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
 		}
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
-		
-		EventHost eventHost =eventHostRepository.findByEventHostIdAndIsDeletedFalse(vmodel.getEventHostId()).map(eh -> eh)
+
+		EventHost eventHost = eventHostRepository.findByEventHostIdAndIsDeletedFalse(vmodel.getEventHostId())
+				.map(eh -> eh)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
-		
+
 		Event event = eventMapper.createFromViewModel(vmodel);
 		event.setImages(images);
 		event.setEventHost(eventHost);
@@ -108,7 +115,7 @@ public class EventService {
 	public EventFlatViewModel getFlatEventByLink(String link) {
 		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(link).map(e -> e)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
-		if(event.isDeleted()) {
+		if (event.isDeleted()) {
 			throw new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND));
 		}
 		return eventFlatMapper.createFromEntity(event);
@@ -123,7 +130,7 @@ public class EventService {
 	public EventViewModel getEventById(long eventId) {
 		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId).map(e -> e)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
-		
+
 		return eventMapper.createFromEntity(event);
 	}
 
@@ -133,34 +140,34 @@ public class EventService {
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_DATES));
 		}
 
-		if(vmodel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream()).anyMatch(bt -> {
+		if (vmodel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream()).anyMatch(bt -> {
 			return bt.isFree() ? bt.getPrice() != 0 : bt.getPrice() <= 0;
 		})) {
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.ISFREE_AND_PRICE_NOT_MATCHED));
 		}
-		
+
 		Event event = eventRepository.findByEventIdAndIsDeletedFalse(vmodel.getEventId()).map(e -> e)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 
-		EventHost eventHost = eventHostRepository.findByEventHostIdAndIsDeletedFalse(vmodel.getEventHostId()).map(eh -> eh)
+		EventHost eventHost = eventHostRepository.findByEventHostIdAndIsDeletedFalse(vmodel.getEventHostId())
+				.map(eh -> eh)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
 
 		if (eventHost.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
-		
-		if(event.getEventState() == State.SOLD) {
+
+		if (event.getEventState() == State.SOLD) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_IS_SOLD));
 		}
 
-		if(!vmodel.getEventLink().equals(event.getEventLink()))
-		{
+		if (!vmodel.getEventLink().equals(event.getEventLink())) {
 			Optional<Event> eventResult = eventRepository.findByEventLinkAndIsDeletedFalse(vmodel.getEventLink());
 			if (eventResult.isPresent() && eventResult.get().getEventId() != vmodel.getEventId()) {
 				throw new AlreadyExistsException(ResourceUtil.getMessage(Response.EVENT_LINK_EXISTS));
 			}
 		}
-		
+
 		List<Image> images = imageRepository.findByImageUUIDIn(
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
@@ -205,10 +212,11 @@ public class EventService {
 		 */
 		return searchViewModel.getRestrictions().stream().map(r -> r.action())
 				.reduce((s1, s2) -> Specifications.where(s1).and(s2))
-				.map(specification -> new PageImpl<>(
-						eventMapper.createFromEntities(eventRepository.findAll(specification).stream().filter(eh->!eh.isDeleted()).collect(Collectors.toList())).stream()
-								.skip(pageable.getPageNumber() * pageable.getPageSize()).limit(pageable.getPageSize())
-								.collect(Collectors.toList())))
+				.map(specification -> new PageImpl<>(eventMapper
+						.createFromEntities(eventRepository.findAll(specification).stream()
+								.filter(eh -> !eh.isDeleted()).collect(Collectors.toList()))
+						.stream().skip(pageable.getPageNumber() * pageable.getPageSize()).limit(pageable.getPageSize())
+						.collect(Collectors.toList())))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
 	}
 
@@ -254,5 +262,40 @@ public class EventService {
 				new PageImpl<>(events.stream().skip(pageable.getPageNumber() * pageable.getPageSize())
 						.limit(pageable.getPageSize()).collect(Collectors.toList()), pageable, events.size()),
 				eventMapper::createFromEntity);
+	}
+
+	@Transactional
+	public void changeEventState(ChangeEventStateVm vmodel) {
+		Event event = eventRepository.findByEventIdAndIsDeletedFalse(vmodel.getEventId()).map(e -> e)
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+		if (event.getEventHost().getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
+		}
+		event.setEventState(vmodel.getState());
+		return;
+	}
+
+	@Transactional
+	public void changeEventDateState(ChangeEventDateStateVm vmodel) {
+		EventDate eventDate = Optional.ofNullable(eventDateRepository.findOne(vmodel.getEventDateId())).map(e -> e)
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
+		if (eventDate.getEvent().getEventHost().getUser().getUserId() != SecurityContextHolder.currentUser()
+				.getUserId()) {
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
+		}
+		eventDate.setEventDateState(vmodel.getEventDateState());
+		return;
+	}
+
+	@Transactional
+	public void changeBlitTypeState(ChangeBlitTypeStateVm vmodel) {
+		BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(vmodel.getBlitTypeId())).map(e -> e)
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
+		if (blitType.getEventDate().getEvent().getEventHost().getUser().getUserId() != SecurityContextHolder
+				.currentUser().getUserId()) {
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
+		}
+		blitType.setBlitTypeState(vmodel.getBlitTypeState());
+		return;
 	}
 }

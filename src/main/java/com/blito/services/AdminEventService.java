@@ -31,15 +31,15 @@ import com.blito.repositories.EventRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.adminreport.BlitBuyerViewModel;
-import com.blito.rest.viewmodels.blittype.AdminChangeBlitTypeStateVm;
+import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
 import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.event.AdminChangeEventOperatorStateVm;
-import com.blito.rest.viewmodels.event.AdminChangeEventStateVm;
+import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.AdminChangeOfferTypeViewModel;
 import com.blito.rest.viewmodels.event.AdminSetIsEventoViewModel;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
-import com.blito.rest.viewmodels.eventdate.AdminChangeEventDateStateVm;
+import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
 import com.blito.security.SecurityContextHolder;
 
 @Service
@@ -72,14 +72,14 @@ public class AdminEventService {
 	}
 
 	@Transactional
-	public void changeEventState(AdminChangeEventStateVm vmodel) {
+	public void changeEventState(ChangeEventStateVm vmodel) {
 		Event event = getEventFromRepository(vmodel.getEventId());
 		event.setEventState(vmodel.getState());
 		return;
 	}
 
 	@Transactional
-	public void changeEventDateState(AdminChangeEventDateStateVm vmodel) {
+	public void changeEventDateState(ChangeEventDateStateVm vmodel) {
 		EventDate eventDate = Optional.ofNullable(eventDateRepository.findOne(vmodel.getEventDateId())).map(ed -> ed)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
 		eventDate.setEventDateState(vmodel.getEventDateState());
@@ -87,7 +87,7 @@ public class AdminEventService {
 	}
 	
 	@Transactional
-	public void changeBlitTypeState(AdminChangeBlitTypeStateVm vmodel) {
+	public void changeBlitTypeState(ChangeBlitTypeStateVm vmodel) {
 		BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(vmodel.getBlitTypeId())).map(bt -> bt)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
 		blitType.setBlitTypeState(vmodel.getBlitTypeState());

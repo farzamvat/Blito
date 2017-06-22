@@ -4,7 +4,7 @@ import javax.validation.constraints.NotNull;
 
 import com.blito.enums.State;
 
-public class AdminChangeBlitTypeStateVm {
+public class ChangeBlitTypeStateVm {
 
 	@NotNull
 	long blitTypeId;

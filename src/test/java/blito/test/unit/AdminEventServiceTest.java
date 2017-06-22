@@ -41,7 +41,7 @@ import com.blito.repositories.UserRepository;
 import com.blito.rest.viewmodels.adminreport.BlitBuyerViewModel;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.event.AdminChangeEventOperatorStateVm;
-import com.blito.rest.viewmodels.event.AdminChangeEventStateVm;
+import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
@@ -96,7 +96,7 @@ public class AdminEventServiceTest {
 	
 	private BlitType blitType2_1_1 = new BlitType();
 	
-	private AdminChangeEventStateVm changeEventStateTestVmodel = new AdminChangeEventStateVm();
+	private ChangeEventStateVm changeEventStateTestVmodel = new ChangeEventStateVm();
 	private AdminChangeEventOperatorStateVm changeEventOperatorStateTestVmodel = new AdminChangeEventOperatorStateVm();
 	private EventViewModel eventUpdateVmodel = new EventViewModel();
 	private EventDateViewModel eventDateUpdateVmodel1 = new EventDateViewModel();
