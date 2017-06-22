@@ -254,13 +254,6 @@ public class AdminEventServiceTest {
 		assertEquals(1000, vmodel.getEventDates().get(0).getPrice());
 	}
 	
-	@Test
-	public void updateEventTest() {
-		EventFlatViewModel vmodel = adminEventService.updateEvent(eventUpdateVmodel);
-		assertEquals("jashne banafsh", vmodel.getEventName());
-		assertEquals("jashne banafsh", eventRepo.findByEventIdAndIsDeletedFalse(event1.getEventId()).get().getEventName());
-		assertEquals("VIP", vmodel.getEventDates().get(0).getName());
-	}
 	
 	@Test(expected = NotFoundException.class)
 	public void getFromRepoTest() {
