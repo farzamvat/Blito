@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.configs.Constants;
 import com.blito.enums.ImageType;
+import com.blito.enums.OperatorState;
 import com.blito.enums.Response;
 import com.blito.enums.State;
 import com.blito.exceptions.AlreadyExistsException;
@@ -271,6 +272,9 @@ public class EventService {
 		if (event.getEventHost().getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
+		if (event.getOperatorState() == OperatorState.REJECTED || event.getOperatorState() == OperatorState.PENDING) {
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_NOT_APPROVED));
+		}
 		event.setEventState(vmodel.getState());
 		return;
 	}
@@ -283,6 +287,10 @@ public class EventService {
 				.getUserId()) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
+		if (eventDate.getEvent().getOperatorState() == OperatorState.REJECTED
+				|| eventDate.getEvent().getOperatorState() == OperatorState.PENDING) {
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_NOT_APPROVED));
+		}
 		eventDate.setEventDateState(vmodel.getEventDateState());
 		return;
 	}
@@ -294,6 +302,10 @@ public class EventService {
 		if (blitType.getEventDate().getEvent().getEventHost().getUser().getUserId() != SecurityContextHolder
 				.currentUser().getUserId()) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
+		}
+		if (blitType.getEventDate().getEvent().getOperatorState() == OperatorState.REJECTED
+				|| blitType.getEventDate().getEvent().getOperatorState() == OperatorState.PENDING) {
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_NOT_APPROVED));
 		}
 		blitType.setBlitTypeState(vmodel.getBlitTypeState());
 		return;
