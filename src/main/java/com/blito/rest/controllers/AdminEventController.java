@@ -7,26 +7,30 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.blito.enums.Response;
+import com.blito.mappers.EventFlatMapper;
+import com.blito.models.Event;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.adminreport.BlitBuyerViewModel;
 import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
 import com.blito.rest.viewmodels.event.AdminChangeEventOperatorStateVm;
-import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.AdminChangeOfferTypeViewModel;
 import com.blito.rest.viewmodels.event.AdminSetIsEventoViewModel;
+import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
-import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
+import com.blito.search.SearchViewModel;
 import com.blito.services.AdminEventService;
 import com.blito.services.ExcelService;
 import com.blito.view.ExcelView;
@@ -43,16 +47,18 @@ public class AdminEventController {
 	AdminEventService adminEventService;
 	@Autowired
 	ExcelService excelService;
+	@Autowired
+	EventFlatMapper flatMapper;
 
-	// ***************** SWAGGER DOCS ***************** //
-	@ApiOperation(value = "get all pending events")
-	@ApiResponses({ @ApiResponse(code = 200, message = "get all pending ok", response = EventViewModel.class) })
-	// ***************** SWAGGER DOCS ***************** //
-	@JsonView(View.SimpleEvent.class)
-	@GetMapping("/pending")
-	public ResponseEntity<Page<EventViewModel>> getAllPendingEvents(Pageable pageable) {
-		return ResponseEntity.ok(adminEventService.getAllPendingEvents(pageable));
-	}
+//	// ***************** SWAGGER DOCS ***************** //
+//	@ApiOperation(value = "get all pending events")
+//	@ApiResponses({ @ApiResponse(code = 200, message = "get all pending ok", response = EventViewModel.class) })
+//	// ***************** SWAGGER DOCS ***************** //
+//	@JsonView(View.SimpleEvent.class)
+//	@GetMapping("/pending")
+//	public ResponseEntity<Page<EventViewModel>> getAllPendingEvents(Pageable pageable) {
+//		return ResponseEntity.ok(adminEventService.getAllPendingEvents(pageable));
+//	}
 
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "change event state")
@@ -141,16 +147,23 @@ public class AdminEventController {
 		adminEventService.deleteEvent(eventId);
 		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
-
-	// ***************** SWAGGER DOCS ***************** //
-	@ApiOperation(value = "get all events")
-	@ApiResponses({ @ApiResponse(code = 200, message = "get all events ok", response = EventFlatViewModel.class) })
-	// ***************** SWAGGER DOCS ***************** //
-	@JsonView(View.SimpleEvent.class)
-	@GetMapping("/all")
-	public ResponseEntity<Page<EventFlatViewModel>> getAllEvents(Pageable page) {
-		return ResponseEntity.ok(adminEventService.getAllEvents(page));
+	
+	@JsonView(View.AdminEvent.class)
+	@PostMapping("/search")
+	public ResponseEntity<Page<EventFlatViewModel>> search(@RequestBody SearchViewModel<Event> search,Pageable pageable) {
+		return ResponseEntity.ok(adminEventService.searchEvents(search, pageable, flatMapper));
 	}
+	
+//
+//	// ***************** SWAGGER DOCS ***************** //
+//	@ApiOperation(value = "get all events")
+//	@ApiResponses({ @ApiResponse(code = 200, message = "get all events ok", response = EventFlatViewModel.class) })
+//	// ***************** SWAGGER DOCS ***************** //
+//	@JsonView(View.SimpleEvent.class)
+//	@GetMapping("/all")
+//	public ResponseEntity<Page<EventFlatViewModel>> getAllEvents(Pageable page) {
+//		return ResponseEntity.ok(adminEventService.getAllEvents(page));
+//	}
 
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "get event")

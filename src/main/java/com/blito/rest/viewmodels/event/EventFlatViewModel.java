@@ -41,6 +41,8 @@ public class EventFlatViewModel {
 	@JsonView(View.SimpleEvent.class)
 	private Timestamp blitSaleEndDate;
 	@JsonView(View.Event.class)
+	private Timestamp eventSoldDate;
+	@JsonView(View.Event.class)
 	private String address;
 	@JsonView(View.Event.class)
 	private String description;
@@ -52,8 +54,58 @@ public class EventFlatViewModel {
 	private String aparatDisplayCode;
 	@JsonView(View.SimpleEvent.class)
 	private OperatorState operatorState;
+	@JsonView(View.AdminEvent.class)
 	private int orderNumber;
+	@JsonView(View.Event.class)
+	private String members;
+	@JsonView(View.Event.class)
+	private Timestamp createdAt;
+	@JsonView(View.AdminEvent.class)
+	private boolean isDeleted;
+	@JsonView(View.AdminEvent.class)
+	private boolean isEvento;
 	
+	
+	public Timestamp getEventSoldDate() {
+		return eventSoldDate;
+	}
+
+	public void setEventSoldDate(Timestamp eventSoldDate) {
+		this.eventSoldDate = eventSoldDate;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	public boolean isEvento() {
+		return isEvento;
+	}
+
+	public void setEvento(boolean isEvento) {
+		this.isEvento = isEvento;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public String getMembers() {
+		return members;
+	}
+
+	public void setMembers(String members) {
+		this.members = members;
+	}
+
 	public int getOrderNumber() {
 		return orderNumber;
 	}

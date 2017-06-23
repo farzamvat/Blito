@@ -26,6 +26,7 @@ import com.blito.mappers.DiscountMapper;
 import com.blito.mappers.EventDateMapper;
 import com.blito.mappers.EventFlatMapper;
 import com.blito.mappers.EventMapper;
+import com.blito.mappers.GenericMapper;
 import com.blito.mappers.ImageMapper;
 import com.blito.models.BlitType;
 import com.blito.models.Discount;
@@ -80,6 +81,7 @@ public class EventService {
 	UserRepository userRepository;
 	@Autowired
 	EventDateRepository eventDateRepository;
+	@Autowired SearchService searchService;
 
 	@Transactional
 	public EventViewModel create(EventViewModel vmodel) {
@@ -207,18 +209,8 @@ public class EventService {
 		return eventLink;
 	}
 
-	public Page<EventViewModel> searchEvents(SearchViewModel<Event> searchViewModel, Pageable pageable) {
-		/*
-		 * empty search handling ...
-		 */
-		return searchViewModel.getRestrictions().stream().map(r -> r.action())
-				.reduce((s1, s2) -> Specifications.where(s1).and(s2))
-				.map(specification -> new PageImpl<>(eventMapper
-						.createFromEntities(eventRepository.findAll(specification).stream()
-								.filter(eh -> !eh.isDeleted()).collect(Collectors.toList()))
-						.stream().skip(pageable.getPageNumber() * pageable.getPageSize()).limit(pageable.getPageSize())
-						.collect(Collectors.toList())))
-				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
+	public <V> Page<V> searchEvents(SearchViewModel<Event> searchViewModel, Pageable pageable,GenericMapper<Event,V> mapper ) {
+		return searchService.search(searchViewModel, pageable, mapper, eventRepository);
 	}
 
 	@Transactional
@@ -258,11 +250,8 @@ public class EventService {
 	@Transactional
 	public Page<EventViewModel> getUserEvents(Pageable pageable) {
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
-		List<Event> events = eventRepository.findByEventHostUserUserIdAndIsDeletedFalse(user.getUserId());
-		return eventMapper.toPage(
-				new PageImpl<>(events.stream().skip(pageable.getPageNumber() * pageable.getPageSize())
-						.limit(pageable.getPageSize()).collect(Collectors.toList()), pageable, events.size()),
-				eventMapper::createFromEntity);
+		Page<Event> events = eventRepository.findByEventHostUserUserIdAndIsDeletedFalse(user.getUserId(), pageable);
+		return eventMapper.toPage(events);
 	}
 
 	@Transactional

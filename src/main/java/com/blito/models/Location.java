@@ -1,5 +1,6 @@
 package com.blito.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 
@@ -7,6 +8,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 @Entity(name="location")
 @PrimaryKeyJoinColumn(referencedColumnName="profileId")
 public class Location extends Profile {
+	@Column(columnDefinition="TEXT")
 	String address;
 	
 	Double longitude;

@@ -36,6 +36,9 @@ public class EventViewModel {
 	@NotNull
 	@JsonView(View.SimpleEvent.class)
 	private Timestamp blitSaleEndDate;
+	
+	@JsonView(View.Event.class)
+	private Timestamp eventSoldDate;
 
 	@JsonView(View.Event.class)
 	@NotEmpty
@@ -46,6 +49,9 @@ public class EventViewModel {
 
 	@JsonView(View.Event.class)
 	private Double latitude;
+	
+	@JsonView(View.Event.class)
+	private Timestamp createdAt;
 
 	@JsonView(View.Event.class)
 	private Double longitude;
@@ -84,6 +90,10 @@ public class EventViewModel {
 
 	@JsonView(View.SimpleEvent.class)
 	private boolean isEvento;
+	@JsonView(View.Event.class)
+	private String members;
+	@JsonView(View.AdminEvent.class)
+	private boolean isDeleted;
 
 	public EventViewModel() {
 		eventDates = new ArrayList<>();
@@ -91,6 +101,36 @@ public class EventViewModel {
 		offers = new ArrayList<>();
 	}
 
+	public Timestamp getEventSoldDate() {
+		return eventSoldDate;
+	}
+
+	public void setEventSoldDate(Timestamp eventSoldDate) {
+		this.eventSoldDate = eventSoldDate;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	public String getMembers() {
+		return members;
+	}
+
+	public void setMembers(String members) {
+		this.members = members;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
 	public boolean isEvento() {
 		return isEvento;
 	}

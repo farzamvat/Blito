@@ -14,6 +14,7 @@ import com.blito.models.User;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.account.UserViewModel;
+import com.blito.search.SearchViewModel;
 
 @Service
 public class AdminAccountService {
@@ -22,7 +23,9 @@ public class AdminAccountService {
 	UserRepository userRepository;
 	@Autowired
 	UserMapper userMapper;
-
+	@Autowired
+	SearchService searchService;
+	
 	public Page<UserViewModel> getAllUsers(Pageable pageable) {
 		return userMapper.toPage(userRepository.findAll(pageable), userMapper::createFromEntity);
 	}
@@ -45,6 +48,11 @@ public class AdminAccountService {
 				.orElseThrow(()->new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
 		user.setBanned(false);
 		userRepository.save(user);
+	}
+	
+	public Page<UserViewModel> searchUsers(SearchViewModel<User> searchViewModel,Pageable pageable)
+	{
+		return searchService.search(searchViewModel, pageable, userMapper, userRepository);
 	}
 	
 //	public UserViewModel updateUser(UserAdminUpdateViewModel vmodel) {

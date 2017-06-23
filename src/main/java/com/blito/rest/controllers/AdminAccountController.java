@@ -6,17 +6,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.blito.enums.Response;
+import com.blito.models.User;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.account.UserViewModel;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
+import com.blito.search.SearchViewModel;
 import com.blito.services.AdminAccountService;
 import com.blito.services.ExcelService;
 import com.blito.services.RoleService;
@@ -44,6 +48,13 @@ public class AdminAccountController {
 	@GetMapping("/all")
 	public ResponseEntity<Page<UserViewModel>> getAllUsers(Pageable pageable){
 		return ResponseEntity.ok(adminAccountService.getAllUsers(pageable));
+	}
+	
+	@JsonView(View.AdminUser.class)
+	@PostMapping("/search")
+	public ResponseEntity<Page<UserViewModel>> search(@RequestBody SearchViewModel<User> search,Pageable pageable)
+	{
+		return ResponseEntity.ok(adminAccountService.searchUsers(search, pageable));
 	}
 	
 	// ***************** SWAGGER DOCS ***************** //

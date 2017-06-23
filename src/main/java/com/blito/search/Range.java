@@ -31,6 +31,4 @@ public class Range<T> extends AbstractSearchViewModel<T> {
 	public void setMaxValue(long maxValue) {
 		this.maxValue = maxValue;
 	}
-
-	
 }

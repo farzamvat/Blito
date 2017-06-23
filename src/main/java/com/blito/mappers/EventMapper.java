@@ -39,6 +39,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
 		vmodel.getEventDates().forEach(ed -> {
 			event.addEventDate(eventDateMapper.createFromViewModel(ed));
 		});
+		event.setMembers(vmodel.getMembers());
 		event.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 		event.setEventState(State.CLOSED);
 		event.setEvento(false);
@@ -68,6 +69,10 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
 		vmodel.setLongitude(event.getLongitude());
 		vmodel.setEvento(event.isEvento());
 		vmodel.setImages(imageMapper.createFromEntities(event.getImages()));
+		vmodel.setCreatedAt(event.getCreatedAt());
+		vmodel.setMembers(event.getMembers());
+		vmodel.setEventSoldDate(event.getEventSoldDate());
+		vmodel.setDeleted(event.isDeleted());
 		return vmodel;
 	}
 
@@ -85,6 +90,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
 		event.setLatitude(vmodel.getLatitude());
 		event.setEventLink(vmodel.getEventLink());
 		event.setEventType(vmodel.getEventType());
+		event.setMembers(vmodel.getMembers());
 		event.setEventDates(vmodel.getEventDates().stream().map(edvm -> {
 			return event.getEventDates().stream().filter(ed -> ed.getEventDateId() == edvm.getEventDateId()).findFirst()
 					.map(e -> eventDateMapper.updateEntity(edvm, e))

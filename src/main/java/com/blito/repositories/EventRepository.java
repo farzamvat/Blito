@@ -18,12 +18,11 @@ import com.blito.models.Event;
 public interface EventRepository
 		extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event>, PagingAndSortingRepository<Event, Long> {
 	Optional<Event> findByEventLinkAndIsDeletedFalse(String link);
-	List<Event> findByEventTypeAndIsDeletedFalse(EventType type,Pageable pageable);
+	Page<Event> findByEventTypeAndIsDeletedFalse(EventType type,Pageable pageable);
 	Page<Event> findByEventStateOrEventStateOrderByCreatedAtDesc(State state,State secondState,Pageable pageable);
-	List<Event> findByEventHostUserUserIdAndIsDeletedFalse(long userId);
+	Page<Event> findByEventHostUserUserIdAndIsDeletedFalse(long userId,Pageable pageable);
 	Page<Event> findByOperatorStateAndIsDeletedFalse(OperatorState operatorState, Pageable pageable);
 	Optional<Event> findByEventIdAndIsDeletedFalse(long eventId);
 	Page<Event> findByIsDeletedFalse(Pageable pageable);
-	List<Event> findByIsDeletedFalse();
-	
+	List<Event> findByIsDeletedFalse();	
 }

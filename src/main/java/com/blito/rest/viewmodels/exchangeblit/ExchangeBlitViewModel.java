@@ -53,9 +53,19 @@ public class ExchangeBlitViewModel {
 	private OperatorState operatorState;
 	@JsonView(View.SimpleExchangeBlit.class)
 	private ImageViewModel image;
+	@JsonView(View.ExchangeBlit.class)
+	private Timestamp createdAt;
 	
 	public ImageViewModel getImage() {
 		return image;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	public void setImage(ImageViewModel image) {

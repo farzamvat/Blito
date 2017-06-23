@@ -41,6 +41,16 @@ public class ExchangeBlit {
 	
 	private String description;
 	
+	private Timestamp createdAt;
+	
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
 	@Enumerated(EnumType.STRING)
 	private State state;
 	@Enumerated(EnumType.STRING)
@@ -87,6 +97,7 @@ public class ExchangeBlit {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	
 
 	public State getState() {
 		return state;
@@ -103,6 +114,11 @@ public class ExchangeBlit {
 	public void setUser(User user) {
 		this.user = user;
 		user.getExchangeBlits().add(this);
+	}
+	
+	public void removeUser()
+	{
+		user = null;
 	}
 
 	public long getExchangeBlitId() {

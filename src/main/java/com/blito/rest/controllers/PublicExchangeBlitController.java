@@ -7,12 +7,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blito.models.ExchangeBlit;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
+import com.blito.search.SearchViewModel;
 import com.blito.services.ExchangeBlitService;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -47,5 +51,12 @@ public class PublicExchangeBlitController {
 	public ResponseEntity<ExchangeBlitViewModel> getExchangeBlitById(@PathVariable long exchangeBlitId)
 	{
 		return ResponseEntity.ok(exchangeBlitService.getExchangeBlitById(exchangeBlitId));
+	}
+	
+	@JsonView(View.ExchangeBlit.class)
+	@PostMapping("/search")
+	public ResponseEntity<Page<ExchangeBlitViewModel>> search(@RequestBody SearchViewModel<ExchangeBlit> searchViewModel,Pageable pageable)
+	{
+		return ResponseEntity.ok(exchangeBlitService.searchExchangeBlits(searchViewModel, pageable));
 	}
 }

@@ -50,5 +50,4 @@ public class AdminExchangeBlitController {
 	{
 		return ResponseEntity.accepted().body(adminExchangeBlitService.changeExchangeBlitState(vmodel));
 	}
-
 }

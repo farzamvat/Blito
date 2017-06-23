@@ -19,6 +19,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import com.blito.enums.EventType;
 import com.blito.enums.OfferTypeEnum;
@@ -32,6 +33,7 @@ public class Event {
 	private long eventId;
 	
 	@OneToMany(mappedBy="event",targetEntity=EventDate.class,cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@OrderBy("date DESC")
 	List<EventDate> eventDates;
 	
 	@ManyToOne(optional=false)
@@ -65,10 +67,12 @@ public class Event {
 	
 	@Column(name="created_at")
 	private Timestamp createdAt;
-	
+	@Column(columnDefinition="TEXT")
 	private String address;
-	
+	@Column(columnDefinition="TEXT")
 	private String description;
+	@Column(columnDefinition="TEXT")
+	private String members;
 	
 	Double longitude;
 	
@@ -90,12 +94,25 @@ public class Event {
 	
 	boolean isEvento = false;
 	
+	
+	
 	public Event() {
 		offers = new ArrayList<>();
 		images = new ArrayList<>();
 		eventDates = new ArrayList<>();
 	}
 	
+	
+	public String getMembers() {
+		return members;
+	}
+
+
+	public void setMembers(String members) {
+		this.members = members;
+	}
+
+
 	public Timestamp getEventSoldDate() {
 		return eventSoldDate;
 	}

@@ -60,6 +60,8 @@ public class Simple<T> extends AbstractSearchViewModel<T> {
 			this.val = Enum.valueOf(SeatType.class, value);
 		else if (field.equals("bankGateway"))
 			this.val = Enum.valueOf(BankGateway.class, value);
+		else if(field.equals("isDeleted"))
+			this.val = Boolean.parseBoolean(value);
 		else
 			this.val = value;
 	}

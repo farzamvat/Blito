@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import com.blito.mappers.AdminReportsMapper;
 import com.blito.mappers.DiscountMapper;
 import com.blito.mappers.EventFlatMapper;
 import com.blito.mappers.EventMapper;
+import com.blito.mappers.GenericMapper;
 import com.blito.models.BlitType;
 import com.blito.models.CommonBlit;
 import com.blito.models.Discount;
@@ -40,6 +42,7 @@ import com.blito.rest.viewmodels.event.AdminSetIsEventoViewModel;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
+import com.blito.search.SearchViewModel;
 import com.blito.security.SecurityContextHolder;
 
 @Service
@@ -63,6 +66,8 @@ public class AdminEventService {
 	UserRepository userRepository;
 	@Autowired
 	BlitTypeRepository blitTypeRepository;
+	@Autowired
+	SearchService searchService;
 
 	public Event getEventFromRepository(long eventId) {
 		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId).map(e -> e)
@@ -177,6 +182,10 @@ public class AdminEventService {
 	public Page<EventViewModel> getAllPendingEvents(Pageable pageable) {
 		return eventMapper
 				.toPage(eventRepository.findByOperatorStateAndIsDeletedFalse(OperatorState.PENDING, pageable));
+	}
+	
+	public <V> Page<V> searchEvents(SearchViewModel<Event> searchViewModel, Pageable pageable,GenericMapper<Event,V> mapper ) {
+		return searchService.search(searchViewModel, pageable, mapper, eventRepository);
 	}
 
 }

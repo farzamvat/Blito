@@ -72,6 +72,11 @@ public class User {
 	public Timestamp getCreatedAt() {
 		return createdAt;
 	}
+	
+	public void removeExchangeBlit(ExchangeBlit blit) {
+		this.exchangeBlits.removeIf(b -> b.getExchangeBlitId() == blit.getExchangeBlitId());
+		blit.removeUser();
+	}
 
 	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;

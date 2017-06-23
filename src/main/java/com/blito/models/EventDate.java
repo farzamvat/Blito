@@ -70,6 +70,7 @@ public class EventDate {
 
 	public void setEvent(Event event) {
 		this.event = event;
+		event.getEventDates().add(this);
 	}
 
 	public long getEventDateId() {

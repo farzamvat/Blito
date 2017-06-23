@@ -35,6 +35,7 @@ import com.blito.enums.OperatorState;
 import com.blito.enums.State;
 import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotFoundException;
+import com.blito.mappers.EventFlatMapper;
 import com.blito.models.Event;
 import com.blito.models.EventHost;
 import com.blito.models.Image;
@@ -47,6 +48,7 @@ import com.blito.repositories.ImageRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.discount.DiscountViewModel;
+import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.search.Collection;
@@ -81,6 +83,8 @@ public class EventServiceTest {
 	BlitTypeRepository blitTypeRepo;
 	@Autowired
 	ImageRepository imageRepository;
+	@Autowired
+	EventFlatMapper eventFlatMapper;
 	Event event;
 	Event event1;
 	Event event2;
@@ -146,6 +150,7 @@ public class EventServiceTest {
 		event.setLatitude(2D);
 		event.setBlitSaleStartDate(Timestamp.from(ZonedDateTime.now().minusHours(24).toInstant()));
 		event.setBlitSaleEndDate(Timestamp.from(ZonedDateTime.now().plusDays(2).toInstant()));
+		
 
 		event1 = new Event();
 		event1.setAddress("ABC");
@@ -210,6 +215,7 @@ public class EventServiceTest {
 		BlitTypeViewModel blitTypeViewModel2 = new BlitTypeViewModel();
 		eventDateViewModel.setDate(Timestamp.from(ZonedDateTime.now().plusDays(10).toInstant()));
 		eventDateViewModel.setDayOfWeek(DayOfWeek.SATURDAY);
+		
 
 		blitTypeViewModel1.setCapacity(20);
 		blitTypeViewModel1.setFree(false);
@@ -361,7 +367,7 @@ public class EventServiceTest {
 		searchViewModel.getRestrictions().add(simple);
 		Pageable pageable = new PageRequest(0, 5);
 
-		Page<EventViewModel> eventsPage = eventService.searchEvents(searchViewModel, pageable);
+		Page<EventFlatViewModel> eventsPage = eventService.searchEvents(searchViewModel, pageable,eventFlatMapper);
 		assertEquals(1,eventsPage.getNumberOfElements());
 	}
 	
@@ -382,6 +388,21 @@ public class EventServiceTest {
 		assertEquals(4, allEvents.getNumberOfElements());
 		allEvents.getContent().stream().forEach(e -> System.err.print(e.getEventName()));
 	}
+	
+	@Test
+	public void eventDateSortTest()
+	{
+		SearchViewModel<Event> searchViewModel = new SearchViewModel<>();
+		Simple<Event> simple = new Simple<>();
+		simple.setField("eventId");
+		simple.setOperation(Operation.eq);
+		simple.setValue(String.valueOf(event.getEventId()));
+		searchViewModel.setRestrictions(new ArrayList<>());
+		searchViewModel.getRestrictions().add(simple);
+		Pageable pageable = new PageRequest(0,5);
+		Page<EventFlatViewModel> events = eventService.searchEvents(searchViewModel, pageable,eventFlatMapper);
+		assertEquals(1, events.getNumberOfElements());
+	}
 
 	@Test
 	public void collectionAndSimpleSearch() {
@@ -398,7 +419,7 @@ public class EventServiceTest {
 		searchViewModel.getRestrictions().add(simple);
 		Pageable pageable = new PageRequest(0, 5);
 
-		Page<EventViewModel> eventsPage = eventService.searchEvents(searchViewModel, pageable);
+		Page<EventFlatViewModel> eventsPage = eventService.searchEvents(searchViewModel, pageable,eventFlatMapper);
 		assertEquals(1, eventsPage.getNumberOfElements());
 	}
 
@@ -413,7 +434,7 @@ public class EventServiceTest {
 		searchViewModel.getRestrictions().add(simple);
 
 		Pageable pageable = new PageRequest(0, 5);
-		Page<EventViewModel> eventsPage = eventService.searchEvents(searchViewModel, pageable);
+		Page<EventFlatViewModel> eventsPage = eventService.searchEvents(searchViewModel, pageable,eventFlatMapper);
 		assertEquals(4, eventsPage.getNumberOfElements());
 	}
 
@@ -437,9 +458,9 @@ public class EventServiceTest {
 		vmodel.setPercent(30);
 
 		vmodel = eventService.setDiscountCode(vmodel);
-		assertEquals(2, vmodel.getBlitTypeIds().size());
-		assertEquals(1, blitTypeRepo.findOne(vmodel.getBlitTypeIds().get(0)).getDiscounts().size());
-		assertEquals(1, blitTypeRepo.findOne(vmodel.getBlitTypeIds().get(1)).getDiscounts().size());
+		assertEquals(4, vmodel.getBlitTypeIds().size());
+		assertEquals(2, blitTypeRepo.findOne(vmodel.getBlitTypeIds().get(0)).getDiscounts().size());
+		assertEquals(2, blitTypeRepo.findOne(vmodel.getBlitTypeIds().get(1)).getDiscounts().size());
 	}
 
 	@Test(expected = InconsistentDataException.class)

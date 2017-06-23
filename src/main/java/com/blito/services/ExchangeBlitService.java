@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +27,7 @@ import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitChangeStateViewModel;
 import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
+import com.blito.search.SearchViewModel;
 import com.blito.security.SecurityContextHolder;
 
 @Service
@@ -40,6 +40,8 @@ public class ExchangeBlitService {
 	UserRepository userRepository;
 	@Autowired
 	ImageRepository imageRepository;
+	@Autowired
+	SearchService searchService;
 
 	private ExchangeBlit findByExchangeBlitId(long id) {
 		return Optional.ofNullable(exchangeBlitRepository.findOne(id)).map(e -> e)
@@ -85,11 +87,12 @@ public class ExchangeBlitService {
 
 		return exchangeBlitMapper.createFromEntity(exchangeBlit);
 	}
-
+////// bug bug bug bug  fixed, tests should be run again
 	@Transactional
 	public void delete(long exchangeBlitId) {
 		ExchangeBlit exchangeBlit = findByExchangeBlitId(exchangeBlitId);
-		SecurityContextHolder.currentUser().getExchangeBlits().remove(exchangeBlit);
+		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
+		user.removeExchangeBlit(exchangeBlit);
 		exchangeBlitRepository.delete(exchangeBlit);
 	}
 
@@ -102,6 +105,11 @@ public class ExchangeBlitService {
 				new PageImpl<>(user.getExchangeBlits().stream().skip(pageable.getPageNumber() * pageable.getPageSize())
 						.limit(pageable.getPageSize()).collect(Collectors.toList())),
 				exchangeBlitMapper::createFromEntity);
+	}
+	
+	public Page<ExchangeBlitViewModel> searchExchangeBlits(SearchViewModel<ExchangeBlit> searchViewModel,Pageable pageable)
+	{
+		return searchService.search(searchViewModel, pageable, exchangeBlitMapper, exchangeBlitRepository);
 	}
 
 	@Transactional

@@ -1,5 +1,9 @@
 package com.blito.mappers;
 
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +28,7 @@ public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit,ExchangeBl
 		exchangeBlit.setLatitude(vmodel.getLatitude());
 		exchangeBlit.setLongitude(vmodel.getLongitude());
 		exchangeBlit.setExchangeBlitType(vmodel.getType());
+		exchangeBlit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 		return exchangeBlit;
 	}
 
@@ -45,6 +50,8 @@ public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit,ExchangeBl
 		vmodel.setImage(imageMapper.createFromEntity(exchangeBlit.getImage()));
 		vmodel.setLatitude(exchangeBlit.getLatitude());
 		vmodel.setLongitude(exchangeBlit.getLongitude());
+		vmodel.setType(exchangeBlit.getExchangeBlitType());
+		vmodel.setCreatedAt(exchangeBlit.getCreatedAt());
 		return vmodel;
 	}
 
