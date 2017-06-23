@@ -8,7 +8,6 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.ZoneIdEditor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +43,7 @@ public class UserAccountService {
 	@Autowired UserMapper userMapper;
 	@Autowired RoleRepository roleRepository;
 	
+	@Transactional
 	public CompletableFuture<User> createUser(RegisterVm vmodel)
 	{
 

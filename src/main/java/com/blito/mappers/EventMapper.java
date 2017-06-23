@@ -75,7 +75,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
 	public Event updateEntity(EventViewModel vmodel, Event event) {
 		event.setAddress(vmodel.getAddress());
 		event.setAparatDisplayCode(event.getAparatDisplayCode());
-		event.setBlitSaleEndDate(vmodel.getBlitSaleStartDate());
+		event.setBlitSaleStartDate(vmodel.getBlitSaleStartDate());
 		event.setBlitSaleEndDate(vmodel.getBlitSaleEndDate());
 		event.setDescription(vmodel.getDescription());
 		event.setEventName(vmodel.getEventName());
