@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,12 +18,14 @@ import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.adminreport.BlitBuyerViewModel;
+import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
 import com.blito.rest.viewmodels.event.AdminChangeEventOperatorStateVm;
-import com.blito.rest.viewmodels.event.AdminChangeEventStateVm;
+import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.AdminChangeOfferTypeViewModel;
 import com.blito.rest.viewmodels.event.AdminSetIsEventoViewModel;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
+import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.services.AdminEventService;
 import com.blito.services.ExcelService;
@@ -59,8 +60,30 @@ public class AdminEventController {
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
 	@PutMapping("/change-event-state")
-	public ResponseEntity<ResultVm> changeEventState(AdminChangeEventStateVm vmodel) {
+	public ResponseEntity<ResultVm> changeEventState(ChangeEventStateVm vmodel) {
 		adminEventService.changeEventState(vmodel);
+		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
+	}
+
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "change event date state")
+	@ApiResponses({ @ApiResponse(code = 200, message = "change event date state ok", response = ResultVm.class),
+			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
+	// ***************** SWAGGER DOCS ***************** //
+	@PutMapping("/change-event-date-state")
+	public ResponseEntity<ResultVm> changeEventDateState(ChangeEventDateStateVm vmodel) {
+		adminEventService.changeEventDateState(vmodel);
+		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
+	}
+
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "change blit type state")
+	@ApiResponses({ @ApiResponse(code = 200, message = "change blit type state ok", response = ResultVm.class),
+			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
+	// ***************** SWAGGER DOCS ***************** //
+	@PutMapping("/change-blit-type-state")
+	public ResponseEntity<ResultVm> changeBlitTypeState(ChangeBlitTypeStateVm vmodel) {
+		adminEventService.changeBlitTypeState(vmodel);
 		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
 
@@ -138,18 +161,6 @@ public class AdminEventController {
 	@GetMapping("/{eventId}")
 	public ResponseEntity<EventFlatViewModel> getFlatEvent(@PathVariable long eventId) {
 		return ResponseEntity.ok(adminEventService.getFlatEvent(eventId));
-	}
-
-	// ***************** SWAGGER DOCS ***************** //
-	@ApiOperation(value = "update event")
-	@ApiResponses({ @ApiResponse(code = 200, message = "update event ok", response = EventFlatViewModel.class),
-			@ApiResponse(code = 400, message = "ValidatonException", response = ExceptionViewModel.class),
-			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
-	// ***************** SWAGGER DOCS ***************** //
-	@JsonView(View.AdminEvent.class)
-	@PutMapping
-	public ResponseEntity<EventFlatViewModel> updateEvent(@Validated EventViewModel vmodel) {
-		return ResponseEntity.ok(adminEventService.updateEvent(vmodel));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //

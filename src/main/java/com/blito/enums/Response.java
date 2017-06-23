@@ -49,7 +49,8 @@ public enum Response {
 	EVENT_HOST_ALREADY_EXISTS("event.host.exists"),
 	ISFREE_AND_PRICE_NOT_MATCHED("error.is.free.price.not.matched"),
 	INCONSISTENT_PERCENTAGE_WHEN_PERCENT_IS_FALSE("error.inconsistent.data.is.not.percentage"),
-	EVENT_IS_SOLD("error.event.is.sold");
+	EVENT_IS_SOLD("error.event.is.sold"),
+	EVENT_NOT_APPROVED("error.event.not.approved");
     
 
     private final String message;

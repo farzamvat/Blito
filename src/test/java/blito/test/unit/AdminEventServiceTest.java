@@ -41,7 +41,7 @@ import com.blito.repositories.UserRepository;
 import com.blito.rest.viewmodels.adminreport.BlitBuyerViewModel;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.event.AdminChangeEventOperatorStateVm;
-import com.blito.rest.viewmodels.event.AdminChangeEventStateVm;
+import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
@@ -96,7 +96,7 @@ public class AdminEventServiceTest {
 	
 	private BlitType blitType2_1_1 = new BlitType();
 	
-	private AdminChangeEventStateVm changeEventStateTestVmodel = new AdminChangeEventStateVm();
+	private ChangeEventStateVm changeEventStateTestVmodel = new ChangeEventStateVm();
 	private AdminChangeEventOperatorStateVm changeEventOperatorStateTestVmodel = new AdminChangeEventOperatorStateVm();
 	private EventViewModel eventUpdateVmodel = new EventViewModel();
 	private EventDateViewModel eventDateUpdateVmodel1 = new EventDateViewModel();
@@ -254,13 +254,6 @@ public class AdminEventServiceTest {
 		assertEquals(1000, vmodel.getEventDates().get(0).getPrice());
 	}
 	
-	@Test
-	public void updateEventTest() {
-		EventFlatViewModel vmodel = adminEventService.updateEvent(eventUpdateVmodel);
-		assertEquals("jashne banafsh", vmodel.getEventName());
-		assertEquals("jashne banafsh", eventRepo.findByEventIdAndIsDeletedFalse(event1.getEventId()).get().getEventName());
-		assertEquals("VIP", vmodel.getEventDates().get(0).getName());
-	}
 	
 	@Test(expected = NotFoundException.class)
 	public void getFromRepoTest() {
