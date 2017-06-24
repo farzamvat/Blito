@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class CommonBlitViewModel {
 	@JsonView(View.SimpleBlit.class)
 	long blitId;
+	Timestamp createdAt;
 	@NotEmpty
 	@JsonView(View.SimpleBlit.class)
 	long blitTypeId;
@@ -182,4 +183,11 @@ public class CommonBlitViewModel {
 	public void setSamanBankRefNumber(String samanBankRefNumber) {
 		this.samanBankRefNumber = samanBankRefNumber;
 	}
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+	
 }

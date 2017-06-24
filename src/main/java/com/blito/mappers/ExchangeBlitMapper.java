@@ -7,6 +7,8 @@ import java.time.ZonedDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.blito.enums.OperatorState;
+import com.blito.enums.State;
 import com.blito.models.ExchangeBlit;
 import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
 
@@ -29,6 +31,8 @@ public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit,ExchangeBl
 		exchangeBlit.setLongitude(vmodel.getLongitude());
 		exchangeBlit.setExchangeBlitType(vmodel.getType());
 		exchangeBlit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+		exchangeBlit.setState(State.CLOSED);
+		exchangeBlit.setOperatorState(OperatorState.PENDING);
 		return exchangeBlit;
 	}
 

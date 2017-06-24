@@ -33,9 +33,28 @@ public class CommonBlitMapper implements GenericMapper<CommonBlit, CommonBlitVie
 	}
 
 	@Override
-	public CommonBlitViewModel createFromEntity(CommonBlit entity) {
-		// TODO Auto-generated method stub
-		return null;
+	public CommonBlitViewModel createFromEntity(CommonBlit blit) {
+		CommonBlitViewModel vmodel = new CommonBlitViewModel();
+		vmodel.setBlitId(blit.getBlitId());
+		vmodel.setBlitTypeId(blit.getBlitType().getBlitTypeId());
+		vmodel.setCount(blit.getCount());
+		vmodel.setTotalAmount(blit.getTotalAmount());
+		vmodel.setTrackCode(blit.getTrackCode());
+		vmodel.setEventName(blit.getEventName());
+		vmodel.setEventDateAndTime(blit.getEventDateAndTime());
+		vmodel.setCustomerName(blit.getCustomerName());
+		vmodel.setEventDate(blit.getEventDate());
+		vmodel.setCustomerMobileNumber(blit.getCustomerMobileNumber());
+		vmodel.setCustomerEmail(blit.getCustomerEmail());
+		vmodel.setEventAddress(blit.getEventAddress());
+		vmodel.setBlitTypeName(blit.getBlitTypeName());
+		vmodel.setPaymentStatus(blit.getPaymentStatus());
+		vmodel.setPaymentError(blit.getPaymentError());
+		vmodel.setSamanBankToken(blit.getSamanBankToken());
+		vmodel.setSamanBankRefNumber(blit.getSamanBankRefNumber());
+		vmodel.setBankGateway(blit.getBankGateway());
+		vmodel.setCreatedAt(blit.getCreatedAt());
+		return vmodel;
 	}
 
 	@Override

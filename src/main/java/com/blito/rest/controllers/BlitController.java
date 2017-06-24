@@ -1,6 +1,8 @@
 package com.blito.rest.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -10,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
+import com.blito.models.CommonBlit;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
+import com.blito.search.SearchViewModel;
 import com.blito.services.BlitService;
 
 @RestController
@@ -31,6 +35,12 @@ public class BlitController {
 					deferred.setErrorResult(t.getCause().getMessage());
 					return deferred;
 				}).join();
+	}
+	
+	@PostMapping("/search")
+	public ResponseEntity<Page<CommonBlitViewModel>> search(@RequestBody SearchViewModel<CommonBlit> searchViewModel,Pageable pageable)
+	{
+		return ResponseEntity.ok(blitService.searchCommonBlits(searchViewModel, pageable));
 	}
 
 }
