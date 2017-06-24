@@ -896,6 +896,7 @@ angular.module('User')
         $scope.submitPlannerSpinner = false;
         $scope.submitPlannerNotif = false;
         $scope.submitEventPlanner = function (plannerData) {
+            $scope.submitPlannerNotif = false;
             var eventPlannerData = {
                 hostName: plannerData.name,
                 hostType: plannerData.type,
@@ -924,6 +925,7 @@ angular.module('User')
                 .then(function (data, status) {
                     $scope.submitPlannerSpinner = false;
                     $scope.submitPlannerNotif = true;
+                    $scope.submitPlannerErrorNotif = false;
                     $scope.getPlannersData();
                     $scope.eventPlanner = [];
                     $scope.plannerImageId = '';
@@ -941,6 +943,7 @@ angular.module('User')
         //==================================================== ********* =================================
         //==================================================== EVENT SUBMIT =================================
         $scope.submitEvent = function (eventFields) {
+            $scope.createEventNotif = false;
 
             var latLng = mapMarkerService.getMarker();
             var newShowTime = angular.copy($scope.showTimeForms);
@@ -957,6 +960,7 @@ angular.module('User')
                 blitSaleEndDate : $scope.persianToMs(eventFields.ticketEndTime),
                 blitSaleStartDate : $scope.persianToMs(eventFields.ticketStartTime),
                 description : eventFields.description,
+                members : eventFields.members,
                 eventDates : newShowTime,
                 images : [
                     {imageUUID : $scope.eventImageId, type : "EVENT_PHOTO"},
@@ -982,13 +986,13 @@ angular.module('User')
                 delete eventSubmitData.images;
             }
             $scope.createEventSpinner = true;
-            $scope.createEventErrorNotif = true;
 
             eventService.submitEventForm(eventSubmitData)
                 .then(function (data, status) {
                     // $scope.submitEventForm.$setPristine();
                     $scope.createEventSpinner = false;
                     $scope.createEventNotif = true;
+                    $scope.createEventErrorNotif = false;
                     console.log(data);
                     $scope.getUserEvents();
                     $scope.eventFields = [];
@@ -1005,6 +1009,7 @@ angular.module('User')
         $scope.submitExchangeNotif = false;
 
         $scope.submitExchangeTicket = function (exchangeFields) {
+            $scope.submitExchangeNotif = false;
             var latLng = mapMarkerService.getMarker();
             $scope.submitExchangeSpinner = true;
             var exchangeData = {
@@ -1027,11 +1032,13 @@ angular.module('User')
             if(!$scope.exchangeImageId){
                 delete exchangeData.image;
             }
+            console.log(exchangeData);
             exchangeService.submitExchangeForm(exchangeData)
                 .then(function (data, status) {
                     console.log(data);
                     $scope.submitExchangeSpinner = false;
                     $scope.submitExchangeNotif = true;
+                    $scope.submitExchangeErrorNotif = false;
                     $scope.getExchangeData();
                     $scope.exchange = [];
                     $scope.exchangeImageId = '';
@@ -1073,6 +1080,7 @@ angular.module('User')
         $scope.editEventFields = {};
 
         $scope.editEvent = function (index) {
+            $scope.editEventNotif = false;
             $scope.eventEditPhotoSuccess = false;
             $scope.eventPhotoOneEditSuccess = false;
             $scope.eventPhotoTwoEditSuccess = false;
@@ -1102,7 +1110,8 @@ angular.module('User')
                 address : $scope.userEventsEdit[index].address,
                 aparatDisplayCode : $scope.userEventsEdit[index].aparatDisplayCode,
                 eventHostId : $scope.userEventsEdit[index].eventHostId,
-                eventLink : $scope.userEventsEdit[index].eventLink
+                eventLink : $scope.userEventsEdit[index].eventLink,
+                members : $scope.userEventsEdit[index].members
             };
             $scope.dateClass = function (classNumber) {
                 return "classDate"+classNumber;
@@ -1306,10 +1315,14 @@ angular.module('User')
                 .then(function (data, status) {
                     $scope.editEventSpinner = false;
                     $scope.editEventNotif = true;
+                    $scope.editEventErrorNotif = false;
                     console.log(data);
                     $scope.getUserEvents();
                 })
                 .catch(function (data, status) {
+                    $scope.editEventErrorNotif = true;
+                    $scope.editEventSpinner = false;
+                    document.getElementById("editEventErrorNotif").innerHTML= data.data.message;
                     console.log(data);
                 })
         };
@@ -1395,13 +1408,19 @@ angular.module('User')
                 delete editHostData.images;
             }
             console.log(editHostData);
+            $scope.editPlannerSpinner = true;
             plannerService.editPlannerForm(editHostData)
                 .then(function (data, status) {
                     console.log(data);
                     $scope.submitPlannerEditNotif = true;
+                    $scope.editPlannerSpinner = false;
+                    $scope.submitPlannerEditErrorNotif = false;
                     $scope.getPlannersData();
                 })
                 .catch(function (data, status) {
+                    $scope.submitPlannerEditErrorNotif = true;
+                    $scope.editPlannerSpinner = false;
+                    document.getElementById("submitPlannerEditErrorNotif").innerHTML= data.data.message;
                     console.log(data);
                 })
         };
@@ -1411,6 +1430,7 @@ angular.module('User')
         $scope.editExchangeSpinner = false;
 
         $scope.editExchange = function (index) {
+            $scope.editExchangeNotif = false;
             $scope.exchangeEditPhotoSuccess = false;
 
             $scope.exchangeEdit = {
@@ -1479,9 +1499,14 @@ angular.module('User')
                 .then(function (data, status) {
                     $scope.editExchangeNotif = true;
                     $scope.editExchangeSpinner = false;
+                    $scope.editExchangeErrorNotif = false;
                     $scope.getExchangeData();
                     console.log(data);
                 }, function (data, status) {
+                    $scope.editExchangeErrorNotif = true;
+                    $scope.editExchangeSpinner = false;
+                    document.getElementById("editExchangeErrorNotif").innerHTML= data.data.message;
+
                     console.log(data);
                 })
         };

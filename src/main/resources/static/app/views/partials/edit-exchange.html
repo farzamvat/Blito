@@ -123,6 +123,9 @@
                         <div ng-show="editExchangeNotif" class="text-center alert alert-success col-xs-12 marginTop10">
                             <strong>آگهی با موفقیت ویرایش شد</strong>
                         </div>
+                        <div id="editExchangeErrorNotif" ng-show="editExchangeErrorNotif" class="text-center alert alert-danger col-xs-12">
+                            <strong></strong>
+                        </div>
                         <div class="controls">
                             <button id="exchangeEventSubmit" ng-disabled="exchangeEditForm.$invalid" ng-click="editExchangeTicket(exchangeEdit)" name="signin" class="btn btn-success btn-lg btnLogin">ویرایش آگهی <i ng-show="editExchangeSpinner" class="fa fa-spinner fa-spin"></i></button>
                         </div>

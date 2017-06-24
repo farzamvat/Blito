@@ -118,8 +118,11 @@
                         <div ng-show="submitPlannerEditNotif" class="text-center alert alert-success col-xs-12" >
                             <strong>برگزار کننده با موفقیت ثبت شد!</strong>
                         </div>
+                        <div id="submitPlannerEditErrorNotif" ng-show="submitPlannerEditErrorNotif" class="text-center alert alert-danger col-xs-12">
+                            <strong></strong>
+                        </div>
                         <div class="controls">
-                            <button id="eventPlannerSubmit" ng-disabled="editPlannerForm.$invalid" ng-click="editHostSubmit(eventPlannerEdit)"  class="btn btn-success btn-lg btnLogin">ویرایش برگذارکننده <i ng-show="submitPlannerSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
+                            <button id="eventPlannerSubmit" ng-disabled="editPlannerForm.$invalid" ng-click="editHostSubmit(eventPlannerEdit)"  class="btn btn-success btn-lg btnLogin">ویرایش برگذارکننده <i ng-show="editPlannerSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
                         </div>
                     </div>
 

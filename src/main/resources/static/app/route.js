@@ -79,13 +79,7 @@ app.run(['$rootScope', 'Auth', '$location', function ($rootScope, Auth, $locatio
             }
 
         }
-        // else if (next.$$route.authenticated === false) {
-        //     if(Auth.isLoggedIn() || Auth.loggedInRefresh()) {
-        //         event.preventDefault();
-        //         $location.path('/');
-        //     }
-        //
-        // }
+
 
     });
 }]);

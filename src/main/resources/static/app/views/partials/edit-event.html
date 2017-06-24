@@ -51,6 +51,16 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row marginTop30">
+                            <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
+                                <div class="col-xs-10 floatRight text-center">
+                                    <label class="registerLabel floatRight" for="eventDescription" >عوامل رویداد :</label>
+                                </div>
+                                <div class="col-xs-11  floatRight ">
+                                    <textarea ng-model="editEventFields.members" required  id="eventMembers"  type="text"  class="form-group textAreaForm" ></textarea>
+                                </div>
+                            </div>
+                        </div>
 
 
                     </fieldset>
@@ -345,6 +355,9 @@
                         <label class="control-label" for="signInButton"></label>
                         <div ng-show="editEventNotif" class="text-center alert alert-success col-xs-12">
                             <strong>رویداد با موفقیت ویرایش شد!</strong>
+                        </div>
+                        <div id="editEventErrorNotif" ng-show="editEventErrorNotif" class="text-center alert alert-danger col-xs-12">
+                            <strong></strong>
                         </div>
                         <div class="controls">
                             <button id="signInButton" ng-disabled="editEventForm.$invalid" ng-click="editEventSubmit(editEventFields)" name="signin" class="btn btn-success btn-lg btnLogin">ویرایش رویداد <i ng-show="editEventSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
