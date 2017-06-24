@@ -344,6 +344,36 @@ public class EventControllerTest {
 	}
 	
 	@Test
+	public void rangeTest() throws URISyntaxException
+	{
+		JSONObject requestBody = new JSONObject();
+		JSONArray restrictions = new JSONArray();
+		JSONObject range = new JSONObject();
+		range.put("type", "range");
+		range.put("field", "createdAt");
+		range.put("minValue", Timestamp.from(ZonedDateTime.now().minusDays(10).toInstant()).getTime());
+		range.put("maxValue", Timestamp.from(ZonedDateTime.now().plusDays(10).toInstant()).getTime());
+		restrictions.put(range);
+		requestBody.put("restrictions", restrictions);
+		
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
+		RequestEntity<String> request = 
+				new RequestEntity<>(requestBody.toString(),headers,HttpMethod.POST,new URI("/api/blito/v1.0/public/events/search?page=0&size=5&sort=createdAt,desc"));
+		ResponseEntity<String> response = 
+				rest.exchange("/api/blito/v1.0/public/events/search?page=0&size=5&sort=createdAt,desc",HttpMethod.POST,request, String.class);
+		JSONObject responseJson = null;
+		try {
+			responseJson = new JSONObject(response.getBody());
+		} catch (Exception e)
+		{
+			assertTrue(false);
+		}
+		assertEquals(4,responseJson.get("numberOfElements"));
+	}
+	
+	@Test
 	public void createdAtDescWithASimpleRestrictionTest() throws URISyntaxException
 	{
 		JSONObject requestBody = new JSONObject();

@@ -20,13 +20,12 @@ import com.blito.search.SearchViewModel;
 @Service
 @Scope("prototype")
 public class SearchService {
-	
-	public <E,V,R extends JpaSpecificationExecutor<E> & JpaRepository<E,Long>> Page<V> search(SearchViewModel<E> searchViewModel, Pageable pageable,GenericMapper<E,V> mapper, R repository) {
+
+	public <E, V, R extends JpaSpecificationExecutor<E> & JpaRepository<E, Long>> Page<V> search(
+			SearchViewModel<E> searchViewModel, Pageable pageable, GenericMapper<E, V> mapper, R repository) {
 		if (searchViewModel.getRestrictions().isEmpty())
 			return mapper.toPage(repository.findAll(pageable));
-		Page<E> searchResult = searchViewModel
-				.getRestrictions().stream().map(
-						r -> r.action())
+		Page<E> searchResult = searchViewModel.getRestrictions().stream().map(r -> r.action())
 				.reduce((s1, s2) -> Specifications.where(s1).and(s2))
 				.map(specification -> repository.findAll(specification, pageable))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
