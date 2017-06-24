@@ -46,6 +46,8 @@ public class Simple<T> extends AbstractSearchViewModel<T> {
 			this.val = Enum.valueOf(State.class, value);
 		else if (field.equals("operatorState"))
 			this.val = Enum.valueOf(OperatorState.class, value);
+		else if (field.equals("state"))
+			this.val = Enum.valueOf(State.class, value);
 		else if (field.equals("eventType"))
 			this.val = Enum.valueOf(EventType.class, value);
 		else if (field.equals("hostType"))

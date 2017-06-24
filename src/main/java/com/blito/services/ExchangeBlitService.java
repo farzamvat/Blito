@@ -19,6 +19,7 @@ import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.ExchangeBlitMapper;
 import com.blito.models.ExchangeBlit;
+import com.blito.models.Image;
 import com.blito.models.User;
 import com.blito.repositories.ExchangeBlitRepository;
 import com.blito.repositories.ImageRepository;
@@ -50,17 +51,17 @@ public class ExchangeBlitService {
 
 	@Transactional
 	public ExchangeBlitViewModel create(ExchangeBlitViewModel vmodel) {
-		ExchangeBlit exchangeBlit = exchangeBlitMapper.createFromViewModel(vmodel);
-		exchangeBlit.setState(State.CLOSED);
-		exchangeBlit.setOperatorState(OperatorState.PENDING);
 		if (vmodel.getImage() == null) {
 			vmodel.setImage(new ImageViewModel(Constants.DEFAULT_EXCHANGEBLIT_PHOTO, ImageType.EXCHANGEBLIT_PHOTO));
 		}
-		exchangeBlit.setImage(imageRepository.findByImageUUID(vmodel.getImage().getImageUUID()).map(i -> {
+		
+		Image image = imageRepository.findByImageUUID(vmodel.getImage().getImageUUID()).map(i -> {
 			i.setImageType(vmodel.getImage().getType());
 			return i;
-		}).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))));
+		}).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
 
+		ExchangeBlit exchangeBlit = exchangeBlitMapper.createFromViewModel(vmodel);
+		exchangeBlit.setImage(image);
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		exchangeBlit.setUser(user);
 		return exchangeBlitMapper.createFromEntity(exchangeBlitRepository.save(exchangeBlit));

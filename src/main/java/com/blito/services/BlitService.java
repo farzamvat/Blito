@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -18,6 +20,7 @@ import com.blito.enums.State;
 import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.CommonBlitMapper;
+import com.blito.models.Blit;
 import com.blito.models.BlitType;
 import com.blito.models.CommonBlit;
 import com.blito.models.User;
@@ -28,6 +31,7 @@ import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.rest.viewmodels.blit.SamanPaymentRequestResponseViewModel;
+import com.blito.search.SearchViewModel;
 import com.blito.security.SecurityContextHolder;
 
 @Service
@@ -45,6 +49,8 @@ public class BlitService {
 	private BlitRepository blitRepository;
 	@Autowired
 	private PaymentService paymentService;
+	@Autowired
+	private SearchService searchService;
 	@Value("{saman.bank.merchantCode}")
 	String samanMerchantCode;
 
@@ -134,5 +140,10 @@ public class BlitService {
 			return generateTrackCode();
 		}
 		return trackCode;
+	}
+	
+	public Page<CommonBlitViewModel> searchCommonBlits(SearchViewModel<CommonBlit> searchViewModel,Pageable pageable)
+	{
+		return searchService.search(searchViewModel, pageable, commonBlitMapper, commonBlitRepository);
 	}
 }
