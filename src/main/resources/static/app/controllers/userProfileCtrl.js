@@ -959,8 +959,8 @@ angular.module('User')
             }
         };
         $scope.deleteFieldTicketType=function(i){
-            if( 1 < $scope.showTimeEditForms[i].blitTypes.length) {
-                $scope.showTimeEditForms[i].blitTypes.splice(-1,1);
+            if( 1 < $scope.showTimeForms[i].blitTypes.length) {
+                $scope.showTimeForms[i].blitTypes.splice(-1,1);
             }
         };
         $scope.addFieldShowTime=function(){
