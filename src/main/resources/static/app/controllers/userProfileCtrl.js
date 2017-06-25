@@ -241,6 +241,8 @@ angular.module('User')
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("gallerySixEdit"))[0].src
             }
+            $scope.eventPhotoSixEditSuccess = false;
+            $scope.eventPhotoSixEditError = false;
             $scope.uploadEventSixEditPhoto = true;
             photoService.upload(imageData)
                 .then(function (data, status) {
@@ -249,6 +251,9 @@ angular.module('User')
 
                     $scope.gallerySixUUID = data.data.imageUUID;
                 }, function (data, status) {
+                    document.getElementById("eventPhotoSixEditError").innerHTML= data.data.message;
+                    $scope.eventPhotoSixEditError = true;
+                    $scope.uploadEventSixEditPhoto = false;
                     console.log(data);
                 })
         }
@@ -256,6 +261,8 @@ angular.module('User')
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryFiveEdit"))[0].src
             }
+            $scope.eventPhotoFiveEditSuccess = false;
+            $scope.eventPhotoFiveEditError = false;
             $scope.uploadEventFiveEditPhoto = true;
             photoService.upload(imageData)
                 .then(function (data, status) {
@@ -264,6 +271,9 @@ angular.module('User')
 
                     $scope.galleryFiveUUID = data.data.imageUUID;
                 }, function (data, status) {
+                    document.getElementById("eventPhotoFiveEditError").innerHTML= data.data.message;
+                    $scope.eventPhotoFiveEditError = true;
+                    $scope.uploadEventFiveEditPhoto = false;
                     console.log(data);
                 })
         }
@@ -272,12 +282,17 @@ angular.module('User')
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryFourEdit"))[0].src
             }
             $scope.uploadEventFourEditPhoto = true;
+            $scope.eventPhotoFourEditError = false;
+            $scope.eventPhotoFourEditSuccess = false;
             photoService.upload(imageData)
                 .then(function (data, status) {
                     $scope.uploadEventFourEditPhoto = false;
                     $scope.eventPhotoFourEditSuccess = true;
                     $scope.galleryFourUUID = data.data.imageUUID;
                 }, function (data, status) {
+                    $scope.uploadEventFourEditPhoto = false;
+                    $scope.eventPhotoFourEditError = true;
+                    document.getElementById("eventPhotoFourEditError").innerHTML= data.data.message;
                     console.log(data);
                 })
         }
@@ -285,15 +300,19 @@ angular.module('User')
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryThreeEdit"))[0].src
             }
+            $scope.eventPhotoThreeEditSuccess = false;
+            $scope.eventPhotoThreeEditError = false;
             $scope.uploadEventThreeEditPhoto = true;
             photoService.upload(imageData)
                 .then(function (data, status) {
                     $scope.uploadEventThreeEditPhoto = false;
-
                     $scope.eventPhotoThreeEditSuccess = true;
 
                     $scope.galleryThreeUUID = data.data.imageUUID;
                 }, function (data, status) {
+                    document.getElementById("eventPhotoThreeEditError").innerHTML= data.data.message;
+                    $scope.eventPhotoThreeEditError = true;
+                    $scope.uploadEventThreeEditPhoto = false;
                     console.log(data);
                 })
         }
@@ -302,6 +321,9 @@ angular.module('User')
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryTwoEdit"))[0].src
             }
             $scope.uploadEventTwoEditPhoto = true;
+            $scope.eventPhotoTwoEditError = false;
+            $scope.eventPhotoTwoEditSuccess = false;
+
             photoService.upload(imageData)
                 .then(function (data, status) {
                     $scope.uploadEventTwoEditPhoto = false;
@@ -309,6 +331,9 @@ angular.module('User')
 
                     $scope.galleryTwoUUID = data.data.imageUUID;
                 }, function (data, status) {
+                    document.getElementById("eventPhotoTwoEditError").innerHTML= data.data.message;
+                    $scope.uploadEventTwoEditPhoto = false;
+                    $scope.eventPhotoTwoEditError = true;
                     console.log(data);
                 })
         }
@@ -317,14 +342,18 @@ angular.module('User')
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryOneEdit"))[0].src
             }
             $scope.uploadEventTwoEditPhoto = true;
+            $scope.eventPhotoOneEditError = false;
+            $scope.eventPhotoOneEditSuccess = false;
             photoService.upload(imageData)
                 .then(function (data, status) {
                     $scope.uploadEventTwoEditPhoto = false;
-
                     $scope.eventPhotoOneEditSuccess = true;
 
                     $scope.galleryOneUUID = data.data.imageUUID;
                 }, function (data, status) {
+                    document.getElementById("eventPhotoOneEditError").innerHTML= data.data.message;
+                    $scope.eventPhotoOneEditError = true;
+                    $scope.uploadEventTwoEditPhoto = false;
                     console.log(data);
                 })
         }
@@ -333,12 +362,17 @@ angular.module('User')
                 encodedBase64 : angular.element(document.getElementsByClassName("gallerySix"))[0].src
             }
             $scope.uploadEventSixPhoto = true;
+            $scope.eventPhotoSixSuccess = false;
+            $scope.eventPhotoSixError = false;
             photoService.upload(imageData)
                 .then(function (data, status) {
                     $scope.uploadEventSixPhoto = false;
                     $scope.eventPhotoSixSuccess = true;
                     $scope.gallerySixUUID = data.data.imageUUID;
                 }, function (data, status) {
+                    document.getElementById("eventPhotoSixError").innerHTML= data.data.message;
+                    $scope.uploadEventSixPhoto = false;
+                    $scope.eventPhotoSixError = true;
                     console.log(data);
                 })
         }
@@ -347,12 +381,17 @@ angular.module('User')
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryFive"))[0].src
             }
             $scope.uploadEventFivePhoto = true;
+            $scope.eventPhotoFiveError = false;
+            $scope.eventPhotoFiveSuccess = false;
             photoService.upload(imageData)
                 .then(function (data, status) {
                     $scope.uploadEventFivePhoto = false;
                     $scope.eventPhotoFiveSuccess = true;
                     $scope.galleryFiveUUID = data.data.imageUUID;
                 }, function (data, status) {
+                    document.getElementById("eventPhotoFiveError").innerHTML= data.data.message;
+                    $scope.eventPhotoFiveError = true;
+                    $scope.uploadEventFivePhoto = false;
                     console.log(data);
                 })
         }
@@ -362,12 +401,18 @@ angular.module('User')
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryFour"))[0].src
             }
             $scope.uploadEventFourPhoto = true;
+            $scope.eventPhotoFourError = false;
+            $scope.eventPhotoFourSuccess = false;
+
             photoService.upload(imageData)
                 .then(function (data, status) {
                     $scope.uploadEventFourPhoto = false;
                     $scope.eventPhotoFourSuccess = true;
                     $scope.galleryFourUUID = data.data.imageUUID;
                 }, function (data, status) {
+                    document.getElementById("eventPhotoFourError").innerHTML= data.data.message;
+                    $scope.uploadEventFourPhoto = false;
+                    $scope.eventPhotoFourError = true;
                     console.log(data);
                 })
         }
@@ -377,12 +422,18 @@ angular.module('User')
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryThree"))[0].src
             }
             $scope.uploadEventThreePhoto = true;
+            $scope.eventPhotoThreeError = false;
+            $scope.eventPhotoThreeSuccess = false;
             photoService.upload(imageData)
                 .then(function (data, status) {
                     $scope.eventPhotoThreeSuccess = true;
                     $scope.uploadEventThreePhoto = false;
                     $scope.galleryThreeUUID = data.data.imageUUID;
                 }, function (data, status) {
+                    document.getElementById("eventPhotoThreeError").innerHTML= data.data.message;
+                    $scope.uploadEventThreePhoto = false;
+                    $scope.eventPhotoThreeError = true;
+
                     console.log(data);
                 })
         }
@@ -392,6 +443,8 @@ angular.module('User')
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryTwo"))[0].src
             }
             $scope.uploadEventTwoPhoto = true;
+            $scope.eventPhotoTwoSuccess = false;
+            $scope.eventPhotoTwoError = false;
             photoService.upload(imageData)
                 .then(function (data, status) {
                     $scope.eventPhotoTwoSuccess = true;
@@ -400,6 +453,9 @@ angular.module('User')
                     console.log($scope.galerryTwoUUID);
                     console.log(data);
                 }, function (data, status) {
+                    document.getElementById("eventPhotoTwoError").innerHTML= data.data.message;
+                    $scope.uploadEventTwoPhoto = false;
+                    $scope.eventPhotoTwoError = true;
                     console.log(data);
                 })
         }
@@ -410,6 +466,8 @@ angular.module('User')
             }
 
             $scope.uploadEventOnePhoto = true;
+            $scope.eventPhotoOneSuccess = false;
+            $scope.eventPhotoOneError = false;
 
             photoService.upload(imageData)
                 .then(function (data, status) {
@@ -417,6 +475,8 @@ angular.module('User')
                     $scope.uploadEventOnePhoto = false;
                     $scope.galleryOneUUID = data.data.imageUUID;
                 }, function (data, status) {
+                    document.getElementById("eventPhotoOneError").innerHTML= data.data.message;
+                    $scope.eventPhotoOneError = true;
                     $scope.uploadEventOnePhoto = false;
                     console.log(data);
                 })
@@ -426,13 +486,17 @@ angular.module('User')
                 encodedBase64 : angular.element(document.getElementsByClassName("profilePhotoUploadEditEvent"))[0].src
             }
             $scope.uploadEditEventPhoto = true;
+            $scope.eventEditPhotoError = false;
+            $scope.eventEditPhotoSuccess = false;
             photoService.upload(imageData)
                 .then(function (data, status) {
                     $scope.eventEditPhotoSuccess = true;
                     $scope.uploadEditEventPhoto = false;
-
                     $scope.eventEditImageId = data.data.imageUUID;
                 }, function (data, status) {
+                    document.getElementById("eventEditPhotoError").innerHTML= data.data.message;
+                    $scope.uploadEditEventPhoto = false;
+                    $scope.eventEditPhotoError = true;
                     console.log(data);
                 })
         }
@@ -440,14 +504,19 @@ angular.module('User')
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("exchangePhotoUploadEdit"))[0].src
             }
-            $scope.showThumbnailProfile = true;
-            $scope.uploadExchangePhoto = true;
+            $scope.uploadEditExchangePhoto = true;
+            $scope.exchangeEditPhotoSuccess = false;
+            $scope.exchangeEditPhotoError = false;
+
             photoService.upload(imageData)
                 .then(function (data, status) {
                     $scope.uploadEditExchangePhoto = false;
                     $scope.exchangeEditPhotoSuccess = true;
                     $scope.exchangeEditImageId = data.data.imageUUID;
                 }, function (data, status) {
+                    document.getElementById("exchangeEditPhotoError").innerHTML= data.data.message;
+                    $scope.uploadEditExchangePhoto = false;
+                    $scope.exchangeEditPhotoError = true;
                     console.log(data);
                 })
         }
@@ -457,6 +526,8 @@ angular.module('User')
                 encodedBase64 : angular.element(document.getElementsByClassName("exchangePhotoUpload"))[0].src
             }
             $scope.uploadExchangePhoto = true;
+            $scope.exchangePhotoError = false;
+            $scope.exchangePhotoSuccess = false;
             photoService.upload(imageData)
                 .then(function (data, status) {
                     $scope.uploadExchangePhoto = false;
@@ -464,6 +535,9 @@ angular.module('User')
                     $scope.exchangeImageId = data.data.imageUUID;
                     console.log(data);
                 }, function (data, status) {
+                    document.getElementById("exchangePhotoError").innerHTML= data.data.message;
+                    $scope.uploadExchangePhoto = false;
+                    $scope.exchangePhotoError = true;
                     console.log(data);
                 })
         }
@@ -472,14 +546,18 @@ angular.module('User')
                 encodedBase64 : angular.element(document.getElementsByClassName("profilePhotoUpload"))[0].src
             }
             $scope.uploadEventPhoto = true;
+            $scope.eventPhotoSuccess = false;
+            $scope.eventPhotoError = false;
             photoService.upload(imageData)
                 .then(function (data, status) {
                     $scope.uploadEventPhoto = false;
                     $scope.eventPhotoSuccess = true;
                     $scope.eventImageId = data.data.imageUUID;
                 }, function (data, status) {
-                    console.log(data);
+                    document.getElementById("eventPhotoError").innerHTML= data.data.message;
+                    $scope.eventPhotoError = true;
                     $scope.uploadEventPhoto = false;
+                    console.log(data);
                 })
         }
 
@@ -491,6 +569,8 @@ angular.module('User')
                 encodedBase64 : angular.element(document.getElementById("eventPlannerPhotoUpload"))[0].src
             }
             $scope.uploadPlannerPhoto = true;
+            $scope.plannerPhotoSuccess = false;
+            $scope.plannerPhotoError = false;
             photoService.upload(imageData)
                 .then(function (data, status) {
                     $scope.uploadPlannerPhoto = false;
@@ -498,6 +578,9 @@ angular.module('User')
                     $scope.plannerImageId = data.data.imageUUID;
 
                 }, function (data, status) {
+                    document.getElementById("plannerPhotoError").innerHTML= data.data.message;
+                    $scope.uploadPlannerPhoto = false;
+                    $scope.plannerPhotoError = true;
                     console.log(data);
                 })
         }
@@ -506,14 +589,19 @@ angular.module('User')
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("eventPlannerPhotoUploadEdit"))[0].src
             }
-            $scope.uploadPlannerPhoto = true;
+            $scope.uploadPlannerEditPhoto = true;
+            $scope.plannerEditPhotoError = false;
+            $scope.plannerEditPhotoSuccess = false;
             photoService.upload(imageData)
                 .then(function (data, status) {
-                    $scope.uploadPlannerPhoto = false;
+                    $scope.uploadPlannerEditPhoto = false;
                     $scope.plannerEditPhotoSuccess = true;
                     $scope.plannerImageIdEdit = data.data.imageUUID;
 
                 }, function (data, status) {
+                    document.getElementById("plannerEditPhotoError").innerHTML= data.data.message;
+                    $scope.uploadPlannerEditPhoto = false;
+                    $scope.plannerEditPhotoError = true;
                     console.log(data);
                 })
         }
@@ -525,6 +613,8 @@ angular.module('User')
                 encodedBase64 : angular.element(document.getElementsByClassName("coverPhotoUpload"))[0].src
             }
             $scope.uploadCoverPhoto = true;
+            $scope.coverPhotoSuccess = false;
+            $scope.coverPhotoError = false;
 
             photoService.upload(imageData)
                 .then(function (data, status) {
@@ -532,6 +622,9 @@ angular.module('User')
                     $scope.coverPhotoSuccess = true;
                     $scope.coverImageId = data.data.imageUUID;
                 }, function (data, status) {
+                    $scope.uploadCoverPhoto = false;
+                    document.getElementById("coverPhotoError").innerHTML= data.data.message;
+                    $scope.coverPhotoError = true;
                     console.log(data);
                 })
         }
@@ -540,14 +633,19 @@ angular.module('User')
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("coverPhotoUploadEdit"))[0].src
             }
-            $scope.uploadCoverPhoto = true;
+            $scope.uploadCoverEditPhoto = true;
+            $scope.coverEditPhotoSuccess = false;
+            $scope.coverEditPhotoError = false;
 
             photoService.upload(imageData)
                 .then(function (data, status) {
-                    $scope.uploadCoverPhoto = false;
+                    $scope.uploadCoverEditPhoto = false;
                     $scope.coverEditPhotoSuccess = true;
                     $scope.coverImageIdEdit = data.data.imageUUID;
                 }, function (data, status) {
+                    $scope.uploadCoverEditPhoto = false;
+                    document.getElementById("coverEditPhotoError").innerHTML= data.data.message;
+                    $scope.coverEditPhotoError = true;
                     console.log(data);
                 })
         }
