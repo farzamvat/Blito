@@ -1,0 +1,62 @@
+<div ng-controller="exchangePageCtrl as eventPage">
+    <div class="row eventPageHeader" ng-class="{'eventPageHeaderCinema': eventType === 'cinema', 'eventPageHeaderTheatre': eventType === 'theatre'}">
+        <div class="col-xs-12 col-sm-4 col-md-3 floatRight eventPageImage">
+            <img ng-src="assets/img/a.jpeg"   class="img-responsive imgMobileSize ">
+        </div>
+        <div class="col-xs-12 col-sm-7 col-md-8 floatRight textAlignRight eventContent" >
+            <h1>نام رویداد</h1>
+            <p> توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد</p>
+            <p> توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد</p>
+            <table class="table">
+                <thead class="tableHeader">
+                <tr>
+
+                    <th class="dataCenter">ساعت
+                    </th>
+                    <th class="dataCenter" >روز
+                    </th>
+                    <th class="dataCenter" >تاریخ
+                    </th>
+                    <th class="dataCenter" >قیمت
+                    </th>
+
+                </tr>
+                </thead>
+                <tbody class="showTimeList">
+                <tr ng-repeat="item in showTime | filter:search">
+                    <td class="dataCenter">{{ item.time}}</td>
+                    <td class="dataCenter">{{ item.weekDay}}</td>
+                    <td class="dataCenter">{{ item.date}}</td>
+                    <td class="dataCenter">{{ item.price}}</td>
+
+                </tr>
+                </tbody>
+            </table>
+            <button data-toggle="modal" data-target="#buyTicket" class="btn btn-success buyTicket  marginTop10"><i class="fa fa-ticket" aria-hidden="true"></i>  خرید بلیت
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-12 floatRight">
+
+
+
+        <div class="col-xs-12 col-sm-12  floatRight textAlignRight">
+            <h3 class="text-center">مکان رویداد</h3>
+            <p class="text-center">منطقه فلان، آدرس فلان، کوچه فلان، پلاک۲</p>
+            <div id="map" class="center-block">
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <div ng-include="'app/views/partials/buyTicket.html'"></div>
+</div>
+
+
+
