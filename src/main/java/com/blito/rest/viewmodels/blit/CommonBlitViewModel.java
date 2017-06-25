@@ -37,6 +37,8 @@ public class CommonBlitViewModel {
 	@JsonView(View.Blit.class)
 	@NotEmpty
 	String eventDateAndTime;
+	@JsonView(View.SimpleBlit.class)
+	long userId;
 	@JsonView(View.Blit.class)
 	@NotEmpty
 	String customerName;
@@ -189,5 +191,10 @@ public class CommonBlitViewModel {
 	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;
 	}
-	
+	public long getUserId() {
+		return userId;
+	}
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
 }

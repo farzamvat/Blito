@@ -50,6 +50,7 @@ public enum Response {
 	ISFREE_AND_PRICE_NOT_MATCHED("error.is.free.price.not.matched"),
 	INCONSISTENT_PERCENTAGE_WHEN_PERCENT_IS_FALSE("error.inconsistent.data.is.not.percentage"),
 	EVENT_IS_SOLD("error.event.is.sold"),
+	EXCHANGE_BLIT_IS_SOLD("error.exchange.blit.is.sold"),
 	EVENT_NOT_APPROVED("error.event.not.approved");
     
 

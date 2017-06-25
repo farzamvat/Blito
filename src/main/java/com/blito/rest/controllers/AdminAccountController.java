@@ -95,7 +95,7 @@ public class AdminAccountController {
 	@ApiResponses({ @ApiResponse(code = 200, message = "get all users ok", response = ModelAndView.class)})
 	// ***************** SWAGGER DOCS ***************** //
 	@GetMapping("/all-users-excel.xlsx")
-	public ModelAndView getAllUsersExcel() {
- 		return new ModelAndView(new ExcelView(), excelService.getUserExcelMap());
+	public ModelAndView searchUsersForExcel(@RequestBody SearchViewModel<User> search) {
+ 		return new ModelAndView(new ExcelView(), adminAccountService.searchUsersForExcel(search));
 	}
 }

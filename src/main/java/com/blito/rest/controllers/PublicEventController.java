@@ -1,6 +1,8 @@
 package com.blito.rest.controllers;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,7 +50,7 @@ public class PublicEventController {
 
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "search events")
-	@ApiResponses({ @ApiResponse(code = 202, message = "search events ok", response = EventViewModel.class) })
+	@ApiResponses({ @ApiResponse(code = 202, message = "search events ok", response = EventFlatViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.Event.class)
 	@PostMapping("/search")
@@ -56,7 +58,7 @@ public class PublicEventController {
 		Page<EventFlatViewModel> page = eventService.searchEvents(searchViewModel, pageable,flatMapper);
 		return ResponseEntity.ok(page);
 	}
-
+	
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "get flat event")
 	@ApiResponses({ @ApiResponse(code = 200, message = "get flat event ok", response = EventFlatViewModel.class),

@@ -25,6 +25,8 @@ public class EventFlatViewModel {
 	@JsonView(View.Event.class)
 	private long eventHostId;
 	@JsonView(View.SimpleEvent.class)
+	private String eventHostName;
+	@JsonView(View.SimpleEvent.class)
 	private List<OfferTypeEnum> offers;
 	@JsonView(View.Event.class)
 	private List<EventDateFlatViewModel> eventDates;
@@ -256,5 +258,14 @@ public class EventFlatViewModel {
 	public void setAparatDisplayCode(String aparatDisplayCode) {
 		this.aparatDisplayCode = aparatDisplayCode;
 	}
+
+	public String getEventHostName() {
+		return eventHostName;
+	}
+
+	public void setEventHostName(String eventHostName) {
+		this.eventHostName = eventHostName;
+	}
+	
 	
 }

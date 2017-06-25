@@ -212,6 +212,10 @@ public class EventService {
 	public <V> Page<V> searchEvents(SearchViewModel<Event> searchViewModel, Pageable pageable,GenericMapper<Event,V> mapper ) {
 		return searchService.search(searchViewModel, pageable, mapper, eventRepository);
 	}
+	
+	public <V> List<V> searchEvents(SearchViewModel<Event> searchViewModel,GenericMapper<Event,V> mapper ) {
+		return searchService.search(searchViewModel, mapper, eventRepository);
+	}
 
 	@Transactional
 	public BlitType getBlitTypeFromRepository(long blitTypeId) {

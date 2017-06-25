@@ -188,14 +188,14 @@ public class AdminEventController {
 		return ResponseEntity.ok(adminEventService.getEventBlitBuyersByEventDate(eventDateId, page));
 	}
 
-	// ***************** SWAGGER DOCS ***************** //
-	@ApiOperation(value = "get event blit buyers by date excel")
-	@ApiResponses({
-			@ApiResponse(code = 200, message = "get event blit buyers by datee excel ok", response = ModelAndView.class),
-			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
-	// ***************** SWAGGER DOCS ***************** //
-	@GetMapping("/get-event-blit-buyers-by-date.xls")
-	public ModelAndView getEventBlitBuyersExcel(@RequestParam long eventDateId) {
-		return new ModelAndView(new ExcelView(), excelService.getBlitBuyersMap(eventDateId));
-	}
+//	// ***************** SWAGGER DOCS ***************** //
+//	@ApiOperation(value = "get event blit buyers by date excel")
+//	@ApiResponses({
+//			@ApiResponse(code = 200, message = "get event blit buyers by datee excel ok", response = ModelAndView.class),
+//			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
+//	// ***************** SWAGGER DOCS ***************** //
+//	@GetMapping("/get-event-blit-buyers-by-date.xls")
+//	public ModelAndView getEventBlitBuyersExcel(@RequestParam long eventDateId) {
+//		return new ModelAndView(new ExcelView(), excelService.getBlitBuyersMap(eventDateId));
+//	}
 }
