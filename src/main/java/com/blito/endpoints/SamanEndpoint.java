@@ -6,8 +6,8 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
-import com.blito.payments.localhost._8085.services.FinalizePaymentRequest;
-import com.blito.payments.localhost._8085.services.FinalizePaymentResponse;
+import com.blito.payments._76._143._201._138._80.services.FinalizePaymentRequest;
+import com.blito.payments._76._143._201._138._80.services.FinalizePaymentResponse;
 import com.blito.services.PaymentService;
 
 

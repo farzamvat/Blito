@@ -23,7 +23,6 @@ public class Simple<T> extends AbstractSearchViewModel<T> {
 	@Override
 	public Specification<T> action() {
 		return (root, query, cb) ->
-
 		OperationService.doOperation(operation, val, cb, root, field);
 	}
 
