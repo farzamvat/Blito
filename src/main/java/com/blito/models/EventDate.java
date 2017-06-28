@@ -3,6 +3,7 @@ package com.blito.models;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -110,5 +111,20 @@ public class EventDate {
 	{
 		this.blitTypes.add(blitType);
 		blitType.setEventDate(this);
+	}
+	
+	public void removeBlitType(BlitType blitType)
+	{
+		this.blitTypes.remove(blitType);
+		blitType.setEventDate(null);
+	}
+	public void removeBlitTypeById(Long id)
+	{
+		Optional<BlitType> bt = this.blitTypes.stream().filter(b -> b.getBlitTypeId() == id).findFirst();
+		if(bt.isPresent())
+		{
+			this.blitTypes.removeIf(b -> b.getBlitTypeId() == id);
+			bt.get().setEventDate(null);
+		}
 	}
 }

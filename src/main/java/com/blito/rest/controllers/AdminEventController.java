@@ -26,6 +26,7 @@ import com.blito.rest.viewmodels.adminreport.BlitBuyerViewModel;
 import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
 import com.blito.rest.viewmodels.event.AdminChangeEventOperatorStateVm;
 import com.blito.rest.viewmodels.event.AdminChangeOfferTypeViewModel;
+import com.blito.rest.viewmodels.event.AdminSetEventOrderViewModel;
 import com.blito.rest.viewmodels.event.AdminSetIsEventoViewModel;
 import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
@@ -138,9 +139,9 @@ public class AdminEventController {
 	@ApiResponses({ @ApiResponse(code = 200, message = "set event order number ok", response = ResultVm.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
-	@PutMapping("/set-event-order-number/{eventId}")
-	public ResponseEntity<ResultVm> setEventOrderNumber(@PathVariable long eventId, @RequestParam int order) {
-		adminEventService.setEventOrderNumber(eventId, order);
+	@PutMapping("/set-event-order-number")
+	public ResponseEntity<ResultVm> setEventOrderNumber(@Validated @RequestBody AdminSetEventOrderViewModel vmodel) {
+		adminEventService.setEventOrderNumber(vmodel.getEventId(), vmodel.getOrder());
 		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
 

@@ -82,6 +82,11 @@ public class AdminEventService {
 	public void changeEventState(ChangeEventStateVm vmodel) {
 		Event event = getEventFromRepository(vmodel.getEventId());
 		checkEventRestricitons(event);
+		if(vmodel.getState() == State.CLOSED)
+			event.getEventDates().forEach(ed -> {
+				ed.setEventDateState(State.CLOSED);
+				ed.getBlitTypes().forEach(bt -> bt.setBlitTypeState(State.CLOSED));
+			});
 		event.setEventState(vmodel.getState());
 		return;
 	}
@@ -90,6 +95,10 @@ public class AdminEventService {
 	public void changeEventDateState(ChangeEventDateStateVm vmodel) {
 		EventDate eventDate = Optional.ofNullable(eventDateRepository.findOne(vmodel.getEventDateId())).map(ed -> ed)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
+		if(vmodel.getEventDateState() == State.CLOSED)
+		{
+			eventDate.getBlitTypes().forEach(bt -> bt.setBlitTypeState(State.CLOSED));
+		}
 		checkEventRestricitons(eventDate.getEvent());
 		eventDate.setEventDateState(vmodel.getEventDateState());
 		return;
