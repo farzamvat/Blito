@@ -258,7 +258,7 @@
 				</executions>
 				<configuration>
 					<schemaDirectory>${project.basedir}/src/main/resources/bank/</schemaDirectory>
-					<outputDirectory>${project.basedir}/src/main/java/com/blito/payments/</outputDirectory>
+					<!-- <outputDirectory>${project.basedir}/src/main/java/com/blito/payments/</outputDirectory> -->
 					<clearOutputDir>false</clearOutputDir>
 				</configuration>
 			</plugin>
