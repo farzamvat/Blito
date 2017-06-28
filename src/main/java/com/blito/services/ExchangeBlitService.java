@@ -70,25 +70,25 @@ public class ExchangeBlitService {
 	@Transactional
 	public ExchangeBlitViewModel update(ExchangeBlitViewModel vmodel) {
 		ExchangeBlit exchangeBlit = findByExchangeBlitId(vmodel.getExchangeBlitId());
-		if (exchangeBlit.getState().equals(State.SOLD) 
-				|| exchangeBlit.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
+		if (exchangeBlit.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
+		}
+		if(exchangeBlit.getState().equals(State.SOLD)) {
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.EXCHANGE_BLIT_IS_SOLD));
 		}
 		if (vmodel.getImage() == null) {
 			vmodel.setImage(new ImageViewModel(Constants.DEFAULT_EXCHANGEBLIT_PHOTO, ImageType.EXCHANGEBLIT_PHOTO));
 		}
-		exchangeBlit.setImage(imageRepository.findByImageUUID(vmodel.getImage().getImageUUID()).map(i -> {
+		Image image = imageRepository.findByImageUUID(vmodel.getImage().getImageUUID()).map(i -> {
 			i.setImageType(vmodel.getImage().getType());
 			return i;
-		}).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))));
+		}).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
 
 		exchangeBlit = exchangeBlitMapper.updateEntity(vmodel, exchangeBlit);
-		exchangeBlit.setOperatorState(OperatorState.PENDING);
-		exchangeBlit.setState(State.CLOSED);
-
+		exchangeBlit.setImage(image);
 		return exchangeBlitMapper.createFromEntity(exchangeBlit);
 	}
-////// bug bug bug bug  fixed, tests should be run again
+
 	@Transactional
 	public void delete(long exchangeBlitId) {
 		ExchangeBlit exchangeBlit = findByExchangeBlitId(exchangeBlitId);

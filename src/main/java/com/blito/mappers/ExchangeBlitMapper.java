@@ -71,6 +71,8 @@ public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit,ExchangeBl
 		exchangeBlit.setEventDate(vmodel.getEventDate());
 		exchangeBlit.setLatitude(vmodel.getLatitude());
 		exchangeBlit.setLongitude(vmodel.getLongitude());
+		exchangeBlit.setOperatorState(OperatorState.PENDING);
+		exchangeBlit.setState(State.CLOSED);
 		return exchangeBlit;
 	}
 }

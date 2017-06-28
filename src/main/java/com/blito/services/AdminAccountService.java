@@ -1,5 +1,6 @@
 package com.blito.services;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class AdminAccountService {
 	UserMapper userMapper;
 	@Autowired
 	SearchService searchService;
+	@Autowired
+	ExcelService excelService;
 	
 	public Page<UserViewModel> getAllUsers(Pageable pageable) {
 		return userMapper.toPage(userRepository.findAll(pageable), userMapper::createFromEntity);
@@ -55,10 +58,9 @@ public class AdminAccountService {
 		return searchService.search(searchViewModel, pageable, userMapper, userRepository);
 	}
 	
-//	public UserViewModel updateUser(UserAdminUpdateViewModel vmodel) {
-//		User user = Optional.ofNullable(userRepository.findOne(vmodel.getUserId())).map(u -> u)
-//				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
-//		return userMapper.createFromEntity(userRepository.save(userMapper.userAdminUpdateViewModelToUser(vmodel, user)));
-//	}	
+	public Map<String, Object> searchUsersForExcel(SearchViewModel<User> searchViewModel)
+	{
+		return excelService.getUserExcelMap(searchService.search(searchViewModel, userMapper, userRepository));
+	}
 	
 }

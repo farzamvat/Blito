@@ -1,5 +1,6 @@
 package com.blito.services;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.context.annotation.Scope;
@@ -31,5 +32,17 @@ public class SearchService {
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
 		return new PageImpl<>(searchResult.getContent().stream().distinct().map(mapper::createFromEntity)
 				.collect(Collectors.toList()), pageable, searchResult.getTotalElements());
+	}
+	
+	public <E, V, R extends JpaSpecificationExecutor<E> & JpaRepository<E, Long>> List<V> search(
+			SearchViewModel<E> searchViewModel, GenericMapper<E, V> mapper, R repository) {
+		if (searchViewModel.getRestrictions().isEmpty())
+			return mapper.createFromEntities(repository.findAll());
+		List<E> searchResult = searchViewModel.getRestrictions().stream().map(r -> r.action())
+				.reduce((s1, s2) -> Specifications.where(s1).and(s2))
+				.map(specification -> repository.findAll(specification))
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
+		return searchResult.stream().distinct().map(mapper::createFromEntity)
+				.collect(Collectors.toList());
 	}
 }

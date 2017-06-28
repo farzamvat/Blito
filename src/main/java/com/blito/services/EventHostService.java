@@ -45,6 +45,8 @@ public class EventHostService {
 	EventHostRepository eventHostRepository;
 	@Autowired
 	ImageMapper imageMapper;
+	@Autowired
+	SearchService searchService;
 
 	private EventHost findEventHostById(long id) {
 		return eventHostRepository.findByEventHostIdAndIsDeletedFalse(id).map(e -> e)
@@ -127,15 +129,6 @@ public class EventHostService {
 	}
 
 	public Page<EventHostViewModel> searchEventHosts(SearchViewModel<EventHost> searchViewModel, Pageable pageable) {
-		/*
-		 * empty search handling ...
-		 */
-		return searchViewModel.getRestrictions().stream().map(r -> r.action())
-				.reduce((s1, s2) -> Specifications.where(s1).and(s2))
-				.map(specification -> new PageImpl<>(
-						eventHostMapper.createFromEntities(eventHostRepository.findAll(specification).stream().filter(eh->!eh.isDeleted()).collect(Collectors.toList())).stream()
-								.skip(pageable.getPageNumber() * pageable.getPageSize()).limit(pageable.getPageSize())
-								.collect(Collectors.toList())))
-				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
+		return searchService.search(searchViewModel, pageable, eventHostMapper, eventHostRepository);
 	}
 }
