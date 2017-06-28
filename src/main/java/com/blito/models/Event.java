@@ -32,7 +32,7 @@ public class Event {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private long eventId;
 	
-	@OneToMany(mappedBy="event",targetEntity=EventDate.class,cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="event",targetEntity=EventDate.class,cascade=CascadeType.ALL,fetch=FetchType.EAGER,orphanRemoval=true)
 	@OrderBy("date DESC")
 	List<EventDate> eventDates;
 	

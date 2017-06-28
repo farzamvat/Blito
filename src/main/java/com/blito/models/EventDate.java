@@ -32,7 +32,7 @@ public class EventDate {
 	@Enumerated(EnumType.STRING)
 	State eventDateState;
 	
-	@OneToMany(mappedBy="eventDate", targetEntity=BlitType.class,fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="eventDate", targetEntity=BlitType.class,fetch=FetchType.LAZY, cascade=CascadeType.ALL,orphanRemoval=true)
 	List<BlitType> blitTypes;
 	
 	@ManyToOne

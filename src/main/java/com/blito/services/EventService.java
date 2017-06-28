@@ -6,9 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +41,7 @@ import com.blito.repositories.EventRepository;
 import com.blito.repositories.ImageRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
 import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.event.ChangeEventStateVm;
@@ -160,7 +159,8 @@ public class EventService {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
 
-		if (event.getEventState() == State.SOLD) {
+		// handle exception message
+		if (event.getEventState() == State.SOLD || event.getEventState() == State.ENDED) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_IS_SOLD));
 		}
 
@@ -183,17 +183,15 @@ public class EventService {
 
 	@Transactional
 	public void delete(long eventId) {
-		Optional<Event> eventResult = eventRepository.findByEventIdAndIsDeletedFalse(eventId);
-		if (!eventResult.isPresent()) {
-			throw new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND));
-		} else {
-			if (eventResult.get().getEventHost().getUser().getUserId() != SecurityContextHolder.currentUser()
+		eventRepository.findByEventIdAndIsDeletedFalse(eventId).map(event -> {
+			if (event.getEventHost().getUser().getUserId() != SecurityContextHolder.currentUser()
 					.getUserId()) {
 				throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 			} else {
-				eventResult.get().setDeleted(true);
+				event.setDeleted(true);
 			}
-		}
+			return event;
+		}).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 	}
 
 	public Page<EventViewModel> getAllEvents(Pageable pageable) {
@@ -260,11 +258,19 @@ public class EventService {
 
 	@Transactional
 	public void changeEventState(ChangeEventStateVm vmodel) {
+		if(vmodel.getState() == State.ENDED || vmodel.getState() == State.SOLD)
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
+		
 		Event event = eventRepository.findByEventIdAndIsDeletedFalse(vmodel.getEventId()).map(e -> e)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+		
 		if (event.getEventHost().getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
+		
+		if(event.getEventState() == State.ENDED || event.getEventState() == State.SOLD)
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
+		
 		if (event.getOperatorState() == OperatorState.REJECTED || event.getOperatorState() == OperatorState.PENDING) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_NOT_APPROVED));
 		}
@@ -272,35 +278,35 @@ public class EventService {
 		return;
 	}
 
-	@Transactional
-	public void changeEventDateState(ChangeEventDateStateVm vmodel) {
-		EventDate eventDate = Optional.ofNullable(eventDateRepository.findOne(vmodel.getEventDateId())).map(e -> e)
-				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
-		if (eventDate.getEvent().getEventHost().getUser().getUserId() != SecurityContextHolder.currentUser()
-				.getUserId()) {
-			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
-		}
-		if (eventDate.getEvent().getOperatorState() == OperatorState.REJECTED
-				|| eventDate.getEvent().getOperatorState() == OperatorState.PENDING) {
-			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_NOT_APPROVED));
-		}
-		eventDate.setEventDateState(vmodel.getEventDateState());
-		return;
-	}
-
-	@Transactional
-	public void changeBlitTypeState(ChangeBlitTypeStateVm vmodel) {
-		BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(vmodel.getBlitTypeId())).map(e -> e)
-				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
-		if (blitType.getEventDate().getEvent().getEventHost().getUser().getUserId() != SecurityContextHolder
-				.currentUser().getUserId()) {
-			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
-		}
-		if (blitType.getEventDate().getEvent().getOperatorState() == OperatorState.REJECTED
-				|| blitType.getEventDate().getEvent().getOperatorState() == OperatorState.PENDING) {
-			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_NOT_APPROVED));
-		}
-		blitType.setBlitTypeState(vmodel.getBlitTypeState());
-		return;
-	}
+//	@Transactional
+//	public void changeEventDateState(ChangeEventDateStateVm vmodel) {
+//		EventDate eventDate = Optional.ofNullable(eventDateRepository.findOne(vmodel.getEventDateId())).map(e -> e)
+//				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
+//		if (eventDate.getEvent().getEventHost().getUser().getUserId() != SecurityContextHolder.currentUser()
+//				.getUserId()) {
+//			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
+//		}
+//		if (eventDate.getEvent().getOperatorState() == OperatorState.REJECTED
+//				|| eventDate.getEvent().getOperatorState() == OperatorState.PENDING) {
+//			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_NOT_APPROVED));
+//		}
+//		eventDate.setEventDateState(vmodel.getEventDateState());
+//		return;
+//	}
+//
+//	@Transactional
+//	public void changeBlitTypeState(ChangeBlitTypeStateVm vmodel) {
+//		BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(vmodel.getBlitTypeId())).map(e -> e)
+//				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
+//		if (blitType.getEventDate().getEvent().getEventHost().getUser().getUserId() != SecurityContextHolder
+//				.currentUser().getUserId()) {
+//			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
+//		}
+//		if (blitType.getEventDate().getEvent().getOperatorState() == OperatorState.REJECTED
+//				|| blitType.getEventDate().getEvent().getOperatorState() == OperatorState.PENDING) {
+//			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_NOT_APPROVED));
+//		}
+//		blitType.setBlitTypeState(vmodel.getBlitTypeState());
+//		return;
+//	}
 }

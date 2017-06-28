@@ -291,6 +291,35 @@ public class EventControllerTest {
 	}
 	
 	@Test
+	public void greaterThanTest() throws URISyntaxException
+	{
+		JSONObject requestBody = new JSONObject();
+		JSONArray restrictions = new JSONArray();
+		JSONObject simple = new JSONObject();
+		simple.put("type", "time");
+		simple.put("field", "createdAt");
+		simple.put("operation", "gt");
+		simple.put("value", Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(11).toInstant()).getTime());
+		restrictions.put(simple);
+		requestBody.put("restrictions", restrictions);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
+		RequestEntity<String> request = 
+				new RequestEntity<>(requestBody.toString(),headers,HttpMethod.POST,new URI("/api/blito/v1.0/public/events/search?page=0&size=5"));
+		ResponseEntity<String> response = 
+				rest.exchange("/api/blito/v1.0/public/events/search?page=0&size=5",HttpMethod.POST,request, String.class);
+		JSONObject responseJson = null;
+		try {
+			responseJson = new JSONObject(response.getBody());
+		} catch (Exception e)
+		{
+			assertTrue(false);
+		}
+		assertEquals(5,responseJson.get("numberOfElements"));
+	}
+	
+	@Test
 	public void sortByCreatedAt() throws URISyntaxException
 	{
 		JSONObject requestBody = new JSONObject();

@@ -14,7 +14,7 @@ import com.blito.enums.State;
 
 public class Simple<T> extends AbstractSearchViewModel<T> {
 
-	public String value;
+	public Object value;
 
 	public Operation operation;
 
@@ -38,31 +38,31 @@ public class Simple<T> extends AbstractSearchViewModel<T> {
 		return value;
 	}
 
-	public void setValue(String value) {
+	public void setValue(Object value) {
 		if (field.equals("eventState") 
 				|| field.equals("eventDateState") 
 				|| field.equals("blitTypeState"))
-			this.val = Enum.valueOf(State.class, value);
+			this.val = Enum.valueOf(State.class, value.toString());
 		else if (field.equals("operatorState"))
-			this.val = Enum.valueOf(OperatorState.class, value);
+			this.val = Enum.valueOf(OperatorState.class, value.toString());
 		else if (field.equals("state"))
-			this.val = Enum.valueOf(State.class, value);
+			this.val = Enum.valueOf(State.class, value.toString());
 		else if (field.equals("eventType"))
-			this.val = Enum.valueOf(EventType.class, value);
+			this.val = Enum.valueOf(EventType.class, value.toString());
 		else if (field.equals("hostType"))
-			this.val = Enum.valueOf(HostType.class, value);
+			this.val = Enum.valueOf(HostType.class, value.toString());
 		else if (field.equals("exchangeBlitType"))
-			this.val = Enum.valueOf(ExchangeBlitType.class, value);
+			this.val = Enum.valueOf(ExchangeBlitType.class, value.toString());
 		else if (field.equals("imageType"))
-			this.val = Enum.valueOf(ImageType.class, value);
+			this.val = Enum.valueOf(ImageType.class, value.toString());
 		else if (field.equals("paymentStatus"))
-			this.val = Enum.valueOf(PaymentStatus.class, value);
+			this.val = Enum.valueOf(PaymentStatus.class, value.toString());
 		else if (field.equals("seatType"))
-			this.val = Enum.valueOf(SeatType.class, value);
+			this.val = Enum.valueOf(SeatType.class, value.toString());
 		else if (field.equals("bankGateway"))
-			this.val = Enum.valueOf(BankGateway.class, value);
+			this.val = Enum.valueOf(BankGateway.class, value.toString());
 		else if(field.equals("isDeleted"))
-			this.val = Boolean.parseBoolean(value);
+			this.val = Boolean.parseBoolean(value.toString());
 		else
 			this.val = value;
 	}

@@ -104,28 +104,30 @@ public class EventController {
 		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
 	
-	// ***************** SWAGGER DOCS ***************** //
-	@ApiOperation(value = "change event date state")
-	@ApiResponses({ @ApiResponse(code = 200, message = "change event date state ok", response = ResultVm.class),
-			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class),
-			@ApiResponse(code = 400, message = "NotAllowedException", response = ExceptionViewModel.class)})
-	// ***************** SWAGGER DOCS ***************** //
-	@PutMapping("/change-event-date-state")
-	public ResponseEntity<ResultVm> changeEventDateState(@Validated @RequestBody ChangeEventDateStateVm vmodel) {
-		eventService.changeEventDateState(vmodel);
-		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
-	}
 	
-	// ***************** SWAGGER DOCS ***************** //
-	@ApiOperation(value = "change blit type state")
-	@ApiResponses({ @ApiResponse(code = 200, message = "change blit type state ok", response = ResultVm.class),
-			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class),
-			@ApiResponse(code = 400, message = "NotAllowedException", response = ExceptionViewModel.class)})
-	// ***************** SWAGGER DOCS ***************** //
-	@PutMapping("/change-blit-type-state")
-	public ResponseEntity<ResultVm> changeBlitTypeState(@Validated @RequestBody ChangeBlitTypeStateVm vmodel) {
-		eventService.changeBlitTypeState(vmodel);
-		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
-	}
+	
+//	// ***************** SWAGGER DOCS ***************** //
+//	@ApiOperation(value = "change event date state")
+//	@ApiResponses({ @ApiResponse(code = 200, message = "change event date state ok", response = ResultVm.class),
+//			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class),
+//			@ApiResponse(code = 400, message = "NotAllowedException", response = ExceptionViewModel.class)})
+//	// ***************** SWAGGER DOCS ***************** //
+//	@PutMapping("/change-event-date-state")
+//	public ResponseEntity<ResultVm> changeEventDateState(@Validated @RequestBody ChangeEventDateStateVm vmodel) {
+//		eventService.changeEventDateState(vmodel);
+//		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
+//	}
+//	
+//	// ***************** SWAGGER DOCS ***************** //
+//	@ApiOperation(value = "change blit type state")
+//	@ApiResponses({ @ApiResponse(code = 200, message = "change blit type state ok", response = ResultVm.class),
+//			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class),
+//			@ApiResponse(code = 400, message = "NotAllowedException", response = ExceptionViewModel.class)})
+//	// ***************** SWAGGER DOCS ***************** //
+//	@PutMapping("/change-blit-type-state")
+//	public ResponseEntity<ResultVm> changeBlitTypeState(@Validated @RequestBody ChangeBlitTypeStateVm vmodel) {
+//		eventService.changeBlitTypeState(vmodel);
+//		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
+//	}
 
 }

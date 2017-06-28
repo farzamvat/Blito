@@ -126,6 +126,12 @@ public class AdminEventController {
 		adminEventService.setEventOffers(vmodel);
 		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
+	
+	@PutMapping("/remove-event-offers")
+	public ResponseEntity<ResultVm> removeEventOffers(@Validated @RequestBody AdminChangeOfferTypeViewModel vmodel) {
+		adminEventService.removeEventOffers(vmodel);
+		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
+	}
 
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "set event order number")
