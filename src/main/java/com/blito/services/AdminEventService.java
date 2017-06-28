@@ -70,9 +70,8 @@ public class AdminEventService {
 	SearchService searchService;
 
 	public Event getEventFromRepository(long eventId) {
-		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId).map(e -> e)
+		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
-
 		return event;
 	}
 
