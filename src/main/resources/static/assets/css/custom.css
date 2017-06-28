@@ -255,6 +255,7 @@ color: white !important;
 .sideBar {
     background: transparent;
 }
+.datepicker-plot-area { z-index: 1151 !important; }
 div.row.slidingEventsRow {
     height: 460px;
     /*background: url('../img/pt.jpg') fixed repeat-y;*/
@@ -434,7 +435,13 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     display: none;
 }
 .exchangePhotoUpload {
-    max-width: 50%;
+    width: 100px;
+}
+.gallery {
+    width: 100px;
+}
+.profilePhotoUploadEditEventexchangePhotoUploadEdit {
+    max-width: 20%;
 }
 .persianTimeExchange {
     text-align: center;
@@ -444,6 +451,21 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     width: 100%;
 }
 /*------------------------------------------------------------------------------------------------*/
+.editForm {
+    width: 80%;
+}
+.eventPlannerPhotoUploadEdit {
+    width: 100px;
+}
+.exchangePhotoUploadEdit {
+    width: 100px;
+}
+.profilePhotoUploadEditEvent {
+    width: 100px;
+}
+.alert {
+    margin-top: 10px;
+}
 .slidingEventsBtn {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -772,6 +794,11 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
     height: 300px;
 
 }
+#editEventMap {
+    border: 2px solid #303030;
+    width: 80%;
+    height: 300px;
+}
 .slick-dots li.slick-active button:before
 {
     opacity: 1;
@@ -784,6 +811,12 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
 .eventsPageRows h1 {
     border-bottom: 3px solid rgb(252, 183, 49);
     padding-bottom: 10px;
+}
+.colorRed {
+    color: red;
+}
+input.ng-invalid.ng-touched {
+    border-color: red;
 }
 .dataCenter {
     text-align: center;
@@ -1156,7 +1189,7 @@ dir-pagination-controls ul {
 .customPanelUser .panel-body {
     max-height: 90%;
     overflow-y:scroll;
-    /*border: 1px solid #303030;*/
+    border: 1px solid #303030;
 }
 .userNameProfilePage {
     font-size: 18px;

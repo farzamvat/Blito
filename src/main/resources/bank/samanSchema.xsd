@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://localhost:8085/services" targetNamespace="http://localhost:8085/services">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://138.201.143.76:80/services" targetNamespace="http://138.201.143.76:80/services">
 	<xs:element name="finalizePaymentRequest">
 		<xs:complexType>
 			<xs:sequence>

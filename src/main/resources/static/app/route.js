@@ -46,6 +46,11 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 authenticated: false
 
             })
+            .when('/exchange-page', {
+                templateUrl : 'app/views/pages/exchange-page.html',
+                authenticated: false
+
+            })
             .when('/bio-page', {
                 templateUrl : 'app/views/pages/bioPage.html',
                 authenticated: false
@@ -57,7 +62,7 @@ var app = angular.module('appRoutes', ['ngRoute'])
             })
             .when('/user-profile', {
                 templateUrl : 'app/views/pages/userProfile.html',
-                authenticated: true
+                authenticated: false
             })
 
             .otherwise({redirectTo: '/'})
@@ -74,13 +79,7 @@ app.run(['$rootScope', 'Auth', '$location', function ($rootScope, Auth, $locatio
             }
 
         }
-        // else if (next.$$route.authenticated === false) {
-        //     if(Auth.isLoggedIn() || Auth.loggedInRefresh()) {
-        //         event.preventDefault();
-        //         $location.path('/');
-        //     }
-        //
-        // }
+
 
     });
 }]);

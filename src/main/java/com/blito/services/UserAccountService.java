@@ -61,7 +61,7 @@ public class UserAccountService {
 		user.getRoles().add(userRole);
 		user.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 		return CompletableFuture.completedFuture(user)
-				.thenAcceptAsync(savedUser -> 
+				.thenAccept(savedUser -> 
 					mailService.sendActivationEmail(savedUser)
 				).thenApply((res) -> {
 					return userRepository.save(user);

@@ -9,12 +9,12 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.blito.enums.SeatType;
 import com.blito.enums.PaymentStatus;
+import com.blito.enums.SeatType;
 import com.blito.enums.State;
 import com.blito.models.Blit;
 import com.blito.models.BlitType;
-import com.blito.payments.localhost._8085.services.FinalizePaymentRequest;
+import com.blito.payments._76._143._201._138._80.services.FinalizePaymentRequest;
 import com.blito.payments.saman.SamanBankService;
 import com.blito.repositories.BlitRepository;
 import com.blito.repositories.BlitTypeRepository;

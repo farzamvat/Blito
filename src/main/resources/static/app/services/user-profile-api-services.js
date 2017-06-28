@@ -3,11 +3,19 @@
  */
 
 angular.module('userProfileApi', [])
-    .service('uploadPhotoService', function ($http, config) {
-        var uploadPhoto = this;
+    .service('photoService', function ($http, config) {
+        var photo = this;
 
-        uploadPhoto.upload = function (imageData) {
+
+        photo.upload = function (imageData) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/images/upload', imageData)
+        }
+        photo.download = function (imageData) {
+            var queryParam = {
+                params : { id : imageData}
+            }
+                return $http.get(config.baseUrl + '/api/blito/v1.0/images/download', queryParam);
+
         }
     })
 
@@ -24,19 +32,28 @@ angular.module('userProfileApi', [])
         event.getUserEvents = function () {
             return $http.get(config.baseUrl+'/api/blito/v1.0/events/all-user-events', queryParam)
         }
+        event.editEvent = function (editData) {
+            return $http.put(config.baseUrl+'/api/blito/v1.0/events', editData)
+        }
     })
     .service('exchangeService', function ($http, config) {
         var exchange = this;
 
-        var queryParam = {
-            params : {page: 0, size: 100}
-        }
 
         exchange.submitExchangeForm = function (exchangeData) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/exchange-blits', exchangeData)
         }
+
         exchange.getExchangeTickets = function () {
+            var queryParam = {
+                params : {page: 0, size: 100}
+            }
+
             return $http.get(config.baseUrl+'/api/blito/v1.0/exchange-blits/all', queryParam)
+        }
+
+        exchange.editExchangeForm = function (editData) {
+            return $http.put(config.baseUrl+'/api/blito/v1.0/exchange-blits', editData)
         }
     })
     .service('plannerService', function ($http, config) {
@@ -44,17 +61,20 @@ angular.module('userProfileApi', [])
         var planners = [];
         planner.setPlanners = function (p) {
             planners = p;
-        }
+        };
         planner.getPlanners = function () {
             return planners;
-        }
+        };
         planner.getPlanners = function () {
             var queryParam = {
                 params : {page: 0, size: 100}
-            }
+            };
             return $http.get(config.baseUrl+'/api/blito/v1.0/event-hosts/all', queryParam)
-        }
+        };
         planner.submitPlannerForm = function (eventData) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/event-hosts', eventData)
+        };
+        planner.editPlannerForm = function (editData) {
+            return $http.put(config.baseUrl+'/api/blito/v1.0/event-hosts', editData)
         }
-    })
+    });
