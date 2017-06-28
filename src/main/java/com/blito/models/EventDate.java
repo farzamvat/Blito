@@ -124,7 +124,6 @@ public class EventDate {
 		if(bt.isPresent())
 		{
 			this.blitTypes.removeIf(b -> b.getBlitTypeId() == id);
-			bt.get().setEventDate(null);
 		}
 	}
 }

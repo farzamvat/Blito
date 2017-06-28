@@ -306,7 +306,6 @@ public class Event {
 		if(ed.isPresent())
 		{
 			this.eventDates.removeIf(b -> b.getEventDateId() == id);
-			ed.get().setEvent(null);
 		}
 	}
 }
