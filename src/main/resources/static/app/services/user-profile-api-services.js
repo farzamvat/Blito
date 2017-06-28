@@ -18,6 +18,15 @@ angular.module('userProfileApi', [])
 
         }
     })
+    .service('eventPageService', function ($http, config) {
+        var eventPage = this;
+
+
+        eventPage.getEvent = function (eventLink) {
+            return $http.get(config.baseUrl+'/api/blito/v1.0/public/events/flat/link/'+eventLink)
+        }
+
+    })
 
     .service('eventService', function ($http, config) {
         var event = this;

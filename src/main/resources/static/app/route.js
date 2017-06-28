@@ -41,7 +41,7 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 authenticated: false
 
             })
-            .when('/event-page', {
+            .when('/event-page/:eventLink', {
                 templateUrl : 'app/views/pages/eventPage.html',
                 authenticated: false
 

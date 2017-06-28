@@ -972,14 +972,24 @@ angular.module('User')
         };
         $scope.addFieldShowTimeEdit=function(){
             if($scope.showTimeEditForms.length < 10) {
-                userProfile.showTimeEditForms++;
-                userProfile.setDateEdit();
+                var classNumber = $scope.showTimeEditForms.length;
+                $timeout(function () {
+                    console.log($(".classDate"+classNumber));
+                    $(".classDate"+classNumber).pDatepicker({
+                        timePicker: {
+                            enabled: true
+                        },
+                        altField: '#persianDigitAlt',
+                        altFormat: "YYYY MM DD HH:mm:ss",
+                        altFieldFormatter: function (unixDate) {
+                        }
+                    });
+                }, 1000);
                 $scope.showTimeEditForms.push({blitTypes : [{}]})
             }
         };
         $scope.deleteFieldShowTimeEdit=function(){
             if( 1 < $scope.showTimeEditForms.length) {
-                userProfile.showTimeEditForms--;
                 $scope.showTimeEditForms.splice(-1,1);
             }
         };
@@ -1045,6 +1055,7 @@ angular.module('User')
 
             var latLng = mapMarkerService.getMarker();
             var newShowTime = angular.copy($scope.showTimeForms);
+            console.log($scope.showTimeForms);
             newShowTime = newShowTime.map(function (item) {
                 item.date = $scope.persianToMs(item.date);
                 return item;
@@ -1178,6 +1189,7 @@ angular.module('User')
         $scope.editEventFields = {};
 
         $scope.editEvent = function (index) {
+            $scope.editEventErrorNotif = false;
             $scope.editEventNotif = false;
             $scope.eventEditPhotoSuccess = false;
             $scope.eventPhotoOneEditSuccess = false;
@@ -1321,6 +1333,7 @@ angular.module('User')
                         altFieldFormatter: function (unixDate) {
                         }
                     });
+                    console.log($scope.persianToArrayInt($scope.persianToArray(persianDate($scope.userEventsEdit[index].eventDates[i].date).pDate)));
                     $(".classDate"+i).pDatepicker("setDate",$scope.persianToArrayInt($scope.persianToArray(persianDate($scope.userEventsEdit[index].eventDates[i].date).pDate)));
                 }
                 $(".blitSaleEndDate").pDatepicker({
@@ -1345,21 +1358,8 @@ angular.module('User')
                 $(".blitSaleStartDate").pDatepicker("setDate",$scope.persianToArrayInt($scope.persianToArray(persianDate($scope.userEventsEdit[index].blitSaleStartDate).pDate)));
                 console.log($scope.persianToArray(persianDate($scope.userEventsEdit[index].blitSaleEndDate)));
             }, 500);
-            userProfile.setDateEdit = function () {
-                $timeout(function () {
-                    $(".persianEditEventTimeShowTime").pDatepicker({
-                        timePicker: {
-                            enabled: true
-                        },
-                        altField: '#persianDigitAlt',
-                        altFormat: "YYYY MM DD HH:mm:ss",
-                        altFieldFormatter: function (unixDate) {
 
-                        }
-                    });
-                }, 1000)
-            };
-            userProfile.setDateEdit();
+
 
             $timeout(function () {
                 mapMarkerService.initMap(document.getElementById('editEventMap'));

@@ -2,7 +2,7 @@
  * Created by soroush on 4/25/17.
  */
 angular.module('eventsPageModule')
-    .controller('eventPageCtrl', function ($scope, userInfo, Auth) {
+    .controller('eventPageCtrl', function ($scope, $routeParams, eventPageService, userInfo, Auth) {
         var eventPage = this;
         $scope.userEmail = 'email';
         $scope.mapOptions = {
@@ -10,6 +10,15 @@ angular.module('eventsPageModule')
             center: new google.maps.LatLng(35.7023, 51.3957),
             mapTypeId: google.maps.MapTypeId.TERRAIN
         };
+        var data = $routeParams.eventLink;
+        eventPageService.getEvent(data)
+            .then(function (data, status) {
+                console.log(data);
+            })
+            .catch(function (data, status) {
+                console.log(data);
+            })
+        console.log(data);
 
 
 
