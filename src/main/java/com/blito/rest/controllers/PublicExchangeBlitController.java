@@ -31,17 +31,6 @@ public class PublicExchangeBlitController {
 	@Autowired ExchangeBlitService exchangeBlitService;
 	
 	// ***************** SWAGGER DOCS ***************** //
-	@ApiOperation(value = "get approved exchange blits")
-	@ApiResponses({ @ApiResponse(code = 200, message = "get all approved exchange blits ok", response = ExchangeBlitViewModel.class)})
-	// ***************** SWAGGER DOCS ***************** //
-	@JsonView(View.SimpleExchangeBlit.class)
-	@GetMapping("/approved")
-	public ResponseEntity<Page<ExchangeBlitViewModel>> approvedExchangeBlits(Pageable pageable)
-	{
-		return ResponseEntity.ok(exchangeBlitService.getApprovedAndNotClosedOrSoldBlits(pageable));
-	}
-	
-	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "get exchange blit")
 	@ApiResponses({ @ApiResponse(code = 200, message = "get exchange blit ok", response = ExchangeBlitViewModel.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})

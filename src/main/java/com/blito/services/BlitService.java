@@ -130,6 +130,10 @@ public class BlitService {
 
 		if (blitType.getBlitTypeState().equals(State.CLOSED))
 			throw new RuntimeException("closed");
+		if(!blitType.getEventDate().getEvent().getEventState().equals(State.OPEN))
+		{
+			throw new RuntimeException("closed or sold out or ended");
+		}
 		if (commonBlit.getCount() + blitType.getSoldCount() > blitType.getCapacity())
 			throw new InconsistentDataException("more than blit type capacity");
 	}

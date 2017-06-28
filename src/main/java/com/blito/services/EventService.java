@@ -217,7 +217,8 @@ public class EventService {
 		Timestamp now = Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant());
 		page.forEach(event -> {
 			if (event.getBlitSaleStartDate().before(now) && !event.isDeleted() && event.getEventState() != State.ENDED
-					&& event.getOperatorState() == OperatorState.APPROVED && event.getEventState() != State.OPEN) {
+					&& event.getOperatorState() == OperatorState.APPROVED && event.getEventState() != State.OPEN && !event.isOpenInit()) {
+				event.setOpenInit(true);
 				event.setEventState(State.OPEN);
 				event.getEventDates().forEach(ed -> {
 					ed.setEventDateState(State.OPEN);
@@ -228,8 +229,9 @@ public class EventService {
 			}
 			
 			if(event.getBlitSaleEndDate().before(now) && !event.isDeleted() && event.getEventState() != State.ENDED
-					&& event.getOperatorState() == OperatorState.APPROVED && event.getEventState() != State.CLOSED)
+					&& event.getOperatorState() == OperatorState.APPROVED && event.getEventState() != State.CLOSED && !event.isClosedInit())
 			{
+				event.setClosedInit(true);
 				event.setEventState(State.CLOSED);
 				event.getEventDates().forEach(ed -> {
 					ed.setEventDateState(State.CLOSED);

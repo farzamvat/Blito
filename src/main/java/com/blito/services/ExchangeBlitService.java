@@ -45,7 +45,7 @@ public class ExchangeBlitService {
 	SearchService searchService;
 
 	private ExchangeBlit findByExchangeBlitId(long id) {
-		return Optional.ofNullable(exchangeBlitRepository.findOne(id)).map(e -> e)
+		return exchangeBlitRepository.findByExchangeBlitIdAndIsDeletedFalse(id)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
 	}
 
@@ -92,9 +92,10 @@ public class ExchangeBlitService {
 	@Transactional
 	public void delete(long exchangeBlitId) {
 		ExchangeBlit exchangeBlit = findByExchangeBlitId(exchangeBlitId);
-		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
-		user.removeExchangeBlit(exchangeBlit);
-		exchangeBlitRepository.delete(exchangeBlit);
+		if (exchangeBlit.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
+		}
+		exchangeBlit.setDeleted(true);
 	}
 
 	@Transactional
@@ -102,10 +103,8 @@ public class ExchangeBlitService {
 
 		User user = Optional.ofNullable(userRepository.findOne(SecurityContextHolder.currentUser().getUserId()))
 				.map(u -> u).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
-		return exchangeBlitMapper.toPage(
-				new PageImpl<>(user.getExchangeBlits().stream().skip(pageable.getPageNumber() * pageable.getPageSize())
-						.limit(pageable.getPageSize()).collect(Collectors.toList())),
-				exchangeBlitMapper::createFromEntity);
+		return exchangeBlitRepository.findByUserUserIdAndIsDeletedFalse(user.getUserId(),pageable).map(exchangeBlitMapper::createFromEntity);
+		
 	}
 	
 	public Page<ExchangeBlitViewModel> searchExchangeBlits(SearchViewModel<ExchangeBlit> searchViewModel,Pageable pageable)
@@ -116,17 +115,13 @@ public class ExchangeBlitService {
 	@Transactional
 	public void changeState(ExchangeBlitChangeStateViewModel vmodel) {
 		ExchangeBlit exchangeBlit = findByExchangeBlitId(vmodel.getExchangeBlitId());
+		if (exchangeBlit.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
+		}
 		if (exchangeBlit.getOperatorState() == OperatorState.PENDING || exchangeBlit.getOperatorState() == OperatorState.REJECTED) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
 		exchangeBlit.setState(vmodel.getState());
-	}
-
-	public Page<ExchangeBlitViewModel> getApprovedAndNotClosedOrSoldBlits(Pageable pageable) {
-		return exchangeBlitMapper.toPage(
-				exchangeBlitRepository.findByStateAndOperatorState(State.OPEN, OperatorState.APPROVED, pageable),
-				exchangeBlitMapper::createFromEntity);
-
 	}
 
 	public ExchangeBlitViewModel getExchangeBlitById(long exchangeBlitId) {

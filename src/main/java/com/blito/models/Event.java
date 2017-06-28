@@ -75,25 +75,29 @@ public class Event {
 	@Column(columnDefinition="TEXT")
 	private String members;
 	
-	Double longitude;
+	private Double longitude;
 	
-	Double latitude;
+	private Double latitude;
 	
-	String eventLink;
-	
-	@Enumerated(EnumType.STRING)
-	State eventState;
+	private String eventLink;
 	
 	@Enumerated(EnumType.STRING)
-	OperatorState operatorState;
+	private State eventState;
 	
-	boolean isDeleted = false;
+	@Enumerated(EnumType.STRING)
+	private OperatorState operatorState;
 	
-	String aparatDisplayCode;
+	private boolean isDeleted = false;
 	
-	int orderNumber;
+	private String aparatDisplayCode;
 	
-	boolean isEvento = false;
+	private int orderNumber;
+	
+	private boolean isEvento = false;
+	
+	private boolean isOpenInit = false;
+	
+	private boolean isClosedInit = false;
 	
 	
 	
@@ -106,6 +110,26 @@ public class Event {
 	
 	public String getMembers() {
 		return members;
+	}
+
+
+	public boolean isOpenInit() {
+		return isOpenInit;
+	}
+
+
+	public void setOpenInit(boolean isOpenInit) {
+		this.isOpenInit = isOpenInit;
+	}
+
+
+	public boolean isClosedInit() {
+		return isClosedInit;
+	}
+
+
+	public void setClosedInit(boolean isClosedInit) {
+		this.isClosedInit = isClosedInit;
 	}
 
 

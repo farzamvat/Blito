@@ -80,6 +80,7 @@ public class EventFlatMapper implements GenericMapper<Event,EventFlatViewModel> 
 		vmodel.setCreatedAt(event.getCreatedAt());
 		vmodel.setMembers(event.getMembers());
 		vmodel.setOperatorState(event.getOperatorState());
+		vmodel.setOrderNumber(event.getOrderNumber());
 		vmodel.setDeleted(event.isDeleted());
 		vmodel.setEventHostName(event.getEventHost().getHostName());
 		vmodel.setEventDates(event.getEventDates().stream()

@@ -43,6 +43,8 @@ public class ExchangeBlit {
 	
 	private Timestamp createdAt;
 	
+	private boolean isDeleted = false;
+	
 	public Timestamp getCreatedAt() {
 		return createdAt;
 	}
@@ -66,6 +68,14 @@ public class ExchangeBlit {
 	Image image;
 	
 	
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
 	public ExchangeBlitType getExchangeBlitType() {
 		return exchangeBlitType;
 	}

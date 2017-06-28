@@ -174,24 +174,4 @@ public class ExchangeBlitServiceTest {
 		exService.changeState(vmodel);
 		assertEquals(State.CLOSED, exRepo.findOne(createExBlitVmodel1.getExchangeBlitId()).getState());
 	}
-	
-	@Test 
-	public void getApprovedAndNotClosedOrSoldBlitsTest() {
-		createExBlitVmodel1 = exService.create(createExBlitVmodel1);
-		exRepo.findOne(createExBlitVmodel1.getExchangeBlitId()).setOperatorState(OperatorState.APPROVED);
-		ExchangeBlitChangeStateViewModel vmodel = new ExchangeBlitChangeStateViewModel();
-		vmodel.setExchangeBlitId(createExBlitVmodel1.getExchangeBlitId());
-		vmodel.setState(State.OPEN);
-		exService.changeState(vmodel);
-		createExBlitVmodel2 = exService.create(createExBlitVmodel2);
-		exRepo.findOne(createExBlitVmodel2.getExchangeBlitId()).setOperatorState(OperatorState.APPROVED);
-		ExchangeBlitChangeStateViewModel vmodel2 = new ExchangeBlitChangeStateViewModel();
-		vmodel2.setExchangeBlitId(createExBlitVmodel2.getExchangeBlitId());
-		vmodel2.setState(State.SOLD);
-		exService.changeState(vmodel2);
-		Pageable pageable = new PageRequest(0,5);
-		Page<ExchangeBlitViewModel> exBlits = exService.getApprovedAndNotClosedOrSoldBlits(pageable);
-		assertEquals(1, exBlits.getNumberOfElements());
-	}
-
 }
