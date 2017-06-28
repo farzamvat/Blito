@@ -25,5 +25,5 @@ public interface EventRepository
 	Page<Event> findByIsDeletedFalse(Pageable pageable);
 	List<Event> findByIsDeletedFalse();	
 	Page<Event> 
-	findByIsDeletedFalseAndEventTypeIsAndEventStateIsAndOperatorStateIsOrderByOrderNumberAsc(EventType eventType,State eventState,OperatorState operatorState, Pageable pageable);
+	findByIsDeletedFalseAndEventTypeIsAndEventStateNotAndOperatorStateIsOrderByOrderNumberDesc(EventType eventType,State eventState,OperatorState operatorState, Pageable pageable);
 }
