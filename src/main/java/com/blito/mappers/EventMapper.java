@@ -3,6 +3,9 @@ package com.blito.mappers;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +16,6 @@ import com.blito.enums.State;
 import com.blito.models.Event;
 import com.blito.models.EventDate;
 import com.blito.rest.viewmodels.event.EventViewModel;
-import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 
 @Component
 public class EventMapper implements GenericMapper<Event, EventViewModel> {
@@ -91,13 +93,32 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
 		event.setEventLink(vmodel.getEventLink());
 		event.setEventType(vmodel.getEventType());
 		event.setMembers(vmodel.getMembers());
-		event.setEventDates(vmodel.getEventDates().stream().map(edvm -> {
-			return event.getEventDates().stream().filter(ed -> ed.getEventDateId() == edvm.getEventDateId()).findFirst()
-					.map(e -> eventDateMapper.updateEntity(edvm, e))
-					.orElseGet(() -> {EventDate ed = eventDateMapper.createFromViewModel(edvm);
-										ed.setEvent(event);
-										return ed;});
-		}).collect(Collectors.toList()));
+		
+		List<Long> oldOnes = vmodel.getEventDates().stream().map(b -> b.getEventDateId()).filter(id -> id > 0).collect(Collectors.toList());
+		List<Long> shouldDelete = new ArrayList<>();
+		event.getEventDates().forEach(bt -> {
+			if(!oldOnes.contains(bt.getEventDateId()))
+			{
+				shouldDelete.add(bt.getEventDateId());
+			}
+		});
+		shouldDelete.forEach(id -> {
+			event.removeEventDateById(id);
+		});
+		
+
+		vmodel.getEventDates().stream().forEach(edvm -> {
+			Optional<EventDate> optionalEventDate = event.getEventDates().stream().filter(ed -> ed.getEventDateId() == edvm.getEventDateId()).findFirst();
+			if(optionalEventDate.isPresent())
+			{
+				eventDateMapper.updateEntity(edvm, optionalEventDate.get());
+			}
+			else {
+				event.addEventDate(eventDateMapper.createFromViewModel(edvm));
+			}
+
+		});
+		
 		return event;
 	}
 }

@@ -1,5 +1,7 @@
 package com.blito.mappers;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -44,19 +46,32 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 	public EventDate updateEntity(EventDateViewModel vmodel, EventDate eventDate) {
 		eventDate.setDate(vmodel.getDate());
 		eventDate.setDayOfWeek(vmodel.getDayOfWeek());
-		eventDate.setBlitTypes(vmodel.getBlitTypes().stream().map(bvm -> {
+		
+		
+		List<Long> oldOnes = vmodel.getBlitTypes().stream().map(b -> b.getBlitTypeId()).filter(id -> id > 0).collect(Collectors.toList());
+		List<Long> shouldDelete = new ArrayList<>();
+		eventDate.getBlitTypes().forEach(bt -> {
+			if(!oldOnes.contains(bt.getBlitTypeId()))
+			{
+				shouldDelete.add(bt.getBlitTypeId());
+			}
+		});
+		shouldDelete.forEach(id -> {
+			eventDate.removeBlitTypeById(id);
+		});
+		
+		vmodel.getBlitTypes().stream().forEach(bvm -> {
 			Optional<BlitType> optionalBlitType =
 					eventDate.getBlitTypes().stream().filter(b -> b.getBlitTypeId() == bvm.getBlitTypeId()).findFirst();
 			if(optionalBlitType.isPresent())
 			{
-				return blitTypeMapper.updateEntity(bvm, optionalBlitType.get());
+				blitTypeMapper.updateEntity(bvm, optionalBlitType.get());
 			}
 			else {
-				BlitType bt = blitTypeMapper.createFromViewModel(bvm);
-				bt.setEventDate(eventDate);
-				return bt;
+				eventDate.addBlitType(blitTypeMapper.createFromViewModel(bvm));
 			}
-		}).collect(Collectors.toList()));
+		});
+	
 		eventDate.setEventDateState(State.CLOSED);
 		return eventDate;
 	}

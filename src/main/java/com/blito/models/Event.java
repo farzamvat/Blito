@@ -3,6 +3,7 @@ package com.blito.models;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -292,7 +293,20 @@ public class Event {
 	
 	public void addEventDate(EventDate eventDate)
 	{
-		this.eventDates.add(eventDate);
-		eventDate.setEvent(this);
+		if(!this.eventDates.contains(eventDate))
+		{
+			this.eventDates.add(eventDate);
+			eventDate.setEvent(this);
+		}
+	}
+	
+	public void removeEventDateById(Long id)
+	{
+		Optional<EventDate> ed = this.eventDates.stream().filter(b -> b.getEventDateId() == id).findFirst();
+		if(ed.isPresent())
+		{
+			this.eventDates.removeIf(b -> b.getEventDateId() == id);
+			ed.get().setEvent(null);
+		}
 	}
 }
