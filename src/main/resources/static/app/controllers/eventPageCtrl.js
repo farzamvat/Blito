@@ -44,7 +44,7 @@ angular.module('eventsPageModule')
             }
         })
 
-        $scope.eventType = "cinema";
+        $scope.eventType = "theatre";
 
         $('.slick-slider').slick('setPosition');
 
