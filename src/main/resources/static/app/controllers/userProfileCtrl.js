@@ -1023,7 +1023,20 @@ angular.module('User')
         //==================================================== EVENT SUBMIT =================================
         $scope.submitEvent = function (eventFields) {
             $scope.createEventNotif = false;
-
+            $scope.eventPhotoSuccess = false;
+            $scope.eventPhotoOneSuccess = false;
+            $scope.eventPhotoTwoSuccess = false;
+            $scope.eventPhotoThreeSuccess = false;
+            $scope.eventPhotoFourSuccess = false;
+            $scope.eventPhotoFiveSuccess = false;
+            $scope.eventPhotoSixSuccess = false;
+            angular.element(document.getElementsByClassName("profilePhotoUpload"))[0].src = "";
+            angular.element(document.getElementsByClassName("galleryOne"))[0].src = "";
+            angular.element(document.getElementsByClassName("galleryTwo"))[0].src = "";
+            angular.element(document.getElementsByClassName("galleryThree"))[0].src = "";
+            angular.element(document.getElementsByClassName("galleryFour"))[0].src = "";
+            angular.element(document.getElementsByClassName("galleryFive"))[0].src = "";
+            angular.element(document.getElementsByClassName("gallerySix"))[0].src = "";
             var latLng = mapMarkerService.getMarker();
             var newShowTime = angular.copy($scope.showTimeForms);
             newShowTime = newShowTime.map(function (item) {
@@ -1073,6 +1086,7 @@ angular.module('User')
                     $scope.createEventErrorNotif = false;
                     $scope.getUserEvents();
                     $scope.eventFields = [];
+
                 }, function (data, status) {
                     $scope.createEventErrorNotif = true;
                     document.getElementById("createEventErrorNotif").innerHTML= data.data.message;
@@ -1085,6 +1099,7 @@ angular.module('User')
         $scope.submitExchangeNotif = false;
 
         $scope.submitExchangeTicket = function (exchangeFields) {
+
             $scope.submitExchangeNotif = false;
             var latLng = mapMarkerService.getMarker();
             $scope.submitExchangeSpinner = true;
@@ -1099,7 +1114,8 @@ angular.module('User')
                     type: "EXCHANGEBLIT_PHOTO"
                 },
                 isBlitoEvent: exchangeFields.isBlito,
-                phoneNumber: $scope.userData.mobile,
+                // phoneNumber: $scope.userData.mobile,
+                phoneNumber: "09122011273",
                 latitude: latLng.lat,
                 longitude: latLng.lng,
                 title: exchangeFields.name,
@@ -1113,6 +1129,8 @@ angular.module('User')
                     $scope.submitExchangeSpinner = false;
                     $scope.submitExchangeNotif = true;
                     $scope.submitExchangeErrorNotif = false;
+                    $scope.exchangePhotoError = false;
+                    $scope.exchangePhotoSuccess = false;
                     $scope.getExchangeData();
                     $scope.exchange = [];
                     $scope.exchangeImageId = '';
@@ -1121,7 +1139,10 @@ angular.module('User')
                 }, function (data, status) {
                     $scope.submitExchangeErrorNotif = true;
                     $scope.submitExchangeSpinner = false;
+                    $scope.exchangePhotoError = false;
+                    $scope.exchangePhotoSuccess = false;
                     document.getElementById("submitExchangeErrorNotif").innerHTML= data.data.message;
+                    console.log(data);
                 })
         };
         //==================================================== ********* =================================
