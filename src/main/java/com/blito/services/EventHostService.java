@@ -2,13 +2,13 @@ package com.blito.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +20,6 @@ import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.EventHostMapper;
 import com.blito.mappers.ImageMapper;
-import com.blito.models.Event;
 import com.blito.models.EventHost;
 import com.blito.models.Image;
 import com.blito.models.User;
@@ -64,8 +63,8 @@ public class EventHostService {
 			vmodel.getImages().add(new ImageViewModel(Constants.DEFAULT_HOST_PHOTO, ImageType.HOST_PHOTO));
 		if (vmodel.getImages().stream().filter(i -> i.getType().equals(ImageType.HOST_COVER_PHOTO)).count() == 0)
 			vmodel.getImages().add(new ImageViewModel(Constants.DEFAULT_HOST_COVER_PHOTO, ImageType.HOST_COVER_PHOTO));
-		List<Image> images = imageRepository.findByImageUUIDIn(
-				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
+		Set<Image> images = imageRepository.findByImageUUIDIn(
+				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toSet()));
 		if (images.size() != vmodel.getImages().size()) {
 			throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
 		}
@@ -86,8 +85,8 @@ public class EventHostService {
 		if (eventHost.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
-		List<Image> images = imageRepository.findByImageUUIDIn(
-				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
+		Set<Image> images = imageRepository.findByImageUUIDIn(
+				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toSet()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 		eventHost.setImages(images);
 		return eventHostMapper.createFromEntity(eventHostMapper.updateEntity(vmodel, eventHost));

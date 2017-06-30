@@ -1,7 +1,7 @@
 package com.blito.repositories;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +23,7 @@ public interface EventRepository
 	Page<Event> findByOperatorStateAndIsDeletedFalse(OperatorState operatorState, Pageable pageable);
 	Optional<Event> findByEventIdAndIsDeletedFalse(long eventId);
 	Page<Event> findByIsDeletedFalse(Pageable pageable);
-	List<Event> findByIsDeletedFalse();	
+	Set<Event> findByIsDeletedFalse();	
 	Page<Event> 
 	findByIsDeletedFalseAndEventTypeIsAndEventStateNotAndOperatorStateIsOrderByOrderNumberDesc(EventType eventType,State eventState,OperatorState operatorState, Pageable pageable);
 }

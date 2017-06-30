@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -19,9 +20,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.blito.Application;
-import com.blito.enums.SeatType;
 import com.blito.enums.HostType;
 import com.blito.enums.OperatorState;
+import com.blito.enums.SeatType;
 import com.blito.enums.State;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.BlitTypeMapper;
@@ -150,19 +151,19 @@ public class AdminEventServiceTest {
 			blitType2_1_1.setPrice(1000);
 			blitType2_1_1.setEventDate(sans2_1);
 			
-			sans1_1.setBlitTypes(Arrays.asList(blitType1_1_1));
+			sans1_1.setBlitTypes(Arrays.asList(blitType1_1_1).stream().collect(Collectors.toSet()));
 			sans1_1.setEvent(event1);
 			
-			sans1_2.setBlitTypes(Arrays.asList(blitType1_2_1));
+			sans1_2.setBlitTypes(Arrays.asList(blitType1_2_1).stream().collect(Collectors.toSet()));
 			sans1_2.setEvent(event1);
 			
-			sans2_1.setBlitTypes(Arrays.asList(blitType2_1_1));
+			sans2_1.setBlitTypes(Arrays.asList(blitType2_1_1).stream().collect(Collectors.toSet()));
 			sans2_1.setEvent(event2);
 			
-			event1.setEventDates(Arrays.asList(sans1_1, sans1_2));
+			event1.setEventDates(Arrays.asList(sans1_1, sans1_2).stream().collect(Collectors.toSet()));
 			event1 = eventRepo.save(event1);
 			
-			event2.setEventDates(Arrays.asList(sans2_1));
+			event2.setEventDates(Arrays.asList(sans2_1).stream().collect(Collectors.toSet()));
 			event2 = eventRepo.save(event2);
 			
 			changeEventStateTestVmodel.setEventId(event1.getEventId());
@@ -180,9 +181,9 @@ public class AdminEventServiceTest {
 			blitTypeUpdateVmodel1.setName("VIP");
 			blitTypeUpdateVmodel2 = blitTypeMapper.createFromEntity(blitType1_2_1);
 			blitTypeUpdateVmodel2.setName("Economic");
-			eventDateUpdateVmodel1.setBlitTypes(Arrays.asList(blitTypeUpdateVmodel1));
-			eventDateUpdateVmodel2.setBlitTypes(Arrays.asList(blitTypeUpdateVmodel2));
-			eventUpdateVmodel.setEventDates(Arrays.asList(eventDateUpdateVmodel1, eventDateUpdateVmodel2));
+			eventDateUpdateVmodel1.setBlitTypes(Arrays.asList(blitTypeUpdateVmodel1).stream().collect(Collectors.toSet()));
+			eventDateUpdateVmodel2.setBlitTypes(Arrays.asList(blitTypeUpdateVmodel2).stream().collect(Collectors.toSet()));
+			eventUpdateVmodel.setEventDates(Arrays.asList(eventDateUpdateVmodel1, eventDateUpdateVmodel2).stream().collect(Collectors.toSet()));
 			
 			cblit1.setCount(5);
 			cblit1.setEventName(event1.getEventName());
@@ -199,7 +200,7 @@ public class AdminEventServiceTest {
 			cblit2.setUser(user);
 			cblit2 = cBlitRepo.save(cblit2);
 			
-			blitType1_1_1.setCommonBlits(Arrays.asList(cblit1, cblit2));
+			blitType1_1_1.setCommonBlits(Arrays.asList(cblit1, cblit2).stream().collect(Collectors.toSet()));
 			
 			cblit3.setCount(4);
 			cblit3.setEventName(event1.getEventName());
@@ -251,7 +252,7 @@ public class AdminEventServiceTest {
 	public void getEventTest() {
 		EventFlatViewModel vmodel = adminEventService.getFlatEvent(event2.getEventId());
 		assertEquals(event2.getEventId(), vmodel.getEventId());
-		assertEquals(1000, vmodel.getEventDates().get(0).getPrice());
+		assertEquals(1000, vmodel.getEventDates().stream().findFirst().get().getPrice());
 	}
 	
 	

@@ -66,19 +66,19 @@ public class Initiallizer {
 		Optional<User> adminResult = userRepository.findByEmail(admin_username);
 			
 		Role adminRole = roleRepository.findByName("ADMIN").map(r -> {
-			r.setPermissions(permissionRepository.findAll());
+			r.setPermissions(permissionRepository.findAll().stream().collect(Collectors.toSet()));
 			return roleRepository.save(r);
 		})
 		.orElseGet(() -> {
 			Role r = new Role();
-			r.setName("ADMIN");	r.setPermissions(permissionRepository.findAll());
+			r.setName("ADMIN");	r.setPermissions(permissionRepository.findAll().stream().collect(Collectors.toSet()));
 			return roleRepository.save(r);
 		});
 		
 		Role userRole = roleRepository.findByName("USER")
 				.orElseGet(() -> {
 					Role r = new Role();
-					r.setName("USER"); r.setPermissions(permissionRepository.findAll());
+					r.setName("USER"); r.setPermissions(permissionRepository.findAll().stream().collect(Collectors.toSet()));
 					return r;
 				});
 		

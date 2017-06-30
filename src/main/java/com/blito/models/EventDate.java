@@ -1,9 +1,9 @@
 package com.blito.models;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -17,7 +17,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.blito.enums.DayOfWeek;
 import com.blito.enums.State;
 
 @Entity(name="event_time")
@@ -25,16 +24,13 @@ public class EventDate {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	long eventDateId;
 	
-	@Enumerated(EnumType.STRING)
-	DayOfWeek dayOfWeek;
-	
 	Timestamp date;
 	
 	@Enumerated(EnumType.STRING)
 	State eventDateState;
 	
 	@OneToMany(mappedBy="eventDate", targetEntity=BlitType.class,fetch=FetchType.LAZY, cascade=CascadeType.ALL,orphanRemoval=true)
-	List<BlitType> blitTypes;
+	Set<BlitType> blitTypes;
 	
 	@ManyToOne
 	@JoinColumn(name="eventId")
@@ -46,7 +42,7 @@ public class EventDate {
 	
 	public EventDate()
 	{
-		blitTypes = new ArrayList<>();
+		blitTypes = new HashSet<>();
 	}
 
 	public State getEventDateState() {
@@ -82,14 +78,6 @@ public class EventDate {
 		this.eventDateId = eventDateId;
 	}
 
-	public DayOfWeek getDayOfWeek() {
-		return dayOfWeek;
-	}
-
-	public void setDayOfWeek(DayOfWeek dayOfWeek) {
-		this.dayOfWeek = dayOfWeek;
-	}
-
 	public Timestamp getDate() {
 		return date;
 	}
@@ -98,11 +86,11 @@ public class EventDate {
 		this.date = date;
 	}
 
-	public List<BlitType> getBlitTypes() {
+	public Set<BlitType> getBlitTypes() {
 		return blitTypes;
 	}
 
-	public void setBlitTypes(List<BlitType> blitTypes) {
+	public void setBlitTypes(Set<BlitType> blitTypes) {
 		this.blitTypes = blitTypes;
 //		blitTypes.forEach(bt->bt.setEventDate(this));
 	}

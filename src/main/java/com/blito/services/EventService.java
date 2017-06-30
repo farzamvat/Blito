@@ -5,6 +5,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,6 @@ import com.blito.mappers.ImageMapper;
 import com.blito.models.BlitType;
 import com.blito.models.Discount;
 import com.blito.models.Event;
-import com.blito.models.EventDate;
 import com.blito.models.EventHost;
 import com.blito.models.Image;
 import com.blito.models.User;
@@ -44,13 +44,10 @@ import com.blito.repositories.EventRepository;
 import com.blito.repositories.ImageRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
-import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
-import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
 import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
-import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
 import com.blito.rest.viewmodels.image.ImageViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.security.SecurityContextHolder;
@@ -100,8 +97,8 @@ public class EventService {
 			vmodel.getImages().add(new ImageViewModel(Constants.DEFAULT_EVENT_PHOTO, ImageType.EVENT_PHOTO));
 		}
 
-		List<Image> images = imageRepository.findByImageUUIDIn(
-				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
+		Set<Image> images = imageRepository.findByImageUUIDIn(
+				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toSet()));
 		if (images.size() != vmodel.getImages().size()) {
 			throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
 		}
@@ -174,8 +171,8 @@ public class EventService {
 			}
 		}
 
-		List<Image> images = imageRepository.findByImageUUIDIn(
-				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toList()));
+		Set<Image> images = imageRepository.findByImageUUIDIn(
+				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toSet()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 
 		event = eventMapper.updateEntity(vmodel, event);
@@ -243,7 +240,7 @@ public class EventService {
 		return page.map(mapper::createFromEntity);
 	}
 
-	public <V> List<V> searchEvents(SearchViewModel<Event> searchViewModel, GenericMapper<Event, V> mapper) {
+	public <V> Set<V> searchEvents(SearchViewModel<Event> searchViewModel, GenericMapper<Event, V> mapper) {
 		return searchService.search(searchViewModel, mapper, eventRepository);
 	}
 
@@ -275,7 +272,7 @@ public class EventService {
 		Discount discount = discountMapper.createFromViewModel(vmodel);
 		discount.setUser(userRepository.findOne(SecurityContextHolder.currentUser().getUserId()));
 		discount.setBlitTypes(
-				vmodel.getBlitTypeIds().stream().map(bt -> getBlitTypeFromRepository(bt)).collect(Collectors.toList()));
+				vmodel.getBlitTypeIds().stream().map(bt -> getBlitTypeFromRepository(bt)).collect(Collectors.toSet()));
 
 		discount = discountRepository.save(discount);
 		return discountMapper.createFromEntity(discount);

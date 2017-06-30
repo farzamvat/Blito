@@ -1,11 +1,10 @@
 package com.blito.rest.viewmodels.eventhost;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
-import com.blito.annotations.Telephone;
 import com.blito.annotations.Url;
 import com.blito.enums.HostType;
 import com.blito.rest.viewmodels.View;
@@ -52,17 +51,17 @@ public class EventHostViewModel {
 	HostType hostType;
 	
 	@JsonView(View.SimpleEventHost.class)
-	List<ImageViewModel> images;
+	Set<ImageViewModel> images;
 	
 	public EventHostViewModel()
 	{
-		images = new ArrayList<>();
+		images = new HashSet<>();
 	}
 	
-	public List<ImageViewModel> getImages() {
+	public Set<ImageViewModel> getImages() {
 		return images;
 	}
-	public void setImages(List<ImageViewModel> images) {
+	public void setImages(Set<ImageViewModel> images) {
 		this.images = images;
 	}
 	public long getEventHostId() {

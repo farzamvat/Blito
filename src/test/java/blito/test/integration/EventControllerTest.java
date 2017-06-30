@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -142,20 +143,17 @@ public class EventControllerTest {
 			EventDate eventDate = new EventDate();
 			eventDate.setDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
 			eventDate.setEventDateState(State.CLOSED);
-			eventDate.setDayOfWeek(DayOfWeek.THURSDAY);
 			eventDate.setEvent(event);
 			
 			EventDate eventDate1 = new EventDate();
 			eventDate1.setDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(2).toInstant()));
 			eventDate1.setEventDateState(State.CLOSED);
 			eventDate1.setEvent(event);
-			eventDate1.setDayOfWeek(DayOfWeek.WEDNESDAY);
 			
 			EventDate eventDate2 = new EventDate();
 			eventDate2.setDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(3).toInstant()));
 			eventDate2.setEventDateState(State.CLOSED);
 			eventDate2.setEvent(event);
-			eventDate2.setDayOfWeek(DayOfWeek.TUESDAY);
 
 			event1 = new Event();
 			event1.setAddress("سلام جطوریسس");
@@ -181,7 +179,7 @@ public class EventControllerTest {
 			event3.setAddress("DFG");
 			event3.setEventState(State.OPEN);
 			event3.setOperatorState(OperatorState.REJECTED);
-			event3.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER));
+			event3.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER).stream().collect(Collectors.toSet()));
 			event3.setEventName("D");
 			event3.setLatitude(1D);
 			event3.setEventType(EventType.SPORT);
@@ -191,7 +189,7 @@ public class EventControllerTest {
 			event4.setAddress("سلام جطوری");
 			event4.setEventState(State.OPEN);
 			event4.setOperatorState(OperatorState.REJECTED);
-			event4.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER, OfferTypeEnum.SPECIAL_OFFER));
+			event4.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER, OfferTypeEnum.SPECIAL_OFFER).stream().collect(Collectors.toSet()));
 			event4.setEventName("E");
 			event4.setLatitude(1D);
 			event4.setEventType(EventType.CONCERT);
@@ -223,7 +221,6 @@ public class EventControllerTest {
 			BlitTypeViewModel blitTypeViewModel1 = new BlitTypeViewModel();
 			BlitTypeViewModel blitTypeViewModel2 = new BlitTypeViewModel();
 			eventDateViewModel.setDate(Timestamp.from(ZonedDateTime.now().plusDays(10).toInstant()));
-			eventDateViewModel.setDayOfWeek(DayOfWeek.SATURDAY);
 
 			blitTypeViewModel1.setCapacity(20);
 			blitTypeViewModel1.setFree(false);
@@ -235,8 +232,8 @@ public class EventControllerTest {
 			blitTypeViewModel2.setName("neshaste");
 			blitTypeViewModel2.setPrice(40000);
 
-			eventDateViewModel.setBlitTypes(Arrays.asList(blitTypeViewModel1, blitTypeViewModel2));
-			eventViewModel.setEventDates(Arrays.asList(eventDateViewModel));
+			eventDateViewModel.setBlitTypes(Arrays.asList(blitTypeViewModel1, blitTypeViewModel2).stream().collect(Collectors.toSet()));
+			eventViewModel.setEventDates(Arrays.asList(eventDateViewModel).stream().collect(Collectors.toSet()));
 
 			Image image = new Image();
 			image.setImageType(ImageType.EVENT_PHOTO);

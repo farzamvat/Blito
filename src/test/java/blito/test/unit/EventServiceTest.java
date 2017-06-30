@@ -169,24 +169,30 @@ public class EventServiceTest {
 		event2.setEventName("C");
 		event2.setLatitude(4D);
 		event2.setEventType(EventType.CINEMA);
+		event2.setBlitSaleStartDate(Timestamp.from(ZonedDateTime.now().minusHours(24).toInstant()));
+		event2.setBlitSaleEndDate(Timestamp.from(ZonedDateTime.now().plusDays(2).toInstant()));
 
 		event3 = new Event();
 		event3.setAddress("DFG");
 		event3.setEventState(State.OPEN);
 		event3.setOperatorState(OperatorState.REJECTED);
-		event3.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER, OfferTypeEnum.SPECIAL_OFFER));
+		event3.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER, OfferTypeEnum.SPECIAL_OFFER).stream().collect(Collectors.toSet()));
 		event3.setEventName("D");
 		event3.setLatitude(1D);
 		event3.setEventType(EventType.SPORT);
+		event3.setBlitSaleStartDate(Timestamp.from(ZonedDateTime.now().minusHours(24).toInstant()));
+		event3.setBlitSaleEndDate(Timestamp.from(ZonedDateTime.now().plusDays(2).toInstant()));
 
 		event4 = new Event();
 		event4.setAddress("ABC");
 		event4.setEventState(State.OPEN);
 		event4.setOperatorState(OperatorState.REJECTED);
-		event4.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER, OfferTypeEnum.SPECIAL_OFFER));
+		event4.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER, OfferTypeEnum.SPECIAL_OFFER).stream().collect(Collectors.toSet()));
 		event4.setEventName("E");
 		event4.setLatitude(1D);
 		event4.setEventType(EventType.CONCERT);
+		event4.setBlitSaleStartDate(Timestamp.from(ZonedDateTime.now().minusHours(24).toInstant()));
+		event4.setBlitSaleEndDate(Timestamp.from(ZonedDateTime.now().plusDays(2).toInstant()));
 
 		event.setEventHost(eventHost1);
 		event1.setEventHost(eventHost1);
@@ -214,7 +220,6 @@ public class EventServiceTest {
 		BlitTypeViewModel blitTypeViewModel1 = new BlitTypeViewModel();
 		BlitTypeViewModel blitTypeViewModel2 = new BlitTypeViewModel();
 		eventDateViewModel.setDate(Timestamp.from(ZonedDateTime.now().plusDays(10).toInstant()));
-		eventDateViewModel.setDayOfWeek(DayOfWeek.SATURDAY);
 		
 
 		blitTypeViewModel1.setCapacity(20);
@@ -227,8 +232,8 @@ public class EventServiceTest {
 		blitTypeViewModel2.setName("neshaste");
 		blitTypeViewModel2.setPrice(40000);
 
-		eventDateViewModel.setBlitTypes(Arrays.asList(blitTypeViewModel1, blitTypeViewModel2));
-		eventViewModel.setEventDates(Arrays.asList(eventDateViewModel));
+		eventDateViewModel.setBlitTypes(Arrays.asList(blitTypeViewModel1, blitTypeViewModel2).stream().collect(Collectors.toSet()));
+		eventViewModel.setEventDates(Arrays.asList(eventDateViewModel).stream().collect(Collectors.toSet()));
 
 		Image image = new Image();
 		image.setImageType(ImageType.EVENT_PHOTO);
@@ -268,10 +273,9 @@ public class EventServiceTest {
 	{
 		EventViewModel vmodel = eventService.create(eventViewModel);
 		vmodel.setAddress("YousefAbad");
-		vmodel.getEventDates().get(0).getBlitTypes().get(0).setName("Roo Hava");
+		vmodel.getEventDates().stream().findFirst().get().getBlitTypes().stream().findFirst().get().setName("Roo Hava");
 		EventDateViewModel eventDateViewModel = new EventDateViewModel();
 		eventDateViewModel.setDate(Timestamp.from(ZonedDateTime.now().plusDays(10).toInstant()));
-		eventDateViewModel.setDayOfWeek(DayOfWeek.SATURDAY);
 		
 		BlitTypeViewModel blitTypeViewModel= new BlitTypeViewModel();
 		blitTypeViewModel.setCapacity(30);
@@ -280,7 +284,7 @@ public class EventServiceTest {
 		blitTypeViewModel.setPrice(40000);
 		
 		
-		eventDateViewModel.setBlitTypes(Arrays.asList(blitTypeViewModel));
+		eventDateViewModel.setBlitTypes(Arrays.asList(blitTypeViewModel).stream().collect(Collectors.toSet()));
 		vmodel.getEventDates().add(eventDateViewModel);
 		
 		vmodel = eventService.update(vmodel);
@@ -330,7 +334,6 @@ public class EventServiceTest {
 		BlitTypeViewModel blitTypeViewModel1= new BlitTypeViewModel();
 		BlitTypeViewModel blitTypeViewModel2 = new BlitTypeViewModel();
 		eventDateViewModel.setDate(Timestamp.from(ZonedDateTime.now().plusDays(10).toInstant()));
-		eventDateViewModel.setDayOfWeek(DayOfWeek.SATURDAY);
 		
 		blitTypeViewModel1.setCapacity(20);
 		blitTypeViewModel1.setFree(false);
@@ -342,8 +345,8 @@ public class EventServiceTest {
 		blitTypeViewModel2.setName("neshaste");
 		blitTypeViewModel2.setPrice(40000);
 		
-		eventDateViewModel.setBlitTypes(Arrays.asList(blitTypeViewModel1,blitTypeViewModel2));
-		vmodel.setEventDates(Arrays.asList(eventDateViewModel));
+		eventDateViewModel.setBlitTypes(Arrays.asList(blitTypeViewModel1,blitTypeViewModel2).stream().collect(Collectors.toSet()));
+		vmodel.setEventDates(Arrays.asList(eventDateViewModel).stream().collect(Collectors.toSet()));
 		vmodel.setEventHostId(1000);
 		vmodel = eventService.create(vmodel);
 	}
@@ -449,7 +452,7 @@ public class EventServiceTest {
 		DiscountViewModel vmodel = new DiscountViewModel();
 
 		vmodel.setBlitTypeIds(eventViewModel.getEventDates().stream()
-				.flatMap(ed -> ed.getBlitTypes().stream().map(bt -> bt.getBlitTypeId())).collect(Collectors.toList()));
+				.flatMap(ed -> ed.getBlitTypes().stream().map(bt -> bt.getBlitTypeId())).collect(Collectors.toSet()));
 		vmodel.setCode("TAKHFIF!@#$");
 		vmodel.setReusability(5);
 		vmodel.setEffectDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
@@ -458,9 +461,8 @@ public class EventServiceTest {
 		vmodel.setPercent(30);
 
 		vmodel = eventService.setDiscountCode(vmodel);
-		assertEquals(4, vmodel.getBlitTypeIds().size());
-		assertEquals(2, blitTypeRepo.findOne(vmodel.getBlitTypeIds().get(0)).getDiscounts().size());
-		assertEquals(2, blitTypeRepo.findOne(vmodel.getBlitTypeIds().get(1)).getDiscounts().size());
+		assertEquals(2, vmodel.getBlitTypeIds().size());
+		assertEquals(1, blitTypeRepo.findOne(vmodel.getBlitTypeIds().stream().findFirst().get()).getDiscounts().size());
 	}
 
 	@Test(expected = InconsistentDataException.class)
@@ -471,7 +473,7 @@ public class EventServiceTest {
 		DiscountViewModel vmodel = new DiscountViewModel();
 
 		vmodel.setBlitTypeIds(eventViewModel.getEventDates().stream()
-				.flatMap(ed -> ed.getBlitTypes().stream().map(bt -> bt.getBlitTypeId())).collect(Collectors.toList()));
+				.flatMap(ed -> ed.getBlitTypes().stream().map(bt -> bt.getBlitTypeId())).collect(Collectors.toSet()));
 		vmodel.setCode("TAKHFIF!@#$");
 		vmodel.setReusability(5);
 		vmodel.setEffectDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
@@ -490,7 +492,7 @@ public class EventServiceTest {
 		DiscountViewModel vmodel = new DiscountViewModel();
 
 		vmodel.setBlitTypeIds(eventViewModel.getEventDates().stream()
-				.flatMap(ed -> ed.getBlitTypes().stream().map(bt -> bt.getBlitTypeId())).collect(Collectors.toList()));
+				.flatMap(ed -> ed.getBlitTypes().stream().map(bt -> bt.getBlitTypeId())).collect(Collectors.toSet()));
 		vmodel.setCode("TAKHFIF!@#$");
 		vmodel.setReusability(5);
 		vmodel.setEffectDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
@@ -509,7 +511,7 @@ public class EventServiceTest {
 		DiscountViewModel vmodel = new DiscountViewModel();
 
 		vmodel.setBlitTypeIds(eventViewModel.getEventDates().stream()
-				.flatMap(ed -> ed.getBlitTypes().stream().map(bt -> bt.getBlitTypeId())).collect(Collectors.toList()));
+				.flatMap(ed -> ed.getBlitTypes().stream().map(bt -> bt.getBlitTypeId())).collect(Collectors.toSet()));
 		vmodel.setCode("TAKHFIF!@#$");
 		vmodel.setReusability(5);
 		vmodel.setEffectDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
@@ -519,8 +521,7 @@ public class EventServiceTest {
 
 		vmodel = eventService.setDiscountCode(vmodel);
 		assertEquals(2, vmodel.getBlitTypeIds().size());
-		assertEquals(1, blitTypeRepo.findOne(vmodel.getBlitTypeIds().get(0)).getDiscounts().size());
-		assertEquals(1, blitTypeRepo.findOne(vmodel.getBlitTypeIds().get(1)).getDiscounts().size());
+		assertEquals(1, blitTypeRepo.findOne(vmodel.getBlitTypeIds().stream().findFirst().get()).getDiscounts().size());
 	}
 
 	@Test(expected = InconsistentDataException.class)
@@ -531,7 +532,7 @@ public class EventServiceTest {
 		DiscountViewModel vmodel = new DiscountViewModel();
 
 		vmodel.setBlitTypeIds(eventViewModel.getEventDates().stream()
-				.flatMap(ed -> ed.getBlitTypes().stream().map(bt -> bt.getBlitTypeId())).collect(Collectors.toList()));
+				.flatMap(ed -> ed.getBlitTypes().stream().map(bt -> bt.getBlitTypeId())).collect(Collectors.toSet()));
 		vmodel.setCode("TAKHFIF!@#$");
 		vmodel.setReusability(5);
 		vmodel.setEffectDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
@@ -542,8 +543,7 @@ public class EventServiceTest {
 
 		vmodel = eventService.setDiscountCode(vmodel);
 		assertEquals(2, vmodel.getBlitTypeIds().size());
-		assertEquals(1, blitTypeRepo.findOne(vmodel.getBlitTypeIds().get(0)).getDiscounts().size());
-		assertEquals(1, blitTypeRepo.findOne(vmodel.getBlitTypeIds().get(1)).getDiscounts().size());
+		assertEquals(1, blitTypeRepo.findOne(vmodel.getBlitTypeIds().stream().findFirst().get()).getDiscounts().size());
 	}
 
 	@Test

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -134,7 +135,7 @@ public class IndexBannerServiceTest {
 			event3.setAddress("DFG");
 			event3.setEventState(State.OPEN);
 			event3.setOperatorState(OperatorState.REJECTED);
-			event3.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER, OfferTypeEnum.SPECIAL_OFFER));
+			event3.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER, OfferTypeEnum.SPECIAL_OFFER).stream().collect(Collectors.toSet()));
 			event3.setEventName("D");
 			event3.setLatitude(1D);
 			event3.setEventType(EventType.SPORT);
@@ -143,7 +144,7 @@ public class IndexBannerServiceTest {
 			event4.setAddress("ABC");
 			event4.setEventState(State.OPEN);
 			event4.setOperatorState(OperatorState.REJECTED);
-			event4.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER, OfferTypeEnum.SPECIAL_OFFER));
+			event4.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER, OfferTypeEnum.SPECIAL_OFFER).stream().collect(Collectors.toSet()));
 			event4.setEventName("E");
 			event4.setLatitude(1D);
 			event4.setEventType(EventType.CONCERT);
@@ -174,7 +175,6 @@ public class IndexBannerServiceTest {
 			BlitTypeViewModel blitTypeViewModel1= new BlitTypeViewModel();
 			BlitTypeViewModel blitTypeViewModel2 = new BlitTypeViewModel();
 			eventDateViewModel.setDate(Timestamp.from(ZonedDateTime.now().plusDays(10).toInstant()));
-			eventDateViewModel.setDayOfWeek(DayOfWeek.SATURDAY);
 			
 			blitTypeViewModel1.setCapacity(20);
 			blitTypeViewModel1.setFree(false);
@@ -186,8 +186,8 @@ public class IndexBannerServiceTest {
 			blitTypeViewModel2.setName("neshaste");
 			blitTypeViewModel2.setPrice(40000);
 			
-			eventDateViewModel.setBlitTypes(Arrays.asList(blitTypeViewModel1,blitTypeViewModel2));
-			eventViewModel.setEventDates(Arrays.asList(eventDateViewModel));
+			eventDateViewModel.setBlitTypes(Arrays.asList(blitTypeViewModel1,blitTypeViewModel2).stream().collect(Collectors.toSet()));
+			eventViewModel.setEventDates(Arrays.asList(eventDateViewModel).stream().collect(Collectors.toSet()));
 			
 			System.err.println(eventRepository.count() + "*************************");
 	}

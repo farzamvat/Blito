@@ -6,7 +6,6 @@ import com.blito.enums.DayOfWeek;
 import com.blito.enums.State;
 
 public class EventDateFlatViewModel {
-	DayOfWeek dayOfWeek;
 	Timestamp date;
 	long eventDateId;
 	State eventState;
@@ -18,14 +17,6 @@ public class EventDateFlatViewModel {
 	long price;
 	State blitTypeState;
 	boolean isFree;
-	
-	public DayOfWeek getDayOfWeek() {
-		return dayOfWeek;
-	}
-
-	public void setDayOfWeek(DayOfWeek dayOfWeek) {
-		this.dayOfWeek = dayOfWeek;
-	}
 
 	public Timestamp getDate() {
 		return date;

@@ -1,8 +1,8 @@
 package com.blito.rest.viewmodels.event;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
@@ -28,11 +28,11 @@ public class EventFlatViewModel {
 	@JsonView(View.SimpleEvent.class)
 	private String eventHostName;
 	@JsonView(View.SimpleEvent.class)
-	private List<OfferTypeEnum> offers;
+	private Set<OfferTypeEnum> offers;
 	@JsonView(View.Event.class)
-	private List<EventDateFlatViewModel> eventDates;
+	private Set<EventDateFlatViewModel> eventDates;
 	@JsonView(View.SimpleEvent.class)
-	private List<ImageViewModel> images;
+	private Set<ImageViewModel> images;
 	@JsonView(View.SimpleEvent.class)
 	@NotNull
 	private String eventName;
@@ -130,9 +130,9 @@ public class EventFlatViewModel {
 
 	public EventFlatViewModel()
 	{
-		offers = new ArrayList<>();
-		eventDates = new ArrayList<>();
-		images = new ArrayList<>();
+		offers = new HashSet<>();
+		eventDates = new HashSet<>();
+		images = new HashSet<>();
 	}
 
 	public long getEventId() {
@@ -167,27 +167,27 @@ public class EventFlatViewModel {
 		this.eventHostId = eventHostId;
 	}
 
-	public List<OfferTypeEnum> getOffers() {
+	public Set<OfferTypeEnum> getOffers() {
 		return offers;
 	}
 
-	public void setOffers(List<OfferTypeEnum> offers) {
+	public void setOffers(Set<OfferTypeEnum> offers) {
 		this.offers = offers;
 	}
 
-	public List<EventDateFlatViewModel> getEventDates() {
+	public Set<EventDateFlatViewModel> getEventDates() {
 		return eventDates;
 	}
 
-	public void setEventDates(List<EventDateFlatViewModel> eventDates) {
+	public void setEventDates(Set<EventDateFlatViewModel> eventDates) {
 		this.eventDates = eventDates;
 	}
 
-	public List<ImageViewModel> getImages() {
+	public Set<ImageViewModel> getImages() {
 		return images;
 	}
 
-	public void setImages(List<ImageViewModel> images) {
+	public void setImages(Set<ImageViewModel> images) {
 		this.images = images;
 	}
 

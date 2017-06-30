@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class ExcelService {
 	@Autowired
 	AdminReportsMapper adminReportsMapper;
 
-	public Map<String, Object> getUserExcelMap(List<UserViewModel> allUsers) {
+	public Map<String, Object> getUserExcelMap(Set<UserViewModel> allUsers) {
 		
 		Map<String, Object> model = new HashMap<String, Object>();
 		// Sheetname

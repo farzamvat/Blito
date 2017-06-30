@@ -1,6 +1,6 @@
 package com.blito.rest.viewmodels.account;
 
-import java.util.List;
+import java.util.Set;
 
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
@@ -28,11 +28,11 @@ public class UserViewModel {
 	boolean banned;
 	
 	@JsonView(View.User.class)
-	List<EventHostViewModel> eventHosts;
+	Set<EventHostViewModel> eventHosts;
 	@JsonView(View.User.class)
-	List<CommonBlitViewModel> blits;
+	Set<CommonBlitViewModel> blits;
 	@JsonView(View.User.class)
-	List<ExchangeBlitViewModel> exchangeBlits;
+	Set<ExchangeBlitViewModel> exchangeBlits;
 
 	public long getUserId() {
 		return userId;
@@ -82,22 +82,22 @@ public class UserViewModel {
 	public void setBanned(boolean banned) {
 		this.banned = banned;
 	}
-	public List<EventHostViewModel> getEventHosts() {
+	public Set<EventHostViewModel> getEventHosts() {
 		return eventHosts;
 	}
-	public void setEventHosts(List<EventHostViewModel> eventHosts) {
+	public void setEventHosts(Set<EventHostViewModel> eventHosts) {
 		this.eventHosts = eventHosts;
 	}
-	public List<CommonBlitViewModel> getBlits() {
+	public Set<CommonBlitViewModel> getBlits() {
 		return blits;
 	}
-	public void setBlits(List<CommonBlitViewModel> blits) {
+	public void setBlits(Set<CommonBlitViewModel> blits) {
 		this.blits = blits;
 	}
-	public List<ExchangeBlitViewModel> getExchangeBlits() {
+	public Set<ExchangeBlitViewModel> getExchangeBlits() {
 		return exchangeBlits;
 	}
-	public void setExchangeBlits(List<ExchangeBlitViewModel> exchangeBlits) {
+	public void setExchangeBlits(Set<ExchangeBlitViewModel> exchangeBlits) {
 		this.exchangeBlits = exchangeBlits;
 	}
 	

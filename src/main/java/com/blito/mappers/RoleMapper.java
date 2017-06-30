@@ -1,6 +1,7 @@
 package com.blito.mappers;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,10 @@ public class RoleMapper implements GenericMapper<Role, RoleViewModel> {
 	@Autowired
 	PermissionRepository permissionRepository;
 	
-	private List<Permission> getPermissionFromRepository(List<Permission> permissions)
+	private Set<Permission> getPermissionFromRepository(Set<Permission> permissions)
 	{
 		return permissionRepository.findByPermissionIdIn(
-				permissions.stream().map(p -> p.getPermissionId()).collect(Collectors.toList()));
+				permissions.stream().map(p -> p.getPermissionId()).collect(Collectors.toSet()));
 	}
 
 	@Override

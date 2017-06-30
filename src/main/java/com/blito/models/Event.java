@@ -1,9 +1,9 @@
 package com.blito.models;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -35,7 +35,7 @@ public class Event {
 	
 	@OneToMany(mappedBy="event",targetEntity=EventDate.class,cascade=CascadeType.ALL,fetch=FetchType.EAGER,orphanRemoval=true)
 	@OrderBy("date DESC")
-	List<EventDate> eventDates;
+	Set<EventDate> eventDates;
 	
 	@ManyToOne(optional=false)
 	@JoinColumn(name="eventHostId")
@@ -44,11 +44,11 @@ public class Event {
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
     @JoinTable(name="event_image" , joinColumns=@JoinColumn(name="event_id"), 
     inverseJoinColumns=@JoinColumn(name="image_id"))
-	private List<Image> images; 
+	private Set<Image> images; 
 	
 	@ElementCollection(fetch=FetchType.EAGER)
 	@Enumerated(EnumType.STRING)
-	List<OfferTypeEnum> offers;
+	Set<OfferTypeEnum> offers;
 	
 	@Column(name="event_name")
 	private String eventName;
@@ -102,9 +102,9 @@ public class Event {
 	
 	
 	public Event() {
-		offers = new ArrayList<>();
-		images = new ArrayList<>();
-		eventDates = new ArrayList<>();
+		offers = new HashSet<>();
+		images = new HashSet<>();
+		eventDates = new HashSet<>();
 	}
 	
 	
@@ -162,11 +162,11 @@ public class Event {
 		this.isEvento = isEvento;
 	}
 
-	public List<OfferTypeEnum> getOffers() {
+	public Set<OfferTypeEnum> getOffers() {
 		return offers;
 	}
 
-	public void setOffers(List<OfferTypeEnum> offers) {
+	public void setOffers(Set<OfferTypeEnum> offers) {
 		this.offers = offers;
 	}
 
@@ -210,11 +210,11 @@ public class Event {
 		this.operatorState = operatorState;
 	}
 
-	public List<Image> getImages() {
+	public Set<Image> getImages() {
 		return images;
 	}
 
-	public void setImages(List<Image> images) {
+	public void setImages(Set<Image> images) {
 		this.images = images;
 	}
 
@@ -250,11 +250,11 @@ public class Event {
 		this.eventId = eventId;
 	}
 
-	public List<EventDate> getEventDates() {
+	public Set<EventDate> getEventDates() {
 		return eventDates;
 	}
 
-	public void setEventDates(List<EventDate> eventDates) {
+	public void setEventDates(Set<EventDate> eventDates) {
 		this.eventDates = eventDates;
 	}
 

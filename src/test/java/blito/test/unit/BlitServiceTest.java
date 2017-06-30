@@ -108,7 +108,6 @@ public class BlitServiceTest {
 		BlitTypeViewModel blitTypeViewModel1 = new BlitTypeViewModel();
 		BlitTypeViewModel blitTypeViewModel2 = new BlitTypeViewModel();
 		eventDateViewModel.setDate(Timestamp.from(ZonedDateTime.now().plusDays(10).toInstant()));
-		eventDateViewModel.setDayOfWeek(DayOfWeek.SATURDAY);
 
 		blitTypeViewModel1.setCapacity(20);
 		blitTypeViewModel1.setFree(true);
@@ -167,7 +166,7 @@ public class BlitServiceTest {
 		vmodel.setCustomerName(user.getFirstname() + " " + user.getLastname());
 		vmodel.setTotalAmount(0);
 		vmodel.setEventAddress(eventViewModel.getAddress());
-		vmodel.setEventDate(eventViewModel.getEventDates().get(0).getDate());
+		vmodel.setEventDate(eventViewModel.getEventDates().stream().findFirst().get().getDate());
 		vmodel.setEventName(eventViewModel.getEventName());
 		blitService.createCommonBlit(vmodel);
 		BlitType blitType = blitTypeRepo.findOne(vmodel.getBlitTypeId());
