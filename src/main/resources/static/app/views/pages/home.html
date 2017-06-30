@@ -48,7 +48,7 @@
         <div  class="col-xs-3 floatRight">
             <a href="/cinema" class="img-responsive center-block categoryImage categoryCinema">
                 <div class="categoryInside">
-                <h4 class="categoryTitle">سینما</h4>
+                    <h4 class="categoryTitle">سینما</h4>
                 </div>
             </a>
             <!--<a class="slidingEventsImg" href=""><img src="assets/img/cin.jpg" class="img-responsive center-block categoryImage"></a>-->
@@ -56,7 +56,7 @@
         <div  class="col-xs-3 floatRight">
             <a href="/theater" class="img-responsive center-block categoryImage categoryTheatre">
                 <div class="categoryInside">
-                <h4 class="categoryTitle">تئاتر</h4>
+                    <h4 class="categoryTitle">تئاتر</h4>
                 </div>
             </a>
             <!--<a class="slidingEventsImg" href=""><img src="assets/img/th.jpg" class="img-responsive center-block categoryImage"></a>-->
@@ -65,7 +65,7 @@
         <div  class="col-xs-3 floatRight">
             <a href="/recent-events" class="img-responsive center-block categoryImage categorySport">
                 <div class="categoryInside">
-                <h4 class="categoryTitle">ورزشی</h4>
+                    <h4 class="categoryTitle">ورزشی</h4>
                 </div>
             </a>
             <!--<a class="slidingEventsImg" href=""><img src="assets/img/con.jpg" class="img-responsive center-block categoryImage"></a>-->
@@ -74,7 +74,7 @@
         <div  class="col-xs-3 floatRight">
             <a href="/cafe" class="img-responsive center-block categoryImage categoryConcert">
                 <div class="categoryInside">
-                <h4 class="categoryTitle">کنسرت</h4>
+                    <h4 class="categoryTitle">کنسرت</h4>
                 </div>
             </a>
             <!--<a class="slidingEventsImg" href=""><img src="assets/img/sp.jpg" class="img-responsive center-block categoryImage"></a>-->
@@ -87,60 +87,23 @@
 
 
         <div class="col-xs-12 col-sm-9 slidingEvents floatRight">
-            <h3 class="textAlignRight">آخرین رویدادها</h3>
+            <h3 class="textAlignRight">کنسرت</h3>
             <button class="  eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</button>
             <div class="col-xs-12 slickSliders">
-                <slick dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=4 touch-move="true" slides-to-scroll=1 >
-                    <div>
-                        <a class="slidingEventsImg" href="" >
-
-                            <img src="assets/img/e.jpeg" class="img-responsive center-block homePageImage">
+                <slick ng-if="concertRow.length > 0" dots="true" infinite="true"      speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=3  >
+                    <div ng-repeat="event in concertRow" >
+                        <a class="slidingEventsImg" href="">
+                            <img ng-src="{{event.images[0].imageUUID}}" class="img-responsive center-block homePageImage">
                             <div class="moreInfo">
-                                <h4>{{ item.title }}asnocanol</h4>
-                                <h5>{{ item.sold }}: جای خالی<i class="fa fa-calendar-check-o"></i></h5>
-                                <h5>{{ item.view }}: بازدید <i class="fa fa-eye"></i></h5>
-
+                            <h4>{{ event.eventName }}</h4>
+                            <h5>{{ event.sold }}: جای خالی<i class="fa fa-calendar-check-o"></i></h5>
+                            <h5>{{ event.view }}: بازدید <i class="fa fa-eye"></i></h5>
                             </div>
                         </a>
-
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-
-
-                        <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i> </button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/a.jpeg" class="img-responsive center-block homePageImage">
-                            </a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
+                        <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
                         <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></button>
                     </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/d.jpeg" class="img-responsive center-block homePageImage">
-                           </a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i> مشاهده رویداد</button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/f.jpeg" class="img-responsive center-block homePageImage">
-                           </a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i>مشاهده رویداد</button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/c.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i>مشاهده رویداد</button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/b.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i>مشاهده رویداد</button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/e.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i>مشاهده رویداد</button>
-                    </div>
+
                 </slick>
             </div>
 
@@ -175,45 +138,23 @@
     <div class="row slidingEventsRow" >
 
         <div class="col-xs-12 col-sm-9 slidingEvents floatRight">
-            <h3 class="textAlignRight">تئاتر</h3>
+            <h3 class="textAlignRight">تور</h3>
             <button class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</button>
             <div class="col-xs-12 slickSliders">
-                <slick dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=4 touch-move="true" slides-to-scroll=1 >
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/e.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i> </button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/a.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
+                <slick ng-if="tourRow.length > 0" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=4 touch-move="true" slides-to-scroll=1  >
+                    <div ng-repeat="event in tourRow" >
+                        <a class="slidingEventsImg" href="">
+                            <img ng-src="{{event.images[0].imageUUID}}" class="img-responsive center-block homePageImage">
+                            <div class="moreInfo">
+                                <h4>{{ event.eventName }}</h4>
+                                <h5>{{ event.sold }}: جای خالی<i class="fa fa-calendar-check-o"></i></h5>
+                                <h5>{{ event.view }}: بازدید <i class="fa fa-eye"></i></h5>
+                            </div>
+                        </a>
+                        <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
                         <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></button>
                     </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/d.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i> مشاهده رویداد</button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/f.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i>مشاهده رویداد</button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/c.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i>مشاهده رویداد</button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/b.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i>مشاهده رویداد</button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/e.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i>مشاهده رویداد</button>
-                    </div>
+
                 </slick>
             </div>
 
@@ -239,45 +180,23 @@
     <div class="row slidingEventsRow" >
 
         <div class="col-xs-12 col-sm-9 slidingEvents floatRight">
-            <h3 class="textAlignRight">تئاتر</h3>
+            <h3 class="textAlignRight">ایونتو</h3>
             <button class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</button>
             <div class="col-xs-12 slickSliders">
-                <slick dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=4 touch-move="true" slides-to-scroll=1 >
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/e.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i> </button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/a.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
+                <slick ng-if="evento.length > 0" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
+                    <div ng-repeat="event in evento" >
+                        <a class="slidingEventsImg" href="">
+                            <img ng-src="{{event.images[0].imageUUID}}" class="img-responsive center-block homePageImage">
+                            <div class="moreInfo">
+                                <h4>{{ event.eventName }}</h4>
+                                <h5>{{ event.sold }}: جای خالی<i class="fa fa-calendar-check-o"></i></h5>
+                                <h5>{{ event.view }}: بازدید <i class="fa fa-eye"></i></h5>
+                            </div>
+                        </a>
+                        <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
                         <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></button>
                     </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/d.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i> مشاهده رویداد</button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/f.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i>مشاهده رویداد</button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/c.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i>مشاهده رویداد</button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/b.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i>مشاهده رویداد</button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/e.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i>مشاهده رویداد</button>
-                    </div>
+
                 </slick>
             </div>
 
@@ -322,131 +241,65 @@
         </div>
     </div>
     <div class="row slidingEventsRow" >
-
-        <div class="col-xs-12 col-sm-9 slidingEvents floatRight">
-            <h3 class="textAlignRight">تئاتر</h3>
-            <button class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</button>
-            <div class="col-xs-12 slickSliders">
-                <slick dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=4 touch-move="true" slides-to-scroll=1 >
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/e.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i> </button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/a.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/d.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i> مشاهده رویداد</button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/f.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i>مشاهده رویداد</button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/c.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i>مشاهده رویداد</button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/b.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i>مشاهده رویداد</button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/e.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i>مشاهده رویداد</button>
-                    </div>
-                </slick>
-            </div>
-
+        <div class="hidden-xs col-sm-1 blitoOffer floatRight">
 
         </div>
-        <div class="hidden-xs col-sm-3  floatRight blitoOffer">
-            <h4 class="text-center marginTop10"> پیشنهاد بلیتو تئاتر</h4>
-            <div class="row marginTop30">
-                <div class="col-sm-1 floatRight">
-                </div>
-                <div class="col-sm-10 floatRight blitoOfferMain">
-                    <a class="slidingEventsImg" href=""><img src="assets/img/e.jpeg" class="img-responsive center-block homePageImage"></a>
-                    <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                    <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></button>
-                </div>
-                <div class="col-sm-1 floatRight">
-                </div>
+        <div class="col-xs-12 col-sm-10 slidingEvents floatRight">
+            <h3 class="textAlignRight">بلیت های آگهی شده</h3>
+            <button class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</button>
+            <div class="col-xs-12 slickSliders">
+                <slick ng-if="exchange.length > 0" dots="true" infinite="true"    speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=3  >
+                    <div ng-repeat="event in exchange" >
+                        <a class="slidingEventsImg" href="">
+                            <img ng-src="{{event.image.imageUUID}}" class="img-responsive center-block homePageImage">
+                            <div class="moreInfo">
+                                <h4>{{ event.title }}</h4>
+                                <h5>{{ event.blitCost }}: قیمت<i class="fa fa-calendar-check-o"></i></h5>
+                                <h5>{{ event.view }}: بازدید <i class="fa fa-eye"></i></h5>
+                            </div>
+                        </a>
+                        <h4 class="text-center slidingEventsTitle">{{event.title}}</h4>
+                        <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></button>
+                    </div>
+
+                </slick>
             </div>
+        </div>
+        <div class="hidden-xs col-sm-1 blitoOffer floatRight">
+
         </div>
 
     </div>
 
     <div class="row slidingEventsRow" >
 
-        <div class="col-xs-12 col-sm-9 slidingEvents floatRight">
-            <h3 class="textAlignRight">تئاتر</h3>
+        <div class="hidden-xs col-sm-1 blitoOffer floatRight">
+
+        </div>
+        <div class="col-xs-12 col-sm-10 slidingEvents floatRight">
+            <h3 class="textAlignRight">رویداد های تمام شده</h3>
             <button class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</button>
             <div class="col-xs-12 slickSliders">
-                <slick dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=4 touch-move="true" slides-to-scroll=1 >
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/e.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i> </button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/a.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
+                <slick ng-if="ended.length > 0" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
+                    <div ng-repeat="event in ended" >
+                        <a class="slidingEventsImg" href="">
+                            <img ng-src="{{event.images[0].imageUUID}}" class="img-responsive center-block homePageImage">
+                            <div class="moreInfo">
+                                <h4>{{ event.eventName }}</h4>
+                                <h5>{{ event.sold }}: جای خالی<i class="fa fa-calendar-check-o"></i></h5>
+                                <h5>{{ event.view }}: بازدید <i class="fa fa-eye"></i></h5>
+                            </div>
+                        </a>
+                        <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
                         <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></button>
                     </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/d.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i> مشاهده رویداد</button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/f.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i>مشاهده رویداد</button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/c.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i>مشاهده رویداد</button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/b.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i>مشاهده رویداد</button>
-                    </div>
-                    <div>
-                        <a class="slidingEventsImg" href=""><img src="assets/img/e.jpeg" class="img-responsive center-block homePageImage"></a>
-                        <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block"> <i class="fa fa-ticket"></i>مشاهده رویداد</button>
-                    </div>
+
                 </slick>
             </div>
-
+        </div>
+        <div class="hidden-xs col-sm-1 blitoOffer floatRight">
 
         </div>
-        <div class="hidden-xs col-sm-3  floatRight blitoOffer">
-            <h4 class="text-center marginTop10"> پیشنهاد بلیتو تئاتر</h4>
-            <div class="row marginTop30">
-                <div class="col-sm-1 floatRight">
-                </div>
-                <div class="col-sm-10 floatRight blitoOfferMain">
-                    <a class="slidingEventsImg" href=""><img src="assets/img/e.jpeg" class="img-responsive center-block homePageImage"></a>
-                    <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                    <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></button>
-                </div>
-                <div class="col-sm-1 floatRight">
-                </div>
-            </div>
-        </div>
-
     </div>
 
 
