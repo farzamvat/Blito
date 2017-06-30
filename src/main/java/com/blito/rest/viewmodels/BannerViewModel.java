@@ -23,8 +23,14 @@ public class BannerViewModel {
 	ImageViewModel image;
 	@NotNull
 	@JsonView(View.IndexBanner.class)
-	long eventId;
+	String eventLink;
 	
+	public String getEventLink() {
+		return eventLink;
+	}
+	public void setEventLink(String eventLink) {
+		this.eventLink = eventLink;
+	}
 	public long getIndexBannerId() {
 		return indexBannerId;
 	}
@@ -54,11 +60,5 @@ public class BannerViewModel {
 	}
 	public void setImage(ImageViewModel image) {
 		this.image = image;
-	}
-	public long getEventId() {
-		return eventId;
-	}
-	public void setEventId(long eventId) {
-		this.eventId = eventId;
 	}
 }

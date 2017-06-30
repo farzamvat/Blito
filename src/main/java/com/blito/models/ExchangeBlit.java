@@ -65,7 +65,7 @@ public class ExchangeBlit {
 	private User user;
 	
 	@OneToOne
-	Image image;
+	private Image image;
 	
 	
 	public boolean isDeleted() {

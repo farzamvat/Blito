@@ -1,5 +1,10 @@
 package com.blito.rest.controllers;
 
+import java.util.concurrent.CompletionStage;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,17 +15,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.blito.enums.Response;
 import com.blito.exceptions.NotFoundException;
 import com.blito.models.Image;
 import com.blito.repositories.ImageRepository;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.image.ImageBase64ViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
-
-import com.fasterxml.jackson.annotation.JsonView;import com.blito.services.ImageService;
+import com.blito.services.ImageService;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @RequestMapping("${api.base.url}")
@@ -50,6 +57,22 @@ public class ImageController {
 					deferred.setErrorResult(throwable.getCause());
 					return deferred;
 				}).join();
+	}
+	
+	@JsonView(View.DefaultView.class)
+	@PostMapping("/images/multipart/upload")
+	public CompletionStage<ResponseEntity<?>> uploadMultipartFile(@RequestParam("file") MultipartFile file,HttpServletRequest req,HttpServletResponse res)
+	{
+		return imageService.saveMultipartFile(file).handle((result,throwable) -> HandleUtility.generateResponseResult(() -> {
+
+			Image image = new Image();
+			image.setImageUUID(result);
+			imageRepository.save(image);
+			ImageViewModel responseVmodel = new ImageViewModel();
+			responseVmodel.setImageUUID(image.getImageUUID());
+			return responseVmodel;
+		
+		}, throwable, req, res));
 	}
 	
 	@JsonView(View.DefaultView.class)

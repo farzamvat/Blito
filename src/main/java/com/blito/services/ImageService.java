@@ -10,8 +10,10 @@ import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.blito.enums.Response;
+import com.blito.exceptions.InternalServerException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.models.Image;
 import com.blito.repositories.ImageRepository;
@@ -50,6 +52,17 @@ public class ImageService {
 				throw new RuntimeException(e.getMessage());
 			}
 		});
+	}
+	
+	public CompletableFuture<String> saveMultipartFile(MultipartFile file)
+	{
+		return CompletableFuture.supplyAsync(() -> {
+			try {
+				return new String(file.getBytes());
+			} catch (IOException e) {
+				throw new InternalServerException(ResourceUtil.getMessage(Response.INTERNAL_SERVER_ERROR));
+			}
+		}).thenCompose(base64 -> this.save(base64));
 	}
 	
 	public CompletableFuture<Void> delete(String uuid)

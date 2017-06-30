@@ -4,6 +4,8 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,9 +58,26 @@ public class IndexBannerService {
 	{
 		indexBanner.setImage(imageRepository.findByImageUUID(vmodel.getImage().getImageUUID())
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))));
-		Event event = eventRepository.findByEventIdAndIsDeletedFalse(vmodel.getEventId())
+		
+		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(vmodel.getEventLink())
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 		indexBanner.setEvent(event);
 		return indexBanner;
+	}
+	
+	public CompletableFuture<Page<BannerViewModel>> getIndexBanners(Pageable pageable)
+	{
+		return CompletableFuture.supplyAsync(() -> indexBannerMapper.toPage(indexBannerRepository.findAll(pageable)));
+	}
+	
+	public CompletableFuture<?> delete(long indexBannerId)
+	{
+		return CompletableFuture.runAsync(() -> {
+			Optional<IndexBanner> result = Optional.ofNullable(indexBannerRepository.findOne(indexBannerId));
+			if(result.isPresent())
+				indexBannerRepository.delete(indexBannerId);
+			else
+				throw new NotFoundException(ResourceUtil.getMessage(Response.INDEX_BANNER_NOT_FOUND));
+		});
 	}
 }
