@@ -15,6 +15,7 @@ import com.blito.enums.ImageType;
 import com.blito.enums.OperatorState;
 import com.blito.enums.Response;
 import com.blito.enums.State;
+import com.blito.exceptions.AlreadyExistsException;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.ExchangeBlitMapper;
@@ -64,6 +65,7 @@ public class ExchangeBlitService {
 		exchangeBlit.setImage(image);
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		exchangeBlit.setUser(user);
+		exchangeBlit.setExchangeLink(generateExchangeBlitLink(exchangeBlit));
 		return exchangeBlitMapper.createFromEntity(exchangeBlitRepository.save(exchangeBlit));
 	}
 
@@ -96,6 +98,15 @@ public class ExchangeBlitService {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
 		exchangeBlit.setDeleted(true);
+	}
+	
+	public String generateExchangeBlitLink(ExchangeBlit exchangeBlit)
+	{
+		String exchangeLink = exchangeBlit.getTitle().replaceAll(" ", "-") + "-" + RandomUtil.generateLinkRandomNumber();
+		while (exchangeBlitRepository.findByExchangeLinkAndIsDeletedFalse(exchangeLink).isPresent()) {
+			exchangeLink = exchangeBlit.getTitle().replaceAll(" ", "-") + "-" + RandomUtil.generateLinkRandomNumber();
+		}
+		return exchangeLink;
 	}
 
 	@Transactional

@@ -198,8 +198,7 @@ public class IndexBannerServiceTest {
 		BannerViewModel vmodel = new BannerViewModel();
 		vmodel.setTitle("Title");
 		vmodel.setDescription("description");
-		vmodel.setEventId(event.getEventId());
-		vmodel.setActive(true);
+		vmodel.setEventLink(event.getEventLink());
 		ImageViewModel image = new ImageViewModel();
 		image.setImageUUID(this.image1.getImageUUID());
 		image.setType(this.image1.getImageType());

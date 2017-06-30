@@ -21,4 +21,6 @@ public interface ExchangeBlitRepository extends JpaRepository<ExchangeBlit, Long
 	Optional<ExchangeBlit> findByExchangeBlitIdAndIsDeletedFalse(long exchangeBlitId);
 	
 	Page<ExchangeBlit> findByUserUserIdAndIsDeletedFalse(long userId,Pageable pageable);
+	
+	Optional<ExchangeBlit> findByExchangeLinkAndIsDeletedFalse(String exchangeLink);
 }

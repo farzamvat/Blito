@@ -156,7 +156,6 @@ public class EventService {
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 
 		EventHost eventHost = eventHostRepository.findByEventHostIdAndIsDeletedFalse(vmodel.getEventHostId())
-				.map(eh -> eh)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
 
 		if (eventHost.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {

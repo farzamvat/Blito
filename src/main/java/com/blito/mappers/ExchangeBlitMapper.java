@@ -56,6 +56,7 @@ public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit,ExchangeBl
 		vmodel.setLongitude(exchangeBlit.getLongitude());
 		vmodel.setType(exchangeBlit.getExchangeBlitType());
 		vmodel.setCreatedAt(exchangeBlit.getCreatedAt());
+		vmodel.setExchangeLink(exchangeBlit.getExchangeLink());
 		return vmodel;
 	}
 

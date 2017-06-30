@@ -11,6 +11,7 @@ import java.time.ZonedDateTime;
 import java.util.Arrays;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -263,7 +264,7 @@ public class EventControllerTest {
 	}
 	
 	@Test
-	public void integrationSimpleSearch() throws URISyntaxException {
+	public void integrationSimpleSearch() throws URISyntaxException, JSONException {
 		JSONObject requestBody = new JSONObject();
 		JSONArray restrictions = new JSONArray();
 		JSONObject simple = new JSONObject();
@@ -291,7 +292,7 @@ public class EventControllerTest {
 	}
 	
 	@Test
-	public void greaterThanTest() throws URISyntaxException
+	public void greaterThanTest() throws URISyntaxException, JSONException
 	{
 		JSONObject requestBody = new JSONObject();
 		JSONArray restrictions = new JSONArray();
@@ -320,7 +321,7 @@ public class EventControllerTest {
 	}
 	
 	@Test
-	public void sortByCreatedAt() throws URISyntaxException
+	public void sortByCreatedAt() throws URISyntaxException, JSONException
 	{
 		JSONObject requestBody = new JSONObject();
 		JSONArray restrictions = new JSONArray();
@@ -343,7 +344,7 @@ public class EventControllerTest {
 	}
 	
 	@Test
-	public void nestedSortingTest() throws URISyntaxException
+	public void nestedSortingTest() throws URISyntaxException, JSONException
 	{
 		JSONObject requestBody = new JSONObject();
 		JSONArray restrictions = new JSONArray();
@@ -373,7 +374,7 @@ public class EventControllerTest {
 	}
 	
 	@Test
-	public void rangeTest() throws URISyntaxException
+	public void rangeTest() throws URISyntaxException, JSONException
 	{
 		JSONObject requestBody = new JSONObject();
 		JSONArray restrictions = new JSONArray();
@@ -403,7 +404,7 @@ public class EventControllerTest {
 	}
 	
 	@Test
-	public void createdAtDescWithASimpleRestrictionTest() throws URISyntaxException
+	public void createdAtDescWithASimpleRestrictionTest() throws URISyntaxException, JSONException
 	{
 		JSONObject requestBody = new JSONObject();
 		JSONArray restrictions = new JSONArray();
@@ -433,7 +434,7 @@ public class EventControllerTest {
 	}
 	
 	@Test
-	public void integrationCollectionSearch() throws URISyntaxException
+	public void integrationCollectionSearch() throws URISyntaxException, JSONException
 	{
 		JSONObject requestBody = new JSONObject();
 		JSONArray restrictions = new JSONArray();

@@ -46,6 +46,8 @@ public class ExchangeBlitViewModel {
 	private String description;
 	@JsonView(View.SimpleExchangeBlit.class)
 	private State state;
+	@JsonView(View.SimpleExchangeBlit.class)
+	private String exchangeLink;
 	@NotNull
 	@JsonView(View.SimpleExchangeBlit.class)
 	private ExchangeBlitType type;
@@ -58,6 +60,14 @@ public class ExchangeBlitViewModel {
 	
 	public ImageViewModel getImage() {
 		return image;
+	}
+
+	public String getExchangeLink() {
+		return exchangeLink;
+	}
+
+	public void setExchangeLink(String exchangeLink) {
+		this.exchangeLink = exchangeLink;
 	}
 
 	public Timestamp getCreatedAt() {

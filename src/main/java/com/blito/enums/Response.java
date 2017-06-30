@@ -51,7 +51,9 @@ public enum Response {
 	INCONSISTENT_PERCENTAGE_WHEN_PERCENT_IS_FALSE("error.inconsistent.data.is.not.percentage"),
 	EVENT_IS_SOLD("error.event.is.sold"),
 	EXCHANGE_BLIT_IS_SOLD("error.exchange.blit.is.sold"),
-	EVENT_NOT_APPROVED("error.event.not.approved");
+	EVENT_NOT_APPROVED("error.event.not.approved"),
+	FILE_UPLOAD_SIZE_EXCEEDS("error.file.upload.max.size.exceeds"), 
+	EXCHANGE_BLIT_LINK_EXISTS("error.exchange.blit.link.exists");
     
 
     private final String message;

@@ -13,6 +13,7 @@ import com.blito.enums.State;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.eventdate.EventDateFlatViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 
 public class EventFlatViewModel {
@@ -65,6 +66,7 @@ public class EventFlatViewModel {
 	@JsonView(View.AdminEvent.class)
 	private boolean isDeleted;
 	@JsonView(View.AdminEvent.class)
+	
 	private boolean isEvento;
 	
 	
@@ -76,6 +78,7 @@ public class EventFlatViewModel {
 		this.eventSoldDate = eventSoldDate;
 	}
 
+	@JsonProperty("isDeleted")
 	public boolean isDeleted() {
 		return isDeleted;
 	}
@@ -84,6 +87,7 @@ public class EventFlatViewModel {
 		this.isDeleted = isDeleted;
 	}
 
+	@JsonProperty("isEvento")
 	public boolean isEvento() {
 		return isEvento;
 	}
