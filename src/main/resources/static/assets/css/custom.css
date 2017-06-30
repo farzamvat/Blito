@@ -660,10 +660,10 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 .imgRelative {
     border-top: 3px solid #303030;
     border-bottom: 3px solid #303030;
-    position: relative;
     overflow: hidden;
     background-color: #eee;
     height: 400px;
+    width: 100%;
 }
 
 .btnExchangeTicket {
@@ -677,7 +677,7 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     z-index: 0;
 }
 .buyTicketBanner {
-    border: 1px solid #202020;
+    /*border: 1px solid #202020;*/
     position: absolute;
     z-index: 100;
     bottom: 10%;
@@ -811,6 +811,7 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
 .eventsPageRows h1 {
     border-bottom: 3px solid rgb(252, 183, 49);
     padding-bottom: 10px;
+
 }
 .colorRed {
     color: red;
@@ -1308,6 +1309,61 @@ footer h6 {
 .bottom_ul li:after { content:"/"; color:#FFF; margin-right:8px; margin-left:8px;}
 .bottom_ul li a { color:#FFF;  font-size:12px;}
 
+
+/*siaaaaa*/
+.slidingEventsImg img{
+    transition: .5s;
+}
+.slidingEventsImg img:hover{
+    transform: scale(1.4);
+
+}
+.slidingEventsImg .moreInfo{
+    pointer-events: none;
+}
+.slidingEventsImg img:hover + .moreInfo {
+    opacity: 1;
+    transform: scale(1.4);
+}
+.blitoOfferMain {
+    overflow: hidden;
+
+}
+.marginTop33{
+    margin-top: 33px;
+}
+.moreInfo{
+    transition: .5s;
+    opacity: 0;
+    width: 106px;
+    height: 70px;
+    background: rgba(252, 183, 49, 0.9);
+    zoom: 1;
+    overflow: hidden;
+    position: relative;
+    bottom: 100px;
+    margin-bottom:-90px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 90px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 30px;
+    border-bottom: 1px dotted rgb(252, 183, 49);
+}
+
+.moreInfo h5 , .moreInfo h4{
+    font-size: 10px;
+    cursor: default;
+    text-decoration: none !important;
+    color: #000;
+    display: block;
+}
+a{
+    text-decoration: none !important;
+}
+
+
 @media (max-width: 570px) {
     .carousel-caption h1 {
         font-size: 18px;
@@ -1579,3 +1635,4 @@ footer h6 {
         font-size:16px;
     }
 }
+
