@@ -61,3 +61,14 @@ angular.module('homePageApi', [])
             return $http.post(config.baseUrl + '/api/blito/v1.0/public/events/search',bodyJson, queryParam);
         }
     })
+    .service('indexBannerService', function ($http, config) {
+        var indexBanner = this;
+        indexBanner.getIndexBanner = function () {
+            var queryParam = {
+                params : {page: 0, size: 5}
+            };
+            return $http.get(config.baseUrl + '/api/blito/v1.0/public/index-banners', queryParam);
+
+        }
+
+    })

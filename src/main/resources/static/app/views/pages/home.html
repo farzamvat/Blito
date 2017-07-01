@@ -3,36 +3,16 @@
 
         <div id="firstCarousel" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators hidden-xs">
-                <li data-target="#firstCarousel" data-slide-to="0" class="active"></li>
-                <li data-target="#firstCarousel" data-slide-to="1"></li>
-                <li data-target="#firstCarousel" data-slide-to="2"></li>
-                <li data-target="#firstCarousel" data-slide-to="3"></li>
+                <li ng-repeat="item in bannerData" data-target="#firstCarousel" data-slide-to="$index" ng-class="{active : $index === 0}"></li>
+
             </ol>
-            <div class="carousel-inner" role="listbox">
-                <div class="item active">
-                    <img src="assets/img/e5.jpeg" alt="First slide">
+            <div class="carousel-inner" role="listbox" >
+                <div  ng-repeat="item in bannerData" class="item" ng-class="{active : $index === 0}">
+                    <img ng-src="{{item.newImage}}" alt="First slide">
                     <button class="btn btn-success btn-lg buyTicketBanner"><i class="fa fa-ticket fa-1x" aria-hidden="true"></i>                       مشاهده و خرید بلیت
                     </button>
                 </div>
-                <div class="item">
-                    <img src="assets/img/e2.jpeg" alt="Second slide">
 
-                    <button class="btn btn-success btn-lg buyTicketBanner"><i class="fa fa-ticket" aria-hidden="true"></i>                       مشاهده و خرید بلیت
-                    </button>
-                </div>
-
-                <div class="item">
-                    <img src="assets/img/e3.jpeg" alt="Third slide">
-
-                    <button class="btn btn-success btn-lg buyTicketBanner"><i class="fa fa-ticket" aria-hidden="true"></i>                       مشاهده و خرید بلیت
-                    </button>
-                </div>
-                <div class="item">
-                    <img src="assets/img/e1.jpeg" alt="Third slide">
-
-                    <button class="btn btn-success btn-lg buyTicketBanner"><i class="fa fa-ticket" aria-hidden="true"></i>                       مشاهده و خرید بلیت
-                    </button>
-                </div>
             </div>
             <span class="left carousel-control" href="#firstCarousel" role="button" data-slide="prev">
                 <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -90,10 +70,10 @@
             <h3 class="textAlignRight">کنسرت</h3>
             <button class="  eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</button>
             <div class="col-xs-12 slickSliders">
-                <slick ng-if="concertRow.length > 0" dots="true" infinite="true"      speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=3  >
+                <slick ng-if="showImages.length > 0" dots="true"      speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
                     <div ng-repeat="event in concertRow" >
                         <a class="slidingEventsImg" href="">
-                            <img ng-src="{{event.images[0].imageUUID}}" class="img-responsive center-block homePageImage">
+                            <img ng-src="{{event.image}}" class="img-responsive center-block homePageImage" />
                             <div class="moreInfo">
                             <h4>{{ event.eventName }}</h4>
                             <h5>{{ event.sold }}: جای خالی<i class="fa fa-calendar-check-o"></i></h5>
@@ -141,10 +121,10 @@
             <h3 class="textAlignRight">تور</h3>
             <button class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</button>
             <div class="col-xs-12 slickSliders">
-                <slick ng-if="tourRow.length > 0" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=4 touch-move="true" slides-to-scroll=1  >
+                <slick ng-if="showImages.length > 4" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=4 touch-move="true" slides-to-scroll=1  >
                     <div ng-repeat="event in tourRow" >
                         <a class="slidingEventsImg" href="">
-                            <img ng-src="{{event.images[0].imageUUID}}" class="img-responsive center-block homePageImage">
+                            <img ng-src="{{event.image}}" class="img-responsive center-block homePageImage">
                             <div class="moreInfo">
                                 <h4>{{ event.eventName }}</h4>
                                 <h5>{{ event.sold }}: جای خالی<i class="fa fa-calendar-check-o"></i></h5>
@@ -183,10 +163,10 @@
             <h3 class="textAlignRight">ایونتو</h3>
             <button class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</button>
             <div class="col-xs-12 slickSliders">
-                <slick ng-if="evento.length > 0" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
+                <slick ng-if="showImages.length > 8" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
                     <div ng-repeat="event in evento" >
                         <a class="slidingEventsImg" href="">
-                            <img ng-src="{{event.images[0].imageUUID}}" class="img-responsive center-block homePageImage">
+                            <img ng-src="{{event.image}}" class="img-responsive center-block homePageImage">
                             <div class="moreInfo">
                                 <h4>{{ event.eventName }}</h4>
                                 <h5>{{ event.sold }}: جای خالی<i class="fa fa-calendar-check-o"></i></h5>
@@ -248,10 +228,10 @@
             <h3 class="textAlignRight">بلیت های آگهی شده</h3>
             <button class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</button>
             <div class="col-xs-12 slickSliders">
-                <slick ng-if="exchange.length > 0" dots="true" infinite="true"    speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=3  >
+                <slick ng-if="showImagesExchange.length > 0" dots="true" infinite="true"    speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1 autoplay="true"  >
                     <div ng-repeat="event in exchange" >
                         <a class="slidingEventsImg" href="">
-                            <img ng-src="{{event.image.imageUUID}}" class="img-responsive center-block homePageImage">
+                            <img ng-src="{{event.newImage}}" class="img-responsive center-block homePageImage">
                             <div class="moreInfo">
                                 <h4>{{ event.title }}</h4>
                                 <h5>{{ event.blitCost }}: قیمت<i class="fa fa-calendar-check-o"></i></h5>
@@ -280,10 +260,10 @@
             <h3 class="textAlignRight">رویداد های تمام شده</h3>
             <button class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</button>
             <div class="col-xs-12 slickSliders">
-                <slick ng-if="ended.length > 0" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
+                <slick ng-if="showImages.length > 8" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
                     <div ng-repeat="event in ended" >
                         <a class="slidingEventsImg" href="">
-                            <img ng-src="{{event.images[0].imageUUID}}" class="img-responsive center-block homePageImage">
+                            <img ng-src="{{event.image}}" class="img-responsive center-block homePageImage">
                             <div class="moreInfo">
                                 <h4>{{ event.eventName }}</h4>
                                 <h5>{{ event.sold }}: جای خالی<i class="fa fa-calendar-check-o"></i></h5>

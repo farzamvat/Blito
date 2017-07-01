@@ -3,18 +3,35 @@
  */
 
 angular.module('homePageModule', [])
-    .controller('homeCtrl', function ($scope, miniSliderService, photoService) {
+    .controller('homeCtrl', function ($scope, miniSliderService, photoService, indexBannerService) {
         $scope.concertRow = [];
+        $scope.showImages = [];
+        $scope.bannerData = [];
+        $scope.showImagesExchange = [];
+        var newTemp;
+        indexBannerService.getIndexBanner()
+            .then(function (data, status) {
+                console.log(data);
+                $scope.bannerData = $scope.catchImagesExchange(data.data.content);
+            })
+            .catch(function (data, status) {
+                console.log(data);
+            })
         miniSliderService.getSlidingDataEvents("CONCERT", 6, false)
             .then(function (data, status) {
                 $scope.concertRow = $scope.catchImagesEvents(data.data.content);
+                console.log($scope.concertRow);
             })
             .catch(function (data, status) {
                 console.log(data);
             })
         ;
+        $scope.$watch('newTemp', function () {
+            console.log($scope.concertRow);
+        })
         miniSliderService.getSlidingDataEvents("TOURISM", 6, false)
             .then(function (data, status) {
+                console.log($scope.catchImagesEvents(data.data.content))
                 $scope.tourRow = $scope.catchImagesEvents(data.data.content);
             })
             .catch(function (data, status) {
@@ -36,43 +53,38 @@ angular.module('homePageModule', [])
             })
         miniSliderService.getEndedEvents(6)
             .then(function (data, status) {
-                console.log(data);
                 $scope.ended = $scope.catchImagesEvents(data.data.content);
             })
             .catch(function (data, status) {
                 console.log(data);
             })
         $scope.catchImagesEvents = function (events) {
-            events.map(function (item) {
+            return events.map(function (item) {
                 var newSet =  item.images.filter(function (image) {
                     return image.type === "EVENT_PHOTO";
                 });
-                newSet.map(function (image) {
-                    return photoService.download(image.imageUUID)
-                        .then(function (data, status) {
-                            image.imageUUID = data.data.encodedBase64;
-                            return image;
-                        })
-                        .catch(function (data, status) {
-                            console.log(data);
-                        })
-                });
-                item.images = newSet;
+                 photoService.download(newSet[0].imageUUID)
+                    .then(function (data, status) {
+                        item.image = data.data.encodedBase64;
+                        $scope.showImages.push(0);
+                    })
+                    .catch(function (data, status) {
+                        console.log(data);
+                    })
                 return item;
 
             });
-            return events;
         }
         $scope.catchImagesExchange = function (events) {
             events.map(function (item) {
-                     photoService.download(item.image.imageUUID)
-                        .then(function (data, status) {
-                           item.image.imageUUID = data.data.encodedBase64;
-                            return item.image;
-                        })
-                        .catch(function (data, status) {
-                            console.log(data);
-                        })
+                photoService.download(item.image.imageUUID)
+                    .then(function (data, status) {
+                        item.newImage = data.data.encodedBase64;
+                        $scope.showImagesExchange.push(0);
+                    })
+                    .catch(function (data, status) {
+                        console.log(data);
+                    })
                 return item;
 
             });
