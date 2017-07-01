@@ -73,7 +73,7 @@ public class BlitService {
 					.completedFuture(commonBlitMapper.createFromEntity(reserveFreeBlit(blitType, commonBlit, user)));
 		} else {
 			if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getTotalAmount())
-				throw new InconsistentDataException("total amount is not equal to blitType * count");
+				throw new InconsistentDataException("total amount is not equal to price * count");
 			return buyCommonBlit(blitType, commonBlit, user).thenApply(blit -> {
 				SamanPaymentRequestResponseViewModel samanResponse = new SamanPaymentRequestResponseViewModel();
 				samanResponse.setToken(blit.getSamanBankToken());

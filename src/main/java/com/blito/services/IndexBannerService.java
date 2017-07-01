@@ -13,6 +13,7 @@ import com.blito.enums.Response;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.IndexBannerMapper;
 import com.blito.models.Event;
+import com.blito.models.Image;
 import com.blito.models.IndexBanner;
 import com.blito.repositories.EventRepository;
 import com.blito.repositories.ImageRepository;
@@ -56,9 +57,10 @@ public class IndexBannerService {
 	
 	private IndexBanner setIndexBannerImageAndEvent(IndexBanner indexBanner,BannerViewModel vmodel)
 	{
-		indexBanner.setImage(imageRepository.findByImageUUID(vmodel.getImage().getImageUUID())
-				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))));
-		
+		Image image = imageRepository.findByImageUUID(vmodel.getImage().getImageUUID())
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
+		image.setImageType(vmodel.getImage().getType());
+		indexBanner.setImage(image);
 		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(vmodel.getEventLink())
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 		indexBanner.setEvent(event);

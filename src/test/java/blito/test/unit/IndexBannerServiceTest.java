@@ -14,11 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.Application;
 import com.blito.configs.Constants;
-import com.blito.enums.DayOfWeek;
 import com.blito.enums.EventType;
 import com.blito.enums.HostType;
 import com.blito.enums.ImageType;
@@ -42,12 +40,13 @@ import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
 import com.blito.security.SecurityContextHolder;
+import com.blito.services.EventService;
 import com.blito.services.IndexBannerService;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes=Application.class)
-@Transactional
+//@Transactional
 public class IndexBannerServiceTest {
 
 	@Autowired
@@ -66,6 +65,9 @@ public class IndexBannerServiceTest {
 	BlitTypeRepository blitTypeRepo;
 	@Autowired
 	ImageRepository imageRepository;
+	@Autowired
+	EventService eventService;
+	
 	Event event;
 	Event event1;
 	Event event2;
@@ -170,6 +172,7 @@ public class IndexBannerServiceTest {
 			eventViewModel.setEventHostName(eventHost.getHostName());
 			eventViewModel.setEventName("My Event");
 			eventViewModel.setEventType(EventType.CONCERT);
+
 			
 			EventDateViewModel eventDateViewModel = new EventDateViewModel();
 			BlitTypeViewModel blitTypeViewModel1= new BlitTypeViewModel();
@@ -189,16 +192,22 @@ public class IndexBannerServiceTest {
 			eventDateViewModel.setBlitTypes(Arrays.asList(blitTypeViewModel1,blitTypeViewModel2).stream().collect(Collectors.toSet()));
 			eventViewModel.setEventDates(Arrays.asList(eventDateViewModel).stream().collect(Collectors.toSet()));
 			
+			Image eventPhoto = new Image();
+			eventPhoto.setImageType(ImageType.EVENT_PHOTO);
+			eventPhoto.setImageUUID(Constants.DEFAULT_EVENT_PHOTO);
+			imageRepository.save(eventPhoto);
+			
 			System.err.println(eventRepository.count() + "*************************");
 	}
 	
 	@Test
 	public void create()
 	{
+		eventViewModel = eventService.create(eventViewModel);
 		BannerViewModel vmodel = new BannerViewModel();
 		vmodel.setTitle("Title");
 		vmodel.setDescription("description");
-		vmodel.setEventLink(event.getEventLink());
+		vmodel.setEventLink(eventViewModel.getEventLink());
 		ImageViewModel image = new ImageViewModel();
 		image.setImageUUID(this.image1.getImageUUID());
 		image.setType(this.image1.getImageType());

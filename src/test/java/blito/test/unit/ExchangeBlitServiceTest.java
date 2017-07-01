@@ -71,25 +71,32 @@ public class ExchangeBlitServiceTest {
 			user2 = userRepository.save(user2);
 			
 			createExBlitVmodel1.setBlitCost(200.2);
+			createExBlitVmodel1.setTitle("ex1");
 			createExBlitVmodel1.setDescription("estakhr");
 			createExBlitVmodel1.setEmail("farzam.vat@gmail.com");
 			createExBlitVmodel2.setBlitCost(500.5);
+			createExBlitVmodel2.setTitle("ex2");
 			createExBlitVmodel2.setDescription("theater");
 			createExBlitVmodel2.setEmail("farzam.vat@gmail.com");
 			updateExBlitVmodel.setBlitCost(1500);
+			updateExBlitVmodel.setTitle("ex3");
 			updateExBlitVmodel.setDescription("cinema");
 			updateExBlitVmodel.setEmail("farzam.vat@gmail.com");
 			getExBlitVmodel.setBlitCost(2000);
+			getExBlitVmodel.setTitle("ex4");
 			getExBlitVmodel.setDescription("cafe");
 			getExBlitVmodel.setEmail("farzam.vat@gmail.com");
 			
 			myExBlitVmodel1.setBlitCost(1);
+			myExBlitVmodel1.setTitle("ex5");
 			myExBlitVmodel1.setDescription("my1");
 			myExBlitVmodel1.setEmail("hasti.sahabi@gmail.com");
 			myExBlitVmodel2.setBlitCost(2);
+			myExBlitVmodel2.setTitle("ex6");
 			myExBlitVmodel2.setDescription("my2");
 			myExBlitVmodel2.setEmail("hasti.sahabi@gmail.com");
 			myExBlitVmodel3.setBlitCost(3);
+			myExBlitVmodel3.setTitle("ex7");
 			myExBlitVmodel3.setDescription("my3");
 			myExBlitVmodel3.setEmail("hasti.sahabi@gmail.com");
 
@@ -139,8 +146,8 @@ public class ExchangeBlitServiceTest {
 		assertEquals(1, SecurityContextHolder.currentUser().getExchangeBlits().size());
 
 		exService.delete(updateExBlitVmodel.getExchangeBlitId());
-		assertEquals(0, exRepo.count());
-		assertEquals(0, SecurityContextHolder.currentUser().getExchangeBlits().size());
+		assertEquals(1, exRepo.count());
+		assertEquals(1, SecurityContextHolder.currentUser().getExchangeBlits().size());
 	}
 	
 	@Test
