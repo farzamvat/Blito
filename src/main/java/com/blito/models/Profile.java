@@ -1,6 +1,6 @@
 package com.blito.models;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -27,7 +27,7 @@ public class Profile {
 	boolean active;
 	
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
-	List<Event> events;
+	Set<Event> events;
 	
 	String biography;
 	
@@ -46,13 +46,13 @@ public class Profile {
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
     @JoinTable(name="profile_image" , joinColumns=@JoinColumn(name="profile_id"), 
     inverseJoinColumns=@JoinColumn(name="image_id"))
-	private List<Image> images; 
+	private Set<Image> images; 
 
-	public List<Image> getImages() {
+	public Set<Image> getImages() {
 		return images;
 	}
 
-	public void setImages(List<Image> images) {
+	public void setImages(Set<Image> images) {
 		this.images = images;
 	}
 
@@ -112,11 +112,11 @@ public class Profile {
 		this.active = active;
 	}
 
-	public List<Event> getEvents() {
+	public Set<Event> getEvents() {
 		return events;
 	}
 
-	public void setEvents(List<Event> events) {
+	public void setEvents(Set<Event> events) {
 		this.events = events;
 	}
 

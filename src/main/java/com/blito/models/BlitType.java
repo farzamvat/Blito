@@ -1,8 +1,8 @@
 package com.blito.models;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -41,41 +41,41 @@ public class BlitType {
 	private String name;
 	
 	@OneToMany(mappedBy="blitType",targetEntity=BlitTypeSeat.class)
-	List<BlitTypeSeat> blitTypeSeats;
+	Set<BlitTypeSeat> blitTypeSeats;
 	
 	@OneToMany(mappedBy="blitType",targetEntity=CommonBlit.class)
-	List<CommonBlit> commonBlits;
+	Set<CommonBlit> commonBlits;
 	
 	@ManyToMany
-	private List<Discount> discounts;
+	private Set<Discount> discounts;
 	
-	public List<Discount> getDiscounts() {
+	public Set<Discount> getDiscounts() {
 		return discounts;
 	}
 
-	public void setDiscounts(List<Discount> discounts) {
+	public void setDiscounts(Set<Discount> discounts) {
 		this.discounts = discounts;
 	}
 
 	public BlitType() {
-		blitTypeSeats = new ArrayList<>();
-		commonBlits = new ArrayList<>();
-		discounts = new ArrayList<>();
+		blitTypeSeats = new HashSet<>();
+		commonBlits = new HashSet<>();
+		discounts = new HashSet<>();
 	}
 	
-	public List<BlitTypeSeat> getBlitTypeSeats() {
+	public Set<BlitTypeSeat> getBlitTypeSeats() {
 		return blitTypeSeats;
 	}
 
-	public void setBlitTypeSeats(List<BlitTypeSeat> blitTypeSeats) {
+	public void setBlitTypeSeats(Set<BlitTypeSeat> blitTypeSeats) {
 		this.blitTypeSeats = blitTypeSeats;
 	}
 
-	public List<CommonBlit> getCommonBlits() {
+	public Set<CommonBlit> getCommonBlits() {
 		return commonBlits;
 	}
 
-	public void setCommonBlits(List<CommonBlit> commonBlits) {
+	public void setCommonBlits(Set<CommonBlit> commonBlits) {
 		this.commonBlits = commonBlits;
 	}
 

@@ -39,16 +39,7 @@ public class AdminAccountController {
 	@Autowired ExcelService excelService;
 	@Autowired RoleService roleService;
 	
-	
-	// ***************** SWAGGER DOCS ***************** //
-	@ApiOperation(value = "get all users")
-	@ApiResponses({ @ApiResponse(code = 200, message = "get all users ok", response = UserViewModel.class)})
-	// ***************** SWAGGER DOCS ***************** //
-	@JsonView(View.SimpleUser.class)
-	@GetMapping("/all")
-	public ResponseEntity<Page<UserViewModel>> getAllUsers(Pageable pageable){
-		return ResponseEntity.ok(adminAccountService.getAllUsers(pageable));
-	}
+
 	
 	@JsonView(View.AdminUser.class)
 	@PostMapping("/search")
@@ -94,7 +85,7 @@ public class AdminAccountController {
 	@ApiOperation(value = "get all users with excel")
 	@ApiResponses({ @ApiResponse(code = 200, message = "get all users ok", response = ModelAndView.class)})
 	// ***************** SWAGGER DOCS ***************** //
-	@GetMapping("/all-users-excel.xlsx")
+	@PostMapping("/all-users-excel.xlsx")
 	public ModelAndView searchUsersForExcel(@RequestBody SearchViewModel<User> search) {
  		return new ModelAndView(new ExcelView(), adminAccountService.searchUsersForExcel(search));
 	}

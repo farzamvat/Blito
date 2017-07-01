@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,8 +35,8 @@ public class Application {
 		return new ModelAndView("index");
 	}
 	
-	@GetMapping("/eventPage")
-	public ModelAndView event()
+	@GetMapping("/event-page/{eventLink}")
+	public ModelAndView event(@PathVariable String eventLink)
 	{
 		return new ModelAndView("index");
 	}

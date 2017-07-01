@@ -28,10 +28,6 @@ public class AdminAccountService {
 	SearchService searchService;
 	@Autowired
 	ExcelService excelService;
-	
-	public Page<UserViewModel> getAllUsers(Pageable pageable) {
-		return userMapper.toPage(userRepository.findAll(pageable), userMapper::createFromEntity);
-	}
 
 	public UserViewModel getUser(long userId) {
 		User user = Optional.ofNullable(userRepository.findOne(userId)).map(u -> u)

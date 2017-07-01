@@ -7,9 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +24,7 @@ import com.blito.models.User;
 import com.blito.repositories.ExchangeBlitRepository;
 import com.blito.repositories.ImageRepository;
 import com.blito.repositories.UserRepository;
-import com.blito.rest.viewmodels.exchangeblit.AdminChangeExchangeBlitStateViewModel;
+import com.blito.rest.viewmodels.exchangeblit.AdminChangeExchangeBlitOperatorStateViewModel;
 import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.AdminExchangeBlitService;
@@ -114,20 +111,14 @@ public class AdminExchangeBlitServiceTest {
 		
 	}
 	
-	@Test
-	public void getallPageable() {
-		Pageable pageable = new PageRequest(0,5);
-		Page<ExchangeBlitViewModel> exBlits = adminExService.exchangeBlitsByPage(pageable);
-		assertEquals(4, exBlits.getNumberOfElements());	
-	}
 	
 	@Test
 	public void changeState() {
 		assertEquals(OperatorState.PENDING, exBlit1.getOperatorState());
-		AdminChangeExchangeBlitStateViewModel vmodel = new AdminChangeExchangeBlitStateViewModel();
+		AdminChangeExchangeBlitOperatorStateViewModel vmodel = new AdminChangeExchangeBlitOperatorStateViewModel();
 		vmodel.setExchangeBlitId(exBlit1.getExchangeBlitId());
 		vmodel.setOperatorState(OperatorState.APPROVED);
-		ExchangeBlitViewModel exBlit = adminExService.changeExchangeBlitState(vmodel);
+		ExchangeBlitViewModel exBlit = adminExService.changeExchangeBlitOperatorState(vmodel);
 		assertEquals(OperatorState.APPROVED, exBlit.getOperatorState());
 		assertEquals(OperatorState.APPROVED, exRepo.findOne(exBlit1.getExchangeBlitId()).getOperatorState());
 	}

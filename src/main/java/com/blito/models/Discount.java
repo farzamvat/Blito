@@ -1,7 +1,8 @@
 package com.blito.models;
 
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,7 +38,12 @@ public class Discount {
 	private User user;
 	
 	@ManyToMany(mappedBy="discounts")
-	private List<BlitType> blitTypes;
+	private Set<BlitType> blitTypes;
+	
+	public Discount()
+	{
+		blitTypes = new HashSet<>();
+	}
 
 	public long getDiscountId() {
 		return discountId;
@@ -117,11 +123,11 @@ public class Discount {
 		this.user = user;
 	}
 
-	public List<BlitType> getBlitTypes() {
+	public Set<BlitType> getBlitTypes() {
 		return blitTypes;
 	}
 
-	public void setBlitTypes(List<BlitType> blitTypes) {
+	public void setBlitTypes(Set<BlitType> blitTypes) {
 		this.blitTypes = blitTypes;
 		blitTypes.forEach(b -> b.getDiscounts().add(this));
 	}

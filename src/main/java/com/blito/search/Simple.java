@@ -22,8 +22,11 @@ public class Simple<T> extends AbstractSearchViewModel<T> {
 
 	@Override
 	public Specification<T> action() {
-		return (root, query, cb) ->
-		OperationService.doOperation(operation, val, cb, root, field);
+		return (root, query, cb) -> {
+			System.out.println("************************************************");
+			return OperationService.doOperation(operation, val, cb, root, field);
+			
+		};
 	}
 
 	public Operation getOperation() {
@@ -62,6 +65,8 @@ public class Simple<T> extends AbstractSearchViewModel<T> {
 		else if (field.equals("bankGateway"))
 			this.val = Enum.valueOf(BankGateway.class, value.toString());
 		else if(field.equals("isDeleted"))
+			this.val = Boolean.parseBoolean(value.toString());
+		else if(field.equals("isEvento"))
 			this.val = Boolean.parseBoolean(value.toString());
 		else
 			this.val = value;

@@ -33,6 +33,20 @@ public class ExceptionUtil {
 		return exvm;
 	}
 	
+	public static <T extends Throwable> ExceptionViewModel generate(HttpStatus status,
+			HttpServletRequest request,
+			T throwable)
+	{
+		ExceptionViewModel exvm = new ExceptionViewModel();
+		exvm.setError(status.name());
+		exvm.setStatus(status.value());
+		exvm.setPath(request.getServletPath());
+		exvm.setMessage(throwable.getMessage());
+		exvm.setException(throwable.getClass().getName());
+		exvm.setTimestamp(System.currentTimeMillis());
+		return exvm;
+	}
+	
 	public static <T extends Enum<T> & ValidationInterface> ExceptionViewModel generate(HttpStatus status,
 			HttpServletRequest request,
 			MethodArgumentNotValidException exception, Class<T> clazz)

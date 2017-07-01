@@ -1,5 +1,8 @@
 package com.blito.services;
 
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -47,15 +50,31 @@ public class PaymentService {
 					BlitType blitType = blitTypeRepository.findByBlitTypeId(blit.getBlitId());
 					blitType.setSoldCount(blitType.getSoldCount() + blit.getCount());
 					if(blitType.getSoldCount() == blitType.getCapacity())
+					{
 						blitType.setBlitTypeState(State.SOLD);
+						if(blitType.getEventDate().getBlitTypes().stream().allMatch(b -> b.getBlitTypeState() == State.SOLD))
+						{
+							blitType.getEventDate().setEventDateState(State.SOLD);
+						}
+						if(blitType.getEventDate().getEvent().getEventDates().stream().allMatch(ed -> ed.getEventDateState() == State.SOLD))
+						{
+							blitType.getEventDate().getEvent().setEventState(State.SOLD);
+							blitType.getEventDate().getEvent().setEventSoldDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+						}
+					}
+						
 					blitTypeRepository.save(blitType);
 					blitRepository.save(blit);
+					
 					//send email asynchronously
+					
+					
 				}).exceptionally(t -> {
 					samanBankService.revereseTransaction(paymentRequestArgs.getRequest().getRefNum()).join();
 					return null;
 				});
 			}
+			//seat blit
 		});
 	}
 

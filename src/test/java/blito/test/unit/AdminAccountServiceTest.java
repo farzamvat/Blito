@@ -81,13 +81,6 @@ public class AdminAccountServiceTest {
 	}
 	
 	@Test
-	public void getAll() {
-		Pageable pageable = new PageRequest(0,10);
-		Page<UserViewModel> users = adminAccService.getAllUsers(pageable);
-		assertEquals(6, users.getNumberOfElements());
-	}
-	
-	@Test
 	public void ban() {
 		adminAccService.banUser(user1.getUserId());
 		user1 = userRepo.findOne(user1.getUserId());

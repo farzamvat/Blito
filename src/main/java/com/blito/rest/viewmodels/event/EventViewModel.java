@@ -1,8 +1,8 @@
 package com.blito.rest.viewmodels.event;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
@@ -67,14 +67,14 @@ public class EventViewModel {
 	String eventHostName;
 
 	@JsonView(View.SimpleEvent.class)
-	List<OfferTypeEnum> offers;
+	Set<OfferTypeEnum> offers;
 
 	@JsonView(View.Event.class)
 	@NotEmpty
-	List<EventDateViewModel> eventDates;
+	Set<EventDateViewModel> eventDates;
 
 	@JsonView(View.SimpleEvent.class)
-	List<ImageViewModel> images;
+	Set<ImageViewModel> images;
 
 	@JsonView(View.Event.class)
 	private String eventLink;
@@ -96,9 +96,9 @@ public class EventViewModel {
 	private boolean isDeleted;
 
 	public EventViewModel() {
-		eventDates = new ArrayList<>();
-		images = new ArrayList<>();
-		offers = new ArrayList<>();
+		eventDates = new HashSet<>();
+		images = new HashSet<>();
+		offers = new HashSet<>();
 	}
 
 	public Timestamp getEventSoldDate() {
@@ -147,11 +147,11 @@ public class EventViewModel {
 		this.eventHostName = eventHostName;
 	}
 
-	public List<OfferTypeEnum> getOffers() {
+	public Set<OfferTypeEnum> getOffers() {
 		return offers;
 	}
 
-	public void setOffers(List<OfferTypeEnum> offers) {
+	public void setOffers(Set<OfferTypeEnum> offers) {
 		this.offers = offers;
 	}
 
@@ -275,19 +275,19 @@ public class EventViewModel {
 		this.eventHostId = eventHostId;
 	}
 
-	public List<EventDateViewModel> getEventDates() {
+	public Set<EventDateViewModel> getEventDates() {
 		return eventDates;
 	}
 
-	public void setEventDates(List<EventDateViewModel> eventDates) {
+	public void setEventDates(Set<EventDateViewModel> eventDates) {
 		this.eventDates = eventDates;
 	}
 
-	public List<ImageViewModel> getImages() {
+	public Set<ImageViewModel> getImages() {
 		return images;
 	}
 
-	public void setImages(List<ImageViewModel> images) {
+	public void setImages(Set<ImageViewModel> images) {
 		this.images = images;
 	}
 }

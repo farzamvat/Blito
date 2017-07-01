@@ -1,6 +1,7 @@
 package com.blito.rest.viewmodels.role;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
@@ -10,7 +11,12 @@ public class RoleViewModel {
 	long roleId;
 	@NotNull
 	String name;
-	List<Permission> permissions;
+	Set<Permission> permissions;
+	
+	public RoleViewModel()
+	{
+		permissions = new HashSet<>();
+	}
 	public long getRoleId() {
 		return roleId;
 	}
@@ -23,10 +29,10 @@ public class RoleViewModel {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<Permission> getPermissions() {
+	public Set<Permission> getPermissions() {
 		return permissions;
 	}
-	public void setPermissions(List<Permission> permissions) {
+	public void setPermissions(Set<Permission> permissions) {
 		this.permissions = permissions;
 	}
 }

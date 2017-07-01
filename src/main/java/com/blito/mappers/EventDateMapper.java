@@ -23,7 +23,6 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 	public EventDate createFromViewModel(EventDateViewModel vmodel) {
 		EventDate eventDate = new EventDate();
 		eventDate.setDate(vmodel.getDate());
-		eventDate.setDayOfWeek(vmodel.getDayOfWeek());
 		eventDate.setEventDateState(State.CLOSED);
 		vmodel.getBlitTypes().forEach(bt -> {
 			eventDate.addBlitType(blitTypeMapper.createFromViewModel(bt));
@@ -35,8 +34,7 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 	public EventDateViewModel createFromEntity(EventDate eventDate) {
 		EventDateViewModel vmodel = new EventDateViewModel();
 		vmodel.setDate(eventDate.getDate());
-		vmodel.setDayOfWeek(eventDate.getDayOfWeek());
-		vmodel.setBlitTypes(eventDate.getBlitTypes().stream().map(blitTypeMapper::createFromEntity).collect(Collectors.toList()));
+		vmodel.setBlitTypes(eventDate.getBlitTypes().stream().map(blitTypeMapper::createFromEntity).collect(Collectors.toSet()));
 		vmodel.setEventDateId(eventDate.getEventDateId());
 		vmodel.setState(eventDate.getEventDateState());
 		return vmodel;
@@ -45,8 +43,6 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 	@Override
 	public EventDate updateEntity(EventDateViewModel vmodel, EventDate eventDate) {
 		eventDate.setDate(vmodel.getDate());
-		eventDate.setDayOfWeek(vmodel.getDayOfWeek());
-		
 		
 		List<Long> oldOnes = vmodel.getBlitTypes().stream().map(b -> b.getBlitTypeId()).filter(id -> id > 0).collect(Collectors.toList());
 		List<Long> shouldDelete = new ArrayList<>();

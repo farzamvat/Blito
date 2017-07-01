@@ -1,6 +1,7 @@
 package com.blito.services;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.context.annotation.Scope;
@@ -39,22 +40,24 @@ public class SearchService {
 		if (searchViewModel.getRestrictions().isEmpty())
 			return repository.findAll(pageable);
 		Page<E> searchResult = searchViewModel.getRestrictions().stream().map(r -> r.action())
-				.reduce((s1, s2) -> Specifications.where(s1).and(s2))
+				.reduce((s1, s2) ->
+				Specifications.where(s1).and(s2))
 				.map(specification -> repository.findAll(specification, pageable))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
 		return new PageImpl<>(searchResult.getContent().stream().distinct()
 				.collect(Collectors.toList()), pageable, searchResult.getTotalElements());
 	}
 	
-	public <E, V, R extends JpaSpecificationExecutor<E> & JpaRepository<E, Long>> List<V> search(
+	public <E, V, R extends JpaSpecificationExecutor<E> & JpaRepository<E, Long>> Set<V> search(
 			SearchViewModel<E> searchViewModel, GenericMapper<E, V> mapper, R repository) {
 		if (searchViewModel.getRestrictions().isEmpty())
-			return mapper.createFromEntities(repository.findAll());
+			return mapper.createFromEntities(repository.findAll().stream().collect(Collectors.toSet()));
 		List<E> searchResult = searchViewModel.getRestrictions().stream().map(r -> r.action())
-				.reduce((s1, s2) -> Specifications.where(s1).and(s2))
+				.reduce((s1, s2) -> 
+				Specifications.where(s1).and(s2))
 				.map(specification -> repository.findAll(specification))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
 		return searchResult.stream().distinct().map(mapper::createFromEntity)
-				.collect(Collectors.toList());
+				.collect(Collectors.toSet());
 	}
 }

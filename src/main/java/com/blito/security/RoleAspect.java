@@ -1,6 +1,6 @@
 package com.blito.security;
 
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.aspectj.lang.JoinPoint;
@@ -28,7 +28,7 @@ public class RoleAspect {
 	public void filterByRole(JoinPoint joinPoint, Permission permission) {
 		User currentUser = SecurityContextHolder.currentUser();
 
-		List<Role> currentUserAttachedRoles = roleRepository
+		Set<Role> currentUserAttachedRoles = roleRepository
 				.findByRoleIdIn(currentUser.getRoles().stream().map(r -> r.getRoleId()).collect(Collectors.toList()));
 
 		if (currentUserAttachedRoles != null) {

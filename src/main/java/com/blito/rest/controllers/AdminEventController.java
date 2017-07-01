@@ -161,17 +161,6 @@ public class AdminEventController {
 	public ResponseEntity<Page<EventFlatViewModel>> search(@RequestBody SearchViewModel<Event> search,Pageable pageable) {
 		return ResponseEntity.ok(adminEventService.searchEvents(search, pageable, flatMapper));
 	}
-	
-//
-//	// ***************** SWAGGER DOCS ***************** //
-//	@ApiOperation(value = "get all events")
-//	@ApiResponses({ @ApiResponse(code = 200, message = "get all events ok", response = EventFlatViewModel.class) })
-//	// ***************** SWAGGER DOCS ***************** //
-//	@JsonView(View.SimpleEvent.class)
-//	@GetMapping("/all")
-//	public ResponseEntity<Page<EventFlatViewModel>> getAllEvents(Pageable page) {
-//		return ResponseEntity.ok(adminEventService.getAllEvents(page));
-//	}
 
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "get event")

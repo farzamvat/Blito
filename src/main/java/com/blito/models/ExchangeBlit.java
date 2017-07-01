@@ -43,13 +43,10 @@ public class ExchangeBlit {
 	
 	private Timestamp createdAt;
 	
-	public Timestamp getCreatedAt() {
-		return createdAt;
-	}
+	private boolean isDeleted = false;
+	
+	private String exchangeLink;
 
-	public void setCreatedAt(Timestamp createdAt) {
-		this.createdAt = createdAt;
-	}
 
 	@Enumerated(EnumType.STRING)
 	private State state;
@@ -63,9 +60,32 @@ public class ExchangeBlit {
 	private User user;
 	
 	@OneToOne
-	Image image;
+	private Image image;
 	
 	
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+	public String getExchangeLink() {
+		return exchangeLink;
+	}
+
+	public void setExchangeLink(String exchangeLink) {
+		this.exchangeLink = exchangeLink;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
 	public ExchangeBlitType getExchangeBlitType() {
 		return exchangeBlitType;
 	}

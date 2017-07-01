@@ -10,12 +10,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class BannerViewModel {
 	@JsonView(View.IndexBanner.class)
 	long indexBannerId;
-	@JsonView(View.AdminIndexBanner.class)
-	boolean active;
-	@NotEmpty
 	@JsonView(View.IndexBanner.class)
 	String title;
-	@NotEmpty
 	@JsonView(View.IndexBanner.class)
 	String description;
 	@NotNull
@@ -23,19 +19,19 @@ public class BannerViewModel {
 	ImageViewModel image;
 	@NotNull
 	@JsonView(View.IndexBanner.class)
-	long eventId;
+	String eventLink;
 	
+	public String getEventLink() {
+		return eventLink;
+	}
+	public void setEventLink(String eventLink) {
+		this.eventLink = eventLink;
+	}
 	public long getIndexBannerId() {
 		return indexBannerId;
 	}
 	public void setIndexBannerId(long indexBannerId) {
 		this.indexBannerId = indexBannerId;
-	}
-	public boolean isActive() {
-		return active;
-	}
-	public void setActive(boolean active) {
-		this.active = active;
 	}
 	public String getTitle() {
 		return title;
@@ -54,11 +50,5 @@ public class BannerViewModel {
 	}
 	public void setImage(ImageViewModel image) {
 		this.image = image;
-	}
-	public long getEventId() {
-		return eventId;
-	}
-	public void setEventId(long eventId) {
-		this.eventId = eventId;
 	}
 }

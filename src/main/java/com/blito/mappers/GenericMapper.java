@@ -1,6 +1,7 @@
 package com.blito.mappers;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -11,14 +12,14 @@ public interface GenericMapper <E,V> {
 	V createFromEntity(E entity);
 	E updateEntity(V viewModel,E entity);
 	
-	default List<V> createFromEntities(List<E> entities)
+	default Set<V> createFromEntities(Set<E> entities)
 	{
-		return entities.stream().map(this::createFromEntity).collect(Collectors.toList());
+		return entities.stream().map(this::createFromEntity).collect(Collectors.toSet());
 	}
 	
-	default List<E> createFromViewModels(List<V> viewModels)
+	default Set<E> createFromViewModels(Set<V> viewModels)
 	{
-		return viewModels.stream().map(this::createFromViewModel).collect(Collectors.toList());
+		return viewModels.stream().map(this::createFromViewModel).collect(Collectors.toSet());
 	}
 	
 	default Page<V> toPage(Page<E> page)
