@@ -51,19 +51,14 @@ public class ExcelService {
 		model.put("sheetname", "Blits");
 		// Headers
 		model.put("headers",
-				Arrays.asList("UserId", "CustomerName", "Mobile", "Email", "BlitId", "Tracking Code", "Blit Type",
-						"Created At", "Count", "Total Amount", "Event Name", "Event Date and Time", "Event Address",
-						"Seat Type", "Payment Status", "Payment Error", "Saman Bank Token", "Saman Bank Ref Number",
-						"Bank Gateway"));
+				Arrays.asList("UserId", "CustomerName", "Mobile", "Email", "BlitId", "Tracking Code", "Blit Type"));
 		// Results
 		model.put("results", blits.stream()
 				.collect(Collectors.toMap(k -> k.getUserId(), v -> Arrays.asList(Long.toString(v.getUserId()),
 						v.getCustomerName(), v.getCustomerMobileNumber(), v.getBlitId(), v.getTrackCode(),
-						v.getBlitTypeName(), v.getCreatedAt(), v.getCount(), v.getTotalAmount(), v.getEventName(),
-						v.getEventDateAndTime(), v.getEventAddress(), v.getSeatType(), v.getPaymentStatus(),
-						v.getPaymentError(), v.getSamanBankToken(), v.getSamanBankToken(), v.getBankGateway()))));
+						v.getBlitTypeName()))));
 		// NumericsColumns
-		model.put("numericcolumns", Arrays.asList("UserId", "BlitId", "Count", "Total Amount"));
+		model.put("numericcolumns", Arrays.asList("UserId", "BlitId"));
 		return model;
 	}
 
