@@ -311,12 +311,25 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     border-bottom-right-radius: 3px;
     border: 1px solid #909090;
 }
+.EmakeEventPlannerForm {
+    display: none;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border: 1px solid #909090;
+}
 
 .makeEventFormHeader {
     color: white;
     background-color: #777;
 }
 .makeEventFormHeader:hover {
+    cursor: pointer;
+}
+.EmakeEventFormHeader {
+    color: white;
+    background-color: #777;
+}
+.EmakeEventFormHeader:hover {
     cursor: pointer;
 }
 .legendStyle {
