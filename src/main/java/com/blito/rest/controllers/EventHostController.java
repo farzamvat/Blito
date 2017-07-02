@@ -14,14 +14,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.blito.enums.Response;
+import com.blito.models.EventHost;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
+import com.blito.search.SearchViewModel;
 import com.blito.services.EventHostService;
+import com.blito.view.ExcelView;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +37,6 @@ import io.swagger.annotations.ApiResponses;
 public class EventHostController {
 	@Autowired
 	EventHostService eventHostService;
-
 
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "create event host")
@@ -78,6 +81,15 @@ public class EventHostController {
 	public ResponseEntity<?> deleteEventHost(@RequestParam long eventHostId) {
 		eventHostService.delete(eventHostId);
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
+	}
+
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "get event hosts with excel")
+	@ApiResponses({ @ApiResponse(code = 200, message = "get event hosts with excel ok", response = ModelAndView.class) })
+	// ***************** SWAGGER DOCS ***************** //
+	@PostMapping("/event-hosts.xlsx")
+	public ModelAndView searchUsersForExcel(@RequestBody SearchViewModel<EventHost> search) {
+		return new ModelAndView(new ExcelView(), eventHostService.searchEventHostsForExcel(search));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //

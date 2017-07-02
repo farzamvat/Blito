@@ -1,6 +1,6 @@
 package com.blito.services;
 
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,6 +46,8 @@ public class EventHostService {
 	ImageMapper imageMapper;
 	@Autowired
 	SearchService searchService;
+	@Autowired
+	ExcelService excelService;
 
 	private EventHost findEventHostById(long id) {
 		return eventHostRepository.findByEventHostIdAndIsDeletedFalse(id).map(e -> e)
@@ -129,5 +131,10 @@ public class EventHostService {
 
 	public Page<EventHostViewModel> searchEventHosts(SearchViewModel<EventHost> searchViewModel, Pageable pageable) {
 		return searchService.search(searchViewModel, pageable, eventHostMapper, eventHostRepository);
+	}
+	
+	public Map<String, Object> searchEventHostsForExcel(SearchViewModel<EventHost> searchViewModel)
+	{
+		return excelService.getEventHostsExcelMap(searchService.search(searchViewModel, eventHostMapper, eventHostRepository));
 	}
 }
