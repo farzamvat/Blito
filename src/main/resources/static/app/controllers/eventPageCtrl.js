@@ -2,7 +2,7 @@
  * Created by soroush on 4/25/17.
  */
 angular.module('eventsPageModule')
-    .controller('eventPageCtrl', function ($scope, $routeParams, eventPageService, userInfo, Auth) {
+    .controller('eventPageCtrl', function ($scope, $routeParams, eventPageService, mapMarkerService,userInfo, Auth) {
         var eventPage = this;
         $scope.userEmail = 'email';
         $scope.mapOptions = {
@@ -11,9 +11,14 @@ angular.module('eventsPageModule')
             mapTypeId: google.maps.MapTypeId.TERRAIN
         };
         var data = $routeParams.eventLink;
+        $scope.eventData = {};
         eventPageService.getEvent(data)
             .then(function (data, status) {
                 console.log(data);
+                $scope.eventData = data.data;
+                mapMarkerService.initMap(document.getElementById('map'));
+                mapMarkerService.setMarker($scope.eventData.latitude, $scope.eventData.longitude);
+                console.log($scope.eventData);
             })
             .catch(function (data, status) {
                 console.log(data);
@@ -22,7 +27,7 @@ angular.module('eventsPageModule')
 
 
 
-        $scope.map = new google.maps.Map(document.getElementById('map'), $scope.mapOptions);
+
 
         $scope.showTime = [
             {weekDay: "یکشنبه", price: "1000", date:"22/2", time: "۱۰:۳۰", sansState: true, expired: true},

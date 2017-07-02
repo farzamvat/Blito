@@ -4,9 +4,9 @@
             <img ng-src="assets/img/a.jpeg"   class="img-responsive imgMobileSize ">
         </div>
         <div class="col-xs-12 col-sm-7 col-md-4 floatRight textAlignRight eventContent" >
-            <h1>نام رویداد</h1>
-            <p> توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد</p>
-            <p> توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد</p>
+            <h1>{{eventData.eventName}}</h1>
+            <p>{{eventData.description}}</p>
+
 
             <button data-toggle="modal" data-target="#buyTicket" class="btn btn-success buyTicket  marginTop10"><i class="fa fa-ticket" aria-hidden="true"></i>  خرید بلیت
 
@@ -27,26 +27,33 @@
                         <thead class="tableHeader">
                         <tr>
 
-                            <th class="dataCenter">ساعت
+                            <th class="dataCenter">روز و ساعت
                             </th>
-                            <th class="dataCenter" >روز
-                            </th>
-                            <th class="dataCenter" >تاریخ
-                            </th>
+
                             <th class="dataCenter" >قیمت
+                            </th>
+                            <th class="dataCenter" >ظرفیت
                             </th>
                             <th class="dataCenter" >وضعیت بلیت
                             </th>
                         </tr>
                         </thead>
                         <tbody class="showTimeList">
-                        <tr ng-repeat="item in showTime | filter:search">
-                            <td class="dataCenter">{{ item.time}}</td>
-                            <td class="dataCenter">{{ item.weekDay}}</td>
+                        <tr ng-repeat="item in eventData.eventDates | filter:search">
                             <td class="dataCenter">{{ item.date}}</td>
-                            <td class="dataCenter">{{ item.price}}</td>
-                            <td class="dataCenter" ng-class="{ 'btn-success': item.sansState && item.expired, 'btn-danger': !item.sansState || !item.expired}">
-                                {{ item.showTimeStateTitle}}</td>
+                            <td ng-if="item.price === 0" class="dataCenter">رایگان</td>
+                            <td ng-if="item.price !== 0" class="dataCenter">{{ item.price}}</td>
+
+                            <td class="dataCenter">{{ item.capacity}}</td>
+                            <td ng-if="item.eventState === 'OPEN'" class="dataCenter btn-success" >
+                                فعال
+                                </td>
+                            <td ng-if="item.eventState === 'CLOSED'" class="dataCenter btn-danger">
+                                بسته
+                                </td>
+                            <td ng-if="item.eventState === 'SOLD'" class="dataCenter btn-danger">
+                                فروخته شد
+                                </td>
                         </tr>
                         </tbody>
                     </table>
@@ -66,18 +73,31 @@
         <div class="tab-content  tabContent">
             <div id="home" class="tab-pane fade in active">
                 <div class="row">
-                <div class="col-xs-12 col-sm-12  floatRight textAlignRight">
+                <div class="col-xs-12 col-sm-8  floatRight textAlignRight">
                     <h3 class="textAlignRight">عوامل </h3>
-                    <h5 class="marginTop30">کارگردان</h5>
-                    <p>توضحیات</p>
-                    <h5>تهیه کننده</h5>
-                    <p>توضحیات</p>
-                    <h5>بازیگران</h5>
-                    <p>توضحیات</p>
+                    <p class="marginTop30">
+                        {{eventData.members}}
+                    </p>
+                    <!--<p>توضحیات</p>-->
+                    <!--<h5>تهیه کننده</h5>-->
+                    <!--<p>توضحیات</p>-->
+                    <!--<h5>بازیگران</h5>-->
+                    <!--<p>توضحیات</p>-->
                 </div>
+                    <div class="col-xs-12 col-sm-4  floatRight textAlignRight">
+                        <h3 class="textAlignRight">برگزارکننده </h3>
+                        <p class="marginTop30">
+                            {{eventData.eventHostName}}
+                        </p>
+                        <!--<p>توضحیات</p>-->
+                        <!--<h5>تهیه کننده</h5>-->
+                        <!--<p>توضحیات</p>-->
+                        <!--<h5>بازیگران</h5>-->
+                        <!--<p>توضحیات</p>-->
+                    </div>
                 <div class="col-xs-12 col-sm-12  floatRight textAlignRight">
                     <h3 class="textAlignRight">مکان رویداد</h3>
-                    <p>منطقه فلان، آدرس فلان، کوچه فلان، پلاک۲</p>
+                    <p>{{eventData.address}}</p>
                     <div id="map" >
                     </div>
                 </div>
@@ -87,7 +107,30 @@
                 <div class="eventVideo"  id="14931147738924580"><script type="text/JavaScript" src="https://www.aparat.com/embed/nv7Xg?data[rnddiv]=14931147738924580&data[responsive]=yes"></script></div>
             </div>
             <div id="menu2" class="tab-pane fade slickFix marginTop30">
-                <div ng-include="'app/views/partials/slickSlider.html'"></div>
+                <!--<div ng-include="'app/views/partials/slickSlider.html'"></div>-->
+                <div class="col-xs-12">
+                    <slick dots="true" infinite="true"    autoplay="true" lazy-load="ondemand" speed=700 slides-to-show=4 touch-move="true" slides-to-scroll=1 >
+                        <div>
+                            <img src="assets/img/e.jpeg" class="img-responsive center-block homePageImage">
+                        </div>
+                        <div>
+                            <img src="assets/img/b.jpeg" class="img-responsive center-block homePageImage">
+                        </div>
+                        <div>
+                            <img src="assets/img/d.jpeg" class="img-responsive center-block homePageImage">
+                        </div>
+                        <div>
+                            <img src="assets/img/e.jpeg" class="img-responsive center-block homePageImage">
+                        </div>
+                        <div>
+                            <img src="assets/img/b.jpeg" class="img-responsive center-block homePageImage">
+                        </div>
+                        <div>
+                            <img src="assets/img/a.jpeg" class="img-responsive center-block homePageImage">
+                        </div>
+                    </slick>
+                </div>
+
             </div>
 
         </div>
