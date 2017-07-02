@@ -204,43 +204,43 @@ public class EventHostServiceTest {
 
 	}
 	
-	@Test 
-	public void getAllEventHostsTest() {
-		assertEquals(0, hostRepo.count());
-		
-		vmodel1.setHostName("Shenakht");
-		vmodel1.setTelephone("22431103");
-		vmodel1.setHostType(HostType.COFFEESHOP);
-
-		vmodel2.setHostName("Lucky Clover Cafe");
-		vmodel2.setTelephone("22431103");
-		vmodel2.setHostType(HostType.COFFEESHOP);
-		
-
-		vmodel3.setHostName("Roo Be Roo");
-		vmodel3.setTelephone("22411254");
-		vmodel3.setHostType(HostType.COFFEESHOP);
-		
-		vmodel4.setHostName("Wispo");
-		vmodel4.setTelephone("22412345");
-		vmodel4.setHostType(HostType.COFFEESHOP);
-		
-		vmodel1 = hostService.create(vmodel1);
-		vmodel2 = hostService.create(vmodel2);
-		vmodel3 = hostService.create(vmodel3);
-		vmodel4 = hostService.create(vmodel4);
-		
-		assertEquals(4, hostRepo.count());
-		
-		Pageable pageable = new PageRequest(0,5);
-		Page<EventHostViewModel> eventHosts = hostService.getAllEventHosts(pageable);
-		assertEquals(4, eventHosts.getNumberOfElements());
-		
-		hostService.delete(vmodel4.getEventHostId());
-		
-		eventHosts = hostService.getAllEventHosts(pageable);
-		assertEquals(3, eventHosts.getNumberOfElements());
-		
-	}
+//	@Test 
+//	public void getAllEventHostsTest() {
+//		assertEquals(0, hostRepo.count());
+//		
+//		vmodel1.setHostName("Shenakht");
+//		vmodel1.setTelephone("22431103");
+//		vmodel1.setHostType(HostType.COFFEESHOP);
+//
+//		vmodel2.setHostName("Lucky Clover Cafe");
+//		vmodel2.setTelephone("22431103");
+//		vmodel2.setHostType(HostType.COFFEESHOP);
+//		
+//
+//		vmodel3.setHostName("Roo Be Roo");
+//		vmodel3.setTelephone("22411254");
+//		vmodel3.setHostType(HostType.COFFEESHOP);
+//		
+//		vmodel4.setHostName("Wispo");
+//		vmodel4.setTelephone("22412345");
+//		vmodel4.setHostType(HostType.COFFEESHOP);
+//		
+//		vmodel1 = hostService.create(vmodel1);
+//		vmodel2 = hostService.create(vmodel2);
+//		vmodel3 = hostService.create(vmodel3);
+//		vmodel4 = hostService.create(vmodel4);
+//		
+//		assertEquals(4, hostRepo.count());
+//		
+//		Pageable pageable = new PageRequest(0,5);
+//		Page<EventHostViewModel> eventHosts = hostService.getAllEventHosts(pageable);
+//		assertEquals(4, eventHosts.getNumberOfElements());
+//		
+//		hostService.delete(vmodel4.getEventHostId());
+//		
+//		eventHosts = hostService.getAllEventHosts(pageable);
+//		assertEquals(3, eventHosts.getNumberOfElements());
+//		
+//	}
 
 }
