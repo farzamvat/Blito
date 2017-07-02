@@ -111,6 +111,7 @@ public class BlitService {
 		if(attachedBlitType.getSoldCount() == attachedBlitType.getCapacity())
 			attachedBlitType.setBlitTypeState(State.SOLD);
 		commonBlit.setTrackCode(generateTrackCode());
+		commonBlit.setUser(attachedUser);
 		commonBlit.setBlitType(attachedBlitType);
 		commonBlit.setPaymentStatus(PaymentStatus.FREE);
 		attachedUser.addBlits(commonBlit);

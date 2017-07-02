@@ -19,14 +19,18 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class CommonBlitViewModel {
 	@JsonView(View.SimpleBlit.class)
 	long blitId;
+	
 	Timestamp createdAt;
+	
 	@NotEmpty
 	@JsonView(View.SimpleBlit.class)
 	long blitTypeId;
+	
 	@JsonView(View.SimpleBlit.class)
 	@Min(1)
 	@Max(10)
 	int count;
+	
 	@JsonView(View.SimpleBlit.class)
 	long totalAmount;
 	@JsonView(View.SimpleBlit.class)
