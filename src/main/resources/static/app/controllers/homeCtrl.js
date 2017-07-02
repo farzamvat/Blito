@@ -42,6 +42,7 @@ angular.module('homePageModule', [])
         miniSliderService.getSlidingDataEvents("evento", 6, true)
             .then(function (data, status) {
                 $scope.evento = $scope.catchImagesEvents(data.data.content, 2);
+                console.log(data);
             })
             .catch(function (data, status) {
                 console.log(data);

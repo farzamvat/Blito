@@ -88,6 +88,7 @@
             </div>
 
 
+
         </div>
         <div class="hidden-xs col-sm-3   floatRight blitoOffer">
             <h4 class="text-center marginTop10"> پیشنهاد کنسرت  </h4>
@@ -163,6 +164,7 @@
             </div>
         </div>
 
+        </div>
     </div>
 
     <div class="row slidingEventsRow" >
@@ -171,7 +173,7 @@
             <h3 class="textAlignRight">ایونتو</h3>
             <button class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</button>
             <div class="col-xs-12 slickSliders">
-                <slick ng-if="showImages[2].length > 2" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
+                <slick  dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
                     <div ng-repeat="event in evento" >
                         <a class="slidingEventsImg" href="{{url+event.eventLink}}">
                             <img ng-src="{{event.image}}" class="img-responsive center-block homePageImage">

@@ -482,8 +482,12 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 .slidingEventsBtn {
     margin-top: 10px;
     margin-bottom: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    width: 106px;
     font-size: 14px;
-    
+
+
 }
 
 .exchangeTicketText {
