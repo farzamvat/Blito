@@ -3,6 +3,7 @@ package com.blito.search;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 		  @Type(value = Range.class, name = "range"),
 		  @Type(value = Time.class , name = "time") 
 		})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class AbstractSearchViewModel<T> {
 
 	protected String field;

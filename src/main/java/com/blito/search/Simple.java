@@ -42,31 +42,29 @@ public class Simple<T> extends AbstractSearchViewModel<T> {
 	}
 
 	public void setValue(Object value) {
-		if (field.equals("eventState") 
-				|| field.equals("eventDateState") 
-				|| field.equals("blitTypeState"))
+		if (field.contains("eventState") 
+				|| field.contains("eventDateState") 
+				|| field.contains("blitTypeState"))
 			this.val = Enum.valueOf(State.class, value.toString());
-		else if (field.equals("operatorState"))
+		else if (field.contains("operatorState"))
 			this.val = Enum.valueOf(OperatorState.class, value.toString());
-		else if (field.equals("state"))
+		else if (field.contains("state"))
 			this.val = Enum.valueOf(State.class, value.toString());
-		else if (field.equals("eventType"))
+		else if (field.contains("eventType"))
 			this.val = Enum.valueOf(EventType.class, value.toString());
-		else if (field.equals("hostType"))
+		else if (field.contains("hostType"))
 			this.val = Enum.valueOf(HostType.class, value.toString());
-		else if (field.equals("exchangeBlitType"))
+		else if (field.contains("exchangeBlitType"))
 			this.val = Enum.valueOf(ExchangeBlitType.class, value.toString());
-		else if (field.equals("imageType"))
+		else if (field.contains("imageType"))
 			this.val = Enum.valueOf(ImageType.class, value.toString());
-		else if (field.equals("paymentStatus"))
+		else if (field.contains("paymentStatus"))
 			this.val = Enum.valueOf(PaymentStatus.class, value.toString());
-		else if (field.equals("seatType"))
+		else if (field.contains("seatType"))
 			this.val = Enum.valueOf(SeatType.class, value.toString());
-		else if (field.equals("bankGateway"))
+		else if (field.contains("bankGateway"))
 			this.val = Enum.valueOf(BankGateway.class, value.toString());
-		else if(field.equals("isDeleted"))
-			this.val = Boolean.parseBoolean(value.toString());
-		else if(field.equals("isEvento"))
+		else if(field.contains("isFree") || field.contains("isEvento") || field.contains("isDeleted"))
 			this.val = Boolean.parseBoolean(value.toString());
 		else
 			this.val = value;
