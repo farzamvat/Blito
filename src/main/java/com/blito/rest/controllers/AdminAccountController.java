@@ -82,11 +82,12 @@ public class AdminAccountController {
 	}
 	
 	// ***************** SWAGGER DOCS ***************** //
-	@ApiOperation(value = "get all users with excel")
+	@ApiOperation(value = "get users with excel")
 	@ApiResponses({ @ApiResponse(code = 200, message = "get all users ok", response = ModelAndView.class)})
 	// ***************** SWAGGER DOCS ***************** //
-	@PostMapping("/all-users-excel.xlsx")
+	@PostMapping("/users-excel.xlsx")
 	public ModelAndView searchUsersForExcel(@RequestBody SearchViewModel<User> search) {
  		return new ModelAndView(new ExcelView(), adminAccountService.searchUsersForExcel(search));
 	}
+	
 }

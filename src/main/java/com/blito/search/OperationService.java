@@ -55,21 +55,21 @@ public class OperationService {
 	}
 
 	private static <T, U> Path<U> joinQueryBuilder(String field, Root<T> root) {
-		List<String> splitted = Arrays.stream(field.split("_")).collect(Collectors.toList());
+		List<String> splitted = Arrays.stream(field.split("-")).collect(Collectors.toList());
 		if (splitted.size() == 1)
 			return root.get(field);
 		String query_field = splitted.remove(splitted.size() - 1);
-		return recursiveJoin(root, splitted.stream().reduce((s1, s2) -> String.valueOf(new StringBuilder().append(s1).append("_").append(s2))).get()).get(query_field);
+		return recursiveJoin(root, splitted.stream().reduce((s1, s2) -> String.valueOf(new StringBuilder().append(s1).append("-").append(s2))).get()).get(query_field);
 
 	}
 	
 	private static <Z,X,T> Join<Z,X> recursiveJoin(Root<T> root,String query)
 	{
-		List<String> splitted = Arrays.stream(query.split("_")).collect(Collectors.toList());
+		List<String> splitted = Arrays.stream(query.split("-")).collect(Collectors.toList());
 		if (splitted.size() == 1)
 			return root.join(query);
 		String query_field = splitted.remove(splitted.size() - 1);
-		return recursiveJoin(root, splitted.stream().reduce((s1, s2) -> String.valueOf(new StringBuilder().append(s1).append("_").append(s2))).get()).join(query_field);
+		return recursiveJoin(root, splitted.stream().reduce((s1, s2) -> String.valueOf(new StringBuilder().append(s1).append("-").append(s2))).get()).join(query_field);
 	
 	}
 

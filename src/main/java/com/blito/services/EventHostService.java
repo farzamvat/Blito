@@ -1,5 +1,6 @@
 package com.blito.services;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -136,5 +137,10 @@ public class EventHostService {
 	public Map<String, Object> searchEventHostsForExcel(SearchViewModel<EventHost> searchViewModel)
 	{
 		return excelService.getEventHostsExcelMap(searchService.search(searchViewModel, eventHostMapper, eventHostRepository));
+	}
+	
+	public Map<String, Object> searchEventHostsForExcel2()
+	{
+		return excelService.getEventHostsExcelMap(eventHostMapper.createFromEntities(new HashSet<>(eventHostRepository.findAll())));
 	}
 }

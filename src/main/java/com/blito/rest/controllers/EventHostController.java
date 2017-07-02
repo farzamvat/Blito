@@ -85,11 +85,22 @@ public class EventHostController {
 
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "get event hosts with excel")
-	@ApiResponses({ @ApiResponse(code = 200, message = "get event hosts with excel ok", response = ModelAndView.class) })
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "get event hosts with excel ok", response = ModelAndView.class) })
 	// ***************** SWAGGER DOCS ***************** //
 	@PostMapping("/event-hosts.xlsx")
 	public ModelAndView searchUsersForExcel(@RequestBody SearchViewModel<EventHost> search) {
 		return new ModelAndView(new ExcelView(), eventHostService.searchEventHostsForExcel(search));
+	}
+
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "get event hosts with excel2")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "get event hosts with excel2 ok", response = ModelAndView.class) })
+	// ***************** SWAGGER DOCS ***************** //
+	@PostMapping("/event-hosts2.xlsx")
+	public ModelAndView searchUsersForExcel2() {
+		return new ModelAndView(new ExcelView(), eventHostService.searchEventHostsForExcel2());
 	}
 
 	// ***************** SWAGGER DOCS ***************** //
