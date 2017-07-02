@@ -151,12 +151,58 @@
                 </div>
                 <div class="tab-pane tabProfile  fade" id="3">
                     <legend class="legendStyle marginTop30 text-center"> مدیریت آگهی بلیت   </legend>
+                    <div class="col-xs-12 marginTop10">
+                        <div class="panel " id="exchangeTicketList">
+                            <div class="panel-heading makeEventFormHeader text-center" id="exchangeTicketListSection" ng-click="toggleBody('exchangeTicketListSection')"><h6>  <i    class="fa fa-arrow-circle-down " aria-hidden="true"></i>  لیست آگهی ها </h6></div>
+                            <div class="panel-body  textAlignRight">
+                                <div class="col-xs-12 col-sm-12 floatRight">
+
+                                    <div class="panel-body textAlignRight">
+
+                                        <table class="table">
+                                            <thead class="tableHeader">
+                                            <tr>
+
+                                                <th class="dataCenter">نام رویداد
+                                                </th>
+                                                <th class="dataCenter" >تاریخ و ساعت
+                                                </th>
+                                                <th class="dataCenter" >وضعیت ثبت
+                                                </th>
+                                                <th class="dataCenter" >نوع
+                                                </th>
+                                                <th class="dataCenter" >وضعیت رویداد
+                                                </th>
+                                                <th class="dataCenter" >قیمت
+                                                </th>
+                                                <th class="dataCenter" >ویرایش آگهی
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="showTimeList">
+                                            <tr ng-repeat="item in exchangeTickets">
+                                                <td class="dataCenter">{{ item.title}}</td>
+                                                <td><input value="{{ item.eventDate}}" class="dataCenter persianTimeExchange" disabled readonly/></td>
+                                                <td class="dataCenter">{{ item.operatorState}}</td>
+                                                <td class="dataCenter">{{ item.type}}</td>
+                                                <td class="dataCenter">{{ item.state}}</td>
+                                                <td class="dataCenter">{{ item.blitCost}}</td>
+                                                <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editExchange($index)">ویرایش</button></td>
+
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-xs-12 ">
 
                         <div class="panel marginTop10" id="exchangeTicket">
 
                             <div class="panel-heading makeEventFormHeader text-center orangeBackground" id="exchangeTicketSection" ng-click="toggleBody('exchangeTicketSection')"><h6>  <i   class="fa fa-arrow-circle-down" aria-hidden="true"></i>  آگهی جدید </h6></div>
-                            <div class="panel-body makeEventForm">
+                            <div class="panel-body makeEventForm makeEventPlannerForm">
                                 <form class="form-inline textAlignRight " name="exchangeBlitForm">
                                     <fieldset class="fieldsetStyle">
                                         <!-- Sign In Form -->
@@ -291,52 +337,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-12 marginTop10">
-                        <div class="panel " id="exchangeTicketList">
-                            <div class="panel-heading makeEventFormHeader text-center" id="exchangeTicketListSection" ng-click="toggleBody('exchangeTicketListSection')"><h6>  <i    class="fa fa-arrow-circle-down " aria-hidden="true"></i>  لیست آگهی ها </h6></div>
-                            <div class="panel-body makeEventPlannerForm textAlignRight">
-                                <div class="col-xs-12 col-sm-12 floatRight">
 
-                                    <div class="panel-body textAlignRight">
-
-                                        <table class="table">
-                                            <thead class="tableHeader">
-                                            <tr>
-
-                                                <th class="dataCenter">نام رویداد
-                                                </th>
-                                                <th class="dataCenter" >تاریخ و ساعت
-                                                </th>
-                                                <th class="dataCenter" >وضعیت ثبت
-                                                </th>
-                                                <th class="dataCenter" >نوع
-                                                </th>
-                                                <th class="dataCenter" >وضعیت رویداد
-                                                </th>
-                                                <th class="dataCenter" >قیمت
-                                                </th>
-                                                <th class="dataCenter" >ویرایش آگهی
-                                                </th>
-                                            </tr>
-                                            </thead>
-                                            <tbody class="showTimeList">
-                                            <tr ng-repeat="item in exchangeTickets">
-                                                <td class="dataCenter">{{ item.title}}</td>
-                                                <td><input value="{{ item.eventDate}}" class="dataCenter persianTimeExchange" disabled readonly/></td>
-                                                <td class="dataCenter">{{ item.operatorState}}</td>
-                                                <td class="dataCenter">{{ item.type}}</td>
-                                                <td class="dataCenter">{{ item.state}}</td>
-                                                <td class="dataCenter">{{ item.blitCost}}</td>
-                                                <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editExchange($index)">ویرایش</button></td>
-
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="tab-pane tabProfile  fade" id="4">
                     <legend class="legendStyle marginTop30 text-center"> مدیریت رویداد   </legend>
