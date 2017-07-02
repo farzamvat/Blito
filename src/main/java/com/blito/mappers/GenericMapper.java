@@ -32,6 +32,11 @@ public interface GenericMapper <E,V> {
 		return list.stream().map(function::apply).collect(Collectors.toList());
 	}
 	
+	default <T,U> Set<U> toSet(Set<T> set,Function<T,U> function)
+	{
+		return set.stream().map(function::apply).collect(Collectors.toSet());
+	}
+	
 	default <T,U> Page<U> toPage(Page<T> page,Function<T,U> function)
 	{
 		return page.map(function::apply);

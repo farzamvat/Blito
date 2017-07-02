@@ -12,7 +12,7 @@ import com.blito.models.EventHost;
 
 public interface EventHostRepository extends JpaRepository<EventHost,Long>, JpaSpecificationExecutor<EventHost>  {
 	Optional<EventHost> findByHostName(String hostName);
-	Set<EventHost> findByUserUserIdAndIsDeletedFalse(long userId);
+	Page<EventHost> findByUserUserIdAndIsDeletedFalse(long userId,Pageable pagable);
 	Optional<EventHost> findByEventHostIdAndIsDeletedFalse(long eventHostId);
 	Page<EventHost> findByIsDeletedFalse(Pageable pageable);
 }

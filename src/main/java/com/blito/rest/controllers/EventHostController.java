@@ -74,7 +74,7 @@ public class EventHostController {
 
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "delete event host")
-	@ApiResponses({ @ApiResponse(code = 202, message = "event host deletion accespted", response = ResultVm.class),
+	@ApiResponses({ @ApiResponse(code = 202, message = "event host deletion accepted", response = ResultVm.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
 	@DeleteMapping
@@ -92,13 +92,15 @@ public class EventHostController {
 	public ModelAndView searchUsersForExcel(@RequestBody SearchViewModel<EventHost> search) {
 		return new ModelAndView(new ExcelView(), eventHostService.searchEventHostsForExcel(search));
 	}
+	
+	// TODO need refactoring or even removing excel APIs , above and below :)
 
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "get event hosts with excel2")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "get event hosts with excel2 ok", response = ModelAndView.class) })
 	// ***************** SWAGGER DOCS ***************** //
-	@PostMapping("/event-hosts2.xlsx")
+	@GetMapping("/event-hosts2.xlsx")
 	public ModelAndView searchUsersForExcel2() {
 		return new ModelAndView(new ExcelView(), eventHostService.searchEventHostsForExcel2());
 	}

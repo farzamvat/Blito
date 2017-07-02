@@ -118,16 +118,9 @@ public class EventHostService {
 		}
 	}
 
-	public Page<EventHostViewModel> getAllEventHosts(Pageable pageable) {
-		return eventHostMapper.toPage(eventHostRepository.findByIsDeletedFalse(pageable));
-	}
-
 	public Page<EventHostViewModel> getCurrentUserEventHosts(Pageable pageable) {
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
-		return eventHostMapper.toPage(new PageImpl<>(
-				eventHostRepository.findByUserUserIdAndIsDeletedFalse(user.getUserId()).stream().skip(pageable.getPageNumber() * pageable.getPageSize())
-						.limit(pageable.getPageSize()).collect(Collectors.toList()),
-				pageable, user.getEventHosts().size()), eventHostMapper::createFromEntity);
+		return eventHostMapper.toPage(eventHostRepository.findByUserUserIdAndIsDeletedFalse(user.getUserId(),pageable));
 	}
 
 	public Page<EventHostViewModel> searchEventHosts(SearchViewModel<EventHost> searchViewModel, Pageable pageable) {
