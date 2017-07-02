@@ -52,16 +52,6 @@ public class AdminEventController {
 	@Autowired
 	EventFlatMapper flatMapper;
 
-//	// ***************** SWAGGER DOCS ***************** //
-//	@ApiOperation(value = "get all pending events")
-//	@ApiResponses({ @ApiResponse(code = 200, message = "get all pending ok", response = EventViewModel.class) })
-//	// ***************** SWAGGER DOCS ***************** //
-//	@JsonView(View.SimpleEvent.class)
-//	@GetMapping("/pending")
-//	public ResponseEntity<Page<EventViewModel>> getAllPendingEvents(Pageable pageable) {
-//		return ResponseEntity.ok(adminEventService.getAllPendingEvents(pageable));
-//	}
-
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "change event state")
 	@ApiResponses({ @ApiResponse(code = 200, message = "change event state ok", response = ResultVm.class),
@@ -184,14 +174,4 @@ public class AdminEventController {
 		return ResponseEntity.ok(adminEventService.getEventBlitBuyersByEventDate(eventDateId, page));
 	}
 
-//	// ***************** SWAGGER DOCS ***************** //
-//	@ApiOperation(value = "get event blit buyers by date excel")
-//	@ApiResponses({
-//			@ApiResponse(code = 200, message = "get event blit buyers by datee excel ok", response = ModelAndView.class),
-//			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
-//	// ***************** SWAGGER DOCS ***************** //
-//	@GetMapping("/get-event-blit-buyers-by-date.xls")
-//	public ModelAndView getEventBlitBuyersExcel(@RequestParam long eventDateId) {
-//		return new ModelAndView(new ExcelView(), excelService.getBlitBuyersMap(eventDateId));
-//	}
 }
