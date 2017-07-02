@@ -9,8 +9,8 @@
             <div class="carousel-inner" role="listbox" >
                 <div  ng-repeat="item in bannerData" class="item" ng-class="{active : $index === 0}">
                     <img ng-src="{{item.newImage}}" alt="First slide">
-                    <button class="btn btn-success btn-lg buyTicketBanner"><i class="fa fa-ticket fa-1x" aria-hidden="true"></i>                       مشاهده و خرید بلیت
-                    </button>
+                    <a href="{{url+item.eventLink}}" class="btn btn-success btn-lg buyTicketBanner"><i class="fa fa-ticket fa-1x" aria-hidden="true"></i>                       مشاهده و خرید بلیت
+                    </a>
                 </div>
 
             </div>
@@ -70,9 +70,9 @@
             <h3 class="textAlignRight">کنسرت</h3>
             <button class="  eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</button>
             <div class="col-xs-12 slickSliders">
-                <slick ng-if="showImages.length > 0" dots="true"      speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
+                <slick ng-if="showImages[0].length > 3" dots="true" lazy-load="ondemand"   infinite="true" autoplay="true"   speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
                     <div ng-repeat="event in concertRow" >
-                        <a class="slidingEventsImg" href="">
+                        <a class="slidingEventsImg" href="{{url+event.eventLink}}">
                             <img ng-src="{{event.image}}" class="img-responsive center-block homePageImage" />
                             <div class="moreInfo">
                             <h4>{{ event.eventName }}</h4>
@@ -81,7 +81,7 @@
                             </div>
                         </a>
                         <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></button>
+                        <a href="{{url+event.eventLink}}" class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
                     </div>
 
                 </slick>
@@ -90,20 +90,21 @@
 
         </div>
         <div class="hidden-xs col-sm-3   floatRight blitoOffer">
-            <h4 class="text-center marginTop10"> پیشنهاد بلیتو  </h4>
+            <h4 class="text-center marginTop10"> پیشنهاد کنسرت  </h4>
             <div class="row marginTop33 ">
                 <div class="col-sm-1 floatRight">
                 </div>
                 <div class="col-sm-10 floatRight blitoOfferMain  ">
-                    <a class="slidingEventsImg  " href=""><img src="assets/img/e.jpeg" class="img-responsive center-block homePageImage">
+                    <a class="slidingEventsImg  " href="{{url+ourOfferConcert[0].eventLink}}"><img ng-src="{{ourOfferConcert[0].image}}" class="img-responsive center-block homePageImage">
                         <div class="moreInfo">
-                            <h4>{{ item.title }}asnocanol</h4>
-                            <h5>{{ item.sold }}: جای خالی<i class="fa fa-calendar-check-o"></i></h5>
-                            <h5>{{ item.view }}: بازدید <i class="fa fa-eye"></i></h5>
+                            <h4>{{ ourOfferConcert[0].eventName }}</h4>
+                            <h5>{{ ourOfferConcert[0].sold }}: جای خالی<i class="fa fa-calendar-check-o"></i></h5>
+                            <h5>{{ ourOfferConcert[0].view }}: بازدید <i class="fa fa-eye"></i></h5>
 
-                        </div></a>
-                    <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                    <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></button>
+                        </div>
+                    </a>
+                    <h4 class="text-center slidingEventsTitle">{{ ourOfferConcert[0].eventName }}</h4>
+                    <a href="{{url+ourOfferConcert[0].eventLink}}" class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
                 </div>
                 <div class="col-sm-1 floatRight">
                 </div>
@@ -121,9 +122,9 @@
             <h3 class="textAlignRight">تور</h3>
             <button class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</button>
             <div class="col-xs-12 slickSliders">
-                <slick ng-if="showImages.length > 4" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=4 touch-move="true" slides-to-scroll=1  >
+                <slick ng-if="showImages[1].length > 1" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=4 touch-move="true" slides-to-scroll=1  >
                     <div ng-repeat="event in tourRow" >
-                        <a class="slidingEventsImg" href="">
+                        <a class="slidingEventsImg" href="{{url+event.eventLink}}">
                             <img ng-src="{{event.image}}" class="img-responsive center-block homePageImage">
                             <div class="moreInfo">
                                 <h4>{{ event.eventName }}</h4>
@@ -132,7 +133,7 @@
                             </div>
                         </a>
                         <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></button>
+                        <a href="{{url+event.eventLink}}" class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
                     </div>
 
                 </slick>
@@ -141,14 +142,21 @@
 
         </div>
         <div class="hidden-xs col-sm-3  floatRight blitoOffer">
-            <h4 class="text-center marginTop10"> پیشنهاد بلیتو تئاتر</h4>
+            <h4 class="text-center marginTop10"> پیشنهاد تور</h4>
             <div class="row marginTop30">
                 <div class="col-sm-1 floatRight">
                 </div>
                 <div class="col-sm-10 floatRight blitoOfferMain">
-                    <a class="slidingEventsImg" href=""><img src="assets/img/e.jpeg" class="img-responsive center-block homePageImage"></a>
-                    <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                    <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></button>
+                    <a class="slidingEventsImg" href="{{url+ourOfferTour[0].eventLink}}"><img ng-src="{{ourOfferTour[0].image}}" class="img-responsive center-block homePageImage">
+                        <div class="moreInfo">
+                            <h4>{{ ourOfferTour[0].eventName }}</h4>
+                            <h5>{{ ourOfferTour[0].sold }}: جای خالی<i class="fa fa-calendar-check-o"></i></h5>
+                            <h5>{{ ourOfferTour[0].view }}: بازدید <i class="fa fa-eye"></i></h5>
+
+                        </div>
+                    </a>
+                    <h4 class="text-center slidingEventsTitle">{{ ourOfferTour[0].eventName }}</h4>
+                    <a href="{{url+ourOfferTour[0].eventLink}}" class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
                 </div>
                 <div class="col-sm-1 floatRight">
                 </div>
@@ -163,9 +171,9 @@
             <h3 class="textAlignRight">ایونتو</h3>
             <button class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</button>
             <div class="col-xs-12 slickSliders">
-                <slick ng-if="showImages.length > 8" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
+                <slick ng-if="showImages[2].length > 2" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
                     <div ng-repeat="event in evento" >
-                        <a class="slidingEventsImg" href="">
+                        <a class="slidingEventsImg" href="{{url+event.eventLink}}">
                             <img ng-src="{{event.image}}" class="img-responsive center-block homePageImage">
                             <div class="moreInfo">
                                 <h4>{{ event.eventName }}</h4>
@@ -174,7 +182,7 @@
                             </div>
                         </a>
                         <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></button>
+                        <a href="{{url+event.eventLink}}" class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
                     </div>
 
                 </slick>
@@ -183,14 +191,20 @@
 
         </div>
         <div class="hidden-xs col-sm-3  floatRight blitoOffer">
-            <h4 class="text-center marginTop10"> پیشنهاد بلیتو تئاتر</h4>
+            <h4 class="text-center marginTop10"> پیشنهاد ایونتو</h4>
             <div class="row marginTop30">
                 <div class="col-sm-1 floatRight">
                 </div>
                 <div class="col-sm-10 floatRight blitoOfferMain">
-                    <a class="slidingEventsImg" href=""><img src="assets/img/e.jpeg" class="img-responsive center-block homePageImage"></a>
-                    <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                    <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></button>
+                    <a class="slidingEventsImg" href="{{url+ourOfferEvento[0].eventLink}}"><img ng-src="{{ourOfferEvento[0].image}}" class="img-responsive center-block homePageImage">
+                        <div class="moreInfo">
+                            <h4>{{ ourOfferEvento[0].eventName }}</h4>
+                            <h5>{{ ourOfferEvento[0].sold }}: جای خالی<i class="fa fa-calendar-check-o"></i></h5>
+                            <h5>{{ ourOfferEvento[0].view }}: بازدید <i class="fa fa-eye"></i></h5>
+                        </div>
+                    </a>
+                    <h4 class="text-center slidingEventsTitle">{{ ourOfferEvento[0].eventName }}</h4>
+                    <a href="{{url+ourOfferEvento[0].eventLink}}" class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
                 </div>
                 <div class="col-sm-1 floatRight">
                 </div>
@@ -228,9 +242,9 @@
             <h3 class="textAlignRight">بلیت های آگهی شده</h3>
             <button class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</button>
             <div class="col-xs-12 slickSliders">
-                <slick ng-if="showImagesExchange.length > 0" dots="true" infinite="true"    speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1 autoplay="true"  >
+                <slick ng-if="showImagesExchange.length > 5" dots="true" infinite="true"    speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1 autoplay="true"  >
                     <div ng-repeat="event in exchange" >
-                        <a class="slidingEventsImg" href="">
+                        <a class="slidingEventsImg" href="{{urlExchange+event.exchangeLink}}">
                             <img ng-src="{{event.newImage}}" class="img-responsive center-block homePageImage">
                             <div class="moreInfo">
                                 <h4>{{ event.title }}</h4>
@@ -239,7 +253,7 @@
                             </div>
                         </a>
                         <h4 class="text-center slidingEventsTitle">{{event.title}}</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></button>
+                        <a href="{{urlExchange+event.exchangeLink}}" class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
                     </div>
 
                 </slick>
@@ -271,7 +285,7 @@
                             </div>
                         </a>
                         <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
-                        <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></button>
+                        <!--<button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></button>-->
                     </div>
 
                 </slick>
