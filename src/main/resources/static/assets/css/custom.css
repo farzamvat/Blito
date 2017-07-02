@@ -738,14 +738,14 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
     width: auto;
     cursor: pointer;
     border: none;
-    background: #ddd;
+    /*background: #ddd;*/
     border-radius: 5px;
     transition: 500ms;
     /*background-color: #ddd; !* For browsers that do not support gradients *!*/
     /*background: -webkit-linear-gradient(#ddd 5%, #303030 25%, #1E90FF 50%); !* For Safari 5.1 to 6.0 *!*/
     /*background: -o-linear-gradient(#ddd 5%, #303030 25%, #1E90FF 50%); !* For Opera 11.1 to 12.0 *!*/
     /*background: -moz-linear-gradient(#ddd 5%, #303030 25%, #1E90FF 50%); !* For Firefox 3.6 to 15 *!*/
-    background: radial-gradient(circle at center, #ddd 80%, rgba(30,30,30, 0) 100%);
+    /*background: radial-gradient(circle at center, #ddd 80%, rgba(30,30,30, 0) 100%);*/
 
 }
 
@@ -1316,7 +1316,6 @@ footer h6 {
 }
 .slidingEventsImg img:hover{
     transform: scale(1.4);
-
 }
 .slidingEventsImg .moreInfo{
     pointer-events: none;
@@ -1351,16 +1350,40 @@ footer h6 {
     line-height: 30px;
     border-bottom: 1px dotted rgb(252, 183, 49);
 }
-
 .moreInfo h5 , .moreInfo h4{
     font-size: 10px;
     cursor: default;
-    text-decoration: none !important;
     color: #000;
     display: block;
 }
 a{
     text-decoration: none !important;
+}
+
+.navbar-header-backcolor{
+    background: rgb(252, 183, 49);
+    transform: skew(-15deg);
+    width: 116px;
+    margin-left: -5px;
+    display: inline-block;
+}
+.navbar-header>img{
+    margin-left: 21.5px;
+    transform: skew(15deg);
+}
+
+
+
+@media (max-width: 770px) {
+    .navbar-header-backcolor{
+        width: 172px !important;
+        margin-left: -8px !important;
+    }
+    .navbar-header>img{
+        margin-left: 21.5px;
+        transform: skew(15deg);
+    }
+
 }
 
 
