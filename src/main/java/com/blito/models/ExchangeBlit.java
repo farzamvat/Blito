@@ -2,6 +2,7 @@ package com.blito.models;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -44,7 +45,7 @@ public class ExchangeBlit {
 	private Timestamp createdAt;
 	
 	private boolean isDeleted = false;
-	
+	@Column(unique=true,nullable=true)
 	private String exchangeLink;
 
 

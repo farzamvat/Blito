@@ -36,10 +36,10 @@ public class PublicExchangeBlitController {
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.ExchangeBlit.class)
-	@GetMapping("/{exchangeBlitId}")
-	public ResponseEntity<ExchangeBlitViewModel> getExchangeBlitById(@PathVariable long exchangeBlitId)
+	@GetMapping("/{exchangeBlitLink}")
+	public ResponseEntity<ExchangeBlitViewModel> getExchangeBlitById(@PathVariable String exchangeBlitLink)
 	{
-		return ResponseEntity.ok(exchangeBlitService.getExchangeBlitById(exchangeBlitId));
+		return ResponseEntity.ok(exchangeBlitService.getExchangeBlitByLink(exchangeBlitLink));
 	}
 	
 	@JsonView(View.ExchangeBlit.class)

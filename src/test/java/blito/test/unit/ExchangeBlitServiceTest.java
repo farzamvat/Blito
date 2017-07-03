@@ -119,7 +119,7 @@ public class ExchangeBlitServiceTest {
 	public void findById()
 	{
 		getExBlitVmodel = exService.create(getExBlitVmodel);
-		ExchangeBlitViewModel foundExBlit = exService.getExchangeBlitById(getExBlitVmodel.getExchangeBlitId());
+		ExchangeBlitViewModel foundExBlit = exService.getExchangeBlitByLink(getExBlitVmodel.getExchangeLink());
 		assertEquals(getExBlitVmodel.getExchangeBlitId(), foundExBlit.getExchangeBlitId());
 	}
 	

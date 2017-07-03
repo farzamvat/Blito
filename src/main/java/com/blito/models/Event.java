@@ -79,6 +79,7 @@ public class Event {
 	
 	private Double latitude;
 	
+	@Column(unique=true,nullable=true)
 	private String eventLink;
 	
 	@Enumerated(EnumType.STRING)
