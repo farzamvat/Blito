@@ -174,22 +174,32 @@
                                                 </th>
                                                 <th class="dataCenter" >قیمت
                                                 </th>
+                                                <th class="dataCenter" >تنظیمات آگهی
+                                                </th>
                                                 <th class="dataCenter" >ویرایش آگهی
                                                 </th>
                                             </tr>
                                             </thead>
                                             <tbody class="showTimeList">
-                                            <tr ng-repeat="item in exchangeTickets">
+                                            <tr pagination-id="exchangePagination"  total-items="totalExchangeNumber" dir-paginate="item in exchangeTickets | itemsPerPage: 4"  current-page="currentPage">
                                                 <td class="dataCenter">{{ item.title}}</td>
                                                 <td class="dataCenter">{{ item.operatorState}}</td>
                                                 <td class="dataCenter">{{ item.type}}</td>
                                                 <td class="dataCenter">{{ item.state}}</td>
                                                 <td class="dataCenter">{{ item.blitCost}}</td>
+                                                <td class="dataCenter"><button type="button" ng-click="showSettingExchange($index)"  class="btn editButton btn-info" >تنظیمات  </button></td>
                                                 <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editExchange($index)">ویرایش</button></td>
 
                                             </tr>
                                             </tbody>
                                         </table>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="col-md-4 col-md-offset-4">
+                                            <dir-pagination-controls pagination-id="exchangePagination" on-page-change="exchangePageChanged(newPageNumber)" class="col-xs-12"
+                                                                     max-size="4">
+                                            </dir-pagination-controls>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -373,22 +383,35 @@
                                                             </th>
                                                             <th class="dataCenter" >وضعیت رویداد
                                                             </th>
+                                                            <th class="dataCenter" >تنظیمات
+                                                            </th>
                                                             <th class="dataCenter" >ویرایش  رویداد
                                                             </th>
 
                                                         </tr>
                                                         </thead>
                                                         <tbody class="showTimeList">
-                                                        <tr ng-repeat="item in getDataUserEvents">
+                                                        <tr  total-items="totalEventsNumber" dir-paginate="item in getDataUserEvents | itemsPerPage: 4" pagination-id="events" current-page="currentPageEvent">
                                                             <td class="dataCenter">{{ item.eventName}}</td>
                                                             <td class="dataCenter">{{ item.eventType}}</td>
                                                             <td class="dataCenter">{{ item.eventHostName}}</td>
                                                             <td class="dataCenter">{{ item.operatorState}}</td>
                                                             <td class="dataCenter">{{ item.eventState}}</td>
+                                                            <td class="dataCenter"><button type="button" ng-click="showSetting($index)"  class="btn editButton btn-info" >تنظیمات رویداد </button></td>
                                                             <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editEvent($index)">ویرایش</button></td>
                                                         </tr>
+
                                                         </tbody>
                                                     </table>
+
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <div class="col-md-4 col-md-offset-4">
+                                                        <dir-pagination-controls pagination-id="events" on-page-change="pageChangedEvents(newPageNumber)" class="col-xs-12"
+                                                                                 max-size="4"
+                                                        >
+                                                        </dir-pagination-controls>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -415,14 +438,22 @@
                                                         </tr>
                                                         </thead>
                                                         <tbody class="showTimeList">
-                                                        <tr ng-repeat="item in eventHosts">
+                                                        <tr  total-items="totalPlannersNumber" dir-paginate="item in eventHosts | itemsPerPage: 4" pagination-id="plannersIdPagination"   current-page="currentPage">
                                                             <td class="dataCenter">{{ item.hostName}}</td>
                                                             <td class="dataCenter">{{ item.telephone}}</td>
                                                             <td class="dataCenter">{{ item.websiteLink}}</td>
                                                             <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editHost($index)">ویرایش</button></td>
                                                         </tr>
+
                                                         </tbody>
                                                     </table>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <div class="col-md-4 col-md-offset-4">
+                                                        <dir-pagination-controls pagination-id="plannersIdPagination" on-page-change="plannersPageChanged(newPageNumber)" class="col-xs-12"
+                                                                                 max-size="4">
+                                                        </dir-pagination-controls>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -971,6 +1002,8 @@
     </div>
     <div ng-include="'app/views/partials/edit-event.html'"></div>
     <div ng-include="'app/views/partials/edit-host.html'"></div>
+    <div ng-include="'app/views/partials/event-setting.html'"></div>
+    <div ng-include="'app/views/partials/exchange-setting.html'"></div>
     <div ng-include="'app/views/partials/edit-exchange.html'"></div>
 </div>
 

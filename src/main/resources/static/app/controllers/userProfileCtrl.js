@@ -1008,7 +1008,7 @@ angular.module('User')
                     $scope.submitPlannerSpinner = false;
                     $scope.submitPlannerNotif = true;
                     $scope.submitPlannerErrorNotif = false;
-                    $scope.getPlannersData();
+                    $scope.getPlannersData(1);
                     $scope.eventPlanner = [];
                     $scope.plannerImageId = '';
                     $scope.coverImageId = '';
@@ -1078,7 +1078,7 @@ angular.module('User')
                     $scope.createEventSpinner = false;
                     $scope.createEventNotif = true;
                     $scope.createEventErrorNotif = false;
-                    $scope.getUserEvents();
+                    $scope.getUserEvents(1);
                     $scope.eventFields = [];
 
                 }, function (data, status) {
@@ -1125,7 +1125,7 @@ angular.module('User')
                     $scope.submitExchangeErrorNotif = false;
                     $scope.exchangePhotoError = false;
                     $scope.exchangePhotoSuccess = false;
-                    $scope.getExchangeData();
+                    $scope.getExchangeData(1);
                     $scope.exchange = [];
                     $scope.exchangeImageId = '';
                     angular.element(document.getElementsByClassName("exchangePhotoUpload"))[0].src = '';
@@ -1142,14 +1142,14 @@ angular.module('User')
         //==================================================== ********* =================================
         $scope.showTime = [];
         $scope.dropDownTabToggleEvent = function (event) {
-            $scope.getPlannersData();
-            $scope.getUserEvents();
+            $scope.getPlannersData(1);
+            $scope.getUserEvents(1);
             mapMarkerService.initMap(document.getElementById('map'));
             $(angular.element(document.getElementById('toggleExchange'))).slideUp(300);
             $(angular.element(event.currentTarget).siblings()[0]).slideDown(300);
         }
         $scope.dropDownTabToggleExchange = function (event) {
-            $scope.getExchangeData();
+            $scope.getExchangeData(1);
             mapMarkerService.initMap(document.getElementById('mapExchange'));
 
             $(angular.element(document.getElementById('toggleEvent'))).slideUp(300);
@@ -1375,7 +1375,7 @@ angular.module('User')
                     $scope.editEventSpinner = false;
                     $scope.editEventNotif = true;
                     $scope.editEventErrorNotif = false;
-                    $scope.getUserEvents();
+                    $scope.getUserEvents(1);
                 })
                 .catch(function (data, status) {
                     $scope.editEventErrorNotif = true;
@@ -1430,7 +1430,7 @@ angular.module('User')
                     $scope.coverImageIdEdit = item.imageUUID;
                 }
             });
-            photoService.download($scope.eventHosts[index].images[0].imageUUID)
+            photoService.download($scope.plannerImageIdEdit)
                 .then(function (data, status) {
 
                     angular.element(document.getElementsByClassName("eventPlannerPhotoUploadEdit"))[0].src = data.data.encodedBase64;
@@ -1439,7 +1439,7 @@ angular.module('User')
                     console.log(status);
                 });
 
-            photoService.download($scope.eventHosts[index].images[1].imageUUID)
+            photoService.download($scope.coverImageIdEdit)
                 .then(function (data, status) {
 
                     angular.element(document.getElementsByClassName("coverPhotoUploadEdit"))[0].src = data.data.encodedBase64;
@@ -1465,7 +1465,7 @@ angular.module('User')
                     $scope.submitPlannerEditNotif = true;
                     $scope.editPlannerSpinner = false;
                     $scope.submitPlannerEditErrorNotif = false;
-                    $scope.getPlannersData();
+                    $scope.getPlannersData(1);
                 })
                 .catch(function (data, status) {
                     $scope.submitPlannerEditErrorNotif = true;
@@ -1546,7 +1546,7 @@ angular.module('User')
                     $scope.editExchangeNotif = true;
                     $scope.editExchangeSpinner = false;
                     $scope.editExchangeErrorNotif = false;
-                    $scope.getExchangeData();
+                    $scope.getExchangeData(1);
                 }, function (data, status) {
                     $scope.editExchangeErrorNotif = true;
                     $scope.editExchangeSpinner = false;
@@ -1555,10 +1555,87 @@ angular.module('User')
                 })
         };
         //==================================================== ********* =================================
+        //==================================================== EVENT SETTING =================================
+        var settingIndex;
+        $scope.showSetting = function (index) {
+            console.log($scope.userEvents[index]);
+            document.getElementsByClassName("eventStatusSpinner")[0].style.display = "none";
+            document.getElementsByClassName("approveSuccessSetting")[0].style.display = "none";
+            document.getElementsByClassName("approveErrorSetting")[0].style.display = "none";
+
+            settingIndex = index;
+            $scope.eventStateSetting = $scope.userEvents[index].eventState;
+
+            $("#settingModal").modal("show");
+        };
+        $scope.changeEventState = function (stateChange) {
+            var stateData = {
+                eventId : $scope.userEvents[settingIndex].eventId,
+                state : stateChange
+            };
+            document.getElementsByClassName("eventStatusSpinner")[0].style.display = "inline";
+            eventService.editEventState(stateData)
+                .then(function () {
+                    document.getElementsByClassName("approveSuccessSetting")[0].style.display = "inline";
+                    document.getElementsByClassName("eventStatusSpinner")[0].style.display = "none";
+                })
+                .catch(function (data) {
+                    console.log(data);
+                    document.getElementById("approveErrorSetting").innerHTML = data.data.message;
+                    document.getElementsByClassName("approveErrorSetting")[0].style.display = "inline";
+                    document.getElementsByClassName("eventStatusSpinner")[0].style.display = "none";
+                })
+        };
+        var settingExchangeIndex;
+        $scope.showSettingExchange = function (index) {
+            console.log($scope.exchangeEditTickets[index]);
+            document.getElementsByClassName("exchangeStatusSpinner")[0].style.display = "none";
+            document.getElementsByClassName("approveSuccessSettingExchange")[0].style.display = "none";
+            document.getElementsByClassName("approveErrorSettingExchange")[0].style.display = "none";
+
+            settingExchangeIndex = index;
+            $scope.exchangeStateSetting = $scope.exchangeEditTickets[index].state;
+
+            $("#settingExchangeModal").modal("show");
+        };
+        $scope.changeExchangeState = function (stateChange) {
+            var stateData = {
+                exchangeBlitId : $scope.exchangeEditTickets[settingExchangeIndex].exchangeBlitId,
+                state : stateChange
+            };
+
+            document.getElementsByClassName("exchangeStatusSpinner")[0].style.display = "inline";
+            exchangeService.editExchangeState(stateData)
+                .then(function () {
+                    document.getElementsByClassName("approveSuccessSettingExchange")[0].style.display = "inline";
+                    document.getElementsByClassName("exchangeStatusSpinner")[0].style.display = "none";
+                })
+                .catch(function (data) {
+                    console.log(data);
+                    document.getElementById("approveErrorSettingExchange").innerHTML = data.data.message;
+                    document.getElementsByClassName("approveErrorSettingExchange")[0].style.display = "inline";
+                    document.getElementsByClassName("exchangeStatusSpinner")[0].style.display = "none";
+                })
+        };
+        //==================================================== ********* =================================
         //==================================================== GET DATA =================================
-        $scope.getExchangeData = function () {
-            exchangeService.getExchangeTickets()
+        $scope.currentPageEvent = 1;
+        $scope.currentPage = 1;
+        $scope.pageChangedEvents = function(newPage) {
+            $scope.getUserEvents(newPage);
+        };
+        $scope.plannersPageChanged = function(newPage) {
+            $scope.getPlannersData(newPage);
+        };
+        $scope.exchangePageChanged = function(newPage) {
+            $scope.getExchangeData(newPage);
+        };
+        //==================================================== ********* =================================
+        //==================================================== GET DATA =================================
+        $scope.getExchangeData = function (page) {
+            exchangeService.getExchangeTickets(page)
                 .then(function (data, status) {
+                    $scope.totalExchangeNumber = data.data.totalElements;
                     $scope.exchangeTickets = data.data.content;
                     $scope.exchangeEditTickets = angular.copy(data.data.content);
                     $scope.exchangeTickets = $scope.exchangeTickets.map(function (ticket) {
@@ -1568,28 +1645,18 @@ angular.module('User')
                         ticket.eventDate = persianDate(ticket.eventDate).pDate;
                         return ticket;
                     })
-                    $timeout(function () {
-                        $(".persianTimeExchange").pDatepicker({
-                            timePicker: {
-                                enabled: true
-                            },
-                            altField: '#persianDigitAlt',
-                            altFormat: "YYYY MM DD HH:mm:ss",
-                            altFieldFormatter: function (unixDate) {
-                            }
-                        });
-                    },1000)
 
                 }, function (data, status) {
                     console.log(data);
                 })
         };
         $scope.getDataUserEvents = [];
-        $scope.getUserEvents = function () {
-            eventService.getUserEvents()
+        $scope.getUserEvents = function (pageNumber) {
+            eventService.getUserEvents(pageNumber)
                 .then(function (data, status) {
-
+                    $scope.totalEventsNumber = data.data.totalElements;
                     $scope.userEvents = data.data.content;
+
                     $scope.userEventsEdit = angular.copy(data.data.content);
                     $scope.userEvents = $scope.userEvents.map(function (event) {
                         event.eventType = dataService.eventTypePersian(event.eventType);
@@ -1608,10 +1675,10 @@ angular.module('User')
                     console.log(data);
                 })
         };
-        $scope.getPlannersData = function () {
-            plannerService.getPlanners()
+        $scope.getPlannersData = function (page) {
+            plannerService.getPlanners(page)
                 .then(function (data, status) {
-                    plannerService.setPlanners(data.data.content)
+                    $scope.totalPlannersNumber = data.data.totalElements;
                     $scope.eventHosts = data.data.content;
                 }, function (data, status) {
                     console.log(data);

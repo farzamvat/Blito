@@ -10,18 +10,18 @@ var app = angular.module('appRoutes', ['ngRoute'])
             enabled: true,
             requireBase: false
         });
-
         $routeProvider
             .when('/', {
                 templateUrl : 'app/views/pages/home.html',
                 authenticated: false
             })
-            .when('/recent-events', {
+            .when('/sports', {
                 templateUrl : 'app/views/pages/eventList.html',
                 authenticated: false
 
             })
-            .when('/cinema', {
+
+            .when('/tour', {
                 templateUrl : 'app/views/pages/eventList.html',
                 authenticated: false
 
@@ -31,7 +31,22 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 authenticated: false
 
             })
-            .when('/cafe', {
+            .when('/concert', {
+                templateUrl : 'app/views/pages/eventList.html',
+                authenticated: false
+
+            })
+            .when('/cinema', {
+                templateUrl : 'app/views/pages/eventList.html',
+                authenticated: false
+
+            })
+            .when('/workshop', {
+                templateUrl : 'app/views/pages/eventList.html',
+                authenticated: false
+
+            })
+            .when('/other', {
                 templateUrl : 'app/views/pages/eventList.html',
                 authenticated: false
 

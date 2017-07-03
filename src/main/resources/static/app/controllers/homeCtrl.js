@@ -102,7 +102,7 @@ angular.module('homePageModule', [])
                 return item;
 
             });
-        }
+        };
         $scope.catchImagesExchange = function (events) {
             events.map(function (item) {
                 photoService.download(item.image.imageUUID)
