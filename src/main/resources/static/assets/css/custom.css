@@ -108,10 +108,12 @@ color: white !important;
     bottom: 45%;
 }
 .slickSliders {
+
     border-top: 3px solid rgb(252, 183, 49);
     /*border-bottom: 3px solid rgb(252, 183, 49);*/
     padding: 20px 5px;
 }
+
 .slick-next, .slick-prev {
     top: 10%;
     border-radius: 5px;
@@ -360,6 +362,13 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 .mapInput {
     margin-right: 20px;
 }
+#photoGallery {
+    width: 80%;
+    margin: 10px auto;
+}
+.carouselGallery .item img {
+    height: 300px !important;
+}
 /*------------------------------------------------------------*/
 /*-------------------------------- USER PROFILE PAGE -------------------------------- */
 
@@ -570,6 +579,20 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     padding-right: 5px;
     text-align: center;
     color: black;
+}
+.datePickerFormatEventPage {
+    width: 100%;
+    direction: ltr;
+    border: none;
+    border-radius: 3px;
+    height: 25px !important;
+    font-size: 12px;
+    padding-right: 5px;
+    text-align: center;
+    color: black;
+}
+.eventPageListTitle {
+    font-size: 10px !important;
 }
 .editDataInput {
     width: 50%;

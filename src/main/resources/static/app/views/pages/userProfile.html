@@ -165,8 +165,7 @@
 
                                                 <th class="dataCenter">نام رویداد
                                                 </th>
-                                                <th class="dataCenter" >تاریخ و ساعت
-                                                </th>
+
                                                 <th class="dataCenter" >وضعیت ثبت
                                                 </th>
                                                 <th class="dataCenter" >نوع
@@ -182,7 +181,6 @@
                                             <tbody class="showTimeList">
                                             <tr ng-repeat="item in exchangeTickets">
                                                 <td class="dataCenter">{{ item.title}}</td>
-                                                <td><input value="{{ item.eventDate}}" class="dataCenter persianTimeExchange" disabled readonly/></td>
                                                 <td class="dataCenter">{{ item.operatorState}}</td>
                                                 <td class="dataCenter">{{ item.type}}</td>
                                                 <td class="dataCenter">{{ item.state}}</td>
@@ -758,7 +756,7 @@
 
                                                         </div>
                                                         <div class="col-xs-7 col-sm-6 floatRight ">
-                                                            <select id="eventTicket" required ng-model="ticketType.free" class="form-control dropDownInput" ng-options="o.v as o.n for o in [{n : 'رایگان', v: true}, {n : 'پولی', v: false}]">
+                                                            <select id="eventTicket" required ng-model="ticketType.isFree" class="form-control dropDownInput" ng-options="o.v as o.n for o in [{n : 'رایگان', v: true}, {n : 'پولی', v: false}]">
 
                                                             </select>
                                                         </div>
@@ -779,7 +777,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-12 floatRight marginTop10">
-                                                            <div ng-if="ticketType.free === false" class="form-group col-xs-12 formRegGroup floatRight">
+                                                            <div ng-if="ticketType.isFree === false" class="form-group col-xs-12 formRegGroup floatRight">
                                                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
                                                                     <label class="registerLabel" for="ticketPurchaseAmount">قیمت بلیت :</label>
                                                                 </div>

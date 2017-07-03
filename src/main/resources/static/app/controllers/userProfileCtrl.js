@@ -334,19 +334,19 @@ angular.module('User')
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryOneEdit"))[0].src
             }
-            $scope.uploadEventTwoEditPhoto = true;
+            $scope.uploadEventOneEditPhoto = true;
             $scope.eventPhotoOneEditError = false;
             $scope.eventPhotoOneEditSuccess = false;
             photoService.upload(imageData)
                 .then(function (data, status) {
-                    $scope.uploadEventTwoEditPhoto = false;
+                    $scope.uploadEventOneEditPhoto = false;
                     $scope.eventPhotoOneEditSuccess = true;
 
                     $scope.galleryOneUUID = data.data.imageUUID;
                 }, function (data, status) {
                     document.getElementById("eventPhotoOneEditError").innerHTML= data.data.message;
                     $scope.eventPhotoOneEditError = true;
-                    $scope.uploadEventTwoEditPhoto = false;
+                    $scope.uploadEventOneEditPhoto = false;
                 })
         }
         $scope.photoGallerySix = function () {
@@ -908,7 +908,8 @@ angular.module('User')
             $location.hash(id);
             $location.hash(old);
             scrollAnimation.scrollTo(id);
-
+            mapMarkerService.initMap(document.getElementById('map'));
+            mapMarkerService.initMap(document.getElementById('mapExchange'));
             $(angular.element(document.getElementById(section)).siblings()[0]).slideDown(300);
             $(angular.element(document.getElementById(section))).addClass('orangeBackground');
 
@@ -1030,13 +1031,6 @@ angular.module('User')
             $scope.eventPhotoFourSuccess = false;
             $scope.eventPhotoFiveSuccess = false;
             $scope.eventPhotoSixSuccess = false;
-            angular.element(document.getElementsByClassName("profilePhotoUpload"))[0].src = "";
-            angular.element(document.getElementsByClassName("galleryOne"))[0].src = "";
-            angular.element(document.getElementsByClassName("galleryTwo"))[0].src = "";
-            angular.element(document.getElementsByClassName("galleryThree"))[0].src = "";
-            angular.element(document.getElementsByClassName("galleryFour"))[0].src = "";
-            angular.element(document.getElementsByClassName("galleryFive"))[0].src = "";
-            angular.element(document.getElementsByClassName("gallerySix"))[0].src = "";
             var latLng = mapMarkerService.getMarker();
             var newShowTime = angular.copy($scope.showTimeForms);
             newShowTime = newShowTime.map(function (item) {
@@ -1157,6 +1151,7 @@ angular.module('User')
         $scope.dropDownTabToggleExchange = function (event) {
             $scope.getExchangeData();
             mapMarkerService.initMap(document.getElementById('mapExchange'));
+
             $(angular.element(document.getElementById('toggleEvent'))).slideUp(300);
             $(angular.element(event.currentTarget).siblings()[0]).slideDown(300);
         }
@@ -1165,6 +1160,8 @@ angular.module('User')
         }
 
         $scope.toggleBody = function (section) {
+            mapMarkerService.initMap(document.getElementById('map'));
+            mapMarkerService.initMap(document.getElementById('mapExchange'));
             $(angular.element(document.getElementById(section)).siblings()[0]).slideToggle(300);
             $(angular.element(document.getElementById(section))).toggleClass('orangeBackground');
         }
@@ -1301,6 +1298,7 @@ angular.module('User')
                         }
                     });
                     $(".classDate"+i).pDatepicker("setDate",$scope.persianToArrayInt($scope.persianToArray(persianDate($scope.userEventsEdit[index].eventDates[i].date).pDate)));
+
                 }
                 $(".blitSaleEndDate").pDatepicker({
                     timePicker: {

@@ -18,15 +18,7 @@ angular.module('userProfileApi', [])
 
         }
     })
-    .service('eventPageService', function ($http, config) {
-        var eventPage = this;
 
-
-        eventPage.getEvent = function (eventLink) {
-            return $http.get(config.baseUrl+'/api/blito/v1.0/public/events/flat/link/'+eventLink)
-        }
-
-    })
 
     .service('eventService', function ($http, config) {
         var event = this;
@@ -44,6 +36,10 @@ angular.module('userProfileApi', [])
         event.editEvent = function (editData) {
             return $http.put(config.baseUrl+'/api/blito/v1.0/events', editData)
         }
+        event.getEvent = function (eventLink) {
+            return $http.get(config.baseUrl+'/api/blito/v1.0/public/events/flat/link/'+eventLink)
+        }
+
     })
     .service('exchangeService', function ($http, config) {
         var exchange = this;
@@ -59,6 +55,9 @@ angular.module('userProfileApi', [])
             }
 
             return $http.get(config.baseUrl+'/api/blito/v1.0/exchange-blits/all', queryParam)
+        }
+        exchange.getExchange = function (exchangeLink) {
+            return $http.get(config.baseUrl+'/api/blito/v1.0/public/exchange-blits/'+exchangeLink)
         }
 
         exchange.editExchangeForm = function (editData) {

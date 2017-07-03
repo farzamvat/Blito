@@ -3,11 +3,11 @@
  */
 
 angular.module('homePageModule', [])
-    .controller('homeCtrl', function ($scope, miniSliderService, photoService, indexBannerService, ourOffersService, config) {
+    .controller('homeCtrl', function ($scope, miniSliderService, photoService, indexBannerService, ourOffersService, $q,config) {
         $scope.concertRow = [];
         $scope.showImages = [[],[], [], []];
         $scope.bannerData = [];
-        $scope.showImagesExchange = [[]];
+        $scope.showImagesExchange = [];
         $scope.url = "http://localhost:3000"+"/event-page/";
         $scope.urlExchange = "http://localhost:3000"+"/exchange-page/";
 
@@ -35,6 +35,7 @@ angular.module('homePageModule', [])
         miniSliderService.getSlidingDataEvents("TOURISM", 6, false)
             .then(function (data, status) {
                 $scope.tourRow = $scope.catchImagesEvents(data.data.content, 1);
+                console.log(data);
             })
             .catch(function (data, status) {
                 console.log(data);

@@ -130,6 +130,9 @@ angular.module('menuPagesModule', [])
                     $location.path(config.redirectToUrlAfterLogin.url);
                     main.setUserData();
                     console.log("ok");
+                    $timeout(function () {
+                        $("#registrationModal").modal("hide");
+                    },2000)
                     })
                 .catch(function (data, status) {
                     $scope.loginErrorNotif = true;

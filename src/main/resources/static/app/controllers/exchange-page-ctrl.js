@@ -3,7 +3,7 @@
  */
 
 angular.module('eventsPageModule')
-    .controller('exchangePageCtrl', function ($scope, userInfo, Auth) {
+    .controller('exchangePageCtrl', function ($scope, $routeParams, exchangeService) {
         var eventPage = this;
         $scope.userEmail = 'email';
         $scope.mapOptions = {
@@ -11,7 +11,14 @@ angular.module('eventsPageModule')
             center: new google.maps.LatLng(35.7023, 51.3957),
             mapTypeId: google.maps.MapTypeId.TERRAIN
         };
-
+        console.log($routeParams.exchangeLink);
+        exchangeService.getExchange($routeParams.exchangeLink)
+            .then(function (data, status) {
+                console.log(data);
+            })
+            .catch(function (data, status) {
+                console.log(data);
+            })
 
 
         $scope.map = new google.maps.Map(document.getElementById('map'), $scope.mapOptions);
