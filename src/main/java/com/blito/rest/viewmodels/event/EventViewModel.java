@@ -30,11 +30,11 @@ public class EventViewModel {
 	private EventType eventType;
 
 	@NotNull
-	@JsonView(View.SimpleEvent.class)
+	@JsonView(View.Event.class)
 	private Timestamp blitSaleStartDate;
 
 	@NotNull
-	@JsonView(View.SimpleEvent.class)
+	@JsonView(View.Event.class)
 	private Timestamp blitSaleEndDate;
 	
 	@JsonView(View.Event.class)
@@ -59,7 +59,7 @@ public class EventViewModel {
 	@JsonView(View.Event.class)
 	private String aparatDisplayCode;
 
-	@JsonView(View.SimpleEvent.class)
+	@JsonView(View.Event.class)
 	@NotNull
 	long eventHostId;
 
@@ -79,10 +79,10 @@ public class EventViewModel {
 	@JsonView(View.SimpleEvent.class)
 	private long views;
 
-	@JsonView(View.Event.class)
+	@JsonView(View.SimpleEvent.class)
 	private String eventLink;
 
-	@JsonView(View.Event.class)
+	@JsonView(View.SimpleEvent.class)
 	private State eventState;
 
 	@JsonView(View.Event.class)

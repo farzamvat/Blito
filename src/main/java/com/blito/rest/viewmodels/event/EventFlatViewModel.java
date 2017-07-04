@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class EventFlatViewModel {
 	@JsonView(View.SimpleEvent.class)
 	private long eventId;
-	@JsonView(View.Event.class)
+	@JsonView(View.SimpleEvent.class)
 	private String eventLink; 
 	@JsonView(View.SimpleEvent.class)
 	private State eventState;
@@ -29,7 +29,7 @@ public class EventFlatViewModel {
 	private String eventHostName;
 	@JsonView(View.SimpleEvent.class)
 	private Set<OfferTypeEnum> offers;
-	@JsonView(View.Event.class)
+	@JsonView(View.SimpleEvent.class)
 	private Set<EventDateFlatViewModel> eventDates;
 	@JsonView(View.SimpleEvent.class)
 	private Set<ImageViewModel> images;

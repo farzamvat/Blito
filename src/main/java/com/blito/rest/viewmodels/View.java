@@ -9,7 +9,7 @@ public class View {
 	public interface SimpleExchangeBlit extends DefaultView {}
 	public interface ExchangeBlit extends SimpleExchangeBlit {}
 	
-	public interface SimpleEvent extends DefaultView {}
+	public interface SimpleEvent extends DefaultView,EventDateFlat {}
 	public interface Event extends SimpleEvent,BlitType,EventDateFlat {}
 	public interface AdminEvent extends Event {}
 	
