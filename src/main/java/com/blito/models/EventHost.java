@@ -64,6 +64,7 @@ public class EventHost {
     inverseJoinColumns=@JoinColumn(name="image_id"))
 	Set<Image> images;
 	
+	@Column(columnDefinition="TEXT")
 	String description;
 	
 	boolean isDeleted = false;

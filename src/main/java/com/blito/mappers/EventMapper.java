@@ -75,6 +75,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
 		vmodel.setMembers(event.getMembers());
 		vmodel.setEventSoldDate(event.getEventSoldDate());
 		vmodel.setDeleted(event.isDeleted());
+		vmodel.setViews(event.getViews());
 		return vmodel;
 	}
 

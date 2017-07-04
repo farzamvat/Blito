@@ -34,10 +34,10 @@ import com.blito.repositories.EventRepository;
 import com.blito.repositories.ImageRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
-import com.blito.rest.viewmodels.blit.SamanPaymentRequestResponseViewModel;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
+import com.blito.rest.viewmodels.payments.SamanPaymentRequestResponseViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.BlitService;
 import com.blito.services.EventService;
@@ -189,7 +189,7 @@ public class BlitServicePaymentTest {
 			SamanPaymentRequestResponseViewModel samanRes = 
 					(SamanPaymentRequestResponseViewModel)res;
 			assertEquals("myToken",samanRes.getToken());
-			Optional<Blit> blitRes = blitRepository.findBySamanBankToken(samanRes.getToken());
+			Optional<Blit> blitRes = blitRepository.findByToken(samanRes.getToken());
 			if(blitRes.isPresent())
 			{
 				assertEquals("85394723",blitRes.get().getTrackCode());

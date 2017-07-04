@@ -1,6 +1,6 @@
-package com.blito.rest.viewmodels.blit;
+package com.blito.rest.viewmodels.payments;
 
-public class SamanPaymentRequestResponseViewModel {
+public class SamanPaymentRequestResponseViewModel extends PaymentRequestViewModel {
 	String Token;
 	String RedirectURL;
 	

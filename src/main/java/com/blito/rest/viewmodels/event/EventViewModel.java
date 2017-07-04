@@ -75,6 +75,9 @@ public class EventViewModel {
 
 	@JsonView(View.SimpleEvent.class)
 	Set<ImageViewModel> images;
+	
+	@JsonView(View.SimpleEvent.class)
+	private long views;
 
 	@JsonView(View.Event.class)
 	private String eventLink;
@@ -99,6 +102,14 @@ public class EventViewModel {
 		eventDates = new HashSet<>();
 		images = new HashSet<>();
 		offers = new HashSet<>();
+	}
+
+	public long getViews() {
+		return views;
+	}
+
+	public void setViews(long views) {
+		this.views = views;
 	}
 
 	public Timestamp getEventSoldDate() {

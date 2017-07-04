@@ -1,7 +1,5 @@
 package com.blito.rest.controllers;
 
-import java.util.concurrent.CompletionStage;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.blito.mappers.EventFlatMapper;
 import com.blito.models.Event;
 import com.blito.repositories.EventRepository;
-import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;

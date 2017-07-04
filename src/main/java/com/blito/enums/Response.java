@@ -53,7 +53,8 @@ public enum Response {
 	EXCHANGE_BLIT_IS_SOLD("error.exchange.blit.is.sold"),
 	EVENT_NOT_APPROVED("error.event.not.approved"),
 	FILE_UPLOAD_SIZE_EXCEEDS("error.file.upload.max.size.exceeds"), 
-	EXCHANGE_BLIT_LINK_EXISTS("error.exchange.blit.link.exists");
+	EXCHANGE_BLIT_LINK_EXISTS("error.exchange.blit.link.exists"),
+	BANK_GATEWAY_NOT_FOUND("error.bank.gateway.not.found");
     
 
     private final String message;

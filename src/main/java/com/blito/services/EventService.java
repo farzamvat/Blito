@@ -121,6 +121,7 @@ public class EventService {
 		if (event.isDeleted()) {
 			throw new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND));
 		}
+		event.setViews(event.getViews()+1);
 		return eventFlatMapper.createFromEntity(event);
 	}
 

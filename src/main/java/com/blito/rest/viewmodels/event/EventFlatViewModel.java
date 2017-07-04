@@ -49,6 +49,8 @@ public class EventFlatViewModel {
 	private String address;
 	@JsonView(View.Event.class)
 	private String description;
+	@JsonView(View.SimpleEvent.class)
+	private long views;
 	@JsonView(View.Event.class)
 	private Double latitude;
 	@JsonView(View.Event.class)
@@ -76,6 +78,14 @@ public class EventFlatViewModel {
 
 	public void setEventSoldDate(Timestamp eventSoldDate) {
 		this.eventSoldDate = eventSoldDate;
+	}
+
+	public long getViews() {
+		return views;
+	}
+
+	public void setViews(long views) {
+		this.views = views;
 	}
 
 	@JsonProperty("isDeleted")

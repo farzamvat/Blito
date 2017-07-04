@@ -6,7 +6,7 @@ public class SamanBankException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 	
-	public static enum ResponseStatus {
+	public static enum SamanResponseStatus {
 		ERROR_NO_1("saman.error.1"),
 		ERROR_NO_3("saman.error.3"),
 		ERROR_NO_4("saman.error.4"),
@@ -27,7 +27,7 @@ public class SamanBankException extends RuntimeException {
 		
 		private String errorMessage;
 		
-		ResponseStatus(String message)
+		SamanResponseStatus(String message)
 		{
 			this.errorMessage = message;
 		}
@@ -43,55 +43,55 @@ public class SamanBankException extends RuntimeException {
 		int responseStatus = Integer.parseInt(status);
 		switch (responseStatus) {
 		case -1:
-			status = getString(ResponseStatus.ERROR_NO_1);
+			status = getString(SamanResponseStatus.ERROR_NO_1);
 			break;
 		case -3:
-			status = getString(ResponseStatus.ERROR_NO_3);
+			status = getString(SamanResponseStatus.ERROR_NO_3);
 			break;
 		case -4:
-			status = getString(ResponseStatus.ERROR_NO_4);
+			status = getString(SamanResponseStatus.ERROR_NO_4);
 			break;
 		case -6:
-			status = getString(ResponseStatus.ERROR_NO_6);
+			status = getString(SamanResponseStatus.ERROR_NO_6);
 			break;
 		case -7:
-			status = getString(ResponseStatus.ERROR_NO_7);
+			status = getString(SamanResponseStatus.ERROR_NO_7);
 			break;
 		case -8:
-			status = getString(ResponseStatus.ERROR_NO_8);
+			status = getString(SamanResponseStatus.ERROR_NO_8);
 			break;
 		case -9:
-			status = getString(ResponseStatus.ERROR_NO_9);
+			status = getString(SamanResponseStatus.ERROR_NO_9);
 			break;
 		case -10:
-			status = getString(ResponseStatus.ERROR_NO_10);
+			status = getString(SamanResponseStatus.ERROR_NO_10);
 			break;
 		case -11:
-			status = getString(ResponseStatus.ERROR_NO_11);
+			status = getString(SamanResponseStatus.ERROR_NO_11);
 			break;
 		case -12:
-			status = getString(ResponseStatus.ERROR_NO_12);
+			status = getString(SamanResponseStatus.ERROR_NO_12);
 			break;
 		case -13:
-			status = getString(ResponseStatus.ERROR_NO_13);
+			status = getString(SamanResponseStatus.ERROR_NO_13);
 			break;
 		case -14:
-			status = getString(ResponseStatus.ERROR_NO_14);
+			status = getString(SamanResponseStatus.ERROR_NO_14);
 			break;
 		case -15:
-			status = getString(ResponseStatus.ERROR_NO_15);
+			status = getString(SamanResponseStatus.ERROR_NO_15);
 			break;
 		case -16:
-			status = getString(ResponseStatus.ERROR_NO_16);
+			status = getString(SamanResponseStatus.ERROR_NO_16);
 			break;
 		case -17:
-			status = getString(ResponseStatus.ERROR_NO_17);
+			status = getString(SamanResponseStatus.ERROR_NO_17);
 			break;
 		case -18:
-			status = getString(ResponseStatus.ERROR_NO_18);
+			status = getString(SamanResponseStatus.ERROR_NO_18);
 			break;
 		default:
-			status = getString(ResponseStatus.ERROR_UNKNOWN);
+			status = getString(SamanResponseStatus.ERROR_UNKNOWN);
 			break;
 		}
 		return status;
@@ -102,7 +102,7 @@ public class SamanBankException extends RuntimeException {
 		super(message);
 	}
 	
-	private static String getString(ResponseStatus status)
+	private static String getString(SamanResponseStatus status)
 	{
 		return ResourceUtil.getMessage(status);
 	}

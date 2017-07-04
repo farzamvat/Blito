@@ -5,13 +5,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
-import com.blito.services.ZarinpalClient;
+import com.blito.payments.zarinpal.client.ZarinpalClient;
 
 @Configuration
 public class ZarinpalConfigurations {
 
-	@Value("zarinpal.url")
-	private String zarinpalURL;
+	@Value("zarinpal.callback.url")
+	private String zarinpalCallbackURL;
+	@Value("zarinpal.merchant.id")
+	private String zarinpalMerchantId;
+	
 	
 	@Bean
 	public Jaxb2Marshaller marshaller() {
@@ -25,7 +28,7 @@ public class ZarinpalConfigurations {
 	@Bean
 	public ZarinpalClient zarinpalClient(Jaxb2Marshaller marshaller)
 	{
-		ZarinpalClient client = new ZarinpalClient(zarinpalURL);
+		ZarinpalClient client = new ZarinpalClient(zarinpalCallbackURL,zarinpalMerchantId);
 		client.setDefaultUri("https://www.zarinpal.com/pg/services/WebGate/service");
 		client.setMarshaller(marshaller);
 		client.setUnmarshaller(marshaller);

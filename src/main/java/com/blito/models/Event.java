@@ -75,6 +75,8 @@ public class Event {
 	@Column(columnDefinition="TEXT")
 	private String members;
 	
+	private long views;
+	
 	private Double longitude;
 	
 	private Double latitude;
@@ -108,7 +110,16 @@ public class Event {
 		eventDates = new HashSet<>();
 	}
 	
-	
+	public long getViews() {
+		return views;
+	}
+
+
+	public void setViews(long views) {
+		this.views = views;
+	}
+
+
 	public String getMembers() {
 		return members;
 	}
