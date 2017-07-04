@@ -3,7 +3,6 @@ package com.blito.services;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -115,13 +114,21 @@ public class EventService {
 		return eventMapper.createFromEntity(eventRepository.save(event));
 	}
 
+	@Transactional
 	public EventFlatViewModel getFlatEventByLink(String link) {
-		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(link).map(e -> e)
+		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(link)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
-		if (event.isDeleted()) {
-			throw new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND));
-		}
+		event.setViews(event.getViews()+1);
 		return eventFlatMapper.createFromEntity(event);
+	}
+	
+	@Transactional
+	public EventViewModel getEventByLink(String eventLink)
+	{
+		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(eventLink)
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+		event.setViews(event.getViews()+1);
+		return eventMapper.createFromEntity(event);
 	}
 
 	public EventFlatViewModel getFlatEventById(long eventId) {

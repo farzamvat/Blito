@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class EventFlatViewModel {
 	@JsonView(View.SimpleEvent.class)
 	private long eventId;
-	@JsonView(View.Event.class)
+	@JsonView(View.SimpleEvent.class)
 	private String eventLink; 
 	@JsonView(View.SimpleEvent.class)
 	private State eventState;
@@ -29,7 +29,7 @@ public class EventFlatViewModel {
 	private String eventHostName;
 	@JsonView(View.SimpleEvent.class)
 	private Set<OfferTypeEnum> offers;
-	@JsonView(View.Event.class)
+	@JsonView(View.SimpleEvent.class)
 	private Set<EventDateFlatViewModel> eventDates;
 	@JsonView(View.SimpleEvent.class)
 	private Set<ImageViewModel> images;
@@ -49,6 +49,8 @@ public class EventFlatViewModel {
 	private String address;
 	@JsonView(View.Event.class)
 	private String description;
+	@JsonView(View.SimpleEvent.class)
+	private long views;
 	@JsonView(View.Event.class)
 	private Double latitude;
 	@JsonView(View.Event.class)
@@ -76,6 +78,14 @@ public class EventFlatViewModel {
 
 	public void setEventSoldDate(Timestamp eventSoldDate) {
 		this.eventSoldDate = eventSoldDate;
+	}
+
+	public long getViews() {
+		return views;
+	}
+
+	public void setViews(long views) {
+		this.views = views;
 	}
 
 	@JsonProperty("isDeleted")

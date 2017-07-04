@@ -40,30 +40,11 @@ public class Blit {
 	SeatType seatType;
 	PaymentStatus paymentStatus;
 	String paymentError;
-	String samanBankToken;
-	String samanBankRefNumber;
+	String token;
+	String refNum;
 	String samanTraceNo;
 	boolean used = false;
 	BankGateway bankGateway;
-	
-	public BankGateway getBankGateway() {
-		return bankGateway;
-	}
-	public void setBankGateway(BankGateway bankGateway) {
-		this.bankGateway = bankGateway;
-	}
-	public String getSamanTraceNo() {
-		return samanTraceNo;
-	}
-	public void setSamanTraceNo(String samanTraceNo) {
-		this.samanTraceNo = samanTraceNo;
-	}
-	public boolean isUsed() {
-		return used;
-	}
-	public void setUsed(boolean used) {
-		this.used = used;
-	}
 	public long getBlitId() {
 		return blitId;
 	}
@@ -166,16 +147,34 @@ public class Blit {
 	public void setPaymentError(String paymentError) {
 		this.paymentError = paymentError;
 	}
-	public String getSamanBankToken() {
-		return samanBankToken;
+	public String getToken() {
+		return token;
 	}
-	public void setSamanBankToken(String samanBankToken) {
-		this.samanBankToken = samanBankToken;
+	public void setToken(String token) {
+		this.token = token;
 	}
-	public String getSamanBankRefNumber() {
-		return samanBankRefNumber;
+	public String getRefNum() {
+		return refNum;
 	}
-	public void setSamanBankRefNumber(String samanBankRefNumber) {
-		this.samanBankRefNumber = samanBankRefNumber;
+	public void setRefNum(String refNum) {
+		this.refNum = refNum;
+	}
+	public String getSamanTraceNo() {
+		return samanTraceNo;
+	}
+	public void setSamanTraceNo(String samanTraceNo) {
+		this.samanTraceNo = samanTraceNo;
+	}
+	public boolean isUsed() {
+		return used;
+	}
+	public void setUsed(boolean used) {
+		this.used = used;
+	}
+	public BankGateway getBankGateway() {
+		return bankGateway;
+	}
+	public void setBankGateway(BankGateway bankGateway) {
+		this.bankGateway = bankGateway;
 	}
 }

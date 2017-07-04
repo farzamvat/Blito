@@ -12,9 +12,9 @@ import com.blito.models.Blit;
 
 @NoRepositoryBean
 public interface BlitBaseRepository <T extends Blit> extends JpaRepository<T,Long> {
-	Optional<T> findBySamanBankRefNumber(String refNum);
+	Optional<T> findByRefNum(String refNum);
 	Optional<T> findBySamanTraceNo(String traceNo);
-	Optional<T> findBySamanBankToken(String token);
+	Optional<T> findByToken(String token);
 	Optional<T> findByTrackCode(String trackCode);
 	Set<T> findByPaymentStatus(PaymentStatus status);
 	Set<T> findBySeatType(SeatType type);

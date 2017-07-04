@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.blito.enums.BankGateway;
 import com.blito.enums.PaymentStatus;
 import com.blito.enums.Response;
 import com.blito.enums.State;
@@ -30,7 +31,8 @@ import com.blito.repositories.CommonBlitRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
-import com.blito.rest.viewmodels.blit.SamanPaymentRequestResponseViewModel;
+import com.blito.rest.viewmodels.payments.SamanPaymentRequestResponseViewModel;
+import com.blito.rest.viewmodels.payments.ZarinpalPayRequetsResponseViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.security.SecurityContextHolder;
 
@@ -51,9 +53,9 @@ public class BlitService {
 	private PaymentService paymentService;
 	@Autowired
 	private SearchService searchService;
-	@Value("{saman.bank.merchantCode}")
-	String samanMerchantCode;
-
+	@Value("{zarinpal.web.gateway}")
+	private String zarinpalGatewayURL;
+	
 	private final Logger log = LoggerFactory.getLogger(BlitService.class);
 
 	@Transactional
@@ -64,6 +66,7 @@ public class BlitService {
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
 
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
+		
 		System.out.println("Thread with id : " + Thread.currentThread().getId()
 				+ " is running inside createCommonBlit methodxxxxxx");
 		if (blitType.isFree()) {
@@ -74,32 +77,52 @@ public class BlitService {
 		} else {
 			if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getTotalAmount())
 				throw new InconsistentDataException("total amount is not equal to price * count");
-			return buyCommonBlit(blitType, commonBlit, user).thenApply(blit -> {
-				SamanPaymentRequestResponseViewModel samanResponse = new SamanPaymentRequestResponseViewModel();
-				samanResponse.setToken(blit.getSamanBankToken());
-				samanResponse.setRedirectURL("http://localhost:8085/ws");
-				return samanResponse;
-			});
-
+			return buyCommonBlit(blitType, commonBlit, user);
 		}
 	}
 
-	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
-	private CompletableFuture<CommonBlit> buyCommonBlit(BlitType blitType, CommonBlit commonBlit, User user) {
+	@Transactional
+	private CompletableFuture<Object> buyCommonBlit(BlitType blitType, CommonBlit commonBlit, User user) {
 		checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
 		String trackCode = generateTrackCode();
-		// bankgateway condition
-		return paymentService.samanBankRequestToken(trackCode, commonBlit.getTotalAmount())
-				.thenApply(token -> {
-					BlitType attachedBlitType = blitTypeRepository.findOne(blitType.getBlitTypeId());
-					User attachedUser = userRepository.findOne(user.getUserId());
-					commonBlit.setBlitType(attachedBlitType);
-					attachedUser.addBlits(commonBlit);
-					commonBlit.setSamanBankToken(token);
-					commonBlit.setTrackCode(trackCode);
-					commonBlit.setPaymentStatus(PaymentStatus.PENDING);
-					return commonBlitRepository.save(commonBlit);
-				});
+		switch (commonBlit.getBankGateway()) {
+		case ZARINPAL:
+			return paymentService.zarinpalRequestToken((int)commonBlit.getTotalAmount(), user.getEmail(), user.getMobile(), blitType.getEventDate().getEvent().getDescription())
+					.thenApply(token -> {
+						CommonBlit persisted = persistNoneFreeCommonBlit(blitType, commonBlit, user, token, trackCode);
+						ZarinpalPayRequetsResponseViewModel zarinpalResponse = new ZarinpalPayRequetsResponseViewModel();
+						zarinpalResponse.setGateway(BankGateway.ZARINPAL);
+						zarinpalResponse.setZarinpalWebGatewayURL(zarinpalGatewayURL + persisted.getToken());
+						return zarinpalResponse;
+					});
+		case SAMAN:
+			return paymentService.samanBankRequestToken(trackCode, commonBlit.getTotalAmount())
+					.thenApply(token -> {
+						CommonBlit persisted = persistNoneFreeCommonBlit(blitType, commonBlit, user, token, trackCode);
+						SamanPaymentRequestResponseViewModel samanResponse = new SamanPaymentRequestResponseViewModel();
+						samanResponse.setToken(persisted.getToken());
+						samanResponse.setGateway(BankGateway.SAMAN);
+						samanResponse.setRedirectURL("http://localhost:8085/ws");
+						return samanResponse;
+					});
+		default:
+			throw new NotFoundException(ResourceUtil.getMessage(Response.BANK_GATEWAY_NOT_FOUND));
+		}
+		
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
+	private CommonBlit persistNoneFreeCommonBlit(BlitType blitType,CommonBlit commonBlit,User user,String token,String trackCode)
+	{
+		BlitType attachedBlitType = blitTypeRepository.findOne(blitType.getBlitTypeId());
+		User attachedUser = userRepository.findOne(user.getUserId());
+		commonBlit.setBlitType(attachedBlitType);
+		attachedUser.addBlits(commonBlit);
+		commonBlit.setToken(token);
+		commonBlit.setTrackCode(trackCode);
+		commonBlit.setPaymentStatus(PaymentStatus.PENDING);
+		return commonBlitRepository.save(commonBlit);
+
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)

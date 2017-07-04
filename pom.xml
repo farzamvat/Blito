@@ -124,10 +124,8 @@
 			<artifactId>spring-security-crypto</artifactId>
 		</dependency>
 
-		<!-- <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-activemq</artifactId>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-activemq</artifactId> 
+			</dependency> -->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
@@ -177,11 +175,8 @@
 			<version>3.0</version>
 		</dependency>
 
-		<!-- <dependency>
-			<groupId>com.saman.payment</groupId>
-			<artifactId>saman-payment</artifactId>
-			<version>1.0.0</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>com.saman.payment</groupId> <artifactId>saman-payment</artifactId> 
+			<version>1.0.0</version> </dependency> -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -244,37 +239,35 @@
 
 			</plugin>
 
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jaxb2-maven-plugin</artifactId>
-				<version>1.6</version>
+			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>jaxb2-maven-plugin</artifactId> 
+				<version>1.6</version> <executions> <execution> <id>xjc</id> <goals> <goal>xjc</goal> 
+				</goals> </execution> </executions> <configuration> <schemaDirectory>${project.basedir}/src/main/resources/bank/</schemaDirectory> 
+				<outputDirectory>${project.basedir}/src/main/java/com/blito/payments/</outputDirectory> 
+				<clearOutputDir>false</clearOutputDir> </configuration> </plugin> -->
+
+			<!-- tag::wsdl[] -->
+			<!-- <plugin>
+				<groupId>org.jvnet.jaxb2.maven2</groupId>
+				<artifactId>maven-jaxb2-plugin</artifactId>
+				<version>0.12.3</version>
 				<executions>
 					<execution>
-						<id>xjc</id>
 						<goals>
-							<goal>xjc</goal>
+							<goal>generate</goal>
 						</goals>
 					</execution>
 				</executions>
 				<configuration>
-					<schemaDirectory>${project.basedir}/src/main/resources/bank/</schemaDirectory>
-					<!-- <outputDirectory>${project.basedir}/src/main/java/com/blito/payments/</outputDirectory> -->
-					<clearOutputDir>false</clearOutputDir>
+					<schemaLanguage>WSDL</schemaLanguage>
+					<generatePackage>com.blito.payments.zarinpal</generatePackage>
+					<schemas>
+						<schema>
+							<url>https://www.zarinpal.com/pg/services/WebGate/wsdl</url>
+						</schema>
+					</schemas>
 				</configuration>
-			</plugin>
-
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-dependency-plugin</artifactId> 
-				<version>2.9</version> <executions> <execution> <id>build-classpath</id> 
-				<phase>generate-sources</phase> <goals> <goal>build-classpath</goal> </goals> 
-				</execution> </executions> <configuration> <outputFile>classpath.txt</outputFile> 
-				</configuration> </plugin> -->
-			<!-- <plugin> <groupId>org.jvnet.jaxb2.maven2</groupId> <artifactId>maven-jaxb2-plugin</artifactId> 
-				<version>0.12.3</version> <executions> <execution> <goals> <goal>generate</goal> 
-				</goals> </execution> </executions> <configuration> <schemaLanguage>WSDL</schemaLanguage> 
-				<generatePackage>saman.wsdl</generatePackage> <schemas> <schema> <url>https://sep.shaparak.ir/payments/referencepayment.asmx?wsdl</url> 
-				</schema> </schemas> <schemaDirectory>${project.basedir}/src/main/resources/bank</schemaDirectory> 
-				<schemaIncludes> <include>*.wsdl</include> </schemaIncludes> </configuration> 
-				</plugin> -->
+			</plugin> -->
+			<!-- end::wsdl[] -->
 
 		</plugins>
 	</build>

@@ -19,20 +19,30 @@ import com.blito.models.Blit;
 import com.blito.models.BlitType;
 import com.blito.payments._76._143._201._138._80.services.FinalizePaymentRequest;
 import com.blito.payments.saman.SamanBankService;
+import com.blito.payments.zarinpal.client.ZarinpalClient;
 import com.blito.repositories.BlitRepository;
 import com.blito.repositories.BlitTypeRepository;
 
 @Service
 public class PaymentService {
 	@Autowired
-	SamanBankService samanBankService;
+	private SamanBankService samanBankService;
 	@Autowired
-	BlitRepository blitRepository;
+	private BlitRepository blitRepository;
 	@Autowired
-	BlitTypeRepository blitTypeRepository;
+	private BlitTypeRepository blitTypeRepository;
+	@Autowired
+	private ZarinpalClient zarinpalClient;
 
 	public CompletableFuture<String> samanBankRequestToken(String reservationNumber, long totalAmount) {
 		return samanBankService.requestToken(reservationNumber, totalAmount);
+	}
+	
+	public CompletableFuture<String> zarinpalRequestToken(int amount,String email,String mobile,String description)
+	{
+		return CompletableFuture.supplyAsync(() -> {
+			return zarinpalClient.getPaymentRequest(amount, email, mobile, description);
+		});
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRES_NEW,isolation=Isolation.SERIALIZABLE)
@@ -44,7 +54,7 @@ public class PaymentService {
 			{
 				samanBankService.verifyTransaction(paymentRequestArgs.getRequest().getRefNum())
 				.thenAccept(res -> {
-					blit.setSamanBankRefNumber(paymentRequestArgs.getRequest().getRefNum());
+					blit.setRefNum(paymentRequestArgs.getRequest().getRefNum());
 					blit.setSamanTraceNo(paymentRequestArgs.getRequest().getTraceNo());
 					blit.setPaymentStatus(PaymentStatus.PAID);
 					BlitType blitType = blitTypeRepository.findByBlitTypeId(blit.getBlitId());
@@ -84,7 +94,7 @@ public class PaymentService {
 		if(paymentRequestCallbackArguments.getRequest().getState().equals("OK"))
 		{
 			Optional<Blit> blitOptional = 
-					blitRepository.findBySamanBankRefNumber(paymentRequestCallbackArguments.getRequest().getRefNum());
+					blitRepository.findByRefNum(paymentRequestCallbackArguments.getRequest().getRefNum());
 			if(blitOptional.isPresent())
 			{
 				if(blitOptional.get().getPaymentStatus().equals(PaymentStatus.ERROR)) {
@@ -109,7 +119,7 @@ public class PaymentService {
 			blitOptional.ifPresent(blit -> {
 				blit.setPaymentError(paymentRequestCallbackArguments.getRequest().getState());
 				blit.setSamanTraceNo(paymentRequestCallbackArguments.getRequest().getTraceNo());
-				blit.setSamanBankRefNumber(paymentRequestCallbackArguments.getRequest().getRefNum());
+				blit.setRefNum(paymentRequestCallbackArguments.getRequest().getRefNum());
 				blit.setPaymentStatus(PaymentStatus.ERROR);
 				blitRepository.save(blit);
 			});

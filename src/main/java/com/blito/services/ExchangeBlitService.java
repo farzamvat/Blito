@@ -55,7 +55,7 @@ public class ExchangeBlitService {
 		if (vmodel.getImage() == null) {
 			vmodel.setImage(new ImageViewModel(Constants.DEFAULT_EXCHANGEBLIT_PHOTO, ImageType.EXCHANGEBLIT_PHOTO));
 		}
-		
+
 		Image image = imageRepository.findByImageUUID(vmodel.getImage().getImageUUID()).map(i -> {
 			i.setImageType(vmodel.getImage().getType());
 			return i;
@@ -75,7 +75,7 @@ public class ExchangeBlitService {
 		if (exchangeBlit.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
-		if(exchangeBlit.getState().equals(State.SOLD)) {
+		if (exchangeBlit.getState().equals(State.SOLD)) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.EXCHANGE_BLIT_IS_SOLD));
 		}
 		if (vmodel.getImage() == null) {
@@ -99,10 +99,10 @@ public class ExchangeBlitService {
 		}
 		exchangeBlit.setDeleted(true);
 	}
-	
-	public String generateExchangeBlitLink(ExchangeBlit exchangeBlit)
-	{
-		String exchangeLink = exchangeBlit.getTitle().replaceAll(" ", "-") + "-" + RandomUtil.generateLinkRandomNumber();
+
+	public String generateExchangeBlitLink(ExchangeBlit exchangeBlit) {
+		String exchangeLink = exchangeBlit.getTitle().replaceAll(" ", "-") + "-"
+				+ RandomUtil.generateLinkRandomNumber();
 		while (exchangeBlitRepository.findByExchangeLinkAndIsDeletedFalse(exchangeLink).isPresent()) {
 			exchangeLink = exchangeBlit.getTitle().replaceAll(" ", "-") + "-" + RandomUtil.generateLinkRandomNumber();
 		}
@@ -114,12 +114,13 @@ public class ExchangeBlitService {
 
 		User user = Optional.ofNullable(userRepository.findOne(SecurityContextHolder.currentUser().getUserId()))
 				.map(u -> u).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
-		return exchangeBlitRepository.findByUserUserIdAndIsDeletedFalse(user.getUserId(),pageable).map(exchangeBlitMapper::createFromEntity);
-		
+		return exchangeBlitRepository.findByUserUserIdAndIsDeletedFalse(user.getUserId(), pageable)
+				.map(exchangeBlitMapper::createFromEntity);
+
 	}
-	
-	public Page<ExchangeBlitViewModel> searchExchangeBlits(SearchViewModel<ExchangeBlit> searchViewModel,Pageable pageable)
-	{
+
+	public Page<ExchangeBlitViewModel> searchExchangeBlits(SearchViewModel<ExchangeBlit> searchViewModel,
+			Pageable pageable) {
 		return searchService.search(searchViewModel, pageable, exchangeBlitMapper, exchangeBlitRepository);
 	}
 
@@ -129,13 +130,16 @@ public class ExchangeBlitService {
 		if (exchangeBlit.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
-		if (exchangeBlit.getOperatorState() == OperatorState.PENDING || exchangeBlit.getOperatorState() == OperatorState.REJECTED) {
+		if (exchangeBlit.getOperatorState() == OperatorState.PENDING
+				|| exchangeBlit.getOperatorState() == OperatorState.REJECTED) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
 		exchangeBlit.setState(vmodel.getState());
 	}
 
-	public ExchangeBlitViewModel getExchangeBlitById(long exchangeBlitId) {
-		return exchangeBlitMapper.createFromEntity(findByExchangeBlitId(exchangeBlitId));
+	public ExchangeBlitViewModel getExchangeBlitByLink(String exchangeLink) {
+		return exchangeBlitMapper.createFromEntity(
+				exchangeBlitRepository.findByExchangeLinkAndIsDeletedFalse(exchangeLink)
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND))));
 	}
 }

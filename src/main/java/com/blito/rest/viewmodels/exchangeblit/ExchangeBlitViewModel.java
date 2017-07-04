@@ -27,7 +27,7 @@ public class ExchangeBlitViewModel {
 	@JsonView(View.SimpleExchangeBlit.class)
 	private double blitCost;
 	@NotNull
-	@JsonView(View.ExchangeBlit.class)
+	@JsonView(View.SimpleExchangeBlit.class)
 	private boolean isBlitoEvent;
 	@MobileNumber
 	@JsonView(View.ExchangeBlit.class)

@@ -50,8 +50,8 @@ public class CommonBlitMapper implements GenericMapper<CommonBlit, CommonBlitVie
 		vmodel.setBlitTypeName(blit.getBlitTypeName());
 		vmodel.setPaymentStatus(blit.getPaymentStatus());
 		vmodel.setPaymentError(blit.getPaymentError());
-		vmodel.setSamanBankToken(blit.getSamanBankToken());
-		vmodel.setSamanBankRefNumber(blit.getSamanBankRefNumber());
+		vmodel.setSamanBankToken(blit.getToken());
+		vmodel.setSamanBankRefNumber(blit.getRefNum());
 		vmodel.setBankGateway(blit.getBankGateway());
 		vmodel.setCreatedAt(blit.getCreatedAt());
 		vmodel.setUserId(blit.getUser().getUserId());
