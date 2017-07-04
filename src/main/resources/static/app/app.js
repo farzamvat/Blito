@@ -18,7 +18,8 @@ angular.module('Blito',
         'UiServices',
         'userProfileApi',
         'exchangesPageModule',
-        'homePageApi'
+        'homePageApi',
+        'notFound'
     ])
     .config(function ($httpProvider) {
         $httpProvider.interceptors.push('AuthInterceptors');
