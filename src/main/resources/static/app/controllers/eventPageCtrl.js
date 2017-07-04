@@ -67,12 +67,13 @@ angular.module('eventsPageModule')
                 console.log(event);
                $scope.eventDataPhoto = event;
                console.log($scope.eventDataPhoto.gallery.length)
-            })
+            });
         };
 
         $scope.eventType = "theatre";
 
-        $('.slick-slider').slick('setPosition');
+
+
 
 
 

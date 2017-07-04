@@ -6,11 +6,6 @@ angular.module('menuPagesModule', [])
         var main = this;
         main.checkingSession = false;
         $scope.loadPage = false;
-
-
-
-
-        //checks users refresh-token every 10 second
         main.checkSession = function () {
             if(AuthToken.getRefreshToken()) {
                 main.checkingSession = true;
@@ -29,7 +24,7 @@ angular.module('menuPagesModule', [])
                             var base64Url = token.split('.')[1];
                             var base64 = base64Url.replace('-', '+').replace('_', '/');
                             return JSON.parse($window.atob(base64));
-                        }
+                        };
                         var expireTime = self.parseJwt(token);
                         var timeStamp = Math.floor(Date.now() / 1000);
                         var timeCheck = expireTime.exp - timeStamp;
@@ -54,7 +49,7 @@ angular.module('menuPagesModule', [])
                 $scope.logoutMenu = false;
                 $window.location.assign('/');
             }
-        }
+        };
         main.checkRefreshTokenValue();
         // requests server for user info and sets data in service
         main.setUserData = function () {
@@ -76,10 +71,6 @@ angular.module('menuPagesModule', [])
         if(main.checkingSession) {
             main.setUserData();
          }
-
-
-
-        // on route change
         $rootScope.$on("$locationChangeStart", function(event, next, current) {
             main.checkRefreshTokenValue();
             if(Auth.isLoggedIn()) {
@@ -102,6 +93,7 @@ angular.module('menuPagesModule', [])
                         main.successMsg = data.data.message;
                         userInfo.setData(data.config.data);
                         $location.path('/activate-user');
+                        $("#registrationModal").modal("hide");
                     })
                     .catch(function (data, status) {
                         $scope.submitRegister = false;
@@ -130,8 +122,11 @@ angular.module('menuPagesModule', [])
                     $location.path(config.redirectToUrlAfterLogin.url);
                     main.setUserData();
                     console.log("ok");
+                    $("#registrationModal").modal("hide");
+                    $scope.Msg = "با موفقیت وارد شدید !";
+                    $("#notification").modal("show");
                     $timeout(function () {
-                        $("#registrationModal").modal("hide");
+                        $("#notification").modal("hide");
                     },2000)
                     })
                 .catch(function (data, status) {
@@ -155,10 +150,7 @@ angular.module('menuPagesModule', [])
 
         $scope.isActive = function (viewLocation) {
             return viewLocation === $location.path();
-        }
-
-
-
+        };
         $scope.nextStep1 = function (eventInfo) {
             $scope.totalPrice = eventInfo.ticketNumber * 10000;
             angular.element(document.getElementsByClassName('progress-bar')).css('width', '50%');
@@ -166,7 +158,7 @@ angular.module('menuPagesModule', [])
             angular.element(document.getElementById('selectTicket')).removeClass('active');
             angular.element(document.getElementById('ticketPay2')).addClass('active').addClass('in');
             angular.element(document.getElementById('payment')).addClass('active');
-        }
+        };
         $scope.prevStep1 = function () {
             angular.element(document.getElementsByClassName('progress-bar')).css('width', '0');
             angular.element(document.getElementById('ticketPay1')).addClass('active').addClass('in');
@@ -174,7 +166,7 @@ angular.module('menuPagesModule', [])
             angular.element(document.getElementById('ticketPay2')).removeClass('active');
 
             angular.element(document.getElementById('payment')).removeClass('active');
-        }
+        };
         $scope.nextStep2 = function () {
             angular.element(document.getElementsByClassName('progress-bar')).css('width', '100%');
             angular.element(document.getElementById('ticketPay2')).removeClass('active');
@@ -182,11 +174,9 @@ angular.module('menuPagesModule', [])
             angular.element(document.getElementById('ticketPay3')).addClass('active').addClass('in');
             angular.element(document.getElementById('paymentComplete')).addClass('active');
 
-        }
+        };
         $scope.hideTicketPaymentModal = function () {
             $("#buyTicket").modal("hide");
         }
-
-
     });
 

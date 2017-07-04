@@ -37,38 +37,36 @@
         </div>
         <div class="col-xs-6 col-sm-4 col-md-3 floatRight marginTop10" pagination-id="eventsList" total-items="totalEventsNumber" dir-paginate="item in eventList | itemsPerPage: 12"  current-page="currentPage">
             <a href="{{url+item.eventLink}}">
-            <div class="recipe"  >
-                <div class="image center-block" >
-                    <img ng-src="{{item.image}}" class="center-block eventListImage"  >
-                    <div class="name">
-                        <h3>{{ item.eventName }}</h3>
-                        <h5> برگزارکننده   : {{ item.eventHostName }}<i class="fa fa-calendar-check-o"></i></h5>
-                        <h5>{{ item.view }}: بلیت خالی  <i class="fa fa-eye"></i>‌</h5>
+                <div class="recipe"  >
+                    <div class="image center-block" >
+                        <img ng-src="{{item.image}}" class="center-block eventListImage"  >
+                        <div class="name">
+                            <h3>{{ item.eventName }}</h3>
+                            <h5> برگزارکننده   : {{ item.eventHostName }}<i class="fa fa-calendar-check-o"></i></h5>
+                            <h5>{{ item.view }}: بلیت خالی  <i class="fa fa-eye"></i>‌</h5>
 
-                    </div>
-                    <div class="eventDescription center-block">
-                        {{item.desc}}
+                        </div>
+                        <div class="eventDescription center-block">
+                            {{item.desc}}
+                        </div>
                     </div>
                 </div>
             </a>
-                <!--<a href="{{item.link}}" class="btn btn-lg btn-success center-block eventListBtn">مشاهده رویداد</a>-->
-            </div>
-            <!--<div class="col-xs-12 eventListSection" ng-show="$index % 4 === 0" style="height: 20px; background-color: #303030">-->
-            <!--{{$index}}-->
-            <!--</div>-->
-        </div>
-
-    </div>
-
-
-    <div class="col-xs-12">
-        <div class="col-md-4 col-md-offset-4">
-            <dir-pagination-controls  pagination-id="eventsList" class="col-xs-12"
-                                     max-size="3"
-                                     direction-links="true"
-                                     boundary-links="true">
-            </dir-pagination-controls>
         </div>
     </div>
+
+
+</div>
+
+
+<div class="col-xs-12">
+    <div class="col-md-4 col-md-offset-4">
+        <dir-pagination-controls  pagination-id="eventsList" class="col-xs-12"
+                                  max-size="3"
+                                  direction-links="true"
+                                  boundary-links="true">
+        </dir-pagination-controls>
+    </div>
+</div>
 
 </div>

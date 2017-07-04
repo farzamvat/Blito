@@ -750,12 +750,6 @@
 
                                         <legend class="legendStyle"> تعریف سانس</legend>
                                         <div class="row">
-
-
-
-
-
-
                                             <div class="col-xs-12 text-center" > اضافه و کم کردن سانس
                                                 <i class="fa fa-plus btn-success addDeleteBtn" ng-click="addFieldShowTime()" aria-hidden="true"></i>
                                                 <i class="fa fa-minus btn-danger addDeleteBtn" ng-click="deleteFieldShowTime()" aria-hidden="true"></i>
@@ -856,6 +850,7 @@
                                 <form class="form-inline textAlignRight" name="submitPlannerForm">
                                     <fieldset class="marginBottom20 fieldsetStyle">
                                         <legend class="legendStyle">اطلاعات برگزار کننده </legend>
+                                        <div class="row">
                                         <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                             <div class="col-xs-10 floatRight text-center">
                                                 <label class="registerLabel floatRight" for="PlannerName" >نام برگزار کننده :</label>
@@ -872,6 +867,9 @@
                                                 <input height="60" id="eventPlannerTelephone" required  ng-model="eventPlanner.mobile"   type="text"  class="form-group registerInput" >
                                             </div>
                                         </div>
+                                        </div>
+                                        <div class="row">
+
                                         <div class="form-group col-xs-12 col-sm-6 formRegGroup marginTop30 floatRight">
                                             <div class="col-xs-10 floatRight text-center">
                                                 <label class="registerLabel floatRight" for="eventPlannerWebsite" > لینک وبسایت  :</label>
@@ -894,7 +892,18 @@
                                             </div>
 
                                         </div>
+                                        </div>
+                                        <div class="row">
 
+                                        <div class="form-group col-xs-12 col-sm-6 formRegGroup marginTop30 floatRight">
+                                            <div class="col-xs-10 floatRight text-center">
+                                                <label class="registerLabel floatRight" for="eventPlannerWebsite" > توضیحات برگزارکننده :</label>
+                                            </div>
+                                            <div class="col-xs-11 floatRight ">
+                                                <textarea ng-model="eventPlanner.description" required  id="plannerDescription"  type="text"  class="form-group textAreaForm marginTop30" ></textarea>
+                                            </div>
+                                        </div>
+                                        </div>
 
                                     </fieldset>
                                     <fieldset class="marginTop30 fieldsetStyle">

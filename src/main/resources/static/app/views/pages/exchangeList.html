@@ -10,15 +10,13 @@
         </div>
         <div class="col-xs-6 col-sm-4 col-md-3 floatRight marginTop10" dir-paginate="item in exchangeList | itemsPerPage: 12" current-page="currentPage">
             <div class="recipe"  >
-                <div class="image center-block" ng-mouseenter="showDescription($event)" ng-mouseleave="hideDescription($event)">
-                    <img ng-src="{{item.img}}" class="center-block eventListImage"  >
+                <div class="image center-block" >
+                    <img ng-src="{{item.newImage}}" class="center-block eventListImage"  >
 
 
                     <div class="name">
                         <h3>{{ item.title }}</h3>
-                        <h5>{{ item.numberRemaining }}: تعداد بلیت  <i class="fa fa-list"></i></h5>
-                        <h5>{{ item.data }}:  سانس ‌ <i class="fa fa-calendar"></i></h5>
-                        <h5>  نوع رویداد ‌ :{{ item.type }} <i class="fa fa-star"></i></h5>
+                        <h5> {{ item.type }}  : نوع رویداد<i class="fa fa-star"></i></h5>
 
                     </div>
                     <div class="eventDescription center-block">
@@ -26,11 +24,8 @@
                     </div>
                 </div>
 
-                <!--<a href="{{item.link}}" class="btn btn-lg btn-success center-block eventListBtn">مشاهده رویداد</a>-->
             </div>
-            <!--<div class="col-xs-12 eventListSection" ng-show="$index % 4 === 0" style="height: 20px; background-color: #303030">-->
-            <!--{{$index}}-->
-            <!--</div>-->
+
         </div>
 
     </div>

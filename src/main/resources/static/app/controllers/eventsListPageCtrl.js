@@ -16,7 +16,7 @@ angular.module('eventsPageModule', [])
                 })
                 .catch(function (data) {
                     console.log(data)
-                })
+                });
         };
         switch($location.path()) {
             case '/sports':
@@ -49,7 +49,7 @@ angular.module('eventsPageModule', [])
                 break;
             default:
                 break;
-        };
+        }
 
 
         $scope.catchImagesEvents = function (events) {
@@ -63,7 +63,7 @@ angular.module('eventsPageModule', [])
                     })
                     .catch(function (data, status) {
                         console.log(data);
-                    })
+                    });
                 return item;
 
             });

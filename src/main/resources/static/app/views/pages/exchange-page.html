@@ -1,35 +1,25 @@
 <div ng-controller="exchangePageCtrl as eventPage">
     <div class="row eventPageHeader" ng-class="{'eventPageHeaderCinema': eventType === 'cinema', 'eventPageHeaderTheatre': eventType === 'theatre'}">
         <div class="col-xs-12 col-sm-4 col-md-3 floatRight eventPageImage">
-            <img ng-src="assets/img/a.jpeg"   class="img-responsive imgMobileSize ">
+            <img ng-src="{{exchangeData.newImage}}"   class="img-responsive imgMobileSize ">
         </div>
         <div class="col-xs-12 col-sm-7 col-md-8 floatRight textAlignRight eventContent" >
-            <h1>نام رویداد</h1>
-            <h3>شماره تماس فروشنده : ۰۹۱۲۲۰۱۱۲۷۳</h3>
-            <p> توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد</p>
-            <p> توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد</p>
+            <h1>{{exchangeData.title}}</h1>
+            <h3>شماره تماس فروشنده : {{exchangeData.phoneNumber}}</h3>
+            <p>{{exchangeData.description}}</p>
             <table class="table">
                 <thead class="tableHeader">
                 <tr>
-
-                    <th class="dataCenter">ساعت
-                    </th>
-                    <th class="dataCenter" >روز
-                    </th>
-                    <th class="dataCenter" >تاریخ
+                    <th class="dataCenter">تاریخ و ساعت
                     </th>
                     <th class="dataCenter" >قیمت
                     </th>
-
                 </tr>
                 </thead>
                 <tbody class="showTimeList">
-                <tr ng-repeat="item in showTime | filter:search">
-                    <td class="dataCenter">{{ item.time}}</td>
-                    <td class="dataCenter">{{ item.weekDay}}</td>
-                    <td class="dataCenter">{{ item.date}}</td>
-                    <td class="dataCenter">{{ item.price}}</td>
-
+                <tr >
+                    <td class="dataCenter"><input  disabled  type="text" class="form-group datePickerFormatEventPage dateInit" readonly></td>
+                    <td class="dataCenter">{{ exchangeData.blitCost}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -43,7 +33,7 @@
 
         <div class="col-xs-12 col-sm-12  floatRight textAlignRight">
             <h3 class="text-center">مکان رویداد</h3>
-            <p class="text-center">منطقه فلان، آدرس فلان، کوچه فلان، پلاک۲</p>
+            <p class="text-center">{{exchangeData.eventAddress}}</p>
             <div id="map" class="center-block">
             </div>
         </div>
