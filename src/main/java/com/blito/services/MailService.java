@@ -14,6 +14,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
 import com.blito.enums.Response;
+import com.blito.exceptions.SendingEmailException;
 import com.blito.models.User;
 import com.blito.resourceUtil.ResourceUtil;
 
@@ -41,7 +42,7 @@ public class MailService {
         context.setVariable("serverAddress",serverAddress);
         String content = templateEngine.process("activationEmail", context);
         System.out.println(content);
-        sendEmail(user.getEmail(), content);
+        sendEmail(user.getEmail(), content,ResourceUtil.getMessage(Response.ACTIVATE_ACCOUNT_EMAIL));
     }
 	
 	public void sendPasswordResetEmail(User user)
@@ -52,21 +53,22 @@ public class MailService {
 		context.setVariable("baseUrl", baseUrl);
 		context.setVariable("serverAddress", serverAddress);
 		String content = templateEngine.process("resetPasswordEmail", context);
-		sendEmail(user.getEmail(), content);
+		sendEmail(user.getEmail(), content,ResourceUtil.getMessage(Response.ACTIVATE_ACCOUNT_EMAIL));
 	}
 
-	public void sendEmail(String to,  String content) {
+	public void sendEmail(String to,  String content,String subject) {
 
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		try {
 			MimeMessageHelper message = new MimeMessageHelper(mimeMessage, CharEncoding.UTF_8);
 			message.setTo(to);
-			message.setSubject(ResourceUtil.getMessage(Response.ACTIVATE_ACCOUNT_EMAIL));
+			message.setSubject(subject);
 			message.setText(content, true);
 			javaMailSender.send(mimeMessage);
 			log.debug("Sent e-mail to User '{}'", to);
 		} catch (Exception e) {
 			log.warn("E-mail could not be sent to user '{}'", to, e);
+			throw new SendingEmailException(ResourceUtil.getMessage(Response.SENDING_EMAIL_ERROR));
 		}
 	}
 }

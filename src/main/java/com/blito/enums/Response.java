@@ -54,7 +54,9 @@ public enum Response {
 	EVENT_NOT_APPROVED("error.event.not.approved"),
 	FILE_UPLOAD_SIZE_EXCEEDS("error.file.upload.max.size.exceeds"), 
 	EXCHANGE_BLIT_LINK_EXISTS("error.exchange.blit.link.exists"),
-	BANK_GATEWAY_NOT_FOUND("error.bank.gateway.not.found");
+	BANK_GATEWAY_NOT_FOUND("error.bank.gateway.not.found"),
+	FORGET_PASS_EMAIL("forget.password.email"),
+	SENDING_EMAIL_ERROR("error.sending.email");
     
 
     private final String message;

@@ -20,6 +20,7 @@ import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.InternalServerException;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
+import com.blito.exceptions.SendingEmailException;
 import com.blito.exceptions.UnauthorizedException;
 import com.blito.exceptions.UserNotActivatedException;
 import com.blito.exceptions.WrongPasswordException;
@@ -41,7 +42,7 @@ public class GlobalControllerExceptionHandler {
 	@ResponseBody
 	@ExceptionHandler({ AlreadyExistsException.class, UserNotActivatedException.class,
 			WrongPasswordException.class, ValidationException.class, NotAllowedException.class,
-			InconsistentDataException.class })
+			InconsistentDataException.class , SendingEmailException.class})
 	public ExceptionViewModel badRequests(HttpServletRequest request, RuntimeException exception) {
 		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception);
 	}
