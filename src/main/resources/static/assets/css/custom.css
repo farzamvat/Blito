@@ -1407,12 +1407,15 @@ footer h6 {
     border-bottom: 1px dotted rgb(252, 183, 49);
 }
 .moreInfo h5 , .moreInfo h4{
-    font-size: 10px;
+    font-size: 8px;
     cursor: default;
     color: #000;
     display: block;
 }
-a{
+.dispNone {
+    display: none;
+}
+a {
     text-decoration: none !important;
 }
 

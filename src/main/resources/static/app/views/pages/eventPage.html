@@ -8,7 +8,7 @@
             <p>{{eventDataDetails.description}}</p>
 
 
-            <button data-toggle="modal" data-target="#buyTicket" class="btn btn-success buyTicket  marginTop10"><i class="fa fa-ticket" aria-hidden="true"></i>  خرید بلیت
+            <button ng-click="showBuyTicketModal()" class="btn btn-success buyTicket  marginTop10"><i class="fa fa-ticket" aria-hidden="true"></i>  خرید بلیت
 
             </button>
 
@@ -39,20 +39,20 @@
                         </tr>
                         </thead>
                         <tbody class="showTimeList">
-                        <tr ng-repeat="item in eventDataDetails.eventDates | filter:search">
+                        <tr ng-repeat="item in eventFlatDates | filter:search">
                             <td class="dataCenter"><input required  ng-class="setClass($index)" disabled  type="text" class="form-group datePickerFormatEventPage " readonly></td>
 
                             <td ng-if="item.price === 0" class="dataCenter">رایگان</td>
                             <td ng-if="item.price !== 0" class="dataCenter">{{ item.price}}</td>
 
                             <td class="dataCenter">{{ item.capacity}}</td>
-                            <td ng-if="item.eventState === 'OPEN'" class="dataCenter btn-success" >
+                            <td ng-if="item.blitTypeState === 'OPEN'" class="dataCenter btn-success" >
                                 فعال
                                 </td>
-                            <td ng-if="item.eventState === 'CLOSED'" class="dataCenter btn-danger">
+                            <td ng-if="item.blitTypeState === 'CLOSED'" class="dataCenter btn-danger">
                                 بسته
                                 </td>
-                            <td ng-if="item.eventState === 'SOLD'" class="dataCenter btn-danger">
+                            <td ng-if="item.blitTypeState === 'SOLD'" class="dataCenter btn-danger">
                                 فروخته شد
                                 </td>
                         </tr>
@@ -63,7 +63,6 @@
             </div>
         </div>
     </div>
-
     <div class="col-xs-12 col-sm-12 col-md-12 floatRight">
         <ul class="nav nav-tabs marginTop10">
             <li class="floatRight active"><a class="tabAnchor" data-toggle="tab" data-target="#home">اطلاعات رویداد <i class="fa fa-info"></i></a></li>

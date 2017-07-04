@@ -1562,6 +1562,22 @@ angular.module('User')
             $scope.eventStateSetting = $scope.userEvents[index].eventState;
 
             $("#settingModal").modal("show");
+            document.getElementsByClassName("deleteSpinner")[0].style.display = "none";
+        };
+        $scope.deleteEvent = function () {
+            document.getElementsByClassName("deleteSpinner")[0].style.display = "inline";
+            eventService.deleteEvent($scope.userEvents[settingIndex].eventId)
+                .then(function (data) {
+                    document.getElementsByClassName("deleteSpinner")[0].style.display = "none";
+                    document.getElementsByClassName("approveSuccessSetting")[0].style.display = "block";
+
+                })
+                .catch(function (data) {
+                    document.getElementsByClassName("deleteSpinner")[0].style.display = "none";
+                    document.getElementById("approveErrorSetting").innerHTML = data.data.message;
+                    document.getElementsByClassName("approveErrorSetting")[0].style.display = "block";
+
+                })
         };
         $scope.changeEventState = function (stateChange) {
             var stateData = {
@@ -1592,13 +1608,26 @@ angular.module('User')
             $scope.exchangeStateSetting = $scope.exchangeEditTickets[index].state;
 
             $("#settingExchangeModal").modal("show");
+            document.getElementsByClassName("deleteSpinner")[0].style.display = "none";
+        };
+        $scope.deleteExchange= function () {
+            document.getElementsByClassName("deleteSpinner")[0].style.display = "inline";
+            exchangeService.deleteExchange($scope.exchangeEditTickets[settingExchangeIndex].exchangeBlitId)
+                .then(function () {
+                    document.getElementsByClassName("approveSuccessSettingExchange")[0].style.display = "inline";
+                    document.getElementsByClassName("deleteSpinner")[0].style.display = "none";
+                })
+                .catch(function () {
+                    document.getElementById("approveErrorSettingExchange").innerHTML = data.data.message;
+                    document.getElementsByClassName("approveErrorSettingExchange")[0].style.display = "inline";
+                    document.getElementsByClassName("deleteSpinner")[0].style.display = "none";
+                })
         };
         $scope.changeExchangeState = function (stateChange) {
             var stateData = {
                 exchangeBlitId : $scope.exchangeEditTickets[settingExchangeIndex].exchangeBlitId,
                 state : stateChange
             };
-
             document.getElementsByClassName("exchangeStatusSpinner")[0].style.display = "inline";
             exchangeService.editExchangeState(stateData)
                 .then(function () {

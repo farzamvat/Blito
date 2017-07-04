@@ -3,7 +3,7 @@
  */
 
 angular.module('homePageModule', [])
-    .controller('homeCtrl', function ($scope, miniSliderService, photoService, indexBannerService, ourOffersService, $q,config) {
+    .controller('homeCtrl', function ($scope, miniSliderService, photoService, indexBannerService, ourOffersService, eventDetailService, $q,config) {
         $scope.concertRow = [];
         $scope.showImages = [[],[], [], []];
         $scope.bannerData = [];
@@ -21,6 +21,7 @@ angular.module('homePageModule', [])
         miniSliderService.getSlidingDataEvents("CONCERT", 6, false)
             .then(function (data) {
                 $scope.concertRow = $scope.catchImagesEvents(data.data.content, 0);
+                $scope.concertRow = $scope.concertRow.map(eventDetailService.calculateFreeBlits);
                 console.log($scope.concertRow);
             })
             .catch(function (data) {
@@ -29,6 +30,7 @@ angular.module('homePageModule', [])
         miniSliderService.getSlidingDataEvents("TOURISM", 6, false)
             .then(function (data) {
                 $scope.tourRow = $scope.catchImagesEvents(data.data.content, 1);
+                $scope.tourRow = $scope.tourRow.map(eventDetailService.calculateFreeBlits);
                 console.log(data);
             })
             .catch(function (data) {
@@ -37,6 +39,7 @@ angular.module('homePageModule', [])
         miniSliderService.getSlidingDataEvents("evento", 6, true)
             .then(function (data) {
                 $scope.evento = $scope.catchImagesEvents(data.data.content, 2);
+                $scope.evento = $scope.evento.map(eventDetailService.calculateFreeBlits);
                 console.log(data);
             })
             .catch(function (data) {

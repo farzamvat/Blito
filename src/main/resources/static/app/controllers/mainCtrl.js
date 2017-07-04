@@ -151,32 +151,6 @@ angular.module('menuPagesModule', [])
         $scope.isActive = function (viewLocation) {
             return viewLocation === $location.path();
         };
-        $scope.nextStep1 = function (eventInfo) {
-            $scope.totalPrice = eventInfo.ticketNumber * 10000;
-            angular.element(document.getElementsByClassName('progress-bar')).css('width', '50%');
-            angular.element(document.getElementById('ticketPay1')).removeClass('active');
-            angular.element(document.getElementById('selectTicket')).removeClass('active');
-            angular.element(document.getElementById('ticketPay2')).addClass('active').addClass('in');
-            angular.element(document.getElementById('payment')).addClass('active');
-        };
-        $scope.prevStep1 = function () {
-            angular.element(document.getElementsByClassName('progress-bar')).css('width', '0');
-            angular.element(document.getElementById('ticketPay1')).addClass('active').addClass('in');
-            angular.element(document.getElementById('selectTicket')).addClass('active');
-            angular.element(document.getElementById('ticketPay2')).removeClass('active');
 
-            angular.element(document.getElementById('payment')).removeClass('active');
-        };
-        $scope.nextStep2 = function () {
-            angular.element(document.getElementsByClassName('progress-bar')).css('width', '100%');
-            angular.element(document.getElementById('ticketPay2')).removeClass('active');
-            angular.element(document.getElementById('payment')).removeClass('active');
-            angular.element(document.getElementById('ticketPay3')).addClass('active').addClass('in');
-            angular.element(document.getElementById('paymentComplete')).addClass('active');
-
-        };
-        $scope.hideTicketPaymentModal = function () {
-            $("#buyTicket").modal("hide");
-        }
     });
 

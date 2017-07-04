@@ -36,11 +36,14 @@ angular.module('userProfileApi', [])
         event.editEvent = function (editData) {
             return $http.put(config.baseUrl+'/api/blito/v1.0/events', editData)
         };
+        event.deleteEvent = function (eventId) {
+            return $http.delete(config.baseUrl+'/api/blito/v1.0/events/'+eventId)
+        };
         event.editEventState = function (stateChange) {
             return $http.put(config.baseUrl+'/api/blito/v1.0/events/change-event-state', stateChange)
         };
         event.getEvent = function (eventLink) {
-            return $http.get(config.baseUrl+'/api/blito/v1.0/public/events/flat/link/'+eventLink)
+            return $http.get(config.baseUrl+'/api/blito/v1.0/public/events/link/'+eventLink)
         };
         event.getEventsByType = function (type, page) {
             var queryParam = {
@@ -65,7 +68,9 @@ angular.module('userProfileApi', [])
         exchange.submitExchangeForm = function (exchangeData) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/exchange-blits', exchangeData)
         };
-
+        exchange.deleteExchange = function (exchangeId) {
+            return $http.delete(config.baseUrl+'/api/blito/v1.0/exchange-blits/'+exchangeId)
+        };
         exchange.getExchangeTickets = function (page) {
             var queryParam = {
                 params : {page: page-1, size: 4}
@@ -95,9 +100,14 @@ angular.module('userProfileApi', [])
             return $http.post(config.baseUrl+'/api/blito/v1.0/public/exchange-blits/search', bodyJson,queryParam);
         };
     })
+    .service('ticketsService', function ($http, config) {
+        var ticket = this;
+        ticket.buyTicket = function (ticketInfo) {
+            return $http.post(config.baseUrl+'/api/blito/v1.0/blits/buy-request', ticketInfo)
+        };
+    })
     .service('plannerService', function ($http, config) {
         var planner = this;
-
         planner.getPlanners = function (page) {
             var queryParam = {
                 params : {page: page-1, size: 4}

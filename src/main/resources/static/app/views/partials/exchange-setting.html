@@ -27,6 +27,14 @@
                             <button id="settingEventStatus"  ng-click="changeExchangeState(exchangeStateSetting)" class="btn btn-success btn-lg adminStatus">اعمال  <i class="fa fa-spinner fa-spin exchangeStatusSpinner"></i></button>
                         </div>
                     </div>
+                    <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
+                        <div class="col-xs-11 floatRight text-center">
+                            <label class="registerLabel floatRight textAlignRight" >پاک کردن رویداد</label>
+                        </div>
+                        <div class="col-xs-11  floatRight ">
+                            <button ng-click="deleteExchange()" type="button" class="btn btn-danger adminStatus floatRight" ><i class="fa fa-trash"></i><i  class="fa fa-spinner fa-spin dispNone deleteSpinner"></i></button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

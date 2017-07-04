@@ -47,12 +47,6 @@ angular.module('UiServices', [])
             mapMarkerOnlyShow(map);
 
         }
-        // mapMarkerService.deleteMarkers = function () {
-        //     for (var i = 0; i < markers.length; i++) {
-        //         markers[i].setMap(null);
-        //     }
-        //     markers = [];
-        // }
 
         var mapMarker = function (map) {
 
@@ -132,6 +126,22 @@ angular.module('UiServices', [])
                 console.log(err);
             }
         }
+    })
+    .service('eventDetailService', function () {
+        var eventDetail = this;
+        var soldCount = 0, capacity = 0;
+        eventDetail.calculateFreeBlits = function (event) {
+            event.eventDates.forEach(function (blit) {
+                capacity +=blit.capacity;
+                soldCount +=blit.soldCount;
+            })
+            event.capacity = capacity;
+            event.soldCount = soldCount;
+            return event
+        }
+
+
+
     })
     .service('dateSetterService', function () {
         var dateSetter = this;
