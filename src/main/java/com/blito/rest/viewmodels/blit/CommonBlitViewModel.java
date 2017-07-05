@@ -2,8 +2,6 @@ package com.blito.rest.viewmodels.blit;
 
 import java.sql.Timestamp;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -11,8 +9,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.blito.annotations.Email;
 import com.blito.annotations.MobileNumber;
 import com.blito.enums.BankGateway;
-import com.blito.enums.SeatType;
 import com.blito.enums.PaymentStatus;
+import com.blito.enums.SeatType;
 import com.blito.rest.viewmodels.View;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -22,13 +20,11 @@ public class CommonBlitViewModel {
 	
 	Timestamp createdAt;
 	
-	@NotEmpty
+	@NotNull
 	@JsonView(View.SimpleBlit.class)
 	long blitTypeId;
 	
 	@JsonView(View.SimpleBlit.class)
-	@Min(1)
-	@Max(10)
 	int count;
 	
 	@JsonView(View.SimpleBlit.class)
