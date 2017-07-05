@@ -15,6 +15,10 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 templateUrl : 'app/views/pages/home.html',
                 authenticated: false
             })
+            .when('/not-found', {
+                templateUrl : 'app/views/error-pages/404page.html',
+                authenticated: false
+            })
             .when('/sports', {
                 templateUrl : 'app/views/pages/eventList.html',
                 authenticated: false

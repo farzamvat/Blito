@@ -1119,6 +1119,79 @@ dir-pagination-controls ul {
     animation-delay: -0.20s;
 }
 
+.notFoundContainer{
+    background: #efefef;
+    border-bottom: 1px solid #222;
+    max-height: 350px;
+}
+.notFountLogo{
+    width: 100%;
+    margin-right: -10%;
+    margin-left: auto;
+    display: block;
+    margin-top: 104px;
+    transform: rotate(180deg);
+
+}
+.curved-line {
+    width: 50%;
+    height: 29px;
+    border: solid 7px #666;
+    border-color: #444 transparent transparent transparent;
+    border-radius: 50%/100% 100% 0 0;
+    margin-left: 30%;
+    margin-top: 17%;
+    position: relative;
+}
+
+.curved-line:before {
+    content: '';
+    position: absolute;
+    top: 70%;
+    left: -5px;
+    width: 7px;
+    height: 8px;
+    border-radius: 50%;
+    background: #444;
+}
+
+.curved-line:after {
+    content: '';
+    position: absolute;
+    top: 70%;
+    right: -5px;
+    width: 7px;
+    height: 8px;
+    border-radius: 50%;
+    background: #444;
+}
+.right{
+    float:right;
+}
+.notFountTextContainer{
+    margin-top: 115px;
+    text-align: right;
+
+}
+.notFountTextContainer h5{
+    margin-right:30px;
+    margin-top: -7px;
+    color: #555;
+}
+.notFountTextContainer h3{
+    border-bottom: 1px solid #ddd;
+    line-height: 55px;
+    color:#444;
+
+}
+.beautifier{
+    position: static;
+    width: 100px;
+    float: left;
+    display: inline-block;
+    height: 1000px;
+    background: #666;
+}
 @-webkit-keyframes sk-bouncedelay {
     0%, 80%, 100% {
         -webkit-transform: scale(0);
@@ -1429,8 +1502,9 @@ a {
     transform: skew(15deg);
 }
 
-
-
+.marginRight100{
+    margin-right: 100px;
+}
 @media (max-width: 770px) {
     .navbar-header-backcolor{
         width: 172px !important;
