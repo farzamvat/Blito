@@ -25,7 +25,7 @@ angular.module('Blito',
         $httpProvider.interceptors.push('AuthInterceptors');
     })
     .constant('config', {
-        baseUrl : 'http://bili.to',
+        baseUrl : 'https://bili.to',
         redirectToUrlAfterLogin : {url : '/'}
     })
 ;
