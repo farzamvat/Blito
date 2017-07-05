@@ -3,74 +3,83 @@
  */
 
 angular.module('eventsPageModule', [])
-    .controller('eventsListPageCtrl', function ($scope, $location) {
+    .controller('eventsListPageCtrl', function ($scope, $location, eventService, photoService, eventDetailService) {
 
+        $scope.url = "http://localhost:3000"+"/event-page/";
 
-
+        $scope.getEventsByTypeData = function (type,page) {
+            eventService.getEventsByType(type, page)
+                .then(function (data) {
+                    $scope.totalEventsNumber = data.data.totalElements;
+                    $scope.eventList = $scope.catchImagesEvents(data.data.content);
+                    $scope.eventList = $scope.eventList.map(eventDetailService.calculateFreeBlits);
+                    console.log($scope.eventList);
+                })
+                .catch(function (data) {
+                    console.log(data)
+                });
+        };
         switch($location.path()) {
-            case '/recent-events':
+            case '/sports':
                 $scope.pageTitle = "ورزشی";
-                $scope.pageHeaderMenu = [{title : "سینما", link : '/cinema'},{title : "تئاتر", link : '/theater'},{title : "کافه", link : '/cafe'} , {title : "تور", link : '/cinema'}, {title : "ورزشی", link : '/cinema'}];
+                $scope.type = "SPORT";
+                $scope.getEventsByTypeData("SPORT", 1);
                 break;
             case '/cinema':
                 $scope.pageTitle = "سینما";
-                $scope.pageHeaderMenu = [{title : "ورزشی", link : '/recent-events'},{title : "تئاتر", link : '/theater'},{title : "کافه", link : '/cafe'} , {title : "تور", link : '/cinema'}, {title : "ورزشی", link : '/cinema'}];
+                $scope.type = "CINEMA";
+                $scope.getEventsByTypeData("CINEMA", 1);
                 break;
             case '/theater':
                 $scope.pageTitle = "تئاتر";
-                $scope.pageHeaderMenu = [{title : "ورزشی", link : '/recent-events'},{title : "سینما", link : '/cinema'},{title : "کافه", link : '/cafe'} , {title : "تور", link : '/cinema'}, {title : "ورزشی", link : '/cinema'}];
+                $scope.type = "THEATER";
+                $scope.getEventsByTypeData("THEATER", 1);
                 break;
-            case '/cafe':
-                $scope.pageTitle = "کافه";
-                $scope.pageHeaderMenu = [{title : "ورزشی", link : '/recent-events'},{title : "سینما", link : '/cinema'},{title : "تئاتر", link : '/theater'} , {title : "تور", link : '/cinema'}, {title : "ورزشی", link : '/cinema'}];
+            case '/workshop':
+                $scope.pageTitle = "کارگاه";
+                $scope.type = "WORKSHOP";
+                $scope.getEventsByTypeData("WORKSHOP", 1);
                 break;
-            case '/cinemaExchange':
-                $scope.pageTitle = "بلیت های تعویض سینما";
+            case '/tour':
+                $scope.pageTitle = "تور";
+                $scope.type = "TOURISM";
+                $scope.getEventsByTypeData("TOURISM", 1);
                 break;
-            case '/theaterExchange':
-                $scope.pageTitle = "بلیت های تعویض تئاتر";
+            case '/concert':
+                $scope.pageTitle = "کنسرت";
+                $scope.type = "CONCERT";
+                $scope.getEventsByTypeData("CONCERT", 1);
                 break;
-            case '/cafeExchange':
-                $scope.pageTitle = "بلیت های تعویض کافه";
+            case '/other':
+                $scope.pageTitle = "سایر";
+                $scope.type = "OTHER";
+                $scope.getEventsByTypeData("OTHER", 1);
                 break;
             default:
                 break;
         }
+        $scope.pageChanged = function (newPage) {
+            $scope.getEventsByTypeData($scope.type, newPage);
+        };
 
 
-        $scope.eventList = [
-            { title: "نام رویداد", img: "assets/img/a.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"},
-            { title: "نام رویداد", img: "assets/img/b.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"},
-            { title: "نام رویداد", img: "assets/img/c.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"},
-            { title: "نام رویداد", img: "assets/img/d.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"},
-            { title: "نام رویداد", img: "assets/img/e.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"},
-            { title: "نام رویداد", img: "assets/img/f.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"},
-            { title: "نام رویداد", img: "assets/img/a.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"},
-            { title: "نام رویداد", img: "assets/img/b.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"},
-            { title: "نام رویداد", img: "assets/img/c.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"},
-            { title: "نام رویداد", img: "assets/img/c.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"},
-            { title: "نام رویداد", img: "assets/img/a.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"},
-            { title: "نام رویداد", img: "assets/img/b.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"},
-            { title: "نام رویداد", img: "assets/img/b.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"},
-            { title: "نام رویداد", img: "assets/img/c.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"},
-            { title: "نام رویداد", img: "assets/img/c.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"},
-            { title: "نام رویداد", img: "assets/img/a.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"},
-            { title: "نام رویداد", img: "assets/img/b.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"},
-            { title: "نام رویداد", img: "assets/img/b.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"},
-            { title: "نام رویداد", img: "assets/img/c.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"},
-            { title: "نام رویداد", img: "assets/img/c.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"},
-            { title: "نام رویداد", img: "assets/img/a.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"},
-            { title: "نام رویداد", img: "assets/img/b.jpeg",view : 107, sold : 24, link: "/event-page", desc: " توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد توضیحات در مورد رویداد"}
+        $scope.catchImagesEvents = function (events) {
+            return events.map(function (item) {
+                var newSet =  item.images.filter(function (image) {
+                    return image.type === "EVENT_PHOTO";
+                });
+                photoService.download(newSet[0].imageUUID)
+                    .then(function (data, status) {
+                        item.image = data.data.encodedBase64;
+                    })
+                    .catch(function (data, status) {
+                        console.log(data);
+                    });
+                return item;
 
-        ];
+            });
+        };
 
-        // $scope.showDescription = function (event) {
-        //     console.log(angular.element(event.target).children());
-        //     $(angular.element(event.target).children()[2]).slideDown(150);
-        // }
-        // $scope.hideDescription = function (event) {
-        //     $(angular.element(event.target).children()[2]).slideUp(150);
-        // }
 
         $scope.currentPage = 1;
     });

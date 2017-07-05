@@ -17,13 +17,17 @@ angular.module('Blito',
         'animationServices',
         'UiServices',
         'userProfileApi',
-        'exchangesPageModule'
+        'exchangesPageModule',
+        'homePageApi',
+        'notFound'
     ])
     .config(function ($httpProvider) {
         $httpProvider.interceptors.push('AuthInterceptors');
     })
     .constant('config', {
-        baseUrl : 'http://138.201.143.76:80',
+        baseUrl : 'http://bili.to',
         redirectToUrlAfterLogin : {url : '/'}
     })
 ;
+
+// http://138.201.143.76/

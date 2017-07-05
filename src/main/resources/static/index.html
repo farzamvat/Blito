@@ -35,6 +35,8 @@
 
     <!-- jalali date-picker -->
     <link rel="stylesheet" href="bower_components/persian-datepicker/dist/css/persian-datepicker-0.4.5.min.css"/>
+    <link rel="stylesheet" href="bower_components/persian-datepicker/dist/css/theme/persian-datepicker-dark.css"/>
+
     <script src="bower_components/persian-datepicker/lib/persian-date.js"></script>
     <script src="bower_components/persian-datepicker/dist/js/persian-datepicker-0.4.5.min.js"></script>
 
@@ -52,6 +54,7 @@
     <script type="text/javascript" src="app/controllers/userProfileCtrl.js"></script>
     <script type="text/javascript" src="app/controllers/exchangeList.js"></script>
     <script type="text/javascript" src="app/controllers/exchange-page-ctrl.js"></script>
+    <script type="text/javascript" src="app/controllers/not-found-ctrl.js"></script>
 
 
     <!-- angular services-->
@@ -59,6 +62,7 @@
     <script type="text/javascript" src="app/services/animate-services.js"></script>
     <script type="text/javascript" src="app/services/ui-services.js"></script>
     <script type="text/javascript" src="app/services/user-profile-api-services.js"></script>
+    <script type="text/javascript" src="app/services/home-page-services.js"></script>
 
     <!-- angular directives-->
     <script type="text/javascript" src="app/directives/changeClassBySize.js"></script>
@@ -70,29 +74,36 @@
 
 <!-- Fixed navbar -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-header">
+
+
+    <div class="navbar-header">
             <button  type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-
-            <img href="/" src="assets/img/logo.png" alt=""/>
+        <span class= "navbar-header navbar-header-backcolor">
+        <img href="/" src="assets/img/logo.png" alt=""/>
             <a class="navbar-brand" href="/" ></a>
+            </span>
         </div>
         <div id="navbar" class="navbar-collapse collapse ">
             <ul class="nav navbar-nav floatRight textAlignRight">
                 <li ng-show="logoutMenu" class="floatRight" ng-class="{ active: isActive('/user-profile')}"><a class="" href="/user-profile"><i class="fa fa-user" aria-hidden="true"></i>  {{firstname}} {{lastname}} </a></li>
                 <li class="floatRight" ng-class="{ active: isActive('/')}"><a class="" href="/"><i class="fa fa-home" aria-hidden="true"></i> خانه </a></li>
-                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema') || isActive('/recent-events') || isActive('/theater') || isActive('/cafe')}">
+                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema') || isActive('/sports') || isActive('/theater') || isActive('/concert') || isActive('/other') || isActive('/tour') || isActive('/workshop')}">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-calendar" aria-hidden="true"></i> رویداد ها   <span class="caret"></span></a>
                     <ul class="dropdown-menu textAlignRight">
-                        <li><a href="/recent-events"> ورزشی</a></li>
-                        <li><a href="/cinema">سینما</a></li>
                         <!--<li role="separator" class="divider"></li>-->
+                        <li><a href="/concert">کنسرت</a></li>
+                        <li><a href="/tour">تور</a></li>
                         <li><a href="/theater">تئاتر</a></li>
-                        <li><a href="/cafe">کافه</a></li>
+                        <li><a href="/workshop">کارگاه</a></li>
+                        <li><a href="/sports"> ورزشی</a></li>
+                        <li><a href="/cinema">سینما</a></li>
+                        <li><a href="/other">سایر</a></li>
+
                         <!--<li class="dropdown-header">Nav header</li>-->
                         <!--<li><a href="#">Separated link</a></li>-->
                         <!--<li><a href="#">One more separated link</a></li>-->

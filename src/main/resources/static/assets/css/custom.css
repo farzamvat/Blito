@@ -1,6 +1,10 @@
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none !important;
 }
+@font-face {
+    font-family: "Iranian Sans";
+    src: url("../fonts/website-fonts/irsans.ttf");
+}
 body, html {
     font-family: "iranian Sans" !important;
     max-width: 100%;
@@ -108,10 +112,12 @@ color: white !important;
     bottom: 45%;
 }
 .slickSliders {
+
     border-top: 3px solid rgb(252, 183, 49);
     /*border-bottom: 3px solid rgb(252, 183, 49);*/
     padding: 20px 5px;
 }
+
 .slick-next, .slick-prev {
     top: 10%;
     border-radius: 5px;
@@ -282,23 +288,25 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     color: #777;
 }
 .pageHeaderLinks {
-    border-bottom: 2px solid #303030;
-    padding-bottom: 10px;
+    /*border-bottom: 2px solid #303030;*/
+
+    padding: 5px 1px;
     font-size: 14px;
+}
+.pageHeaderLinksDiv {
+    background-color: rgb(252, 183, 49);
+    border-radius: 2px;
+    margin-left: 10px;
 }
 .eventListHeader {
     font-size: 22px;
 }
-.eventListAnchor:hover {
+.eventListAnchor {
+    color: black;
     text-decoration: none;
-    color: rgb(252, 183, 49);
 }
-.eventListAnchor:active{
-    color: #777 !important;
-}
-.eventListAnchor:visited {
-    color: #777 !important;
-}
+
+
 /*-----------------------make event form styles-------------------------------------*/
 .makeEventForm {
     border-bottom-left-radius: 3px;
@@ -311,12 +319,25 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     border-bottom-right-radius: 3px;
     border: 1px solid #909090;
 }
+.EmakeEventPlannerForm {
+    display: none;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border: 1px solid #909090;
+}
 
 .makeEventFormHeader {
     color: white;
     background-color: #777;
 }
 .makeEventFormHeader:hover {
+    cursor: pointer;
+}
+.EmakeEventFormHeader {
+    color: white;
+    background-color: #777;
+}
+.EmakeEventFormHeader:hover {
     cursor: pointer;
 }
 .legendStyle {
@@ -346,6 +367,13 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 }
 .mapInput {
     margin-right: 20px;
+}
+#photoGallery {
+    width: 80%;
+    margin: 10px auto;
+}
+.carouselGallery .item img {
+    height: 300px !important;
 }
 /*------------------------------------------------------------*/
 /*-------------------------------- USER PROFILE PAGE -------------------------------- */
@@ -469,7 +497,10 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 .slidingEventsBtn {
     margin-top: 10px;
     margin-bottom: 10px;
-    font-size: 14px;
+    margin-right: auto;
+    margin-left: auto;
+    width: 106px;
+    font-size: 10px;
 }
 
 .exchangeTicketText {
@@ -552,6 +583,20 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     padding-right: 5px;
     text-align: center;
     color: black;
+}
+.datePickerFormatEventPage {
+    width: 100%;
+    direction: ltr;
+    border: none;
+    border-radius: 3px;
+    height: 25px !important;
+    font-size: 12px;
+    padding-right: 5px;
+    text-align: center;
+    color: black;
+}
+.eventPageListTitle {
+    font-size: 10px !important;
 }
 .editDataInput {
     width: 50%;
@@ -660,10 +705,10 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 .imgRelative {
     border-top: 3px solid #303030;
     border-bottom: 3px solid #303030;
-    position: relative;
     overflow: hidden;
     background-color: #eee;
     height: 400px;
+    width: 100%;
 }
 
 .btnExchangeTicket {
@@ -677,7 +722,7 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     z-index: 0;
 }
 .buyTicketBanner {
-    border: 1px solid #202020;
+    /*border: 1px solid #202020;*/
     position: absolute;
     z-index: 100;
     bottom: 10%;
@@ -738,14 +783,14 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
     width: auto;
     cursor: pointer;
     border: none;
-    background: #ddd;
+    /*background: #ddd;*/
     border-radius: 5px;
     transition: 500ms;
     /*background-color: #ddd; !* For browsers that do not support gradients *!*/
     /*background: -webkit-linear-gradient(#ddd 5%, #303030 25%, #1E90FF 50%); !* For Safari 5.1 to 6.0 *!*/
     /*background: -o-linear-gradient(#ddd 5%, #303030 25%, #1E90FF 50%); !* For Opera 11.1 to 12.0 *!*/
     /*background: -moz-linear-gradient(#ddd 5%, #303030 25%, #1E90FF 50%); !* For Firefox 3.6 to 15 *!*/
-    background: radial-gradient(circle at center, #ddd 80%, rgba(30,30,30, 0) 100%);
+    /*background: radial-gradient(circle at center, #ddd 80%, rgba(30,30,30, 0) 100%);*/
 
 }
 
@@ -805,12 +850,13 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
     color: rgb(252, 183, 49);
 }
 .eventsPageRows {
-    margin-top: 50px;
+    margin-top: 30px;
     margin-bottom: 20px;
 }
 .eventsPageRows h1 {
     border-bottom: 3px solid rgb(252, 183, 49);
     padding-bottom: 10px;
+
 }
 .colorRed {
     color: red;
@@ -831,10 +877,23 @@ dir-pagination-controls .pagination {
     justify-content: center;
 }
 dir-pagination-controls ul {
-    display: block !important;
-    margin: 0 auto !important;
-    width: 200px;
-    height: 40px;
+    /*display: block !important;*/
+    /*margin: 0 auto !important;*/
+    /*!*width: 200px;*!*/
+    /*height: 40px;*/
+    width: 500px;
+}
+#eventPlannerPhotoUpload {
+    width: 100px;
+}
+.eventPlannerPhotoUploadEdit {
+    width: 100px;
+}
+.coverPhotoUploadEdit {
+    width: 100px;
+}
+.coverPhotoUpload {
+    width: 100px;
 }
 .eventContent  button {
     padding: 20px 40px;
@@ -1064,6 +1123,79 @@ dir-pagination-controls ul {
     animation-delay: -0.20s;
 }
 
+.notFoundContainer{
+    background: #efefef;
+    border-bottom: 1px solid #222;
+    max-height: 350px;
+}
+.notFountLogo{
+    width: 100%;
+    margin-right: -10%;
+    margin-left: auto;
+    display: block;
+    margin-top: 104px;
+    transform: rotate(180deg);
+
+}
+.curved-line {
+    width: 50%;
+    height: 29px;
+    border: solid 7px #666;
+    border-color: #444 transparent transparent transparent;
+    border-radius: 50%/100% 100% 0 0;
+    margin-left: 30%;
+    margin-top: 17%;
+    position: relative;
+}
+
+.curved-line:before {
+    content: '';
+    position: absolute;
+    top: 70%;
+    left: -5px;
+    width: 7px;
+    height: 8px;
+    border-radius: 50%;
+    background: #444;
+}
+
+.curved-line:after {
+    content: '';
+    position: absolute;
+    top: 70%;
+    right: -5px;
+    width: 7px;
+    height: 8px;
+    border-radius: 50%;
+    background: #444;
+}
+.right{
+    float:right;
+}
+.notFountTextContainer{
+    margin-top: 115px;
+    text-align: right;
+
+}
+.notFountTextContainer h5{
+    margin-right:30px;
+    margin-top: -7px;
+    color: #555;
+}
+.notFountTextContainer h3{
+    border-bottom: 1px solid #ddd;
+    line-height: 55px;
+    color:#444;
+
+}
+.beautifier{
+    position: static;
+    width: 100px;
+    float: left;
+    display: inline-block;
+    height: 1000px;
+    background: #666;
+}
 @-webkit-keyframes sk-bouncedelay {
     0%, 80%, 100% {
         -webkit-transform: scale(0);
@@ -1308,6 +1440,88 @@ footer h6 {
 .bottom_ul li:after { content:"/"; color:#FFF; margin-right:8px; margin-left:8px;}
 .bottom_ul li a { color:#FFF;  font-size:12px;}
 
+
+/*siaaaaa*/
+.slidingEventsImg img{
+    transition: .5s;
+}
+.slidingEventsImg img:hover{
+    transform: scale(1.4);
+}
+.slidingEventsImg .moreInfo{
+    pointer-events: none;
+}
+.slidingEventsImg img:hover + .moreInfo {
+    opacity: 1;
+    transform: scale(1.4);
+}
+.blitoOfferMain {
+    overflow: hidden;
+
+}
+.marginTop33{
+    margin-top: 33px;
+}
+.moreInfo{
+    transition: .5s;
+    opacity: 0;
+    width: 106px;
+    height: 70px;
+    background: rgba(252, 183, 49, 0.9);
+    zoom: 1;
+    overflow: hidden;
+    position: relative;
+    bottom: 100px;
+    margin-bottom:-90px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 90px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 30px;
+    border-bottom: 1px dotted rgb(252, 183, 49);
+}
+.moreInfo h5 , .moreInfo h4{
+    font-size: 8px;
+    cursor: default;
+    color: #000;
+    display: block;
+}
+.dispNone {
+    display: none;
+}
+a {
+    text-decoration: none !important;
+}
+
+.navbar-header-backcolor{
+    background: rgb(252, 183, 49);
+    transform: skew(-15deg);
+    width: 116px;
+    margin-left: -5px;
+    display: inline-block;
+}
+.navbar-header>img{
+    margin-left: 21.5px;
+    transform: skew(15deg);
+}
+
+.marginRight100{
+    margin-right: 100px;
+}
+@media (max-width: 770px) {
+    .navbar-header-backcolor{
+        width: 172px !important;
+        margin-left: -8px !important;
+    }
+    .navbar-header>img{
+        margin-left: 21.5px;
+        transform: skew(15deg);
+    }
+
+}
+
+
 @media (max-width: 570px) {
     .carousel-caption h1 {
         font-size: 18px;
@@ -1355,6 +1569,9 @@ footer h6 {
 
 
 @media (max-width: 768px) {
+    .pageHeaderLinksDiv {
+        margin-left: 0;
+    }
     .recipe .name {
         bottom:20px;
         left: 10px;
@@ -1579,3 +1796,4 @@ footer h6 {
         font-size:16px;
     }
 }
+

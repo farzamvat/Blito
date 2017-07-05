@@ -37,12 +37,16 @@ angular.module('UiServices', [])
             mapMarker(map);
 
         }
-        // mapMarkerService.deleteMarkers = function () {
-        //     for (var i = 0; i < markers.length; i++) {
-        //         markers[i].setMap(null);
-        //     }
-        //     markers = [];
-        // }
+        mapMarkerService.initMapOnlyShowMarker = function (mapInput) {
+
+            try {
+                map = new google.maps.Map(mapInput, mapOptions);
+            } catch(err) {
+                console.log(err);
+            }
+            mapMarkerOnlyShow(map);
+
+        }
 
         var mapMarker = function (map) {
 
@@ -85,6 +89,86 @@ angular.module('UiServices', [])
                 console.log(err);
             }
         }
+        var mapMarkerOnlyShow = function (map) {
+
+            markers = [];
+            try {
+                $timeout(function () {
+                    try {
+                        google.maps.event.trigger(map, 'resize');
+                    } catch (err) {
+                        console.log(err);
+                    }
+                }, 300);
+
+                $timeout(function () {
+                    mapMarkerService.placeMarker(latitudeLongtitude, map);
+                    map.setCenter(new google.maps.LatLng(latitudeLongtitude.lat, latitudeLongtitude.lng));
+                }, 600);
+
+
+                mapMarkerService.placeMarker = function (latLong, map) {
+
+                    var marker = new google.maps.Marker({
+                        position: latLong,
+                        map: map
+                    });
+
+                    markers.push(marker);
+                    if (markers.length > 1) {
+                        markers[0].setMap(null);
+                        markers.shift();
+                    }
+
+
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        }
+    })
+    .service('eventDetailService', function () {
+        var eventDetail = this;
+        var soldCount = 0, capacity = 0;
+        eventDetail.calculateFreeBlits = function (event) {
+            event.eventDates.forEach(function (blit) {
+                capacity +=blit.capacity;
+                soldCount +=blit.soldCount;
+            })
+            event.capacity = capacity;
+            event.soldCount = soldCount;
+            return event
+        }
+
+
+
+    })
+    .service('dateSetterService', function () {
+        var dateSetter = this;
+        dateSetter.persianToArray = function (date) {
+            var dateArray = [];
+            dateArray.push(date.year);
+            dateArray.push(date.month);
+            dateArray.push(date.date);
+            dateArray.push(date.hours);
+            dateArray.push(date.minutes);
+            dateArray.push(date.seconds);
+            dateArray.push(date.milliseconds);
+            dateArray = dateArray.map(function (item) {
+                return parseInt(item);
+            });
+
+            return dateArray;
+        };
+        dateSetter.persianToMs = function (date) {
+            var newData = date.replace(/[^\w\s]/gi , ' ').split(" ");
+            newData.pop();
+            newData = newData.map(function (item) {
+                return parseInt(item);
+            });
+            date = persianDate(newData).gDate.getTime();
+            return date;
+        };
     })
     .service('dataService', function () {
         var data = this;
@@ -173,6 +257,19 @@ angular.module('UiServices', [])
 
             }
             return persianOperatorState;
+        }
+        data.mapToPersianEvent = function (item) {
+            item.eventState = data.stateTypePersian(item.eventState);
+            item.eventType = data.eventTypePersian(item.eventType);
+            item.operatorState = data.operatorStatePersian(item.operatorState);
+            return item;
+        }
+
+        data.mapToPersianExchange = function (item) {
+            item.operatorState = data.operatorStatePersian(item.operatorState);
+            item.state = data.stateTypePersian(item.state);
+            item.type = data.eventTypePersian(item.type);
+            return item;
         }
 
     })
