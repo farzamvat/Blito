@@ -26,7 +26,8 @@
                     <table class="table">
                         <thead class="tableHeader">
                         <tr>
-
+                            <th class="dataCenter eventPageListTitle">نام بلیت
+                            </th>
                             <th class="dataCenter eventPageListTitle">روز و ساعت
                             </th>
 
@@ -40,12 +41,15 @@
                         </thead>
                         <tbody class="showTimeList">
                         <tr ng-repeat="item in eventFlatDates | filter:search">
-                            <td class="dataCenter"><input required  ng-class="setClass($index)" disabled  type="text" class="form-group datePickerFormatEventPage " readonly></td>
+                            <td  class="dataCenter">
+                                {{item.name}}
+                            </td>
+                            <td class="dataCenter"><input required  ng-class="setClass($index)"  disabled  type="text" class="form-group datePickerFormatEventPage " readonly></td>
 
                             <td ng-if="item.price === 0" class="dataCenter">رایگان</td>
                             <td ng-if="item.price !== 0" class="dataCenter">{{ item.price}}</td>
 
-                            <td class="dataCenter">{{ item.capacity}}</td>
+                            <td class="dataCenter">{{ item.capacity - item.soldCount}}</td>
                             <td ng-if="item.blitTypeState === 'OPEN'" class="dataCenter btn-success" >
                                 فعال
                                 </td>
