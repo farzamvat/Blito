@@ -1,5 +1,8 @@
 package com.blito.services;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang3.CharEncoding;
@@ -10,13 +13,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.context.Context;
-import org.thymeleaf.spring4.SpringTemplateEngine;
 
 import com.blito.enums.Response;
 import com.blito.exceptions.SendingEmailException;
 import com.blito.models.User;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.view.HtmlRenderer;
 
 @Service
 public class MailService {
@@ -32,15 +34,15 @@ public class MailService {
 	private JavaMailSenderImpl javaMailSender;
 
 	@Autowired
-	private SpringTemplateEngine templateEngine;
+	private HtmlRenderer htmlRenderer;
 
 	public void sendActivationEmail(User user) {
         log.debug("Sending user activation e-mail to '{}'", user.getEmail());
-        Context context = new Context();
-        context.setVariable("user", user);
-        context.setVariable("baseUrl", baseUrl);
-        context.setVariable("serverAddress",serverAddress);
-        String content = templateEngine.process("activationEmail", context);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("user", user);
+        map.put("baseUrl", baseUrl);
+        map.put("serverAddress",serverAddress);
+        String content = htmlRenderer.renderHtml("activationEmail", map);
         System.out.println(content);
         sendEmail(user.getEmail(), content,ResourceUtil.getMessage(Response.ACTIVATE_ACCOUNT_EMAIL));
     }
@@ -48,12 +50,12 @@ public class MailService {
 	public void sendPasswordResetEmail(User user)
 	{
 		log.debug("Sending user reset password e-mail to '{}'", user.getEmail());
-		Context context = new Context();
-		context.setVariable("user", user);
-		context.setVariable("baseUrl", baseUrl);
-		context.setVariable("serverAddress", serverAddress);
-		String content = templateEngine.process("resetPasswordEmail", context);
-		sendEmail(user.getEmail(), content,ResourceUtil.getMessage(Response.ACTIVATE_ACCOUNT_EMAIL));
+		Map<String, Object> map = new HashMap<String, Object>();
+        map.put("user", user);
+        map.put("baseUrl", baseUrl);
+        map.put("serverAddress",serverAddress);
+        String content = htmlRenderer.renderHtml("resetPasswordEmail", map);
+        sendEmail(user.getEmail(), content,ResourceUtil.getMessage(Response.ACTIVATE_ACCOUNT_EMAIL));
 	}
 
 	public void sendEmail(String to,  String content,String subject) {

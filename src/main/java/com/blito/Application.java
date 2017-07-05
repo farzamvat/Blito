@@ -18,6 +18,7 @@ public class Application {
 	
 	@Autowired Initiallizer initializer;
 
+
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}

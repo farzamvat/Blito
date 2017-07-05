@@ -20,6 +20,7 @@ public class ThymeleafConfiguration {
         ClassLoaderTemplateResolver emailTemplateResolver = new ClassLoaderTemplateResolver();
         emailTemplateResolver.setPrefix("static/");
         emailTemplateResolver.setSuffix(".html");
+        emailTemplateResolver.setTemplateMode("XHTML"); //added
         emailTemplateResolver.setCharacterEncoding(CharEncoding.UTF_8);
         emailTemplateResolver.setOrder(1);
         return emailTemplateResolver;
