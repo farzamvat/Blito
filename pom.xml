@@ -60,6 +60,15 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+
+		<!-- flying saucer pdf -->
+		<dependency>
+			<groupId>org.xhtmlrenderer</groupId>
+			<artifactId>flying-saucer-pdf</artifactId>
+			<version>9.1.4</version>
+		</dependency>
+		
+		
 		<!-- https://mvnrepository.com/artifact/org.springframework.integration/spring-integration-test -->
 		<dependency>
 			<groupId>org.springframework.integration</groupId>
@@ -246,27 +255,12 @@
 				<clearOutputDir>false</clearOutputDir> </configuration> </plugin> -->
 
 			<!-- tag::wsdl[] -->
-			<!-- <plugin>
-				<groupId>org.jvnet.jaxb2.maven2</groupId>
-				<artifactId>maven-jaxb2-plugin</artifactId>
-				<version>0.12.3</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<schemaLanguage>WSDL</schemaLanguage>
-					<generatePackage>com.blito.payments.zarinpal</generatePackage>
-					<schemas>
-						<schema>
-							<url>https://www.zarinpal.com/pg/services/WebGate/wsdl</url>
-						</schema>
-					</schemas>
-				</configuration>
-			</plugin> -->
+			<!-- <plugin> <groupId>org.jvnet.jaxb2.maven2</groupId> <artifactId>maven-jaxb2-plugin</artifactId> 
+				<version>0.12.3</version> <executions> <execution> <goals> <goal>generate</goal> 
+				</goals> </execution> </executions> <configuration> <schemaLanguage>WSDL</schemaLanguage> 
+				<generatePackage>com.blito.payments.zarinpal</generatePackage> <schemas> 
+				<schema> <url>https://www.zarinpal.com/pg/services/WebGate/wsdl</url> </schema> 
+				</schemas> </configuration> </plugin> -->
 			<!-- end::wsdl[] -->
 
 		</plugins>
