@@ -62,8 +62,6 @@ angular.module('eventsPageModule')
                     });
                     jqSelect.pDatepicker("setDate",dateSetterService.persianToArray(persianDate($scope.eventFlatDates[i].date).pDate));
                 }
-                console.log($scope.eventFlatDates);
-
             }, 300);
         };
         $scope.filterImages = function (images, type) {

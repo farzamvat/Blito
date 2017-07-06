@@ -42,20 +42,21 @@
 
 
 
-                                <!-- Button -->
-                                <div class="control-group ">
-                                    <div ng-show="loginSuccessNotif" class="text-center alert alert-success col-xs-12" >
-                                        <strong>با موفقیت وارد شدید !</strong>
-                                    </div>
-                                    <div id="loginError" ng-show="loginErrorNotif" class="text-center alert alert-danger col-xs-12" >
-                                        <strong></strong>
-                                    </div>
-                                    <label class="control-label" for="signInButton"></label>
-                                    <div class="controls">
-                                        <button id="signInButton" ng-disabled="signInForm.$invalid" ng-click="login(loginFields)" name="signin" class="btn btn-success btn-lg btnLogin">ورود <i ng-show="submitLogin" class="fa fa-spinner fa-spin"></i></button>
-                                    </div>
-                                </div>
+
                             </fieldset>
+                            <!-- Button -->
+                            <div class="control-group ">
+                                <div ng-show="loginSuccessNotif" class="text-center alert alert-success col-xs-12" >
+                                    <strong>با موفقیت وارد شدید !</strong>
+                                </div>
+                                <div id="loginError" ng-show="loginErrorNotif" class="text-center alert alert-danger col-xs-12" >
+                                    <strong></strong>
+                                </div>
+                                <label class="control-label" for="signInButton"></label>
+                                <div class="controls">
+                                    <button id="signInButton" ng-disabled="signInForm.$invalid" ng-click="login(loginFields)" name="signin" class="btn btn-success btn-lg btnLogin">ورود <i ng-show="submitLogin" class="fa fa-spinner fa-spin"></i></button>
+                                </div>
+                            </div>
                         </form>
 
                     </div>
@@ -122,7 +123,7 @@
                                     </div>
                                 </div>
 
-                                <span data-ng-show="signupForm.reenterpassword.$error.match">Emails have to match!</span>
+                                <span data-ng-show="signupForm.reenterpassword.$error.match">رمزهای عبور برابر نیستند</span>
                                 <div class="col-xs-12 form-control-static text-center colorRed" ng-match="fields.password" ng-show="signupForm.reenterpassword.$touched && signupForm.reenterpassword.$invalid">رمز نا معتبر است</div>
 
                                 <!-- Multiple Radios (inline) -->
@@ -132,14 +133,15 @@
                                 <div id="registerError" ng-show="registerErrorNotif" class="text-center alert alert-danger col-xs-12" >
                                     <strong></strong>
                                 </div>
-                                <!-- Button -->
-                                <div class="control-group">
-                                    <label class="registerLabel" for="confirmsignup"></label>
-                                    <div class="controls">
-                                        <button ng-disabled="signupForm.$invalid" id="confirmsignup" ng-click="regUser(fields)" name="confirmsignup" class="btn btn-success btn-lg btnReg">ثبت نام <i ng-show="submitRegister" class="fa fa-spinner fa-spin"></i></button>
-                                    </div>
-                                </div>
+
                             </fieldset>
+                            <!-- Button -->
+                            <div class="control-group marginTop30">
+                                <label class="registerLabel" for="confirmsignup"></label>
+                                <div class="controls">
+                                    <button ng-disabled="signupForm.$invalid" id="confirmsignup" ng-click="regUser(fields)" name="confirmsignup" class="btn btn-success btn-lg btnReg">ثبت نام <i ng-show="submitRegister" class="fa fa-spinner fa-spin"></i></button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>

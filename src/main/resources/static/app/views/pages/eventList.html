@@ -1,6 +1,9 @@
 <div class="row" ng-controller="eventsListPageCtrl as events">
     <div class="col-md-12 eventsPageRows">
         <div class="row">
+            <h1 class="text-center">{{pageTitle}}</h1>
+        </div>
+        <div class="row">
             <div class="hidden-xs col-sm-3  floatRight"></div>
 
             <a ng-show="pageTitle !== 'کنسرت' " class="eventListAnchor" href="/concert"><div  class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight" >
@@ -32,9 +35,7 @@
             </div>
             </a>
         </div>
-        <div class="row">
-            <h1 class="text-center">{{pageTitle}}</h1>
-        </div>
+
         <div class="col-xs-6 col-sm-4 col-md-3 floatRight marginTop10" pagination-id="eventPagination" total-items="totalEventsNumber" dir-paginate="item in eventList | itemsPerPage: 12"  current-page="currentPage">
             <a href="{{url+item.eventLink}}">
                 <div class="recipe"  >

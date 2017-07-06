@@ -103,8 +103,24 @@ angular.module('authServices', [])
 
         };
         authTokenService.getRefreshToken = function () {
+            if($window.localStorage.getItem('refresh-token')) {
+                self.parseJwt = function (token) {
+                    var base64Url = token.split('.')[1];
+                    var base64 = base64Url.replace('-', '+').replace('_', '/');
+                    return JSON.parse($window.atob(base64));
+                };
+                var expireTime = self.parseJwt($window.localStorage.getItem('refresh-token'));
+                var timeStamp = Math.floor(Date.now() / 1000);
+                var timeCheck = expireTime.exp - timeStamp;
+                if(timeCheck < 10) {
+                    return "logOut";
+                } else {
+                    return $window.localStorage.getItem('refresh-token');
+                }
+            } else {
+                return false;
+            }
 
-                return $window.localStorage.getItem('refresh-token');
         }
     })
 
