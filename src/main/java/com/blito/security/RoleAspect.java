@@ -27,7 +27,10 @@ public class RoleAspect {
 	@Before("@annotation(permission)")
 	public void filterByRole(JoinPoint joinPoint, Permission permission) {
 		User currentUser = SecurityContextHolder.currentUser();
-
+		
+		if(currentUser.isBanned())
+			throw new ForbiddenException(ResourceUtil.getMessage(Response.USER_IS_BANNED));
+		
 		Set<Role> currentUserAttachedRoles = roleRepository
 				.findByRoleIdIn(currentUser.getRoles().stream().map(r -> r.getRoleId()).collect(Collectors.toList()));
 

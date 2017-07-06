@@ -13,9 +13,13 @@ import com.blito.models.User;
 
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User>, PagingAndSortingRepository<User, Long>  {
 	Optional<User> findByEmail(String email);
+	Optional<User> findByEmailAndBannedFalse(String email);
 	Optional<User> findByMobile(String mobile);
 	Optional<User> findByEmailAndActivationKey(String email,String key);
 	Optional<User> findByRefreshToken(String refreshToken);
 	Set<User> findByIsOldUser(boolean isOld);
 	Page<User> findAll(Pageable pageable);
+	Optional<User> findByUserIdAndBannedFalse(long userId);
+	Page<User> findByBannedFalse(Pageable pageable);
+
 }

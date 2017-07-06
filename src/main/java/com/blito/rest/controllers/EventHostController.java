@@ -95,15 +95,6 @@ public class EventHostController {
 	
 	// TODO need refactoring or even removing excel APIs , above and below :)
 
-	// ***************** SWAGGER DOCS ***************** //
-	@ApiOperation(value = "get event hosts with excel2")
-	@ApiResponses({
-			@ApiResponse(code = 200, message = "get event hosts with excel2 ok", response = ModelAndView.class) })
-	// ***************** SWAGGER DOCS ***************** //
-	@GetMapping("/event-hosts2.xlsx")
-	public ModelAndView searchUsersForExcel2() {
-		return new ModelAndView(new ExcelView(), eventHostService.searchEventHostsForExcel2());
-	}
 
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "get all of user's event hosts")
