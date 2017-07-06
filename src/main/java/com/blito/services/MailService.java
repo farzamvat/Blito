@@ -42,7 +42,7 @@ public class MailService {
         map.put("user", user);
         map.put("baseUrl", baseUrl);
         map.put("serverAddress",serverAddress);
-        String content = htmlRenderer.renderHtml("activationEmail", map);
+        String content = htmlRenderer.renderHtml("accountVerification", map);
         System.out.println(content);
         sendEmail(user.getEmail(), content,ResourceUtil.getMessage(Response.ACTIVATE_ACCOUNT_EMAIL));
     }
@@ -54,7 +54,7 @@ public class MailService {
         map.put("user", user);
         map.put("baseUrl", baseUrl);
         map.put("serverAddress",serverAddress);
-        String content = htmlRenderer.renderHtml("resetPasswordEmail", map);
+        String content = htmlRenderer.renderHtml("forgetPassword", map);
         sendEmail(user.getEmail(), content,ResourceUtil.getMessage(Response.ACTIVATE_ACCOUNT_EMAIL));
 	}
 
