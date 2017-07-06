@@ -133,6 +133,7 @@ public class BlitService {
 		attachedBlitType.setSoldCount(attachedBlitType.getSoldCount() + commonBlit.getCount());
 		if(attachedBlitType.getSoldCount() == attachedBlitType.getCapacity())
 			attachedBlitType.setBlitTypeState(State.SOLD);
+		//TODO sold event dates and event
 		commonBlit.setTrackCode(generateTrackCode());
 		commonBlit.setUser(attachedUser);
 		commonBlit.setBlitType(attachedBlitType);
