@@ -8,10 +8,10 @@ angular.module('homePageModule', [])
         $scope.showImages = [[],[], [], []];
         $scope.bannerData = [];
         $scope.showImagesExchange = [];
-        $scope.url = "http://localhost:3000"+"/event-page/";
-        $scope.urlExchange = "http://localhost:3000"+"/exchange-page/";
-        // $scope.url = config.baseUrl+"/event-page/";
-        // $scope.urlExchange = config.baseUrl+"/exchange-page/";
+        // $scope.url = "http://localhost:3000"+"/event-page/";
+        // $scope.urlExchange = "http://localhost:3000"+"/exchange-page/";
+        $scope.url = config.baseUrl+"/event-page/";
+        $scope.urlExchange = config.baseUrl+"/exchange-page/";
         indexBannerService.getIndexBanner()
             .then(function (data) {
                 console.log(data);
