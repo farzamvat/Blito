@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.enums.Response;
 import com.blito.exceptions.NotFoundException;
@@ -17,6 +18,7 @@ import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.account.UserViewModel;
 import com.blito.search.SearchViewModel;
+import com.blito.security.SecurityContextHolder;
 
 @Service
 public class AdminAccountService {
@@ -58,5 +60,13 @@ public class AdminAccountService {
 	public Map<String, Object> searchUsersForExcel(SearchViewModel<User> searchViewModel)
 	{
 		return excelService.getUserExcelMap(searchService.search(searchViewModel, userMapper, userRepository));
+	}
+	
+	@Transactional
+	public UserViewModel updateUserInfo(UserViewModel vmodel)
+	{
+		User user = userRepository.findOne(vmodel.getUserId());
+		user = userMapper.updateEntity(vmodel, user);
+		return userMapper.createFromEntity(user);
 	}
 }

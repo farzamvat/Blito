@@ -58,14 +58,14 @@ public class ExcelService {
 						"Bank Gateway"));
 		// Results
 		model.put("results", blits.stream()
-				.collect(Collectors.toMap(k -> k.getUserId(), v -> Arrays.asList(Long.toString(v.getUserId()),
-						v.getCustomerName(), v.getCustomerMobileNumber(), v.getBlitId(), v.getTrackCode(),
-						v.getBlitTypeName(), v.getCreatedAt(), v.getCount(), v.getTotalAmount(), v.getEventName(),
-						v.getEventDateAndTime(), v.getEventAddress(), v.getSeatType(), v.getPaymentStatus(),
-						v.getPaymentError(), v.getSamanBankToken(), v.getSamanBankToken(), v.getBankGateway()))));
+				.collect(Collectors.toMap(k -> k.getUserId(), v -> Arrays.asList(String.valueOf(v.getUserId()),
+						v.getCustomerName(), v.getCustomerMobileNumber(), v.getCustomerEmail() , String.valueOf(v.getBlitId()), v.getTrackCode(),
+						v.getBlitTypeName(), v.getCreatedAt().toString(), String.valueOf(v.getCount()), String.valueOf(v.getTotalAmount()), v.getEventName(),
+						v.getEventDateAndTime(), v.getEventAddress(), v.getSeatType() == null ? " " : v.getSeatType().toString(), v.getPaymentStatus() == null ? " " : v.getPaymentStatus().toString(),
+						v.getPaymentError(), v.getSamanBankToken(), v.getSamanBankRefNumber(), v.getBankGateway() == null ? " " :v.getBankGateway().toString()))));
 		// NumericsColumns
-		model.put("numericcolumns", Arrays.asList("UserId", "BlitId", "Count", "Total Amount"));
-		return model;
+		model.put("numericcolumns", Arrays.asList("UserId", "BlitId","Count", "Total Amount"));
+		return model; 
 	}
 
 	

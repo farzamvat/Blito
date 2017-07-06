@@ -16,6 +16,7 @@ import com.blito.enums.validation.ControllerEnumValidation;
 import com.blito.exceptions.AlreadyExistsException;
 import com.blito.exceptions.ExceptionUtil;
 import com.blito.exceptions.FileSizeExceedsException;
+import com.blito.exceptions.ForbiddenException;
 import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.InternalServerException;
 import com.blito.exceptions.NotAllowedException;
@@ -74,5 +75,13 @@ public class GlobalControllerExceptionHandler {
 	public ExceptionViewModel fileSizeExceeds(HttpServletRequest request,MultipartException exception)
 	{
 		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, new FileSizeExceedsException(ResourceUtil.getMessage(Response.FILE_UPLOAD_SIZE_EXCEEDS)));
+	}
+	
+	@ResponseStatus(HttpStatus.FORBIDDEN)
+	@ResponseBody
+	@ExceptionHandler(ForbiddenException.class)
+	public ExceptionViewModel forbidden(HttpServletRequest request,ForbiddenException exception)
+	{
+		return ExceptionUtil.generate(HttpStatus.FORBIDDEN, request, exception);
 	}
 }

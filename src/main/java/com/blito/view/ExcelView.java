@@ -36,6 +36,7 @@ public class ExcelView extends AbstractXlsView {
             numericColumns = (List<String>)model.get("numericcolumns");
 
         Sheet sheet = workbook.createSheet(sheetName);
+        
         sheet.setDefaultColumnWidth((short) 12);
         
         int currentRow = 0;

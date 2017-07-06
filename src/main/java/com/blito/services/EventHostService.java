@@ -132,8 +132,5 @@ public class EventHostService {
 		return excelService.getEventHostsExcelMap(searchService.search(searchViewModel, eventHostMapper, eventHostRepository));
 	}
 	
-	public Map<String, Object> searchEventHostsForExcel2()
-	{
-		return excelService.getEventHostsExcelMap(eventHostMapper.createFromEntities(new HashSet<>(eventHostRepository.findAll())));
-	}
+
 }

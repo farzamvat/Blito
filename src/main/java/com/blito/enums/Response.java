@@ -56,6 +56,7 @@ public enum Response {
 	EXCHANGE_BLIT_LINK_EXISTS("error.exchange.blit.link.exists"),
 	BANK_GATEWAY_NOT_FOUND("error.bank.gateway.not.found"),
 	FORGET_PASS_EMAIL("forget.password.email"),
+	USER_IS_BANNED("error.user.is.banned"),
 	SENDING_EMAIL_ERROR("error.sending.email");
     
 

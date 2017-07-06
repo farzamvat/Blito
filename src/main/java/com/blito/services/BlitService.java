@@ -1,5 +1,7 @@
 package com.blito.services;
 
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -21,7 +23,6 @@ import com.blito.enums.State;
 import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.CommonBlitMapper;
-import com.blito.models.Blit;
 import com.blito.models.BlitType;
 import com.blito.models.CommonBlit;
 import com.blito.models.User;
@@ -53,6 +54,9 @@ public class BlitService {
 	private PaymentService paymentService;
 	@Autowired
 	private SearchService searchService;
+	@Autowired
+	private ExcelService excelService;
+	
 	@Value("{zarinpal.web.gateway}")
 	private String zarinpalGatewayURL;
 	
@@ -174,5 +178,14 @@ public class BlitService {
 	public Page<CommonBlitViewModel> searchCommonBlits(SearchViewModel<CommonBlit> searchViewModel,Pageable pageable)
 	{
 		return searchService.search(searchViewModel, pageable, commonBlitMapper, commonBlitRepository);
+	}
+	
+	public Map<String, Object> searchCommonBlitsForExcel(SearchViewModel<CommonBlit> searchViewModel)
+	{
+		return excelService.getBlitsExcelMap(searchService.search(searchViewModel, commonBlitMapper, commonBlitRepository));
+	}
+	
+	public Map<String, Object> getExcel(){
+		return excelService.getBlitsExcelMap(commonBlitMapper.createFromEntities(new HashSet<>(commonBlitRepository.findAll())));
 	}
 }

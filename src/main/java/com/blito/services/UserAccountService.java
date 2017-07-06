@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.blito.enums.Response;
 import com.blito.exceptions.AlreadyExistsException;
 import com.blito.exceptions.InternalServerException;
+import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.exceptions.UnauthorizedException;
 import com.blito.exceptions.UserNotActivatedException;
@@ -85,6 +86,9 @@ public class UserAccountService {
 		if(!user.isActive())
 			throw new UserNotActivatedException(ResourceUtil.getMessage(Response.USER_NOT_ACTIVATED));
 			
+		if(user.isBanned()) {
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.USER_IS_BANNED));
+		}
 		return CompletableFuture.supplyAsync(() -> encoder.matches(vmodel.getPassword(), user.getPassword()))
 				.thenCombine(jwtService.generateToken(user.getUserId()), (isMatchedAsyncResult,asyncTokenResult) -> {
 					if(isMatchedAsyncResult)

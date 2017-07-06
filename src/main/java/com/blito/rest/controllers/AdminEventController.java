@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.blito.enums.Response;
-import com.blito.mappers.EventFlatMapper;
+import com.blito.mappers.EventMapper;
 import com.blito.models.Event;
+import com.blito.models.EventHost;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
@@ -30,6 +31,7 @@ import com.blito.rest.viewmodels.event.AdminSetEventOrderViewModel;
 import com.blito.rest.viewmodels.event.AdminSetIsEventoViewModel;
 import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
+import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.search.SearchViewModel;
@@ -50,7 +52,7 @@ public class AdminEventController {
 	@Autowired
 	ExcelService excelService;
 	@Autowired
-	EventFlatMapper flatMapper;
+	EventMapper eventMapper;
 
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "change event state")
@@ -91,7 +93,8 @@ public class AdminEventController {
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
 	@PutMapping("/change-event-operator-state")
-	public ResponseEntity<ResultVm> changeEventOperatorState(@Validated @RequestBody AdminChangeEventOperatorStateVm vmodel) {
+	public ResponseEntity<ResultVm> changeEventOperatorState(
+			@Validated @RequestBody AdminChangeEventOperatorStateVm vmodel) {
 		adminEventService.changeOperatorState(vmodel);
 		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
@@ -117,7 +120,7 @@ public class AdminEventController {
 		adminEventService.setEventOffers(vmodel);
 		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
-	
+
 	@PutMapping("/remove-event-offers")
 	public ResponseEntity<ResultVm> removeEventOffers(@Validated @RequestBody AdminChangeOfferTypeViewModel vmodel) {
 		adminEventService.removeEventOffers(vmodel);
@@ -145,11 +148,11 @@ public class AdminEventController {
 		adminEventService.deleteEvent(eventId);
 		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
-	
+
 	@JsonView(View.AdminEvent.class)
 	@PostMapping("/search")
-	public ResponseEntity<Page<EventFlatViewModel>> search(@RequestBody SearchViewModel<Event> search,Pageable pageable) {
-		return ResponseEntity.ok(adminEventService.searchEvents(search, pageable, flatMapper));
+	public ResponseEntity<Page<EventViewModel>> search(@RequestBody SearchViewModel<Event> search, Pageable pageable) {
+		return ResponseEntity.ok(adminEventService.searchEvents(search, pageable, eventMapper));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //
@@ -173,5 +176,6 @@ public class AdminEventController {
 	public ResponseEntity<Page<BlitBuyerViewModel>> getEventBlitBuyers(@RequestParam long eventDateId, Pageable page) {
 		return ResponseEntity.ok(adminEventService.getEventBlitBuyersByEventDate(eventDateId, page));
 	}
+
 
 }
