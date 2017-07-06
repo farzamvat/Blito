@@ -158,9 +158,9 @@ color: white !important;
 .slidingEventsTitle {
     font-size: 14px;
 }
-.slidingEvents button {
+.slidingEvents a {
     margin-top: 15px;
-    font-size: 12px;
+    font-size: 12px ;
 }
 .slidingEvents h3 {
     float: right;
@@ -495,12 +495,9 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     margin-top: 10px;
 }
 .slidingEventsBtn {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-right: auto;
-    margin-left: auto;
+    margin: 10px auto;
     width: 106px;
-    font-size: 10px;
+    font-size: 10px !important;
 }
 
 .exchangeTicketText {

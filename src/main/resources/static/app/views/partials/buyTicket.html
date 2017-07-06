@@ -70,13 +70,13 @@
                                                 </div>
 
                                             </div>
-                                            <div ng-show="itemWithCapacity[0].capacity === 0">
+                                            <div ng-show="itemWithCapacity[0].capacity === 0 || itemWithCapacity[0].blitTypeState === 'CLOSED'">
                                                 <div   class="text-center  alert alert-danger col-xs-12">
-                                                    <strong>تعداد بلیت این سانس تمام شده !</strong>
+                                                    <strong>این بلیت قابل خریداری نمی باشد !</strong>
                                                 </div>
 
                                             </div>
-                                            <div ng-show="itemWithCapacity[0].capacity !== 0">
+                                            <div ng-show="itemWithCapacity[0].capacity !== 0 && itemWithCapacity[0].eventState !== 'CLOSED'">
                                             <div ng-if="ticketInfo.sansSelect.$valid && itemWithCapacity[0].capacity>=10" class="form-group col-xs-12  formRegGroup floatRight marginTop30">
                                                 <div class="col-xs-5 col-sm-4 floatRight text-center">
                                                     <label class="registerLabel" for="ticketNumber" > تعداد بلیت  :</label>

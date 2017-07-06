@@ -6,9 +6,21 @@ angular.module('menuPagesModule', [])
         var main = this;
         main.checkingSession = false;
         $scope.loadPage = false;
+        $scope.logout = function () {
+            Auth.logout();
+            main.logoutMenu = false;
+            $window.location.assign('/');
+
+        };
+
         main.checkSession = function () {
-            if(AuthToken.getRefreshToken()) {
+            if(AuthToken.getRefreshToken() === "logOut") {
+                main.checkingSession = false;
+                $scope.loggedIn = false;
+                $scope.logout();
+            } else if(AuthToken.getRefreshToken() !== "logOut" && AuthToken.getRefreshToken()) {
                 main.checkingSession = true;
+                $scope.loggedIn = true;
                 var interval = $interval(function () {
                     var token = AuthToken.getRefreshToken();
                     if(!token) {
@@ -24,13 +36,14 @@ angular.module('menuPagesModule', [])
                             var base64Url = token.split('.')[1];
                             var base64 = base64Url.replace('-', '+').replace('_', '/');
                             return JSON.parse($window.atob(base64));
-                        };
+                        }
                         var expireTime = self.parseJwt(token);
                         var timeStamp = Math.floor(Date.now() / 1000);
                         var timeCheck = expireTime.exp - timeStamp;
                         console.log(timeCheck);
-                        if(timeCheck < 1) {
+                        if(timeCheck < 11) {
                             main.checkingSession = false;
+                            $scope.loggedIn = false;
                             $scope.logout();
                             $interval.cancel(interval);
                         } else {
@@ -38,7 +51,6 @@ angular.module('menuPagesModule', [])
                         }
                     }
                 }, 10000);
-            } else {
             }
         };
         main.checkSession();
@@ -141,12 +153,6 @@ angular.module('menuPagesModule', [])
             ;
         };
 
-        $scope.logout = function () {
-            Auth.logout();
-            main.logoutMenu = false;
-            $window.location.assign('/');
-
-        };
 
         $scope.isActive = function (viewLocation) {
             return viewLocation === $location.path();
