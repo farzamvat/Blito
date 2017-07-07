@@ -120,6 +120,11 @@
                                 <h5>{{ event.capacity - event.soldCount }}: جای خالی <i class="fa fa-calendar-check-o"></i></h5>
                                 <h5>{{ event.views }}: بازدید <i class="fa fa-eye"></i></h5>
                             </div>
+                            <div class="closed">
+                                <h4>{{ event.eventName }}</h4>
+                                <h5>{{ event.capacity - event.soldCount }}: جای خالی <i class="fa fa-calendar-check-o"></i></h5>
+                                <h5>{{ event.views }}: بازدید <i class="fa fa-eye"></i></h5>
+                            </div>
                         </a>
                         <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
                         <a href="{{url+event.eventLink}}" class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
