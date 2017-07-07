@@ -1506,6 +1506,27 @@ a {
 .marginRight100{
     margin-right: 100px;
 }
+.notFoundHeader{
+    width:100%;
+    Top:0px;
+    height:40px;
+    background: #000;
+}
+.notFoundHeaderBeautifier{
+    float:left;
+    width:50%;
+    height:41px;
+    margin-left: -10px;
+    background: rgb(252, 183, 49);
+}
+.notFoundHeader img{
+    height:30px;
+    width: auto;
+    margin-top:5px;
+    margin-right: -24px;
+    float:right;
+}
+
 @media (max-width: 770px) {
     .navbar-header-backcolor{
         width: 172px !important;
