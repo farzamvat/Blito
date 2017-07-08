@@ -992,7 +992,7 @@ dir-pagination-controls ul {
     position:absolute;
     bottom:125px;
     left: 40px;
-
+    color: #000;
     padding-bottom: 90px;
     text-align: center;
     vertical-align: middle;
@@ -1452,6 +1452,9 @@ footer h6 {
     opacity: 1;
     transform: scale(1.4);
 }
+.slidingEventsImg img:hover ~ .closed {
+    transform: scale(1.4);
+}
 .blitoOfferMain {
     overflow: hidden;
 
@@ -1487,10 +1490,77 @@ footer h6 {
 .dispNone {
     display: none;
 }
-a {
+.closed{
+    transition: .5s;
+    pointer-events: none;
+    position: relative;
+    height: 150px;
+    vertical-align: middle;
+    width: 106px;
+    margin-right: auto;
+    top: -171px;
+    margin-bottom: -170px;
+    margin-left: auto;
+    text-align: center;
+    background: rgba(0,0,0,0.4);
+}
+.closed h1{
+    height:100%;
+    color:#ddd;
+}
+.closed p{
+    font-size: 20px;
+}
+.closed i{
+    margin-top: 40px;
+    margin-bottom: 0px;
+    font-size: 64px;
+}
+a{
     text-decoration: none !important;
 }
+/*.eventListHeaderContainer{*/
+    /*margin-top: -46px;*/
+    /*margin-bottom: 46px;*/
+/*}*/
+/*#eventListOther:not(:active),*/
+/*#eventListCinema:not(:active),*/
+/*#eventListTheater:not(:active),*/
+/*#eventListConcert:not(:active),*/
+/*#eventListSport:not(:active),*/
+/*#eventListWorkshop:not(:active),*/
+/*#eventListTour:not(:active){*/
+    /*animation-name: eventListAnimation1;*/
+    /*animation-duration: 1s;*/
 
+/*}*/
+/*#eventListOther:active,*/
+/*#eventListCinema:active,*/
+/*#eventListTheater:active,*/
+/*#eventListConcert:active,*/
+/*#eventListSport:active,*/
+/*#eventListWorkshop:active,*/
+/*#eventListTour:active{*/
+    /*animation-name: eventListAnimation2;*/
+    /*animation-duration: 1s;*/
+
+/*}*/
+/*!*.pageHeaderLinksDiv:not(:active){*!*/
+     /*!*animation-name: eventListAnimation;*!*/
+     /*!*animation-duration: 1s;*!*/
+ /*!*}*!*/
+/*@keyframes eventListAnimation2 {*/
+    /*0%   {transform: rotateX(calc());*/
+    /*margin-top: 30px;}*/
+    /*50%  {transform: rotateX(90deg);*/
+    /*margin-top: 12px;}*/
+/*}*/
+/*@keyframes eventListAnimation1 {*/
+    /*0%   {transform: rotateX(90deg);*/
+    /*margin-top: 12px;}*/
+    /*50%  {transform: rotateX(0deg);*/
+    /*margin-top: 30px;}*/
+/*}*/
 .navbar-header-backcolor{
     background: rgb(252, 183, 49);
     transform: skew(-15deg);
@@ -1593,6 +1663,7 @@ a {
     .recipe .name {
         bottom:20px;
         left: 10px;
+        color:#000;
     }
     .slidingEvents {
         /*background-color: #eee;*/
