@@ -18,9 +18,7 @@ angular.module('menuPagesModule', [])
                 main.checkingSession = false;
                 $scope.loggedIn = false;
                 $scope.logout();
-                console.log("a");
             } else if(AuthToken.getRefreshToken() !== "logOut" && AuthToken.getRefreshToken()) {
-                console.log("b");
                 main.checkingSession = true;
                 $scope.loggedIn = true;
                 var interval = $interval(function () {
