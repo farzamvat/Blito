@@ -129,7 +129,7 @@ color: white !important;
     right: -25px;
 }
 .slick-prev {
-    left: 15px;
+    left: 0;
 }
 .slick-next::before, .slick-next::after{
     background-color: #303030;
