@@ -1,14 +1,14 @@
 <div class="homePage" ng-controller="homeCtrl as home">
     <div class="sliderSection">
 
-        <div id="firstCarousel" class="carousel slide" data-ride="carousel">
+        <div ng-show="showSectionsExcahnge[0]" id="firstCarousel" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators hidden-xs">
                 <li ng-repeat="item in bannerData" data-target="#firstCarousel" data-slide-to="{{$index}}" ng-class="{active : $index === 0}"></li>
 
             </ol>
             <div class="carousel-inner" role="listbox" >
                 <div  ng-repeat="item in bannerData" class="item" ng-class="{active : $index === 0}">
-                    <img ng-src="{{item.newImage}}" alt="First slide">
+                    <img ng-src="{{item.newImage}}" alt="First slide " class="firstSliderSectionImage">
                     <a href="{{url+item.eventLink}}" class="btn btn-success btn-lg buyTicketBanner"><i class="fa fa-ticket fa-1x" aria-hidden="true"></i>                       مشاهده و خرید بلیت
                     </a>
                 </div>
@@ -22,6 +22,21 @@
                 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                 <span class="sr-only">Next</span>
             </span>
+        </div>
+        <div ng-if="!showSectionsExcahnge[0]" class="loadingSlider">
+            <div class="lights">
+                <div class="light light1"></div>
+                <div class="light light2"></div>
+                <div class="light light3"></div>
+                <div class="conc_group">
+                    <div class="conc light1_conc"></div>
+                    <div class="conc light2_conc"></div>
+                    <div class="conc light3_conc"></div>
+                </div>
+            </div>
+            <div class="co_name">!بی برنامه نمونید </div>
+            <!--<div class="load_msg">LOADING...</div>-->
+            <div class="ground"></div>
         </div>
     </div>
     <div class="row categorySection">
@@ -61,43 +76,54 @@
         <div class="col-xs-12 col-sm-9 slidingEvents floatRight">
             <h3 class="textAlignRight">کنسرت</h3>
             <div class="marginTop30">
-            <a href="/concert" class="  eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</a>
+                <a href="/concert" class="  eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</a>
             </div>
             <div class="col-xs-12 slickSliders">
-                <slick ng-if="showImages[0].length > 0" dots="true" lazy-load="ondemand"   infinite="true" autoplay="true"   speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
+                <slick ng-if="showSections[0]" dots="true" lazy-load="ondemand"   infinite="true" autoplay="true"   speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
                     <div ng-repeat="event in concertRow" >
                         <a class="slidingEventsImg" href="{{url+event.eventLink}}">
                             <img ng-src="{{event.image}}" class="img-responsive center-block homePageImage" />
                             <div class="moreInfo">
-                            <h4>{{ event.eventName }}</h4>
-                            <h5>{{ event.capacity - event.soldCount }}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
-                            <h5>{{ event.views }}: بازدید <i class="fa fa-eye"></i></h5>
+                                <h4>{{ event.eventName }}</h4>
+                                <h5>{{ event.capacity - event.soldCount }}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
+                                <h5>{{ event.views }}: بازدید <i class="fa fa-eye"></i></h5>
+                            </div>
+                            <div ng-show="event.eventState === 'CLOSED'" class="closed">
+                                <h1><i class="fa fa-lock"></i>
+                                    <p>بسته</p>
+                                </h1>
                             </div>
                         </a>
                         <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
-                        <a href="{{url+event.eventLink}}" class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
+                        <a href="{{url+event.eventLink}}" class="btn btn-success slidingEventsBtn center-block hidden-xs">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
                     </div>
 
                 </slick>
+                <div ng-if="!showSections[0]" class="homePageLoader"></div>
             </div>
         </div>
         <div class="hidden-xs col-sm-3   floatRight blitoOffer">
-            <h4 class="text-center marginTop10"> پیشنهاد کنسرت  </h4>
+            <h4 class="text-center marginTop10"> بلیتو کنسرت  </h4>
             <div class="row marginTop33 ">
                 <div class="col-sm-1 floatRight">
                 </div>
-                <div class="col-sm-10 floatRight blitoOfferMain  ">
+                <div ng-show="showSections[1]" class="col-sm-10 floatRight blitoOfferMain  ">
                     <a class="slidingEventsImg  " href="{{url+ourOfferConcert[0].eventLink}}"><img ng-src="{{ourOfferConcert[0].image}}" class="img-responsive center-block homePageImage">
                         <div class="moreInfo">
                             <h4>{{ ourOfferConcert[0].eventName }}</h4>
                             <h5>{{ ourOfferConcert[0].capacity - ourOfferConcert[0].soldCount }}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
                             <h5>{{ ourOfferConcert[0].views }}: بازدید <i class="fa fa-eye"></i></h5>
-
+                        </div>
+                        <div ng-show="ourOfferConcert[0].eventState === 'CLOSED'" class="closed">
+                            <h1><i class="fa fa-lock"></i>
+                                <p>بسته</p>
+                            </h1>
                         </div>
                     </a>
                     <h4 class="text-center slidingEventsTitle">{{ ourOfferConcert[0].eventName }}</h4>
                     <a href="{{url+ourOfferConcert[0].eventLink}}" class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
                 </div>
+                <div ng-if="!showSections[1]" class="homePageLoader"></div>
                 <div class="col-sm-1 floatRight">
                 </div>
             </div>
@@ -108,10 +134,10 @@
         <div class="col-xs-12 col-sm-9 slidingEvents floatRight">
             <h3 class="textAlignRight">تور</h3>
             <div class="marginTop30">
-            <a href="/tour" class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</a>
+                <a href="/tour" class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</a>
             </div>
             <div class="col-xs-12 slickSliders">
-                <slick ng-if="showImages[1].length > 0" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=4 touch-move="true" slides-to-scroll=1  >
+                <slick ng-if="showSections[2]" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=4 touch-move="true" slides-to-scroll=1  >
                     <div ng-repeat="event in tourRow" >
                         <a class="slidingEventsImg" href="{{url+event.eventLink}}">
                             <img ng-src="{{event.image}}" class="img-responsive center-block homePageImage">
@@ -120,44 +146,44 @@
                                 <h5>{{ event.capacity - event.soldCount }}: جای خالی <i class="fa fa-calendar-check-o"></i></h5>
                                 <h5>{{ event.views }}: بازدید <i class="fa fa-eye"></i></h5>
                             </div>
-                            <div class="closed">
+                            <div ng-show="event.eventState === 'CLOSED'" class="closed">
                                 <h1><i class="fa fa-lock"></i>
                                     <p>بسته</p>
                                 </h1>
                             </div>
                         </a>
                         <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
-                        <a href="{{url+event.eventLink}}" class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
+                        <a href="{{url+event.eventLink}}" class="btn btn-success slidingEventsBtn center-block hidden-xs">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
                     </div>
 
                 </slick>
+                <div ng-if="!showSections[2]" class="homePageLoader"></div>
             </div>
 
 
         </div>
         <div class="hidden-xs col-sm-3  floatRight blitoOffer">
-            <h4 class="text-center marginTop10"> پیشنهاد تور</h4>
+            <h4 class="text-center marginTop10">بلیتو تور</h4>
             <div class="row marginTop30">
                 <div class="col-sm-1 floatRight">
                 </div>
-                <div class="col-sm-10 floatRight blitoOfferMain">
+                <div ng-show="showSections[3]" class="col-sm-10 floatRight blitoOfferMain">
                     <a class="slidingEventsImg" href="{{url+ourOfferTour[0].eventLink}}"><img ng-src="{{ourOfferTour[0].image}}" class="img-responsive center-block homePageImage">
                         <div class="moreInfo">
                             <h4>{{ ourOfferTour[0].eventName }}</h4>
                             <h5>{{ ourOfferTour[0].capacity - ourOfferTour[0].soldCount }}: جای خالی <i class="fa fa-calendar-check-o"></i></h5>
                             <h5>{{ ourOfferTour[0].views }}: بازدید <i class="fa fa-eye"></i></h5>
                         </div>
-                        <!--cloooooooooooooooooooooooooooosed-->
-                        <div class="closed">
+                        <div ng-show="ourOfferTour[0].eventState === 'CLOSED'" class="closed">
                             <h1><i class="fa fa-lock"></i>
                                 <p>بسته</p>
                             </h1>
                         </div>
-                        <!--cloooooooooooooooooooooooooooosed-->
                     </a>
                     <h4 class="text-center slidingEventsTitle">{{ ourOfferTour[0].eventName }}</h4>
                     <a href="{{url+ourOfferTour[0].eventLink}}" class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
                 </div>
+                <div ng-if="!showSections[3]" class="homePageLoader"></div>
                 <div class="col-sm-1 floatRight">
                 </div>
             </div>
@@ -170,7 +196,7 @@
         <div class="col-xs-12 col-sm-9 slidingEvents floatRight">
             <h3 class="textAlignRight">ایونتو</h3>
             <div class="col-xs-12 slickSliders">
-                <slick ng-if="showImages[2].length > 0" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
+                <slick ng-if="showSections[4]" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
                     <div ng-repeat="event in evento" >
                         <a class="slidingEventsImg" href="{{url+event.eventLink}}">
                             <img ng-src="{{event.image}}" class="img-responsive center-block homePageImage">
@@ -179,32 +205,44 @@
                                 <h5>{{ event.capacity - event.soldCount }}: جای خالی <i class="fa fa-calendar-check-o"></i></h5>
                                 <h5>{{ event.views }}: بازدید <i class="fa fa-eye"></i></h5>
                             </div>
+                            <div ng-show="event.eventState === 'CLOSED'" class="closed">
+                                <h1><i class="fa fa-lock"></i>
+                                    <p>بسته</p>
+                                </h1>
+                            </div>
                         </a>
                         <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
-                        <a href="{{url+event.eventLink}}" class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
+                        <a href="{{url+event.eventLink}}" class="btn btn-success slidingEventsBtn center-block hidden-xs">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
                     </div>
 
                 </slick>
+                <div ng-if="!showSections[4]" class="homePageLoader"></div>
             </div>
 
 
         </div>
         <div class="hidden-xs col-sm-3  floatRight blitoOffer">
-            <h4 class="text-center marginTop10"> پیشنهاد ایونتو</h4>
+            <h4 class="text-center marginTop10"> بلیتو ایونتو</h4>
             <div class="row marginTop30">
                 <div class="col-sm-1 floatRight">
                 </div>
-                <div class="col-sm-10 floatRight blitoOfferMain">
+                <div ng-show="showSections[5]" class="col-sm-10 floatRight blitoOfferMain">
                     <a class="slidingEventsImg" href="{{url+ourOfferEvento[0].eventLink}}"><img ng-src="{{ourOfferEvento[0].image}}" class="img-responsive center-block homePageImage">
                         <div class="moreInfo">
                             <h4>{{ ourOfferEvento[0].eventName }}</h4>
                             <h5>{{ ourOfferEvento[0].capacity - ourOfferEvento[0].soldCount }}: جای خالی <i class="fa fa-calendar-check-o"></i></h5>
                             <h5>{{ ourOfferEvento[0].views }}: بازدید <i class="fa fa-eye"></i></h5>
                         </div>
+                        <div ng-show="ourOfferEvento[0].eventState === 'CLOSED'" class="closed">
+                            <h1><i class="fa fa-lock"></i>
+                                <p>بسته</p>
+                            </h1>
+                        </div>
                     </a>
                     <h4 class="text-center slidingEventsTitle">{{ ourOfferEvento[0].eventName }}</h4>
                     <a href="{{url+ourOfferEvento[0].eventLink}}" class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
                 </div>
+                <div ng-if="!showSections[5]" class="homePageLoader"></div>
                 <div class="col-sm-1 floatRight">
                 </div>
             </div>
@@ -220,8 +258,8 @@
                 مربوط به رویداد مورد نظر  مربوط به رویدا
                 توضیحات مربوط به رویداد مورد نظر توضیحات مربوط به رویداد مورد نظر توضیحات مربوط به رویداد مورد نظر توضیحات مربوط به رویداد مورد نظر
             </p>
-            <button class="btn btn-success co-xs-12 btn-lg btnExchangeTicket"> بلیت های آگهی شده <i class="fa fa-list-alt" aria-hidden="true"></i></button>
-            <button class="btn btn-success co-xs-12 btn-lg btnExchangeTicket"> بلیت خود را اگهی کنید <i class="fa fa-tags" aria-hidden="true"></i></button>
+            <a href="/exchange-tickets" class="btn btn-success co-xs-12 btn-lg btnExchangeTicket"> <i class="fa fa-list-alt" aria-hidden="true"></i> بلیت های آگهی شده </a>
+            <!--<button class="btn btn-success co-xs-12 btn-lg btnExchangeTicket"> بلیت خود را اگهی کنید <i class="fa fa-tags" aria-hidden="true"></i></button>-->
         </div>
 
         <div class="col-md-3 floatRight col-sm-3 hidden-xs ">
@@ -240,10 +278,10 @@
         <div class="col-xs-12 col-sm-10 slidingEvents floatRight">
             <h3 class="textAlignRight">بلیت های آگهی شده</h3>
             <div class="marginTop30">
-            <a href="/exchange-tickets" class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</a>
+                <a href="/exchange-tickets" class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</a>
             </div>
             <div class="col-xs-12 slickSliders">
-                <slick ng-if="showImagesExchange.length > 0" dots="true" lazy-load="ondemand" infinite="true"    speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1 autoplay="true"  >
+                <slick ng-if="showSectionsExcahnge[1]" dots="true" lazy-load="ondemand" infinite="true"    speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1 autoplay="true"  >
                     <div ng-repeat="event in exchange" >
                         <a class="slidingEventsImg" href="{{urlExchange+event.exchangeLink}}">
                             <img ng-src="{{event.newImage}}" class="img-responsive center-block homePageImage">
@@ -252,12 +290,18 @@
                                 <h5>{{ event.blitCost }}: قیمت <i class="fa fa-calendar-check-o"></i></h5>
                                 <h5>{{ event.view }}: بازدید <i class="fa fa-eye"></i></h5>
                             </div>
+                            <div ng-show="event.state === 'CLOSED'" class="closed">
+                                <h1><i class="fa fa-lock"></i>
+                                    <p>بسته</p>
+                                </h1>
+                            </div>
                         </a>
                         <h4 class="text-center slidingEventsTitle">{{event.title}}</h4>
-                        <a href="{{urlExchange+event.exchangeLink}}" class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
+                        <a href="{{urlExchange+event.exchangeLink}}" class="btn btn-success slidingEventsBtn center-block hidden-xs">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
                     </div>
 
                 </slick>
+                <div ng-if="!showSectionsExcahnge[1]" class="homePageLoader"></div>
             </div>
 
         </div>
@@ -276,7 +320,7 @@
             <h3 class="textAlignRight">رویداد های تمام شده</h3>
 
             <div class="col-xs-12 slickSliders">
-                <slick ng-if="showImages.length > 8" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
+                <slick ng-if="showSections[6]" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
                     <div ng-repeat="event in ended" >
                         <a class="slidingEventsImg" href="">
                             <img ng-src="{{event.image}}" class="img-responsive center-block homePageImage">
@@ -290,6 +334,7 @@
                     </div>
 
                 </slick>
+                <div ng-if="!showSections[6]" class="homePageLoader"></div>
             </div>
 
         </div>
