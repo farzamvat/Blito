@@ -190,8 +190,7 @@ color: white !important;
 }
 .categorySection {
     /*background: url("../img/movie.png") repeat-x;*/
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: 10px;
     background-color: #202020;
 }
 .categorySection a {
@@ -1517,14 +1516,17 @@ footer h6 {
 .closed h1{
     height:100%;
     color:#ddd;
+    text-shadow: 0px 2px 5px #333;
 }
 .closed p{
     font-size: 20px;
+    text-shadow: 0px 2px 5px #333;
 }
 .closed i{
     margin-top: 40px;
     margin-bottom: 0px;
     font-size: 64px;
+    text-shadow: 0px 2px 5px #333;
 }
 a{
     text-decoration: none !important;
@@ -1793,7 +1795,13 @@ a{
     float: left;
     margin-top: -140px;
 }
-
+.slidingEventsMiniLogo{
+    float: right;
+    margin-top: 30px;
+    max-height: 30px;
+    max-width: 30px;
+    margin-right: 15px;
+}
 @media (max-width: 770px) {
     .navbar-header-backcolor{
         width: 172px !important;
@@ -1812,9 +1820,17 @@ a{
         font-size: 18px;
     }
 
-}
-@media (max-width: 675px) {
 
+}
+@media (max-width: 700px) {
+    .closed{
+        width:100%;
+        background: transparent;
+    }
+
+    .moreInfo{
+        display:none;
+    }
 }
 
 
@@ -1874,6 +1890,7 @@ a{
         padding: 15px 20px;
         height: 400px !important;
     }
+
     .homePage {
         margin-top: 50px;
     }
