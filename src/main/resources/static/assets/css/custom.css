@@ -1446,6 +1446,8 @@ footer h6 {
 }
 .slidingEventsImg img:hover{
     transform: scale(1.4);
+    -webkit-transform: scale(1.4);
+    -ms-transform: scale(1.4);
 }
 .slidingEventsImg .moreInfo{
     pointer-events: none;
@@ -1453,9 +1455,13 @@ footer h6 {
 .slidingEventsImg img:hover + .moreInfo {
     opacity: 1;
     transform: scale(1.4);
+    -webkit-transform: scale(1.4);
+    -ms-transform: scale(1.4);
 }
 .slidingEventsImg img:hover ~ .closed {
     transform: scale(1.4);
+    -webkit-transform: scale(1.4);
+    -ms-transform: scale(1.4);
 }
 .blitoOfferMain {
     overflow: hidden;
@@ -1466,6 +1472,7 @@ footer h6 {
 }
 .moreInfo{
     transition: .5s;
+    -webkit-transition: .5s;
     opacity: 0;
     width: 106px;
     height: 70px;
@@ -1494,6 +1501,7 @@ footer h6 {
 }
 .closed{
     transition: .5s;
+    -webkit-transition: .5s;
     pointer-events: none;
     position: relative;
     height: 150px;
@@ -1566,6 +1574,8 @@ a{
 .navbar-header-backcolor{
     background: rgb(252, 183, 49);
     transform: skew(-15deg);
+    -webkit-transform: skew(-15deg);
+    -ms-transform: skew(-15deg);
     width: 116px;
     margin-left: -5px;
     display: inline-block;
@@ -1573,6 +1583,8 @@ a{
 .navbar-header>img{
     margin-left: 21.5px;
     transform: skew(15deg);
+    -webkit-transform: skew(15deg);
+    -ms-transform: skew(15deg);
 }
 
 .marginRight100{
