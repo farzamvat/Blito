@@ -54,10 +54,10 @@
                         <div class="row marginTop30">
                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
                                 <div class="col-xs-10 floatRight text-center">
-                                    <label class="registerLabel floatRight" for="exchangeDescription" >توضیحات رویداد :</label>
+                                    <label class="registerLabel floatRight" for="exchangeDescription" >توضیحات رویداد :(حداکثر {{100 - exchangeEdit.description.length}} کاراکتر مجاز)</label>
                                 </div>
                                 <div class="col-xs-11  floatRight ">
-                                    <textarea ng-model="exchangeEdit.description"  id="exchangeDescription" required   type="text"  class="form-group textAreaForm" ></textarea>
+                                    <textarea ng-model="exchangeEdit.description" maxlength="100"  id="exchangeDescription" required   type="text"  class="form-group textAreaForm" ></textarea>
                                 </div>
                             </div>
                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">

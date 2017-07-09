@@ -84,7 +84,7 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 authenticated: false
             })
 
-            .otherwise({redirectTo: '/'})
+            .otherwise({redirectTo: '/not-found'})
 
 
     });

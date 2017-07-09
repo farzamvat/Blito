@@ -233,6 +233,16 @@ color: white !important;
     padding-top: 20px;
     color: white;
 }
+.btn {
+    border-radius: 2px !important;
+}
+.btn-success{
+    background-color: #39A939;
+    border-color: #0A730A;
+}
+.btn-success:hover {
+    background-color: #1F911F;
+}
 .eventMore {
     background-color: rgb(252, 183, 49);
     margin-top: 35px;
