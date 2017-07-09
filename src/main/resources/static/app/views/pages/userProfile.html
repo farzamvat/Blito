@@ -259,10 +259,10 @@
                                         <div class="row marginTop30">
                                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="exchangeDescription" >توضیحات رویداد :</label>
+                                                    <label class="registerLabel floatRight" for="exchangeDescription" >توضیحات رویداد :(حداکثر {{100 - exchange.description.length}} کاراکتر مجاز)</label>
                                                 </div>
                                                 <div class="col-xs-11  floatRight ">
-                                                    <textarea ng-model="exchange.description" required  id="exchangeDescription"   type="text"  class="form-group textAreaForm" ></textarea>
+                                                    <textarea ng-model="exchange.description" required maxlength="100" id="exchangeDescription"   type="text"  class="form-group textAreaForm" ></textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
@@ -501,10 +501,10 @@
                                         <div class="row marginTop30">
                                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="eventDescription" >توضیحات رویداد :</label>
+                                                    <label class="registerLabel floatRight" for="eventDescription" >توضیحات رویداد :(حداکثر {{200 - eventFields.description.length}} کاراکتر مجاز)</label>
                                                 </div>
                                                 <div class="col-xs-11  floatRight ">
-                                                    <textarea ng-model="eventFields.description" required  id="eventDescription"  type="text"  class="form-group textAreaForm" ></textarea>
+                                                    <textarea ng-model="eventFields.description" required maxlength="200" id="eventDescription"  type="text"  class="form-group textAreaForm" ></textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
@@ -523,7 +523,6 @@
 
                                         <legend class="legendStyle"> اطلاعات زمانی فروش بلیت</legend>
                                         <div class="row">
-
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
                                                     <label class="registerLabel floatRight" for="eventTicketStartTime">زمان شروع :</label>
@@ -897,10 +896,10 @@
 
                                         <div class="form-group col-xs-12 col-sm-6 formRegGroup marginTop30 floatRight">
                                             <div class="col-xs-10 floatRight text-center">
-                                                <label class="registerLabel floatRight" for="eventPlannerWebsite" > توضیحات برگزارکننده :</label>
+                                                <label class="registerLabel floatRight" for="eventPlannerWebsite" > توضیحات برگزارکننده :(حداکثر {{200 - eventPlanner.description.length}} کاراکتر مجاز)</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
-                                                <textarea ng-model="eventPlanner.description" required  id="plannerDescription"  type="text"  class="form-group textAreaForm marginTop30" ></textarea>
+                                                <textarea ng-model="eventPlanner.description" maxlength="200" required  id="plannerDescription"  type="text"  class="form-group textAreaForm marginTop30" ></textarea>
                                             </div>
                                         </div>
                                         </div>

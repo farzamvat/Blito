@@ -50,10 +50,10 @@
                         <div class="row">
                         <div class="form-group col-xs-12 col-sm-6 formRegGroup marginTop30 floatRight">
                             <div class="col-xs-10 floatRight text-center">
-                                <label class="registerLabel floatRight" for="eventPlannerEditDescription" > توضیحات برگزارکننده :</label>
+                                <label class="registerLabel floatRight" for="eventPlannerEditDescription" > توضیحات برگزارکننده :(حداکثر {{200 - eventPlannerEdit.description.length}} کاراکتر مجاز)</label>
                             </div>
                             <div class="col-xs-11 floatRight ">
-                                <textarea ng-model="eventPlannerEdit.description" required  id="eventPlannerEditDescription"  type="text"  class="form-group textAreaForm marginTop30" ></textarea>
+                                <textarea ng-model="eventPlannerEdit.description" maxlength="200" required  id="eventPlannerEditDescription"  type="text"  class="form-group textAreaForm marginTop30" ></textarea>
                             </div>
                         </div>
                         </div>

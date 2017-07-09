@@ -8,6 +8,14 @@ angular.module('userProfileApi', [])
 
 
         photo.upload = function (imageData) {
+            var blob = new Blob([imageData.encodedBase64], {type: 'image/png'});
+            var file = new File([blob], 'imageFileName.png');
+            var fd = new FormData();
+            fd.append("file", file);
+            return $http.post(config.baseUrl+'/api/blito/v1.0/images/multipart/upload', fd,
+                {transformRequest : angular.identity, headers : {'Content-Type': undefined}})
+        };
+        photo.uploadOld = function (imageData) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/images/upload', imageData)
         };
         photo.download = function (imageData) {
@@ -104,6 +112,17 @@ angular.module('userProfileApi', [])
         var ticket = this;
         ticket.buyTicket = function (ticketInfo) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/blits/buy-request', ticketInfo)
+        };
+        ticket.getUserTickets = function (pageNumber, userId) {
+            var queryParam = {
+                params : {page: pageNumber-1, size: 5, sort: "createdAt,desc"}
+            };
+            var bodyJson = {
+                restrictions : [
+                    {field : "isDeleted", type : "simple", operation : "eq", value: "false"}
+                ]
+            };
+            return $http.post(config.baseUrl+'/api/blito/v1.0/blits/search', bodyJson, queryParam)
         };
     })
     .service('plannerService', function ($http, config) {

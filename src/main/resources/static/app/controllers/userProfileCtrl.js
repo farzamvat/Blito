@@ -1155,6 +1155,9 @@ angular.module('User')
         }
 
         $scope.toggleBody = function (section) {
+            if(section === 'myTicketSection') {
+
+            }
             mapMarkerService.initMap(document.getElementById('map'));
             mapMarkerService.initMap(document.getElementById('mapExchange'));
             $(angular.element(document.getElementById(section)).siblings()[0]).slideToggle(300);

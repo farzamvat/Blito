@@ -26,7 +26,7 @@ angular.module('exchangesPageModule', [])
         };
         $scope.pageChanged = function (newpage) {
             $scope.getAllExchanges(newpage);
-        }
+        };
 
         $scope.catchImagesExchange = function (events) {
             events.map(function (item) {
