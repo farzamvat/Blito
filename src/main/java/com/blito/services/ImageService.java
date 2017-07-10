@@ -142,7 +142,7 @@ public class ImageService {
 						}
 					}).thenApply(id -> {
 						image.setImageUUID(id);
-						image.setImageType(imageType);
+						image.setImageType(imageType.name());
 						return image;
 					}).join();
 					
@@ -154,7 +154,7 @@ public class ImageService {
 					} catch (IOException e) {
 						throw new RuntimeException(e.getMessage());
 					}
-					image.setImageType(imageType);
+					image.setImageType(imageType.name());
 					return imageRepository.save(image);
 				});
 		
