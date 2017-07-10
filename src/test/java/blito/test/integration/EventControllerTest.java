@@ -173,6 +173,8 @@ public class EventControllerTest {
 			event2.setEventName("C");
 			event2.setLatitude(4D);
 			event2.setEventType(EventType.CINEMA.name());
+			event2.setBlitSaleStartDate(Timestamp.from(ZonedDateTime.now().minusHours(24).toInstant()));
+			event2.setBlitSaleEndDate(Timestamp.from(ZonedDateTime.now().plusDays(2).toInstant()));
 			event2.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(5).toInstant()));
 			
 			event3 = new Event();
@@ -183,6 +185,8 @@ public class EventControllerTest {
 			event3.setEventName("D");
 			event3.setLatitude(1D);
 			event3.setEventType(EventType.SPORT.name());
+			event3.setBlitSaleStartDate(Timestamp.from(ZonedDateTime.now().minusHours(24).toInstant()));
+			event3.setBlitSaleEndDate(Timestamp.from(ZonedDateTime.now().plusDays(2).toInstant()));
 			event3.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(3).toInstant()));
 
 			event4 = new Event();
@@ -193,6 +197,8 @@ public class EventControllerTest {
 			event4.setEventName("E");
 			event4.setLatitude(1D);
 			event4.setEventType(EventType.CONCERT.name());
+			event4.setBlitSaleStartDate(Timestamp.from(ZonedDateTime.now().minusHours(24).toInstant()));
+			event4.setBlitSaleEndDate(Timestamp.from(ZonedDateTime.now().plusDays(2).toInstant()));
 			event4.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 
 			event.setEventHost(eventHost1);
