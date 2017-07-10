@@ -242,6 +242,7 @@ color: white !important;
 .btn-success:hover {
     background-color: #1F911F;
 }
+
 .eventMore {
     background-color: rgb(252, 183, 49);
     margin-top: 35px;
@@ -265,6 +266,44 @@ color: white !important;
 }
 .eventMore:checked {
     color:white;
+}
+.btn-blito {
+    background-color: rgb(252, 183, 49);
+    height: 50px !important;
+    padding: 0 15px;
+    width: 100%;
+}
+.btn-blito:hover {
+    box-shadow: none;
+}
+.searchBarHomePage {
+    margin: 0 auto;
+}
+.searchHomeHeader {
+    color: white;
+}
+.searchHomePageForm {
+    margin: 0 auto;
+}
+.searchBarHomePageInput {
+    text-align: right;
+    /*width: 400px !important;*/
+    height: 50px ;
+    margin: 0 auto !important;
+    padding: 0 10px;
+}
+.searchBarButton {
+    color: white;
+    /*width: 100%;*/
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    margin: 0;
+}
+.searchSection {
+    padding-top: 10px;
+    padding-bottom: 15px;
+    background: url('../img/back.png') fixed;
+    border-bottom: 2px solid #202020;
 }
 .slidingEvents h2:hover {
     color: rgb(252,183, 49);

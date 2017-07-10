@@ -63,41 +63,42 @@
                                         <table class="table">
                                             <thead class="tableHeader">
                                             <tr>
-
                                                 <th class="dataCenter">نام رویداد
                                                 </th>
-                                                <th class="dataCenter" >تاریخ
+                                                <th class="dataCenter" > تاریخ و ساعت
                                                 </th>
-                                                <th class="dataCenter" >روز
-                                                </th>
-                                                <th class="dataCenter" >ساعت
-                                                </th>
+
                                                 <th class="dataCenter" >قیمت
                                                 </th>
-                                                <th class="dataCenter" >پیگیری
+                                                <th class="dataCenter" >تعداد
+                                                </th>
+                                                <th class="dataCenter" >شماره پیگیری
                                                 </th>
                                             </tr>
                                             </thead>
                                             <tbody class="showTimeList tableOverFlow">
-                                            <tr ng-repeat="item in showTime">
-                                                <td class="dataCenter">{{ item.title}}</td>
-                                                <td class="dataCenter">{{ item.time}}</td>
-                                                <td class="dataCenter">{{ item.weekDay}}</td>
-                                                <td class="dataCenter">{{ item.date}}</td>
-                                                <td class="dataCenter">{{ item.price}}</td>
-                                                <td class="dataCenter">{{ item.code}}</td>
-
+                                            <tr pagination-id="userTickets"  total-items="totalUserTickets" dir-paginate="item in userTickets | itemsPerPage: 5"  current-page="currentPage">
+                                                <td class="dataCenter">{{ item.eventName}}</td>
+                                                <td class="dataCenter">{{ item.eventDateAndTime}}</td>
+                                                <td ng-show="item.paymentStatus === 'FREE'" class="dataCenter">رایگان</td>
+                                                <td ng-hide="item.paymentStatus === 'FREE'" class="dataCenter">{{item.totalAmount}}</td>
+                                                <td class="dataCenter">{{ item.count}}</td>
+                                                <td class="dataCenter">{{ item.trackCode}}</td>
                                             </tr>
                                             </tbody>
                                         </table>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="col-md-4 col-md-offset-4">
+                                            <dir-pagination-controls pagination-id="userTickets" on-page-change="userTicketsPageChanged(newPageNumber)" class="col-xs-12"
+                                                                     max-size="4">
+                                            </dir-pagination-controls>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
                 <div class="tab-pane tabProfile  fade" id="2">
                     <form name="editUserData" class="form-inline textAlignRight">
@@ -351,7 +352,7 @@
                     <legend class="legendStyle marginTop30 text-center"> مدیریت رویداد   </legend>
                     <div class="col-xs-12 marginTop10">
                         <div class="panel " id="eventList">
-                            <div class="panel-heading EmakeEventFormHeader text-center" id="eventListSection" ng-click="toggleBody('eventListSection')"><h6> <i  class="fa fa-arrow-circle-down " aria-hidden="true"></i>  لسیت رویداد ها و برگذارکننده ها </h6></div>
+                            <div class="panel-heading EmakeEventFormHeader text-center" id="eventListSection" ng-click="toggleBody('eventListSection')"><h6> <i  class="fa fa-arrow-circle-down " aria-hidden="true"></i>  لسیت رویداد ها و برگزارکننده ها </h6></div>
 
 
 
@@ -418,7 +419,7 @@
                                         <div class="col-xs-12 col-sm-12 floatRight">
                                             <div class="panel panel-primary customPanel customPanelUser">
                                                 <div class="panel-heading">
-                                                    <span class="glyphicon glyphicon-list"></span> لیست برگذار کننده ها
+                                                    <span class="glyphicon glyphicon-list"></span> لیست برگزارکننده ها
 
                                                 </div>
                                                 <div class="panel-body textAlignRight">
@@ -427,7 +428,7 @@
                                                         <thead class="tableHeader">
                                                         <tr>
 
-                                                            <th class="dataCenter">نام برگذار کننده
+                                                            <th class="dataCenter">نام برگزارکننده
                                                             </th>
                                                             <th class="dataCenter" >تلفن
                                                             </th>
@@ -726,11 +727,11 @@
                                         </div>
                                     </fieldset>
                                     <fieldset class="marginTop60 fieldsetStyle">
-                                        <legend class="legendStyle">  اطلاعات برگذار کننده</legend>
+                                        <legend class="legendStyle">  اطلاعات برگزارکننده</legend>
                                         <div class="row marginTop30">
                                             <div class="form-group col-xs-12 col-sm-10  formRegGroup floatRight">
                                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
-                                                    <label class="registerLabel" for="eventPlanner">انتخاب برگذار کننده   :</label>
+                                                    <label class="registerLabel" for="eventPlanner">انتخاب برگزارکننده   :</label>
                                                 </div>
                                                 <div class="col-xs-7 col-sm-6 floatRight ">
                                                     <select id="eventPlanner" required  ng-model="eventFields.eventPlanner" ng-options="obj.hostName for obj in eventHosts track by obj.eventHostId" class="form-control dropDownList">
@@ -740,7 +741,7 @@
 
                                             </div>
                                             <div class="col-xs-12 text-center marginTop30">
-                                                <label class=" text-center">برگذار کننده ثبت نکردید؟</label>
+                                                <label class=" text-center">برگزارکننده ثبت نکردید؟</label>
                                                 <a  ng-click="scrollTo('eventPlannerSection', 'PlannerSection')" class="text-center">اینجا را کلیک کنید</a>
                                             </div>
                                         </div>
@@ -844,7 +845,7 @@
                     </div>
                     <div class="col-xs-12 marginTop10">
                         <div class="panel " id="eventPlannerSection">
-                            <div class="panel-heading makeEventFormHeader text-center" id="PlannerSection" ng-click="toggleBody('PlannerSection')"><h6> <i  class="fa fa-arrow-circle-down " aria-hidden="true"></i>  ایجاد برگذار کننده </h6></div>
+                            <div class="panel-heading makeEventFormHeader text-center" id="PlannerSection" ng-click="toggleBody('PlannerSection')"><h6> <i  class="fa fa-arrow-circle-down " aria-hidden="true"></i>  ایجاد برگزارکننده </h6></div>
                             <div class="panel-body EmakeEventPlannerForm">
                                 <form class="form-inline textAlignRight" name="submitPlannerForm">
                                     <fieldset class="marginBottom20 fieldsetStyle">
@@ -860,7 +861,7 @@
                                         </div>
                                         <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                             <div class="col-xs-10 floatRight text-center">
-                                                <label class="registerLabel floatRight" for="eventPlannerTelephone" > شماره تلفن برگذار کننده  :</label>
+                                                <label class="registerLabel floatRight" for="eventPlannerTelephone" > شماره تلفن برگزارکننده  :</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
                                                 <input height="60" id="eventPlannerTelephone" required  ng-model="eventPlanner.mobile"   type="text"  class="form-group registerInput" >
@@ -880,7 +881,7 @@
 
                                         <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight marginTop30">
                                             <div class="col-xs-11 floatRight text-center">
-                                                <label class="registerLabel floatRight"  for="eventPlannerType">نوع برگذارکننده :</label>
+                                                <label class="registerLabel floatRight"  for="eventPlannerType">نوع برگزارکننده :</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
                                                 <select id="eventPlannerType" required  ng-model="eventPlanner.type" ng-options="o.v as o.n for o in [{n : 'نهاد', v: 'ORGANIZATION'},{n : 'کافی شاپ', v: 'COFFEESHOP'},{n : 'فرهنگسرا', v: 'CULTURALCENTER'},{n : 'تئاتر', v: 'THEATER'},{n : 'مؤسسه', v: 'INSTITUTION'},{n : 'فرد', v: 'INDIVIDUAL'}, {n : 'سایر', v: 'OTHER'}]" class="form-control dropDownList">
@@ -995,7 +996,7 @@
                                             <strong></strong>
                                         </div>
                                         <div class="controls">
-                                            <button id="eventPlannerSubmit" ng-disabled="submitPlannerForm.$invalid" ng-click="submitEventPlanner(eventPlanner)"  class="btn btn-success btn-lg btnLogin">ثبت برگذارکننده <i ng-show="submitPlannerSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
+                                            <button id="eventPlannerSubmit" ng-disabled="submitPlannerForm.$invalid" ng-click="submitEventPlanner(eventPlanner)"  class="btn btn-success btn-lg btnLogin">ثبت برگزارکننده <i ng-show="submitPlannerSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
                                         </div>
                                     </div>
 

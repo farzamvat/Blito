@@ -70,6 +70,16 @@
                                                 </div>
 
                                             </div>
+                                            <div ng-show="!loggedIn && itemWithCapacity[0].isFree">
+                                                <div   class="text-center  alert alert-danger col-xs-12">
+                                                    <strong>برای خرید بلیت رایگان باید کاربر وبسایت باشید !</strong>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <button ng-click="hideTicketShowLogin()" class="btn btn-info marginBottom20 center-block">ورود/ثبت نام</button>
+                                                </div>
+
+                                            </div>
+                                            <div ng-hide="!loggedIn && itemWithCapacity[0].isFree">
                                             <div ng-show="itemWithCapacity[0].capacity === 0 || itemWithCapacity[0].blitTypeState === 'CLOSED'">
                                                 <div   class="text-center  alert alert-danger col-xs-12">
                                                     <strong>این بلیت قابل خریداری نمی باشد !</strong>
@@ -146,6 +156,7 @@
                                                 <div class="controls">
                                                     <button  id="nextStep1"  ng-click="nextStep1(eventInfo)" ng-disabled="ticketInfo.$invalid"  class="btn btn-success btn-lg btnLogin"> مرحله بعد <i class="fa fa-arrow-left"></i></button>
                                                 </div>
+                                            </div>
                                             </div>
                                             </div>
                                         </fieldset>

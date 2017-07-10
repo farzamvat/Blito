@@ -15,6 +15,10 @@ angular.module('eventsPageModule')
         $scope.setClass = function (index) {
             return "classDate"+index;
         };
+        $scope.hideTicketShowLogin = function () {
+            $("#buyTicket").modal("hide");
+            $("#registrationModal").modal("show");
+        };
         $scope.eventData = {};
         eventService.getEvent($routeParams.eventLink)
             .then(function (data, status) {
