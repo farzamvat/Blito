@@ -71,11 +71,7 @@ public class BlitService {
 
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		
-		System.out.println("Thread with id : " + Thread.currentThread().getId()
-				+ " is running inside createCommonBlit methodxxxxxx");
 		if (blitType.isFree()) {
-			System.out.println("Thread with id : " + Thread.currentThread().getId()
-					+ " is running inside createCommonBlit method");
 			return CompletableFuture
 					.completedFuture(commonBlitMapper.createFromEntity(reserveFreeBlit(blitType, commonBlit, user)));
 		} else {

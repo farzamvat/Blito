@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <springProperty name="log-dir" source="log.logDirectory"/>
+    <springProperty name="sensitive-data-logging-level" source="sensitive.data.logging.level"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.out</target>
+        <encoder>
+            <pattern>%date{yyyy/MM/dd HH:mm:ss ZZZZ} - [%level] - from %logger in %thread %n%message%n%xException%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log-dir}/blito.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log-dir}/mp-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy/MM/dd HH:mm:ss ZZZZ} - [%level] - from %logger in %thread %n%message%n%xException%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="akka" level="INFO" />
+    <logger name="com.zaxxer.hikari">
+        <level value="error"/>
+    </logger>
+    <logger name="org.hibernate">
+        <level value="error"/>
+    </logger>
+
+    <logger name="org.springframework.web.client.RestTemplate" level="${sensitive-data-logging-level}" />
+    <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="${sensitive-data-logging-level}" />
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+</configuration>

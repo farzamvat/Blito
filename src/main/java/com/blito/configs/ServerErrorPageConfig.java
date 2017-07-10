@@ -12,8 +12,8 @@ public class ServerErrorPageConfig {
 	public EmbeddedServletContainerCustomizer containerCustomizer() {
 	 
 	   return (container -> {
-	        ErrorPage error500Page = new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/500.html");
-	        container.addErrorPages(error500Page);
+//	        ErrorPage error500Page = new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/500.html");
+//	        container.addErrorPages(error500Page);
 	   });
 	}
 }
