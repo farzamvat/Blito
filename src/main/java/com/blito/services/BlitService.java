@@ -36,6 +36,7 @@ import com.blito.rest.viewmodels.payments.SamanPaymentRequestResponseViewModel;
 import com.blito.rest.viewmodels.payments.ZarinpalPayRequetsResponseViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.security.SecurityContextHolder;
+import com.blito.services.util.HtmlRenderer;
 
 @Service
 public class BlitService {
@@ -56,12 +57,21 @@ public class BlitService {
 	private SearchService searchService;
 	@Autowired
 	private ExcelService excelService;
+	@Autowired
+	private HtmlRenderer htmlRenderer;
 	
 	@Value("{zarinpal.web.gateway}")
 	private String zarinpalGatewayURL;
 	
 	private final Logger log = LoggerFactory.getLogger(BlitService.class);
 
+	
+	public String generateCommonBlitHtml(CommonBlit commonBllit)
+	{
+		// TODO
+		return htmlRenderer.renderHtml("ticket", null);
+	}
+	
 	@Transactional
 	public CompletableFuture<Object> createCommonBlit(CommonBlitViewModel vmodel) {
 

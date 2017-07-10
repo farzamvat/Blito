@@ -1,4 +1,4 @@
-package com.blito.view;
+package com.blito.services.util;
 
 import java.util.Map;
 

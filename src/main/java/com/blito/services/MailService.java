@@ -18,7 +18,7 @@ import com.blito.enums.Response;
 import com.blito.exceptions.SendingEmailException;
 import com.blito.models.User;
 import com.blito.resourceUtil.ResourceUtil;
-import com.blito.view.HtmlRenderer;
+import com.blito.services.util.HtmlRenderer;
 
 @Service
 public class MailService {

@@ -58,7 +58,7 @@ public class ExcelService {
 						"Bank Gateway"));
 		// Results
 		model.put("results", blits.stream()
-				.collect(Collectors.toMap(k -> k.getUserId(), v -> Arrays.asList(String.valueOf(v.getUserId()),
+				.collect(Collectors.toMap(k -> k.getBlitId(), v -> Arrays.asList(String.valueOf(v.getUserId()),
 						v.getCustomerName(), v.getCustomerMobileNumber(), v.getCustomerEmail() , String.valueOf(v.getBlitId()), v.getTrackCode(),
 						v.getBlitTypeName(), v.getCreatedAt().toString(), String.valueOf(v.getCount()), String.valueOf(v.getTotalAmount()), v.getEventName(),
 						v.getEventDateAndTime(), v.getEventAddress(), v.getSeatType() == null ? " " : v.getSeatType().toString(), v.getPaymentStatus() == null ? " " : v.getPaymentStatus().toString(),

@@ -71,12 +71,11 @@ public class ImageController {
 			ImageViewModel responseVmodel = new ImageViewModel();
 			responseVmodel.setImageUUID(image.getImageUUID());
 			return responseVmodel;
-		
 		}, throwable, req, res));
 	}
 	
 	@JsonView(View.DefaultView.class)
-	@GetMapping("/images/download")
+	@GetMapping("/download")
 	public DeferredResult<ResponseEntity<ImageBase64ViewModel>> download(@RequestParam String id)
 	{
 		DeferredResult<ResponseEntity<ImageBase64ViewModel>> deferred = new DeferredResult<>();

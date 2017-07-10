@@ -12,6 +12,7 @@ import com.blito.enums.BankGateway;
 import com.blito.enums.PaymentStatus;
 import com.blito.enums.SeatType;
 import com.blito.rest.viewmodels.View;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
 public class CommonBlitViewModel {
@@ -37,6 +38,7 @@ public class CommonBlitViewModel {
 	@JsonView(View.Blit.class)
 	@NotEmpty
 	String eventDateAndTime;
+	@JsonIgnore
 	@JsonView(View.SimpleBlit.class)
 	long userId;
 	@JsonView(View.Blit.class)

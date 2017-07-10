@@ -35,7 +35,8 @@ public class SecurityConfig {
 					.addMatcher("/operator/*")
 					.addMatcher("/enums/*")
 					.addMatcher("/exchange-blits/*")
-//					.addMatcher("/blits/*")
+					.addMatcher("/blits/*")
+					.addMatcher("/images/*")
 					.getUrlPatterns());
 		return filterRegistration;
 	}
