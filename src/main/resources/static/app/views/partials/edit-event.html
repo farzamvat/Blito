@@ -1,10 +1,8 @@
 <!-- Modal -->
 <div id="editEvent" class="modal fade" role="dialog">
     <div class="modal-dialog editForm">
-
         <!-- Modal content-->
         <div class="modal-content registerBody">
-
             <div class="modal-body ">
                 <form class="form-inline textAlignRight" name="editEventForm">
                     <fieldset class="fieldsetStyle">
@@ -272,11 +270,11 @@
                         </div>
                     </fieldset>
                     <fieldset class="marginTop60 fieldsetStyle">
-                        <legend class="legendStyle">  اطلاعات برگذار کننده</legend>
+                        <legend class="legendStyle">  اطلاعات برگزارکننده</legend>
                         <div class="row marginTop30">
                             <div class="form-group col-xs-12 col-sm-10  formRegGroup floatRight">
                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
-                                    <label class="registerLabel" for="eventPlanner">انتخاب برگذار کننده   :</label>
+                                    <label class="registerLabel" for="eventPlanner">انتخاب برگزارکننده   :</label>
                                 </div>
                                 <div class="col-xs-7 col-sm-6 floatRight ">
                                     <select id="eventPlanner" ng-model="editEventFields.eventHostId"  ng-value="editEventFields.eventHostId"  ng-options="obj.hostName for obj in eventHosts track by obj.eventHostId" class="form-control dropDownList">

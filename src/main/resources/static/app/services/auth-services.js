@@ -210,7 +210,7 @@ angular.module('authServices', [])
             // userDataService.lastname = 'yousefi';
             // userDataService.mobile = '09122011273';
             userDataService.email = userData.email;
-        }
+        };
         userInfo.getData = function () {
             return userDataService;
         }

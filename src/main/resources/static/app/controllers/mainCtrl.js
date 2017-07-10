@@ -129,6 +129,7 @@ angular.module('menuPagesModule', [])
                 .then(function (data, status) {
                     $scope.loginSuccessNotif = true;
                     $scope.submitLogin = false;
+                    $scope.loggedIn = true;
                     main.checkSession();
                     console.log(data);
                     $location.path(config.redirectToUrlAfterLogin.url);

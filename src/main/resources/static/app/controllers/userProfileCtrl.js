@@ -3,7 +3,7 @@
  */
 
 angular.module('User')
-    .controller('userProfileCtrl', function ($scope, userInfo, Auth, $timeout, mapMarkerService, updateInfo, $location, scrollAnimation, photoService, eventService, plannerService, exchangeService, dataService) {
+    .controller('userProfileCtrl', function ($scope, userInfo, Auth, $timeout, mapMarkerService, updateInfo, $location, scrollAnimation, photoService, eventService, plannerService, exchangeService, dataService, ticketsService, $q) {
         var userProfile = this;
 
         $scope.userData = userInfo.getData();
@@ -25,10 +25,11 @@ angular.module('User')
         $scope.createEventSpinner = false;
         $scope.createEventNotif = false;
         userProfile.showTimeNumber = 0;
+        var userInfoPromise = [];
         //==================================================== EDIT USER GET INFO =================================
         $scope.editInfo = angular.copy(userInfo.getData());
         $scope.editUserInfo = function () {
-            Auth.getUser()
+            userInfoPromise.push(Auth.getUser()
                 .then(function (data, status) {
                     $scope.logoutMenu = true;
                     userProfile.userData = data.data;
@@ -36,10 +37,10 @@ angular.module('User')
                     $scope.editInfo = angular.copy(userInfo.getData());
 
                 }, function (data) {
-                    console.log("updated");
-                })
+                    console.log(data);
+                }))
         };
-
+        $scope.editUserInfo();
         $scope.updateInfo = function (editInfo) {
             $scope.updateInfoSpinner = true;
             delete editInfo["email"];
@@ -1142,27 +1143,24 @@ angular.module('User')
             mapMarkerService.initMap(document.getElementById('map'));
             $(angular.element(document.getElementById('toggleExchange'))).slideUp(300);
             $(angular.element(event.currentTarget).siblings()[0]).slideDown(300);
-        }
+        };
         $scope.dropDownTabToggleExchange = function (event) {
             $scope.getExchangeData(1);
             mapMarkerService.initMap(document.getElementById('mapExchange'));
 
             $(angular.element(document.getElementById('toggleEvent'))).slideUp(300);
             $(angular.element(event.currentTarget).siblings()[0]).slideDown(300);
-        }
+        };
         $scope.closeTabDropDowns = function () {
             $(angular.element(document.getElementsByClassName('tabDropDown'))).slideUp(300);
-        }
+        };
 
         $scope.toggleBody = function (section) {
-            if(section === 'myTicketSection') {
-
-            }
             mapMarkerService.initMap(document.getElementById('map'));
             mapMarkerService.initMap(document.getElementById('mapExchange'));
             $(angular.element(document.getElementById(section)).siblings()[0]).slideToggle(300);
             $(angular.element(document.getElementById(section))).toggleClass('orangeBackground');
-        }
+        };
 
         $scope.exchangeTickets = [];
         //==================================================== EDIT EVENT =================================
@@ -1657,6 +1655,9 @@ angular.module('User')
         $scope.exchangePageChanged = function(newPage) {
             $scope.getExchangeData(newPage);
         };
+        $scope.userTicketsPageChanged = function (newPage) {
+            $scope.getUserTickets(newPage);
+        };
         //==================================================== ********* =================================
         //==================================================== GET DATA =================================
         $scope.getExchangeData = function (page) {
@@ -1704,12 +1705,33 @@ angular.module('User')
         };
         $scope.getPlannersData = function (page) {
             plannerService.getPlanners(page)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.totalPlannersNumber = data.data.totalElements;
                     $scope.eventHosts = data.data.content;
-                }, function (data, status) {
+                }, function (data) {
                     console.log(data);
                 })
         };
+
+        $scope.getUserTickets = function (pageNumber) {
+            ticketsService.getUserTickets(pageNumber, $scope.userData.email)
+                .then(function (data) {
+                    console.log(data);
+                    $scope.totalUserTickets = data.data.totalElements;
+                    $scope.userTickets = data.data.content;
+                })
+                .catch(function (data) {
+                    console.log(data);
+                })
+        };
+        console.log(userInfoPromise);
+       $q.all(userInfoPromise)
+           .then(function () {
+               console.log($scope.userData);
+               $scope.getUserTickets(1);
+           })
+           .catch(function () {
+               
+           })
         //==================================================== ********* =================================
     });

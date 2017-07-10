@@ -113,13 +113,13 @@ angular.module('userProfileApi', [])
         ticket.buyTicket = function (ticketInfo) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/blits/buy-request', ticketInfo)
         };
-        ticket.getUserTickets = function (pageNumber, userId) {
+        ticket.getUserTickets = function (pageNumber, userEmail) {
             var queryParam = {
                 params : {page: pageNumber-1, size: 5, sort: "createdAt,desc"}
             };
             var bodyJson = {
                 restrictions : [
-                    {field : "isDeleted", type : "simple", operation : "eq", value: "false"}
+                    {field : "user-email", type : "simple", operation : "eq", value: userEmail}
                 ]
             };
             return $http.post(config.baseUrl+'/api/blito/v1.0/blits/search', bodyJson, queryParam)

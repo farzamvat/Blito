@@ -8,16 +8,16 @@ angular.module('UiServices', [])
 
         mapMarkerService.getMarker = function () {
             return latitudeLongtitude;
-        }
+        };
         mapMarkerService.setMarker = function (lat, lng) {
             latitudeLongtitude = {
                 lat : lat,
                 lng : lng
             }
-        }
+        };
         mapMarkerService.getMarkerArray = function () {
             return markers;
-        }
+        };
         try {
             var mapOptions = {
                 zoom: 14,
@@ -36,7 +36,7 @@ angular.module('UiServices', [])
             }
             mapMarker(map);
 
-        }
+        };
         mapMarkerService.initMapOnlyShowMarker = function (mapInput) {
 
             try {
@@ -46,7 +46,7 @@ angular.module('UiServices', [])
             }
             mapMarkerOnlyShow(map);
 
-        }
+        };
 
         var mapMarker = function (map) {
 
@@ -88,7 +88,7 @@ angular.module('UiServices', [])
             } catch (err) {
                 console.log(err);
             }
-        }
+        };
         var mapMarkerOnlyShow = function (map) {
 
             markers = [];
@@ -174,7 +174,7 @@ angular.module('UiServices', [])
         var data = this;
 
         data.eventTypePersian = function (type) {
-            var persianType = ''
+            var persianType = '';
             switch (type) {
                 case "CINEMA" :
                     persianType = 'سینما';
@@ -217,7 +217,7 @@ angular.module('UiServices', [])
                     break;
             }
             return persianType;
-        }
+        };
 
         data.stateTypePersian = function (state) {
             var persianState = '';
@@ -232,12 +232,12 @@ angular.module('UiServices', [])
                     persianState = 'بسته';
                     break;
                 default :
-                    persianState = 'گونه'
+                    persianState = 'گونه';
                     break;
 
             }
             return persianState;
-        }
+        };
 
         data.operatorStatePersian = function (operatorState) {
             var persianOperatorState = '';
@@ -252,18 +252,18 @@ angular.module('UiServices', [])
                     persianOperatorState = 'تأیید شده';
                     break;
                 default :
-                    persianOperatorState = 'گونه'
+                    persianOperatorState = 'گونه';
                     break;
 
             }
             return persianOperatorState;
-        }
+        };
         data.mapToPersianEvent = function (item) {
             item.eventState = data.stateTypePersian(item.eventState);
             item.eventType = data.eventTypePersian(item.eventType);
             item.operatorState = data.operatorStatePersian(item.operatorState);
             return item;
-        }
+        };
 
         data.mapToPersianExchange = function (item) {
             item.operatorState = data.operatorStatePersian(item.operatorState);
@@ -272,4 +272,4 @@ angular.module('UiServices', [])
             return item;
         }
 
-    })
+    });
