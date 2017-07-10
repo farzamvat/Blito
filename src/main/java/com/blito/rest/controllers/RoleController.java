@@ -42,6 +42,7 @@ public class RoleController {
 	
 	@DeleteMapping("/{roleId}")
 	public ResponseEntity<?> delete(@PathVariable long roleId) {
+		roleService.deleteRoleById(roleId);
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
 

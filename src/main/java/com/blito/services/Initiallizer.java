@@ -45,7 +45,7 @@ public class Initiallizer {
 			List<Permission> permissions = new ArrayList<>();
 			Arrays.asList(ApiBusinessName.values()).forEach(e -> {
 				Permission permission = new Permission();
-				permission.setApiBusinessName(e);
+				permission.setApiBusinessName(e.name());
 				permissions.add(permission);
 			});
 			permissionRepository.save(permissions);
@@ -53,7 +53,7 @@ public class Initiallizer {
 			List<Permission> finalPermissions = Arrays.asList(ApiBusinessName.values()).stream().map(e -> permissionRepository.findAll()
 					.stream().filter(p -> p.getApiBusinessName().equals(e)).findFirst().map(p -> p).orElseGet(() -> {
 						Permission permission = new Permission();
-						permission.setApiBusinessName(e);
+						permission.setApiBusinessName(e.name());
 						return permission;
 					})).collect(Collectors.toList());
 			permissionRepository.save(finalPermissions);

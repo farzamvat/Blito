@@ -18,9 +18,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.blito.Application;
 import com.blito.configs.Constants;
+import com.blito.enums.BankGateway;
 import com.blito.enums.EventType;
 import com.blito.enums.HostType;
 import com.blito.enums.ImageType;
+import com.blito.enums.SeatType;
 import com.blito.enums.State;
 import com.blito.models.BlitType;
 import com.blito.models.EventHost;
@@ -97,7 +99,7 @@ public class BlitServiceTest {
 		SecurityContextHolder.setCurrentUser(user);
 
 		eventHost.setHostName("hostname12");
-		eventHost.setHostType(HostType.THEATER);
+		eventHost.setHostType(HostType.THEATER.name());
 		eventHost.setTelephone("02188002116");
 		eventHost.setUser(user);
 
@@ -128,19 +130,19 @@ public class BlitServiceTest {
 		eventViewModel.getEventDates().add(eventDateViewModel);
 
 		Image image = new Image();
-		image.setImageType(ImageType.EVENT_PHOTO);
+		image.setImageType(ImageType.EVENT_PHOTO.name());
 		image.setImageUUID(Constants.DEFAULT_HOST_PHOTO);
 
 		Image hostCoverPhoto = new Image();
-		hostCoverPhoto.setImageType(ImageType.HOST_COVER_PHOTO);
+		hostCoverPhoto.setImageType(ImageType.HOST_COVER_PHOTO.name());
 		hostCoverPhoto.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO);
 
 		Image exchangeBlitPhoto = new Image();
-		exchangeBlitPhoto.setImageType(ImageType.EXCHANGEBLIT_PHOTO);
+		exchangeBlitPhoto.setImageType(ImageType.EXCHANGEBLIT_PHOTO.name());
 		exchangeBlitPhoto.setImageUUID(Constants.DEFAULT_EXCHANGEBLIT_PHOTO);
 
 		Image eventPhoto = new Image();
-		eventPhoto.setImageType(ImageType.EVENT_PHOTO);
+		eventPhoto.setImageType(ImageType.EVENT_PHOTO.name());
 		eventPhoto.setImageUUID(Constants.DEFAULT_EVENT_PHOTO);
 
 		imageRepository.save(image);
@@ -167,17 +169,19 @@ public class BlitServiceTest {
 		
 		commonBlitViewModel.setBlitTypeId(blitTypeId);
 		commonBlitViewModel.setCount(20);
+		commonBlitViewModel.setSeatType(SeatType.COMMON);
 		commonBlitViewModel.setEventName(eventViewModel.getEventName());
 		commonBlitViewModel.setUserId(user.getUserId());
 		commonBlitViewModel.setCustomerName(user.getFirstname()+ " " + user.getLastname());
 		commonBlitViewModel.setEventDate(eventDateViewModel.getDate());
+		commonBlitViewModel.setBankGateway(BankGateway.NONE);
 		
 		blitService.createCommonBlit(commonBlitViewModel);
 
 		BlitType blitType = blitTypeRepo.findOne(blitTypeId);
 		assertEquals(1, commonBlitRepo.count());
 		assertEquals(20, blitType.getSoldCount());
-		assertEquals(State.SOLD, blitType.getBlitTypeState());
+		assertEquals(State.SOLD.name(), blitType.getBlitTypeState());
 		
 	}
 }

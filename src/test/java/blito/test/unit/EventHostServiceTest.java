@@ -74,10 +74,10 @@ public class EventHostServiceTest {
 		SecurityContextHolder.setCurrentUser(user);
 		Image image1 = new Image();
 		image1.setImageUUID(Constants.DEFAULT_HOST_PHOTO);
-		image1.setImageType(ImageType.HOST_PHOTO);
+		image1.setImageType(ImageType.HOST_PHOTO.name());
 		imageRepo.save(image1);
 		Image image2 = new Image();
-		image2.setImageType(ImageType.HOST_COVER_PHOTO);
+		image2.setImageType(ImageType.HOST_COVER_PHOTO.name());
 		image2.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO);
 		imageRepo.save(image2);
 

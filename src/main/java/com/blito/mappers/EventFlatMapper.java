@@ -5,10 +5,11 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.blito.enums.EventType;
+import com.blito.enums.OfferTypeEnum;
 import com.blito.enums.OperatorState;
 import com.blito.enums.State;
 import com.blito.models.Event;
-import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventUpdateViewModel;
 
@@ -32,11 +33,11 @@ public class EventFlatMapper implements GenericMapper<Event,EventFlatViewModel> 
 		event.setBlitSaleStartDate(vmodel.getBlitSaleStartDate());
 		event.setDescription(vmodel.getDescription());
 		event.setEventName(vmodel.getEventName());
-		event.setEventType(vmodel.getEventType());
+		event.setEventType(vmodel.getEventType().name());
 		event.setLongitude(vmodel.getLongitude());
 		event.setLatitude(vmodel.getLatitude());
 		event.setEventLink(vmodel.getEventLink());
-		event.setOperatorState(OperatorState.PENDING);
+		event.setOperatorState(OperatorState.PENDING.name());
 		return event;
 	}
 	
@@ -65,7 +66,7 @@ public class EventFlatMapper implements GenericMapper<Event,EventFlatViewModel> 
 		EventFlatViewModel vmodel = new EventFlatViewModel();
 		vmodel.setEventId(event.getEventId());
 		vmodel.setEventName(event.getEventName());
-		vmodel.setEventType(event.getEventType());
+		vmodel.setEventType(Enum.valueOf(EventType.class, event.getEventType()));
 		vmodel.setBlitSaleStartDate(event.getBlitSaleStartDate());
 		vmodel.setBlitSaleEndDate(event.getBlitSaleEndDate());
 		vmodel.setAddress(event.getAddress());
@@ -73,13 +74,13 @@ public class EventFlatMapper implements GenericMapper<Event,EventFlatViewModel> 
 		vmodel.setLatitude(event.getLatitude());
 		vmodel.setLongitude(event.getLongitude());
 		vmodel.setEventLink(event.getEventLink());
-		vmodel.setEventState(event.getEventState());
+		vmodel.setEventState(Enum.valueOf(State.class, event.getEventState()));
 		vmodel.setAparatDisplayCode(event.getAparatDisplayCode());
 		vmodel.setEvento(event.isEvento());
-		vmodel.setOffers(event.getOffers());
+		vmodel.setOffers(event.getOffers().stream().map(offer -> Enum.valueOf(OfferTypeEnum.class, offer)).collect(Collectors.toSet()));
 		vmodel.setCreatedAt(event.getCreatedAt());
 		vmodel.setMembers(event.getMembers());
-		vmodel.setOperatorState(event.getOperatorState());
+		vmodel.setOperatorState(Enum.valueOf(OperatorState.class, event.getOperatorState()));
 		vmodel.setOrderNumber(event.getOrderNumber());
 		vmodel.setDeleted(event.isDeleted());
 		vmodel.setViews(event.getViews());
@@ -102,11 +103,11 @@ public class EventFlatMapper implements GenericMapper<Event,EventFlatViewModel> 
 		event.setBlitSaleEndDate(vmodel.getBlitSaleEndDate());
 		event.setBlitSaleStartDate(vmodel.getBlitSaleStartDate());
 		event.setDescription(vmodel.getDescription());
-		event.setEventType(vmodel.getEventType());
+		event.setEventType(vmodel.getEventType().name());
 		event.setLatitude(vmodel.getLatitude());
 		event.setLongitude(vmodel.getLongitude());
-		event.setOperatorState(OperatorState.PENDING);
-		event.setEventState(State.CLOSED);
+		event.setOperatorState(OperatorState.PENDING.name());
+		event.setEventState(State.CLOSED.name());
 		
 		return event;
 	}

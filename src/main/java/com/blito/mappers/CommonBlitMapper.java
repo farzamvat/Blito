@@ -6,6 +6,8 @@ import java.time.ZonedDateTime;
 
 import org.springframework.stereotype.Component;
 
+import com.blito.enums.BankGateway;
+import com.blito.enums.PaymentStatus;
 import com.blito.models.CommonBlit;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 
@@ -27,8 +29,8 @@ public class CommonBlitMapper implements GenericMapper<CommonBlit, CommonBlitVie
 		blit.setCustomerEmail(vmodel.getCustomerEmail());
 		blit.setEventAddress(vmodel.getEventAddress());
 		blit.setBlitTypeName(vmodel.getBlitTypeName());
-		blit.setSeatType(vmodel.getSeatType());
-		blit.setBankGateway(vmodel.getBankGateway());
+		blit.setSeatType(vmodel.getSeatType().name());
+		blit.setBankGateway(vmodel.getBankGateway().name());
 		return blit;
 	}
 
@@ -48,11 +50,11 @@ public class CommonBlitMapper implements GenericMapper<CommonBlit, CommonBlitVie
 		vmodel.setCustomerEmail(blit.getCustomerEmail());
 		vmodel.setEventAddress(blit.getEventAddress());
 		vmodel.setBlitTypeName(blit.getBlitTypeName());
-		vmodel.setPaymentStatus(blit.getPaymentStatus());
+		vmodel.setPaymentStatus(Enum.valueOf(PaymentStatus.class, blit.getPaymentStatus()));
 		vmodel.setPaymentError(blit.getPaymentError());
 		vmodel.setSamanBankToken(blit.getToken());
 		vmodel.setSamanBankRefNumber(blit.getRefNum());
-		vmodel.setBankGateway(blit.getBankGateway());
+		vmodel.setBankGateway(Enum.valueOf(BankGateway.class, blit.getBankGateway()));
 		vmodel.setCreatedAt(blit.getCreatedAt());
 		vmodel.setUserId(blit.getUser().getUserId());
 		return vmodel;

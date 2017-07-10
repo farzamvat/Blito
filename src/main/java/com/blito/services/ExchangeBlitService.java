@@ -57,7 +57,7 @@ public class ExchangeBlitService {
 		}
 
 		Image image = imageRepository.findByImageUUID(vmodel.getImage().getImageUUID()).map(i -> {
-			i.setImageType(vmodel.getImage().getType());
+			i.setImageType(vmodel.getImage().getType().name());
 			return i;
 		}).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
 
@@ -82,7 +82,7 @@ public class ExchangeBlitService {
 			vmodel.setImage(new ImageViewModel(Constants.DEFAULT_EXCHANGEBLIT_PHOTO, ImageType.EXCHANGEBLIT_PHOTO));
 		}
 		Image image = imageRepository.findByImageUUID(vmodel.getImage().getImageUUID()).map(i -> {
-			i.setImageType(vmodel.getImage().getType());
+			i.setImageType(vmodel.getImage().getType().name());
 			return i;
 		}).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
 
@@ -130,11 +130,11 @@ public class ExchangeBlitService {
 		if (exchangeBlit.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
-		if (exchangeBlit.getOperatorState() == OperatorState.PENDING
-				|| exchangeBlit.getOperatorState() == OperatorState.REJECTED) {
+		if (exchangeBlit.getOperatorState().equals(OperatorState.PENDING.name())
+				|| exchangeBlit.getOperatorState().equals(OperatorState.REJECTED.name())) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
-		exchangeBlit.setState(vmodel.getState());
+		exchangeBlit.setState(vmodel.getState().name());
 	}
 
 	public ExchangeBlitViewModel getExchangeBlitByLink(String exchangeLink) {

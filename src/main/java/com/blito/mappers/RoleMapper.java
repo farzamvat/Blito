@@ -1,6 +1,6 @@
 package com.blito.mappers;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -18,17 +18,17 @@ public class RoleMapper implements GenericMapper<Role, RoleViewModel> {
 	@Autowired
 	PermissionRepository permissionRepository;
 	
-	private Set<Permission> getPermissionFromRepository(Set<Permission> permissions)
+	private Set<Permission> getPermissionFromRepository(Set<Long> permissionIds)
 	{
-		return permissionRepository.findByPermissionIdIn(
-				permissions.stream().map(p -> p.getPermissionId()).collect(Collectors.toSet()));
+		return permissionRepository.findByPermissionIdIn(permissionIds);
+				
 	}
 
 	@Override
 	public Role createFromViewModel(RoleViewModel viewModel) {
 		Role role = new Role();
 		role.setName(viewModel.getName());
-		role.setPermissions(getPermissionFromRepository(viewModel.getPermissions()));
+		role.setPermissions(getPermissionFromRepository(viewModel.getPermissionIds()));
 		return role;
 	}
 
@@ -37,14 +37,14 @@ public class RoleMapper implements GenericMapper<Role, RoleViewModel> {
 		RoleViewModel vmodel = new RoleViewModel();
 		vmodel.setName(entity.getName());
 		vmodel.setRoleId(entity.getRoleId());
-		vmodel.setPermissions(entity.getPermissions());
+		vmodel.setPermissionIds(entity.getPermissions().stream().map(p->p.getPermissionId()).collect(Collectors.toSet()));
 		return vmodel;
 	}
 
 	@Override
 	public Role updateEntity(RoleViewModel viewModel, Role entity) {
 		entity.setName(viewModel.getName());
-		entity.setPermissions(getPermissionFromRepository(viewModel.getPermissions()));
+		entity.setPermissions(getPermissionFromRepository(viewModel.getPermissionIds()));
 		return entity;
 	}
 

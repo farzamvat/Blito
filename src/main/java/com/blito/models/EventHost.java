@@ -51,8 +51,7 @@ public class EventHost {
 	private String linkedinLink;
 	
 	@Column(name="event_type")
-	@Enumerated(EnumType.STRING)
-	private HostType hostType;
+	private String hostType;
 	
 	@ManyToOne(targetEntity=User.class, optional=false)
 	@JoinColumn(name="userId")
@@ -171,11 +170,11 @@ public class EventHost {
 		this.twitterLink = twitterLink;
 	}
 
-	public HostType getHostType() {
+	public String getHostType() {
 		return hostType;
 	}
 
-	public void setHostType(HostType hostType) {
+	public void setHostType(String hostType) {
 		this.hostType = hostType;
 	}
 

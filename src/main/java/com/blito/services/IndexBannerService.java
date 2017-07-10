@@ -59,7 +59,7 @@ public class IndexBannerService {
 	{
 		Image image = imageRepository.findByImageUUID(vmodel.getImage().getImageUUID())
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
-		image.setImageType(vmodel.getImage().getType());
+		image.setImageType(vmodel.getImage().getType().name());
 		indexBanner.setImage(image);
 		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(vmodel.getEventLink())
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));

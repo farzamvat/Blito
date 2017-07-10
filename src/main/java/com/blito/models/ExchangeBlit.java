@@ -47,14 +47,9 @@ public class ExchangeBlit {
 	private boolean isDeleted = false;
 	@Column(unique=true,nullable=true)
 	private String exchangeLink;
-
-
-	@Enumerated(EnumType.STRING)
-	private State state;
-	@Enumerated(EnumType.STRING)
-	private ExchangeBlitType exchangeBlitType;
-	@Enumerated(EnumType.STRING)
-	private OperatorState operatorState;
+	private String state;
+	private String exchangeBlitType;
+	private String operatorState;
 	
 	@ManyToOne
 	@JoinColumn(name="userId")
@@ -87,11 +82,11 @@ public class ExchangeBlit {
 		this.isDeleted = isDeleted;
 	}
 
-	public ExchangeBlitType getExchangeBlitType() {
+	public String getExchangeBlitType() {
 		return exchangeBlitType;
 	}
 
-	public void setExchangeBlitType(ExchangeBlitType exchangeBlitType) {
+	public void setExchangeBlitType(String exchangeBlitType) {
 		this.exchangeBlitType = exchangeBlitType;
 	}
 
@@ -103,11 +98,11 @@ public class ExchangeBlit {
 		this.image = image;
 	}
 
-	public OperatorState getOperatorState() {
+	public String getOperatorState() {
 		return operatorState;
 	}
 
-	public void setOperatorState(OperatorState operatorState) {
+	public void setOperatorState(String operatorState) {
 		this.operatorState = operatorState;
 	}
 
@@ -120,11 +115,11 @@ public class ExchangeBlit {
 	}
 	
 
-	public State getState() {
+	public String getState() {
 		return state;
 	}
 
-	public void setState(State state) {
+	public void setState(String state) {
 		this.state = state;
 	}
 

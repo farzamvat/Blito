@@ -57,6 +57,7 @@ public enum Response {
 	BANK_GATEWAY_NOT_FOUND("error.bank.gateway.not.found"),
 	FORGET_PASS_EMAIL("forget.password.email"),
 	USER_IS_BANNED("error.user.is.banned"),
+	ROLE_NAME_ALREADY_EXISTS("error.role.name.already.exists"),
 	SENDING_EMAIL_ERROR("error.sending.email");
     
 

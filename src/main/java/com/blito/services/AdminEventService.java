@@ -84,10 +84,10 @@ public class AdminEventService {
 		checkEventRestricitons(event);
 		if(vmodel.getState() == State.CLOSED)
 			event.getEventDates().forEach(ed -> {
-				ed.setEventDateState(State.CLOSED);
-				ed.getBlitTypes().forEach(bt -> bt.setBlitTypeState(State.CLOSED));
+				ed.setEventDateState(State.CLOSED.name());
+				ed.getBlitTypes().forEach(bt -> bt.setBlitTypeState(State.CLOSED.name()));
 			});
-		event.setEventState(vmodel.getState());
+		event.setEventState(vmodel.getState().name());
 		return;
 	}
 
@@ -97,10 +97,10 @@ public class AdminEventService {
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
 		if(vmodel.getEventDateState() == State.CLOSED)
 		{
-			eventDate.getBlitTypes().forEach(bt -> bt.setBlitTypeState(State.CLOSED));
+			eventDate.getBlitTypes().forEach(bt -> bt.setBlitTypeState(State.CLOSED.name()));
 		}
 		checkEventRestricitons(eventDate.getEvent());
-		eventDate.setEventDateState(vmodel.getEventDateState());
+		eventDate.setEventDateState(vmodel.getEventDateState().name());
 		return;
 	}
 	
@@ -109,7 +109,7 @@ public class AdminEventService {
 		BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(vmodel.getBlitTypeId())).map(bt -> bt)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
 		checkEventRestricitons(blitType.getEventDate().getEvent());
-		blitType.setBlitTypeState(vmodel.getBlitTypeState());
+		blitType.setBlitTypeState(vmodel.getBlitTypeState().name());
 		return;
 	}
 
@@ -117,7 +117,7 @@ public class AdminEventService {
 	public void changeOperatorState(AdminChangeEventOperatorStateVm vmodel) {
 		Event event = getEventFromRepository(vmodel.getEventId());
 		checkEventRestricitons(event);
-		event.setOperatorState(vmodel.getOperatorState());
+		event.setOperatorState(vmodel.getOperatorState().name());
 		return;
 	}
 
@@ -141,7 +141,7 @@ public class AdminEventService {
 	
 	private void checkEventRestricitons(Event event)
 	{
-		if(event.getEventState() == State.ENDED || event.getEventState() == State.SOLD) {
+		if(event.getEventState().equals(State.ENDED.name()) || event.getEventState().equals(State.SOLD.name())) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
 	}
@@ -152,7 +152,7 @@ public class AdminEventService {
 		checkEventRestricitons(event);
 		vmodel.getOffers().forEach(offer -> {
 			if(!event.getOffers().contains(offer))
-				event.getOffers().add(offer);
+				event.getOffers().add(offer.name());
 		});
 	}
 	
@@ -161,7 +161,7 @@ public class AdminEventService {
 		Event event = getEventFromRepository(vmodel.getEventId());
 		checkEventRestricitons(event);
 		vmodel.getOffers().forEach(offer -> {
-			event.getOffers().remove(offer);
+			event.getOffers().remove(offer.name());
 		});
 	}
 
@@ -207,7 +207,7 @@ public class AdminEventService {
 
 	public Page<EventViewModel> getAllPendingEvents(Pageable pageable) {
 		return eventMapper
-				.toPage(eventRepository.findByOperatorStateAndIsDeletedFalse(OperatorState.PENDING, pageable));
+				.toPage(eventRepository.findByOperatorStateAndIsDeletedFalse(OperatorState.PENDING.name(), pageable));
 	}
 	
 	public <V> Page<V> searchEvents(SearchViewModel<Event> searchViewModel, Pageable pageable,GenericMapper<Event,V> mapper ) {

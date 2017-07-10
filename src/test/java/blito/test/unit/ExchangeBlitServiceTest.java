@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.Application;
 import com.blito.configs.Constants;
+import com.blito.enums.ExchangeBlitType;
 import com.blito.enums.ImageType;
 import com.blito.enums.OperatorState;
 import com.blito.enums.State;
@@ -58,7 +59,7 @@ public class ExchangeBlitServiceTest {
 	{
 			Image image = new Image();
 			image.setImageUUID(Constants.DEFAULT_EXCHANGEBLIT_PHOTO);
-			image.setImageType(ImageType.EXCHANGEBLIT_PHOTO);
+			image.setImageType(ImageType.EXCHANGEBLIT_PHOTO.name());
 			imageRepository.save(image);
 			
 			user.setEmail("farzam.vat@gmail.com");
@@ -74,16 +75,20 @@ public class ExchangeBlitServiceTest {
 			createExBlitVmodel1.setTitle("ex1");
 			createExBlitVmodel1.setDescription("estakhr");
 			createExBlitVmodel1.setEmail("farzam.vat@gmail.com");
+			createExBlitVmodel1.setType(ExchangeBlitType.CINEMA);
 			createExBlitVmodel2.setBlitCost(500.5);
 			createExBlitVmodel2.setTitle("ex2");
 			createExBlitVmodel2.setDescription("theater");
 			createExBlitVmodel2.setEmail("farzam.vat@gmail.com");
+			createExBlitVmodel2.setType(ExchangeBlitType.CINEMA);
 			updateExBlitVmodel.setBlitCost(1500);
 			updateExBlitVmodel.setTitle("ex3");
 			updateExBlitVmodel.setDescription("cinema");
 			updateExBlitVmodel.setEmail("farzam.vat@gmail.com");
+			updateExBlitVmodel.setType(ExchangeBlitType.CINEMA);
 			getExBlitVmodel.setBlitCost(2000);
 			getExBlitVmodel.setTitle("ex4");
+			getExBlitVmodel.setType(ExchangeBlitType.CINEMA);
 			getExBlitVmodel.setDescription("cafe");
 			getExBlitVmodel.setEmail("farzam.vat@gmail.com");
 			
@@ -91,14 +96,17 @@ public class ExchangeBlitServiceTest {
 			myExBlitVmodel1.setTitle("ex5");
 			myExBlitVmodel1.setDescription("my1");
 			myExBlitVmodel1.setEmail("hasti.sahabi@gmail.com");
+			myExBlitVmodel1.setType(ExchangeBlitType.CINEMA);
 			myExBlitVmodel2.setBlitCost(2);
 			myExBlitVmodel2.setTitle("ex6");
 			myExBlitVmodel2.setDescription("my2");
 			myExBlitVmodel2.setEmail("hasti.sahabi@gmail.com");
+			myExBlitVmodel2.setType(ExchangeBlitType.CINEMA);
 			myExBlitVmodel3.setBlitCost(3);
 			myExBlitVmodel3.setTitle("ex7");
 			myExBlitVmodel3.setDescription("my3");
 			myExBlitVmodel3.setEmail("hasti.sahabi@gmail.com");
+			myExBlitVmodel3.setType(ExchangeBlitType.CINEMA);
 
 
 	}
@@ -126,8 +134,8 @@ public class ExchangeBlitServiceTest {
 	@Test
 	public void update() {
 		updateExBlitVmodel = exService.create(updateExBlitVmodel);
-		exRepo.findOne(updateExBlitVmodel.getExchangeBlitId()).setState(State.OPEN);
-		exRepo.findOne(updateExBlitVmodel.getExchangeBlitId()).setOperatorState(OperatorState.APPROVED);;
+		exRepo.findOne(updateExBlitVmodel.getExchangeBlitId()).setState(State.OPEN.name());
+		exRepo.findOne(updateExBlitVmodel.getExchangeBlitId()).setOperatorState(OperatorState.APPROVED.name());
 		ExchangeBlitViewModel newVmodel = new ExchangeBlitViewModel();
 		newVmodel.setExchangeBlitId(updateExBlitVmodel.getExchangeBlitId());
 		newVmodel.setBlitCost(5000);
@@ -171,14 +179,14 @@ public class ExchangeBlitServiceTest {
 	public void changeState()
 	{
 		createExBlitVmodel1 = exService.create(createExBlitVmodel1);
-		exRepo.findOne(createExBlitVmodel1.getExchangeBlitId()).setOperatorState(OperatorState.APPROVED);
+		exRepo.findOne(createExBlitVmodel1.getExchangeBlitId()).setOperatorState(OperatorState.APPROVED.name());
 		ExchangeBlitChangeStateViewModel vmodel = new ExchangeBlitChangeStateViewModel();
 		vmodel.setExchangeBlitId(createExBlitVmodel1.getExchangeBlitId());
 		vmodel.setState(State.SOLD);
 		exService.changeState(vmodel);
-		assertEquals(State.SOLD, exRepo.findOne(createExBlitVmodel1.getExchangeBlitId()).getState());
+		assertEquals(State.SOLD.name(), exRepo.findOne(createExBlitVmodel1.getExchangeBlitId()).getState());
 		vmodel.setState(State.CLOSED);
 		exService.changeState(vmodel);
-		assertEquals(State.CLOSED, exRepo.findOne(createExBlitVmodel1.getExchangeBlitId()).getState());
+		assertEquals(State.CLOSED.name(), exRepo.findOne(createExBlitVmodel1.getExchangeBlitId()).getState());
 	}
 }

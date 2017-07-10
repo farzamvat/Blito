@@ -92,7 +92,7 @@ public class BlitServicePaymentTest {
 
 		eventHost = new EventHost();
 		eventHost.setHostName("hostname12");
-		eventHost.setHostType(HostType.THEATER);
+		eventHost.setHostType(HostType.THEATER.name());
 		eventHost.setTelephone("02188002116");
 		eventHost.setUser(user);
 
@@ -132,19 +132,19 @@ public class BlitServicePaymentTest {
 		blitTypeViewModel = blitTypeViewModel1;
 
 		Image image = new Image();
-		image.setImageType(ImageType.EVENT_PHOTO);
+		image.setImageType(ImageType.EVENT_PHOTO.name());
 		image.setImageUUID(Constants.DEFAULT_HOST_PHOTO);
 
 		Image hostCoverPhoto = new Image();
-		image.setImageType(ImageType.HOST_COVER_PHOTO);
+		image.setImageType(ImageType.HOST_COVER_PHOTO.name());
 		image.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO);
 
 		Image exchangeBlitPhoto = new Image();
-		image.setImageType(ImageType.EXCHANGEBLIT_PHOTO);
+		image.setImageType(ImageType.EXCHANGEBLIT_PHOTO.name());
 		image.setImageUUID(Constants.DEFAULT_EXCHANGEBLIT_PHOTO);
 
 		Image eventPhoto = new Image();
-		image.setImageType(ImageType.EVENT_PHOTO);
+		image.setImageType(ImageType.EVENT_PHOTO.name());
 		image.setImageUUID(Constants.DEFAULT_EVENT_PHOTO);
 
 		imageRepository.save(image);
@@ -167,7 +167,7 @@ public class BlitServicePaymentTest {
 		
 		eventViewModel = eventService.create(eventViewModel);
 		blitTypeRepo.save(blitTypeRepo.findAll().stream().map(b -> {
-			b.setBlitTypeState(State.OPEN);
+			b.setBlitTypeState(State.OPEN.name());
 			return b;
 		}).collect(Collectors.toList()));
 

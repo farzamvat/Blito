@@ -61,10 +61,10 @@ public class PaymentService {
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_AMOUNT));
 		if(status == "OK")
 		{
-			if(blit.getSeatType() == SeatType.COMMON)
+			if(blit.getSeatType().equals(SeatType.COMMON.name()))
 			{
 				CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
-				if(commonBlit.getBlitType().getBlitTypeState() != State.OPEN)
+				if(!commonBlit.getBlitType().getBlitTypeState().equals(State.OPEN.name()))
 					throw new RuntimeException("not open");
 				PaymentVerificationResponse verificationResponse = zarinpalClient.getPaymentVerificationResponse(amount, authority);
 				persistZarinpalBoughtBlit(commonBlit, authority, String.valueOf(verificationResponse.getRefID()), ZarinpalException.generateMessage(verificationResponse.getStatus()));
@@ -75,7 +75,7 @@ public class PaymentService {
 		}
 		else {
 			blit.setPaymentError("NOK");
-			blit.setPaymentStatus(PaymentStatus.ERROR);
+			blit.setPaymentStatus(PaymentStatus.ERROR.name());
 			blitRepository.save(blit);
 		}
 	}
@@ -85,17 +85,17 @@ public class PaymentService {
 		CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
 		BlitType blitType = blitTypeRepository.findByBlitTypeId(commonBlit.getBlitType().getBlitTypeId());
 		commonBlit.setRefNum(refNum);
-		commonBlit.setPaymentStatus(PaymentStatus.PAID);
+		commonBlit.setPaymentStatus(PaymentStatus.PAID.name());
 		blitType.setSoldCount(blitType.getSoldCount() + commonBlit.getCount());
 		if (blitType.getSoldCount() == blitType.getCapacity()) {
-			blitType.setBlitTypeState(State.SOLD);
+			blitType.setBlitTypeState(State.SOLD.name());
 			if (blitType.getEventDate().getBlitTypes().stream()
-					.allMatch(b -> b.getBlitTypeState() == State.SOLD)) {
-				blitType.getEventDate().setEventDateState(State.SOLD);
+					.allMatch(b -> b.getBlitTypeState().equals(State.SOLD.name()))) {
+				blitType.getEventDate().setEventDateState(State.SOLD.name());
 			}
 			if (blitType.getEventDate().getEvent().getEventDates().stream()
-					.allMatch(ed -> ed.getEventDateState() == State.SOLD)) {
-				blitType.getEventDate().getEvent().setEventState(State.SOLD);
+					.allMatch(ed -> ed.getEventDateState().equals(State.SOLD.name()))) {
+				blitType.getEventDate().getEvent().setEventState(State.SOLD.name());
 				blitType.getEventDate().getEvent().setEventSoldDate(
 						Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 			}
@@ -110,19 +110,19 @@ public class PaymentService {
 				samanBankService.verifyTransaction(paymentRequestArgs.getRequest().getRefNum()).thenAccept(res -> {
 					blit.setRefNum(paymentRequestArgs.getRequest().getRefNum());
 					blit.setSamanTraceNo(paymentRequestArgs.getRequest().getTraceNo());
-					blit.setPaymentStatus(PaymentStatus.PAID);
+					blit.setPaymentStatus(PaymentStatus.PAID.name());
 					// TODO ERROR
 					BlitType blitType = blitTypeRepository.findByBlitTypeId(blit.getBlitId());
 					blitType.setSoldCount(blitType.getSoldCount() + blit.getCount());
 					if (blitType.getSoldCount() == blitType.getCapacity()) {
-						blitType.setBlitTypeState(State.SOLD);
+						blitType.setBlitTypeState(State.SOLD.name());
 						if (blitType.getEventDate().getBlitTypes().stream()
-								.allMatch(b -> b.getBlitTypeState() == State.SOLD)) {
-							blitType.getEventDate().setEventDateState(State.SOLD);
+								.allMatch(b -> b.getBlitTypeState().equals(State.SOLD.name()))) {
+							blitType.getEventDate().setEventDateState(State.SOLD.name());
 						}
 						if (blitType.getEventDate().getEvent().getEventDates().stream()
-								.allMatch(ed -> ed.getEventDateState() == State.SOLD)) {
-							blitType.getEventDate().getEvent().setEventState(State.SOLD);
+								.allMatch(ed -> ed.getEventDateState().equals(State.SOLD.name()))) {
+							blitType.getEventDate().getEvent().setEventState(State.SOLD.name());
 							blitType.getEventDate().getEvent().setEventSoldDate(
 									Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 						}
@@ -170,7 +170,7 @@ public class PaymentService {
 				blit.setPaymentError(paymentRequestCallbackArguments.getRequest().getState());
 				blit.setSamanTraceNo(paymentRequestCallbackArguments.getRequest().getTraceNo());
 				blit.setRefNum(paymentRequestCallbackArguments.getRequest().getRefNum());
-				blit.setPaymentStatus(PaymentStatus.ERROR);
+				blit.setPaymentStatus(PaymentStatus.ERROR.name());
 				blitRepository.save(blit);
 			});
 

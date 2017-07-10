@@ -95,7 +95,7 @@ public class BlitService {
 	private CompletableFuture<Object> buyCommonBlit(BlitType blitType, CommonBlit commonBlit, User user) {
 		checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
 		String trackCode = generateTrackCode();
-		switch (commonBlit.getBankGateway()) {
+		switch (Enum.valueOf(BankGateway.class, commonBlit.getBankGateway())) {
 		case ZARINPAL:
 			return paymentService.zarinpalRequestToken((int)commonBlit.getTotalAmount(), user.getEmail(), user.getMobile(), blitType.getEventDate().getEvent().getDescription())
 					.thenApply(token -> {
@@ -130,7 +130,7 @@ public class BlitService {
 		attachedUser.addBlits(commonBlit);
 		commonBlit.setToken(token);
 		commonBlit.setTrackCode(trackCode);
-		commonBlit.setPaymentStatus(PaymentStatus.PENDING);
+		commonBlit.setPaymentStatus(PaymentStatus.PENDING.name());
 		return commonBlitRepository.save(commonBlit);
 
 	}
@@ -142,12 +142,12 @@ public class BlitService {
 		User attachedUser = userRepository.findOne(user.getUserId());
 		attachedBlitType.setSoldCount(attachedBlitType.getSoldCount() + commonBlit.getCount());
 		if(attachedBlitType.getSoldCount() == attachedBlitType.getCapacity())
-			attachedBlitType.setBlitTypeState(State.SOLD);
+			attachedBlitType.setBlitTypeState(State.SOLD.name());
 		//TODO sold event dates and event
 		commonBlit.setTrackCode(generateTrackCode());
 		commonBlit.setUser(attachedUser);
 		commonBlit.setBlitType(attachedBlitType);
-		commonBlit.setPaymentStatus(PaymentStatus.FREE);
+		commonBlit.setPaymentStatus(PaymentStatus.FREE.name());
 		attachedUser.addBlits(commonBlit);
 		//
 		//
@@ -165,7 +165,7 @@ public class BlitService {
 
 		if (blitType.getBlitTypeState().equals(State.CLOSED))
 			throw new RuntimeException("closed");
-		if(!blitType.getEventDate().getEvent().getEventState().equals(State.OPEN))
+		if(!blitType.getEventDate().getEvent().getEventState().equals(State.OPEN.name()))
 		{
 			throw new RuntimeException("closed or sold out or ended");
 		}

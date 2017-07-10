@@ -37,14 +37,14 @@ public class Blit {
 	String customerEmail;
 	String eventAddress;
 	String blitTypeName;
-	SeatType seatType;
-	PaymentStatus paymentStatus;
+	String seatType;
+	String paymentStatus;
 	String paymentError;
 	String token;
 	String refNum;
 	String samanTraceNo;
 	boolean used = false;
-	BankGateway bankGateway;
+	String bankGateway;
 	public long getBlitId() {
 		return blitId;
 	}
@@ -129,16 +129,16 @@ public class Blit {
 	public void setBlitTypeName(String blitTypeName) {
 		this.blitTypeName = blitTypeName;
 	}
-	public SeatType getSeatType() {
+	public String getSeatType() {
 		return seatType;
 	}
-	public void setSeatType(SeatType seatType) {
+	public void setSeatType(String seatType) {
 		this.seatType = seatType;
 	}
-	public PaymentStatus getPaymentStatus() {
+	public String getPaymentStatus() {
 		return paymentStatus;
 	}
-	public void setPaymentStatus(PaymentStatus paymentStatus) {
+	public void setPaymentStatus(String paymentStatus) {
 		this.paymentStatus = paymentStatus;
 	}
 	public String getPaymentError() {
@@ -171,10 +171,10 @@ public class Blit {
 	public void setUsed(boolean used) {
 		this.used = used;
 	}
-	public BankGateway getBankGateway() {
+	public String getBankGateway() {
 		return bankGateway;
 	}
-	public void setBankGateway(BankGateway bankGateway) {
+	public void setBankGateway(String bankGateway) {
 		this.bankGateway = bankGateway;
 	}
 }

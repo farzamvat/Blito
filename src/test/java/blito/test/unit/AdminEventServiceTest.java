@@ -20,6 +20,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.blito.Application;
+import com.blito.enums.EventType;
 import com.blito.enums.HostType;
 import com.blito.enums.OperatorState;
 import com.blito.enums.SeatType;
@@ -118,30 +119,35 @@ public class AdminEventServiceTest {
 			SecurityContextHolder.setCurrentUser(userRepo.save(user));
 			
 			eventHost.setHostName("paliz theater");
-			eventHost.setHostType(HostType.CULTURALCENTER);
+			eventHost.setHostType(HostType.CULTURALCENTER.name());
 			eventHost.setTelephone("22431103");
 			eventHost.setUser(user);
 			eventHost = eventHostRepo.save(eventHost);
 			
 			event1.setEventName("akharin naameh");
 			event1.setEventHost(eventHost);
-			event1.setOperatorState(OperatorState.PENDING);
+			event1.setOperatorState(OperatorState.PENDING.name());
 			
 			event2.setEventName("jashne piroozi");
 			event2.setEventHost(eventHost);
-			event2.setOperatorState(OperatorState.PENDING);
+			event2.setOperatorState(OperatorState.PENDING.name());
 			
 			sans1_1.setDate(new Timestamp(1495264909518L));
+			sans1_1.setEventDateState(State.CLOSED.name());
 			sans1_2.setDate(new Timestamp(1495264909518L));
+			sans1_2.setEventDateState(State.CLOSED.name());
 			sans2_1.setDate(new Timestamp(1495264909518L));
+			sans2_1.setEventDateState(State.CLOSED.name());
 			
 			blitType1_1_1.setName("seated1");
 			blitType1_1_1.setCapacity(50);
 			blitType1_1_1.setPrice(2500);
+			blitType1_1_1.setBlitTypeState(State.CLOSED.name());
 			blitType1_1_1.setEventDate(sans1_1);
 			
 			blitType1_2_1.setName("seated2");
 			blitType1_2_1.setCapacity(50);
+			blitType1_2_1.setBlitTypeState(State.CLOSED.name());
 			blitType1_2_1.setPrice(2500);
 			blitType1_2_1.setEventDate(sans1_2);
 			
@@ -149,6 +155,7 @@ public class AdminEventServiceTest {
 			blitType2_1_1.setName("standing");
 			blitType2_1_1.setCapacity(100);
 			blitType2_1_1.setPrice(1000);
+			blitType2_1_1.setBlitTypeState(State.CLOSED.name());
 			blitType2_1_1.setEventDate(sans2_1);
 			
 			sans1_1.setBlitTypes(Arrays.asList(blitType1_1_1).stream().collect(Collectors.toSet()));
@@ -161,9 +168,13 @@ public class AdminEventServiceTest {
 			sans2_1.setEvent(event2);
 			
 			event1.setEventDates(Arrays.asList(sans1_1, sans1_2).stream().collect(Collectors.toSet()));
+			event1.setEventState(State.CLOSED.name());
+			event1.setEventType(EventType.CINEMA.name());
 			event1 = eventRepo.save(event1);
 			
 			event2.setEventDates(Arrays.asList(sans2_1).stream().collect(Collectors.toSet()));
+			event2.setEventState(State.CLOSED.name());
+			event2.setEventType(EventType.CINEMA.name());
 			event2 = eventRepo.save(event2);
 			
 			changeEventStateTestVmodel.setEventId(event1.getEventId());
@@ -187,7 +198,7 @@ public class AdminEventServiceTest {
 			
 			cblit1.setCount(5);
 			cblit1.setEventName(event1.getEventName());
-			cblit1.setSeatType(SeatType.COMMON);
+			cblit1.setSeatType(SeatType.COMMON.name());
 			cblit1.setBlitType(blitType1_1_1);
 			cblit1.setUser(user);
 			cblit1 = cBlitRepo.save(cblit1);
@@ -195,7 +206,7 @@ public class AdminEventServiceTest {
 			
 			cblit2.setCount(2);
 			cblit2.setEventName(event1.getEventName());
-			cblit2.setSeatType(SeatType.COMMON);
+			cblit2.setSeatType(SeatType.COMMON.name());
 			cblit2.setBlitType(blitType1_1_1);
 			cblit2.setUser(user);
 			cblit2 = cBlitRepo.save(cblit2);
@@ -204,14 +215,14 @@ public class AdminEventServiceTest {
 			
 			cblit3.setCount(4);
 			cblit3.setEventName(event1.getEventName());
-			cblit3.setSeatType(SeatType.COMMON);
+			cblit3.setSeatType(SeatType.COMMON.name());
 			cblit3.setBlitType(blitType1_2_1);
 			cblit3.setUser(user);
 			cblit3 = cBlitRepo.save(cblit3);
 			
 			cblit4.setCount(7);
 			cblit4.setEventName(event1.getEventName());
-			cblit4.setSeatType(SeatType.COMMON);
+			cblit4.setSeatType(SeatType.COMMON.name());
 			cblit4.setBlitType(blitType1_2_1);
 			cblit4.setUser(user);
 			cblit4 = cBlitRepo.save(cblit4);
@@ -221,16 +232,16 @@ public class AdminEventServiceTest {
 	@Test
 	public void changeEventStateTest() {
 		adminEventService.changeEventState(changeEventStateTestVmodel);
-		assertEquals(State.CLOSED, eventRepo.findByEventIdAndIsDeletedFalse(event1.getEventId()).get().getEventState());
+		assertEquals(State.CLOSED.name(), eventRepo.findByEventIdAndIsDeletedFalse(event1.getEventId()).get().getEventState());
 		changeEventStateTestVmodel.setState(State.OPEN);
 		adminEventService.changeEventState(changeEventStateTestVmodel);
-		assertEquals(State.OPEN, eventRepo.findByEventIdAndIsDeletedFalse(event1.getEventId()).get().getEventState());
+		assertEquals(State.OPEN.name(), eventRepo.findByEventIdAndIsDeletedFalse(event1.getEventId()).get().getEventState());
 	}
 	
 	@Test
 	public void changeOperatorStateTest() {
 		adminEventService.changeOperatorState(changeEventOperatorStateTestVmodel);
-		assertEquals(OperatorState.APPROVED, eventRepo.findByEventIdAndIsDeletedFalse(event1.getEventId()).get().getOperatorState());
+		assertEquals(OperatorState.APPROVED.name(), eventRepo.findByEventIdAndIsDeletedFalse(event1.getEventId()).get().getOperatorState());
 	}
 	
 	@Test

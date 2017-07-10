@@ -5,18 +5,17 @@ import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
-import com.blito.models.Permission;
-
 public class RoleViewModel {
 	long roleId;
 	@NotNull
 	String name;
-	Set<Permission> permissions;
+	Set<Long> permissionIds;
 	
 	public RoleViewModel()
 	{
-		permissions = new HashSet<>();
+		permissionIds = new HashSet<>();
 	}
+	
 	public long getRoleId() {
 		return roleId;
 	}
@@ -29,10 +28,10 @@ public class RoleViewModel {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Set<Permission> getPermissions() {
-		return permissions;
+	public Set<Long> getPermissionIds() {
+		return permissionIds;
 	}
-	public void setPermissions(Set<Permission> permissions) {
-		this.permissions = permissions;
+	public void setPermissionIds(Set<Long> permissionIds) {
+		this.permissionIds = permissionIds;
 	}
 }

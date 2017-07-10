@@ -31,7 +31,7 @@ public class Profile {
 	
 	String biography;
 	
-	ProfileType profileType;
+	String profileType;
 	
 	String name;
 	
@@ -128,11 +128,11 @@ public class Profile {
 		this.biography = biography;
 	}
 
-	public ProfileType getProfileType() {
+	public String getProfileType() {
 		return profileType;
 	}
 
-	public void setProfileType(ProfileType profileType) {
+	public void setProfileType(String profileType) {
 		this.profileType = profileType;
 	}
 }
