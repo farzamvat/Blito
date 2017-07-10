@@ -30,7 +30,7 @@ public class AdminExchangeBlitService {
 	public ExchangeBlitViewModel changeExchangeBlitOperatorState (AdminChangeExchangeBlitOperatorStateViewModel vmodel) {
 		ExchangeBlit exchangeBlit = exchangeBlitRepository.findByExchangeBlitIdAndIsDeletedFalse(vmodel.getExchangeBlitId())
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
-		exchangeBlit.setOperatorState(vmodel.getOperatorState());
+		exchangeBlit.setOperatorState(vmodel.getOperatorState().name());
 		return exchangeBlitMapper.createFromEntity(exchangeBlit);
 	}
 	
@@ -39,7 +39,7 @@ public class AdminExchangeBlitService {
 	{
 		ExchangeBlit exchangeBlit = exchangeBlitRepository.findByExchangeBlitIdAndIsDeletedFalse(vmodel.getExchangeBlitId())
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
-		exchangeBlit.setState(vmodel.getState());
+		exchangeBlit.setState(vmodel.getState().name());
 		return exchangeBlitMapper.createFromEntity(exchangeBlit);
 	}
 	

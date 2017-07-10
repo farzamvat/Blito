@@ -16,7 +16,7 @@ import com.blito.models.ExchangeBlit;
 public interface ExchangeBlitRepository extends JpaRepository<ExchangeBlit, Long>, JpaSpecificationExecutor<ExchangeBlit>, PagingAndSortingRepository<ExchangeBlit, Long> {
 	Set<ExchangeBlit> findByStateAndIsDeletedFalse(State state);
 
-	Page<ExchangeBlit> findByStateAndOperatorStateAndIsDeletedFalse(State state, OperatorState operatorState,Pageable pageable);
+	Page<ExchangeBlit> findByStateAndOperatorStateAndIsDeletedFalse(String state, String operatorState,Pageable pageable);
 	
 	Optional<ExchangeBlit> findByExchangeBlitIdAndIsDeletedFalse(long exchangeBlitId);
 	

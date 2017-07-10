@@ -113,7 +113,7 @@ public class EventControllerTest {
 
 			eventHost1 = new EventHost();
 			eventHost1.setHostName("hostname12");
-			eventHost1.setHostType(HostType.THEATER);
+			eventHost1.setHostType(HostType.THEATER.name());
 			eventHost1.setTelephone("02188002116");
 			eventHost1.setUser(user);
 
@@ -121,7 +121,7 @@ public class EventControllerTest {
 
 			eventHost2 = new EventHost();
 			eventHost2.setHostName("hostnamekkkk");
-			eventHost2.setHostType(HostType.THEATER);
+			eventHost2.setHostType(HostType.THEATER.name());
 			eventHost2.setTelephone("02188002116");
 			eventHost2.setUser(user2);
 
@@ -131,10 +131,10 @@ public class EventControllerTest {
 
 			event = new Event();
 			event.setAddress("سلام جطوری");
-			event.setEventState(State.SOLD);
-			event.setOperatorState(OperatorState.PENDING);
+			event.setEventState(State.SOLD.name());
+			event.setOperatorState(OperatorState.PENDING.name());
 			event.setEventName("A");
-			event.setEventType(EventType.CINEMA);
+			event.setEventType(EventType.CINEMA.name());
 			event.setLatitude(2D);
 			event.setBlitSaleStartDate(Timestamp.from(ZonedDateTime.now().minusHours(24).toInstant()));
 			event.setBlitSaleEndDate(Timestamp.from(ZonedDateTime.now().plusDays(2).toInstant()));
@@ -142,57 +142,57 @@ public class EventControllerTest {
 			
 			EventDate eventDate = new EventDate();
 			eventDate.setDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
-			eventDate.setEventDateState(State.CLOSED);
+			eventDate.setEventDateState(State.CLOSED.name());
 			eventDate.setEvent(event);
 			
 			EventDate eventDate1 = new EventDate();
 			eventDate1.setDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(2).toInstant()));
-			eventDate1.setEventDateState(State.CLOSED);
+			eventDate1.setEventDateState(State.CLOSED.name());
 			eventDate1.setEvent(event);
 			
 			EventDate eventDate2 = new EventDate();
 			eventDate2.setDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(3).toInstant()));
-			eventDate2.setEventDateState(State.CLOSED);
+			eventDate2.setEventDateState(State.CLOSED.name());
 			eventDate2.setEvent(event);
 
 			event1 = new Event();
 			event1.setAddress("سلام جطوریسس");
-			event1.setEventState(State.OPEN);
-			event1.setOperatorState(OperatorState.APPROVED);
+			event1.setEventState(State.OPEN.name());
+			event1.setOperatorState(OperatorState.APPROVED.name());
 			event1.setEventName("B");
 			event1.setLatitude(1D);
-			event1.setEventType(EventType.CINEMA);
+			event1.setEventType(EventType.CINEMA.name());
 			event1.setBlitSaleStartDate(Timestamp.from(ZonedDateTime.now().minusHours(10).toInstant()));
 			event1.setBlitSaleEndDate(Timestamp.from(ZonedDateTime.now().plusDays(1).toInstant()));
 			event1.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(7).toInstant()));
 
 			event2 = new Event();
 			event2.setAddress("سلام");
-			event2.setEventState(State.CLOSED);
-			event2.setOperatorState(OperatorState.PENDING);
+			event2.setEventState(State.CLOSED.name());
+			event2.setOperatorState(OperatorState.PENDING.name());
 			event2.setEventName("C");
 			event2.setLatitude(4D);
-			event2.setEventType(EventType.CINEMA);
+			event2.setEventType(EventType.CINEMA.name());
 			event2.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(5).toInstant()));
 			
 			event3 = new Event();
 			event3.setAddress("DFG");
-			event3.setEventState(State.OPEN);
-			event3.setOperatorState(OperatorState.REJECTED);
-			event3.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER).stream().collect(Collectors.toSet()));
+			event3.setEventState(State.OPEN.name());
+			event3.setOperatorState(OperatorState.REJECTED.name());
+			event3.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER.name()).stream().collect(Collectors.toSet()));
 			event3.setEventName("D");
 			event3.setLatitude(1D);
-			event3.setEventType(EventType.SPORT);
+			event3.setEventType(EventType.SPORT.name());
 			event3.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(3).toInstant()));
 
 			event4 = new Event();
 			event4.setAddress("سلام جطوری");
-			event4.setEventState(State.OPEN);
-			event4.setOperatorState(OperatorState.REJECTED);
-			event4.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER, OfferTypeEnum.SPECIAL_OFFER).stream().collect(Collectors.toSet()));
+			event4.setEventState(State.OPEN.name());
+			event4.setOperatorState(OperatorState.REJECTED.name());
+			event4.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER.name(), OfferTypeEnum.SPECIAL_OFFER.name()).stream().collect(Collectors.toSet()));
 			event4.setEventName("E");
 			event4.setLatitude(1D);
-			event4.setEventType(EventType.CONCERT);
+			event4.setEventType(EventType.CONCERT.name());
 			event4.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 
 			event.setEventHost(eventHost1);
@@ -236,19 +236,19 @@ public class EventControllerTest {
 			eventViewModel.setEventDates(Arrays.asList(eventDateViewModel).stream().collect(Collectors.toSet()));
 
 			Image image = new Image();
-			image.setImageType(ImageType.EVENT_PHOTO);
+			image.setImageType(ImageType.EVENT_PHOTO.name());
 			image.setImageUUID(Constants.DEFAULT_HOST_PHOTO);
 
 			Image hostCoverPhoto = new Image();
-			image.setImageType(ImageType.HOST_COVER_PHOTO);
+			image.setImageType(ImageType.HOST_COVER_PHOTO.name());
 			image.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO);
 
 			Image exchangeBlitPhoto = new Image();
-			image.setImageType(ImageType.EXCHANGEBLIT_PHOTO);
+			image.setImageType(ImageType.EXCHANGEBLIT_PHOTO.name());
 			image.setImageUUID(Constants.DEFAULT_EXCHANGEBLIT_PHOTO);
 
 			Image eventPhoto = new Image();
-			image.setImageType(ImageType.EVENT_PHOTO);
+			image.setImageType(ImageType.EVENT_PHOTO.name());
 			image.setImageUUID(Constants.DEFAULT_EVENT_PHOTO);
 
 			imageRepository.save(image);

@@ -22,9 +22,9 @@ public class Collection<T> extends AbstractSearchViewModel<T> {
 		return values;
 	}
 
-	public void setValues(List<String> values) {
+	public void setValues(List<Object> values) {
 		if (super.field.equals("offers")) {
-			vals = values.stream().map(v -> Enum.valueOf(OfferTypeEnum.class, v)).collect(Collectors.toList());
+			vals = values;
 		}
 	}
 }

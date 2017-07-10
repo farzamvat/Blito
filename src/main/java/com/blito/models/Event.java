@@ -47,15 +47,13 @@ public class Event {
 	private Set<Image> images; 
 	
 	@ElementCollection(fetch=FetchType.EAGER)
-	@Enumerated(EnumType.STRING)
-	Set<OfferTypeEnum> offers;
+	Set<String> offers;
 	
 	@Column(name="event_name")
 	private String eventName;
 	
 	@Column(name="event_type")
-	@Enumerated(EnumType.STRING)
-	private EventType eventType;
+	private String eventType;
 	
 	@Column(name="blit_sale_start_date")
 	private Timestamp blitSaleStartDate;
@@ -84,11 +82,9 @@ public class Event {
 	@Column(unique=true,nullable=true)
 	private String eventLink;
 	
-	@Enumerated(EnumType.STRING)
-	private State eventState;
+	private String eventState;
 	
-	@Enumerated(EnumType.STRING)
-	private OperatorState operatorState;
+	private String operatorState;
 	
 	private boolean isDeleted = false;
 	
@@ -174,11 +170,11 @@ public class Event {
 		this.isEvento = isEvento;
 	}
 
-	public Set<OfferTypeEnum> getOffers() {
+	public Set<String> getOffers() {
 		return offers;
 	}
 
-	public void setOffers(Set<OfferTypeEnum> offers) {
+	public void setOffers(Set<String> offers) {
 		this.offers = offers;
 	}
 
@@ -198,11 +194,11 @@ public class Event {
 		this.aparatDisplayCode = aparatDisplayCode;
 	}
 
-	public State getEventState() {
+	public String getEventState() {
 		return eventState;
 	}
 
-	public void setEventState(State eventState) {
+	public void setEventState(String eventState) {
 		this.eventState = eventState;
 	}
 
@@ -214,11 +210,11 @@ public class Event {
 		this.isDeleted = isDeleted;
 	}
 
-	public OperatorState getOperatorState() {
+	public String getOperatorState() {
 		return operatorState;
 	}
 
-	public void setOperatorState(OperatorState operatorState) {
+	public void setOperatorState(String operatorState) {
 		this.operatorState = operatorState;
 	}
 
@@ -287,11 +283,11 @@ public class Event {
 		this.eventName = eventName;
 	}
 
-	public EventType getEventType() {
+	public String getEventType() {
 		return eventType;
 	}
 
-	public void setEventType(EventType eventType) {
+	public void setEventType(String eventType) {
 		this.eventType = eventType;
 	}
 

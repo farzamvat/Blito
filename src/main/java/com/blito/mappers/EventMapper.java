@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.blito.enums.EventType;
+import com.blito.enums.OfferTypeEnum;
 import com.blito.enums.OperatorState;
 import com.blito.enums.State;
 import com.blito.models.Event;
@@ -34,16 +36,16 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
 		event.setBlitSaleEndDate(vmodel.getBlitSaleEndDate());
 		event.setBlitSaleStartDate(vmodel.getBlitSaleStartDate());
 		event.setDescription(vmodel.getDescription());
-		event.setEventType(vmodel.getEventType());
+		event.setEventType(vmodel.getEventType().name());
 		event.setLatitude(vmodel.getLatitude());
 		event.setLongitude(vmodel.getLongitude());
-		event.setOperatorState(OperatorState.PENDING);
+		event.setOperatorState(OperatorState.PENDING.name());
 		vmodel.getEventDates().forEach(ed -> {
 			event.addEventDate(eventDateMapper.createFromViewModel(ed));
 		});
 		event.setMembers(vmodel.getMembers());
 		event.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
-		event.setEventState(State.CLOSED);
+		event.setEventState(State.CLOSED.name());
 		event.setEvento(false);
 		return event;
 	}
@@ -61,12 +63,12 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
 		vmodel.setEventId(event.getEventId());
 		vmodel.setEventLink(event.getEventLink());
 		vmodel.setEventName(event.getEventName());
-		vmodel.setEventType(event.getEventType());
+		vmodel.setEventType(Enum.valueOf(EventType.class, event.getEventType()));
 		vmodel.setOrderNumber(event.getOrderNumber());
-		vmodel.setOperatorState(event.getOperatorState());
-		vmodel.setEventState(event.getEventState());
+		vmodel.setOperatorState(Enum.valueOf(OperatorState.class, event.getOperatorState()));
+		vmodel.setEventState(Enum.valueOf(State.class, event.getEventState()));
 		vmodel.setEventDates(eventDateMapper.createFromEntities(event.getEventDates()));
-		vmodel.setOffers(event.getOffers());
+		vmodel.setOffers(event.getOffers().stream().map(offer -> Enum.valueOf(OfferTypeEnum.class,offer)).collect(Collectors.toSet()));
 		vmodel.setLatitude(event.getLatitude());
 		vmodel.setLongitude(event.getLongitude());
 		vmodel.setEvento(event.isEvento());
@@ -87,12 +89,12 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
 		event.setBlitSaleEndDate(vmodel.getBlitSaleEndDate());
 		event.setDescription(vmodel.getDescription());
 		event.setEventName(vmodel.getEventName());
-		event.setEventState(State.CLOSED);
-		event.setOperatorState(OperatorState.PENDING);
+		event.setEventState(State.CLOSED.name());
+		event.setOperatorState(OperatorState.PENDING.name());
 		event.setLongitude(vmodel.getLongitude());
 		event.setLatitude(vmodel.getLatitude());
 		event.setEventLink(vmodel.getEventLink());
-		event.setEventType(vmodel.getEventType());
+		event.setEventType(vmodel.getEventType().name());
 		event.setMembers(vmodel.getMembers());
 		
 		List<Long> oldOnes = vmodel.getEventDates().stream().map(b -> b.getEventDateId()).filter(id -> id > 0).collect(Collectors.toList());

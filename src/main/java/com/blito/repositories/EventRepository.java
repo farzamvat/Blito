@@ -17,13 +17,13 @@ import com.blito.models.Event;
 public interface EventRepository
 		extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event>, PagingAndSortingRepository<Event, Long> {
 	Optional<Event> findByEventLinkAndIsDeletedFalse(String link);
-	Page<Event> findByEventTypeAndIsDeletedFalse(EventType type,Pageable pageable);
-	Page<Event> findByEventStateOrEventStateOrderByCreatedAtDesc(State state,State secondState,Pageable pageable);
+	Page<Event> findByEventTypeAndIsDeletedFalse(String type,Pageable pageable);
+	Page<Event> findByEventStateOrEventStateOrderByCreatedAtDesc(String state,String secondState,Pageable pageable);
 	Page<Event> findByEventHostUserUserIdAndIsDeletedFalse(long userId,Pageable pageable);
-	Page<Event> findByOperatorStateAndIsDeletedFalse(OperatorState operatorState, Pageable pageable);
+	Page<Event> findByOperatorStateAndIsDeletedFalse(String operatorState, Pageable pageable);
 	Optional<Event> findByEventIdAndIsDeletedFalse(long eventId);
 	Page<Event> findByIsDeletedFalse(Pageable pageable);
 	Set<Event> findByIsDeletedFalse();	
 	Page<Event> 
-	findByIsDeletedFalseAndEventTypeIsAndEventStateNotAndOperatorStateIsOrderByOrderNumberDesc(EventType eventType,State eventState,OperatorState operatorState, Pageable pageable);
+	findByIsDeletedFalseAndEventTypeIsAndEventStateNotAndOperatorStateIsOrderByOrderNumberDesc(String eventType,String eventState,String operatorState, Pageable pageable);
 }

@@ -3,8 +3,11 @@ package com.blito.mappers;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.EnumType;
+
 import org.springframework.stereotype.Component;
 
+import com.blito.enums.ImageType;
 import com.blito.models.Image;
 import com.blito.rest.viewmodels.image.ImageViewModel;
 
@@ -15,7 +18,7 @@ public class ImageMapper implements GenericMapper<Image,ImageViewModel> {
 	{
 		images = images.stream().map(im -> vmodels.stream()
 				.filter(imv -> imv.getImageUUID().equals(im.getImageUUID())).map(imageViewModel -> {
-					im.setImageType(imageViewModel.getType());
+					im.setImageType(imageViewModel.getType().name());
 					return im;
 				}).findFirst().orElse(null))
 				.collect(Collectors.toSet());
@@ -32,7 +35,7 @@ public class ImageMapper implements GenericMapper<Image,ImageViewModel> {
 	public ImageViewModel createFromEntity(Image image) {
 		ImageViewModel vmodel = new ImageViewModel();
 		vmodel.setImageUUID(image.getImageUUID());
-		vmodel.setType(image.getImageType());
+		vmodel.setType(Enum.valueOf(ImageType.class, image.getImageType()));
 		return vmodel;
 	}
 

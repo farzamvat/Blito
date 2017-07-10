@@ -3,6 +3,7 @@ package com.blito.mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.blito.enums.HostType;
 import com.blito.models.EventHost;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 
@@ -16,7 +17,7 @@ public class EventHostMapper implements GenericMapper<EventHost,EventHostViewMod
 	public EventHost createFromViewModel(EventHostViewModel vmodel) {
 		EventHost eventHost = new EventHost();
 		eventHost.setHostName(vmodel.getHostName());
-		eventHost.setHostType(vmodel.getHostType());
+		eventHost.setHostType(vmodel.getHostType().name());
 		eventHost.setDescription(vmodel.getDescription());
 		eventHost.setInstagramLink(vmodel.getInstagramLink());
 		eventHost.setLinkedinLink(vmodel.getLinkedinLink());
@@ -32,7 +33,7 @@ public class EventHostMapper implements GenericMapper<EventHost,EventHostViewMod
 		EventHostViewModel vmodel = new EventHostViewModel();
 		vmodel.setEventHostId(eventHost.getEventHostId());
 		vmodel.setHostName(eventHost.getHostName());
-		vmodel.setHostType(eventHost.getHostType());
+		vmodel.setHostType(Enum.valueOf(HostType.class, eventHost.getHostType()));
 		vmodel.setDescription(eventHost.getDescription());
 		vmodel.setInstagramLink(eventHost.getInstagramLink());
 		vmodel.setLinkedinLink(eventHost.getLinkedinLink());
@@ -47,7 +48,7 @@ public class EventHostMapper implements GenericMapper<EventHost,EventHostViewMod
 	@Override
 	public EventHost updateEntity(EventHostViewModel vmodel, EventHost eventHost) {
 		eventHost.setHostName(vmodel.getHostName());
-		eventHost.setHostType(vmodel.getHostType());
+		eventHost.setHostType(vmodel.getHostType().name());
 		eventHost.setDescription(vmodel.getDescription());
 		eventHost.setInstagramLink(vmodel.getInstagramLink());
 		eventHost.setLinkedinLink(vmodel.getLinkedinLink());

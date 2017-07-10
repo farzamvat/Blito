@@ -26,8 +26,7 @@ public class EventDate {
 	
 	Timestamp date;
 	
-	@Enumerated(EnumType.STRING)
-	State eventDateState;
+	String eventDateState;
 	
 	@OneToMany(mappedBy="eventDate", targetEntity=BlitType.class,fetch=FetchType.LAZY, cascade=CascadeType.ALL,orphanRemoval=true)
 	Set<BlitType> blitTypes;
@@ -45,11 +44,11 @@ public class EventDate {
 		blitTypes = new HashSet<>();
 	}
 
-	public State getEventDateState() {
+	public String getEventDateState() {
 		return eventDateState;
 	}
 
-	public void setEventDateState(State eventDateState) {
+	public void setEventDateState(String eventDateState) {
 		this.eventDateState = eventDateState;
 	}
 

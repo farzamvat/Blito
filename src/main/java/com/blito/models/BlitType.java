@@ -31,8 +31,7 @@ public class BlitType {
 	
 	private long price;
 	
-	@Enumerated(EnumType.STRING)
-	State blitTypeState;
+	private String blitTypeState;
 	
 	@ManyToOne
 	@JoinColumn(name="eventDateId")
@@ -87,11 +86,11 @@ public class BlitType {
 		this.name = name;
 	}
 
-	public State getBlitTypeState() {
+	public String getBlitTypeState() {
 		return blitTypeState;
 	}
 
-	public void setBlitTypeState(State blitTypeState) {
+	public void setBlitTypeState(String blitTypeState) {
 		this.blitTypeState = blitTypeState;
 	}
 
