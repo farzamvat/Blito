@@ -1652,7 +1652,17 @@ angular.module('User')
             $("#settingPlannerModal").modal("show");
         };
         $scope.deletePlanner = function () {
-            console.log($scope.eventHosts[plannerSettingIndex]);
+            document.getElementsByClassName("deletePlannerSpinner")[0].style.display = "inline";
+            plannerService.deletePlanner($scope.eventHosts[plannerSettingIndex].eventHostId)
+                .then(function () {
+                    document.getElementsByClassName("approveSuccessSettingPlanner")[0].style.display = "block";
+                    document.getElementsByClassName("deletePlannerSpinner")[0].style.display = "none";
+                })
+                .catch(function () {
+                    document.getElementById("approveErrorSettingPlanner").innerHTML = data.data.message;
+                    document.getElementsByClassName("deletePlannerSpinner")[0].style.display = "none";
+                    document.getElementsByClassName("approveErrorSettingPlanner")[0].style.display = "inline";
+                })
         };
         //==================================================== ********* =================================
         //==================================================== GET DATA =================================

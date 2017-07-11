@@ -140,4 +140,10 @@ angular.module('userProfileApi', [])
         planner.editPlannerForm = function (editData) {
             return $http.put(config.baseUrl+'/api/blito/v1.0/event-hosts', editData)
         };
+        planner.deletePlanner = function (plannerId) {
+            var queryParam = {
+                params : {eventHostId : plannerId}
+            };
+            return $http.delete(config.baseUrl+'/api/blito/v1.0/event-hosts', queryParam)
+        };
     });
