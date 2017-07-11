@@ -49,6 +49,8 @@ public class EventHostService {
 	SearchService searchService;
 	@Autowired
 	ExcelService excelService;
+	@Autowired
+	ImageService imageService;
 
 	private EventHost findEventHostById(long id) {
 		return eventHostRepository.findByEventHostIdAndIsDeletedFalse(id).map(e -> e)
@@ -113,6 +115,7 @@ public class EventHostService {
 					.getUserId()) {
 				throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 			} else {
+				eventHostResult.get().getImages().stream().map(i->imageService.deleteAsync(i.getImageUUID()));
 				eventHostResult.get().setDeleted(true);
 			}
 		}
