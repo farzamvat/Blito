@@ -1551,7 +1551,7 @@ angular.module('User')
                 })
         };
         //==================================================== ********* =================================
-        //==================================================== EVENT SETTING =================================
+        //==================================================== SETTINGS =================================
         var settingIndex;
         $scope.showSetting = function (index) {
             console.log($scope.userEvents[index]);
@@ -1565,6 +1565,7 @@ angular.module('User')
             $("#settingModal").modal("show");
             document.getElementsByClassName("deleteSpinner")[0].style.display = "none";
         };
+
         $scope.deleteEvent = function () {
             document.getElementsByClassName("deleteSpinner")[0].style.display = "inline";
             eventService.deleteEvent($scope.userEvents[settingIndex].eventId)
@@ -1641,6 +1642,17 @@ angular.module('User')
                     document.getElementsByClassName("approveErrorSettingExchange")[0].style.display = "inline";
                     document.getElementsByClassName("exchangeStatusSpinner")[0].style.display = "none";
                 })
+        };
+        var plannerSettingIndex;
+        $scope.showSettingPlanner = function (index) {
+            plannerSettingIndex = index;
+            document.getElementsByClassName("deletePlannerSpinner")[0].style.display = "none";
+            document.getElementsByClassName("approveSuccessSettingPlanner")[0].style.display = "none";
+            document.getElementsByClassName("approveErrorSettingPlanner")[0].style.display = "none";
+            $("#settingPlannerModal").modal("show");
+        };
+        $scope.deletePlanner = function () {
+            console.log($scope.eventHosts[plannerSettingIndex]);
         };
         //==================================================== ********* =================================
         //==================================================== GET DATA =================================

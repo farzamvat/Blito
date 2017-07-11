@@ -434,6 +434,8 @@
                                                             </th>
                                                             <th class="dataCenter" >آدرس وبسایت
                                                             </th>
+                                                            <th class="dataCenter" >تنظیمات برگزارکننده
+                                                            </th>
                                                             <th class="dataCenter" >ویرایش برگزارکننده
                                                             </th>
                                                         </tr>
@@ -443,6 +445,7 @@
                                                             <td class="dataCenter">{{ item.hostName}}</td>
                                                             <td class="dataCenter">{{ item.telephone}}</td>
                                                             <td class="dataCenter">{{ item.websiteLink}}</td>
+                                                            <td class="dataCenter"><button type="button" ng-click="showSettingPlanner($index)"  class="btn editButton btn-info" >تنظیمات </button></td>
                                                             <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editHost($index)">ویرایش</button></td>
                                                         </tr>
 
@@ -1012,6 +1015,7 @@
     <div ng-include="'app/views/partials/edit-event.html'"></div>
     <div ng-include="'app/views/partials/edit-host.html'"></div>
     <div ng-include="'app/views/partials/event-setting.html'"></div>
+    <div ng-include="'app/views/partials/planner-setting.html'"></div>
     <div ng-include="'app/views/partials/exchange-setting.html'"></div>
     <div ng-include="'app/views/partials/edit-exchange.html'"></div>
 </div>

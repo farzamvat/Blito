@@ -114,6 +114,7 @@ angular.module('userProfileApi', [])
             return $http.post(config.baseUrl+'/api/blito/v1.0/blits/buy-request', ticketInfo)
         };
         ticket.getUserTickets = function (pageNumber, userEmail) {
+            console.log(userEmail);
             var queryParam = {
                 params : {page: pageNumber-1, size: 5, sort: "createdAt,desc"}
             };
