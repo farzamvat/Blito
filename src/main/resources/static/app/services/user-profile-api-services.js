@@ -23,18 +23,14 @@ angular.module('userProfileApi', [])
                 params : { id : imageData}
             };
             return $http.get(config.baseUrl + '/api/blito/v1.0/download', queryParam);
-
         }
     })
-
-
     .service('eventService', function ($http, config) {
         var event = this;
 
         event.submitEventForm = function (eventData) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/events', eventData)
         };
-
         event.getUserEvents = function (page) {
             var queryParam = {
                 params : {page: page-1, size: 4}
@@ -67,7 +63,6 @@ angular.module('userProfileApi', [])
             };
             return $http.post(config.baseUrl+'/api/blito/v1.0/public/events/search', bodyJson, queryParam)
         }
-
     })
     .service('exchangeService', function ($http, config) {
         var exchange = this;
