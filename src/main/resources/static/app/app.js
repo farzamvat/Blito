@@ -26,7 +26,7 @@ angular.module('Blito',
     })
 
     .constant('config', {
-        baseUrl : 'http://192.168.200.249:8085',
+        baseUrl : 'http://192.168.200.246:8085',
         redirectToUrlAfterLogin : {url : '/'}
     })
 ;

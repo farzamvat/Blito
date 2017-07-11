@@ -1511,6 +1511,11 @@ footer h6 {
     -webkit-transform: scale(1.4);
     -ms-transform: scale(1.4);
 }
+.slidingEventsImg img:hover ~ .soldout {
+    transform: scale(1.4);
+    -webkit-transform: scale(1.4);
+    -ms-transform: scale(1.4);
+}
 .blitoOfferMain {
     overflow: hidden;
 
@@ -1851,6 +1856,26 @@ a{
     max-width: 30px;
     margin-right: 15px;
 }
+.soldout{
+    transition: .5s;
+    pointer-events: none;
+    height: 150px;
+    vertical-align: middle;
+    position: relative;
+    width: 106px;
+    margin-right: auto;
+    top: -171px;
+    margin-bottom: -190px;
+    margin-left: auto;
+    text-align: center;
+}
+
+.soldout img{
+    width: 100%;
+    height: auto;
+    margin-top: 40px;
+    transform: scale(1.2);
+}
 @media (max-width: 770px) {
     .navbar-header-backcolor{
         width: 172px !important;
@@ -2028,9 +2053,6 @@ a{
     .slick-next, .slick-prev, .slick-next::before, .slick-prev::before {
         display: none;
     }
-    .slidingEventsTitle {
-        color: white;
-    }
     .exchangeTicketText {
         margin-top: 30px;
     }
@@ -2050,7 +2072,7 @@ a{
 
     .slick-dots li button:before{
         opacity: 1;
-        color: white;
+        color: #c0c0c0;
     }
 
     .sliderSection {
