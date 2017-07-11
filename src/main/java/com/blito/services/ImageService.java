@@ -88,7 +88,7 @@ public class ImageService {
 		}).thenCompose(base64 -> this.save(base64));
 	}
 	
-	public CompletableFuture<Void> delete(String uuid)
+	public CompletableFuture<Void> deleteAsync(String uuid)
 	{
 		return CompletableFuture.runAsync(() -> {
 			Image image = imageRepository.findByImageUUID(uuid).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
@@ -102,6 +102,19 @@ public class ImageService {
 				throw new RuntimeException(e.getMessage());
 			}
 		});
+	}
+	
+	public void delete(String uid) {
+		Image image = imageRepository.findByImageUUID(uid).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
+		try {
+			
+			if(Files.deleteIfExists(Paths.get("images/" + image.getImageUUID() + ".txt")))
+				imageRepository.delete(image);
+			else
+				throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
+		} catch (IOException e) {
+			throw new RuntimeException(e.getMessage());
+		}
 	}
 	
 	public CompletableFuture<ImageViewModel> createOrUpdateDefaultImage(MultipartFile file,String defaultImageId)
@@ -134,18 +147,20 @@ public class ImageService {
 	{
 		return imageRepository.findByImageUUID(defaultId)
 				.map(image -> {
-					return delete(defaultId).thenCompose(res -> {
-						try {
-							return save(new String(file.getBytes()), defaultId);
-						} catch (IOException e1) {
-							throw new InternalServerException(ResourceUtil.getMessage(Response.INTERNAL_SERVER_ERROR));
-						}
-					}).thenApply(id -> {
-						image.setImageUUID(id);
-						image.setImageType(imageType.name());
-						return image;
-					}).join();
-					
+					delete(defaultId);
+					try {
+						return save(new String(file.getBytes()),defaultId).thenApply(id -> {
+							image.setImageUUID(id);
+							image.setImageType(imageType.name());
+							return image;
+						}).handle((result,throwable) -> {
+							if(throwable != null)
+								return image;
+							return result;
+						}).join();
+					} catch (IOException e) {
+						throw new InternalServerException(ResourceUtil.getMessage(Response.INTERNAL_SERVER_ERROR));
+					}
 				})
 				.orElseGet(() -> {
 					Image image = new Image();

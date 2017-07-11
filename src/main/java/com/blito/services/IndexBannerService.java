@@ -48,7 +48,7 @@ public class IndexBannerService {
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.INDEX_BANNER_NOT_FOUND)));
 		if(!vmodel.getImage().getImageUUID().equals(indexBanner.getImage().getImageUUID()))
 		{
-			return imageService.delete(indexBanner.getImage().getImageUUID());
+			return imageService.deleteAsync(indexBanner.getImage().getImageUUID());
 		}
 		indexBanner = indexBannerMapper.updateEntity(vmodel, indexBanner);
 		indexBanner = setIndexBannerImageAndEvent(indexBanner,vmodel);
