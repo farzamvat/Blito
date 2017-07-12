@@ -152,7 +152,7 @@ public class ImageService {
 						return save(new String(file.getBytes()),defaultId).thenApply(id -> {
 							image.setImageUUID(id);
 							image.setImageType(imageType.name());
-							return image;
+							return imageRepository.save(image);
 						}).handle((result,throwable) -> {
 							if(throwable != null)
 								return image;
