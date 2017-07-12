@@ -148,6 +148,7 @@ public class BlitService {
 		commonBlit.setUser(attachedUser);
 		commonBlit.setBlitType(attachedBlitType);
 		commonBlit.setPaymentStatus(PaymentStatus.FREE.name());
+		commonBlit.setBankGateway(BankGateway.NONE.name());
 		attachedUser.addBlits(commonBlit);
 		//
 		//

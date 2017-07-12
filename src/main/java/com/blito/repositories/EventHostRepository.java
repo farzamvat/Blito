@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import com.blito.models.EventHost;
 
 public interface EventHostRepository extends JpaRepository<EventHost,Long>, JpaSpecificationExecutor<EventHost>  {
-	Optional<EventHost> findByHostName(String hostName);
+	Optional<EventHost> findByHostNameAndIsDeletedFalse(String hostName);
 	Page<EventHost> findByUserUserIdAndIsDeletedFalse(long userId,Pageable pagable);
 	Optional<EventHost> findByEventHostIdAndIsDeletedFalse(long eventHostId);
 	Page<EventHost> findByIsDeletedFalse(Pageable pageable);

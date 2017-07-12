@@ -196,7 +196,7 @@ public class EventService {
 			if (event.getEventHost().getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 				throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 			} else {
-				event.getImages().stream().map(i->imageService.deleteAsync(i.getImageUUID()));
+				event.getImages().forEach(i->imageService.delete(i.getImageUUID()));
 				event.setDeleted(true);
 			}
 			return event;

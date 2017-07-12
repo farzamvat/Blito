@@ -1,8 +1,5 @@
 package com.blito.services;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,16 +12,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.blito.enums.AdminApiBusinessName;
 import com.blito.enums.ApiBusinessName;
+import com.blito.enums.ApiBusinessNameInterface;
 import com.blito.models.Permission;
 import com.blito.models.Role;
 import com.blito.models.User;
 import com.blito.repositories.PermissionRepository;
 import com.blito.repositories.RoleRepository;
 import com.blito.repositories.UserRepository;
-import com.blito.rest.viewmodels.OldUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 
 @Service
 public class Initiallizer {
@@ -43,7 +40,7 @@ public class Initiallizer {
 	public void importPermissionsToDataBase() {
 		if (permissionRepository.findAll().isEmpty()) {
 			List<Permission> permissions = new ArrayList<>();
-			Arrays.asList(ApiBusinessName.values()).forEach(e -> {
+			(new ArrayList<ApiBusinessNameInterface>(AdminApiBusinessName.getValues())).forEach(e -> {
 				Permission permission = new Permission();
 				permission.setApiBusinessName(e.name());
 				permissions.add(permission);

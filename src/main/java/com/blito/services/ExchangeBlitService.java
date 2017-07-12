@@ -99,7 +99,7 @@ public class ExchangeBlitService {
 		if (exchangeBlit.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
-		imageService.deleteAsync(exchangeBlit.getImage().getImageUUID());
+		imageService.delete(exchangeBlit.getImage().getImageUUID());
 		exchangeBlit.setDeleted(true);
 	}
 

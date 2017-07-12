@@ -8,4 +8,5 @@ import com.blito.models.Permission;
 
 public interface PermissionRepository extends JpaRepository<Permission,Long> {
 	Set<Permission> findByPermissionIdIn(Set<Long> ids);
+	Set<Permission> findByApiBusinessNameIn(Set<String> apiBusinessNames);
 }

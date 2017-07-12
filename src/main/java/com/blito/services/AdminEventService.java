@@ -137,7 +137,7 @@ public class AdminEventService {
 		if (!eventResult.isPresent()) {
 			throw new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND));
 		} else {
-			eventResult.get().getImages().stream().map(i->imageService.deleteAsync(i.getImageUUID()));
+			eventResult.get().getImages().forEach(i->imageService.delete(i.getImageUUID()));
 			eventResult.get().setDeleted(true);
 		}
 	}
