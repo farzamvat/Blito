@@ -662,7 +662,7 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     direction: rtl;
     text-align: right;
     border-radius: 3px;
-    height: 40px !important;
+    height: 30px !important;
     font-size: 20px;
     padding-right: 10px;
     background: none;
@@ -695,9 +695,9 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 }
 
 .eventPageHeaderTheatre {
-    background: url('../img/1.jpg') fixed ;
-    background-size: 100% 380px;
-    padding-top: 80px;
+    background: url('../img/1.png') fixed ;
+    background-size: 100% 500px;
+    padding-top: 68px;
     padding-bottom: 40px;
 }
 
@@ -1919,6 +1919,55 @@ a{
     font-size: 64px;
     text-shadow: 0px 2px 5px #333;
 }
+.scrollBarHidden{
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+}
+.marginBottom0{
+    margin-bottom: 0px;
+}
+.aboutUsContainer{
+    margin-top:30px;
+    width:100%;
+    background: #efefef;
+
+}
+.aboutUsContainer p{
+}
+.aboutUsHeader h2{
+    float: right;
+    color:#444;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: 100%;
+    margin-right: 55px;
+    text-align: right;
+}
+.aboutUsTextContainer{
+    position: relative;
+    text-align: center;
+}
+.blitoTeamPictureHolder{
+    width:120px;
+    height:120px;
+    background:#444;
+    border-radius: 50%;
+    border:2px solid rgb(252, 183, 49);
+    margin:auto;
+}
+.blitoTeamContainer{
+    float: right;
+    margin-right: 33.333%;
+}
+.blitoTeamContainer h4 ,
+.blitoTeamContainer p{
+    text-align: center;
+    margin: auto;
+    margin-top:30px;
+}
+table td{
+    vertical-align: middle !important;
+}
 @media (max-width: 770px) {
     .navbar-header-backcolor{
         width: 172px !important;
@@ -2127,10 +2176,15 @@ a{
     }
 
 }
-@media (max-width: 991px) {
+@media (max-width: 991px) and (min-width:615px) {
     .customPanelEventPage {
-        width: 92% !important;
+        width: calc(58.33% + 176px) !important;
         margin: 10px auto !important;
+        float:right;
+    }
+    .panelMidSize{
+        margin-right: calc(33.33% - 176px);
+        padding: 0px;
     }
 }
 
