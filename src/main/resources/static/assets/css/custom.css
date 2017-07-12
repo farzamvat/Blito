@@ -1932,6 +1932,13 @@ a{
     background: #efefef;
 
 }
+.editInfoSection {
+    background-color: #fff;
+    border-radius: 3px;
+    margin: 10px 20px;
+    padding: 10px 20px;
+    border: 1px solid #333;
+}
 .aboutUsContainer p{
 }
 .aboutUsHeader h2{
@@ -2027,15 +2034,18 @@ table td{
     .recipe {
         width: 300px;
     }
-    #map {
-        width: 400px;
-        height: 300px;
-        margin: 10px auto;
-    }
+    /*#map {*/
+        /*width: 400px;*/
+        /*height: 300px;*/
+        /*margin: 10px auto;*/
+    /*}*/
 }
 
 
 @media (max-width: 768px) {
+    .inputXsSize {
+        width: 100%;
+    }
     .loadingSlider {
         height: 180px ;
     }

@@ -135,13 +135,16 @@ angular.module('eventsPageModule')
                     blitTypeName : $scope.itemWithCapacity[0].name,
                     count : $scope.totalNumber,
                     customerEmail : userData.email,
-                    customerMobileNumber : userData.mobile,
-                    customerName : userData.firstname+ " " + userData.lastname,
+                    // customerMobileNumber : userData.mobile,
+                    // customerName : userData.firstname+ " " + userData.lastname,
+                    customerMobileNumber : "09122011273",
+                    customerName : "سروش",
                     eventAddress : $scope.eventDataDetails.address,
                     eventDate : $scope.itemWithCapacity[0].date,
                     eventDateAndTime : dateSetterService.persianToArray(persianDate($scope.itemWithCapacity[0].date).pDate).join(),
                     eventName : $scope.eventDataDetails.eventName,
-                    seatType : "COMMON"
+                    seatType : "COMMON",
+                    bankGateway : "NONE"
                 };
             document.getElementsByClassName("freeBlitSpinner")[0].style.display = "inline";
             document.getElementById("buyBlitError").style.display = "none";

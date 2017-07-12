@@ -40,6 +40,23 @@ angular.module('User')
                     console.log(data);
                 }))
         };
+        $scope.changePassword = function (password) {
+            document.getElementsByClassName("deletePlannerSpinner")[0].style.display = "none";
+            document.getElementsByClassName("changePasswordSpinner")[0].style.display = "inline";
+            console.log(password);
+            updateInfo.changePasswordSubmit(password)
+                .then(function (data) {
+                    console.log(data);
+                    document.getElementById("changePasswordSuccess").style.display = "block";
+                    document.getElementsByClassName("changePasswordSpinner")[0].style.display = "none";
+                })
+                .catch(function (data) {
+                    console.log(data);
+                    document.getElementsByClassName("changePasswordSpinner")[0].style.display = "none";
+                    document.getElementById("changePasswordError").style.display = "block";
+                    document.getElementById("changePasswordError").innerHTML = data.data.message;
+                })
+        };
         $scope.editUserInfo();
         $scope.updateInfo = function (editInfo) {
             $scope.updateInfoSpinner = true;
@@ -1686,6 +1703,26 @@ angular.module('User')
         };
         //==================================================== ********* =================================
         //==================================================== GET DATA =================================
+        $scope.showTickets = function (index) {
+            $scope.eventTicketsPageChanged = function (newPage) {
+                $scope.getEventTickets(newPage);
+            };
+            $scope.getEventTickets = function (pageNumber) {
+
+              ticketsService.getEventTickets(pageNumber, $scope.userEvents[index].eventId)
+                  .then(function (data) {
+                      $scope.totalTicketNumber = data.data.totalElements;
+                      $scope.eventsTickets = data.data.content;
+                      console.log(data);
+                  })
+                  .catch(function (data) {
+                      console.log(data);
+                  })
+            };
+            $scope.getEventTickets(1);
+            $('#eventTickets').modal('show');
+
+        };
         $scope.getExchangeData = function (page) {
             exchangeService.getExchangeTickets(page)
                 .then(function (data, status) {
