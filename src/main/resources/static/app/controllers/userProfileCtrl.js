@@ -994,7 +994,11 @@ angular.module('User')
                 twitterLink: plannerData.twitter,
                 websiteLink: plannerData.website,
                 description : plannerData.description
-            }
+            };
+            eventPlannerData.images = eventPlannerData.images.filter(function (images) {
+                return images.imageUUID !== undefined;
+            });
+            console.log(eventPlannerData.images);
             if(!$scope.plannerImageId && !$scope.coverImageId){
                 delete eventPlannerData.images;
             }
@@ -1551,7 +1555,7 @@ angular.module('User')
                 })
         };
         //==================================================== ********* =================================
-        //==================================================== EVENT SETTING =================================
+        //==================================================== SETTINGS =================================
         var settingIndex;
         $scope.showSetting = function (index) {
             console.log($scope.userEvents[index]);
@@ -1565,6 +1569,7 @@ angular.module('User')
             $("#settingModal").modal("show");
             document.getElementsByClassName("deleteSpinner")[0].style.display = "none";
         };
+
         $scope.deleteEvent = function () {
             document.getElementsByClassName("deleteSpinner")[0].style.display = "inline";
             eventService.deleteEvent($scope.userEvents[settingIndex].eventId)
@@ -1640,6 +1645,27 @@ angular.module('User')
                     document.getElementById("approveErrorSettingExchange").innerHTML = data.data.message;
                     document.getElementsByClassName("approveErrorSettingExchange")[0].style.display = "inline";
                     document.getElementsByClassName("exchangeStatusSpinner")[0].style.display = "none";
+                })
+        };
+        var plannerSettingIndex;
+        $scope.showSettingPlanner = function (index) {
+            plannerSettingIndex = index;
+            document.getElementsByClassName("deletePlannerSpinner")[0].style.display = "none";
+            document.getElementsByClassName("approveSuccessSettingPlanner")[0].style.display = "none";
+            document.getElementsByClassName("approveErrorSettingPlanner")[0].style.display = "none";
+            $("#settingPlannerModal").modal("show");
+        };
+        $scope.deletePlanner = function () {
+            document.getElementsByClassName("deletePlannerSpinner")[0].style.display = "inline";
+            plannerService.deletePlanner($scope.eventHosts[plannerSettingIndex].eventHostId)
+                .then(function () {
+                    document.getElementsByClassName("approveSuccessSettingPlanner")[0].style.display = "block";
+                    document.getElementsByClassName("deletePlannerSpinner")[0].style.display = "none";
+                })
+                .catch(function () {
+                    document.getElementById("approveErrorSettingPlanner").innerHTML = data.data.message;
+                    document.getElementsByClassName("deletePlannerSpinner")[0].style.display = "none";
+                    document.getElementsByClassName("approveErrorSettingPlanner")[0].style.display = "inline";
                 })
         };
         //==================================================== ********* =================================

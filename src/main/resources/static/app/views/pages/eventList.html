@@ -50,17 +50,14 @@
                         <div class="eventDescription center-block">
                             {{item.description}}
                         </div>
-                        <div ng-show="event.eventState === 'CLOSED'" class="closed">
+                        <div ng-show="item.eventState === 'CLOSED'" class="closed">
                             <h1><i class="fa fa-lock"></i>
                                 <p>بسته</p>
                             </h1>
                         </div>
-                        <!--======================================soldout=============================-->
-                        <div class="soldout">
+                        <div ng-show="item.eventState === 'SOLD'" class="soldout ">
                             <img src="../../../assets/img/soldout.png"/>
                         </div>
-                        <!--======================================soldout=============================-->
-
                     </div>
                 </div>
             </a>

@@ -109,7 +109,7 @@
                                 </h1>
                             </div>
 
-                            <div class="soldout">
+                            <div ng-show="event.eventState === 'SOLD'" class="soldout">
                                 <img src="../../../assets/img/soldout.png"/>
                             </div>
                         </a>
@@ -137,6 +137,9 @@
                             <h1><i class="fa fa-lock"></i>
                                 <p>بسته</p>
                             </h1>
+                        </div>
+                        <div ng-show="ourOfferConcert[0].eventState === 'SOLD'" class="soldout">
+                            <img src="../../../assets/img/soldout.png"/>
                         </div>
 
                     </a>
@@ -171,11 +174,10 @@
                                     <p>بسته</p>
                                 </h1>
                             </div>
-<!--========================================soldout====================================-->
-                            <div class="soldout">
+                            <div ng-show="event.eventState === 'SOLD'" class="soldout">
                                 <img src="../../../assets/img/soldout.png"/>
                             </div>
-<!--========================================soldout====================================-->
+
                         </a>
                         <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
                         <a href="{{url+event.eventLink}}" class="btn btn-success slidingEventsBtn center-block hidden-xs">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
@@ -200,6 +202,9 @@
                             <h1><i class="fa fa-lock"></i>
                                 <p>بسته</p>
                             </h1>
+                        </div>
+                        <div ng-show="ourOfferTour[0].eventState === 'SOLD'" class="soldout">
+                            <img src="../../../assets/img/soldout.png"/>
                         </div>
                     </a>
                     <h4 class="text-center slidingEventsTitle">{{ ourOfferTour[0].eventName }}</h4>
@@ -230,6 +235,10 @@
                                     <p>بسته</p>
                                 </h1>
                             </div>
+                            <div ng-show="event.eventState === 'SOLD'" class="soldout">
+                                <img src="../../../assets/img/soldout.png"/>
+                            </div>
+
                         </a>
                         <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
                         <a href="{{url+event.eventLink}}" class="btn btn-success slidingEventsBtn center-block hidden-xs">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
@@ -257,6 +266,9 @@
                             <h1><i class="fa fa-lock"></i>
                                 <p>بسته</p>
                             </h1>
+                        </div>
+                        <div ng-show="ourOfferEvento[0].eventState === 'SOLD'" class="soldout">
+                            <img src="../../../assets/img/soldout.png"/>
                         </div>
                     </a>
                     <h4 class="text-center slidingEventsTitle">{{ ourOfferEvento[0].eventName }}</h4>
@@ -314,6 +326,9 @@
                                 <h1><i class="fa fa-lock"></i>
                                     <p>بسته</p>
                                 </h1>
+                            </div>
+                            <div ng-show="event.state === 'SOLD'" class="soldout">
+                                <img src="../../../assets/img/soldout.png"/>
                             </div>
                         </a>
                         <h4 class="text-center slidingEventsTitle">{{event.title}}</h4>
