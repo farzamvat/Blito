@@ -13,7 +13,7 @@
             </button>
 
         </div>
-        <div class="col-xs-12   col-sm-12   col-md-4 floatRight  textAlignRight paddingRight0 panelMidSize" >
+        <div class="col-xs-12   col-sm-12   col-md-4 floatRight textAlignRight paddingRight0 panelMidSize" >
 
             <div class="panel panel-primary  customPanelEventPage eventPageShowTimeColor">
                 <div class="panel-heading">
@@ -21,7 +21,7 @@
                     <input height="60" id="searchShowTime" placeholder="&#xf002;" ng-model="search"   type="text"  class="form-group searchListInput" >
                 </div>
 
-                <div class="panel-body textAlignRight">
+                <div class="panel-body textAlignRight scrollBarHidden">
 
                     <table class="table">
                         <thead class="tableHeader">
@@ -44,7 +44,7 @@
                             <td  class="dataCenter">
                                 {{item.name}}
                             </td>
-                            <td class="dataCenter"><input required  ng-class="setClass($index)"  disabled  type="text" class="form-group datePickerFormatEventPage " readonly></td>
+                            <td class="dataCenter"><input required  ng-class="setClass($index)"  disabled  type="text" class="form-group datePickerFormatEventPage marginBottom0" readonly></td>
 
                             <td ng-if="item.price === 0" class="dataCenter">رایگان</td>
                             <td ng-if="item.price !== 0" class="dataCenter">{{ item.price}}</td>
