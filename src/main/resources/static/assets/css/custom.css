@@ -1930,9 +1930,7 @@ a{
     margin-top:30px;
     width:100%;
     background: #efefef;
-
-}
-.aboutUsContainer p{
+    height:100%;
 }
 .aboutUsHeader h2{
     float: right;
@@ -1940,30 +1938,82 @@ a{
     margin-top: 30px;
     margin-bottom: 30px;
     width: 100%;
-    margin-right: 55px;
-    text-align: right;
+    margin-right: auto;
+    margin-left: auto;
+    height:65px;
+    text-align: center;
+    border-bottom: 2px solid #ddd;
 }
 .aboutUsTextContainer{
     position: relative;
     text-align: center;
 }
-.blitoTeamPictureHolder{
-    width:120px;
-    height:120px;
-    background:#444;
-    border-radius: 50%;
-    border:2px solid rgb(252, 183, 49);
-    margin:auto;
-}
+
 .blitoTeamContainer{
+    height:auto;
+    margin:auto;
     float: right;
-    margin-right: 33.333%;
+
 }
 .blitoTeamContainer h4 ,
 .blitoTeamContainer p{
     text-align: center;
     margin: auto;
+    color:#444;
     margin-top:30px;
+}
+.blitoTeamPicturebeautifier{
+    width:125px;
+    height:125px;
+    background:transparent;
+    border-radius: 50%;
+    border-top:5px solid #444;
+    margin:auto;
+    transition: .5s;
+}
+
+.blitoTeamPicturebeautifier2{
+    width:115px;
+    height:115px;
+    background:transparent;
+    border-radius: 50%;
+    border-left:4px solid #aaa;
+    margin:auto;
+    margin-top:4px;
+    padding: 5px;
+    transition: .3s;
+
+}
+.blitoTeamPictureHolder{
+    width:100px;
+    height:100px;
+    background:#444;
+    border-radius: 50%;
+    border:3px solid rgb(252, 183, 49);
+    margin:auto;
+    transition: .3s;
+    margin-top:2px;
+}
+.blitoTeamPicturebeautifier:hover .blitoTeamPicturebeautifier2{
+    transform: rotate(180deg);
+}
+.blitoTeamPicturebeautifier:hover .blitoTeamPictureHolder{
+    transform: rotate(-90deg)  ;
+}
+
+.blitoTeamPicturebeautifier:hover {
+    transform: rotate(-90deg) scale(1.3);
+}
+.person{
+    padding-top:30px;
+    padding-bottom:30px;
+    float: right;
+}
+.someholder{
+    margin:auto;
+}
+.marginRight25Percent{
+    margin-right: 12.5%;
 }
 table td{
     vertical-align: middle !important;
