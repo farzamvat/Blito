@@ -994,7 +994,11 @@ angular.module('User')
                 twitterLink: plannerData.twitter,
                 websiteLink: plannerData.website,
                 description : plannerData.description
-            }
+            };
+            eventPlannerData.images = eventPlannerData.images.filter(function (images) {
+                return images.imageUUID !== undefined;
+            });
+            console.log(eventPlannerData.images);
             if(!$scope.plannerImageId && !$scope.coverImageId){
                 delete eventPlannerData.images;
             }
