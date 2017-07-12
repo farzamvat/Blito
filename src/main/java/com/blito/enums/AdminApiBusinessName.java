@@ -4,10 +4,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public enum AdminApiBusinessName implements ApiBusinessNameInterface{
-	ADMINAPI1,
-	ADMINAPI2;
-
+public enum AdminApiBusinessName implements ApiBusinessNameInterface {
+	ADMINAPI1, ADMINAPI2, ADMINAPI3;
 
 	public static Set<ApiBusinessNameInterface> getValues() {
 		Set<ApiBusinessNameInterface> set = new HashSet<>(Arrays.asList(values()));

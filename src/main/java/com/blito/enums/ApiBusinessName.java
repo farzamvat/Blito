@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public enum ApiBusinessName implements ApiBusinessNameInterface {
-	API1, API2, API3;
+	API1, API2, API3, API4, API5;
 
 	public static Set<ApiBusinessNameInterface> getValues() {
 		Set<ApiBusinessNameInterface> set = new HashSet<>(Arrays.asList(values()));
