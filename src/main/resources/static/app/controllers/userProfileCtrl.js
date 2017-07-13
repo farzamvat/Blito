@@ -86,10 +86,25 @@ angular.module('User')
                     timePicker: {
                         enabled: true
                     },
+                    formatter : function (unixDate) {
+                        var self = this;
+                        var pdate = new persianDate(unixDate);
+                        pdate.formatPersian = true;
+                        return pdate.format(self.format);
+                    },
                     altField: '#persianDigitAlt',
-                    altFormat: "YYYY MM DD HH:mm:ss",
+                    altFormat: "unix",
                     altFieldFormatter: function (unixDate) {
-                        // $scope.showTimeForms[i].date = unixDate;
+                        var self = this;
+                        var thisAltFormat = self.altFormat.toLowerCase();
+                        if (thisAltFormat === "gregorian" | thisAltFormat === "g") {
+                            return new Date(unixDate);
+                        }
+                        if (thisAltFormat === "unix" | thisAltFormat === "u") {
+                            return unixDate;
+                        } else {
+                            return new persianDate(unixDate).format(self.altFormat);
+                        }
                     }
                 });
             }, 1000);
@@ -99,6 +114,12 @@ angular.module('User')
             $(".persianTimeEventStart").pDatepicker({
                 timePicker: {
                     enabled: true
+                },
+                formatter : function (unixDate) {
+                    var self = this;
+                    var pdate = new persianDate(unixDate);
+                    pdate.formatPersian = true;
+                    return pdate.format(self.format);
                 },
                 altField: '#persianDigitAlt',
                 altFormat: "YYYY MM DD HH:mm:ss",
@@ -110,8 +131,15 @@ angular.module('User')
                 timePicker: {
                     enabled: true
                 },
+                formatter : function (unixDate) {
+                    var self = this;
+                    var pdate = new persianDate(unixDate);
+                    pdate.formatPersian = true;
+                    return pdate.format(self.format);
+                },
                 altField: '#persianDigitAlt',
                 altFormat: "YYYY MM DD HH:mm:ss",
+
                 altFieldFormatter: function (unixDate) {
                     $scope.eventEndTime = unixDate;
                 }
@@ -122,6 +150,12 @@ angular.module('User')
                 },
                 altField: '#persianDigitAlt',
                 altFormat: "YYYY MM DD HH:mm:ss",
+                formatter : function (unixDate) {
+                    var self = this;
+                    var pdate = new persianDate(unixDate);
+                    pdate.formatPersian = true;
+                    return pdate.format(self.format);
+                },
                 altFieldFormatter: function (unixDate) {
                     $scope.exchangeTime = unixDate;
                 }
@@ -967,6 +1001,12 @@ angular.module('User')
                         },
                         altField: '#persianDigitAlt',
                         altFormat: "YYYY MM DD HH:mm:ss",
+                        formatter : function (unixDate) {
+                            var self = this;
+                            var pdate = new persianDate(unixDate);
+                            pdate.formatPersian = true;
+                            return pdate.format(self.format);
+                        },
                         altFieldFormatter: function (unixDate) {
                         }
                     });
@@ -1311,6 +1351,12 @@ angular.module('User')
                         },
                         altField: '#persianDigitAlt',
                         altFormat: "YYYY MM DD HH:mm:ss",
+                        formatter : function (unixDate) {
+                            var self = this;
+                            var pdate = new persianDate(unixDate);
+                            pdate.formatPersian = true;
+                            return pdate.format(self.format);
+                        },
                         altFieldFormatter: function (unixDate) {
                         }
                     });
@@ -1323,6 +1369,12 @@ angular.module('User')
                     },
                     altField: '#persianDigitAlt',
                     altFormat: "YYYY MM DD HH:mm:ss",
+                    formatter : function (unixDate) {
+                        var self = this;
+                        var pdate = new persianDate(unixDate);
+                        pdate.formatPersian = true;
+                        return pdate.format(self.format);
+                    },
                     altFieldFormatter: function (unixDate) {
                     }
                 });
@@ -1332,6 +1384,12 @@ angular.module('User')
                     },
                     altField: '#persianDigitAlt',
                     altFormat: "YYYY MM DD HH:mm:ss",
+                    formatter : function (unixDate) {
+                        var self = this;
+                        var pdate = new persianDate(unixDate);
+                        pdate.formatPersian = true;
+                        return pdate.format(self.format);
+                    },
                     altFieldFormatter: function (unixDate) {
                     }
                 });
@@ -1421,11 +1479,20 @@ angular.module('User')
             return date;
         };
         $scope.persianToMs = function (date) {
-            var newData = date.replace(/[^\w\s]/gi , ' ').split(" ");
+            console.log(date);
+            var newData = date.replace(/:|-/gi , ' ').split(" ");
             newData.pop();
+            newData.pop();
+            newData = newData.map(function (persianNumb) {
+                var persian = {'۰':0,'۱':1,'۲':2,'۳':3,'۴':4,'۵': 5,'۶': 6,'۷': 7,'۸' : 8,'۹': 9};
+                return persianNumb.split('').map(function (persianDigit) {
+                   return persian[persianDigit];
+                }).join('');
+            });
             newData = newData.map(function (item) {
                 return parseInt(item);
             });
+            console.log(newData);
             date = persianDate(newData).gDate.getTime();
             return date;
         };
@@ -1520,6 +1587,12 @@ angular.module('User')
                 },
                 altField: '#persianDigitAlt',
                 altFormat: "YYYY MM DD HH:mm:ss",
+                formatter : function (unixDate) {
+                    var self = this;
+                    var pdate = new persianDate(unixDate);
+                    pdate.formatPersian = true;
+                    return pdate.format(self.format);
+                },
                 altFieldFormatter: function (unixDate) {
                     $scope.editExchangeDate = unixDate;
                 }

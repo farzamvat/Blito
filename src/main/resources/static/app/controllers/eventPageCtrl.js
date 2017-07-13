@@ -58,6 +58,12 @@ angular.module('eventsPageModule')
                         timePicker: {
                             enabled: true
                         },
+                        formatter : function (unixDate) {
+                            var self = this;
+                            var pdate = new persianDate(unixDate);
+                            pdate.formatPersian = true;
+                            return pdate.format(self.format);
+                        },
                         altField: '#persianDigitAlt',
                         altFormat: "YYYY MM DD HH:mm:ss",
                         persianDigit : true,
