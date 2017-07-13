@@ -40,6 +40,23 @@ angular.module('User')
                     console.log(data);
                 }))
         };
+        $scope.changePassword = function (password) {
+            document.getElementsByClassName("deletePlannerSpinner")[0].style.display = "none";
+            document.getElementsByClassName("changePasswordSpinner")[0].style.display = "inline";
+            console.log(password);
+            updateInfo.changePasswordSubmit(password)
+                .then(function (data) {
+                    console.log(data);
+                    document.getElementById("changePasswordSuccess").style.display = "block";
+                    document.getElementsByClassName("changePasswordSpinner")[0].style.display = "none";
+                })
+                .catch(function (data) {
+                    console.log(data);
+                    document.getElementsByClassName("changePasswordSpinner")[0].style.display = "none";
+                    document.getElementById("changePasswordError").style.display = "block";
+                    document.getElementById("changePasswordError").innerHTML = data.data.message;
+                })
+        };
         $scope.editUserInfo();
         $scope.updateInfo = function (editInfo) {
             $scope.updateInfoSpinner = true;
@@ -69,10 +86,25 @@ angular.module('User')
                     timePicker: {
                         enabled: true
                     },
+                    formatter : function (unixDate) {
+                        var self = this;
+                        var pdate = new persianDate(unixDate);
+                        pdate.formatPersian = true;
+                        return pdate.format(self.format);
+                    },
                     altField: '#persianDigitAlt',
-                    altFormat: "YYYY MM DD HH:mm:ss",
+                    altFormat: "unix",
                     altFieldFormatter: function (unixDate) {
-                        // $scope.showTimeForms[i].date = unixDate;
+                        var self = this;
+                        var thisAltFormat = self.altFormat.toLowerCase();
+                        if (thisAltFormat === "gregorian" | thisAltFormat === "g") {
+                            return new Date(unixDate);
+                        }
+                        if (thisAltFormat === "unix" | thisAltFormat === "u") {
+                            return unixDate;
+                        } else {
+                            return new persianDate(unixDate).format(self.altFormat);
+                        }
                     }
                 });
             }, 1000);
@@ -82,6 +114,12 @@ angular.module('User')
             $(".persianTimeEventStart").pDatepicker({
                 timePicker: {
                     enabled: true
+                },
+                formatter : function (unixDate) {
+                    var self = this;
+                    var pdate = new persianDate(unixDate);
+                    pdate.formatPersian = true;
+                    return pdate.format(self.format);
                 },
                 altField: '#persianDigitAlt',
                 altFormat: "YYYY MM DD HH:mm:ss",
@@ -93,8 +131,15 @@ angular.module('User')
                 timePicker: {
                     enabled: true
                 },
+                formatter : function (unixDate) {
+                    var self = this;
+                    var pdate = new persianDate(unixDate);
+                    pdate.formatPersian = true;
+                    return pdate.format(self.format);
+                },
                 altField: '#persianDigitAlt',
                 altFormat: "YYYY MM DD HH:mm:ss",
+
                 altFieldFormatter: function (unixDate) {
                     $scope.eventEndTime = unixDate;
                 }
@@ -105,6 +150,12 @@ angular.module('User')
                 },
                 altField: '#persianDigitAlt',
                 altFormat: "YYYY MM DD HH:mm:ss",
+                formatter : function (unixDate) {
+                    var self = this;
+                    var pdate = new persianDate(unixDate);
+                    pdate.formatPersian = true;
+                    return pdate.format(self.format);
+                },
                 altFieldFormatter: function (unixDate) {
                     $scope.exchangeTime = unixDate;
                 }
@@ -653,9 +704,7 @@ angular.module('User')
                 angular.element(document.getElementsByClassName("galleryFourEdit"))[0].src = base64Data;
                 //here you can send data over your server as desired
             }
-
             r.readAsDataURL(f); //once defined all callbacks, begin reading the file
-
         };
         fileSelectEventGalleryThreeEdit.onchange = function() { //set callback to action after choosing file
             var f = fileSelectEventGalleryThreeEdit.files[0], r = new FileReader();
@@ -950,6 +999,12 @@ angular.module('User')
                         },
                         altField: '#persianDigitAlt',
                         altFormat: "YYYY MM DD HH:mm:ss",
+                        formatter : function (unixDate) {
+                            var self = this;
+                            var pdate = new persianDate(unixDate);
+                            pdate.formatPersian = true;
+                            return pdate.format(self.format);
+                        },
                         altFieldFormatter: function (unixDate) {
                         }
                     });
@@ -1216,12 +1271,14 @@ angular.module('User')
                     gallery.push(image.imageUUID);
                 }
             });
+            console.log($scope.userEventsEdit[index]);
             $scope.eventEditImageId = imageUUID;
+            console.log($scope.eventEditImageId);
 
-            photoService.download(imageUUID)
+            photoService.download($scope.eventEditImageId)
                 .then(function (data, status) {
+                    console.log(data);
                     angular.element(document.getElementsByClassName("profilePhotoUploadEditEvent"))[0].src = data.data.encodedBase64;
-                }, function (data, status) {
                 })
                 .catch(function (data, status) {
                     console.log(status);
@@ -1294,6 +1351,12 @@ angular.module('User')
                         },
                         altField: '#persianDigitAlt',
                         altFormat: "YYYY MM DD HH:mm:ss",
+                        formatter : function (unixDate) {
+                            var self = this;
+                            var pdate = new persianDate(unixDate);
+                            pdate.formatPersian = true;
+                            return pdate.format(self.format);
+                        },
                         altFieldFormatter: function (unixDate) {
                         }
                     });
@@ -1306,6 +1369,12 @@ angular.module('User')
                     },
                     altField: '#persianDigitAlt',
                     altFormat: "YYYY MM DD HH:mm:ss",
+                    formatter : function (unixDate) {
+                        var self = this;
+                        var pdate = new persianDate(unixDate);
+                        pdate.formatPersian = true;
+                        return pdate.format(self.format);
+                    },
                     altFieldFormatter: function (unixDate) {
                     }
                 });
@@ -1315,6 +1384,12 @@ angular.module('User')
                     },
                     altField: '#persianDigitAlt',
                     altFormat: "YYYY MM DD HH:mm:ss",
+                    formatter : function (unixDate) {
+                        var self = this;
+                        var pdate = new persianDate(unixDate);
+                        pdate.formatPersian = true;
+                        return pdate.format(self.format);
+                    },
                     altFieldFormatter: function (unixDate) {
                     }
                 });
@@ -1404,11 +1479,20 @@ angular.module('User')
             return date;
         };
         $scope.persianToMs = function (date) {
-            var newData = date.replace(/[^\w\s]/gi , ' ').split(" ");
+            console.log(date);
+            var newData = date.replace(/:|-/gi , ' ').split(" ");
             newData.pop();
+            newData.pop();
+            newData = newData.map(function (persianNumb) {
+                var persian = {'۰':0,'۱':1,'۲':2,'۳':3,'۴':4,'۵': 5,'۶': 6,'۷': 7,'۸' : 8,'۹': 9};
+                return persianNumb.split('').map(function (persianDigit) {
+                   return persian[persianDigit];
+                }).join('');
+            });
             newData = newData.map(function (item) {
                 return parseInt(item);
             });
+            console.log(newData);
             date = persianDate(newData).gDate.getTime();
             return date;
         };
@@ -1503,6 +1587,12 @@ angular.module('User')
                 },
                 altField: '#persianDigitAlt',
                 altFormat: "YYYY MM DD HH:mm:ss",
+                formatter : function (unixDate) {
+                    var self = this;
+                    var pdate = new persianDate(unixDate);
+                    pdate.formatPersian = true;
+                    return pdate.format(self.format);
+                },
                 altFieldFormatter: function (unixDate) {
                     $scope.editExchangeDate = unixDate;
                 }
@@ -1686,6 +1776,26 @@ angular.module('User')
         };
         //==================================================== ********* =================================
         //==================================================== GET DATA =================================
+        $scope.showTickets = function (index) {
+            $scope.eventTicketsPageChanged = function (newPage) {
+                $scope.getEventTickets(newPage);
+            };
+            $scope.getEventTickets = function (pageNumber) {
+
+              ticketsService.getEventTickets(pageNumber, $scope.userEvents[index].eventId)
+                  .then(function (data) {
+                      $scope.totalTicketNumber = data.data.totalElements;
+                      $scope.eventsTickets = data.data.content;
+                      console.log(data);
+                  })
+                  .catch(function (data) {
+                      console.log(data);
+                  })
+            };
+            $scope.getEventTickets(1);
+            $('#eventTickets').modal('show');
+
+        };
         $scope.getExchangeData = function (page) {
             exchangeService.getExchangeTickets(page)
                 .then(function (data, status) {

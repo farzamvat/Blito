@@ -56,6 +56,9 @@ angular.module('authServices', [])
         var updateInfo = this;
         updateInfo.updateData = function (updateData) {
             return $http.post(config.baseUrl + '/api/blito/v1.0/account/update-info', updateData);
+        };
+        updateInfo.changePasswordSubmit = function (changePassword) {
+            return $http.post(config.baseUrl + '/api/blito/v1.0/account/change-password', changePassword);
         }
     })
     .service('userCreate', function ($http, config) {
@@ -203,12 +206,12 @@ angular.module('authServices', [])
         var userDataService = { firstname : 'کاربر', lastname : '', mobile : '09122011273', email : ''};
 
         userInfo.setData = function (userData) {
-            userDataService.firstname = userData.firstname;
-            userDataService.lastname = userData.lastname;
-            userDataService.mobile = userData.mobile;
-            // userDataService.firstname = 'soroush';
-            // userDataService.lastname = 'yousefi';
-            // userDataService.mobile = '09122011273';
+            // userDataService.firstname = userData.firstname;
+            // userDataService.lastname = userData.lastname;
+            // userDataService.mobile = userData.mobile;
+            userDataService.firstname = 'soroush';
+            userDataService.lastname = 'yousefi';
+            userDataService.mobile = '09122011273';
             userDataService.email = userData.email;
         };
         userInfo.getData = function () {

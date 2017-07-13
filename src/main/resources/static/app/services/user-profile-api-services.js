@@ -23,7 +23,7 @@ angular.module('userProfileApi', [])
                 params : { id : imageData}
             };
             return $http.get(config.baseUrl + '/api/blito/v1.0/download', queryParam);
-        }
+        };
     })
     .service('eventService', function ($http, config) {
         var event = this;
@@ -109,13 +109,23 @@ angular.module('userProfileApi', [])
             return $http.post(config.baseUrl+'/api/blito/v1.0/blits/buy-request', ticketInfo)
         };
         ticket.getUserTickets = function (pageNumber, userEmail) {
-            console.log(userEmail);
             var queryParam = {
                 params : {page: pageNumber-1, size: 5, sort: "createdAt,desc"}
             };
             var bodyJson = {
                 restrictions : [
                     {field : "user-email", type : "simple", operation : "eq", value: userEmail}
+                ]
+            };
+            return $http.post(config.baseUrl+'/api/blito/v1.0/blits/search', bodyJson, queryParam)
+        };
+        ticket.getEventTickets = function (pageNumber, eventId) {
+            var queryParam = {
+                params : {page: pageNumber-1, size: 4, sort: "createdAt,desc"}
+            };
+            var bodyJson = {
+                restrictions : [
+                    {field : "blitType-eventDate-event-eventId", type : "simple", operation : "eq", value: eventId}
                 ]
             };
             return $http.post(config.baseUrl+'/api/blito/v1.0/blits/search', bodyJson, queryParam)

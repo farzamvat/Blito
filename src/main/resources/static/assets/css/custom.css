@@ -1931,8 +1931,16 @@ a{
     margin-top:30px;
     width:100%;
     background: #efefef;
-    height:100%;
-    float:right;
+
+}
+.editInfoSection {
+    background-color: #fff;
+    border-radius: 3px;
+    margin: 10px 20px;
+    padding: 10px 20px;
+    border: 1px solid #333;
+}
+.aboutUsContainer p{
 }
 .aboutUsHeader h2{
     float: right;
@@ -2166,6 +2174,9 @@ table td{
 
 
 @media (max-width: 768px) {
+    .inputXsSize {
+        width: 100%;
+    }
     .loadingSlider {
         height: 180px ;
     }
