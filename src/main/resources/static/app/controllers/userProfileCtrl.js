@@ -704,9 +704,7 @@ angular.module('User')
                 angular.element(document.getElementsByClassName("galleryFourEdit"))[0].src = base64Data;
                 //here you can send data over your server as desired
             }
-
             r.readAsDataURL(f); //once defined all callbacks, begin reading the file
-
         };
         fileSelectEventGalleryThreeEdit.onchange = function() { //set callback to action after choosing file
             var f = fileSelectEventGalleryThreeEdit.files[0], r = new FileReader();
@@ -1273,12 +1271,14 @@ angular.module('User')
                     gallery.push(image.imageUUID);
                 }
             });
+            console.log($scope.userEventsEdit[index]);
             $scope.eventEditImageId = imageUUID;
+            console.log($scope.eventEditImageId);
 
-            photoService.download(imageUUID)
+            photoService.download($scope.eventEditImageId)
                 .then(function (data, status) {
+                    console.log(data);
                     angular.element(document.getElementsByClassName("profilePhotoUploadEditEvent"))[0].src = data.data.encodedBase64;
-                }, function (data, status) {
                 })
                 .catch(function (data, status) {
                     console.log(status);

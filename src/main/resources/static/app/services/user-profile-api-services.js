@@ -23,7 +23,7 @@ angular.module('userProfileApi', [])
                 params : { id : imageData}
             };
             return $http.get(config.baseUrl + '/api/blito/v1.0/download', queryParam);
-        }
+        };
     })
     .service('eventService', function ($http, config) {
         var event = this;

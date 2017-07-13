@@ -56,7 +56,7 @@ angular.module('authServices', [])
         var updateInfo = this;
         updateInfo.updateData = function (updateData) {
             return $http.post(config.baseUrl + '/api/blito/v1.0/account/update-info', updateData);
-        }
+        };
         updateInfo.changePasswordSubmit = function (changePassword) {
             return $http.post(config.baseUrl + '/api/blito/v1.0/account/change-password', changePassword);
         }
