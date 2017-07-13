@@ -37,7 +37,7 @@ textarea:focus, input:focus {
     font-family: "iranian Sans" !important;
     width: 100%;
     min-height: 800px;
-
+    background:#efefef;
     padding: 0;
 }
 .carousel .item img {
@@ -869,9 +869,10 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
     margin: 10px auto;
 }
 #map {
-    border: 2px solid #303030;
     width: 80%;
     height: 300px;
+    margin: auto;
+    margin-top:50px;
 
 }
 #mapExchange {
@@ -1931,28 +1932,38 @@ a{
     width:100%;
     background: #efefef;
     height:100%;
+    float:right;
 }
 .aboutUsHeader h2{
     float: right;
     color:#444;
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin:30px auto;
     width: 100%;
-    margin-right: auto;
-    margin-left: auto;
     height:65px;
     text-align: center;
     border-bottom: 2px solid #ddd;
 }
 .aboutUsTextContainer{
     position: relative;
-    text-align: center;
+    text-align: right;
+    float: right;
+    padding-right:40px;
+    pointer-events: none;
 }
 
 .blitoTeamContainer{
     height:auto;
     margin:auto;
     float: right;
+    padding-right: 12.5%;
+    width:100%;
+
+}
+.containerAboutUs{
+    min-height: 400px;
+}
+.blitoTeamContainer2{
+    border-bottom: 2px solid #ddd;
 
 }
 .blitoTeamContainer h4 ,
@@ -1969,7 +1980,7 @@ a{
     border-radius: 50%;
     border-top:5px solid #444;
     margin:auto;
-    transition: .5s;
+    transition: .4s;
 }
 
 .blitoTeamPicturebeautifier2{
@@ -1981,8 +1992,7 @@ a{
     margin:auto;
     margin-top:4px;
     padding: 5px;
-    transition: .3s;
-
+    transition: .4s;
 }
 .blitoTeamPictureHolder{
     width:100px;
@@ -1991,16 +2001,15 @@ a{
     border-radius: 50%;
     border:3px solid rgb(252, 183, 49);
     margin:auto;
-    transition: .3s;
+    transition: .4s;
     margin-top:2px;
 }
 .blitoTeamPicturebeautifier:hover .blitoTeamPicturebeautifier2{
-    transform: rotate(180deg);
+    transform: rotate(225deg);
 }
 .blitoTeamPicturebeautifier:hover .blitoTeamPictureHolder{
-    transform: rotate(-90deg)  ;
+    transform: rotate(-135deg)  ;
 }
-
 .blitoTeamPicturebeautifier:hover {
     transform: rotate(-90deg) scale(1.3);
 }
@@ -2015,6 +2024,67 @@ a{
 .marginRight25Percent{
     margin-right: 12.5%;
 }
+.marginRight0{
+    margin-right: 0px;
+}
+.aboutUsText{
+    width:70%;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 17px;
+
+}
+.beautifierback{
+    width:200px;
+    height:500px;
+    transform:skew(15deg);
+    background: #bbb;
+}
+.marginRight8percentEventPage{
+    margin-right: 8.3333%;
+}
+.eventTabContent{
+    margin-top: 48px;
+    background: #fff;
+    border:2px solid #ddd;
+    padding:28px;
+}
+.EventPageUl{
+    transform:scale(.7);
+    border:none;
+    position: absolute;
+    right:50px;
+}
+.EventPageUl a{
+    border-radius: 0px;
+    brder:none;
+}
+.laptopcontainer img,
+.nolaptopcontainer img{
+    max-width:50%;
+    height: auto;
+    width: auto;
+    max-height:600px;
+    float:right;
+    margin-right:25%;
+
+}
+.laptopcontainer {
+    position: absolute;
+    margin-bottom: 100px;
+}
+.nolaptopcontainer{
+    position: absolute;
+    transform: scale(0);
+    pointer-events: none;
+    transition: .5s;
+}
+.laptopcontainer:hover + .nolaptopcontainer{
+    transform: scale(1);
+}
+.pictureHolder{
+    margin-top:-45px;
+}
 table td{
     vertical-align: middle !important;
 }
@@ -2027,6 +2097,7 @@ table td{
         margin-left: 21.5px;
         transform: skew(15deg);
     }
+
 
 }
 
@@ -2081,6 +2152,15 @@ table td{
         width: 400px;
         height: 300px;
         margin: 10px auto;
+    }
+    .blitoTeamContainer{
+        margin: auto;
+    }
+    .marginRight8percentEventPage{
+        margin-right:-13px;
+    }
+    .pictureHolder{
+        margin-top:80px;
     }
 }
 
@@ -2224,6 +2304,8 @@ table td{
         color : white !important;
         font-size: 14px;
     }
+
+
 
 }
 @media (max-width: 991px) and (min-width:615px) {
