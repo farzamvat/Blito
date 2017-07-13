@@ -1,7 +1,9 @@
 package com.blito.models;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -9,8 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,11 +21,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
-
-import com.blito.enums.EventType;
-import com.blito.enums.OfferTypeEnum;
-import com.blito.enums.OperatorState;
-import com.blito.enums.State;
 
 @Entity(name="event")
 public class Event {
@@ -97,15 +92,26 @@ public class Event {
 	private boolean isOpenInit = false;
 	
 	private boolean isClosedInit = false;
-	
-	
+
+	@ElementCollection(fetch=FetchType.EAGER)
+	@Column(name="fields")
+	private Map<String,String> additionalFields;
 	
 	public Event() {
 		offers = new HashSet<>();
 		images = new HashSet<>();
 		eventDates = new HashSet<>();
+		additionalFields = new HashMap<>();
 	}
-	
+
+	public Map<String, String> getAdditionalFields() {
+		return additionalFields;
+	}
+
+	public void setAdditionalFields(Map<String, String> additionalFields) {
+		this.additionalFields = additionalFields;
+	}
+
 	public long getViews() {
 		return views;
 	}

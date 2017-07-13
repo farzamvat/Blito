@@ -37,6 +37,11 @@ public final class Constants {
     public static final String DEFAULT_HOST_COVER_PHOTO = "HOST-COVER-PHOTO";
     public static final String DEFAULT_EVENT_PHOTO = "EVENT-PHOTO";
     public static final String DEFAULT_EXCHANGEBLIT_PHOTO = "EXCHANGEBLIT_PHOTO";
+    
+    public static final String FIELD_STRING_TYPE = "string";
+    public static final String FIELD_INT_TYPE = "int";
+    public static final String FIELD_DOUBLE_TYPE = "double";
+    public static final String FIELD_IMAGE_TYPE = "image";
 
     private Constants()
     {}

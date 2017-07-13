@@ -2,6 +2,7 @@ package com.blito.rest.viewmodels.event;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
@@ -68,10 +69,19 @@ public class EventFlatViewModel {
 	@JsonView(View.AdminEvent.class)
 	private boolean isDeleted;
 	@JsonView(View.AdminEvent.class)
-	
 	private boolean isEvento;
+	@JsonView(View.Event.class)
+	private Map<String,String> additionalFields;
 	
 	
+	public Map<String, String> getAdditionalFields() {
+		return additionalFields;
+	}
+
+	public void setAdditionalFields(Map<String, String> additionalFields) {
+		this.additionalFields = additionalFields;
+	}
+
 	public Timestamp getEventSoldDate() {
 		return eventSoldDate;
 	}
