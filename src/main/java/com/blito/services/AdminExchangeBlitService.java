@@ -1,10 +1,7 @@
 package com.blito.services;
 
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +21,8 @@ public class AdminExchangeBlitService {
 	ExchangeBlitMapper exchangeBlitMapper;
 	@Autowired
 	ExchangeBlitRepository exchangeBlitRepository;
+	@Autowired
+	ImageService imageService;
 
 	
 	@Transactional
@@ -48,6 +47,7 @@ public class AdminExchangeBlitService {
 	{
 		ExchangeBlit exchangeBlit = exchangeBlitRepository.findByExchangeBlitIdAndIsDeletedFalse(exchangeBlitId)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
+		imageService.delete(exchangeBlit.getImage().getImageUUID());
 		exchangeBlit.setDeleted(true);
 	}
 }

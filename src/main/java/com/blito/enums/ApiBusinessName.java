@@ -5,10 +5,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public enum ApiBusinessName implements ApiBusinessNameInterface {
-	TEST;
+	API1, API2, API3, API4, API5;
 
-	@Override
-	public Set<ApiBusinessNameInterface> getValues() {
-			return new HashSet<>(Arrays.asList(values()));
+	public static Set<ApiBusinessNameInterface> getValues() {
+		Set<ApiBusinessNameInterface> set = new HashSet<>(Arrays.asList(values()));
+		return set;
 	}
 }

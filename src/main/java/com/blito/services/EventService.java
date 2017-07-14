@@ -81,6 +81,8 @@ public class EventService {
 	EventDateRepository eventDateRepository;
 	@Autowired
 	SearchService searchService;
+	@Autowired
+	ImageService imageService;
 
 	@Transactional
 	public EventViewModel create(EventViewModel vmodel) {
@@ -194,6 +196,7 @@ public class EventService {
 			if (event.getEventHost().getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 				throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 			} else {
+				event.getImages().forEach(i->imageService.delete(i.getImageUUID()));
 				event.setDeleted(true);
 			}
 			return event;

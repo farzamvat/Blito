@@ -44,6 +44,8 @@ public class ExchangeBlitService {
 	ImageRepository imageRepository;
 	@Autowired
 	SearchService searchService;
+	@Autowired
+	ImageService imageService;
 
 	private ExchangeBlit findByExchangeBlitId(long id) {
 		return exchangeBlitRepository.findByExchangeBlitIdAndIsDeletedFalse(id)
@@ -97,6 +99,7 @@ public class ExchangeBlitService {
 		if (exchangeBlit.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
+		imageService.delete(exchangeBlit.getImage().getImageUUID());
 		exchangeBlit.setDeleted(true);
 	}
 
