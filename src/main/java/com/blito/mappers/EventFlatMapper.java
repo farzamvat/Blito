@@ -92,6 +92,7 @@ public class EventFlatMapper implements GenericMapper<Event,EventFlatViewModel> 
 		vmodel.setEventHostId(event.getEventHost().getEventHostId());
 		vmodel.setImages(
 				event.getImages().stream().map(i -> imageMapper.createFromEntity(i)).collect(Collectors.toSet()));
+		vmodel.setAdditionalFields(event.getAdditionalFields());
 		return vmodel;
 	}
 

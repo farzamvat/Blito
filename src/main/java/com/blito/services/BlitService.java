@@ -131,6 +131,7 @@ public class BlitService {
 		commonBlit.setToken(token);
 		commonBlit.setTrackCode(trackCode);
 		commonBlit.setPaymentStatus(PaymentStatus.PENDING.name());
+		commonBlit.setBankGateway(BankGateway.NONE.name());
 		return commonBlitRepository.save(commonBlit);
 
 	}

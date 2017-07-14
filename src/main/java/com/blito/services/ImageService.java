@@ -139,12 +139,32 @@ public class ImageService {
 	}
 
 	@Transactional
-	public Image persistDefaultImage(MultipartFile file, String defaultId, ImageType imageType) {
-		return imageRepository.findByImageUUID(defaultId).map(image -> {
-			delete(defaultId);
-			try {
-				return save(new String(file.getBytes()), defaultId).thenApply(id -> {
-					image.setImageUUID(id);
+	public Image persistDefaultImage(MultipartFile file,String defaultId,ImageType imageType)
+	{
+		return imageRepository.findByImageUUID(defaultId)
+				.map(image -> {
+					delete(defaultId);
+					try {
+						return save(new String(file.getBytes()),defaultId).thenApply(id -> {
+							image.setImageUUID(id);
+							image.setImageType(imageType.name());
+							return imageRepository.save(image);
+						}).handle((result,throwable) -> {
+							if(throwable != null)
+								return image;
+							return result;
+						}).join();
+					} catch (IOException e) {
+						throw new InternalServerException(ResourceUtil.getMessage(Response.INTERNAL_SERVER_ERROR));
+					}
+				})
+				.orElseGet(() -> {
+					Image image = new Image();
+					try {
+						image.setImageUUID(save(new String(file.getBytes()), defaultId).join());
+					} catch (IOException e) {
+						throw new RuntimeException(e.getMessage());
+					}
 					image.setImageType(imageType.name());
 					return image;
 				}).handle((result, throwable) -> {

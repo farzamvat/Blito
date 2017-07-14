@@ -43,6 +43,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
 		vmodel.getEventDates().forEach(ed -> {
 			event.addEventDate(eventDateMapper.createFromViewModel(ed));
 		});
+		event.setAdditionalFields(vmodel.getAdditionalFields());
 		event.setMembers(vmodel.getMembers());
 		event.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 		event.setEventState(State.CLOSED.name());
@@ -78,6 +79,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
 		vmodel.setEventSoldDate(event.getEventSoldDate());
 		vmodel.setDeleted(event.isDeleted());
 		vmodel.setViews(event.getViews());
+		vmodel.setAdditionalFields(event.getAdditionalFields());
 		return vmodel;
 	}
 
