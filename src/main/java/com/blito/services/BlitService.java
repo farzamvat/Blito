@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.blito.configs.Constants;
 import com.blito.enums.BankGateway;
 import com.blito.enums.PaymentStatus;
 import com.blito.enums.Response;
@@ -25,6 +26,7 @@ import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.CommonBlitMapper;
 import com.blito.models.BlitType;
 import com.blito.models.CommonBlit;
+import com.blito.models.Event;
 import com.blito.models.User;
 import com.blito.repositories.BlitRepository;
 import com.blito.repositories.BlitTypeRepository;
@@ -78,6 +80,41 @@ public class BlitService {
 		CommonBlit commonBlit = commonBlitMapper.createFromViewModel(vmodel);
 		BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(vmodel.getBlitTypeId()))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
+		
+		
+		
+		// ADDITIONAL FIELDS VALIDATION
+		if( !blitType.getEventDate().getEvent().getAdditionalFields().isEmpty() || blitType.getEventDate().getEvent().getAdditionalFields() != null)
+		{
+			// TODO exception messages
+			Event event = blitType.getEventDate().getEvent();
+			if(vmodel.getAdditionalFields().isEmpty() || vmodel.getAdditionalFields() == null)
+				throw new RuntimeException("additional fields map is empty");
+			vmodel.getAdditionalFields().forEach((k,v) -> {
+				event.getAdditionalFields().keySet().stream().filter(key -> key == k).findFirst()
+					.ifPresent(key -> {
+						if(event.getAdditionalFields().get(key).equals(Constants.FIELD_DOUBLE_TYPE))
+						{
+							try {
+								Double.parseDouble(v);
+							} catch(Exception e) 
+							{
+								throw new RuntimeException(e.getMessage());
+							}
+						}
+						else if(event.getAdditionalFields().get(key).equals(Constants.FIELD_INT_TYPE))
+						{
+							try {
+								Integer.parseInt(v);
+							} catch (Exception e)
+							{
+								throw new RuntimeException(e.getMessage());
+							}
+						}
+					});
+			});
+		}
+		// ADDITIONAL FIELDS VALIDATION
 
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		
@@ -133,7 +170,6 @@ public class BlitService {
 		commonBlit.setPaymentStatus(PaymentStatus.PENDING.name());
 		commonBlit.setBankGateway(BankGateway.NONE.name());
 		return commonBlitRepository.save(commonBlit);
-
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)

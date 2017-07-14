@@ -56,6 +56,14 @@ public class Blit {
 		additionalFields = new HashMap<String,String>();
 	}
 	
+	public Map<String, String> getAdditionalFields() {
+		return additionalFields;
+	}
+
+	public void setAdditionalFields(Map<String, String> additionalFields) {
+		this.additionalFields = additionalFields;
+	}
+
 	public long getBlitId() {
 		return blitId;
 	}

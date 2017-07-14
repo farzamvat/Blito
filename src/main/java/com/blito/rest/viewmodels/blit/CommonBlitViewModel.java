@@ -81,6 +81,14 @@ public class CommonBlitViewModel {
 		additionalFields = new HashMap<>();
 	}
 	
+	public Map<String, String> getAdditionalFields() {
+		return additionalFields;
+	}
+
+	public void setAdditionalFields(Map<String, String> additionalFields) {
+		this.additionalFields = additionalFields;
+	}
+
 	public BankGateway getBankGateway() {
 		return bankGateway;
 	}

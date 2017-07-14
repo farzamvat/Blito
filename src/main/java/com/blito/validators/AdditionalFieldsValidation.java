@@ -22,6 +22,8 @@ public class AdditionalFieldsValidation implements ConstraintValidator<Additiona
 	public boolean isValid(Map<String, String> value, ConstraintValidatorContext context) {
 		if(value.isEmpty() || value == null)
 			return true;
+		if(value.keySet().stream().distinct().count() != value.keySet().stream().count())
+			return false;
 		List<String> schemaTypes = Arrays.asList(Constants.FIELD_DOUBLE_TYPE,Constants.FIELD_IMAGE_TYPE,Constants.FIELD_INT_TYPE,Constants.FIELD_STRING_TYPE);
 		if(value.values().stream().filter(type -> type.equals(Constants.FIELD_IMAGE_TYPE)).count() > 1)
 			return false;
