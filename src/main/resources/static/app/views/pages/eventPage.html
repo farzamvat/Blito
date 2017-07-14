@@ -13,7 +13,7 @@
             </button>
 
         </div>
-        <div class="col-xs-12   col-sm-12   col-md-4 floatRight  textAlignRight paddingRight0 panelMidSize" >
+        <div class="col-xs-12   col-sm-12   col-md-4 floatRight textAlignRight paddingRight0 panelMidSize" >
 
             <div class="panel panel-primary  customPanelEventPage eventPageShowTimeColor">
                 <div class="panel-heading">
@@ -21,7 +21,7 @@
                     <input height="60" id="searchShowTime" placeholder="&#xf002;" ng-model="search"   type="text"  class="form-group searchListInput" >
                 </div>
 
-                <div class="panel-body textAlignRight">
+                <div class="panel-body textAlignRight scrollBarHidden">
 
                     <table class="table">
                         <thead class="tableHeader">
@@ -44,7 +44,7 @@
                             <td  class="dataCenter">
                                 {{item.name}}
                             </td>
-                            <td class="dataCenter"><input required  ng-class="setClass($index)"  disabled  type="text" class="form-group datePickerFormatEventPage " readonly></td>
+                            <td class="dataCenter"><input required  ng-class="setClass($index)"  disabled  type="text" class="form-group datePickerFormatEventPage marginBottom0" readonly></td>
 
                             <td ng-if="item.price === 0" class="dataCenter">رایگان</td>
                             <td ng-if="item.price !== 0" class="dataCenter">{{ item.price}}</td>
@@ -67,15 +67,15 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-12 floatRight">
-        <ul class="nav nav-tabs marginTop10">
+    <div class="col-xs-12 col-sm-12 marginRight8percentEventPage col-md-10 floatRight">
+        <ul class="nav nav-tabs marginTop10 EventPageUl">
             <li class="floatRight active"><a class="tabAnchor" data-toggle="tab" data-target="#home">اطلاعات رویداد <i class="fa fa-info"></i></a></li>
             <li class="floatRight " ng-show="eventDataDetails.aparatDisplayCode !== null"><a class="tabAnchor" data-toggle="tab" data-target="#menu1">تیزر <i class="fa fa-film"></i></a></li>
             <li class="floatRight" ng-show="eventDataPhoto.gallery.length !== 0"><a class="tabAnchor" data-toggle="tab" data-target="#menu2"> گالری تصویر <i class="fa fa-photo"></i></a></li>
         </ul>
 
-        <div class="tab-content  tabContent">
-            <div id="home" class="tab-pane fade in active">
+        <div class="tab-content  tabContent ">
+            <div id="home" class="tab-pane fade in active eventTabContent">
                 <div class="row">
                 <div class="col-xs-12 col-sm-8  floatRight textAlignRight">
                     <h3 class="textAlignRight">عوامل </h3>

@@ -3,34 +3,34 @@
         <div class="row">
             <h1 class="text-center">{{pageTitle}}</h1>
         </div>
-        <div class="row">
+        <div class="row eventListHeaderContainer">
             <div class="hidden-xs col-sm-3  floatRight"></div>
 
-            <a ng-show="pageTitle !== 'کنسرت' " class="eventListAnchor" href="/concert"><div  class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight" >
+            <a ng-show="pageTitle !== 'کنسرت' " class="eventListAnchor" href="/concert"><div id="eventListConcert" class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight" >
                 <h4 class="text-center pageHeaderLinks">کنسرت</h4>
             </div>
             </a>
-            <a ng-show="pageTitle !== 'تور' " class="eventListAnchor" href="/tour"><div  class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight">
+            <a ng-show="pageTitle !== 'تور' " class="eventListAnchor" href="/tour"><div id="eventListTour" class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight">
                 <h4 class="text-center pageHeaderLinks">تور</h4>
             </div>
             </a>
-            <a ng-show="pageTitle !== 'تئاتر' " class="eventListAnchor" href="/theater"><div  class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight">
+            <a ng-show="pageTitle !== 'تئاتر' " class="eventListAnchor" href="/theater"><div id="eventListTheater" class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight">
                 <h4 class="text-center pageHeaderLinks">تئاتر</h4>
             </div>
             </a>
-            <a  ng-show="pageTitle !== 'ورزشی' " class="eventListAnchor" href="/sports"><div class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight">
+            <a  ng-show="pageTitle !== 'ورزشی' " class="eventListAnchor" href="/sports"><div id="eventListSport" class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight">
                 <h4 class="text-center pageHeaderLinks">ورزشی</h4>
             </div>
             </a>
-            <a ng-show="pageTitle !== 'کارگاه' " class="eventListAnchor" href="/workshop"><div  class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight">
+            <a ng-show="pageTitle !== 'کارگاه' " class="eventListAnchor" href="/workshop"><div id="eventListWorkshop" class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight">
                 <h4 class="text-center pageHeaderLinks">کارگاه</h4>
             </div>
             </a>
-            <a ng-show="pageTitle !== 'سینما' " class="eventListAnchor" href="/cinema"><div  class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight">
+            <a ng-show="pageTitle !== 'سینما' " class="eventListAnchor" href="/cinema"><div  id="eventListCinema"class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight">
                 <h4 class="text-center pageHeaderLinks">سینما</h4>
             </div>
             </a>
-            <a ng-show="pageTitle !== 'سایر' " class="eventListAnchor" href="/other"><div  class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight" >
+            <a ng-show="pageTitle !== 'سایر' " class="eventListAnchor" href="/other"><div id="eventListOther" class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight" >
                 <h4 class="text-center pageHeaderLinks">سایر</h4>
             </div>
             </a>
@@ -49,6 +49,14 @@
                         </div>
                         <div class="eventDescription center-block">
                             {{item.description}}
+                        </div>
+                        <div ng-show="item.eventState === 'CLOSED'" class="closed">
+                            <h1><i class="fa fa-lock"></i>
+                                <p>بسته</p>
+                            </h1>
+                        </div>
+                        <div ng-show="item.eventState === 'SOLD'" class="soldout ">
+                            <img src="../../../assets/img/soldout.png"/>
                         </div>
                     </div>
                 </div>

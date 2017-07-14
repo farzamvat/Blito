@@ -6,7 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1, user-scalable=0.5" />
     <title>بلیتو</title>
-
+    <link rel="apple-touch-icon" sizes="180x180" href="fav-icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="fav-icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="fav-icons/favicon-16x16.png">
+    <link rel="manifest" href="fav-icons/manifest.json">
+    <link rel="mask-icon" href="fav-icons/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="theme-color" content="#ffffff">
     <!-- external css libraries-->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css"/>
@@ -55,6 +60,7 @@
     <script type="text/javascript" src="app/controllers/exchangeList.js"></script>
     <script type="text/javascript" src="app/controllers/exchange-page-ctrl.js"></script>
     <script type="text/javascript" src="app/controllers/not-found-ctrl.js"></script>
+    <script type="text/javascript" src="app/controllers/about-us-ctrl.js"></script>
 
 
     <!-- angular services-->
@@ -77,53 +83,58 @@
 
 
     <div class="navbar-header">
-            <button  type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
+        <button  type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a  href="/" >
+
         <span class= "navbar-header navbar-header-backcolor">
+
         <img href="/" src="assets/img/logo.png" alt=""/>
-            <a class="navbar-brand" href="/" ></a>
+
             </span>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse ">
-            <ul class="nav navbar-nav floatRight textAlignRight">
-                <li ng-show="logoutMenu" class="floatRight" ng-class="{ active: isActive('/user-profile')}"><a class="" href="/user-profile"><i class="fa fa-user" aria-hidden="true"></i>  {{firstname}} {{lastname}} </a></li>
-                <li class="floatRight" ng-class="{ active: isActive('/')}"><a class="" href="/"><i class="fa fa-home" aria-hidden="true"></i> خانه </a></li>
-                <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema') || isActive('/sports') || isActive('/theater') || isActive('/concert') || isActive('/other') || isActive('/tour') || isActive('/workshop')}">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-calendar" aria-hidden="true"></i> رویداد ها   <span class="caret"></span></a>
-                    <ul class="dropdown-menu textAlignRight">
-                        <!--<li role="separator" class="divider"></li>-->
-                        <li><a href="/concert">کنسرت</a></li>
-                        <li><a href="/tour">تور</a></li>
-                        <li><a href="/theater">تئاتر</a></li>
-                        <li><a href="/workshop">کارگاه</a></li>
-                        <li><a href="/sports"> ورزشی</a></li>
-                        <li><a href="/cinema">سینما</a></li>
-                        <li><a href="/other">سایر</a></li>
+        </a>
 
-                        <!--<li class="dropdown-header">Nav header</li>-->
-                        <!--<li><a href="#">Separated link</a></li>-->
-                        <!--<li><a href="#">One more separated link</a></li>-->
-                    </ul>
-                </li>
-                <li class="floatRight" ng-class="{ active: isActive('/exchange-tickets')}"><a href="/exchange-tickets"><i class="fa fa-ticket" aria-hidden="true"></i> بلیت های تعویضی   </a>
-                </li>
-                <li ng-hide="logoutMenu" class="floatRight signInButton"><a href="" data-toggle="modal" data-target="#registrationModal"><i class="fa fa-sign-in" aria-hidden="true"></i> ورود/ثبت نام  </a></li>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse ">
+        <ul class="nav navbar-nav floatRight textAlignRight">
+            <li ng-show="logoutMenu" class="floatRight" ng-class="{ active: isActive('/user-profile')}"><a class="" href="/user-profile"><i class="fa fa-user" aria-hidden="true"></i>  {{firstname}} {{lastname}} </a></li>
+            <li class="floatRight" ng-class="{ active: isActive('/')}"><a class="" href="/"><i class="fa fa-home" aria-hidden="true"></i> خانه </a></li>
+            <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema') || isActive('/sports') || isActive('/theater') || isActive('/concert') || isActive('/other') || isActive('/tour') || isActive('/workshop')}">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-calendar" aria-hidden="true"></i> رویداد ها   <span class="caret"></span></a>
+                <ul class="dropdown-menu textAlignRight">
+                    <!--<li role="separator" class="divider"></li>-->
+                    <li><a href="/concert">کنسرت</a></li>
+                    <li><a href="/tour">تور</a></li>
+                    <li><a href="/theater">تئاتر</a></li>
+                    <li><a href="/workshop">کارگاه</a></li>
+                    <li><a href="/sports"> ورزشی</a></li>
+                    <li><a href="/cinema">سینما</a></li>
+                    <li><a href="/other">سایر</a></li>
 
-                <li ng-show="logoutMenu" ng-click="logout()" class="floatRight signInButton"><a href=""><i class="fa fa-sign-out" aria-hidden="true"></i> خروج</a></li>
+                    <!--<li class="dropdown-header">Nav header</li>-->
+                    <!--<li><a href="#">Separated link</a></li>-->
+                    <!--<li><a href="#">One more separated link</a></li>-->
+                </ul>
+            </li>
+            <li class="floatRight" ng-class="{ active: isActive('/exchange-tickets')}"><a href="/exchange-tickets"><i class="fa fa-ticket" aria-hidden="true"></i> بلیت های تعویضی   </a>
+            </li>
+            <li ng-hide="logoutMenu" class="floatRight signInButton"><a href="" data-toggle="modal" data-target="#registrationModal"><i class="fa fa-sign-in" aria-hidden="true"></i> ورود/ثبت نام  </a></li>
 
-            </ul>
-        </div><!--/.nav-collapse -->
+            <li ng-show="logoutMenu" ng-click="logout()" class="floatRight signInButton"><a href=""><i class="fa fa-sign-out" aria-hidden="true"></i> خروج</a></li>
+
+        </ul>
+    </div><!--/.nav-collapse -->
 </nav>
 <div class="container">
 
-<div ng-view="">
+    <div ng-view="">
 
 
-</div>
+    </div>
 
 
 </div><!-- container-->

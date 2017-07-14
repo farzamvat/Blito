@@ -19,6 +19,10 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 templateUrl : 'app/views/error-pages/404page.html',
                 authenticated: false
             })
+            .when('/about-us', {
+                templateUrl : 'app/views/pages/about-us.html',
+                authenticated: false
+            })
             .when('/sports', {
                 templateUrl : 'app/views/pages/eventList.html',
                 authenticated: false
@@ -84,7 +88,7 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 authenticated: false
             })
 
-            .otherwise({redirectTo: '/'})
+            .otherwise({redirectTo: '/not-found'})
 
 
     });

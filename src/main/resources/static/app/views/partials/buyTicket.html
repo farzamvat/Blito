@@ -70,6 +70,16 @@
                                                 </div>
 
                                             </div>
+                                            <div ng-show="!loggedIn && itemWithCapacity[0].isFree">
+                                                <div   class="text-center  alert alert-danger col-xs-12">
+                                                    <strong>برای خرید بلیت رایگان باید کاربر وبسایت باشید !</strong>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <button ng-click="hideTicketShowLogin()" class="btn btn-info marginBottom20 center-block">ورود/ثبت نام</button>
+                                                </div>
+
+                                            </div>
+                                            <div ng-hide="!loggedIn && itemWithCapacity[0].isFree">
                                             <div ng-show="itemWithCapacity[0].capacity === 0 || itemWithCapacity[0].blitTypeState === 'CLOSED'">
                                                 <div   class="text-center  alert alert-danger col-xs-12">
                                                     <strong>این بلیت قابل خریداری نمی باشد !</strong>
@@ -148,6 +158,7 @@
                                                 </div>
                                             </div>
                                             </div>
+                                            </div>
                                         </fieldset>
 
                                     </form>
@@ -156,32 +167,36 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="ticketPay2">
-                                    <form class="form-inline textAlignRight marginTop0">
+                                    <form name="paymentStatus" class="form-inline textAlignRight marginTop0">
                                         <fieldset class="fieldsetStyle">
                                             <div class="form-group col-xs-12 formRegGroup floatRight">
                                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
-                                                    <label class="registerLabel" for="finalTicketType">بلیت انتخابی  :</label>
+                                                    <label class="registerLabel" >بلیت انتخابی  :</label>
                                                 </div>
                                                 <div class="col-xs-7 col-sm-6 floatRight ">
-                                                    <input height="60" id="finalTicketType" value="{{itemWithCapacity[0].name}}" name="userid"  type="text"  class="form-group registerInput disabledInput" disabled>
+                                                    <label>{{itemWithCapacity[0].name}}</label>
+                                                    <!--<input height="60" id="finalTicketType"  name="userid"  type="text"  class="form-group registerInput disabledInput" disabled>-->
                                                 </div>
 
                                             </div>
                                             <div class="form-group col-xs-12 formRegGroup floatRight">
                                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
-                                                    <label class="registerLabel" for="TotalTicketNumber">تعداد بلیت   :</label>
+                                                    <label class="registerLabel" >تعداد بلیت   :</label>
                                                 </div>
                                                 <div class="col-xs-7 col-sm-6 floatRight ">
-                                                    <input height="60" id="TotalTicketNumber" value="{{totalNumber}}" name="userid"  type="text"  class="form-group registerInput disabledInput" disabled>
+                                                    <label>{{totalNumber}}</label>
+                                                    <!--<input height="60" id="TotalTicketNumber" value="" name="userid"  type="text"  class="form-group registerInput disabledInput" disabled>-->
                                                 </div>
 
                                             </div>
                                             <div ng-if="!itemWithCapacity[0].isFree" class="form-group col-xs-12 formRegGroup floatRight">
                                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
-                                                    <label class="registerLabel" for="eventTotalPrice">قیمت پرداختی  :</label>
+                                                    <label class="registerLabel" >قیمت پرداختی  :</label>
                                                 </div>
                                                 <div class="col-xs-7 col-sm-6 floatRight ">
-                                                    <input height="60" id="eventTotalPrice" value="{{totalPrice}}" name="userid"  type="text"  class="form-group registerInput disabledInput" disabled>
+                                                    <label>{{totalPrice}}</label>
+                                                    <!--<input class="form-group" name="paymentInput"   type="text">-->
+                                                    <input height="60" id="registerLabel" ng-model="paymentSelectedDone" name="userid"  type="text"  class="form-group registerInput " ng-show="" required>
                                                 </div>
 
                                             </div>
@@ -191,18 +206,18 @@
 
                                             <div  ng-if="!itemWithCapacity[0].isFree" class="form-group col-xs-12 formRegGroup floatRight">
                                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
-                                                    <label class="registerLabel" for="paymentBank"> انتخاب درگاه  :</label>
+                                                    <label class="registerLabel" > انتخاب درگاه  :</label>
                                                 </div>
-                                                <div class="col-xs-7 col-sm-6 floatRight ">
-                                                    <select id="paymentBank" class="form-control dropDownList">
-                                                        <option>بانک ۱</option>
-                                                        <option>بانک ۲</option>
-                                                        <option>بانک ۳</option>
-                                                    </select>
+                                                <div class="col-xs-12  floatRight ">
+                                                    <div class="col-xs-12 col-sm-6 marginTop10">
+                                                   <button ng-click="paymentSelected('ZARINPAL')" class=" btnPaymentActive">
+                                                       <img class="paymentImages" src="../../../assets/img/zarrinpal.png" alt="">
+                                                   </button>
+                                                    </div>
                                                 </div>
                                                 <div class="control-group text-center marginBottom20">
                                                     <div class="controls col-xs-12 col-sm-6 marginBottom20">
-                                                        <button id="nextStep2" ng-click="nextStep2()" name="payment" class="btn btn-success btn-lg btnLogin">  پرداخت <i class="fa fa-money"></i></button>
+                                                        <button  ng-disabled="paymentStatus.$invalid" id="nextStep2" ng-click="nextStep2()" type="submit"  class="btn btn-success btn-lg btnLogin">  پرداخت <i class="fa fa-spin fa-spinner dispNone payedBlitSpinner"></i><i class="fa fa-money"></i></button>
                                                     </div>
                                                     <div class="controls col-xs-12 col-sm-6 marginBottom20">
                                                         <button id="prevStep1" ng-click="prevStep1()"  class="btn btn-danger btn-lg btnLogin"><i class="fa fa-arrow-right"></i>   مرحله قبل </button>

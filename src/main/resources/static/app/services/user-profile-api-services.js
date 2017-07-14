@@ -8,25 +8,29 @@ angular.module('userProfileApi', [])
 
 
         photo.upload = function (imageData) {
+            var blob = new Blob([imageData.encodedBase64], {type: 'image/png'});
+            var file = new File([blob], 'imageFileName.png');
+            var fd = new FormData();
+            fd.append("file", file);
+            return $http.post(config.baseUrl+'/api/blito/v1.0/images/multipart/upload', fd,
+                {transformRequest : angular.identity, headers : {'Content-Type': undefined}})
+        };
+        photo.uploadOld = function (imageData) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/images/upload', imageData)
         };
         photo.download = function (imageData) {
             var queryParam = {
                 params : { id : imageData}
             };
-            return $http.get(config.baseUrl + '/api/blito/v1.0/images/download', queryParam);
-
-        }
+            return $http.get(config.baseUrl + '/api/blito/v1.0/download', queryParam);
+        };
     })
-
-
     .service('eventService', function ($http, config) {
         var event = this;
 
         event.submitEventForm = function (eventData) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/events', eventData)
         };
-
         event.getUserEvents = function (page) {
             var queryParam = {
                 params : {page: page-1, size: 4}
@@ -59,7 +63,6 @@ angular.module('userProfileApi', [])
             };
             return $http.post(config.baseUrl+'/api/blito/v1.0/public/events/search', bodyJson, queryParam)
         }
-
     })
     .service('exchangeService', function ($http, config) {
         var exchange = this;
@@ -105,6 +108,28 @@ angular.module('userProfileApi', [])
         ticket.buyTicket = function (ticketInfo) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/blits/buy-request', ticketInfo)
         };
+        ticket.getUserTickets = function (pageNumber, userEmail) {
+            var queryParam = {
+                params : {page: pageNumber-1, size: 5, sort: "createdAt,desc"}
+            };
+            var bodyJson = {
+                restrictions : [
+                    {field : "user-email", type : "simple", operation : "eq", value: userEmail}
+                ]
+            };
+            return $http.post(config.baseUrl+'/api/blito/v1.0/blits/search', bodyJson, queryParam)
+        };
+        ticket.getEventTickets = function (pageNumber, eventId) {
+            var queryParam = {
+                params : {page: pageNumber-1, size: 4, sort: "createdAt,desc"}
+            };
+            var bodyJson = {
+                restrictions : [
+                    {field : "blitType-eventDate-event-eventId", type : "simple", operation : "eq", value: eventId}
+                ]
+            };
+            return $http.post(config.baseUrl+'/api/blito/v1.0/blits/search', bodyJson, queryParam)
+        };
     })
     .service('plannerService', function ($http, config) {
         var planner = this;
@@ -119,5 +144,11 @@ angular.module('userProfileApi', [])
         };
         planner.editPlannerForm = function (editData) {
             return $http.put(config.baseUrl+'/api/blito/v1.0/event-hosts', editData)
+        };
+        planner.deletePlanner = function (plannerId) {
+            var queryParam = {
+                params : {eventHostId : plannerId}
+            };
+            return $http.delete(config.baseUrl+'/api/blito/v1.0/event-hosts', queryParam)
         };
     });

@@ -3,7 +3,7 @@
  */
 
 angular.module('User')
-    .controller('userProfileCtrl', function ($scope, userInfo, Auth, $timeout, mapMarkerService, updateInfo, $location, scrollAnimation, photoService, eventService, plannerService, exchangeService, dataService) {
+    .controller('userProfileCtrl', function ($scope, userInfo, Auth, $timeout, mapMarkerService, updateInfo, $location, scrollAnimation, photoService, eventService, plannerService, exchangeService, dataService, ticketsService, $q) {
         var userProfile = this;
 
         $scope.userData = userInfo.getData();
@@ -25,10 +25,11 @@ angular.module('User')
         $scope.createEventSpinner = false;
         $scope.createEventNotif = false;
         userProfile.showTimeNumber = 0;
+        var userInfoPromise = [];
         //==================================================== EDIT USER GET INFO =================================
         $scope.editInfo = angular.copy(userInfo.getData());
         $scope.editUserInfo = function () {
-            Auth.getUser()
+            userInfoPromise.push(Auth.getUser()
                 .then(function (data, status) {
                     $scope.logoutMenu = true;
                     userProfile.userData = data.data;
@@ -36,10 +37,27 @@ angular.module('User')
                     $scope.editInfo = angular.copy(userInfo.getData());
 
                 }, function (data) {
-                    console.log("updated");
+                    console.log(data);
+                }))
+        };
+        $scope.changePassword = function (password) {
+            document.getElementsByClassName("deletePlannerSpinner")[0].style.display = "none";
+            document.getElementsByClassName("changePasswordSpinner")[0].style.display = "inline";
+            console.log(password);
+            updateInfo.changePasswordSubmit(password)
+                .then(function (data) {
+                    console.log(data);
+                    document.getElementById("changePasswordSuccess").style.display = "block";
+                    document.getElementsByClassName("changePasswordSpinner")[0].style.display = "none";
+                })
+                .catch(function (data) {
+                    console.log(data);
+                    document.getElementsByClassName("changePasswordSpinner")[0].style.display = "none";
+                    document.getElementById("changePasswordError").style.display = "block";
+                    document.getElementById("changePasswordError").innerHTML = data.data.message;
                 })
         };
-
+        $scope.editUserInfo();
         $scope.updateInfo = function (editInfo) {
             $scope.updateInfoSpinner = true;
             delete editInfo["email"];
@@ -68,10 +86,25 @@ angular.module('User')
                     timePicker: {
                         enabled: true
                     },
+                    formatter : function (unixDate) {
+                        var self = this;
+                        var pdate = new persianDate(unixDate);
+                        pdate.formatPersian = true;
+                        return pdate.format(self.format);
+                    },
                     altField: '#persianDigitAlt',
-                    altFormat: "YYYY MM DD HH:mm:ss",
+                    altFormat: "unix",
                     altFieldFormatter: function (unixDate) {
-                        // $scope.showTimeForms[i].date = unixDate;
+                        var self = this;
+                        var thisAltFormat = self.altFormat.toLowerCase();
+                        if (thisAltFormat === "gregorian" | thisAltFormat === "g") {
+                            return new Date(unixDate);
+                        }
+                        if (thisAltFormat === "unix" | thisAltFormat === "u") {
+                            return unixDate;
+                        } else {
+                            return new persianDate(unixDate).format(self.altFormat);
+                        }
                     }
                 });
             }, 1000);
@@ -81,6 +114,12 @@ angular.module('User')
             $(".persianTimeEventStart").pDatepicker({
                 timePicker: {
                     enabled: true
+                },
+                formatter : function (unixDate) {
+                    var self = this;
+                    var pdate = new persianDate(unixDate);
+                    pdate.formatPersian = true;
+                    return pdate.format(self.format);
                 },
                 altField: '#persianDigitAlt',
                 altFormat: "YYYY MM DD HH:mm:ss",
@@ -92,8 +131,15 @@ angular.module('User')
                 timePicker: {
                     enabled: true
                 },
+                formatter : function (unixDate) {
+                    var self = this;
+                    var pdate = new persianDate(unixDate);
+                    pdate.formatPersian = true;
+                    return pdate.format(self.format);
+                },
                 altField: '#persianDigitAlt',
                 altFormat: "YYYY MM DD HH:mm:ss",
+
                 altFieldFormatter: function (unixDate) {
                     $scope.eventEndTime = unixDate;
                 }
@@ -104,6 +150,12 @@ angular.module('User')
                 },
                 altField: '#persianDigitAlt',
                 altFormat: "YYYY MM DD HH:mm:ss",
+                formatter : function (unixDate) {
+                    var self = this;
+                    var pdate = new persianDate(unixDate);
+                    pdate.formatPersian = true;
+                    return pdate.format(self.format);
+                },
                 altFieldFormatter: function (unixDate) {
                     $scope.exchangeTime = unixDate;
                 }
@@ -244,7 +296,7 @@ angular.module('User')
                     $scope.uploadEventSixEditPhoto = false;
                     $scope.eventPhotoSixEditSuccess = true;
 
-                    $scope.gallerySixUUID = data.data.imageUUID;
+                    $scope.gallerySixEditUUID = data.data.imageUUID;
                 }, function (data, status) {
                     document.getElementById("eventPhotoSixEditError").innerHTML= data.data.message;
                     $scope.eventPhotoSixEditError = true;
@@ -263,7 +315,7 @@ angular.module('User')
                     $scope.uploadEventFiveEditPhoto = false;
                     $scope.eventPhotoFiveEditSuccess = true;
 
-                    $scope.galleryFiveUUID = data.data.imageUUID;
+                    $scope.galleryFiveEditUUID = data.data.imageUUID;
                 }, function (data, status) {
                     document.getElementById("eventPhotoFiveEditError").innerHTML= data.data.message;
                     $scope.eventPhotoFiveEditError = true;
@@ -281,7 +333,7 @@ angular.module('User')
                 .then(function (data, status) {
                     $scope.uploadEventFourEditPhoto = false;
                     $scope.eventPhotoFourEditSuccess = true;
-                    $scope.galleryFourUUID = data.data.imageUUID;
+                    $scope.galleryFourEditUUID = data.data.imageUUID;
                 }, function (data, status) {
                     $scope.uploadEventFourEditPhoto = false;
                     $scope.eventPhotoFourEditError = true;
@@ -300,7 +352,7 @@ angular.module('User')
                     $scope.uploadEventThreeEditPhoto = false;
                     $scope.eventPhotoThreeEditSuccess = true;
 
-                    $scope.galleryThreeUUID = data.data.imageUUID;
+                    $scope.galleryThreeEditUUID = data.data.imageUUID;
                 }, function (data, status) {
                     document.getElementById("eventPhotoThreeEditError").innerHTML= data.data.message;
                     $scope.eventPhotoThreeEditError = true;
@@ -320,7 +372,7 @@ angular.module('User')
                     $scope.uploadEventTwoEditPhoto = false;
                     $scope.eventPhotoTwoEditSuccess = true;
 
-                    $scope.galleryTwoUUID = data.data.imageUUID;
+                    $scope.galleryTwoEditUUID = data.data.imageUUID;
                 }, function (data, status) {
                     document.getElementById("eventPhotoTwoEditError").innerHTML= data.data.message;
                     $scope.uploadEventTwoEditPhoto = false;
@@ -339,7 +391,7 @@ angular.module('User')
                     $scope.uploadEventOneEditPhoto = false;
                     $scope.eventPhotoOneEditSuccess = true;
 
-                    $scope.galleryOneUUID = data.data.imageUUID;
+                    $scope.galleryOneEditUUID = data.data.imageUUID;
                 }, function (data, status) {
                     document.getElementById("eventPhotoOneEditError").innerHTML= data.data.message;
                     $scope.eventPhotoOneEditError = true;
@@ -652,9 +704,7 @@ angular.module('User')
                 angular.element(document.getElementsByClassName("galleryFourEdit"))[0].src = base64Data;
                 //here you can send data over your server as desired
             }
-
             r.readAsDataURL(f); //once defined all callbacks, begin reading the file
-
         };
         fileSelectEventGalleryThreeEdit.onchange = function() { //set callback to action after choosing file
             var f = fileSelectEventGalleryThreeEdit.files[0], r = new FileReader();
@@ -949,6 +999,12 @@ angular.module('User')
                         },
                         altField: '#persianDigitAlt',
                         altFormat: "YYYY MM DD HH:mm:ss",
+                        formatter : function (unixDate) {
+                            var self = this;
+                            var pdate = new persianDate(unixDate);
+                            pdate.formatPersian = true;
+                            return pdate.format(self.format);
+                        },
                         altFieldFormatter: function (unixDate) {
                         }
                     });
@@ -993,7 +1049,11 @@ angular.module('User')
                 twitterLink: plannerData.twitter,
                 websiteLink: plannerData.website,
                 description : plannerData.description
-            }
+            };
+            eventPlannerData.images = eventPlannerData.images.filter(function (images) {
+                return images.imageUUID !== undefined;
+            });
+            console.log(eventPlannerData.images);
             if(!$scope.plannerImageId && !$scope.coverImageId){
                 delete eventPlannerData.images;
             }
@@ -1017,6 +1077,13 @@ angular.module('User')
         };
         //==================================================== ********* =================================
         //==================================================== EVENT SUBMIT =================================
+        $scope.galleryOneUUID = null;
+        $scope.galleryTwoUUID = null;
+        $scope.galleryThreeUUID = null;
+        $scope.galleryFourUUID = null;
+        $scope.galleryFiveUUID = null;
+        $scope.gallerySixUUID = null;
+
         $scope.submitEvent = function (eventFields) {
             $scope.createEventNotif = false;
             $scope.eventPhotoSuccess = false;
@@ -1142,24 +1209,24 @@ angular.module('User')
             mapMarkerService.initMap(document.getElementById('map'));
             $(angular.element(document.getElementById('toggleExchange'))).slideUp(300);
             $(angular.element(event.currentTarget).siblings()[0]).slideDown(300);
-        }
+        };
         $scope.dropDownTabToggleExchange = function (event) {
             $scope.getExchangeData(1);
             mapMarkerService.initMap(document.getElementById('mapExchange'));
 
             $(angular.element(document.getElementById('toggleEvent'))).slideUp(300);
             $(angular.element(event.currentTarget).siblings()[0]).slideDown(300);
-        }
+        };
         $scope.closeTabDropDowns = function () {
             $(angular.element(document.getElementsByClassName('tabDropDown'))).slideUp(300);
-        }
+        };
 
         $scope.toggleBody = function (section) {
             mapMarkerService.initMap(document.getElementById('map'));
             mapMarkerService.initMap(document.getElementById('mapExchange'));
             $(angular.element(document.getElementById(section)).siblings()[0]).slideToggle(300);
             $(angular.element(document.getElementById(section))).toggleClass('orangeBackground');
-        }
+        };
 
         $scope.exchangeTickets = [];
         //==================================================== EDIT EVENT =================================
@@ -1175,6 +1242,12 @@ angular.module('User')
             $scope.eventPhotoFourEditSuccess = false;
             $scope.eventPhotoFiveEditSuccess = false;
             $scope.eventPhotoSixEditSuccess = false;
+            $scope.galleryOneEditUUID = null;
+            $scope.galleryTwoEditUUID = null;
+            $scope.galleryThreeEditUUID = null;
+            $scope.galleryFourEditUUID = null;
+            $scope.galleryFiveEditUUID = null;
+            $scope.gallerySixEditUUID = null;
 
             angular.element(document.getElementsByClassName("profilePhotoUploadEditEvent"))[0].src = "";
             angular.element(document.getElementsByClassName("galleryOneEdit"))[0].src = "";
@@ -1183,7 +1256,6 @@ angular.module('User')
             angular.element(document.getElementsByClassName("galleryFourEdit"))[0].src = "";
             angular.element(document.getElementsByClassName("galleryFiveEdit"))[0].src = "";
             angular.element(document.getElementsByClassName("gallerySixEdit"))[0].src = "";
-            gallery = [];
             $scope.eventEditPhotoSuccess = false;
 
             $scope.showTimeEditForms = angular.copy($scope.userEventsEdit[index].eventDates);
@@ -1211,18 +1283,20 @@ angular.module('User')
                     gallery.push(image.imageUUID);
                 }
             });
+            console.log($scope.userEventsEdit[index]);
             $scope.eventEditImageId = imageUUID;
+            console.log($scope.eventEditImageId);
 
-            photoService.download(imageUUID)
+            photoService.download($scope.eventEditImageId)
                 .then(function (data, status) {
+                    console.log(data);
                     angular.element(document.getElementsByClassName("profilePhotoUploadEditEvent"))[0].src = data.data.encodedBase64;
-                }, function (data, status) {
                 })
                 .catch(function (data, status) {
                     console.log(status);
                 });
             if(gallery.length >= 1) {
-                $scope.galleryOneUUID = gallery[0];
+                $scope.galleryOneEditUUID = gallery[0];
                 photoService.download(gallery[0])
                     .then(function (data, status) {
                         angular.element(document.getElementsByClassName("galleryOneEdit"))[0].src = data.data.encodedBase64;
@@ -1232,7 +1306,7 @@ angular.module('User')
                     });
             }
             if(gallery.length >= 2) {
-                $scope.galleryTwoUUID = gallery[1];
+                $scope.galleryTwoEditUUID = gallery[1];
                 photoService.download(gallery[1])
                     .then(function (data, status) {
                         angular.element(document.getElementsByClassName("galleryTwoEdit"))[0].src = data.data.encodedBase64;
@@ -1242,7 +1316,7 @@ angular.module('User')
                     });
             }
             if(gallery.length >= 3) {
-                $scope.galleryThreeUUID = gallery[2];
+                $scope.galleryThreeEditUUID = gallery[2];
                 photoService.download(gallery[2])
                     .then(function (data, status) {
                         angular.element(document.getElementsByClassName("galleryThreeEdit"))[0].src = data.data.encodedBase64;
@@ -1252,7 +1326,7 @@ angular.module('User')
                     });
             }
             if(gallery.length >= 4) {
-                $scope.galleryFourUUID = gallery[3];
+                $scope.galleryFourEditUUID = gallery[3];
                 photoService.download(gallery[3])
                     .then(function (data, status) {
                         angular.element(document.getElementsByClassName("galleryFourEdit"))[0].src = data.data.encodedBase64;
@@ -1262,7 +1336,7 @@ angular.module('User')
                     });
             }
             if(gallery.length >= 5) {
-                $scope.galleryFiveUUID = gallery[4];
+                $scope.galleryFiveEditUUID = gallery[4];
                 photoService.download(gallery[4])
                     .then(function (data, status) {
                         angular.element(document.getElementsByClassName("galleryFiveEdit"))[0].src = data.data.encodedBase64;
@@ -1272,7 +1346,7 @@ angular.module('User')
                     });
             }
             if(gallery.length === 6) {
-                $scope.gallerySixUUID = gallery[5];
+                $scope.gallerySixEditUUID = gallery[5];
                 photoService.download(gallery[5])
                     .then(function (data, status) {
                         angular.element(document.getElementsByClassName("gallerySixEdit"))[0].src = data.data.encodedBase64;
@@ -1289,6 +1363,12 @@ angular.module('User')
                         },
                         altField: '#persianDigitAlt',
                         altFormat: "YYYY MM DD HH:mm:ss",
+                        formatter : function (unixDate) {
+                            var self = this;
+                            var pdate = new persianDate(unixDate);
+                            pdate.formatPersian = true;
+                            return pdate.format(self.format);
+                        },
                         altFieldFormatter: function (unixDate) {
                         }
                     });
@@ -1301,6 +1381,12 @@ angular.module('User')
                     },
                     altField: '#persianDigitAlt',
                     altFormat: "YYYY MM DD HH:mm:ss",
+                    formatter : function (unixDate) {
+                        var self = this;
+                        var pdate = new persianDate(unixDate);
+                        pdate.formatPersian = true;
+                        return pdate.format(self.format);
+                    },
                     altFieldFormatter: function (unixDate) {
                     }
                 });
@@ -1310,6 +1396,12 @@ angular.module('User')
                     },
                     altField: '#persianDigitAlt',
                     altFormat: "YYYY MM DD HH:mm:ss",
+                    formatter : function (unixDate) {
+                        var self = this;
+                        var pdate = new persianDate(unixDate);
+                        pdate.formatPersian = true;
+                        return pdate.format(self.format);
+                    },
                     altFieldFormatter: function (unixDate) {
                     }
                 });
@@ -1331,8 +1423,16 @@ angular.module('User')
             $scope.newShowTimeEditForms = angular.copy($scope.showTimeEditForms);
 
             $scope.newShowTimeEditForms.map(function (item) {
-                var newData = item.date.replace(/[^\w\s]/gi , ' ').split(" ");
+
+                var newData = item.date.replace(/:|-/gi , ' ').split(" ");
                 newData.pop();
+                newData.pop();
+                newData = newData.map(function (persianNumb) {
+                    var persian = {'۰':0,'۱':1,'۲':2,'۳':3,'۴':4,'۵': 5,'۶': 6,'۷': 7,'۸' : 8,'۹': 9};
+                    return persianNumb.split('').map(function (persianDigit) {
+                        return persian[persianDigit];
+                    }).join('');
+                });
                 newData = newData.map(function (item) {
                     return parseInt(item);
                 });
@@ -1347,12 +1447,12 @@ angular.module('User')
 
             sendingData.images = [
                 {imageUUID : $scope.eventEditImageId, type : "EVENT_PHOTO"},
-                {imageUUID : $scope.galleryOneUUID, type : "GALLERY"},
-                {imageUUID : $scope.galleryTwoUUID, type : "GALLERY"},
-                {imageUUID : $scope.galleryThreeUUID, type : "GALLERY"},
-                {imageUUID : $scope.galleryFourUUID, type : "GALLERY"},
-                {imageUUID : $scope.galleryFiveUUID, type : "GALLERY"},
-                {imageUUID : $scope.gallerySixUUID, type : "GALLERY"}
+                {imageUUID : $scope.galleryOneEditUUID, type : "GALLERY"},
+                {imageUUID : $scope.galleryTwoEditUUID, type : "GALLERY"},
+                {imageUUID : $scope.galleryThreeEditUUID, type : "GALLERY"},
+                {imageUUID : $scope.galleryFourEditUUID, type : "GALLERY"},
+                {imageUUID : $scope.galleryFiveEditUUID, type : "GALLERY"},
+                {imageUUID : $scope.gallerySixEditUUID, type : "GALLERY"}
             ];
             if(!$scope.eventEditImageId){
                 delete sendingData.images;
@@ -1399,11 +1499,20 @@ angular.module('User')
             return date;
         };
         $scope.persianToMs = function (date) {
-            var newData = date.replace(/[^\w\s]/gi , ' ').split(" ");
+            console.log(date);
+            var newData = date.replace(/:|-/gi , ' ').split(" ");
             newData.pop();
+            newData.pop();
+            newData = newData.map(function (persianNumb) {
+                var persian = {'۰':0,'۱':1,'۲':2,'۳':3,'۴':4,'۵': 5,'۶': 6,'۷': 7,'۸' : 8,'۹': 9};
+                return persianNumb.split('').map(function (persianDigit) {
+                   return persian[persianDigit];
+                }).join('');
+            });
             newData = newData.map(function (item) {
                 return parseInt(item);
             });
+            console.log(newData);
             date = persianDate(newData).gDate.getTime();
             return date;
         };
@@ -1498,6 +1607,12 @@ angular.module('User')
                 },
                 altField: '#persianDigitAlt',
                 altFormat: "YYYY MM DD HH:mm:ss",
+                formatter : function (unixDate) {
+                    var self = this;
+                    var pdate = new persianDate(unixDate);
+                    pdate.formatPersian = true;
+                    return pdate.format(self.format);
+                },
                 altFieldFormatter: function (unixDate) {
                     $scope.editExchangeDate = unixDate;
                 }
@@ -1550,7 +1665,7 @@ angular.module('User')
                 })
         };
         //==================================================== ********* =================================
-        //==================================================== EVENT SETTING =================================
+        //==================================================== SETTINGS =================================
         var settingIndex;
         $scope.showSetting = function (index) {
             console.log($scope.userEvents[index]);
@@ -1564,6 +1679,7 @@ angular.module('User')
             $("#settingModal").modal("show");
             document.getElementsByClassName("deleteSpinner")[0].style.display = "none";
         };
+
         $scope.deleteEvent = function () {
             document.getElementsByClassName("deleteSpinner")[0].style.display = "inline";
             eventService.deleteEvent($scope.userEvents[settingIndex].eventId)
@@ -1641,6 +1757,27 @@ angular.module('User')
                     document.getElementsByClassName("exchangeStatusSpinner")[0].style.display = "none";
                 })
         };
+        var plannerSettingIndex;
+        $scope.showSettingPlanner = function (index) {
+            plannerSettingIndex = index;
+            document.getElementsByClassName("deletePlannerSpinner")[0].style.display = "none";
+            document.getElementsByClassName("approveSuccessSettingPlanner")[0].style.display = "none";
+            document.getElementsByClassName("approveErrorSettingPlanner")[0].style.display = "none";
+            $("#settingPlannerModal").modal("show");
+        };
+        $scope.deletePlanner = function () {
+            document.getElementsByClassName("deletePlannerSpinner")[0].style.display = "inline";
+            plannerService.deletePlanner($scope.eventHosts[plannerSettingIndex].eventHostId)
+                .then(function () {
+                    document.getElementsByClassName("approveSuccessSettingPlanner")[0].style.display = "block";
+                    document.getElementsByClassName("deletePlannerSpinner")[0].style.display = "none";
+                })
+                .catch(function () {
+                    document.getElementById("approveErrorSettingPlanner").innerHTML = data.data.message;
+                    document.getElementsByClassName("deletePlannerSpinner")[0].style.display = "none";
+                    document.getElementsByClassName("approveErrorSettingPlanner")[0].style.display = "inline";
+                })
+        };
         //==================================================== ********* =================================
         //==================================================== GET DATA =================================
         $scope.currentPageEvent = 1;
@@ -1654,8 +1791,31 @@ angular.module('User')
         $scope.exchangePageChanged = function(newPage) {
             $scope.getExchangeData(newPage);
         };
+        $scope.userTicketsPageChanged = function (newPage) {
+            $scope.getUserTickets(newPage);
+        };
         //==================================================== ********* =================================
         //==================================================== GET DATA =================================
+        $scope.showTickets = function (index) {
+            $scope.eventTicketsPageChanged = function (newPage) {
+                $scope.getEventTickets(newPage);
+            };
+            $scope.getEventTickets = function (pageNumber) {
+
+              ticketsService.getEventTickets(pageNumber, $scope.userEvents[index].eventId)
+                  .then(function (data) {
+                      $scope.totalTicketNumber = data.data.totalElements;
+                      $scope.eventsTickets = data.data.content;
+                      console.log(data);
+                  })
+                  .catch(function (data) {
+                      console.log(data);
+                  })
+            };
+            $scope.getEventTickets(1);
+            $('#eventTickets').modal('show');
+
+        };
         $scope.getExchangeData = function (page) {
             exchangeService.getExchangeTickets(page)
                 .then(function (data, status) {
@@ -1701,12 +1861,33 @@ angular.module('User')
         };
         $scope.getPlannersData = function (page) {
             plannerService.getPlanners(page)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.totalPlannersNumber = data.data.totalElements;
                     $scope.eventHosts = data.data.content;
-                }, function (data, status) {
+                }, function (data) {
                     console.log(data);
                 })
         };
+
+        $scope.getUserTickets = function (pageNumber) {
+            ticketsService.getUserTickets(pageNumber, $scope.userData.email)
+                .then(function (data) {
+                    console.log(data);
+                    $scope.totalUserTickets = data.data.totalElements;
+                    $scope.userTickets = data.data.content;
+                })
+                .catch(function (data) {
+                    console.log(data);
+                })
+        };
+        console.log(userInfoPromise);
+       $q.all(userInfoPromise)
+           .then(function () {
+               console.log($scope.userData);
+               $scope.getUserTickets(1);
+           })
+           .catch(function () {
+               
+           })
         //==================================================== ********* =================================
     });

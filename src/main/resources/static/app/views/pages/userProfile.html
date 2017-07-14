@@ -63,72 +63,73 @@
                                         <table class="table">
                                             <thead class="tableHeader">
                                             <tr>
-
                                                 <th class="dataCenter">نام رویداد
                                                 </th>
-                                                <th class="dataCenter" >تاریخ
+                                                <th class="dataCenter" > تاریخ و ساعت
                                                 </th>
-                                                <th class="dataCenter" >روز
-                                                </th>
-                                                <th class="dataCenter" >ساعت
-                                                </th>
+
                                                 <th class="dataCenter" >قیمت
                                                 </th>
-                                                <th class="dataCenter" >پیگیری
+                                                <th class="dataCenter" >تعداد
+                                                </th>
+                                                <th class="dataCenter" >شماره پیگیری
                                                 </th>
                                             </tr>
                                             </thead>
                                             <tbody class="showTimeList tableOverFlow">
-                                            <tr ng-repeat="item in showTime">
-                                                <td class="dataCenter">{{ item.title}}</td>
-                                                <td class="dataCenter">{{ item.time}}</td>
-                                                <td class="dataCenter">{{ item.weekDay}}</td>
-                                                <td class="dataCenter">{{ item.date}}</td>
-                                                <td class="dataCenter">{{ item.price}}</td>
-                                                <td class="dataCenter">{{ item.code}}</td>
-
+                                            <tr pagination-id="userTickets"  total-items="totalUserTickets" dir-paginate="item in userTickets | itemsPerPage: 5"  current-page="currentPage">
+                                                <td class="dataCenter">{{ item.eventName}}</td>
+                                                <td class="dataCenter">{{ item.eventDateAndTime}}</td>
+                                                <td ng-show="item.paymentStatus === 'FREE'" class="dataCenter">رایگان</td>
+                                                <td ng-hide="item.paymentStatus === 'FREE'" class="dataCenter">{{item.totalAmount}}</td>
+                                                <td class="dataCenter">{{ item.count}}</td>
+                                                <td class="dataCenter">{{ item.trackCode}}</td>
                                             </tr>
                                             </tbody>
                                         </table>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="col-md-4 col-md-offset-4">
+                                            <dir-pagination-controls pagination-id="userTickets" on-page-change="userTicketsPageChanged(newPageNumber)" class="col-xs-12"
+                                                                     max-size="4">
+                                            </dir-pagination-controls>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
                 <div class="tab-pane tabProfile  fade" id="2">
-                    <form name="editUserData" class="form-inline textAlignRight">
+                    <form name="editUserData" class="form-inline textAlignRight editInfoSection">
                         <fieldset class="fieldsetStyle ">
 
                             <legend class="legendStyle marginTop30 text-center">اطلاعات کاربر   </legend>
                             <div class="row marginTop30">
                                 <div class="form-group col-xs-12  formRegGroup floatRight">
-                                    <div class="col-xs-5 col-sm-4 floatRight text-center">
+                                    <div class="col-xs-12 col-sm-4 floatRight text-center">
                                         <label class="registerLabel" for="firstname" >نام  :</label>
                                     </div>
-                                    <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input height="60" id="firstname" name="firstname" ng-model="editInfo.firstname"  value="{{firstname}}"  type="text"  class="form-group registerInput editDataInput" required>
+                                    <div class="col-xs-12 col-sm-8 floatRight ">
+                                        <input height="60" id="firstname" name="firstname" ng-model="editInfo.firstname"  value="{{firstname}}"  type="text"  class="form-group registerInput editDataInput inputXsSize" required>
                                     </div>
                                 </div>
                                 <div class="form-group col-xs-12 marginTop30  formRegGroup floatRight">
-                                    <div class="col-xs-5 col-sm-4 floatRight text-center">
+                                    <div class="col-xs-12 col-sm-4 floatRight text-center">
                                         <label class="registerLabel" for="lastname" >نام خانوادگی  :</label>
                                     </div>
-                                    <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input height="60" id="lastname" name="lastname"  value="{{lastname}}" ng-model="editInfo.lastname"  type="text"  class="form-group registerInput editDataInput" required>
+                                    <div class="col-xs-12 col-sm-8 floatRight ">
+                                        <input height="60" id="lastname" name="lastname"  value="{{lastname}}" ng-model="editInfo.lastname"  type="text"  class="form-group registerInput editDataInput inputXsSize" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="row marginTop30">
                                 <div class="form-group col-xs-12  formRegGroup floatRight">
-                                    <div class="col-xs-5 col-sm-4 floatRight text-center">
+                                    <div class="col-xs-12 col-sm-4 floatRight text-center">
                                         <label class="registerLabel" for="mobile" > شماره موبایل  :</label>
                                     </div>
-                                    <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input height="60" id="mobile" name="mobile"  value="{{mobile}}" ng-model="editInfo.mobile"  type="text"  class="form-group registerInput editDataInput" required>
+                                    <div class="col-xs-12 col-sm-8 floatRight ">
+                                        <input height="60" id="mobile" name="mobile"  value="{{mobile}}" ng-model="editInfo.mobile"  type="text"  class="form-group registerInput editDataInput inputXsSize" required>
                                     </div>
                                 </div>
 
@@ -148,12 +149,58 @@
                             </div>
                         </div>
                     </form>
+                    <form name="changePasswordForm" class="form-inline textAlignRight marginTop30 editInfoSection">
+                        <fieldset class="fieldsetStyle ">
+                            <legend class="legendStyle marginTop30 text-center">تغییر رمز عبور    </legend>
+                            <div class="row marginTop30">
+                                <div class="form-group col-xs-12  formRegGroup floatRight">
+                                    <div class="col-xs-12 col-sm-4 floatRight text-center">
+                                        <label class="registerLabel" for="password" >رمز عبور قدیم :</label>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-8 floatRight ">
+                                        <input height="60" id="passwordOld" name="passwordOld" ng-model="password.oldPassowrd" length-validation    type="password"  class="form-group registerInput inputXsSize editDataInput" required>
+                                    </div>
+                                    <div class="col-xs-12 form-control-static text-center colorRed" ng-show="changePasswordForm.passwordOld.$touched && changePasswordForm.passwordOld.$invalid" >رمز نا معتبر است</div>
+                                </div>
+                                <div class="form-group col-xs-12  formRegGroup floatRight marginTop30">
+                                    <div class="col-xs-12 col-sm-4 floatRight text-center">
+                                        <label class="registerLabel" for="password" >رمز عبور جدید :</label>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-8 floatRight ">
+                                        <input height="60" id="password" name="passwordChange" ng-model="password.newPassword" length-validation    type="password"  class="form-group registerInput inputXsSize editDataInput" required>
+                                    </div>
+                                    <div class="col-xs-12 form-control-static text-center colorRed" ng-show="changePasswordForm.passwordChange.$touched && changePasswordForm.passwordChange.$invalid" >رمز نا معتبر است</div>
+                                </div>
+                                <div class="form-group col-xs-12 marginTop30  formRegGroup floatRight">
+                                    <div class="col-xs-12 col-sm-4 floatRight text-center">
+                                        <label class="registerLabel" for="passwordRepeat" >تکرار رمز عبور جدید :</label>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-8 floatRight ">
+                                        <input height="60" id="passwordRepeat" name="passwordChangeRepeat" length-validation password-validation="password"    ng-model="password.confirmNewPassword"  type="password"  class="form-group registerInput inputXsSize editDataInput" required>
+                                    </div>
+                                    <span data-ng-show="changePasswordForm.passwordChangeRepeat.$error.match">رمزهای عبور برابر نیستند</span>
+                                    <div class="col-xs-12 form-control-static text-center colorRed" ng-match="fields.password" ng-show="changePasswordForm.passwordChangeRepeat.$touched && changePasswordForm.passwordChangeRepeat.$invalid">رمز نا معتبر است</div>
+
+                                </div>
+                            </div>
+                            <div id="changePasswordError" class="alert alert-danger text-center  dispNone" >
+                            </div>
+                            <div id="changePasswordSuccess" class="alert alert-success text-center  dispNone">
+                                تغییرات ثبت شد !
+                            </div>
+                        </fieldset>
+                        <div class="control-group text-center marginBottom20">
+                            <div class="controls">
+                                <button ng-click="changePassword(password)" ng-disabled="changePasswordForm.$invalid" class="btn btn-success btn-lg btnLogin"> ثبت    <i class="fa fa-circle-o-notch dispNone changePasswordSpinner" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="tab-pane tabProfile  fade" id="3">
                     <legend class="legendStyle marginTop30 text-center"> مدیریت آگهی بلیت   </legend>
                     <div class="col-xs-12 marginTop10">
                         <div class="panel " id="exchangeTicketList">
-                            <div class="panel-heading makeEventFormHeader text-center" id="exchangeTicketListSection" ng-click="toggleBody('exchangeTicketListSection')"><h6>  <i    class="fa fa-arrow-circle-down " aria-hidden="true"></i>  لیست آگهی ها </h6></div>
+                            <div class="panel-heading makeEventFormHeader text-center orangeBackground" id="exchangeTicketListSection" ng-click="toggleBody('exchangeTicketListSection')"><h6>  <i    class="fa fa-arrow-circle-down " aria-hidden="true"></i>  لیست آگهی ها </h6></div>
                             <div class="panel-body  textAlignRight">
                                 <div class="col-xs-12 col-sm-12 floatRight">
 
@@ -187,7 +234,7 @@
                                                 <td class="dataCenter">{{ item.type}}</td>
                                                 <td class="dataCenter">{{ item.state}}</td>
                                                 <td class="dataCenter">{{ item.blitCost}}</td>
-                                                <td class="dataCenter"><button type="button" ng-click="showSettingExchange($index)"  class="btn editButton btn-info" >تنظیمات  </button></td>
+                                                <td class="dataCenter"><button type="button" ng-click="showSettingExchange($index)"  class="btn editButton" >تنظیمات  </button></td>
                                                 <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editExchange($index)">ویرایش</button></td>
 
                                             </tr>
@@ -209,7 +256,7 @@
 
                         <div class="panel marginTop10" id="exchangeTicket">
 
-                            <div class="panel-heading makeEventFormHeader text-center orangeBackground" id="exchangeTicketSection" ng-click="toggleBody('exchangeTicketSection')"><h6>  <i   class="fa fa-arrow-circle-down" aria-hidden="true"></i>  آگهی جدید </h6></div>
+                            <div class="panel-heading makeEventFormHeader text-center " id="exchangeTicketSection" ng-click="toggleBody('exchangeTicketSection')"><h6>  <i   class="fa fa-arrow-circle-down" aria-hidden="true"></i>  آگهی جدید </h6></div>
                             <div class="panel-body makeEventForm makeEventPlannerForm">
                                 <form class="form-inline textAlignRight " name="exchangeBlitForm">
                                     <fieldset class="fieldsetStyle">
@@ -259,10 +306,10 @@
                                         <div class="row marginTop30">
                                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="exchangeDescription" >توضیحات رویداد :</label>
+                                                    <label class="registerLabel floatRight" for="exchangeDescription" >توضیحات رویداد :(حداکثر {{100 - exchange.description.length}} کاراکتر مجاز)</label>
                                                 </div>
                                                 <div class="col-xs-11  floatRight ">
-                                                    <textarea ng-model="exchange.description" required  id="exchangeDescription"   type="text"  class="form-group textAreaForm" ></textarea>
+                                                    <textarea ng-model="exchange.description" required maxlength="100" id="exchangeDescription"   type="text"  class="form-group textAreaForm" ></textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
@@ -313,7 +360,7 @@
                                             <div class="form-group col-xs-12 col-md-6 formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
                                                     <label class="registerLabel floatRight" >مختصات جغرافیایی رویداد :</label>
-                                                    <label>با کلیک روی نقشه مکان را مشخص کنید</label>
+                                                    <div class="col-xs-12">با کلیک روی نقشه مکان را مشخص کنید</div>
                                                 </div>
                                                 <div class="col-xs-12 floatRight ">
                                                     <div id="mapExchange" ng-click="addMarker()" >
@@ -348,15 +395,10 @@
 
                 </div>
                 <div class="tab-pane tabProfile  fade" id="4">
-                    <legend class="legendStyle marginTop30 text-center"> مدیریت رویداد   </legend>
+                    <legend class="legendStyle marginTop30 text-center "> مدیریت رویداد   </legend>
                     <div class="col-xs-12 marginTop10">
                         <div class="panel " id="eventList">
-                            <div class="panel-heading EmakeEventFormHeader text-center" id="eventListSection" ng-click="toggleBody('eventListSection')"><h6> <i  class="fa fa-arrow-circle-down " aria-hidden="true"></i>  لسیت رویداد ها و برگذارکننده ها </h6></div>
-
-
-
-
-
+                            <div class="panel-heading EmakeEventFormHeader text-center orangeBackground" id="eventListSection" ng-click="toggleBody('eventListSection')"><h6> <i  class="fa fa-arrow-circle-down " aria-hidden="true"></i>  لسیت رویداد ها و برگزارکننده ها </h6></div>
                             <div class="panel-body ">
                                 <form class="form-inline textAlignRight">
                                     <fieldset class="fieldsetStyle">
@@ -387,7 +429,8 @@
                                                             </th>
                                                             <th class="dataCenter" >ویرایش  رویداد
                                                             </th>
-
+                                                            <!--<th class="dataCenter" >بلیت های خریداری شده-->
+                                                            <!--</th>-->
                                                         </tr>
                                                         </thead>
                                                         <tbody class="showTimeList">
@@ -399,6 +442,8 @@
                                                             <td class="dataCenter">{{ item.eventState}}</td>
                                                             <td class="dataCenter"><button type="button" ng-click="showSetting($index)"  class="btn editButton btn-info" >تنظیمات رویداد </button></td>
                                                             <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editEvent($index)">ویرایش</button></td>
+                                                            <td ng-show="item.operatorState === 'تأیید شده'" class="dataCenter"><button class="btn editButton btn-default" ng-click="showTickets($index)">بلیت های فروش رفته</button></td>
+
                                                         </tr>
 
                                                         </tbody>
@@ -418,7 +463,7 @@
                                         <div class="col-xs-12 col-sm-12 floatRight">
                                             <div class="panel panel-primary customPanel customPanelUser">
                                                 <div class="panel-heading">
-                                                    <span class="glyphicon glyphicon-list"></span> لیست برگذار کننده ها
+                                                    <span class="glyphicon glyphicon-list"></span> لیست برگزارکننده ها
 
                                                 </div>
                                                 <div class="panel-body textAlignRight">
@@ -427,11 +472,13 @@
                                                         <thead class="tableHeader">
                                                         <tr>
 
-                                                            <th class="dataCenter">نام برگذار کننده
+                                                            <th class="dataCenter">نام برگزارکننده
                                                             </th>
                                                             <th class="dataCenter" >تلفن
                                                             </th>
                                                             <th class="dataCenter" >آدرس وبسایت
+                                                            </th>
+                                                            <th class="dataCenter" >تنظیمات برگزارکننده
                                                             </th>
                                                             <th class="dataCenter" >ویرایش برگزارکننده
                                                             </th>
@@ -442,6 +489,7 @@
                                                             <td class="dataCenter">{{ item.hostName}}</td>
                                                             <td class="dataCenter">{{ item.telephone}}</td>
                                                             <td class="dataCenter">{{ item.websiteLink}}</td>
+                                                            <td class="dataCenter"><button type="button" ng-click="showSettingPlanner($index)"  class="btn editButton btn-info" >تنظیمات </button></td>
                                                             <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editHost($index)">ویرایش</button></td>
                                                         </tr>
 
@@ -464,11 +512,7 @@
                     </div>
                     <div class="col-xs-12 marginTop10">
                         <div class="panel " id="makeEvent">
-
-
-
-
-                            <div class="panel-heading  EmakeEventFormHeader text-center orangeBackground" id="makeEventSection" ng-click="toggleBody('makeEventSection')"><h6>  <i   class="fa fa-arrow-circle-down" aria-hidden="true"></i>  ایجاد رویداد </h6></div>
+                            <div class="panel-heading  EmakeEventFormHeader text-center " id="makeEventSection" ng-click="toggleBody('makeEventSection')"><h6>  <i   class="fa fa-arrow-circle-down" aria-hidden="true"></i>  ایجاد رویداد </h6></div>
                             <div class="panel-body makeEventForm EmakeEventPlannerForm">
                                 <form class="form-inline textAlignRight" name="submitEventForm">
                                     <fieldset class="fieldsetStyle">
@@ -501,10 +545,10 @@
                                         <div class="row marginTop30">
                                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="eventDescription" >توضیحات رویداد :</label>
+                                                    <label class="registerLabel floatRight" for="eventDescription" >توضیحات رویداد :(حداکثر {{200 - eventFields.description.length}} کاراکتر مجاز)</label>
                                                 </div>
                                                 <div class="col-xs-11  floatRight ">
-                                                    <textarea ng-model="eventFields.description" required  id="eventDescription"  type="text"  class="form-group textAreaForm" ></textarea>
+                                                    <textarea ng-model="eventFields.description" required maxlength="200" id="eventDescription"  type="text"  class="form-group textAreaForm" ></textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
@@ -523,7 +567,6 @@
 
                                         <legend class="legendStyle"> اطلاعات زمانی فروش بلیت</legend>
                                         <div class="row">
-
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
                                                     <label class="registerLabel floatRight" for="eventTicketStartTime">زمان شروع :</label>
@@ -561,18 +604,14 @@
                                             <div class="form-group col-xs-12 col-md-6 formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
                                                     <label class="registerLabel floatRight" >مختصات جغرافیایی رویداد :</label>
-                                                    <label>با کلیک روی نقشه مکان را مشخص کنید</label>
+                                                    <div class="col-xs-12">با کلیک روی نقشه مکان را مشخص کنید</div>
                                                 </div>
                                                 <div class="col-xs-12 floatRight ">
                                                     <div id="map" ng-click="addMarker()" >
                                                     </div>
                                                 </div>
-
                                             </div>
-
-
                                         </div>
-
                                     </fieldset>
                                     <fieldset class="marginTop30 fieldsetStyle">
                                         <legend class="legendStyle"> بارگذاری عکس و ویدئو</legend>
@@ -602,7 +641,7 @@
                                             <div class="col-xs-12 col-sm-12 floatRight marginTop30">
                                                 <h3 class="textAlignRight marginRight30 marginBottom20">عکس های گالری</h3>
                                                 <div class="row">
-                                                <div class="col-sm-4 floatRight marginTop10">
+                                                <div class="col-xs-12 col-sm-4 floatRight marginTop10">
                                                 <label class="marginRight30"> عکس اول :</label>
                                                 <button class="btn btn-default " ng-click='uploadGalleryOne()'>انتخاب <i class="fa fa-image"></i></button>
                                                 <div class="col-xs-12" ng-show="showThumbnailOne">
@@ -619,7 +658,7 @@
                                                     </div>
                                                 </div>
                                                 </div>
-                                                <div class="col-sm-4 floatRight marginTop10">
+                                                <div class="col-xs-12 col-sm-4 floatRight marginTop10">
                                                 <label class="marginRight30"> عکس دوم :</label>
                                                 <button class="btn btn-default " ng-click='uploadGalleryTwo()'>انتخاب <i class="fa fa-image"></i></button>
                                                 <div class="col-xs-12" ng-show="showThumbnailTwo">
@@ -636,7 +675,7 @@
                                                     </div>
                                                 </div>
                                                 </div>
-                                                <div class="col-sm-4 floatRight marginTop10">
+                                                <div class="col-xs-12 col-sm-4 floatRight marginTop10">
                                                 <label class="marginRight30"> عکس سوم :</label>
                                                 <button class="btn btn-default " ng-click='uploadGalleryThree()'>انتخاب <i class="fa fa-image"></i></button>
                                                 <div class="col-xs-12" ng-show="showThumbnailThree">
@@ -655,7 +694,7 @@
                                                 </div>
                                                 </div>
                                                 <div class="row">
-                                                <div class="col-sm-4 floatRight marginTop10">
+                                                <div class="col-xs-12 col-sm-4 floatRight marginTop10">
                                                 <label class="marginRight30"> عکس چهارم :</label>
                                                 <button class="btn btn-default " ng-click='uploadGalleryFour()'>انتخاب <i class="fa fa-image"></i></button>
                                                 <div class="col-xs-12" ng-show="showThumbnailFour">
@@ -672,7 +711,7 @@
                                                     </div>
                                                 </div>
                                                 </div>
-                                                <div class="col-sm-4 floatRight marginTop10">
+                                                <div class="col-xs-12 col-sm-4 floatRight marginTop10">
                                                 <label class="marginRight30"> عکس پنجم :</label>
                                                 <button class="btn btn-default " ng-click='uploadGalleryFive()'>انتخاب <i class="fa fa-image"></i></button>
                                                 <div class="col-xs-12" ng-show="showThumbnailFive">
@@ -689,7 +728,7 @@
                                                     </div>
                                                 </div>
                                                 </div>
-                                                <div class="col-sm-4 floatRight marginTop10">
+                                                <div class="col-xs-12 col-sm-4 floatRight marginTop10">
                                                 <label class="marginRight30"> عکس ششم :</label>
                                                 <button class="btn btn-default " ng-click='uploadGallerySix()'>انتخاب <i class="fa fa-image"></i></button>
                                                 <div class="col-xs-12" ng-show="showThumbnailSix">
@@ -727,11 +766,11 @@
                                         </div>
                                     </fieldset>
                                     <fieldset class="marginTop60 fieldsetStyle">
-                                        <legend class="legendStyle">  اطلاعات برگذار کننده</legend>
+                                        <legend class="legendStyle">  اطلاعات برگزارکننده</legend>
                                         <div class="row marginTop30">
                                             <div class="form-group col-xs-12 col-sm-10  formRegGroup floatRight">
                                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
-                                                    <label class="registerLabel" for="eventPlanner">انتخاب برگذار کننده   :</label>
+                                                    <label class="registerLabel" for="eventPlanner">انتخاب برگزارکننده   :</label>
                                                 </div>
                                                 <div class="col-xs-7 col-sm-6 floatRight ">
                                                     <select id="eventPlanner" required  ng-model="eventFields.eventPlanner" ng-options="obj.hostName for obj in eventHosts track by obj.eventHostId" class="form-control dropDownList">
@@ -741,7 +780,7 @@
 
                                             </div>
                                             <div class="col-xs-12 text-center marginTop30">
-                                                <label class=" text-center">برگذار کننده ثبت نکردید؟</label>
+                                                <label class=" text-center">برگزارکننده ثبت نکردید؟</label>
                                                 <a  ng-click="scrollTo('eventPlannerSection', 'PlannerSection')" class="text-center">اینجا را کلیک کنید</a>
                                             </div>
                                         </div>
@@ -758,11 +797,11 @@
                                                 <div class="col-xs-10 col-xs-offset-1 showTimeSection">
                                                     <div class="col-xs-12">
                                                         <h4 class="text-center" > سانس  {{$index + 1}}</h4>
-                                                        <div class="col-xs-5 col-sm-6 floatRight text-center">
+                                                        <div class="col-xs-12 col-sm-6 floatRight text-center">
 
                                                             <label class="registerLabel" >تاریخ و ساعت : </label>
                                                         </div>
-                                                        <div class="col-xs-7 col-sm-6 floatRight ">
+                                                        <div class="col-xs-12 col-sm-6 floatRight inputXsSize">
                                                             <input type="text" required ng-model="showTime.date" class="persianTime datePickerFormat" readonly/>
 
                                                             <!--<input height="60"     type="text"  class="form-group registerInput floatRight eventShowTime" >-->
@@ -772,7 +811,7 @@
 
 
                                                     <div class="form-group col-xs-12  formRegGroup floatRight marginTop30" ng-repeat="ticketType in showTime.blitTypes">
-                                                        <div class="col-xs-5 col-sm-6 floatRight marginTop10">
+                                                        <div class="col-xs-12 col-sm-6 floatRight marginTop10">
 
                                                             <div class="col-xs-12  col-sm-12 floatRight text-center">
 
@@ -780,34 +819,34 @@
                                                             </div>
 
                                                         </div>
-                                                        <div class="col-xs-7 col-sm-6 floatRight ">
+                                                        <div class="col-xs-12 col-sm-6 floatRight ">
                                                             <select id="eventTicket" required ng-model="ticketType.isFree" class="form-control dropDownInput" ng-options="o.v as o.n for o in [{n : 'رایگان', v: true}, {n : 'پولی', v: false}]">
 
                                                             </select>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-12 floatRight marginTop10">
-                                                            <div class="col-xs-5 col-sm-6 floatRight text-center">
+                                                            <div class="col-xs-12 col-sm-6 floatRight text-center">
                                                                 <label class="registerLabel" for="ticketName">نام بلیت :</label>
                                                             </div>
-                                                            <div class="col-xs-7 col-sm-6 floatRight ">
+                                                            <div class="col-xs-12 col-sm-6 floatRight inputXsSize">
                                                                 <input height="60" required id="ticketName" ng-model="ticketType.name"   type="text"  class="form-group registerInput" >
                                                             </div>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-12 floatRight marginTop10">
-                                                            <div class="col-xs-5 col-sm-6 floatRight text-center">
+                                                            <div class="col-xs-12 col-sm-6 floatRight text-center">
                                                                 <label class="registerLabel" for="ticketCapacity">ظرفیت بلیت :</label>
                                                             </div>
-                                                            <div class="col-xs-7 col-sm-6 floatRight ">
-                                                                <input height="60" required id="ticketCapacity" ng-model="ticketType.capacity"   type="number"  class="form-group registerInput" >
+                                                            <div class="col-xs-12 col-sm-6 floatRight ">
+                                                                <input height="60" required id="ticketCapacity" ng-model="ticketType.capacity"   type="number"  class="form-group registerInput inputXsSize" >
                                                             </div>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-12 floatRight marginTop10">
                                                             <div ng-if="ticketType.isFree === false" class="form-group col-xs-12 formRegGroup floatRight">
-                                                                <div class="col-xs-5 col-sm-6 floatRight text-center">
+                                                                <div class="col-xs-12 col-sm-6 floatRight text-center">
                                                                     <label class="registerLabel" for="ticketPurchaseAmount">قیمت بلیت :</label>
                                                                 </div>
-                                                                <div class="col-xs-7 col-sm-6 floatRight ">
-                                                                    <input height="60" required id="ticketPurchaseAmount" ng-model="ticketType.price"   type="number"  class="form-group registerInput" >
+                                                                <div class="col-xs-12 col-sm-6 floatRight ">
+                                                                    <input height="60" required id="ticketPurchaseAmount" ng-model="ticketType.price"   type="number"  class="form-group registerInput inputXsSize" >
                                                                 </div>
 
                                                             </div>
@@ -845,7 +884,7 @@
                     </div>
                     <div class="col-xs-12 marginTop10">
                         <div class="panel " id="eventPlannerSection">
-                            <div class="panel-heading makeEventFormHeader text-center" id="PlannerSection" ng-click="toggleBody('PlannerSection')"><h6> <i  class="fa fa-arrow-circle-down " aria-hidden="true"></i>  ایجاد برگذار کننده </h6></div>
+                            <div class="panel-heading makeEventFormHeader text-center" id="PlannerSection" ng-click="toggleBody('PlannerSection')"><h6> <i  class="fa fa-arrow-circle-down " aria-hidden="true"></i>  ایجاد برگزارکننده </h6></div>
                             <div class="panel-body EmakeEventPlannerForm">
                                 <form class="form-inline textAlignRight" name="submitPlannerForm">
                                     <fieldset class="marginBottom20 fieldsetStyle">
@@ -861,7 +900,7 @@
                                         </div>
                                         <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                             <div class="col-xs-10 floatRight text-center">
-                                                <label class="registerLabel floatRight" for="eventPlannerTelephone" > شماره تلفن برگذار کننده  :</label>
+                                                <label class="registerLabel floatRight" for="eventPlannerTelephone" > شماره تلفن برگزارکننده  :</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
                                                 <input height="60" id="eventPlannerTelephone" required  ng-model="eventPlanner.mobile"   type="text"  class="form-group registerInput" >
@@ -881,7 +920,7 @@
 
                                         <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight marginTop30">
                                             <div class="col-xs-11 floatRight text-center">
-                                                <label class="registerLabel floatRight"  for="eventPlannerType">نوع برگذارکننده :</label>
+                                                <label class="registerLabel floatRight"  for="eventPlannerType">نوع برگزارکننده :</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
                                                 <select id="eventPlannerType" required  ng-model="eventPlanner.type" ng-options="o.v as o.n for o in [{n : 'نهاد', v: 'ORGANIZATION'},{n : 'کافی شاپ', v: 'COFFEESHOP'},{n : 'فرهنگسرا', v: 'CULTURALCENTER'},{n : 'تئاتر', v: 'THEATER'},{n : 'مؤسسه', v: 'INSTITUTION'},{n : 'فرد', v: 'INDIVIDUAL'}, {n : 'سایر', v: 'OTHER'}]" class="form-control dropDownList">
@@ -897,10 +936,10 @@
 
                                         <div class="form-group col-xs-12 col-sm-6 formRegGroup marginTop30 floatRight">
                                             <div class="col-xs-10 floatRight text-center">
-                                                <label class="registerLabel floatRight" for="eventPlannerWebsite" > توضیحات برگزارکننده :</label>
+                                                <label class="registerLabel floatRight" for="eventPlannerWebsite" > توضیحات برگزارکننده :(حداکثر {{200 - eventPlanner.description.length}} کاراکتر مجاز)</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
-                                                <textarea ng-model="eventPlanner.description" required  id="plannerDescription"  type="text"  class="form-group textAreaForm marginTop30" ></textarea>
+                                                <textarea ng-model="eventPlanner.description" maxlength="200" required  id="plannerDescription"  type="text"  class="form-group textAreaForm marginTop30" ></textarea>
                                             </div>
                                         </div>
                                         </div>
@@ -996,7 +1035,7 @@
                                             <strong></strong>
                                         </div>
                                         <div class="controls">
-                                            <button id="eventPlannerSubmit" ng-disabled="submitPlannerForm.$invalid" ng-click="submitEventPlanner(eventPlanner)"  class="btn btn-success btn-lg btnLogin">ثبت برگذارکننده <i ng-show="submitPlannerSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
+                                            <button id="eventPlannerSubmit" ng-disabled="submitPlannerForm.$invalid" ng-click="submitEventPlanner(eventPlanner)"  class="btn btn-success btn-lg btnLogin">ثبت برگزارکننده <i ng-show="submitPlannerSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
                                         </div>
                                     </div>
 
@@ -1010,8 +1049,10 @@
         </div>
     </div>
     <div ng-include="'app/views/partials/edit-event.html'"></div>
+    <div ng-include="'app/views/partials/user-tickets.html'"></div>
     <div ng-include="'app/views/partials/edit-host.html'"></div>
     <div ng-include="'app/views/partials/event-setting.html'"></div>
+    <div ng-include="'app/views/partials/planner-setting.html'"></div>
     <div ng-include="'app/views/partials/exchange-setting.html'"></div>
     <div ng-include="'app/views/partials/edit-exchange.html'"></div>
 </div>
