@@ -55,6 +55,12 @@ public class BlitType {
 	public void setDiscounts(Set<Discount> discounts) {
 		this.discounts = discounts;
 	}
+	
+	public void addCommonBlit(CommonBlit commonBlit)
+	{
+		this.commonBlits.add(commonBlit);
+		commonBlit.setBlitType(this);
+	}
 
 	public BlitType() {
 		blitTypeSeats = new HashSet<>();

@@ -49,7 +49,7 @@ public class ThymeleafConfiguration {
         templateResolver.setOrder(Integer.valueOf(1));
         templateResolver.setPrefix("templates/");
         templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode("XHTML");
+        templateResolver.setTemplateMode("HTML5");
         templateResolver.setCharacterEncoding(CharEncoding.UTF_8);
         templateResolver.setCacheable(false);
         return templateResolver;
@@ -60,7 +60,7 @@ public class ThymeleafConfiguration {
         templateResolver.setOrder(Integer.valueOf(1));
         templateResolver.setPrefix("static/");
         templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode("XHTML");
+        templateResolver.setTemplateMode("HTML5");
         templateResolver.setCharacterEncoding(CharEncoding.UTF_8);
         templateResolver.setCacheable(false);
         return templateResolver;

@@ -30,11 +30,11 @@ public class Application {
 		initializer.insertAdminUserAndRoleAndOldBlitoUsers();
 	}
 	
-//	@GetMapping("/*")
-//	public ModelAndView index()
-//	{
-//		return new ModelAndView("index");
-//	}
+	@GetMapping("/*")
+	public ModelAndView index()
+	{
+		return new ModelAndView("index");
+	}
 	
 	@GetMapping("/event-page/{eventLink}")
 	public ModelAndView event(@PathVariable String eventLink)

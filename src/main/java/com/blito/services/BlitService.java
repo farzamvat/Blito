@@ -62,7 +62,7 @@ public class BlitService {
 	@Autowired
 	private HtmlRenderer htmlRenderer;
 	
-	@Value("{zarinpal.web.gateway}")
+	@Value("${zarinpal.web.gateway}")
 	private String zarinpalGatewayURL;
 	
 	private final Logger log = LoggerFactory.getLogger(BlitService.class);
@@ -74,7 +74,6 @@ public class BlitService {
 		return htmlRenderer.renderHtml("ticket", null);
 	}
 	
-	@Transactional
 	public CompletableFuture<Object> createCommonBlit(CommonBlitViewModel vmodel) {
 
 		CommonBlit commonBlit = commonBlitMapper.createFromViewModel(vmodel);
@@ -129,7 +128,6 @@ public class BlitService {
 		}
 	}
 
-	@Transactional
 	private CompletableFuture<Object> buyCommonBlit(BlitType blitType, CommonBlit commonBlit, User user) {
 		checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
 		String trackCode = generateTrackCode();
@@ -156,20 +154,19 @@ public class BlitService {
 		default:
 			throw new NotFoundException(ResourceUtil.getMessage(Response.BANK_GATEWAY_NOT_FOUND));
 		}
-		
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
 	private CommonBlit persistNoneFreeCommonBlit(BlitType blitType,CommonBlit commonBlit,User user,String token,String trackCode)
 	{
+		checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
 		BlitType attachedBlitType = blitTypeRepository.findOne(blitType.getBlitTypeId());
 		User attachedUser = userRepository.findOne(user.getUserId());
+		commonBlit.setUser(attachedUser);
 		commonBlit.setBlitType(attachedBlitType);
-		attachedUser.addBlits(commonBlit);
 		commonBlit.setToken(token);
 		commonBlit.setTrackCode(trackCode);
 		commonBlit.setPaymentStatus(PaymentStatus.PENDING.name());
-		commonBlit.setBankGateway(BankGateway.NONE.name());
 		return commonBlitRepository.save(commonBlit);
 	}
 

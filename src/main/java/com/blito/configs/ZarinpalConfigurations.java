@@ -10,11 +10,11 @@ import com.blito.payments.zarinpal.client.ZarinpalClient;
 @Configuration
 public class ZarinpalConfigurations {
 
-	@Value("zarinpal.merchant.id")
+	@Value("${zarinpal.merchant.id}")
 	private String zarinpalMerchantId;
-	@Value("serverAddress")
+	@Value("${serverAddress}")
 	private String serverAddress;
-	@Value("api.base.url")
+	@Value("${api.base.url}")
 	private String baseUrl;
 	
 	
