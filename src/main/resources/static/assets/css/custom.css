@@ -1945,7 +1945,6 @@ a{
 }
 .aboutUsContainer{
     margin-top:30px;
-    width:100%;
     background: #efefef;
 
 }
@@ -1956,42 +1955,90 @@ a{
     padding: 10px 20px;
     border: 1px solid #333;
 }
-.aboutUsContainer p{
+.aboutUsHeader{
+    padding-right:30px ;
+    padding-left:30px ;
 }
 .aboutUsHeader h2{
     float: right;
     color:#444;
-    margin:30px auto;
-    width: 100%;
+    margin:30px 36%;
+    width: 25%;
     height:65px;
     text-align: center;
-    border-bottom: 2px solid #ddd;
+    border-bottom: 2px solid rgb(252, 183, 49);
 }
 .aboutUsTextContainer{
     position: relative;
     text-align: right;
     float: right;
-    padding-right:40px;
     pointer-events: none;
 }
+.aboutUsTextContainer p{
+    padding: 40px;
+    direction: rtl;
+    float:right;
+    border-left: 1px solid #ddd;
 
+}
 .blitoTeamContainer{
     height:auto;
     margin:auto;
     float: right;
-    padding-right: 12.5%;
     width:100%;
+    padding-right: 20%;
 
+}
+.padRight20per{
+     padding-right: 20%;
+}
+.aboutUsText2{
+    padding: 40px;
+    direction: rtl;
+    float:right;
+    margin-right: 20%;
+    border-left: none !important;
+    border-bottom: 1px solid #ddd;
+
+}
+.logobeautifier{
+    position:absolute;
+    height:30%;
+    float:right;
+    right:127px;
+    top:25%;
+    opacity: .2;
+}
+.logobeautifier2{
+    position:absolute;
+    height:30%;
+    float:left;
+    left:68px;
+    top:25%;
+    transform: scale(-1,1) ;
+    opacity: .5;
 }
 .containerAboutUs{
     min-height: 400px;
 }
 .blitoTeamContainer2{
     border-bottom: 2px solid #ddd;
+    height:auto;
+    margin:auto;
+    float: right;
+    width:100%;
+
 
 }
 .blitoTeamContainer h4 ,
 .blitoTeamContainer p{
+    text-align: center;
+    margin: auto;
+    color:#444;
+    margin-top:30px;
+}
+.blitoTeamContainer2 h4 ,
+.blitoTeamContainer2 p{
     text-align: center;
     margin: auto;
     color:#444;
@@ -2027,6 +2074,9 @@ a{
     margin:auto;
     transition: .4s;
     margin-top:2px;
+}
+.marginAuto{
+    margin:auto;
 }
 .blitoTeamPicturebeautifier:hover .blitoTeamPicturebeautifier2{
     transform: rotate(225deg);
@@ -2106,9 +2156,6 @@ a{
 .laptopcontainer:hover + .nolaptopcontainer{
     transform: scale(1);
 }
-.pictureHolder{
-    margin-top:-45px;
-}
 table td{
     vertical-align: middle !important;
 }
@@ -2179,6 +2226,7 @@ table td{
     }
     .blitoTeamContainer{
         margin: auto;
+        padding-right: 0%;
     }
     .marginRight8percentEventPage{
         margin-right:-13px;
