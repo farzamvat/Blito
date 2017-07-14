@@ -22,6 +22,12 @@ var app = angular.module('appRoutes', ['ngRoute'])
             .when('/about-us', {
                 templateUrl : 'app/views/pages/about-us.html',
                 authenticated: false
+            }).when('/term-of-use', {
+                templateUrl : 'app/views/pages/term-of-use.html',
+                authenticated: false
+            }).when('/privacy-policy', {
+                templateUrl : 'app/views/pages/privacy-policy.html',
+                authenticated: false
             })
             .when('/sports', {
                 templateUrl : 'app/views/pages/eventList.html',
