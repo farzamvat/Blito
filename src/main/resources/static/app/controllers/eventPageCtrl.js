@@ -110,7 +110,7 @@ angular.module('eventsPageModule')
             if($scope.itemWithCapacity[0].isFree) {
                 $scope.totalNumber = eventInfo.ticketNumber;
             } else {
-                $scope.totalPrice = eventInfo.ticketNumber * $scope.itemWithCapacity.price;
+                $scope.totalPrice = eventInfo.ticketNumber * $scope.itemWithCapacity[0].price;
                 $scope.totalNumber = eventInfo.ticketNumber;
             }
             angular.element(document.getElementsByClassName('progress-bar')).css('width', '50%');
@@ -127,12 +127,47 @@ angular.module('eventsPageModule')
 
             angular.element(document.getElementById('payment')).removeClass('active');
         };
+        var buyPaymentTicket = {};
+        $scope.paymentSelected = function (payment) {
+            var userData = userInfo.getData();
+            $scope.paymentSelectedDone = "selected";
+            buyPaymentTicket = {
+                blitTypeId : $scope.itemWithCapacity[0].blitTypeId,
+                blitTypeName : $scope.itemWithCapacity[0].name,
+                count : $scope.totalNumber,
+                customerEmail : userData.email,
+                customerMobileNumber : userData.mobile,
+                customerName : userData.firstname+ " " + userData.lastname,
+                eventAddress : $scope.eventDataDetails.address,
+                eventDate : $scope.itemWithCapacity[0].date,
+                eventDateAndTime : dateSetterService.persianToArray(persianDate($scope.itemWithCapacity[0].date).pDate).join(),
+                eventName : $scope.eventDataDetails.eventName,
+                seatType : "COMMON",
+                totalAmount : $scope.totalPrice ,
+                bankGateway : payment
+            };
+        };
         $scope.nextStep2 = function () {
-            angular.element(document.getElementsByClassName('progress-bar')).css('width', '100%');
-            angular.element(document.getElementById('ticketPay2')).removeClass('active');
-            angular.element(document.getElementById('payment')).removeClass('active');
-            angular.element(document.getElementById('ticketPay3')).addClass('active').addClass('in');
-            angular.element(document.getElementById('paymentComplete')).addClass('active');
+
+            document.getElementsByClassName("payedBlitSpinner")[0].style.display = "inline";
+            document.getElementById("buyBlitError").style.display = "none";
+            console.log(buyPaymentTicket);
+            ticketsService.buyTicket(buyPaymentTicket)
+                .then(function (data) {
+                    document.getElementsByClassName("payedBlitSpinner")[0].style.display = "none";
+                    console.log(data);
+                    angular.element(document.getElementsByClassName('progress-bar')).css('width', '100%');
+                    angular.element(document.getElementById('ticketPay2')).removeClass('active');
+                    angular.element(document.getElementById('payment')).removeClass('active');
+                    angular.element(document.getElementById('ticketPay3')).addClass('active').addClass('in');
+                    angular.element(document.getElementById('paymentComplete')).addClass('active');
+                })
+                .catch(function (data) {
+                    console.log(data);
+                    document.getElementsByClassName("payedBlitSpinner")[0].style.display = "none";
+                    document.getElementById("buyBlitError").innerHTML= data.data.message;
+                    document.getElementById("buyBlitError").style.display = "inline";
+                })
         };
         $scope.nextStep2Free = function () {
             var userData = userInfo.getData();
@@ -141,10 +176,10 @@ angular.module('eventsPageModule')
                     blitTypeName : $scope.itemWithCapacity[0].name,
                     count : $scope.totalNumber,
                     customerEmail : userData.email,
-                    // customerMobileNumber : userData.mobile,
-                    // customerName : userData.firstname+ " " + userData.lastname,
-                    customerMobileNumber : "09122011273",
-                    customerName : "سروش",
+                    customerMobileNumber : userData.mobile,
+                    customerName : userData.firstname+ " " + userData.lastname,
+                    // customerMobileNumber : "09122011273",
+                    // customerName : "سروش",
                     eventAddress : $scope.eventDataDetails.address,
                     eventDate : $scope.itemWithCapacity[0].date,
                     eventDateAndTime : dateSetterService.persianToArray(persianDate($scope.itemWithCapacity[0].date).pDate).join(),
@@ -173,13 +208,14 @@ angular.module('eventsPageModule')
                     })
 
         };
+
         $scope.showBuyTicketModal = function () {
 
             $("#buyTicket").modal("show");
-        }
+        };
         $scope.hideTicketPaymentModal = function () {
             $("#buyTicket").modal("hide");
-        }
+        };
 
 
     });

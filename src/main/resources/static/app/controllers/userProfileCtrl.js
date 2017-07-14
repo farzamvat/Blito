@@ -296,7 +296,7 @@ angular.module('User')
                     $scope.uploadEventSixEditPhoto = false;
                     $scope.eventPhotoSixEditSuccess = true;
 
-                    $scope.gallerySixUUID = data.data.imageUUID;
+                    $scope.gallerySixEditUUID = data.data.imageUUID;
                 }, function (data, status) {
                     document.getElementById("eventPhotoSixEditError").innerHTML= data.data.message;
                     $scope.eventPhotoSixEditError = true;
@@ -315,7 +315,7 @@ angular.module('User')
                     $scope.uploadEventFiveEditPhoto = false;
                     $scope.eventPhotoFiveEditSuccess = true;
 
-                    $scope.galleryFiveUUID = data.data.imageUUID;
+                    $scope.galleryFiveEditUUID = data.data.imageUUID;
                 }, function (data, status) {
                     document.getElementById("eventPhotoFiveEditError").innerHTML= data.data.message;
                     $scope.eventPhotoFiveEditError = true;
@@ -333,7 +333,7 @@ angular.module('User')
                 .then(function (data, status) {
                     $scope.uploadEventFourEditPhoto = false;
                     $scope.eventPhotoFourEditSuccess = true;
-                    $scope.galleryFourUUID = data.data.imageUUID;
+                    $scope.galleryFourEditUUID = data.data.imageUUID;
                 }, function (data, status) {
                     $scope.uploadEventFourEditPhoto = false;
                     $scope.eventPhotoFourEditError = true;
@@ -352,7 +352,7 @@ angular.module('User')
                     $scope.uploadEventThreeEditPhoto = false;
                     $scope.eventPhotoThreeEditSuccess = true;
 
-                    $scope.galleryThreeUUID = data.data.imageUUID;
+                    $scope.galleryThreeEditUUID = data.data.imageUUID;
                 }, function (data, status) {
                     document.getElementById("eventPhotoThreeEditError").innerHTML= data.data.message;
                     $scope.eventPhotoThreeEditError = true;
@@ -372,7 +372,7 @@ angular.module('User')
                     $scope.uploadEventTwoEditPhoto = false;
                     $scope.eventPhotoTwoEditSuccess = true;
 
-                    $scope.galleryTwoUUID = data.data.imageUUID;
+                    $scope.galleryTwoEditUUID = data.data.imageUUID;
                 }, function (data, status) {
                     document.getElementById("eventPhotoTwoEditError").innerHTML= data.data.message;
                     $scope.uploadEventTwoEditPhoto = false;
@@ -391,7 +391,7 @@ angular.module('User')
                     $scope.uploadEventOneEditPhoto = false;
                     $scope.eventPhotoOneEditSuccess = true;
 
-                    $scope.galleryOneUUID = data.data.imageUUID;
+                    $scope.galleryOneEditUUID = data.data.imageUUID;
                 }, function (data, status) {
                     document.getElementById("eventPhotoOneEditError").innerHTML= data.data.message;
                     $scope.eventPhotoOneEditError = true;
@@ -1077,6 +1077,13 @@ angular.module('User')
         };
         //==================================================== ********* =================================
         //==================================================== EVENT SUBMIT =================================
+        $scope.galleryOneUUID = null;
+        $scope.galleryTwoUUID = null;
+        $scope.galleryThreeUUID = null;
+        $scope.galleryFourUUID = null;
+        $scope.galleryFiveUUID = null;
+        $scope.gallerySixUUID = null;
+
         $scope.submitEvent = function (eventFields) {
             $scope.createEventNotif = false;
             $scope.eventPhotoSuccess = false;
@@ -1235,6 +1242,12 @@ angular.module('User')
             $scope.eventPhotoFourEditSuccess = false;
             $scope.eventPhotoFiveEditSuccess = false;
             $scope.eventPhotoSixEditSuccess = false;
+            $scope.galleryOneEditUUID = null;
+            $scope.galleryTwoEditUUID = null;
+            $scope.galleryThreeEditUUID = null;
+            $scope.galleryFourEditUUID = null;
+            $scope.galleryFiveEditUUID = null;
+            $scope.gallerySixEditUUID = null;
 
             angular.element(document.getElementsByClassName("profilePhotoUploadEditEvent"))[0].src = "";
             angular.element(document.getElementsByClassName("galleryOneEdit"))[0].src = "";
@@ -1243,7 +1256,6 @@ angular.module('User')
             angular.element(document.getElementsByClassName("galleryFourEdit"))[0].src = "";
             angular.element(document.getElementsByClassName("galleryFiveEdit"))[0].src = "";
             angular.element(document.getElementsByClassName("gallerySixEdit"))[0].src = "";
-            gallery = [];
             $scope.eventEditPhotoSuccess = false;
 
             $scope.showTimeEditForms = angular.copy($scope.userEventsEdit[index].eventDates);
@@ -1284,7 +1296,7 @@ angular.module('User')
                     console.log(status);
                 });
             if(gallery.length >= 1) {
-                $scope.galleryOneUUID = gallery[0];
+                $scope.galleryOneEditUUID = gallery[0];
                 photoService.download(gallery[0])
                     .then(function (data, status) {
                         angular.element(document.getElementsByClassName("galleryOneEdit"))[0].src = data.data.encodedBase64;
@@ -1294,7 +1306,7 @@ angular.module('User')
                     });
             }
             if(gallery.length >= 2) {
-                $scope.galleryTwoUUID = gallery[1];
+                $scope.galleryTwoEditUUID = gallery[1];
                 photoService.download(gallery[1])
                     .then(function (data, status) {
                         angular.element(document.getElementsByClassName("galleryTwoEdit"))[0].src = data.data.encodedBase64;
@@ -1304,7 +1316,7 @@ angular.module('User')
                     });
             }
             if(gallery.length >= 3) {
-                $scope.galleryThreeUUID = gallery[2];
+                $scope.galleryThreeEditUUID = gallery[2];
                 photoService.download(gallery[2])
                     .then(function (data, status) {
                         angular.element(document.getElementsByClassName("galleryThreeEdit"))[0].src = data.data.encodedBase64;
@@ -1314,7 +1326,7 @@ angular.module('User')
                     });
             }
             if(gallery.length >= 4) {
-                $scope.galleryFourUUID = gallery[3];
+                $scope.galleryFourEditUUID = gallery[3];
                 photoService.download(gallery[3])
                     .then(function (data, status) {
                         angular.element(document.getElementsByClassName("galleryFourEdit"))[0].src = data.data.encodedBase64;
@@ -1324,7 +1336,7 @@ angular.module('User')
                     });
             }
             if(gallery.length >= 5) {
-                $scope.galleryFiveUUID = gallery[4];
+                $scope.galleryFiveEditUUID = gallery[4];
                 photoService.download(gallery[4])
                     .then(function (data, status) {
                         angular.element(document.getElementsByClassName("galleryFiveEdit"))[0].src = data.data.encodedBase64;
@@ -1334,7 +1346,7 @@ angular.module('User')
                     });
             }
             if(gallery.length === 6) {
-                $scope.gallerySixUUID = gallery[5];
+                $scope.gallerySixEditUUID = gallery[5];
                 photoService.download(gallery[5])
                     .then(function (data, status) {
                         angular.element(document.getElementsByClassName("gallerySixEdit"))[0].src = data.data.encodedBase64;
@@ -1411,8 +1423,16 @@ angular.module('User')
             $scope.newShowTimeEditForms = angular.copy($scope.showTimeEditForms);
 
             $scope.newShowTimeEditForms.map(function (item) {
-                var newData = item.date.replace(/[^\w\s]/gi , ' ').split(" ");
+
+                var newData = item.date.replace(/:|-/gi , ' ').split(" ");
                 newData.pop();
+                newData.pop();
+                newData = newData.map(function (persianNumb) {
+                    var persian = {'۰':0,'۱':1,'۲':2,'۳':3,'۴':4,'۵': 5,'۶': 6,'۷': 7,'۸' : 8,'۹': 9};
+                    return persianNumb.split('').map(function (persianDigit) {
+                        return persian[persianDigit];
+                    }).join('');
+                });
                 newData = newData.map(function (item) {
                     return parseInt(item);
                 });
@@ -1427,12 +1447,12 @@ angular.module('User')
 
             sendingData.images = [
                 {imageUUID : $scope.eventEditImageId, type : "EVENT_PHOTO"},
-                {imageUUID : $scope.galleryOneUUID, type : "GALLERY"},
-                {imageUUID : $scope.galleryTwoUUID, type : "GALLERY"},
-                {imageUUID : $scope.galleryThreeUUID, type : "GALLERY"},
-                {imageUUID : $scope.galleryFourUUID, type : "GALLERY"},
-                {imageUUID : $scope.galleryFiveUUID, type : "GALLERY"},
-                {imageUUID : $scope.gallerySixUUID, type : "GALLERY"}
+                {imageUUID : $scope.galleryOneEditUUID, type : "GALLERY"},
+                {imageUUID : $scope.galleryTwoEditUUID, type : "GALLERY"},
+                {imageUUID : $scope.galleryThreeEditUUID, type : "GALLERY"},
+                {imageUUID : $scope.galleryFourEditUUID, type : "GALLERY"},
+                {imageUUID : $scope.galleryFiveEditUUID, type : "GALLERY"},
+                {imageUUID : $scope.gallerySixEditUUID, type : "GALLERY"}
             ];
             if(!$scope.eventEditImageId){
                 delete sendingData.images;
