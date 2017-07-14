@@ -97,18 +97,13 @@ public class User {
 		blit.setUser(this);
 	}
 	
-	
 	public boolean isOldUser() {
 		return isOldUser;
 	}
 
-
-
 	public void setOldUser(boolean isOldUser) {
 		this.isOldUser = isOldUser;
 	}
-
-
 
 	public String getResetKey() {
 		return resetKey;

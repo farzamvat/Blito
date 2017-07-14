@@ -1,5 +1,6 @@
 package com.blito.services;
 
+import java.util.HashSet;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +66,7 @@ public class RoleService {
 	public void deleteRoleById(long id)
 	{
 		Role role = findRoleById(id);
+		role.getPermissions().clear();
 		roleRepository.delete(role);
 	}
 
