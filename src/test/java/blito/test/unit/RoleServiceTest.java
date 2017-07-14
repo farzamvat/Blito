@@ -74,15 +74,16 @@ public class RoleServiceTest {
 	}
 
 	@Test
-	public void testCreateRole() {
-		assertEquals(5, permissionRepo.count());
+	public void createRoleTest() {
+		assertEquals(8, permissionRepo.count());
 		roleVmodel = roleService.createRole(roleVmodel);
 		assertEquals(3, roleRepo.count());
+		assertEquals(3, roleVmodel.getPermissionIds().size());
 	}
 	
 	@Test
 	public void assignRoleTest() {
-		assertEquals(5, permissionRepo.count());
+		assertEquals(8, permissionRepo.count());
 		roleVmodel = roleService.createRole(roleVmodel);
 		assertEquals(3, roleRepo.count());
 		
@@ -93,7 +94,7 @@ public class RoleServiceTest {
 	
 	@Test
 	public void getRolesTest() {
-		assertEquals(5, permissionRepo.count());
+		assertEquals(8, permissionRepo.count());
 		roleVmodel = roleService.createRole(roleVmodel);
 		assertEquals(3, roleRepo.count());
 		
@@ -102,6 +103,47 @@ public class RoleServiceTest {
 		Page<RoleViewModel> roles = roleService.getRoles(pageable);
 		
 		assertEquals(3, roles.getNumberOfElements());
+	}
+	
+	@Test
+	public void getRoleByIdTest() {
+		roleVmodel = roleService.createRole(roleVmodel);
+		assertEquals(3, roleRepo.count());
+		
+		roleVmodel = roleService.getRoleById(roleVmodel.getRoleId());
+		assertEquals("OPERATOR", roleVmodel.getName());
+		
+		roleVmodel = roleService.getRoleById(1);
+		assertEquals("ADMIN", roleVmodel.getName());
+		
+		roleVmodel = roleService.getRoleById(2);
+		assertEquals("USER", roleVmodel.getName());
+	}
+	
+	@Test
+	public void editRoleTest() {
+		roleVmodel = roleService.createRole(roleVmodel);
+		assertEquals(3, roleRepo.count());
+		
+
+		Set<String> editedNames = new HashSet<String>(Arrays.asList(ApiBusinessName.API1.name(), ApiBusinessName.API2.name(),
+				ApiBusinessName.API3.name(), AdminApiBusinessName.ADMINAPI1.name()));
+
+		roleVmodel.setPermissionIds(permissionRepo.findByApiBusinessNameIn(editedNames).stream().map(p -> p.getPermissionId())
+				.collect(Collectors.toSet()));
+		
+		roleVmodel = roleService.editRole(roleVmodel);
+		assertEquals(3, roleRepo.count());
+		assertEquals(4, roleVmodel.getPermissionIds().size());
+	}
+	
+	@Test
+	public void deleteRoleById() {
+		roleVmodel = roleService.createRole(roleVmodel);
+		assertEquals(3, roleRepo.count());
+		
+		roleService.deleteRoleById(roleVmodel.getRoleId());
+		assertEquals(2, roleRepo.count());
 	}
 	
 
