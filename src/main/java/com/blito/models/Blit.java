@@ -1,8 +1,13 @@
 package com.blito.models;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,10 +16,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.blito.enums.BankGateway;
-import com.blito.enums.SeatType;
-import com.blito.enums.PaymentStatus;
 
 @Entity(name="blit")
 @Table
@@ -45,6 +46,16 @@ public class Blit {
 	String samanTraceNo;
 	boolean used = false;
 	String bankGateway;
+	
+	@ElementCollection(fetch=FetchType.EAGER)
+	@Column(name="fields")
+	private Map<String,String> additionalFields;
+	
+	public Blit()
+	{
+		additionalFields = new HashMap<String,String>();
+	}
+	
 	public long getBlitId() {
 		return blitId;
 	}
