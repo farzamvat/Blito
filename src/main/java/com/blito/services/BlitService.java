@@ -88,31 +88,32 @@ public class BlitService {
 		{
 			// TODO exception messages
 			Event event = blitType.getEventDate().getEvent();
-			if(vmodel.getAdditionalFields().isEmpty() || vmodel.getAdditionalFields() == null)
-				throw new RuntimeException("additional fields map is empty");
-			vmodel.getAdditionalFields().forEach((k,v) -> {
-				event.getAdditionalFields().keySet().stream().filter(key -> key == k).findFirst()
-					.ifPresent(key -> {
-						if(event.getAdditionalFields().get(key).equals(Constants.FIELD_DOUBLE_TYPE))
-						{
-							try {
-								Double.parseDouble(v);
-							} catch(Exception e) 
+			if(!event.getAdditionalFields().isEmpty())
+				if(vmodel.getAdditionalFields().isEmpty() || vmodel.getAdditionalFields() == null)
+					throw new RuntimeException("additional fields map is empty");
+				vmodel.getAdditionalFields().forEach((k,v) -> {
+					event.getAdditionalFields().keySet().stream().filter(key -> key == k).findFirst()
+						.ifPresent(key -> {
+							if(event.getAdditionalFields().get(key).equals(Constants.FIELD_DOUBLE_TYPE))
 							{
-								throw new RuntimeException(e.getMessage());
+								try {
+									Double.parseDouble(v);
+								} catch(Exception e) 
+								{
+									throw new RuntimeException(e.getMessage());
+								}
 							}
-						}
-						else if(event.getAdditionalFields().get(key).equals(Constants.FIELD_INT_TYPE))
-						{
-							try {
-								Integer.parseInt(v);
-							} catch (Exception e)
+							else if(event.getAdditionalFields().get(key).equals(Constants.FIELD_INT_TYPE))
 							{
-								throw new RuntimeException(e.getMessage());
+								try {
+									Integer.parseInt(v);
+								} catch (Exception e)
+								{
+									throw new RuntimeException(e.getMessage());
+								}
 							}
-						}
-					});
-			});
+						});
+				});
 		}
 		// ADDITIONAL FIELDS VALIDATION
 
