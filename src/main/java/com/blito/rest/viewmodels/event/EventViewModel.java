@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.blito.annotations.AdditionalFields;
 import com.blito.enums.EventType;
 import com.blito.enums.OfferTypeEnum;
 import com.blito.enums.OperatorState;
@@ -99,6 +100,8 @@ public class EventViewModel {
 	private String members;
 	@JsonView(View.AdminEvent.class)
 	private boolean isDeleted;
+	
+	@AdditionalFields
 	@JsonView(View.Event.class)
 	private Map<String,String> additionalFields;
 
@@ -118,7 +121,6 @@ public class EventViewModel {
 	public void setAdditionalFields(Map<String, String> additionalFields) {
 		this.additionalFields = additionalFields;
 	}
-
 
 	public long getViews() {
 		return views;

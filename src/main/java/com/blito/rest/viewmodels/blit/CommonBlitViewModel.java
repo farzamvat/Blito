@@ -1,6 +1,8 @@
 package com.blito.rest.viewmodels.blit;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
@@ -72,7 +74,21 @@ public class CommonBlitViewModel {
 	String samanBankRefNumber;
 	@JsonView(View.Blit.class)
 	BankGateway bankGateway;
+	@JsonView(View.Blit.class)
+	private Map<String,String> additionalFields;
 	
+	public CommonBlitViewModel() {
+		additionalFields = new HashMap<>();
+	}
+	
+	public Map<String, String> getAdditionalFields() {
+		return additionalFields;
+	}
+
+	public void setAdditionalFields(Map<String, String> additionalFields) {
+		this.additionalFields = additionalFields;
+	}
+
 	public BankGateway getBankGateway() {
 		return bankGateway;
 	}

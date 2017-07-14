@@ -29,6 +29,9 @@ public class MailService {
 	
 	@Value(value = "${serverAddress}")
 	String serverAddress;
+	
+	@Value("${spring.mail.username}")
+	String mailFromAddress;
 
 	@Autowired
 	private JavaMailSenderImpl javaMailSender;
@@ -63,6 +66,7 @@ public class MailService {
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		try {
 			MimeMessageHelper message = new MimeMessageHelper(mimeMessage, CharEncoding.UTF_8);
+			message.setFrom(mailFromAddress);
 			message.setTo(to);
 			message.setSubject(subject);
 			message.setText(content, true);
