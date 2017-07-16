@@ -120,16 +120,15 @@ public class EventService {
 	public EventFlatViewModel getFlatEventByLink(String link) {
 		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(link)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
-		event.setViews(event.getViews()+1);
+		event.setViews(event.getViews() + 1);
 		return eventFlatMapper.createFromEntity(event);
 	}
-	
+
 	@Transactional
-	public EventViewModel getEventByLink(String eventLink)
-	{
+	public EventViewModel getEventByLink(String eventLink) {
 		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(eventLink)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
-		event.setViews(event.getViews()+1);
+		event.setViews(event.getViews() + 1);
 		return eventMapper.createFromEntity(event);
 	}
 
@@ -196,7 +195,7 @@ public class EventService {
 			if (event.getEventHost().getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 				throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 			} else {
-				event.getImages().forEach(i->imageService.delete(i.getImageUUID()));
+				event.getImages().forEach(i -> imageService.delete(i.getImageUUID()));
 				event.setDeleted(true);
 			}
 			return event;
@@ -204,7 +203,8 @@ public class EventService {
 	}
 
 	public Page<EventViewModel> getAllEvents(Pageable pageable) {
-		return eventRepository.findByEventStateOrEventStateOrderByCreatedAtDesc(State.SOLD.name(), State.OPEN.name(), pageable)
+		return eventRepository
+				.findByEventStateOrEventStateOrderByCreatedAtDesc(State.SOLD.name(), State.OPEN.name(), pageable)
 				.map(eventMapper::createFromEntity);
 	}
 
@@ -222,8 +222,10 @@ public class EventService {
 		Page<Event> page = searchService.search(searchViewModel, pageable, eventRepository);
 		Timestamp now = Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant());
 		page.forEach(event -> {
-			if (event.getBlitSaleStartDate().before(now) && !event.isDeleted() && !event.getEventState().equals(State.ENDED.name())
-					&& event.getOperatorState().equals(OperatorState.APPROVED.name()) && !event.getEventState().equals(State.OPEN.name()) && !event.isOpenInit()) {
+			if (event.getBlitSaleStartDate().before(now) && !event.isDeleted()
+					&& !event.getEventState().equals(State.ENDED.name())
+					&& event.getOperatorState().equals(OperatorState.APPROVED.name())
+					&& !event.getEventState().equals(State.OPEN.name()) && !event.isOpenInit()) {
 				event.setOpenInit(true);
 				event.setEventState(State.OPEN.name());
 				event.getEventDates().forEach(ed -> {
@@ -233,10 +235,11 @@ public class EventService {
 					});
 				});
 			}
-			
-			if(event.getBlitSaleEndDate().before(now) && !event.isDeleted() && !event.getEventState().equals(State.ENDED.name())
-					&& event.getOperatorState().equals(OperatorState.APPROVED.name()) && !event.getEventState().equals(State.CLOSED.name()) && !event.isClosedInit())
-			{
+
+			if (event.getBlitSaleEndDate().before(now) && !event.isDeleted()
+					&& !event.getEventState().equals(State.ENDED.name())
+					&& event.getOperatorState().equals(OperatorState.APPROVED.name())
+					&& !event.getEventState().equals(State.CLOSED.name()) && !event.isClosedInit()) {
 				event.setClosedInit(true);
 				event.setEventState(State.CLOSED.name());
 				event.getEventDates().forEach(ed -> {
@@ -310,10 +313,22 @@ public class EventService {
 		if (event.getEventState().equals(State.ENDED.name()) || event.getEventState().equals(State.SOLD.name()))
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 
-		if (event.getOperatorState().equals(OperatorState.REJECTED.name()) || event.getOperatorState().equals(OperatorState.PENDING.name())) {
+		if (event.getOperatorState().equals(OperatorState.REJECTED.name())
+				|| event.getOperatorState().equals(OperatorState.PENDING.name())) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_NOT_APPROVED));
 		}
 		event.setEventState(vmodel.getState().name());
 		return;
+	}
+
+	@Transactional
+	public void deleteEventGalleryPhoto(long eventId, String uuid) {
+		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId)
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+
+		event.getImages().remove(imageRepository.findByImageUUID(uuid)
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))));
+		
+		imageService.delete(uuid);
 	}
 }

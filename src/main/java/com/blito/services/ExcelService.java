@@ -32,7 +32,7 @@ public class ExcelService {
 	public Map<String, Object> getUserExcelMap(Set<UserViewModel> allUsers) {
 
 		Map<String, Object> model = new HashMap<String, Object>();
-		// Sheetname
+		// Sheet Name
 		model.put("sheetname", "Users");
 		// Headers
 		model.put("headers", Arrays.asList("Id", "Firstname", "Lastname", "Mobile", "Email"));
@@ -50,7 +50,7 @@ public class ExcelService {
 	public Map<String, Object> getBlitsExcelMap(Set<CommonBlitViewModel> blits) {
 
 		Map<String, Object> model = new HashMap<String, Object>();
-		// Sheetname
+		// Sheet Name
 		model.put("sheetname", "Blits");
 		// Headers
 		model.put("headers",
@@ -76,7 +76,7 @@ public class ExcelService {
 	public Map<String, Object> getBlitsExcelMap(Set<CommonBlitViewModel> blits, Map<String, String> additionalFields) {
 
 		Map<String, Object> model = new HashMap<String, Object>();
-		// Sheetname
+		// Sheet Name
 		model.put("sheetname", "Blits");
 		// Headers
 		List<String> headers = new ArrayList<String>(Arrays.asList("UserId", "CustomerName", "Mobile", "Email",
@@ -115,7 +115,7 @@ public class ExcelService {
 	public Map<String, Object> getEventHostsExcelMap(Set<EventHostViewModel> eventHosts) {
 
 		Map<String, Object> model = new HashMap<String, Object>();
-		// Sheetname
+		// Sheet Name
 		model.put("sheetname", "EventHosts");
 		// Headers
 		model.put("headers", Arrays.asList("EventHostId", "HostName", "Telephone"));

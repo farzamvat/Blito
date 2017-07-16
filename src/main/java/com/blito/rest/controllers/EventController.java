@@ -1,6 +1,12 @@
 package com.blito.rest.controllers;
 
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.blito.enums.Response;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
@@ -102,6 +109,13 @@ public class EventController {
 	public ResponseEntity<ResultVm> changeEventState(@Validated @RequestBody ChangeEventStateVm vmodel) {
 		eventService.changeEventState(vmodel);
 		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
+	}
+	
+	@DeleteMapping("/{eventId}/{uuid}")
+	public CompletionStage<ResponseEntity<?>> deleteGalleryPhoto(@PathVariable long eventId, @PathVariable String uuid,HttpServletRequest req,HttpServletResponse res){
+		
+		return CompletableFuture.runAsync(() -> eventService.deleteEventGalleryPhoto(eventId, uuid))
+				.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result, throwable, req, res));
 	}
 	
 	
