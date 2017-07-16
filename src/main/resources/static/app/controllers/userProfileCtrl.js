@@ -216,6 +216,18 @@ angular.module('User')
                     $scope.uploadEventSixEditPhoto = false;
                 })
         };
+        $scope.photoGallerySixEditDelete = function () {
+            $scope.eventPhotoSixEditSuccess = false;
+            $scope.eventPhotoSixEditError = false;
+            photoService.deletePhoto($scope.gallerySixEditUUID)
+                .then(function () {
+                    $scope.uploadEventSixEditPhoto = false;
+                })
+                .catch(function (data) {
+                    document.getElementById("eventPhotoSixEditError").innerHTML= data.data.message;
+                    $scope.eventPhotoSixEditError = true;
+                })
+        };
         $scope.photoGalleryFiveEdit = function () {
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryFiveEdit"))[0].src
@@ -233,6 +245,18 @@ angular.module('User')
                     document.getElementById("eventPhotoFiveEditError").innerHTML= data.data.message;
                     $scope.eventPhotoFiveEditError = true;
                     $scope.uploadEventFiveEditPhoto = false;
+                })
+        };
+        $scope.photoGalleryFiveEditDelete = function () {
+            $scope.eventPhotoFiveEditSuccess = false;
+            $scope.eventPhotoFiveEditError = false;
+            photoService.deletePhoto($scope.galleryFiveEditUUID)
+                .then(function () {
+                    $scope.eventPhotoSixEditSuccess = true;
+                })
+                .catch(function (data) {
+                    document.getElementById("eventPhotoFiveEditError").innerHTML= data.data.message;
+                    $scope.eventPhotoSixEditError = true;
                 })
         };
         $scope.photoGalleryFourEdit = function () {
@@ -253,6 +277,18 @@ angular.module('User')
                     document.getElementById("eventPhotoFourEditError").innerHTML= data.data.message;
                 })
         };
+        $scope.photoGalleryFourEditDelete = function () {
+            $scope.eventPhotoFourEditError = false;
+            $scope.eventPhotoFourEditSuccess = false;
+            photoService.deletePhoto($scope.galleryFourEditUUID)
+                .then(function () {
+                    $scope.eventPhotoFourEditSuccess = true;
+                })
+                .catch(function (data) {
+                    document.getElementById("eventPhotoFourEditError").innerHTML= data.data.message;
+                    $scope.eventPhotoFourEditError = true;
+                })
+        };
         $scope.photoGalleryThreeEdit = function () {
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryThreeEdit"))[0].src
@@ -270,6 +306,18 @@ angular.module('User')
                     document.getElementById("eventPhotoThreeEditError").innerHTML= data.data.message;
                     $scope.eventPhotoThreeEditError = true;
                     $scope.uploadEventThreeEditPhoto = false;
+                })
+        };
+        $scope.photoGalleryThreeEditDelete = function () {
+            $scope.eventPhotoThreeEditSuccess = false;
+            $scope.eventPhotoThreeEditError = false;
+            photoService.deletePhoto($scope.galleryThreeEditUUID)
+                .then(function () {
+                    $scope.eventPhotoThreeEditSuccess = true;
+                })
+                .catch(function (data) {
+                    document.getElementById("eventPhotoThreeEditError").innerHTML= data.data.message;
+                    $scope.eventPhotoThreeEditError = true;
                 })
         };
         $scope.photoGalleryTwoEdit = function () {
@@ -292,6 +340,18 @@ angular.module('User')
                     $scope.eventPhotoTwoEditError = true;
                 })
         };
+        $scope.photoGalleryTwoEditDelete = function () {
+            $scope.eventPhotoTwoEditError = false;
+            $scope.eventPhotoTwoEditSuccess = false;
+            photoService.deletePhoto($scope.galleryTwoEditUUID)
+                .then(function () {
+                    $scope.eventPhotoTwoEditSuccess = true;
+                })
+                .catch(function (data) {
+                    document.getElementById("eventPhotoTwoEditError").innerHTML= data.data.message;
+                    $scope.eventPhotoTwoEditError = true;
+                })
+        };
         $scope.photoGalleryOneEdit = function () {
             var imageData = {
                 encodedBase64 : angular.element(document.getElementsByClassName("galleryOneEdit"))[0].src
@@ -309,6 +369,20 @@ angular.module('User')
                     document.getElementById("eventPhotoOneEditError").innerHTML= data.data.message;
                     $scope.eventPhotoOneEditError = true;
                     $scope.uploadEventOneEditPhoto = false;
+                })
+        };
+        $scope.photoGalleryOneEditDelete = function () {
+            $scope.eventPhotoOneEditError = false;
+            $scope.eventPhotoOneEditSuccess = false;
+            console.log($scope.galleryOneEditUUID);
+            photoService.deletePhoto($scope.galleryOneEditUUID)
+                .then(function () {
+                    $scope.eventPhotoOneEditSuccess = true;
+                })
+                .catch(function (data) {
+                    console.log(data);
+                    document.getElementById("eventPhotoOneEditError").innerHTML= data.data.message;
+                    $scope.eventPhotoOneEditError = true;
                 })
         };
         $scope.photoGallerySix = function () {

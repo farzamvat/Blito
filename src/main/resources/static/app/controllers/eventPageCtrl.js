@@ -53,24 +53,8 @@ angular.module('eventsPageModule')
             }
             $timeout(function () {
                 for(var i = 0 ; i < $scope.eventFlatDates.length; i++) {
-                    var jqSelect = $(".classDate"+i);
-                    jqSelect.pDatepicker({
-                        timePicker: {
-                            enabled: true
-                        },
-                        formatter : function (unixDate) {
-                            var self = this;
-                            var pdate = new persianDate(unixDate);
-                            pdate.formatPersian = true;
-                            return pdate.format(self.format);
-                        },
-                        altField: '#persianDigitAlt',
-                        altFormat: "YYYY MM DD HH:mm:ss",
-                        persianDigit : true,
-                        altFieldFormatter: function (unixDate) {
-                        }
-                    });
-                    jqSelect.pDatepicker("setDate",dateSetterService.persianToArray(persianDate($scope.eventFlatDates[i].date).pDate));
+                    dateSetterService.initDate("classDate"+i);
+                    $(".classDate"+i).pDatepicker("setDate",dateSetterService.persianToArray(persianDate($scope.eventFlatDates[i].date).pDate));
                 }
             }, 300);
         };
@@ -82,7 +66,8 @@ angular.module('eventsPageModule')
 
         $scope.getImages = function (event) {
             event.images.map(function (imageItem) {
-               promises.push(photoService.download(imageItem.imageUUID)
+               promises.push(
+                   photoService.download(imageItem.imageUUID)
                     .then(function (data) {
                         imageItem.imageUUID = data.data.encodedBase64;
                         return imageItem;
@@ -103,7 +88,7 @@ angular.module('eventsPageModule')
                 return item.blitTypeId === inputId;
             });
             console.log($scope.itemWithCapacity);
-        }
+        };
 
         $scope.eventType = "theatre";
         $scope.nextStep1 = function (eventInfo) {
@@ -178,8 +163,6 @@ angular.module('eventsPageModule')
                     customerEmail : userData.email,
                     customerMobileNumber : userData.mobile,
                     customerName : userData.firstname+ " " + userData.lastname,
-                    // customerMobileNumber : "09122011273",
-                    // customerName : "سروش",
                     eventAddress : $scope.eventDataDetails.address,
                     eventDate : $scope.itemWithCapacity[0].date,
                     eventDateAndTime : dateSetterService.persianToArray(persianDate($scope.itemWithCapacity[0].date).pDate).join(),
