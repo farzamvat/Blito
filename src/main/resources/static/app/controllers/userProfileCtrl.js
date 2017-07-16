@@ -583,7 +583,6 @@ angular.module('User')
                 })
         };
 
-
         fileSelectEventGallerySixEdit.onchange = function() {
             imageServices.readBase64Data(fileSelectEventGallerySixEdit, "gallerySixEdit");
         };
@@ -982,74 +981,31 @@ angular.module('User')
             console.log($scope.userEventsEdit[index]);
             $scope.eventEditImageId = imageUUID;
             console.log($scope.eventEditImageId);
+            imageServices.downloadPhotos($scope.eventEditImageId, "profilePhotoUploadEditEvent");
 
-            photoService.download($scope.eventEditImageId)
-                .then(function (data, status) {
-                    console.log(data);
-                    angular.element(document.getElementsByClassName("profilePhotoUploadEditEvent"))[0].src = data.data.encodedBase64;
-                })
-                .catch(function (data, status) {
-                    console.log(status);
-                });
             if(gallery.length >= 1) {
                 $scope.galleryOneEditUUID = gallery[0];
-                photoService.download(gallery[0])
-                    .then(function (data, status) {
-                        angular.element(document.getElementsByClassName("galleryOneEdit"))[0].src = data.data.encodedBase64;
-                    })
-                    .catch(function (data, status) {
-                        console.log(status);
-                    });
+                imageServices.downloadPhotos($scope.galleryOneEditUUID, "galleryOneEdit");
             }
             if(gallery.length >= 2) {
                 $scope.galleryTwoEditUUID = gallery[1];
-                photoService.download(gallery[1])
-                    .then(function (data, status) {
-                        angular.element(document.getElementsByClassName("galleryTwoEdit"))[0].src = data.data.encodedBase64;
-                    })
-                    .catch(function (data, status) {
-                        console.log(status);
-                    });
+                imageServices.downloadPhotos($scope.galleryTwoEditUUID, "galleryTwoEdit");
             }
             if(gallery.length >= 3) {
                 $scope.galleryThreeEditUUID = gallery[2];
-                photoService.download(gallery[2])
-                    .then(function (data, status) {
-                        angular.element(document.getElementsByClassName("galleryThreeEdit"))[0].src = data.data.encodedBase64;
-                    })
-                    .catch(function (data, status) {
-                        console.log(status);
-                    });
+                imageServices.downloadPhotos($scope.galleryThreeEditUUID, "galleryThreeEdit");
             }
             if(gallery.length >= 4) {
                 $scope.galleryFourEditUUID = gallery[3];
-                photoService.download(gallery[3])
-                    .then(function (data, status) {
-                        angular.element(document.getElementsByClassName("galleryFourEdit"))[0].src = data.data.encodedBase64;
-                    })
-                    .catch(function (data, status) {
-                        console.log(status);
-                    });
+                imageServices.downloadPhotos($scope.galleryFourEditUUID, "galleryFourEdit");
             }
             if(gallery.length >= 5) {
                 $scope.galleryFiveEditUUID = gallery[4];
-                photoService.download(gallery[4])
-                    .then(function (data, status) {
-                        angular.element(document.getElementsByClassName("galleryFiveEdit"))[0].src = data.data.encodedBase64;
-                    })
-                    .catch(function (data, status) {
-                        console.log(status);
-                    });
+                imageServices.downloadPhotos($scope.galleryFiveEditUUID, "galleryFiveEdit");
             }
             if(gallery.length === 6) {
                 $scope.gallerySixEditUUID = gallery[5];
-                photoService.download(gallery[5])
-                    .then(function (data, status) {
-                        angular.element(document.getElementsByClassName("gallerySixEdit"))[0].src = data.data.encodedBase64;
-                    })
-                    .catch(function (data, status) {
-                        console.log(status);
-                    });
+                imageServices.downloadPhotos($scope.gallerySixEditUUID, "gallerySixEdit");
             }
             $timeout(function () {
                 for(var i = 0 ; i < $scope.userEventsEdit[index].eventDates.length; i++) {
@@ -1073,20 +1029,7 @@ angular.module('User')
             $scope.newShowTimeEditForms = angular.copy($scope.showTimeEditForms);
 
             $scope.newShowTimeEditForms.map(function (item) {
-
-                var newData = item.date.replace(/:|-/gi , ' ').split(" ");
-                newData.pop();
-                newData.pop();
-                newData = newData.map(function (persianNumb) {
-                    var persian = {'۰':0,'۱':1,'۲':2,'۳':3,'۴':4,'۵': 5,'۶': 6,'۷': 7,'۸' : 8,'۹': 9};
-                    return persianNumb.split('').map(function (persianDigit) {
-                        return persian[persianDigit];
-                    }).join('');
-                });
-                newData = newData.map(function (item) {
-                    return parseInt(item);
-                });
-                item.date = persianDate(newData).gDate.getTime();
+                item.date = dateSetterService.persianToMs(item.date);
                 return item;
             });
             sendingData.blitSaleEndDate = dateSetterService.persianToMs(editEventData.blitSaleEndDate);
@@ -1143,23 +1086,8 @@ angular.module('User')
                     $scope.coverImageIdEdit = item.imageUUID;
                 }
             });
-            photoService.download($scope.plannerImageIdEdit)
-                .then(function (data, status) {
-
-                    angular.element(document.getElementsByClassName("eventPlannerPhotoUploadEdit"))[0].src = data.data.encodedBase64;
-                })
-                .catch(function (data, status) {
-                    console.log(status);
-                });
-
-            photoService.download($scope.coverImageIdEdit)
-                .then(function (data, status) {
-
-                    angular.element(document.getElementsByClassName("coverPhotoUploadEdit"))[0].src = data.data.encodedBase64;
-                })
-                .catch(function (data, status) {
-                    console.log(status);
-                })
+            imageServices.downloadPhotos($scope.plannerImageIdEdit, "eventPlannerPhotoUploadEdit");
+            imageServices.downloadPhotos($scope.coverImageIdEdit, "coverPhotoUploadEdit");
         };
         $scope.editHostSubmit = function (editHostData) {
             editHostData.images.forEach(function (item) {
@@ -1211,14 +1139,7 @@ angular.module('User')
             dateSetterService.initDate("persianEditExchangeTime");
             $(".persianEditExchangeTime").pDatepicker("setDate",dateSetterService.persianToArray(persianDate($scope.exchangeEditTickets[index].eventDate).pDate));
             $scope.exchangeEditImageId = $scope.exchangeEditTickets[index].image.imageUUID;
-            photoService.download($scope.exchangeEditTickets[index].image.imageUUID)
-                .then(function (data, status) {
-
-                    angular.element(document.getElementsByClassName("exchangePhotoUploadEdit"))[0].src = data.data.encodedBase64;
-                })
-                .catch(function (data, status) {
-                    console.log(status);
-                });
+            imageServices.downloadPhotos($scope.exchangeEditImageId, "exchangePhotoUploadEdit");
             mapMarkerService.initMap(document.getElementById('mapExchangeEdit'));
             mapMarkerService.setMarker(latlng.lat, latlng.lng);
             $("#editExchange").modal("show");

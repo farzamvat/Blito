@@ -140,7 +140,7 @@ angular.module('UiServices', [])
             return event
         };
     })
-    .service('imageServices', function ($rootScope) {
+    .service('imageServices', function ($rootScope, photoService) {
         var image = this;
         image.readBase64Data = function (fileSelector, className) {
             var f = fileSelector.files[0], r = new FileReader();
@@ -153,6 +153,15 @@ angular.module('UiServices', [])
             };
             r.readAsDataURL(f);
 
+        };
+        image.downloadPhotos = function (UUID, className) {
+            photoService.download(UUID)
+                .then(function (data, status) {
+                    angular.element(document.getElementsByClassName(className))[0].src = data.data.encodedBase64;
+                })
+                .catch(function (data, status) {
+                    console.log(status);
+                });
         };
     })
     .service('dateSetterService', function () {
