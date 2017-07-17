@@ -31,6 +31,7 @@ public class CommonBlitMapper implements GenericMapper<CommonBlit, CommonBlitVie
 		blit.setBlitTypeName(vmodel.getBlitTypeName());
 		blit.setSeatType(vmodel.getSeatType().name());
 		blit.setBankGateway(vmodel.getBankGateway().name());
+		blit.setAdditionalFields(vmodel.getAdditionalFields());
 		return blit;
 	}
 
@@ -57,6 +58,7 @@ public class CommonBlitMapper implements GenericMapper<CommonBlit, CommonBlitVie
 		vmodel.setBankGateway(Enum.valueOf(BankGateway.class, blit.getBankGateway()));
 		vmodel.setCreatedAt(blit.getCreatedAt());
 		vmodel.setUserId(blit.getUser().getUserId());
+		vmodel.setAdditionalFields(blit.getAdditionalFields());
 		return vmodel;
 	}
 

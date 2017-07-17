@@ -3,6 +3,7 @@ package com.blito.services;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
@@ -31,6 +32,7 @@ import com.blito.models.User;
 import com.blito.repositories.BlitRepository;
 import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.CommonBlitRepository;
+import com.blito.repositories.EventRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
@@ -61,6 +63,8 @@ public class BlitService {
 	private ExcelService excelService;
 	@Autowired
 	private HtmlRenderer htmlRenderer;
+	@Autowired
+	private EventRepository eventRepository;
 	
 	@Value("${zarinpal.web.gateway}")
 	private String zarinpalGatewayURL;
@@ -224,7 +228,17 @@ public class BlitService {
 	
 	public Map<String, Object> searchCommonBlitsForExcel(SearchViewModel<CommonBlit> searchViewModel)
 	{
-		return excelService.getBlitsExcelMap(searchService.search(searchViewModel, commonBlitMapper, commonBlitRepository));
+		Set<CommonBlitViewModel> blits = searchService.search(searchViewModel, commonBlitMapper, commonBlitRepository);
+		if(blits.stream().findFirst().isPresent()) {
+			CommonBlitViewModel blit = blits.stream().findFirst().get();
+			if(blit.getAdditionalFields() != null && !blit.getAdditionalFields().isEmpty()) {
+				CommonBlit cBlit = commonBlitRepository.findOne(blit.getBlitId());
+				Event event = eventRepository.findOne(cBlit.getBlitType().getEventDate().getEvent().getEventId());
+				return excelService.getBlitsExcelMap(blits, event.getAdditionalFields());
+			}
+		}
+
+		return excelService.getBlitsExcelMap(blits);
 	}
 	
 	public Map<String, Object> getExcel(){

@@ -1,5 +1,6 @@
 package com.blito.services;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.blito.configs.Constants;
 import com.blito.mappers.AdminReportsMapper;
 import com.blito.repositories.EventDateRepository;
 import com.blito.repositories.UserRepository;
@@ -28,12 +30,12 @@ public class ExcelService {
 	AdminReportsMapper adminReportsMapper;
 
 	public Map<String, Object> getUserExcelMap(Set<UserViewModel> allUsers) {
-		
+
 		Map<String, Object> model = new HashMap<String, Object>();
-		// Sheetname
+		// Sheet Name
 		model.put("sheetname", "Users");
 		// Headers
-		model.put("headers", Arrays.asList("Id","Firstname","Lastname","Mobile","Email"));
+		model.put("headers", Arrays.asList("Id", "Firstname", "Lastname", "Mobile", "Email"));
 		// Results
 		model.put("results",
 				allUsers.stream()
@@ -44,11 +46,11 @@ public class ExcelService {
 
 		return model;
 	}
-	
+
 	public Map<String, Object> getBlitsExcelMap(Set<CommonBlitViewModel> blits) {
 
 		Map<String, Object> model = new HashMap<String, Object>();
-		// Sheetname
+		// Sheet Name
 		model.put("sheetname", "Blits");
 		// Headers
 		model.put("headers",
@@ -57,32 +59,71 @@ public class ExcelService {
 						"Seat Type", "Payment Status", "Payment Error", "Saman Bank Token", "Saman Bank Ref Number",
 						"Bank Gateway"));
 		// Results
-		model.put("results", blits.stream()
-				.collect(Collectors.toMap(k -> k.getBlitId(), v -> Arrays.asList(String.valueOf(v.getUserId()),
-						v.getCustomerName(), v.getCustomerMobileNumber(), v.getCustomerEmail() , String.valueOf(v.getBlitId()), v.getTrackCode(),
-						v.getBlitTypeName(), v.getCreatedAt().toString(), String.valueOf(v.getCount()), String.valueOf(v.getTotalAmount()), v.getEventName(),
-						v.getEventDateAndTime(), v.getEventAddress(), v.getSeatType() == null ? " " : v.getSeatType().toString(), v.getPaymentStatus() == null ? " " : v.getPaymentStatus().toString(),
-						v.getPaymentError(), v.getSamanBankToken(), v.getSamanBankRefNumber(), v.getBankGateway() == null ? " " :v.getBankGateway().toString()))));
+		model.put("results", blits.stream().collect(Collectors.toMap(k -> k.getBlitId(),
+				v -> Arrays.asList(String.valueOf(v.getUserId()), v.getCustomerName(), v.getCustomerMobileNumber(),
+						v.getCustomerEmail(), String.valueOf(v.getBlitId()), v.getTrackCode(), v.getBlitTypeName(),
+						v.getCreatedAt().toString(), String.valueOf(v.getCount()), String.valueOf(v.getTotalAmount()),
+						v.getEventName(), v.getEventDateAndTime(), v.getEventAddress(),
+						v.getSeatType() == null ? " " : v.getSeatType().toString(),
+						v.getPaymentStatus() == null ? " " : v.getPaymentStatus().toString(), v.getPaymentError(),
+						v.getSamanBankToken(), v.getSamanBankRefNumber(),
+						v.getBankGateway() == null ? " " : v.getBankGateway().toString()))));
 		// NumericsColumns
-		model.put("numericcolumns", Arrays.asList("UserId", "BlitId","Count", "Total Amount"));
-		return model; 
+		model.put("numericcolumns", Arrays.asList("UserId", "BlitId", "Count", "Total Amount"));
+		return model;
 	}
 
-	
-public Map<String, Object> getEventHostsExcelMap(Set<EventHostViewModel> eventHosts){
-		
+	public Map<String, Object> getBlitsExcelMap(Set<CommonBlitViewModel> blits, Map<String, String> additionalFields) {
+
 		Map<String, Object> model = new HashMap<String, Object>();
-		//Sheetname
-		model.put("sheetname", "EventHosts");
-		//Headers
-		model.put("headers", Arrays.asList("EventHostId","HostName", "Telephone"));
-		//Results
-		model.put("results",
-				eventHosts.stream()
-						.collect(Collectors.toMap(k -> k.getEventHostId(), v -> Arrays.asList(Long.toString(v.getEventHostId()),
-								v.getHostName(), v.getTelephone()))));
+		// Sheet Name
+		model.put("sheetname", "Blits");
+		// Headers
+		List<String> headers = new ArrayList<String>(Arrays.asList("UserId", "CustomerName", "Mobile", "Email",
+				"BlitId", "Tracking Code", "Blit Type", "Created At", "Count", "Total Amount", "Event Name",
+				"Event Date and Time", "Event Address", "Seat Type", "Payment Status", "Payment Error",
+				"Saman Bank Token", "Saman Bank Ref Number", "Bank Gateway"));
+		headers.addAll(additionalFields.entrySet().stream().map(entry -> entry.getKey()).collect(Collectors.toList()));
+		model.put("headers", headers);
+		// Results
+		Map<Object, Object> results = blits.stream().collect(Collectors.toMap(k -> k.getBlitId(), v -> getValues(v)));
+		model.put("results", results);
 		// NumericsColumns
-				model.put("numericcolumns", Arrays.asList("EventHostId"));
+		List<String> numericColumns = new ArrayList<String>(Arrays.asList("UserId", "BlitId", "Count", "Total Amount"));
+		numericColumns.addAll(additionalFields.entrySet().stream()
+				.filter(entry -> entry.getValue().equals(Constants.FIELD_INT_TYPE)
+						|| entry.getValue().equals(Constants.FIELD_DOUBLE_TYPE))
+				.map(entry -> entry.getKey()).collect(Collectors.toList()));
+		model.put("numericcolumns", numericColumns);
+		return model;
+	}
+
+	public List<Object> getValues(CommonBlitViewModel v) {
+		List<Object> values = new ArrayList<Object>(Arrays.asList(String.valueOf(v.getUserId()), v.getCustomerName(),
+				v.getCustomerMobileNumber(), v.getCustomerEmail(), String.valueOf(v.getBlitId()), v.getTrackCode(),
+				v.getBlitTypeName(), v.getCreatedAt().toString(), String.valueOf(v.getCount()),
+				String.valueOf(v.getTotalAmount()), v.getEventName(), v.getEventDateAndTime(), v.getEventAddress(),
+				v.getSeatType() == null ? " " : v.getSeatType().toString(),
+				v.getPaymentStatus() == null ? " " : v.getPaymentStatus().toString(), v.getPaymentError(),
+				v.getSamanBankToken(), v.getSamanBankRefNumber(),
+				v.getBankGateway() == null ? " " : v.getBankGateway().toString()));
+		values.addAll(v.getAdditionalFields().entrySet().stream().map(entry -> entry.getValue())
+				.collect(Collectors.toList()));
+		return values;
+	}
+
+	public Map<String, Object> getEventHostsExcelMap(Set<EventHostViewModel> eventHosts) {
+
+		Map<String, Object> model = new HashMap<String, Object>();
+		// Sheet Name
+		model.put("sheetname", "EventHosts");
+		// Headers
+		model.put("headers", Arrays.asList("EventHostId", "HostName", "Telephone"));
+		// Results
+		model.put("results", eventHosts.stream().collect(Collectors.toMap(k -> k.getEventHostId(),
+				v -> Arrays.asList(Long.toString(v.getEventHostId()), v.getHostName(), v.getTelephone()))));
+		// NumericsColumns
+		model.put("numericcolumns", Arrays.asList("EventHostId"));
 		return model;
 	}
 }
