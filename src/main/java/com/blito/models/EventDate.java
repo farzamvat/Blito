@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -20,6 +21,7 @@ import javax.persistence.OneToMany;
 import com.blito.enums.State;
 
 @Entity(name="event_time")
+@Cacheable(false)
 public class EventDate {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	long eventDateId;

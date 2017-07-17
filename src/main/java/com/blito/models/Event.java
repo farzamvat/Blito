@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -23,6 +24,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
 @Entity(name="event")
+@Cacheable(false)
 public class Event {
 	
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)

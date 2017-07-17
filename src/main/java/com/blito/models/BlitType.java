@@ -4,6 +4,7 @@ package com.blito.models;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -18,6 +19,7 @@ import javax.persistence.OneToMany;
 import com.blito.enums.State;
 
 @Entity(name="blit_type")
+@Cacheable(false)
 public class BlitType {
 	
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
