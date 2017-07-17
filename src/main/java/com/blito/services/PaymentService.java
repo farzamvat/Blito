@@ -6,6 +6,8 @@ import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -43,6 +45,7 @@ public class PaymentService {
 	private ZarinpalClient zarinpalClient;
 	@Autowired
 	private CommonBlitRepository commonBlitRepository;
+	private final Logger log = LoggerFactory.getLogger(PaymentService.class);
 
 	public CompletableFuture<String> samanBankRequestToken(String reservationNumber, long totalAmount) {
 		return samanBankService.requestToken(reservationNumber, totalAmount);
@@ -63,10 +66,12 @@ public class PaymentService {
 		{
 			if(blit.getSeatType().equals(SeatType.COMMON.name()))
 			{
+				log.info("success in zarinpal payment callback blit id '{}' user email '{}'",blit.getBlitId(),blit.getCustomerEmail());
 				CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
 				if(!commonBlit.getBlitType().getBlitTypeState().equals(State.OPEN.name()))
 					throw new RuntimeException("not open");
 				PaymentVerificationResponse verificationResponse = zarinpalClient.getPaymentVerificationResponse((int)commonBlit.getTotalAmount(), authority);
+				log.info("success in zarinpal verification response blit id '{}' user email '{}' ref number '{}'",blit.getBlitId(),blit.getCustomerEmail(), verificationResponse.getRefID());
 				persistZarinpalBoughtBlit(commonBlit, authority, String.valueOf(verificationResponse.getRefID()), ZarinpalException.generateMessage(verificationResponse.getStatus()));
 			}
 			else {
@@ -74,6 +79,7 @@ public class PaymentService {
 			}
 		}
 		else {
+			log.error("Error in zarinpal callback, blit id '{}' , user email '{}'",blit.getBlitId(),blit.getCustomerEmail());
 			blit.setPaymentError("NOK");
 			blit.setPaymentStatus(PaymentStatus.ERROR.name());
 			blitRepository.save(blit);
@@ -100,7 +106,7 @@ public class PaymentService {
 						Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 			}
 		}
-		return commonBlit;
+		return commonBlitRepository.save(commonBlit);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
