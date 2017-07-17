@@ -1628,6 +1628,22 @@ a{
     /*50%  {transform: rotateX(0deg);*/
     /*margin-top: 30px;}*/
 /*}*/
+.paymentImages {
+    width: 100px;
+}
+.btnPaymentActive {
+    border: 1px solid #303030;
+    background-color: #efefef;
+    transition: 500ms;
+}
+.btnPaymentActive:active {
+    border:1px solid #39A939;
+    background-color: white;
+}
+.btnPaymentActive:focus{
+    border:1px solid #39A939;
+    background-color: white;
+}
 .navbar-header-backcolor{
     background: rgb(252, 183, 49);
     transform: skew(-15deg);

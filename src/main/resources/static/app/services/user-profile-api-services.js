@@ -24,6 +24,9 @@ angular.module('userProfileApi', [])
             };
             return $http.get(config.baseUrl + '/api/blito/v1.0/download', queryParam);
         };
+        photo.deleteGalleryPhoto = function (eventId, UUID) {
+            return $http.delete(config.baseUrl+'/api/blito/v1.0/events/'+eventId+'/'+UUID)
+        }
     })
     .service('eventService', function ($http, config) {
         var event = this;

@@ -10,10 +10,11 @@ angular.module('homePageModule', [])
         $scope.bannerData = [];
         var promises = [[],[],[],[],[],[],[]];
         var promisesExchange = [[], []];
-        $scope.url = "http://localhost:3000"+"/event-page/";
-        $scope.urlExchange = "http://localhost:3000"+"/exchange-page/";
-        // $scope.url = config.baseUrl+"/event-page/";
-        // $scope.urlExchange = config.baseUrl+"/exchange-page/";
+        // $scope.url = "http://localhost:3000"+"/event-page/";
+        //
+        // $scope.urlExchange = "http://localhost:3000"+"/exchange-page/";
+        $scope.url = config.baseUrl+"/event-page/";
+        $scope.urlExchange = config.baseUrl+"/exchange-page/";
         indexBannerService.getIndexBanner()
             .then(function (data) {
                 console.log(data);
