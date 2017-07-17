@@ -175,6 +175,7 @@ public class AccountController {
 	@GetMapping("/account/user-info")
 	public ResponseEntity<UserViewModel> getCurrentUserInfo()
 	{
+		System.out.println("HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEELLLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		return ResponseEntity.ok(userMapper.createFromEntity(user));
 	}
