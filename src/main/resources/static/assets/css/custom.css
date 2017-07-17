@@ -871,8 +871,7 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
 #map {
     width: 80%;
     height: 300px;
-    margin: auto;
-    margin-top:50px;
+    margin:10px auto;
 
 }
 #mapExchange {
@@ -2197,6 +2196,22 @@ a{
 table td{
     vertical-align: middle !important;
 }
+.profileToggleMenu {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    vertical-align: middle;
+    align-content: center;
+    padding-top: 10px;
+    position: fixed;
+    text-align: center;
+    z-index: 1000;
+    border: 1px solid #333;
+    right: 20px;
+    transition: 500ms;
+    background-color: rgb(252, 183, 49);
+}
+
 @media (max-width: 770px) {
     .navbar-header-backcolor{
         width: 172px !important;
@@ -2258,8 +2273,7 @@ table td{
         width: 300px;
     }
     #map {
-        width: 400px;
-        height: 300px;
+
         margin: 10px auto;
     }
     .blitoTeamContainer{
@@ -2276,6 +2290,21 @@ table td{
 
 
 @media (max-width: 768px) {
+    .editForm {
+        width: 100%;
+        z-index: 1000000000000000000;
+    }
+    .profileTabs {
+        right: -185px;
+        transition: 500ms;
+    }
+    .pullMenuLeft {
+        right: 0;
+    }
+    .rotateToggleMenu {
+        right: 200px;
+        transform: rotate(45deg);
+    }
     .inputXsSize {
         width: 100%;
     }
