@@ -16,9 +16,9 @@ public class ZarinpalRestController {
 	@Autowired
 	private PaymentService paymentService;
 	@GetMapping
-	public ResponseEntity<?> zarinpalCallback(@RequestParam String authority,@RequestParam int amount,@RequestParam String status)
+	public ResponseEntity<?> zarinpalCallback(@RequestParam String Authority,@RequestParam int amount,@RequestParam String status)
 	{
-		paymentService.zarinpalPaymentFlow(authority, amount, status);
+		paymentService.zarinpalPaymentFlow(Authority, amount, status);
 		return ResponseEntity.ok().build();
 	}
 }
