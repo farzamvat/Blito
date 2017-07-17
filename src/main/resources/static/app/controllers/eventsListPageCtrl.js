@@ -5,8 +5,8 @@
 angular.module('eventsPageModule', [])
     .controller('eventsListPageCtrl', function ($scope, $location, eventService, photoService, eventDetailService, config) {
 
-        $scope.url = "http://localhost:3000"+"/event-page/";
-        // $scope.url = config.baseUrl+"/event-page/";
+        // $scope.url = "http://localhost:3000"+"/event-page/";
+        $scope.url = config.baseUrl+"/event-page/";
 
         $scope.getEventsByTypeData = function (type,page) {
             eventService.getEventsByType(type, page)

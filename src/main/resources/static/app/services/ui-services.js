@@ -134,17 +134,85 @@ angular.module('UiServices', [])
             event.eventDates.forEach(function (blit) {
                 capacity +=blit.capacity;
                 soldCount +=blit.soldCount;
-            })
+            });
             event.capacity = capacity;
             event.soldCount = soldCount;
             return event
-        }
+        };
+    })
+    .service('imageServices', function ($rootScope, photoService) {
+        var image = this;
+        image.readBase64Data = function (fileSelector, className) {
+            var f = fileSelector.files[0], r = new FileReader();
 
+            r.onloadend = function (e) {
+                console.log(e);
+                var base64Data = e.target.result;
+                $rootScope.$apply();
+                angular.element(document.getElementsByClassName(className))[0].src = base64Data;
+            };
+            r.readAsDataURL(f);
 
-
+        };
+        image.downloadPhotos = function (UUID, className) {
+            photoService.download(UUID)
+                .then(function (data, status) {
+                    angular.element(document.getElementsByClassName(className))[0].src = data.data.encodedBase64;
+                })
+                .catch(function (data, status) {
+                    console.log(status);
+                });
+        };
     })
     .service('dateSetterService', function () {
         var dateSetter = this;
+        dateSetter.initDate = function (className) {
+            $("."+className).pDatepicker({
+                timePicker: {
+                    enabled: true
+                },
+                formatter : function (unixDate) {
+                    var self = this;
+                    var pdate = new persianDate(unixDate);
+                    pdate.formatPersian = true;
+                    return pdate.format(self.format);
+                },
+                altField: '#persianDigitAlt',
+                altFormat: "YYYY MM DD HH:mm:ss"
+
+            });
+        };
+        dateSetter.persianToArray = function (date) {
+            var dateArray = [];
+            dateArray.push(date.year);
+            dateArray.push(date.month);
+            dateArray.push(date.date);
+            dateArray.push(date.hours);
+            dateArray.push(date.minutes);
+            dateArray.push(date.seconds);
+            dateArray.push(date.milliseconds);
+            dateArray = dateArray.map(function (item) {
+                return parseInt(item);
+            });
+            return dateArray;
+        };
+
+        dateSetter.persianToMs = function (date) {
+            var newData = date.replace(/:|-/gi , ' ').split(" ");
+            newData.pop();
+            newData.pop();
+            newData = newData.map(function (persianNumb) {
+                var persian = {'۰':0,'۱':1,'۲':2,'۳':3,'۴':4,'۵': 5,'۶': 6,'۷': 7,'۸' : 8,'۹': 9};
+                return persianNumb.split('').map(function (persianDigit) {
+                    return persian[persianDigit];
+                }).join('');
+            });
+            newData = newData.map(function (item) {
+                return parseInt(item);
+            });
+            date = persianDate(newData).gDate.getTime();
+            return date;
+        };
         dateSetter.persianToArray = function (date) {
             var dateArray = [];
             dateArray.push(date.year);
@@ -159,15 +227,6 @@ angular.module('UiServices', [])
             });
 
             return dateArray;
-        };
-        dateSetter.persianToMs = function (date) {
-            var newData = date.replace(/[^\w\s]/gi , ' ').split(" ");
-            newData.pop();
-            newData = newData.map(function (item) {
-                return parseInt(item);
-            });
-            date = persianDate(newData).gDate.getTime();
-            return date;
         };
     })
     .service('dataService', function () {
