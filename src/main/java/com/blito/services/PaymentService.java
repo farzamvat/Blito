@@ -62,7 +62,7 @@ public class PaymentService {
 		Blit blit = blitRepository.findByToken(authority).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
 //		if(blit.getTotalAmount() != amount)
 //			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_AMOUNT));
-		if(status == "OK")
+		if(status.equals("OK"))
 		{
 			if(blit.getSeatType().equals(SeatType.COMMON.name()))
 			{
@@ -80,7 +80,7 @@ public class PaymentService {
 		}
 		else {
 			log.error("Error in zarinpal callback, blit id '{}' , user email '{}'",blit.getBlitId(),blit.getCustomerEmail());
-			blit.setPaymentError("NOK");
+			blit.setPaymentError(status);
 			blit.setPaymentStatus(PaymentStatus.ERROR.name());
 			blitRepository.save(blit);
 		}
