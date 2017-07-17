@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +37,7 @@ import com.blito.models.Event;
 import com.blito.models.EventHost;
 import com.blito.models.Image;
 import com.blito.models.User;
+import com.blito.payments.saman.SamanBankService;
 import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.DiscountRepository;
 import com.blito.repositories.EventDateRepository;
@@ -83,6 +86,8 @@ public class EventService {
 	SearchService searchService;
 	@Autowired
 	ImageService imageService;
+	
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	@Transactional
 	public EventViewModel create(EventViewModel vmodel) {
@@ -295,6 +300,7 @@ public class EventService {
 	public Page<EventViewModel> getUserEvents(Pageable pageable) {
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		Page<Event> events = eventRepository.findByEventHostUserUserIdAndIsDeletedFalse(user.getUserId(), pageable);
+		log.info("*****************************************************************  '{}'",events);		
 		return eventMapper.toPage(events);
 	}
 
