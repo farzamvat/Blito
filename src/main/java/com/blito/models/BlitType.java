@@ -19,7 +19,6 @@ import javax.persistence.OneToMany;
 import com.blito.enums.State;
 
 @Entity(name="blit_type")
-@Cacheable(false)
 public class BlitType {
 	
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)

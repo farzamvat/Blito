@@ -21,7 +21,6 @@ import javax.persistence.OneToMany;
 import com.blito.enums.State;
 
 @Entity(name="event_time")
-@Cacheable(false)
 public class EventDate {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	long eventDateId;
