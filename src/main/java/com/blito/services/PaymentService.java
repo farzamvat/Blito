@@ -54,11 +54,11 @@ public class PaymentService {
 		});
 	}
 	
-	public void zarinpalPaymentFlow(String authority,int amount,String status)
+	public void zarinpalPaymentFlow(String authority,String status)
 	{
 		Blit blit = blitRepository.findByToken(authority).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
-		if(blit.getTotalAmount() != amount)
-			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_AMOUNT));
+//		if(blit.getTotalAmount() != amount)
+//			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_AMOUNT));
 		if(status == "OK")
 		{
 			if(blit.getSeatType().equals(SeatType.COMMON.name()))
@@ -66,7 +66,7 @@ public class PaymentService {
 				CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
 				if(!commonBlit.getBlitType().getBlitTypeState().equals(State.OPEN.name()))
 					throw new RuntimeException("not open");
-				PaymentVerificationResponse verificationResponse = zarinpalClient.getPaymentVerificationResponse(amount, authority);
+				PaymentVerificationResponse verificationResponse = zarinpalClient.getPaymentVerificationResponse((int)commonBlit.getTotalAmount(), authority);
 				persistZarinpalBoughtBlit(commonBlit, authority, String.valueOf(verificationResponse.getRefID()), ZarinpalException.generateMessage(verificationResponse.getStatus()));
 			}
 			else {
