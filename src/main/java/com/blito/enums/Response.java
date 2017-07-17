@@ -37,7 +37,28 @@ public enum Response {
 	EVENT_NOT_FOUND("error.event.not.found"),
 	REFRESH_TOKEN_NOT_PRESENT("error.refresh.token.not.present"), 
 	EVENT_LINK_EXISTS("error.event.link.exists"),
-	EVENT_DATE_NOT_FOUND("error.event.date.not.found");
+	EVENT_DATE_NOT_FOUND("error.event.date.not.found"),
+	SEARCH_UNSUCCESSFUL("error.search.unsuccessful"),
+	BLIT_TYPE_NOT_FOUND("error.blit.type.not.found"),
+	INDEX_BANNER_NOT_FOUND("error.index.banner.not.found"),
+	DISCOUNT_CODE_ALREADY_EXISTS("error.discount.code.exists"),
+	INCONSISTENT_DATES("error.inconsistent.dates"),
+	INCONSISTENT_PERCENT("error.inconsistent.percentage"),
+	INCONSISTENT_AMOUNT_WHEN_PERCENT_IS_TRUE("error.inconsistent.data.is.percentage"),
+	INCONSISTENT_AMOUNT("error.inconsistent.data.amount"),
+	EVENT_HOST_ALREADY_EXISTS("event.host.exists"),
+	ISFREE_AND_PRICE_NOT_MATCHED("error.is.free.price.not.matched"),
+	INCONSISTENT_PERCENTAGE_WHEN_PERCENT_IS_FALSE("error.inconsistent.data.is.not.percentage"),
+	EVENT_IS_SOLD("error.event.is.sold"),
+	EXCHANGE_BLIT_IS_SOLD("error.exchange.blit.is.sold"),
+	EVENT_NOT_APPROVED("error.event.not.approved"),
+	FILE_UPLOAD_SIZE_EXCEEDS("error.file.upload.max.size.exceeds"), 
+	EXCHANGE_BLIT_LINK_EXISTS("error.exchange.blit.link.exists"),
+	BANK_GATEWAY_NOT_FOUND("error.bank.gateway.not.found"),
+	FORGET_PASS_EMAIL("forget.password.email"),
+	USER_IS_BANNED("error.user.is.banned"),
+	ROLE_NAME_ALREADY_EXISTS("error.role.name.already.exists"),
+	SENDING_EMAIL_ERROR("error.sending.email");
     
 
     private final String message;

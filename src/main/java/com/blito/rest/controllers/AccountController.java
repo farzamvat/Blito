@@ -2,34 +2,24 @@ package com.blito.rest.controllers;
 
 import java.util.regex.Pattern;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.blito.configs.Constants;
 import com.blito.enums.Response;
-import com.blito.enums.validation.AccountControllerEnumValidation;
-import com.blito.exceptions.EmailAlreadyExistsException;
-import com.blito.exceptions.ExceptionUtil;
-import com.blito.exceptions.NotFoundException;
-import com.blito.exceptions.UnauthorizedException;
-import com.blito.exceptions.UserNotActivatedException;
-import com.blito.exceptions.WrongPasswordException;
+import com.blito.enums.validation.ControllerEnumValidation;
 import com.blito.mappers.UserMapper;
 import com.blito.models.User;
 import com.blito.repositories.UserRepository;
@@ -58,39 +48,14 @@ public class AccountController {
 	@Autowired
 	UserRepository userRepository;
 	@Autowired UserMapper userMapper;
-
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ExceptionViewModel argumentValidation(HttpServletRequest request,
-			MethodArgumentNotValidException exception) {
-		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception, AccountControllerEnumValidation.class);
-	}
-
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler({ EmailAlreadyExistsException.class, UserNotActivatedException.class, 
-		WrongPasswordException.class, ValidationException.class })
-	public ExceptionViewModel badRequests(HttpServletRequest request, RuntimeException exception) {
-		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception);
-	}
 	
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	@ExceptionHandler({NotFoundException.class})
-	public ExceptionViewModel notFounds(HttpServletRequest request, RuntimeException exception) {
-		return ExceptionUtil.generate(HttpStatus.NOT_FOUND, request, exception);
-	}
-	
-	@ResponseStatus(HttpStatus.UNAUTHORIZED)
-	@ExceptionHandler(UnauthorizedException.class)
-	public ExceptionViewModel unauthorized(HttpServletRequest request,UnauthorizedException exception)
-	{
-		return ExceptionUtil.generate(HttpStatus.UNAUTHORIZED, request, exception);
-	}
 
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "user registration")
 	@ApiResponses({ @ApiResponse(code = 201, message = "created successfully", response = ResultVm.class),
-			@ApiResponse(code = 400, message = "ValidationException()"
-					+ "or EmailAlreadyExistsException", response = ExceptionViewModel.class)})
+			@ApiResponse(code = 400, message = "ValidationException"
+					+ "or EmailAlreadyExistsException", response = ExceptionViewModel.class),
+			@ApiResponse(code = 500, message = "InternalServerException", response = ExceptionViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
 	@PostMapping("/register")
 	public DeferredResult<ResponseEntity<ResultVm>> register(@Validated @RequestBody RegisterVm vmodel) {
@@ -108,7 +73,10 @@ public class AccountController {
 		}).join();
 	}
 	
-	
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "activate user")
+	@ApiResponses({@ApiResponse(code = 200, message="", response = ModelAndView.class)})
+	// ***************** SWAGGER DOCS ***************** //
 	@GetMapping("/activate")
 	public ModelAndView activateAccount(@RequestParam String key,@RequestParam String email)
 	{
@@ -175,12 +143,17 @@ public class AccountController {
 				}).join();
 	}
 	
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "send reset password email")
+	@ApiResponses({@ApiResponse(code = 200, message="", response = ResultVm.class),
+				   @ApiResponse(code = 400, message="ValidationException", response = ExceptionViewModel.class)})
+	// ***************** SWAGGER DOCS ***************** //		
 	@GetMapping("/forget-password")
 	public DeferredResult<ResponseEntity<?>> forgetPassword(@RequestParam String email)
 	{
 		DeferredResult<ResponseEntity<?>> deferred = new DeferredResult<ResponseEntity<?>>();
 		if(!Pattern.compile(Constants.EMAIL_REGEX).matcher(email).matches()) {
-			deferred.setErrorResult(new ValidationException(ResourceUtil.getMessage(AccountControllerEnumValidation.EMAIL)));
+			deferred.setErrorResult(new ValidationException(ResourceUtil.getMessage(ControllerEnumValidation.EMAIL)));
 			return deferred;
 		}
 		return userAccountService.forgetPassword(email)
@@ -218,6 +191,12 @@ public class AccountController {
 		return ResponseEntity.ok(userAccountService.updateUserInfo(vmodel));
 	}
 	
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "refresh token")
+	@ApiResponses({@ApiResponse(code = 200, message="refresh token ok", response = TokenModel.class),
+				   @ApiResponse(code = 404, message="NotFoundException", response = ExceptionViewModel.class),
+				   @ApiResponse(code = 401, message="UnauthorizedException", response = ExceptionViewModel.class)})
+	// ***************** SWAGGER DOCS ***************** //
 	@GetMapping("/refresh")
 	public DeferredResult<ResponseEntity<TokenModel>> getAccessToken(@RequestParam String refresh_token)
 	{
@@ -232,7 +211,4 @@ public class AccountController {
 					return deferred;
 				}).join();
 	}
-	
-	
-	
 }

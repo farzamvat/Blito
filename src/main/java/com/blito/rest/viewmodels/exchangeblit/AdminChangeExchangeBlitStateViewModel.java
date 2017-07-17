@@ -2,23 +2,23 @@ package com.blito.rest.viewmodels.exchangeblit;
 
 import javax.validation.constraints.NotNull;
 
-import com.blito.enums.OperatorState;
+import com.blito.enums.State;
 
 public class AdminChangeExchangeBlitStateViewModel {
 	@NotNull
-	long exchangeBlitId;
+	private State state;
 	@NotNull
-	OperatorState operatorState;
+	private long exchangeBlitId;
+	public State getState() {
+		return state;
+	}
+	public void setState(State state) {
+		this.state = state;
+	}
 	public long getExchangeBlitId() {
 		return exchangeBlitId;
 	}
 	public void setExchangeBlitId(long exchangeBlitId) {
 		this.exchangeBlitId = exchangeBlitId;
-	}
-	public OperatorState getOperatorState() {
-		return operatorState;
-	}
-	public void setOperatorState(OperatorState operatorState) {
-		this.operatorState = operatorState;
 	}
 }

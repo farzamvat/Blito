@@ -1,8 +1,9 @@
 package com.blito.models;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -16,7 +17,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.blito.enums.DayOfWeek;
 import com.blito.enums.State;
 
 @Entity(name="event_time")
@@ -24,16 +24,12 @@ public class EventDate {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	long eventDateId;
 	
-	@Enumerated(EnumType.STRING)
-	DayOfWeek dayOfWeek;
-	
 	Timestamp date;
 	
-	@Enumerated(EnumType.STRING)
-	State eventState;
+	String eventDateState;
 	
-	@OneToMany(mappedBy="eventDate", targetEntity=BlitType.class,fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	List<BlitType> blitTypes;
+	@OneToMany(mappedBy="eventDate", targetEntity=BlitType.class,fetch=FetchType.LAZY, cascade=CascadeType.ALL,orphanRemoval=true)
+	Set<BlitType> blitTypes;
 	
 	@ManyToOne
 	@JoinColumn(name="eventId")
@@ -45,15 +41,15 @@ public class EventDate {
 	
 	public EventDate()
 	{
-		blitTypes = new ArrayList<>();
+		blitTypes = new HashSet<>();
 	}
 
-	public State getEventState() {
-		return eventState;
+	public String getEventDateState() {
+		return eventDateState;
 	}
 
-	public void setEventState(State eventState) {
-		this.eventState = eventState;
+	public void setEventDateState(String eventDateState) {
+		this.eventDateState = eventDateState;
 	}
 
 	public Salon getSalon() {
@@ -70,6 +66,7 @@ public class EventDate {
 
 	public void setEvent(Event event) {
 		this.event = event;
+		event.getEventDates().add(this);
 	}
 
 	public long getEventDateId() {
@@ -80,14 +77,6 @@ public class EventDate {
 		this.eventDateId = eventDateId;
 	}
 
-	public DayOfWeek getDayOfWeek() {
-		return dayOfWeek;
-	}
-
-	public void setDayOfWeek(DayOfWeek dayOfWeek) {
-		this.dayOfWeek = dayOfWeek;
-	}
-
 	public Timestamp getDate() {
 		return date;
 	}
@@ -96,11 +85,32 @@ public class EventDate {
 		this.date = date;
 	}
 
-	public List<BlitType> getBlitTypes() {
+	public Set<BlitType> getBlitTypes() {
 		return blitTypes;
 	}
 
-	public void setBlitTypes(List<BlitType> blitTypes) {
+	public void setBlitTypes(Set<BlitType> blitTypes) {
 		this.blitTypes = blitTypes;
+//		blitTypes.forEach(bt->bt.setEventDate(this));
+	}
+	
+	public void addBlitType(BlitType blitType)
+	{
+		this.blitTypes.add(blitType);
+		blitType.setEventDate(this);
+	}
+	
+	public void removeBlitType(BlitType blitType)
+	{
+		this.blitTypes.remove(blitType);
+		blitType.setEventDate(null);
+	}
+	public void removeBlitTypeById(Long id)
+	{
+		Optional<BlitType> bt = this.blitTypes.stream().filter(b -> b.getBlitTypeId() == id).findFirst();
+		if(bt.isPresent())
+		{
+			this.blitTypes.removeIf(b -> b.getBlitTypeId() == id);
+		}
 	}
 }

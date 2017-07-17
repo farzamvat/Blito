@@ -1,27 +1,26 @@
 package com.blito.models;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
-import com.blito.enums.EventType;
-import com.blito.enums.OfferTypeEnum;
-import com.blito.enums.OperatorState;
-import com.blito.enums.State;
+import javax.persistence.OrderBy;
 
 @Entity(name="event")
 public class Event {
@@ -29,27 +28,27 @@ public class Event {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private long eventId;
 	
-	@OneToMany(mappedBy="event",targetEntity=EventDate.class,cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-	List<EventDate> eventDates;
+	@OneToMany(mappedBy="event",targetEntity=EventDate.class,cascade=CascadeType.ALL,fetch=FetchType.EAGER,orphanRemoval=true)
+	@OrderBy("date DESC")
+	Set<EventDate> eventDates;
 	
 	@ManyToOne(optional=false)
 	@JoinColumn(name="eventHostId")
 	private EventHost eventHost;
 	
-	@OneToMany
-	@JoinColumn(name="eventId")
-	private List<Image> images; 
+	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+    @JoinTable(name="event_image" , joinColumns=@JoinColumn(name="event_id"), 
+    inverseJoinColumns=@JoinColumn(name="image_id"))
+	private Set<Image> images; 
 	
 	@ElementCollection(fetch=FetchType.EAGER)
-	@Enumerated(EnumType.STRING)
-	List<OfferTypeEnum> offers;
+	Set<String> offers;
 	
 	@Column(name="event_name")
 	private String eventName;
 	
 	@Column(name="event_type")
-	@Enumerated(EnumType.STRING)
-	private EventType eventType;
+	private String eventType;
 	
 	@Column(name="blit_sale_start_date")
 	private Timestamp blitSaleStartDate;
@@ -57,34 +56,118 @@ public class Event {
 	@Column(name="blit_sale_end_date")
 	private Timestamp blitSaleEndDate;
 	
+	@Column(name="sold_date")
+	private Timestamp eventSoldDate;
+	
+	@Column(name="created_at")
+	private Timestamp createdAt;
+	@Column(columnDefinition="TEXT")
 	private String address;
-	
+	@Column(columnDefinition="TEXT")
 	private String description;
+	@Column(columnDefinition="TEXT")
+	private String members;
 	
-	Double longitude;
+	private long views;
 	
-	Double latitude;
+	private Double longitude;
 	
-	String eventLink;
+	private Double latitude;
 	
-	@Enumerated(EnumType.STRING)
-	State eventState;
+	@Column(unique=true,nullable=true)
+	private String eventLink;
 	
-	@Enumerated(EnumType.STRING)
-	OperatorState operatorState;
+	private String eventState;
 	
-	String aparatDisplayCode;
+	private String operatorState;
 	
-	int orderNumber;
+	private boolean isDeleted = false;
 	
-	boolean isEvento = false;
+	private String aparatDisplayCode;
+	
+	private int orderNumber;
+	
+	private boolean isEvento = false;
+	
+	private boolean isOpenInit = false;
+	
+	private boolean isClosedInit = false;
+
+	@ElementCollection(fetch=FetchType.EAGER)
+	@Column(name="fields")
+	private Map<String,String> additionalFields;
 	
 	public Event() {
-		offers = new ArrayList<>();
-		images = new ArrayList<>();
-		eventDates = new ArrayList<>();
+		offers = new HashSet<>();
+		images = new HashSet<>();
+		eventDates = new HashSet<>();
+		additionalFields = new HashMap<>();
 	}
-	
+
+	public Map<String, String> getAdditionalFields() {
+		return additionalFields;
+	}
+
+	public void setAdditionalFields(Map<String, String> additionalFields) {
+		this.additionalFields = additionalFields;
+	}
+
+	public long getViews() {
+		return views;
+	}
+
+
+	public void setViews(long views) {
+		this.views = views;
+	}
+
+
+	public String getMembers() {
+		return members;
+	}
+
+
+	public boolean isOpenInit() {
+		return isOpenInit;
+	}
+
+
+	public void setOpenInit(boolean isOpenInit) {
+		this.isOpenInit = isOpenInit;
+	}
+
+
+	public boolean isClosedInit() {
+		return isClosedInit;
+	}
+
+
+	public void setClosedInit(boolean isClosedInit) {
+		this.isClosedInit = isClosedInit;
+	}
+
+
+	public void setMembers(String members) {
+		this.members = members;
+	}
+
+
+	public Timestamp getEventSoldDate() {
+		return eventSoldDate;
+	}
+
+	public void setEventSoldDate(Timestamp eventSoldDate) {
+		this.eventSoldDate = eventSoldDate;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
 	public boolean isEvento() {
 		return isEvento;
 	}
@@ -93,11 +176,11 @@ public class Event {
 		this.isEvento = isEvento;
 	}
 
-	public List<OfferTypeEnum> getOffers() {
+	public Set<String> getOffers() {
 		return offers;
 	}
 
-	public void setOffers(List<OfferTypeEnum> offers) {
+	public void setOffers(Set<String> offers) {
 		this.offers = offers;
 	}
 
@@ -117,27 +200,35 @@ public class Event {
 		this.aparatDisplayCode = aparatDisplayCode;
 	}
 
-	public State getEventState() {
+	public String getEventState() {
 		return eventState;
 	}
 
-	public void setEventState(State eventState) {
+	public void setEventState(String eventState) {
 		this.eventState = eventState;
 	}
 
-	public OperatorState getOperatorState() {
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	public String getOperatorState() {
 		return operatorState;
 	}
 
-	public void setOperatorState(OperatorState operatorState) {
+	public void setOperatorState(String operatorState) {
 		this.operatorState = operatorState;
 	}
 
-	public List<Image> getImages() {
+	public Set<Image> getImages() {
 		return images;
 	}
 
-	public void setImages(List<Image> images) {
+	public void setImages(Set<Image> images) {
 		this.images = images;
 	}
 
@@ -173,11 +264,11 @@ public class Event {
 		this.eventId = eventId;
 	}
 
-	public List<EventDate> getEventDates() {
+	public Set<EventDate> getEventDates() {
 		return eventDates;
 	}
 
-	public void setEventDates(List<EventDate> eventDates) {
+	public void setEventDates(Set<EventDate> eventDates) {
 		this.eventDates = eventDates;
 	}
 
@@ -187,6 +278,7 @@ public class Event {
 
 	public void setEventHost(EventHost eventHost) {
 		this.eventHost = eventHost;
+		eventHost.getEvents().add(this);
 	}
 
 	public String getEventName() {
@@ -197,11 +289,11 @@ public class Event {
 		this.eventName = eventName;
 	}
 
-	public EventType getEventType() {
+	public String getEventType() {
 		return eventType;
 	}
 
-	public void setEventType(EventType eventType) {
+	public void setEventType(String eventType) {
 		this.eventType = eventType;
 	}
 
@@ -235,5 +327,23 @@ public class Event {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public void addEventDate(EventDate eventDate)
+	{
+		if(!this.eventDates.contains(eventDate))
+		{
+			this.eventDates.add(eventDate);
+			eventDate.setEvent(this);
+		}
+	}
+	
+	public void removeEventDateById(Long id)
+	{
+		Optional<EventDate> ed = this.eventDates.stream().filter(b -> b.getEventDateId() == id).findFirst();
+		if(ed.isPresent())
+		{
+			this.eventDates.removeIf(b -> b.getEventDateId() == id);
+		}
 	}
 }

@@ -1,14 +1,31 @@
 package com.blito.rest.viewmodels.blittype;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.blito.enums.State;
+import com.blito.rest.viewmodels.View;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 
 public class BlitTypeViewModel {
+	@JsonView(View.BlitType.class)
 	long blitTypeId;
+	@JsonView(View.BlitType.class)
+	@NotEmpty
 	String name;
+	@JsonView(View.BlitType.class)
+	@NotNull
 	int capacity;
+	@JsonView(View.BlitType.class)
 	int soldCount;
+	@JsonView(View.BlitType.class)
 	long price;
+	@JsonView(View.BlitType.class)
 	State blitTypeState;
+	@JsonView(View.BlitType.class)
+	@NotNull
 	boolean isFree;
 	public long getBlitTypeId() {
 		return blitTypeId;
@@ -46,6 +63,7 @@ public class BlitTypeViewModel {
 	public void setBlitTypeState(State blitTypeState) {
 		this.blitTypeState = blitTypeState;
 	}
+	@JsonProperty("isFree")
 	public boolean isFree() {
 		return isFree;
 	}

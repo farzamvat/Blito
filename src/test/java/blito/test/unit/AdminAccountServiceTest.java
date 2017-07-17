@@ -33,7 +33,6 @@ public class AdminAccountServiceTest {
 	@Autowired
 	AdminAccountService adminAccService;
 	
-	private boolean isInit = false;
 	private User admin = new User();
 	private User user1 = new User();
 	private User user2 = new User();
@@ -42,7 +41,6 @@ public class AdminAccountServiceTest {
 	
 	@Before
 	public void init() {
-		if(!isInit) {
 			admin.setFirstname("Admin");
 			admin.setEmail("admin@gamil.com");
 			admin.setActive(true);
@@ -68,8 +66,6 @@ public class AdminAccountServiceTest {
 			user4.setActive(true);
 			user4 = userRepo.save(user4);
 			
-			isInit = true;
-		}
 		
 	}
 	
@@ -82,13 +78,6 @@ public class AdminAccountServiceTest {
 	@Test(expected = NotFoundException.class)
 	public void getWithNotFoundException() {
 		UserViewModel foundUser = adminAccService.getUser(2342);
-	}
-	
-	@Test
-	public void getAll() {
-		Pageable pageable = new PageRequest(0,10);
-		Page<UserViewModel> users = adminAccService.getAllUsers(pageable);
-		assertEquals(5, users.getNumberOfElements());
 	}
 	
 	@Test

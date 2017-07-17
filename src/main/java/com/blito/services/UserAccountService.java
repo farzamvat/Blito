@@ -1,5 +1,8 @@
 package com.blito.services;
 
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -10,8 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.enums.Response;
-import com.blito.exceptions.EmailAlreadyExistsException;
+import com.blito.exceptions.AlreadyExistsException;
 import com.blito.exceptions.InternalServerException;
+import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.exceptions.UnauthorizedException;
 import com.blito.exceptions.UserNotActivatedException;
@@ -40,13 +44,14 @@ public class UserAccountService {
 	@Autowired UserMapper userMapper;
 	@Autowired RoleRepository roleRepository;
 	
-	public CompletableFuture<Void> createUser(RegisterVm vmodel)
+	@Transactional
+	public CompletableFuture<User> createUser(RegisterVm vmodel)
 	{
 
 		Optional<User> result = userRepository.findByEmail(vmodel.getEmail());
 		if(result.isPresent())
 		{
-			throw new EmailAlreadyExistsException(ResourceUtil.getMessage(Response.EMAIL_ALREADY_IN_USE));
+			throw new AlreadyExistsException(ResourceUtil.getMessage(Response.EMAIL_ALREADY_IN_USE));
 		}
 		Role userRole = roleRepository.findByName("USER")
 				.map(r -> r)
@@ -55,10 +60,13 @@ public class UserAccountService {
 		user.setActivationKey(UUID.randomUUID().toString());
 		user.setPassword(encoder.encode(user.getPassword()));
 		user.getRoles().add(userRole);
-		return CompletableFuture.completedFuture(userRepository.save(user))
-				.thenAcceptAsync(savedUser -> 
+		user.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+		return CompletableFuture.completedFuture(user)
+				.thenAccept(savedUser -> 
 					mailService.sendActivationEmail(savedUser)
-				);
+				).thenApply((res) -> {
+					return userRepository.save(user);
+				});
 	}
 	
 	@Transactional
@@ -73,11 +81,13 @@ public class UserAccountService {
 	public CompletableFuture<TokenModel> login(LoginViewModel vmodel)
 	{
 		User user = userRepository.findByEmail(vmodel.getEmail())
-				.map(u -> u)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
 		if(!user.isActive())
 			throw new UserNotActivatedException(ResourceUtil.getMessage(Response.USER_NOT_ACTIVATED));
 			
+		if(user.isBanned()) {
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.USER_IS_BANNED));
+		}
 		return CompletableFuture.supplyAsync(() -> encoder.matches(vmodel.getPassword(), user.getPassword()))
 				.thenCombine(jwtService.generateToken(user.getUserId()), (isMatchedAsyncResult,asyncTokenResult) -> {
 					if(isMatchedAsyncResult)
@@ -92,7 +102,8 @@ public class UserAccountService {
 						}
 						user.setRefreshToken(asyncTokenResult.getRefreshToken());
 						user.setResetKey(null);
-						asyncTokenResult.setRole(user.getRoles().stream().findFirst().get().getName());
+						User savedUser = userRepository.save(user);
+						asyncTokenResult.setRole(savedUser.getRoles().stream().findFirst().get().getName());
 						return asyncTokenResult;
 					}
 					else {
@@ -105,11 +116,16 @@ public class UserAccountService {
 	public CompletableFuture<Void> forgetPassword(String email)
 	{
 		User user = userRepository.findByEmail(email)
-				.map(u -> u)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
+		if(user.isBanned())
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.USER_IS_BANNED));
 		user.setResetKey(RandomUtil.generatePassword());
 		user.setPassword(encoder.encode(user.getResetKey()));
-		return CompletableFuture.runAsync(() -> mailService.sendPasswordResetEmail(user));
+		return CompletableFuture.runAsync(() -> mailService.sendPasswordResetEmail(user))
+				.thenAccept(result -> userRepository.findByEmail(email).ifPresent(u -> {
+					u.setResetKey(null);
+					userRepository.save(user);
+				}));
 	}
 	
 	public CompletableFuture<User> changePassword(ChangePasswordViewModel vmodel)

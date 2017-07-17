@@ -1,11 +1,16 @@
 package com.blito.rest.viewmodels.event;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.blito.annotations.AdditionalFields;
 import com.blito.enums.EventType;
 import com.blito.enums.OfferTypeEnum;
 import com.blito.enums.OperatorState;
@@ -18,101 +23,164 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class EventViewModel {
 	@JsonView(View.SimpleEvent.class)
 	private long eventId;
-	
-	@NotNull
+
+	@NotEmpty
 	@JsonView(View.SimpleEvent.class)
-	private String EventName;
-	
+	private String eventName;
+
 	@NotNull
 	@JsonView(View.SimpleEvent.class)
 	private EventType eventType;
-	
-	@JsonView(View.SimpleEvent.class)
+
+	@NotNull
+	@JsonView(View.Event.class)
 	private Timestamp blitSaleStartDate;
-	
-	@JsonView(View.SimpleEvent.class)
+
+	@NotNull
+	@JsonView(View.Event.class)
 	private Timestamp blitSaleEndDate;
 	
 	@JsonView(View.Event.class)
+	private Timestamp eventSoldDate;
+
+	@JsonView(View.Event.class)
+	@NotEmpty
 	private String address;
-	
+
 	@JsonView(View.Event.class)
 	private String description;
-	
+
 	@JsonView(View.Event.class)
 	private Double latitude;
 	
 	@JsonView(View.Event.class)
+	private Timestamp createdAt;
+
+	@JsonView(View.Event.class)
 	private Double longitude;
-	
+
 	@JsonView(View.Event.class)
 	private String aparatDisplayCode;
-	
-	@JsonView(View.SimpleEvent.class)
+
+	@JsonView(View.Event.class)
+	@NotNull
 	long eventHostId;
-	
+
 	@JsonView(View.SimpleEvent.class)
 	String eventHostName;
+
+	@JsonView(View.SimpleEvent.class)
+	Set<OfferTypeEnum> offers;
+
+	@JsonView(View.Event.class)
+	@NotEmpty
+	Set<EventDateViewModel> eventDates;
+
+	@JsonView(View.SimpleEvent.class)
+	Set<ImageViewModel> images;
 	
 	@JsonView(View.SimpleEvent.class)
-	List<OfferTypeEnum> offers;
-	
-	@JsonView(View.Event.class)
-	List<EventDateViewModel> eventDates;
-	
+	private long views;
+
 	@JsonView(View.SimpleEvent.class)
-	List<ImageViewModel> images;
-	
-	@JsonView(View.Event.class)
 	private String eventLink;
-	
-	@JsonView(View.Event.class)
+
+	@JsonView(View.SimpleEvent.class)
 	private State eventState;
-	
+
 	@JsonView(View.Event.class)
 	private OperatorState operatorState;
-	
+
 	@JsonView(View.AdminEvent.class)
 	private int orderNumber;
-	
+
 	@JsonView(View.SimpleEvent.class)
 	private boolean isEvento;
+	@JsonView(View.Event.class)
+	private String members;
+	@JsonView(View.AdminEvent.class)
+	private boolean isDeleted;
 	
-	
-	
-	public EventViewModel()
-	{
-		eventDates = new ArrayList<>();
-		images = new ArrayList<>();
-		offers = new ArrayList<>();
+	@AdditionalFields
+	@JsonView(View.Event.class)
+	private Map<String,String> additionalFields;
+
+	public EventViewModel() {
+		eventDates = new HashSet<>();
+		images = new HashSet<>();
+		offers = new HashSet<>();
+		additionalFields = new HashMap<>();
 	}
+
 	
-	
+	public Map<String, String> getAdditionalFields() {
+		return additionalFields;
+	}
+
+
+	public void setAdditionalFields(Map<String, String> additionalFields) {
+		this.additionalFields = additionalFields;
+	}
+
+	public long getViews() {
+		return views;
+	}
+
+	public void setViews(long views) {
+		this.views = views;
+	}
+
+	public Timestamp getEventSoldDate() {
+		return eventSoldDate;
+	}
+
+	public void setEventSoldDate(Timestamp eventSoldDate) {
+		this.eventSoldDate = eventSoldDate;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	public String getMembers() {
+		return members;
+	}
+
+	public void setMembers(String members) {
+		this.members = members;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
 	public boolean isEvento() {
 		return isEvento;
 	}
-
 
 	public void setEvento(boolean isEvento) {
 		this.isEvento = isEvento;
 	}
 
-
 	public String getEventHostName() {
 		return eventHostName;
 	}
-
 
 	public void setEventHostName(String eventHostName) {
 		this.eventHostName = eventHostName;
 	}
 
-
-	public List<OfferTypeEnum> getOffers() {
+	public Set<OfferTypeEnum> getOffers() {
 		return offers;
 	}
 
-	public void setOffers(List<OfferTypeEnum> offers) {
+	public void setOffers(Set<OfferTypeEnum> offers) {
 		this.offers = offers;
 	}
 
@@ -157,11 +225,11 @@ public class EventViewModel {
 	}
 
 	public String getEventName() {
-		return EventName;
+		return eventName;
 	}
 
 	public void setEventName(String eventName) {
-		EventName = eventName;
+		this.eventName = eventName;
 	}
 
 	public EventType getEventType() {
@@ -236,19 +304,19 @@ public class EventViewModel {
 		this.eventHostId = eventHostId;
 	}
 
-	public List<EventDateViewModel> getEventDates() {
+	public Set<EventDateViewModel> getEventDates() {
 		return eventDates;
 	}
 
-	public void setEventDates(List<EventDateViewModel> eventDates) {
+	public void setEventDates(Set<EventDateViewModel> eventDates) {
 		this.eventDates = eventDates;
 	}
 
-	public List<ImageViewModel> getImages() {
+	public Set<ImageViewModel> getImages() {
 		return images;
 	}
 
-	public void setImages(List<ImageViewModel> images) {
+	public void setImages(Set<ImageViewModel> images) {
 		this.images = images;
 	}
 }

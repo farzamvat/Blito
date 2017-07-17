@@ -10,7 +10,6 @@ import javax.persistence.OneToOne;
 public class IndexBanner {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	long indexBannerId;
-	boolean active;
 	String title;
 	String description;
 	@OneToOne
@@ -22,12 +21,6 @@ public class IndexBanner {
 	}
 	public void setIndexBannerId(long indexBannerId) {
 		this.indexBannerId = indexBannerId;
-	}
-	public boolean isActive() {
-		return active;
-	}
-	public void setActive(boolean active) {
-		this.active = active;
 	}
 	public String getTitle() {
 		return title;

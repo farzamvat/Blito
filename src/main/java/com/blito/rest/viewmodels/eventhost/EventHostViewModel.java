@@ -1,43 +1,67 @@
 package com.blito.rest.viewmodels.eventhost;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
 import com.blito.annotations.Url;
 import com.blito.enums.HostType;
+import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.image.ImageViewModel;
+import com.fasterxml.jackson.annotation.JsonView;
 
 public class EventHostViewModel {
+	@JsonView(View.SimpleEventHost.class)
 	long eventHostId;
+	
+	@JsonView(View.SimpleEventHost.class)
 	@NotNull
 	String hostName;
-	@NotNull
+	
+	@JsonView(View.EventHost.class)
+	String description;
+	
+	@JsonView(View.EventHost.class)
+	//@Telephone
 	String telephone;
+	
+	@JsonView(View.EventHost.class)
 	@Url
 	String telegramLink;
+	
+	@JsonView(View.EventHost.class)
 	@Url
 	String instagramLink;
+	
+	@JsonView(View.EventHost.class)
 	@Url
 	String twitterLink;
+	
+	@JsonView(View.EventHost.class)
 	@Url
 	String linkedinLink;
+	
+	@JsonView(View.EventHost.class)
 	@Url
 	String websiteLink;
+	
+	@JsonView(View.EventHost.class)
 	@NotNull
 	HostType hostType;
-	List<ImageViewModel> images;
+	
+	@JsonView(View.SimpleEventHost.class)
+	Set<ImageViewModel> images;
 	
 	public EventHostViewModel()
 	{
-		images = new ArrayList<>();
+		images = new HashSet<>();
 	}
 	
-	public List<ImageViewModel> getImages() {
+	public Set<ImageViewModel> getImages() {
 		return images;
 	}
-	public void setImages(List<ImageViewModel> images) {
+	public void setImages(Set<ImageViewModel> images) {
 		this.images = images;
 	}
 	public long getEventHostId() {
@@ -57,6 +81,13 @@ public class EventHostViewModel {
 	}
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
+	}
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	public String getTelegramLink() {
 		return telegramLink;

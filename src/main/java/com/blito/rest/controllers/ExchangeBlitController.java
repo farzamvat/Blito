@@ -1,7 +1,6 @@
 package com.blito.rest.controllers;
 
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,20 +15,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blito.enums.Response;
 import com.blito.mappers.ExchangeBlitMapper;
-import com.blito.models.User;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
+import com.blito.rest.viewmodels.exception.ExceptionViewModel;
+import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitChangeStateViewModel;
 import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
-import com.blito.security.SecurityContextHolder;
 import com.blito.services.ExchangeBlitService;
 import com.fasterxml.jackson.annotation.JsonView;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("${api.base.url}" + "/exchange-blits")
@@ -39,6 +41,12 @@ public class ExchangeBlitController {
 	@Autowired UserRepository userRepository;
 	@Autowired ExchangeBlitMapper exchangeBlitMapper;
 	
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "create exchange blit")
+	@ApiResponses({ @ApiResponse(code = 201, message = "created exchange blit", response = ExchangeBlitViewModel.class),
+			@ApiResponse(code = 400, message = "ValidationException", response = ExceptionViewModel.class),
+			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
+	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.ExchangeBlit.class)
 	@PostMapping
 	public ResponseEntity<ExchangeBlitViewModel> create(@Validated @RequestBody ExchangeBlitViewModel vmodel)
@@ -46,6 +54,12 @@ public class ExchangeBlitController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(exchangeBlitService.create(vmodel));
 	}
 	
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "update exchange blit")
+	@ApiResponses({ @ApiResponse(code = 202, message = "update exchange blit accepted", response = ExchangeBlitViewModel.class),
+			@ApiResponse(code = 400, message = "ValidationException or NotAllowedException", response = ExceptionViewModel.class),
+			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
+	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.ExchangeBlit.class)
 	@PutMapping
 	public ResponseEntity<ExchangeBlitViewModel> update(@Validated @RequestBody ExchangeBlitViewModel vmodel)
@@ -53,33 +67,40 @@ public class ExchangeBlitController {
 		return ResponseEntity.accepted().body(exchangeBlitService.update(vmodel));
 	}
 	
-	@DeleteMapping
-	public ResponseEntity<ResultVm> delete(@RequestParam long exchangeBlitId)
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "delete exchange blit")
+	@ApiResponses({ @ApiResponse(code = 202, message = "delete exchange blit accepted", response = ResultVm.class),
+			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
+	// ***************** SWAGGER DOCS ***************** //
+	@DeleteMapping("/{exchangeBlitId}")
+	public ResponseEntity<ResultVm> delete(@PathVariable long exchangeBlitId)
 	{
 		exchangeBlitService.delete(exchangeBlitId);
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
 	
-	@JsonView(View.SimpleExchangeBlit.class)
-	@GetMapping("/all")
-	public ResponseEntity<List<ExchangeBlitViewModel>> currentUserExchangeBlits()
-	{
-		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
-		return ResponseEntity.ok(exchangeBlitMapper.createFromEntities(user.getExchangeBlits()));
-	}
-	
-	@JsonView(View.SimpleExchangeBlit.class)
-	@GetMapping("/approved")
-	public ResponseEntity<Page<ExchangeBlitViewModel>> approvedExchangeBlits(Pageable pageable)
-	{
-		return ResponseEntity.ok(exchangeBlitService.getApprovedAndNotClosedOrSoldBlits(pageable));
-	}
-	
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "get all user's exchanbe blits")
+	@ApiResponses({ @ApiResponse(code = 200, message = "get all user's exchange blits ok", response = ExchangeBlitViewModel.class),
+			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
+	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.ExchangeBlit.class)
-	@GetMapping("/{exchangeBlitId}")
-	public ResponseEntity<ExchangeBlitViewModel> getExchangeBlitById(@PathVariable long exchangeBlitId)
+	@GetMapping("/all")
+	public ResponseEntity<Page<ExchangeBlitViewModel>> currentUserExchangeBlits(Pageable pageable)
 	{
-		return ResponseEntity.ok(exchangeBlitService.getExchangeBlitById(exchangeBlitId));
+		return ResponseEntity.ok(exchangeBlitService.currentUserExchangeBlits(pageable));
 	}
-	
+
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "change exchnge blit state")
+	@ApiResponses({ @ApiResponse(code = 202, message = "change state accepted", response = ResultVm.class),
+			@ApiResponse(code = 400, message = "ValidationException or NotAllowedException", response = ExceptionViewModel.class),
+			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
+	// ***************** SWAGGER DOCS ***************** //
+	@PostMapping("/change-state")
+	public ResponseEntity<ResultVm> changeExchangeBlitState(@RequestBody @Validated ExchangeBlitChangeStateViewModel vmodel)
+	{
+		exchangeBlitService.changeState(vmodel);
+		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
+	}
 }

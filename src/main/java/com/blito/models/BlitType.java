@@ -1,8 +1,8 @@
 package com.blito.models;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -30,8 +31,7 @@ public class BlitType {
 	
 	private long price;
 	
-	@Enumerated(EnumType.STRING)
-	State blitTypeState;
+	private String blitTypeState;
 	
 	@ManyToOne
 	@JoinColumn(name="eventDateId")
@@ -40,29 +40,47 @@ public class BlitType {
 	private String name;
 	
 	@OneToMany(mappedBy="blitType",targetEntity=BlitTypeSeat.class)
-	List<BlitTypeSeat> blitTypeSeats;
+	Set<BlitTypeSeat> blitTypeSeats;
 	
 	@OneToMany(mappedBy="blitType",targetEntity=CommonBlit.class)
-	List<CommonBlit> commonBlits;
+	Set<CommonBlit> commonBlits;
 	
-	public BlitType() {
-		blitTypeSeats = new ArrayList<>();
-		commonBlits = new ArrayList<>();
+	@ManyToMany
+	private Set<Discount> discounts;
+	
+	public Set<Discount> getDiscounts() {
+		return discounts;
+	}
+
+	public void setDiscounts(Set<Discount> discounts) {
+		this.discounts = discounts;
 	}
 	
-	public List<BlitTypeSeat> getBlitTypeSeats() {
+	public void addCommonBlit(CommonBlit commonBlit)
+	{
+		this.commonBlits.add(commonBlit);
+		commonBlit.setBlitType(this);
+	}
+
+	public BlitType() {
+		blitTypeSeats = new HashSet<>();
+		commonBlits = new HashSet<>();
+		discounts = new HashSet<>();
+	}
+	
+	public Set<BlitTypeSeat> getBlitTypeSeats() {
 		return blitTypeSeats;
 	}
 
-	public void setBlitTypeSeats(List<BlitTypeSeat> blitTypeSeats) {
+	public void setBlitTypeSeats(Set<BlitTypeSeat> blitTypeSeats) {
 		this.blitTypeSeats = blitTypeSeats;
 	}
 
-	public List<CommonBlit> getCommonBlits() {
+	public Set<CommonBlit> getCommonBlits() {
 		return commonBlits;
 	}
 
-	public void setCommonBlits(List<CommonBlit> commonBlits) {
+	public void setCommonBlits(Set<CommonBlit> commonBlits) {
 		this.commonBlits = commonBlits;
 	}
 
@@ -74,11 +92,11 @@ public class BlitType {
 		this.name = name;
 	}
 
-	public State getBlitTypeState() {
+	public String getBlitTypeState() {
 		return blitTypeState;
 	}
 
-	public void setBlitTypeState(State blitTypeState) {
+	public void setBlitTypeState(String blitTypeState) {
 		this.blitTypeState = blitTypeState;
 	}
 

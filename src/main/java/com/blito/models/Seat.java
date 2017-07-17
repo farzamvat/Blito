@@ -46,5 +46,6 @@ public class Seat {
 	}
 	public void setSalon(Salon salon) {
 		this.salon = salon;
+		salon.getSeats().add(this);
 	}
 }

@@ -1,13 +1,18 @@
 package com.blito.rest.viewmodels.image;
 
-import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.blito.enums.ImageType;
+import com.blito.rest.viewmodels.View;
+import com.fasterxml.jackson.annotation.JsonView;
 
 public class ImageViewModel {
-	@NotNull
+	@JsonView(View.DefaultView.class)
+	@NotEmpty
 	String imageUUID;
-	@NotNull
+	@JsonView(View.DefaultView.class)
+	@NotEmpty
 	ImageType type;
 	
 	public ImageViewModel() {}

@@ -2,6 +2,7 @@ package com.blito.mappers;
 
 import org.springframework.stereotype.Component;
 
+import com.blito.enums.State;
 import com.blito.models.BlitType;
 import com.blito.models.EventDate;
 import com.blito.rest.viewmodels.eventdate.EventDateFlatViewModel;
@@ -13,14 +14,13 @@ public class EventDateFlatMapper implements GenericMapper<EventDate,EventDateFla
 		EventDateFlatViewModel vmodel = new EventDateFlatViewModel();
 		vmodel.setEventDateId(eventDate.getEventDateId());
 		vmodel.setDate(eventDate.getDate());
-		vmodel.setDayOfWeek(eventDate.getDayOfWeek());
-		vmodel.setEventState(eventDate.getEventState());
+		vmodel.setEventState(Enum.valueOf(State.class, eventDate.getEventDateState()));
 		vmodel.setBlitTypeId(blitType.getBlitTypeId());
 		vmodel.setName(blitType.getName());
 		vmodel.setPrice(blitType.getPrice());
 		vmodel.setCapacity(blitType.getCapacity());
 		vmodel.setSoldCount(blitType.getSoldCount());
-		vmodel.setBlitTypeState(blitType.getBlitTypeState());
+		vmodel.setBlitTypeState(Enum.valueOf(State.class, blitType.getBlitTypeState()));
 		vmodel.setFree(blitType.isFree());
 		return vmodel;
 	}
@@ -36,7 +36,8 @@ public class EventDateFlatMapper implements GenericMapper<EventDate,EventDateFla
 	}
 
 	@Override
-	public EventDate updateEntity(EventDateFlatViewModel viewModel, EventDate entity) {
+	public EventDate updateEntity(EventDateFlatViewModel vmodel, EventDate eventDate) {
+
 		return null;
 	}
 

@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.blito.annotations.Email;
 import com.blito.annotations.MobileNumber;
 import com.blito.enums.ExchangeBlitType;
@@ -16,17 +18,16 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class ExchangeBlitViewModel {
 	@JsonView(View.SimpleExchangeBlit.class)
 	private long exchangeBlitId;
-	@NotNull
+	@NotEmpty
 	@JsonView(View.SimpleExchangeBlit.class)
 	private String title;
 	@NotNull
 	@JsonView(View.SimpleExchangeBlit.class)
 	private Timestamp eventDate;
-	@NotNull
 	@JsonView(View.SimpleExchangeBlit.class)
 	private double blitCost;
 	@NotNull
-	@JsonView(View.ExchangeBlit.class)
+	@JsonView(View.SimpleExchangeBlit.class)
 	private boolean isBlitoEvent;
 	@MobileNumber
 	@JsonView(View.ExchangeBlit.class)
@@ -34,25 +35,47 @@ public class ExchangeBlitViewModel {
 	@Email
 	@JsonView(View.ExchangeBlit.class)
 	private String email;
-	@NotNull
+	@NotEmpty
 	@JsonView(View.ExchangeBlit.class)
 	private String eventAddress;
-	@NotNull
 	@JsonView(View.ExchangeBlit.class)
-	private String vendorAddress;
+	private double latitude;
+	@JsonView(View.ExchangeBlit.class)
+	private double longitude;
 	@JsonView(View.ExchangeBlit.class)
 	private String description;
 	@JsonView(View.SimpleExchangeBlit.class)
 	private State state;
+	@JsonView(View.SimpleExchangeBlit.class)
+	private String exchangeLink;
+	@NotNull
 	@JsonView(View.SimpleExchangeBlit.class)
 	private ExchangeBlitType type;
 	@JsonView(View.SimpleExchangeBlit.class)
 	private OperatorState operatorState;
 	@JsonView(View.SimpleExchangeBlit.class)
 	private ImageViewModel image;
+	@JsonView(View.ExchangeBlit.class)
+	private Timestamp createdAt;
 	
 	public ImageViewModel getImage() {
 		return image;
+	}
+
+	public String getExchangeLink() {
+		return exchangeLink;
+	}
+
+	public void setExchangeLink(String exchangeLink) {
+		this.exchangeLink = exchangeLink;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	public void setImage(ImageViewModel image) {
@@ -139,14 +162,6 @@ public class ExchangeBlitViewModel {
 		this.eventAddress = eventAddress;
 	}
 
-	public String getVendorAddress() {
-		return vendorAddress;
-	}
-
-	public void setVendorAddress(String vendorAddress) {
-		this.vendorAddress = vendorAddress;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -162,4 +177,21 @@ public class ExchangeBlitViewModel {
 	public void setState(State state) {
 		this.state = state;
 	}
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+	
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://138.201.143.76:80/services" targetNamespace="http://138.201.143.76:80/services">
+	<xs:element name="finalizePaymentRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="request" type="tns:request"></xs:element>
+			</xs:sequence>		
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="finalizePaymentResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="name" type="xs:string"></xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:complexType name="request">
+        <xs:sequence>
+            <xs:element name="ResNum" type="xs:string"/>
+            <xs:element name="RefNum" type="xs:string"/>
+            <xs:element name="State" type="xs:string"/>
+            <xs:element name="MID" type="xs:string"/>
+            <xs:element name="TraceNo" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

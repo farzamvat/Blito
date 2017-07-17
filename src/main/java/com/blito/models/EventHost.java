@@ -1,22 +1,23 @@
 package com.blito.models;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import com.blito.enums.HostType;
 
@@ -26,7 +27,7 @@ public class EventHost {
 	long eventHostId;
 	
 	@OneToMany(mappedBy="eventHost",targetEntity=Event.class)
-	List<Event> events;
+	Set<Event> events;
 
 	@Column(name="host_name")
 	private String hostName;
@@ -50,30 +51,33 @@ public class EventHost {
 	private String linkedinLink;
 	
 	@Column(name="event_type")
-	@Enumerated(EnumType.STRING)
-	private HostType hostType;
+	private String hostType;
 	
-	@ManyToOne(targetEntity=User.class)
+	@ManyToOne(targetEntity=User.class, optional=false)
 	@JoinColumn(name="userId")
 	User user;
 	
-	@OneToMany
-	@Cascade({CascadeType.ALL})
-	@JoinColumn(name="eventHostId")
-	List<Image> images;
 	
+	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+    @JoinTable(name="event_host_image" , joinColumns=@JoinColumn(name="event_host_id"), 
+    inverseJoinColumns=@JoinColumn(name="image_id"))
+	Set<Image> images;
+	
+	@Column(columnDefinition="TEXT")
 	String description;
 	
+	boolean isDeleted = false;
+	
 	public EventHost() {
-		images = new ArrayList<>();
-		events = new ArrayList<>();
+		images = new HashSet<>();
+		events = new HashSet<>();
 	}
 	
-	public List<Image> getImages() {
+	public Set<Image> getImages() {
 		return images;
 	}
 
-	public void setImages(List<Image> images) {
+	public void setImages(Set<Image> images) {
 		this.images = images;
 	}
 
@@ -99,6 +103,7 @@ public class EventHost {
 
 	public void setUser(User user) {
 		this.user = user;
+		user.getEventHosts().add(this);
 	}
 
 	public long getEventHostId() {
@@ -109,11 +114,11 @@ public class EventHost {
 		this.eventHostId = eventHostId;
 	}
 
-	public List<Event> getEvents() {
+	public Set<Event> getEvents() {
 		return events;
 	}
 
-	public void setEvents(List<Event> events) {
+	public void setEvents(Set<Event> events) {
 		this.events = events;
 	}
 
@@ -165,11 +170,21 @@ public class EventHost {
 		this.twitterLink = twitterLink;
 	}
 
-	public HostType getHostType() {
+	public String getHostType() {
 		return hostType;
 	}
 
-	public void setHostType(HostType hostType) {
+	public void setHostType(String hostType) {
 		this.hostType = hostType;
 	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+	
 }

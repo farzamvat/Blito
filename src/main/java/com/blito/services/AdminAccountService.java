@@ -1,11 +1,14 @@
 package com.blito.services;
 
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.enums.Response;
 import com.blito.exceptions.NotFoundException;
@@ -14,6 +17,8 @@ import com.blito.models.User;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.account.UserViewModel;
+import com.blito.search.SearchViewModel;
+import com.blito.security.SecurityContextHolder;
 
 @Service
 public class AdminAccountService {
@@ -22,10 +27,10 @@ public class AdminAccountService {
 	UserRepository userRepository;
 	@Autowired
 	UserMapper userMapper;
-
-	public Page<UserViewModel> getAllUsers(Pageable pageable) {
-		return userMapper.toPage(userRepository.findAll(pageable), userMapper::createFromEntity);
-	}
+	@Autowired
+	SearchService searchService;
+	@Autowired
+	ExcelService excelService;
 
 	public UserViewModel getUser(long userId) {
 		User user = Optional.ofNullable(userRepository.findOne(userId)).map(u -> u)
@@ -47,10 +52,21 @@ public class AdminAccountService {
 		userRepository.save(user);
 	}
 	
-//	public UserViewModel updateUser(UserAdminUpdateViewModel vmodel) {
-//		User user = Optional.ofNullable(userRepository.findOne(vmodel.getUserId())).map(u -> u)
-//				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
-//		return userMapper.createFromEntity(userRepository.save(userMapper.userAdminUpdateViewModelToUser(vmodel, user)));
-//	}	
+	public Page<UserViewModel> searchUsers(SearchViewModel<User> searchViewModel,Pageable pageable)
+	{
+		return searchService.search(searchViewModel, pageable, userMapper, userRepository);
+	}
 	
+	public Map<String, Object> searchUsersForExcel(SearchViewModel<User> searchViewModel)
+	{
+		return excelService.getUserExcelMap(searchService.search(searchViewModel, userMapper, userRepository));
+	}
+	
+	@Transactional
+	public UserViewModel updateUserInfo(UserViewModel vmodel)
+	{
+		User user = userRepository.findOne(vmodel.getUserId());
+		user = userMapper.updateEntity(vmodel, user);
+		return userMapper.createFromEntity(user);
+	}
 }

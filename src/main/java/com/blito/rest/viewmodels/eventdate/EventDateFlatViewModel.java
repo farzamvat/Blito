@@ -2,30 +2,32 @@ package com.blito.rest.viewmodels.eventdate;
 
 import java.sql.Timestamp;
 
-import com.blito.enums.DayOfWeek;
 import com.blito.enums.State;
+import com.blito.rest.viewmodels.View;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 
 public class EventDateFlatViewModel {
-	DayOfWeek dayOfWeek;
+	@JsonView(View.EventDateFlat.class)
 	Timestamp date;
+	@JsonView(View.EventDateFlat.class)
 	long eventDateId;
+	@JsonView(View.EventDateFlat.class)
 	State eventState;
-	
+	@JsonView(View.EventDateFlat.class)
 	long blitTypeId;
+	@JsonView(View.EventDateFlat.class)
 	String name;
+	@JsonView(View.EventDateFlat.class)
 	int capacity;
+	@JsonView(View.EventDateFlat.class)
 	int soldCount;
+	@JsonView(View.EventDateFlat.class)
 	long price;
+	@JsonView(View.EventDateFlat.class)
 	State blitTypeState;
+	@JsonView(View.EventDateFlat.class)
 	boolean isFree;
-	
-	public DayOfWeek getDayOfWeek() {
-		return dayOfWeek;
-	}
-
-	public void setDayOfWeek(DayOfWeek dayOfWeek) {
-		this.dayOfWeek = dayOfWeek;
-	}
 
 	public Timestamp getDate() {
 		return date;
@@ -98,7 +100,7 @@ public class EventDateFlatViewModel {
 	public void setBlitTypeState(State blitTypeState) {
 		this.blitTypeState = blitTypeState;
 	}
-
+	@JsonProperty("isFree")
 	public boolean isFree() {
 		return isFree;
 	}

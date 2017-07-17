@@ -7,5 +7,6 @@ public enum ExchangeBlitType {
 	CONCERT,
 	SPORT,
 	DISCOUNT_TICKET,
-	WORKSHOP
+	WORKSHOP,
+	OTHER
 }

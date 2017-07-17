@@ -7,9 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +24,7 @@ import com.blito.models.User;
 import com.blito.repositories.ExchangeBlitRepository;
 import com.blito.repositories.ImageRepository;
 import com.blito.repositories.UserRepository;
-import com.blito.rest.viewmodels.exchangeblit.AdminChangeExchangeBlitStateViewModel;
+import com.blito.rest.viewmodels.exchangeblit.AdminChangeExchangeBlitOperatorStateViewModel;
 import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.AdminExchangeBlitService;
@@ -70,43 +67,43 @@ public class AdminExchangeBlitServiceTest {
 		user.setEmail("fifi@gmail.com");
 		user.setActive(true);
 		
-		image.setImageType(ImageType.EXCHANGEBLIT_PHOTO);
+		image.setImageType(ImageType.EXCHANGEBLIT_PHOTO.name());
 		image.setImageUUID(Constants.DEFAULT_EXCHANGEBLIT_PHOTO);
 		image = imageRepo.save(image);
 		
 		exBlit1.setTitle("ExBlit1");
 		exBlit1.setImage(image);
 		exBlit1.setUser(user);
-		exBlit1.setType(ExchangeBlitType.CONCERT);
-		exBlit1.setOperatorState(OperatorState.PENDING);
-		exBlit1.setState(State.CLOSED);
+		exBlit1.setExchangeBlitType(ExchangeBlitType.CONCERT.name());
+		exBlit1.setOperatorState(OperatorState.PENDING.name());
+		exBlit1.setState(State.CLOSED.name());
 		exBlit1 = exRepo.save(exBlit1);
 		user.getExchangeBlits().add(exBlit1);
 		
 		exBlit2.setTitle("ExBlit2");
 		exBlit2.setImage(image);
 		exBlit2.setUser(user);
-		exBlit2.setType(ExchangeBlitType.CONCERT);
-		exBlit2.setOperatorState(OperatorState.APPROVED);
-		exBlit2.setState(State.OPEN);
+		exBlit2.setExchangeBlitType(ExchangeBlitType.CONCERT.name());
+		exBlit2.setOperatorState(OperatorState.APPROVED.name());
+		exBlit2.setState(State.OPEN.name());
 		exBlit2 = exRepo.save(exBlit2);
 		user.getExchangeBlits().add(exBlit2);
 		
 		exBlit3.setTitle("ExBlit3");
 		exBlit3.setImage(image);
 		exBlit3.setUser(user);
-		exBlit3.setType(ExchangeBlitType.CONCERT);
-		exBlit3.setOperatorState(OperatorState.APPROVED);
-		exBlit3.setState(State.OPEN);
+		exBlit3.setExchangeBlitType(ExchangeBlitType.CONCERT.name());
+		exBlit3.setOperatorState(OperatorState.APPROVED.name());
+		exBlit3.setState(State.OPEN.name());
 		exBlit3 = exRepo.save(exBlit3);
 		user.getExchangeBlits().add(exBlit3);
 		
 		exBlit4.setTitle("ExBlit4");
 		exBlit4.setImage(image);
 		exBlit4.setUser(user);
-		exBlit4.setType(ExchangeBlitType.CONCERT);
-		exBlit4.setOperatorState(OperatorState.APPROVED);
-		exBlit4.setState(State.OPEN);
+		exBlit4.setExchangeBlitType(ExchangeBlitType.CONCERT.name());
+		exBlit4.setOperatorState(OperatorState.APPROVED.name());
+		exBlit4.setState(State.OPEN.name());
 		exBlit4 = exRepo.save(exBlit4);
 		user.getExchangeBlits().add(exBlit4);
 		
@@ -114,22 +111,16 @@ public class AdminExchangeBlitServiceTest {
 		
 	}
 	
-	@Test
-	public void getallPageable() {
-		Pageable pageable = new PageRequest(0,5);
-		Page<ExchangeBlitViewModel> exBlits = adminExService.exchangeBlitsByPage(pageable);
-		assertEquals(4, exBlits.getNumberOfElements());	
-	}
 	
 	@Test
 	public void changeState() {
-		assertEquals(OperatorState.PENDING, exBlit1.getOperatorState());
-		AdminChangeExchangeBlitStateViewModel vmodel = new AdminChangeExchangeBlitStateViewModel();
+		assertEquals(OperatorState.PENDING.name(), exBlit1.getOperatorState());
+		AdminChangeExchangeBlitOperatorStateViewModel vmodel = new AdminChangeExchangeBlitOperatorStateViewModel();
 		vmodel.setExchangeBlitId(exBlit1.getExchangeBlitId());
 		vmodel.setOperatorState(OperatorState.APPROVED);
-		ExchangeBlitViewModel exBlit = adminExService.changeExchangeBlitState(vmodel);
+		ExchangeBlitViewModel exBlit = adminExService.changeExchangeBlitOperatorState(vmodel);
 		assertEquals(OperatorState.APPROVED, exBlit.getOperatorState());
-		assertEquals(OperatorState.APPROVED, exRepo.findOne(exBlit1.getExchangeBlitId()).getOperatorState());
+		assertEquals(OperatorState.APPROVED.name(), exRepo.findOne(exBlit1.getExchangeBlitId()).getOperatorState());
 	}
 
 }

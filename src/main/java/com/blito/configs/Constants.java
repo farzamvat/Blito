@@ -7,9 +7,10 @@ public final class Constants {
     public static final String PHONE_REGEX = "09[0-9]{9}";
     public static final String PHONE_NUMBER_REGEX = "0[0-9]{6,10}";
     public static final String POSTAL_CODE_REGEX = "[0-9]{10}";
+    public static final String TEL_REGEX = "[0-9]*";
     public static final String NATIONAL_ID = "[0-9]{10}";
     public static final String DATE_REGEX = "(13|14)\\d\\d/([1-9]|0[1-9]|1[012])/(0[1-9]|1[0-9]|2[0-9]|3[0-1]|[1-9])";
-    public static final String LINK_REGEX = "^(http:\\/\\/|https:\\/\\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}.?([a-z]+)?$";
+    public static final String LINK_REGEX = "^(http:\\/\\/|https:\\/\\/)?(wwa-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}.?([a-z]+)?$";
     public static final String EMAIL_REGEX = "^[-!#$%&'*+/0-9=?A-Z^_a-z{|}~](\\.?[-!#$%&'*+/0-9=?A-Z^_a-z{|}~])*@[a-zA-Z](-?[a-zA-Z0-9])*(\\.[a-zA-Z](-?[a-zA-Z0-9])*)+$";
 
     public static final int PASSWORD_MIN_LENGTH = 8;
@@ -32,11 +33,15 @@ public final class Constants {
     public static final int MAX_ACTIVE_SMS_RETRY = 5;
     public static final int MAX_INCORRECT_PASSWORD_BEFORE_BAN = 3;
     
-    public static final String DEFAULT_EVENT_BANNER = "EVENT-BANNER";
     public static final String DEFAULT_HOST_PHOTO = "HOST-PHOTO";
     public static final String DEFAULT_HOST_COVER_PHOTO = "HOST-COVER-PHOTO";
     public static final String DEFAULT_EVENT_PHOTO = "EVENT-PHOTO";
     public static final String DEFAULT_EXCHANGEBLIT_PHOTO = "EXCHANGEBLIT_PHOTO";
+    
+    public static final String FIELD_STRING_TYPE = "string";
+    public static final String FIELD_INT_TYPE = "int";
+    public static final String FIELD_DOUBLE_TYPE = "double";
+    public static final String FIELD_IMAGE_TYPE = "image";
 
     private Constants()
     {}

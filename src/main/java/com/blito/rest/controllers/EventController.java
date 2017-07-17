@@ -1,6 +1,14 @@
 package com.blito.rest.controllers;
 
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,61 +23,125 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blito.enums.Response;
-import com.blito.models.Event;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
+import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
+import com.blito.rest.viewmodels.discount.DiscountViewModel;
+import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventViewModel;
-import com.blito.rest.viewmodels.event.EventUpdateViewModel;
-import com.blito.rest.viewmodels.event.EventFlatViewModel;
-import com.blito.search.SearchViewModel;
+import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
+import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.services.EventService;
 import com.fasterxml.jackson.annotation.JsonView;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("${api.base.url}" + "/events")
 public class EventController {
-	
-	@Autowired EventService eventService;
-	
+
+	@Autowired
+	EventService eventService;
+
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "create event")
+	@ApiResponses({ @ApiResponse(code = 201, message = "created successfully", response = EventViewModel.class),
+			@ApiResponse(code = 400, message = "ValidationException", response = ExceptionViewModel.class),
+			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
+	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.Event.class)
 	@PostMapping
-	public ResponseEntity<EventViewModel> create (@Validated @RequestBody EventViewModel vmodel) {
+	public ResponseEntity<EventViewModel> create(@Validated @RequestBody EventViewModel vmodel) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(eventService.create(vmodel));
 	}
-	
-	@JsonView(View.Event.class)
-	@GetMapping("/flat/{eventId}")
-	public ResponseEntity<EventFlatViewModel> getFlatEvent(@PathVariable long eventId) 
-	{
-		return ResponseEntity.ok(eventService.getFlatEventById(eventId));
-	}
-	
-	@JsonView(View.Event.class)
-	@GetMapping("/{eventId}")
-	public ResponseEntity<EventUpdateViewModel> getEvent(@PathVariable long eventId)
-	{
-		return null;
-	}
-	
+
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "update event")
+	@ApiResponses({ @ApiResponse(code = 202, message = "update event accepted", response = EventViewModel.class),
+			@ApiResponse(code = 400, message = "ValidationException or NotAllowedException" 
+												+ " or EventLinkAlreadyExistsException", response = ExceptionViewModel.class),
+			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
+	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.Event.class)
 	@PutMapping
-	public ResponseEntity<EventViewModel> updateEvent(@Validated @RequestBody EventViewModel vmodel)
-	{
+	public ResponseEntity<EventViewModel> updateEvent(@Validated @RequestBody EventViewModel vmodel) {
 		return ResponseEntity.accepted().body(eventService.update(vmodel));
 	}
-	
-	@DeleteMapping
-	public ResponseEntity<ResultVm> delete(@PathVariable long eventId)
-	{
+
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "delete event")
+	@ApiResponses({ @ApiResponse(code = 202, message = "delete event accepted", response = EventViewModel.class),
+			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class),
+			@ApiResponse(code = 400, message = "NotAllowedException", response = ExceptionViewModel.class) })
+	// ***************** SWAGGER DOCS ***************** //
+	@DeleteMapping("/{eventId}")
+	public ResponseEntity<ResultVm> delete(@PathVariable long eventId) {
 		eventService.delete(eventId);
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
 	
-	@JsonView(View.SimpleEvent.class)
-	@PostMapping("/search")
-	public ResponseEntity<?> search(@RequestBody SearchViewModel<Event> searchViewModel,Pageable pageable)
-	{
-		return ResponseEntity.ok(eventService.searchEvents(searchViewModel, pageable));
+	@PostMapping("/set-discount-code")
+	public ResponseEntity<DiscountViewModel> setDiscountCode(@Validated @RequestBody DiscountViewModel vmodel) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(eventService.setDiscountCode(vmodel));
 	}
+	
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "get all user's events")
+	@ApiResponses({ @ApiResponse(code = 200, message = "get all user's events ok", response = EventViewModel.class)})
+	// ***************** SWAGGER DOCS ***************** //
+	@JsonView(View.Event.class)
+	@GetMapping("/all-user-events")
+	public ResponseEntity<Page<EventViewModel>> getAllUserEvents(Pageable pageable){
+		return ResponseEntity.ok(eventService.getUserEvents(pageable));
+	}
+	
+	// ***************** SWAGGER DOCS ***************** //
+	@ApiOperation(value = "change event state")
+	@ApiResponses({ @ApiResponse(code = 200, message = "change event state ok", response = ResultVm.class),
+			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class),
+			@ApiResponse(code = 400, message = "NotAllowedException", response = ExceptionViewModel.class)})
+	// ***************** SWAGGER DOCS ***************** //
+	@PutMapping("/change-event-state")
+	public ResponseEntity<ResultVm> changeEventState(@Validated @RequestBody ChangeEventStateVm vmodel) {
+		eventService.changeEventState(vmodel);
+		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
+	}
+	
+	@DeleteMapping("/{eventId}/{uuid}")
+	public CompletionStage<ResponseEntity<?>> deleteGalleryPhoto(@PathVariable long eventId, @PathVariable String uuid,HttpServletRequest req,HttpServletResponse res){
+		
+		return CompletableFuture.runAsync(() -> eventService.deleteEventGalleryPhoto(eventId, uuid))
+				.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result, throwable, req, res));
+	}
+	
+	
+	
+//	// ***************** SWAGGER DOCS ***************** //
+//	@ApiOperation(value = "change event date state")
+//	@ApiResponses({ @ApiResponse(code = 200, message = "change event date state ok", response = ResultVm.class),
+//			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class),
+//			@ApiResponse(code = 400, message = "NotAllowedException", response = ExceptionViewModel.class)})
+//	// ***************** SWAGGER DOCS ***************** //
+//	@PutMapping("/change-event-date-state")
+//	public ResponseEntity<ResultVm> changeEventDateState(@Validated @RequestBody ChangeEventDateStateVm vmodel) {
+//		eventService.changeEventDateState(vmodel);
+//		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
+//	}
+//	
+//	// ***************** SWAGGER DOCS ***************** //
+//	@ApiOperation(value = "change blit type state")
+//	@ApiResponses({ @ApiResponse(code = 200, message = "change blit type state ok", response = ResultVm.class),
+//			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class),
+//			@ApiResponse(code = 400, message = "NotAllowedException", response = ExceptionViewModel.class)})
+//	// ***************** SWAGGER DOCS ***************** //
+//	@PutMapping("/change-blit-type-state")
+//	public ResponseEntity<ResultVm> changeBlitTypeState(@Validated @RequestBody ChangeBlitTypeStateVm vmodel) {
+//		eventService.changeBlitTypeState(vmodel);
+//		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
+//	}
+
 }

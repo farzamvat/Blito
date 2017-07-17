@@ -1,8 +1,15 @@
 package com.blito.mappers;
 
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.blito.enums.ExchangeBlitType;
+import com.blito.enums.OperatorState;
+import com.blito.enums.State;
 import com.blito.models.ExchangeBlit;
 import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
 
@@ -21,7 +28,12 @@ public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit,ExchangeBl
 		exchangeBlit.setEventAddress(vmodel.getEventAddress());
 		exchangeBlit.setPhoneNumber(vmodel.getPhoneNumber());
 		exchangeBlit.setEventDate(vmodel.getEventDate());
-		exchangeBlit.setVendorAddress(vmodel.getVendorAddress());
+		exchangeBlit.setLatitude(vmodel.getLatitude());
+		exchangeBlit.setLongitude(vmodel.getLongitude());
+		exchangeBlit.setExchangeBlitType(vmodel.getType().name());
+		exchangeBlit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+		exchangeBlit.setState(State.CLOSED.name());
+		exchangeBlit.setOperatorState(OperatorState.PENDING.name());
 		return exchangeBlit;
 	}
 
@@ -37,11 +49,14 @@ public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit,ExchangeBl
 		vmodel.setEventAddress(exchangeBlit.getEventAddress());
 		vmodel.setPhoneNumber(exchangeBlit.getPhoneNumber());
 		vmodel.setEventDate(exchangeBlit.getEventDate());
-		vmodel.setVendorAddress(exchangeBlit.getVendorAddress());
-		vmodel.setState(exchangeBlit.getState());
-		vmodel.setOperatorState(exchangeBlit.getOperatorState());
-		vmodel.setType(exchangeBlit.getType());
+		vmodel.setState(Enum.valueOf(State.class, exchangeBlit.getState()));
+		vmodel.setOperatorState(Enum.valueOf(OperatorState.class, exchangeBlit.getOperatorState()));
+		vmodel.setType(Enum.valueOf(ExchangeBlitType.class, exchangeBlit.getExchangeBlitType()));
 		vmodel.setImage(imageMapper.createFromEntity(exchangeBlit.getImage()));
+		vmodel.setLatitude(exchangeBlit.getLatitude());
+		vmodel.setLongitude(exchangeBlit.getLongitude());
+		vmodel.setCreatedAt(exchangeBlit.getCreatedAt());
+		vmodel.setExchangeLink(exchangeBlit.getExchangeLink());
 		return vmodel;
 	}
 
@@ -55,7 +70,10 @@ public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit,ExchangeBl
 		exchangeBlit.setEventAddress(vmodel.getEventAddress());
 		exchangeBlit.setPhoneNumber(vmodel.getPhoneNumber());
 		exchangeBlit.setEventDate(vmodel.getEventDate());
-		exchangeBlit.setVendorAddress(vmodel.getVendorAddress());
+		exchangeBlit.setLatitude(vmodel.getLatitude());
+		exchangeBlit.setLongitude(vmodel.getLongitude());
+		exchangeBlit.setOperatorState(OperatorState.PENDING.name());
+		exchangeBlit.setState(State.CLOSED.name());
 		return exchangeBlit;
 	}
 }
