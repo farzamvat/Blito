@@ -14,7 +14,7 @@
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log-dir}/blito.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log-dir}/mp-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${log-dir}/blito-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>7</maxHistory>
             <totalSizeCap>20GB</totalSizeCap>
         </rollingPolicy>

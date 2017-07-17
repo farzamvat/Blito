@@ -81,7 +81,6 @@ public class UserAccountService {
 	public CompletableFuture<TokenModel> login(LoginViewModel vmodel)
 	{
 		User user = userRepository.findByEmail(vmodel.getEmail())
-				.map(u -> u)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
 		if(!user.isActive())
 			throw new UserNotActivatedException(ResourceUtil.getMessage(Response.USER_NOT_ACTIVATED));
@@ -117,12 +116,16 @@ public class UserAccountService {
 	public CompletableFuture<Void> forgetPassword(String email)
 	{
 		User user = userRepository.findByEmail(email)
-				.map(u -> u)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
+		if(user.isBanned())
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.USER_IS_BANNED));
 		user.setResetKey(RandomUtil.generatePassword());
 		user.setPassword(encoder.encode(user.getResetKey()));
 		return CompletableFuture.runAsync(() -> mailService.sendPasswordResetEmail(user))
-				.thenAccept(result -> user.setResetKey(null));
+				.thenAccept(result -> userRepository.findByEmail(email).ifPresent(u -> {
+					u.setResetKey(null);
+					userRepository.save(user);
+				}));
 	}
 	
 	public CompletableFuture<User> changePassword(ChangePasswordViewModel vmodel)
