@@ -112,7 +112,6 @@ public class ExchangeBlitService {
 		return exchangeLink;
 	}
 
-	@Transactional
 	public Page<ExchangeBlitViewModel> currentUserExchangeBlits(Pageable pageable) {
 
 		User user = Optional.ofNullable(userRepository.findOne(SecurityContextHolder.currentUser().getUserId()))

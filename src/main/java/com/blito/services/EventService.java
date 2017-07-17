@@ -296,11 +296,9 @@ public class EventService {
 		return discountMapper.createFromEntity(discount);
 	}
 
-	@Transactional
 	public Page<EventViewModel> getUserEvents(Pageable pageable) {
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		Page<Event> events = eventRepository.findByEventHostUserUserIdAndIsDeletedFalse(user.getUserId(), pageable);
-		log.info("*****************************************************************  '{}'",events);		
 		return eventMapper.toPage(events);
 	}
 
