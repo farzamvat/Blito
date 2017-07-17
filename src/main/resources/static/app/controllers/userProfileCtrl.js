@@ -96,6 +96,9 @@ angular.module('User')
         //==================================================== ********* =================================
 
         //==================================================== IMAGE UPLOADS =================================
+        $scope.deleteGallerySpinner = function (i) {
+            return "deleteSpinner"+i;
+        };
         var fileSelectProfile = document.createElement('input');
         fileSelectProfile.type = 'file';
         var fileSelectCover = document.createElement('input');
@@ -216,14 +219,17 @@ angular.module('User')
                     $scope.uploadEventSixEditPhoto = false;
                 })
         };
-        $scope.photoGallerySixEditDelete = function () {
+        $scope.photoGallerySixEditDelete = function (eventId) {
             $scope.eventPhotoSixEditSuccess = false;
             $scope.eventPhotoSixEditError = false;
-            photoService.deletePhoto($scope.gallerySixEditUUID)
+            document.getElementsByClassName("deleteSpinner5")[0].style.display = "inline";
+            photoService.deleteGalleryPhoto(eventId, $scope.gallerySixEditUUID)
                 .then(function () {
+                    document.getElementsByClassName("deleteSpinner5")[0].style.display = "none";
                     $scope.uploadEventSixEditPhoto = false;
                 })
                 .catch(function (data) {
+                    document.getElementsByClassName("deleteSpinner5")[0].style.display = "none";
                     document.getElementById("eventPhotoSixEditError").innerHTML= data.data.message;
                     $scope.eventPhotoSixEditError = true;
                 })
@@ -247,14 +253,17 @@ angular.module('User')
                     $scope.uploadEventFiveEditPhoto = false;
                 })
         };
-        $scope.photoGalleryFiveEditDelete = function () {
+        $scope.photoGalleryFiveEditDelete = function (eventId) {
             $scope.eventPhotoFiveEditSuccess = false;
             $scope.eventPhotoFiveEditError = false;
-            photoService.deletePhoto($scope.galleryFiveEditUUID)
+            document.getElementsByClassName("deleteSpinner4")[0].style.display = "inline";
+            photoService.deleteGalleryPhoto(eventId, $scope.galleryFiveEditUUID)
                 .then(function () {
                     $scope.eventPhotoSixEditSuccess = true;
+                    document.getElementsByClassName("deleteSpinner4")[0].style.display = "none";
                 })
                 .catch(function (data) {
+                    document.getElementsByClassName("deleteSpinner4")[0].style.display = "none";
                     document.getElementById("eventPhotoFiveEditError").innerHTML= data.data.message;
                     $scope.eventPhotoSixEditError = true;
                 })
@@ -277,14 +286,17 @@ angular.module('User')
                     document.getElementById("eventPhotoFourEditError").innerHTML= data.data.message;
                 })
         };
-        $scope.photoGalleryFourEditDelete = function () {
+        $scope.photoGalleryFourEditDelete = function (eventId) {
             $scope.eventPhotoFourEditError = false;
             $scope.eventPhotoFourEditSuccess = false;
-            photoService.deletePhoto($scope.galleryFourEditUUID)
+            document.getElementsByClassName("deleteSpinner3")[0].style.display = "inline";
+            photoService.deleteGalleryPhoto(eventId, $scope.galleryFourEditUUID)
                 .then(function () {
+                    document.getElementsByClassName("deleteSpinner3")[0].style.display = "none";
                     $scope.eventPhotoFourEditSuccess = true;
                 })
                 .catch(function (data) {
+                    document.getElementsByClassName("deleteSpinner3")[0].style.display = "none";
                     document.getElementById("eventPhotoFourEditError").innerHTML= data.data.message;
                     $scope.eventPhotoFourEditError = true;
                 })
@@ -308,14 +320,17 @@ angular.module('User')
                     $scope.uploadEventThreeEditPhoto = false;
                 })
         };
-        $scope.photoGalleryThreeEditDelete = function () {
+        $scope.photoGalleryThreeEditDelete = function (eventId) {
             $scope.eventPhotoThreeEditSuccess = false;
             $scope.eventPhotoThreeEditError = false;
-            photoService.deletePhoto($scope.galleryThreeEditUUID)
+            document.getElementsByClassName("deleteSpinner2")[0].style.display = "inline";
+            photoService.deleteGalleryPhoto(eventId, $scope.galleryThreeEditUUID)
                 .then(function () {
+                    document.getElementsByClassName("deleteSpinner2")[0].style.display = "none";
                     $scope.eventPhotoThreeEditSuccess = true;
                 })
                 .catch(function (data) {
+                    document.getElementsByClassName("deleteSpinner2")[0].style.display = "none";
                     document.getElementById("eventPhotoThreeEditError").innerHTML= data.data.message;
                     $scope.eventPhotoThreeEditError = true;
                 })
@@ -340,14 +355,17 @@ angular.module('User')
                     $scope.eventPhotoTwoEditError = true;
                 })
         };
-        $scope.photoGalleryTwoEditDelete = function () {
+        $scope.photoGalleryTwoEditDelete = function (eventId) {
             $scope.eventPhotoTwoEditError = false;
             $scope.eventPhotoTwoEditSuccess = false;
-            photoService.deletePhoto($scope.galleryTwoEditUUID)
+            document.getElementsByClassName("deleteSpinner1")[0].style.display = "inline";
+            photoService.deleteGalleryPhoto(eventId, $scope.galleryTwoEditUUID)
                 .then(function () {
                     $scope.eventPhotoTwoEditSuccess = true;
+                    document.getElementsByClassName("deleteSpinner1")[0].style.display = "none";
                 })
                 .catch(function (data) {
+                    document.getElementsByClassName("deleteSpinner1")[0].style.display = "none";
                     document.getElementById("eventPhotoTwoEditError").innerHTML= data.data.message;
                     $scope.eventPhotoTwoEditError = true;
                 })
@@ -371,16 +389,17 @@ angular.module('User')
                     $scope.uploadEventOneEditPhoto = false;
                 })
         };
-        $scope.photoGalleryOneEditDelete = function () {
+        $scope.photoGalleryOneEditDelete = function (eventId) {
             $scope.eventPhotoOneEditError = false;
             $scope.eventPhotoOneEditSuccess = false;
-            console.log($scope.galleryOneEditUUID);
-            photoService.deletePhoto($scope.galleryOneEditUUID)
+            document.getElementsByClassName("deleteSpinner0")[0].style.display = "inline";
+            photoService.deleteGalleryPhoto(eventId, $scope.galleryOneEditUUID)
                 .then(function () {
                     $scope.eventPhotoOneEditSuccess = true;
+                    document.getElementsByClassName("deleteSpinner0")[0].style.display = "none";
                 })
                 .catch(function (data) {
-                    console.log(data);
+                    document.getElementsByClassName("deleteSpinner0")[0].style.display = "none";
                     document.getElementById("eventPhotoOneEditError").innerHTML= data.data.message;
                     $scope.eventPhotoOneEditError = true;
                 })
@@ -577,7 +596,7 @@ angular.module('User')
 
         $scope.photoUploadPlanner = function () {
             var imageData = {
-                encodedBase64 : angular.element(document.getElementById("eventPlannerPhotoUpload"))[0].src
+                encodedBase64 : angular.element(document.getElementsByClassName("eventPlannerPhotoUpload"))[0].src
             };
             $scope.uploadPlannerPhoto = true;
             $scope.plannerPhotoSuccess = false;

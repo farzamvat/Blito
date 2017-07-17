@@ -137,7 +137,7 @@
                                         <strong></strong>
                                     </div>
                                     <div ng-show="eventEditPhotoSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
-                                        <strong>عکس با موفقیت بارگذاری شد</strong>
+                                        <strong>عملیات با موفقیت انجام شد !</strong>
                                     </div>
                                 </div>
 
@@ -152,13 +152,13 @@
                                             <img class="img-responsive gallery galleryOneEdit marginTop30"  src="" alt="">
                                             <div class="col-xs-12">
                                                 <div class="btn btn-success marginTop10" ng-click="photoGalleryOneEdit()">بارگذاری   <i ng-show="uploadEventOneEditPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
-                                                <div class="btn btn-danger marginTop10" ng-click="photoGalleryOneEditDelete()"><i class="fa fa-trash"></i><i class="fa fa-spinner fa-spin dispNone"></i></div>
+                                                <div class="btn btn-danger marginTop10" ng-click="photoGalleryOneEditDelete(editEventFields.eventId)"><i class="fa fa-trash"></i><i ng-class="deleteGallerySpinner(0)" class="fa fa-spinner fa-spin dispNone"></i></div>
                                             </div>
                                             <div id="eventPhotoOneEditError" ng-show="eventPhotoOneEditError" class="text-center alert alert-danger col-xs-12">
                                                 <strong></strong>
                                             </div>
                                             <div ng-show="eventPhotoOneEditSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
-                                                <strong>عکس با موفقیت بارگذاری شد</strong>
+                                                <strong>عملیات با موفقیت انجام شد !</strong>
                                             </div>
                                         </div>
                                     </div>
@@ -169,13 +169,13 @@
                                             <img class="img-responsive gallery galleryTwoEdit marginTop30"  src="" alt="">
                                             <div class="col-xs-12">
                                                 <div class="btn btn-success marginTop10" ng-click="photoGalleryTwoEdit()">بارگذاری   <i ng-show="uploadEventTwoEditPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
-                                                <div class="btn btn-danger marginTop10" ng-click="photoGalleryTwoEditDelete()"><i class="fa fa-trash"></i><i class="fa fa-spinner fa-spin dispNone"></i></div>
+                                                <div class="btn btn-danger marginTop10" ng-click="photoGalleryTwoEditDelete(editEventFields.eventId)"><i class="fa fa-trash"></i><i ng-class="deleteGallerySpinner(1)" class="fa fa-spinner fa-spin dispNone"></i></div>
                                             </div>
                                             <div id="eventPhotoTwoEditError" ng-show="eventPhotoTwoEditError" class="text-center alert alert-danger col-xs-12">
                                                 <strong></strong>
                                             </div>
                                             <div ng-show="eventPhotoTwoEditSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
-                                                <strong>عکس با موفقیت بارگذاری شد</strong>
+                                                <strong>عملیات با موفقیت انجام شد !</strong>
                                             </div>
                                         </div>
                                     </div>
@@ -186,13 +186,13 @@
                                             <img class="img-responsive gallery galleryThreeEdit marginTop30"  src="" alt="">
                                             <div class="col-xs-12">
                                                 <div class="btn btn-success marginTop10" ng-click="photoGalleryThreeEdit()">بارگذاری   <i ng-show="uploadEventThreeEditPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
-                                                <div class="btn btn-danger marginTop10" ng-click="photoGalleryThreeEditDelete()"><i class="fa fa-trash"></i><i class="fa fa-spinner fa-spin dispNone"></i></div>
+                                                <div class="btn btn-danger marginTop10" ng-click="photoGalleryThreeEditDelete(editEventFields.eventId)"><i class="fa fa-trash"></i><i ng-class="deleteGallerySpinner(2)" class="fa fa-spinner fa-spin dispNone"></i></div>
                                             </div>
                                             <div id="eventPhotoThreeEditError" ng-show="eventPhotoThreeEditError" class="text-center alert alert-danger col-xs-12">
                                                 <strong></strong>
                                             </div>
                                             <div ng-show="eventPhotoThreeEditSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
-                                                <strong>عکس با موفقیت بارگذاری شد</strong>
+                                                <strong>عملیات با موفقیت انجام شد !</strong>
                                             </div>
                                         </div>
                                     </div>
@@ -205,13 +205,13 @@
                                             <img class="img-responsive gallery galleryFourEdit marginTop30"  src="" alt="">
                                             <div class="col-xs-12">
                                                 <div class="btn btn-success marginTop10" ng-click="photoGalleryFourEdit()">بارگذاری   <i ng-show="uploadEventFourEditPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
-                                                <div class="btn btn-danger marginTop10" ng-click="photoGalleryFourEditDelete()"><i class="fa fa-trash"></i><i class="fa fa-spinner fa-spin dispNone"></i></div>
+                                                <div class="btn btn-danger marginTop10" ng-click="photoGalleryFourEditDelete(editEventFields.eventId)"><i class="fa fa-trash"></i><i ng-class="deleteGallerySpinner(3)" class="fa fa-spinner fa-spin dispNone"></i></div>
                                             </div>
                                             <div id="eventPhotoFourEditError" ng-show="eventPhotoFourEditError" class="text-center alert alert-danger col-xs-12">
                                                 <strong></strong>
                                             </div>
                                             <div ng-show="eventPhotoFourEditSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
-                                                <strong>عکس با موفقیت بارگذاری شد</strong>
+                                                <strong>عملیات با موفقیت انجام شد !</strong>
                                             </div>
                                         </div>
                                     </div>
@@ -222,13 +222,13 @@
                                             <img class="img-responsive gallery galleryFiveEdit marginTop30"  src="" alt="">
                                             <div class="col-xs-12">
                                                 <div class="btn btn-success marginTop10" ng-click="photoGalleryFiveEdit()">بارگذاری   <i ng-show="uploadEventFiveEditPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
-                                                <div class="btn btn-danger marginTop10" ng-click="photoGalleryFiveEditDelete()"><i class="fa fa-trash"></i><i class="fa fa-spinner fa-spin dispNone"></i></div>
+                                                <div class="btn btn-danger marginTop10" ng-click="photoGalleryFiveEditDelete(editEventFields.eventId)"><i class="fa fa-trash"></i><i ng-class="deleteGallerySpinner(4)" class="fa fa-spinner fa-spin dispNone"></i></div>
                                             </div>
                                             <div id="eventPhotoFiveEditError" ng-show="eventPhotoFiveEditError" class="text-center alert alert-danger col-xs-12">
                                                 <strong></strong>
                                             </div>
                                             <div ng-show="eventPhotoFiveEditSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
-                                                <strong>عکس با موفقیت بارگذاری شد</strong>
+                                                <strong>عملیات با موفقیت انجام شد !</strong>
                                             </div>
                                         </div>
                                     </div>
@@ -239,13 +239,13 @@
                                             <img class="img-responsive gallery gallerySixEdit marginTop30"  src="" alt="">
                                             <div class="col-xs-12">
                                                 <div class="btn btn-success marginTop10" ng-click="photoGallerySixEdit()">بارگذاری   <i ng-show="uploadEventSixEditPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
-                                                <div class="btn btn-danger marginTop10" ng-click="photoGallerySixEditDelete()"><i class="fa fa-trash"></i><i class="fa fa-spinner fa-spin dispNone"></i></div>
+                                                <div class="btn btn-danger marginTop10" ng-click="photoGallerySixEditDelete(editEventFields.eventId)"><i class="fa fa-trash"></i><i ng-class="deleteGallerySpinner(5)" class="fa fa-spinner fa-spin dispNone"></i></div>
                                             </div>
                                             <div id="eventPhotoSixEditError" ng-show="eventPhotoSixEditError" class="text-center alert alert-danger col-xs-12">
                                                 <strong></strong>
                                             </div>
                                             <div ng-show="eventPhotoSixEditSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
-                                                <strong>عکس با موفقیت بارگذاری شد</strong>
+                                                <strong>عملیات با موفقیت انجام شد !</strong>
                                             </div>
                                         </div>
                                     </div>
