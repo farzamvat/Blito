@@ -20,9 +20,12 @@ angular.module('eventsPageModule')
             $("#registrationModal").modal("show");
         };
         $scope.eventData = {};
+
         eventService.getEvent($routeParams.eventLink)
             .then(function (data, status) {
+                console.log(data);
                 $scope.eventDataDetails = angular.copy(data.data);
+                $scope.eventType = $scope.eventDataDetails.eventType;
                 mapMarkerService.initMapOnlyShowMarker(document.getElementById('map'));
                 mapMarkerService.setMarker($scope.eventDataDetails.latitude, $scope.eventDataDetails.longitude);
                 $scope.flatEventDates($scope.eventDataDetails.eventDates);
@@ -54,7 +57,7 @@ angular.module('eventsPageModule')
             $timeout(function () {
                 for(var i = 0 ; i < $scope.eventFlatDates.length; i++) {
                     dateSetterService.initDate("classDate"+i);
-                    $(".classDate"+i).pDatepicker("setDate",dateSetterService.persianToArray(persianDate($scope.eventFlatDates[i].date).pDate));
+                    $(".classDate"+i).val(persianDate($scope.eventFlatDates[i].date).format("dddd, MMMM DD, h:mm"))
                 }
             }, 300);
         };
@@ -89,8 +92,6 @@ angular.module('eventsPageModule')
             });
             console.log($scope.itemWithCapacity);
         };
-
-        $scope.eventType = "theatre";
         $scope.nextStep1 = function (eventInfo) {
             if($scope.itemWithCapacity[0].isFree) {
                 $scope.totalNumber = eventInfo.ticketNumber;

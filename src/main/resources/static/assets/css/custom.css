@@ -693,20 +693,58 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     padding: 15px 60px;
     font-size: 14px;
 }
-
-.eventPageHeaderTheatre {
-    background: url('../img/1.png') fixed ;
-    background-size: 100% 500px;
-    padding-top: 68px;
-    padding-bottom: 40px;
+.fontGreen {
+    color: #39A939;
 }
-
-
+.fontRed {
+    color: #a94442;
+}
+.eventPageHeaderTheatre {
+    background: url('../img/theater.png') fixed ;
+    background-size: 100% 380px;
+    padding-top: 68px;
+    padding-bottom: 20px;
+}
 .eventPageHeaderCinema {
-    background: url('../img/2.png') fixed ;
-    background-size: 100% 500px;
-    padding-top: 80px;
-    padding-bottom: 40px;
+    background: url('../img/cinema.png') fixed ;
+    background-size: 100% 380px;
+    padding-top: 68px;
+    padding-bottom: 20px;
+}
+.eventPageHeaderEducation {
+    background: url('../img/amoozeshi.png') fixed ;
+    background-size: 100% 380px;
+    padding-top: 68px;
+    padding-bottom: 20px;
+}
+.eventPageHeaderEntertainment {
+    background: url('../img/entertainment.png') fixed ;
+    background-size: 100% 380px;
+    padding-top: 68px;
+    padding-bottom: 20px;
+}
+.eventPageHeaderTour {
+    background: url('../img/gardeshgari.png') fixed ;
+    background-size: 100% 380px;
+    padding-top: 68px;
+    padding-bottom: 20px;
+}
+.eventPageHeaderMusic {
+    background: url('../img/music.png') fixed ;
+    background-size: 100% 380px;
+    padding-top: 88px;
+    padding-bottom: 20px;
+}
+.eventPageHeaderOther {
+    background: url('../img/sayer.png') fixed ;
+    background-size: 100% 380px;
+    padding-top: 68px;
+    padding-bottom: 20px;
+}
+.logoEventPage {
+    position: absolute;
+    top: 20px;
+    right: 10px;
 }
 .eventContent {
     margin-right: 0;
@@ -732,6 +770,9 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 }
 .panelMidSize {
     height: 250px ;
+}
+.eventPagePanelHeading {
+    opacity: 0.8;
 }
 
 .eventPageImage img {
@@ -2193,6 +2234,9 @@ a{
     border:2px solid #ddd;
     float:right;
 }
+.datePickerFormatEventPage {
+    color: black !important;
+}
 table td{
     vertical-align: middle !important;
 }
@@ -2290,6 +2334,14 @@ table td{
 
 
 @media (max-width: 768px) {
+    .logoEventPage {
+        top: 30px;
+    }
+    .eventContent {
+        padding-right: 30px;
+    }
+
+
     .editForm {
         width: 100%;
         z-index: 1000000000000000000;
@@ -2373,10 +2425,10 @@ table td{
     .eventPageHeader {
         background-size: 3000px auto;
     }
-    .imgMobileSize {
-        display: block;
-        margin: 10px auto;
-    }
+    /*.imgMobileSize {*/
+        /*display: block;*/
+        /*margin: 10px auto;*/
+    /*}*/
     .eventContent {
         text-align: center;
     }
