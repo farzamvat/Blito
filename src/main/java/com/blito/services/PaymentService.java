@@ -18,7 +18,6 @@ import com.blito.enums.PaymentStatus;
 import com.blito.enums.Response;
 import com.blito.enums.SeatType;
 import com.blito.enums.State;
-import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.exceptions.ZarinpalException;
 import com.blito.models.Blit;
@@ -57,6 +56,7 @@ public class PaymentService {
 		});
 	}
 	
+	@Transactional
 	public void zarinpalPaymentFlow(String authority,String status)
 	{
 		Blit blit = blitRepository.findByToken(authority).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
@@ -86,7 +86,7 @@ public class PaymentService {
 		}
 	}
 	
-	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
+	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
 	private Blit persistZarinpalBoughtBlit(CommonBlit blit, String authority, String refNum, String paymentMessage) {
 		CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
 		BlitType blitType = blitTypeRepository.findByBlitTypeId(commonBlit.getBlitType().getBlitTypeId());
@@ -109,6 +109,7 @@ public class PaymentService {
 		return commonBlitRepository.save(commonBlit);
 	}
 
+	
 	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
 	private void completePaymentOperation(FinalizePaymentRequest paymentRequestArgs) {
 		blitRepository.findByTrackCode(paymentRequestArgs.getRequest().getResNum()).ifPresent(blit -> {
