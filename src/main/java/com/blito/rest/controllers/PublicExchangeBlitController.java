@@ -42,7 +42,7 @@ public class PublicExchangeBlitController {
 		return ResponseEntity.ok(exchangeBlitService.getExchangeBlitByLink(exchangeBlitLink));
 	}
 	
-	@JsonView(View.SimpleExchangeBlit.class)
+	@JsonView(View.ExchangeBlit.class)
 	@PostMapping("/search")
 	public ResponseEntity<Page<ExchangeBlitViewModel>> search(@RequestBody SearchViewModel<ExchangeBlit> searchViewModel,Pageable pageable)
 	{
