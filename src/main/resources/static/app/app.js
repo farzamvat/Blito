@@ -25,10 +25,10 @@ angular.module('Blito',
         $httpProvider.interceptors.push('AuthInterceptors');
     })
     .constant('config', {
-        baseUrl : 'http://192.168.201.229:8086',
+        baseUrl : 'http://89.163.225.16',
         redirectToUrlAfterLogin : {url : '/'}
     })
 ;
 
-// http://213.32.14.78/\
+// http://89.163.225.16/\
 //192.168.202.19:8085

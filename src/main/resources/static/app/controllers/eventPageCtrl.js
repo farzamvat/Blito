@@ -2,7 +2,17 @@
  * Created by soroush on 4/25/17.
  */
 angular.module('eventsPageModule')
-    .controller('eventPageCtrl', function ($scope, $routeParams, eventService, mapMarkerService, photoService, $q, dateSetterService, $timeout, userInfo, ticketsService) {
+    .controller('eventPageCtrl', function ($scope,
+                                           $routeParams,
+                                           eventService,
+                                           mapMarkerService,
+                                           photoService,
+                                           $q,
+                                           dateSetterService,
+                                           $timeout,
+                                           userInfo,
+                                           ticketsService,
+                                           $window) {
         var promises = [];
         $scope.persianSans = [];
         $scope.eventInfo = {};
@@ -57,7 +67,8 @@ angular.module('eventsPageModule')
             $timeout(function () {
                 for(var i = 0 ; i < $scope.eventFlatDates.length; i++) {
                     dateSetterService.initDate("classDate"+i);
-                    $(".classDate"+i).val(persianDate($scope.eventFlatDates[i].date).format("dddd, MMMM DD, h:mm"))
+                    $scope.eventFlatDates[i].persianDate = persianDate($scope.eventFlatDates[i].date).format("dddd,DD MMMM, ساعت HH:MM");
+                    $(".classDate"+i).val(persianDate($scope.eventFlatDates[i].date).format("dddd,DD MMMM, ساعت HH:MM"))
                 }
             }, 300);
         };
@@ -66,7 +77,6 @@ angular.module('eventsPageModule')
                 return item.type === type ;
             })
         };
-
         $scope.getImages = function (event) {
             event.images.map(function (imageItem) {
                promises.push(
@@ -116,7 +126,10 @@ angular.module('eventsPageModule')
         var buyPaymentTicket = {};
         $scope.paymentSelected = function (payment) {
             var userData = userInfo.getData();
+            console.log($scope.eventFlatDates);
             $scope.paymentSelectedDone = "selected";
+            var eventPersianDate = $scope.eventFlatDates.filter(function (ticket) { return ticket.name === $scope.itemWithCapacity[0].name});
+            console.log(eventPersianDate);
             buyPaymentTicket = {
                 blitTypeId : $scope.itemWithCapacity[0].blitTypeId,
                 blitTypeName : $scope.itemWithCapacity[0].name,
@@ -126,7 +139,7 @@ angular.module('eventsPageModule')
                 customerName : userData.firstname+ " " + userData.lastname,
                 eventAddress : $scope.eventDataDetails.address,
                 eventDate : $scope.itemWithCapacity[0].date,
-                eventDateAndTime : dateSetterService.persianToArray(persianDate($scope.itemWithCapacity[0].date).pDate).join(),
+                eventDateAndTime : eventPersianDate[0].persianDate,
                 eventName : $scope.eventDataDetails.eventName,
                 seatType : "COMMON",
                 totalAmount : $scope.totalPrice ,
@@ -138,10 +151,15 @@ angular.module('eventsPageModule')
             document.getElementsByClassName("payedBlitSpinner")[0].style.display = "inline";
             document.getElementById("buyBlitError").style.display = "none";
             console.log(buyPaymentTicket);
+            var paymentWindow = $window.open('');
             ticketsService.buyTicket(buyPaymentTicket)
                 .then(function (data) {
                     document.getElementsByClassName("payedBlitSpinner")[0].style.display = "none";
                     console.log(data);
+                    $scope.gateWayDetails = data.data;
+                    if($scope.gateWayDetails.gateway === 'ZARINPAL') {
+                        $scope.zarinPalGateWay($scope.gateWayDetails, paymentWindow);
+                    }
                     angular.element(document.getElementsByClassName('progress-bar')).css('width', '100%');
                     angular.element(document.getElementById('ticketPay2')).removeClass('active');
                     angular.element(document.getElementById('payment')).removeClass('active');
@@ -157,7 +175,8 @@ angular.module('eventsPageModule')
         };
         $scope.nextStep2Free = function () {
             var userData = userInfo.getData();
-                var buyFreeTicket = {
+            var eventPersianDate = $scope.eventFlatDates.filter(function (ticket) { return ticket.name === $scope.itemWithCapacity[0].name});
+            var buyFreeTicket = {
                     blitTypeId : $scope.itemWithCapacity[0].blitTypeId,
                     blitTypeName : $scope.itemWithCapacity[0].name,
                     count : $scope.totalNumber,
@@ -166,7 +185,7 @@ angular.module('eventsPageModule')
                     customerName : userData.firstname+ " " + userData.lastname,
                     eventAddress : $scope.eventDataDetails.address,
                     eventDate : $scope.itemWithCapacity[0].date,
-                    eventDateAndTime : dateSetterService.persianToArray(persianDate($scope.itemWithCapacity[0].date).pDate).join(),
+                    eventDateAndTime : eventPersianDate[0].persianDate,
                     eventName : $scope.eventDataDetails.eventName,
                     seatType : "COMMON",
                     bankGateway : "NONE"
@@ -200,6 +219,9 @@ angular.module('eventsPageModule')
         $scope.hideTicketPaymentModal = function () {
             $("#buyTicket").modal("hide");
         };
-
+        $scope.zarinPalGateWay = function (gateWayDetails, paymentWindow) {
+            console.log($window.location);
+            paymentWindow.location = gateWayDetails.zarinpalWebGatewayURL;
+        }
 
     });

@@ -34,7 +34,6 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 authenticated: false
 
             })
-
             .when('/tour', {
                 templateUrl : 'app/views/pages/eventList.html',
                 authenticated: false
@@ -93,7 +92,14 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 templateUrl : 'app/views/pages/userProfile.html',
                 authenticated: false
             })
-
+            .when('/payment/:trackCode', {
+                templateUrl : 'app/views/pages/user-ticket.html',
+                authenticated: false
+            })
+            .when('/payment/error/:message', {
+                templateUrl : 'app/views/pages/user-ticket-error.html',
+                authenticated: false
+            })
             .otherwise({redirectTo: '/not-found'})
 
 

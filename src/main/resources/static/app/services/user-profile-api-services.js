@@ -133,6 +133,9 @@ angular.module('userProfileApi', [])
             };
             return $http.post(config.baseUrl+'/api/blito/v1.0/blits/search', bodyJson, queryParam)
         };
+        ticket.getBoughtTicket = function (trackCode) {
+            return $http.get(config.baseUrl+'/api/blito/v1.0/public/blits/'+trackCode)
+        };
     })
     .service('plannerService', function ($http, config) {
         var planner = this;

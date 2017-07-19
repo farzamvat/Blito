@@ -14,10 +14,10 @@
         <img ng-show="eventType === 'TOURISM'" class="logoEventPage" src="assets/img/tour-logo.png" alt="">
         <img ng-show="eventType === 'OTHER'" class="logoEventPage" src="assets/img/other-logo.png" alt="">
 
-        <div class="col-xs-12 col-sm-4 col-md-3 floatRight eventPageImage">
+        <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 floatRight eventPageImage">
             <img ng-src="{{eventDataPhoto.eventPhoto[0].imageUUID}}"   class="img-responsive imgMobileSize ">
         </div>
-        <div class="col-xs-12 col-sm-7 col-md-4 floatRight textAlignRight eventContent" >
+        <div class="col-xs-12 col-sm-7 col-md-3 col-lg-4 floatRight textAlignRight eventContent" >
             <h1>{{eventDataDetails.eventName}}</h1>
             <p>{{eventDataDetails.description}}</p>
 
@@ -26,7 +26,7 @@
 
             </button>
         </div>
-        <div class="col-xs-12   col-sm-12   col-md-4 floatRight textAlignRight paddingRight0 panelMidSize" >
+        <div class="col-xs-12   col-sm-12   col-md-5 col-lg-4 floatRight textAlignRight paddingRight0 panelMidSize" >
 
             <div class="panel panel-primary  customPanelEventPage eventPageShowTimeColor">
                 <div class="panel-heading eventPagePanelHeading">
@@ -57,7 +57,7 @@
                             <td  class="dataCenter">
                                 {{item.name}}
                             </td>
-                            <td class="dataCenter"><input required  ng-class="setClass($index)"  disabled  type="text" class="form-group datePickerFormatEventPage marginBottom0" readonly></td>
+                            <td class="dataCenter eventPageTimeField"><input required  ng-class="setClass($index)"  disabled  type="text" class="form-group datePickerFormatEventPage marginBottom0" readonly></td>
 
                             <td ng-if="item.price === 0" class="dataCenter">رایگان</td>
                             <td ng-if="item.price !== 0" class="dataCenter">{{ item.price}}</td>
