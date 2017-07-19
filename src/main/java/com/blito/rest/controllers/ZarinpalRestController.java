@@ -45,6 +45,6 @@ public class ZarinpalRestController {
 	@GetMapping("/payment/error/{message}")
 	public ModelAndView paymentResultInCaseOfError(@PathVariable String message)
 	{
-		return new ModelAndView("error").addObject("message", message);
+		return new ModelAndView("index");
 	}
 }

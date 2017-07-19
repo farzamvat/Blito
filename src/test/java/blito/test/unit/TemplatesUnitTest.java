@@ -59,12 +59,12 @@ public class TemplatesUnitTest {
 	public void ticketTemplateTest()
 	{
 		CommonBlitViewModel blit = new CommonBlitViewModel();
-		blit.setEventName("زویداد");
+		blit.setEventName("کنسرت من رویداد");
 		blit.setCustomerName("فزارام وطن زاده");
 		blit.setCustomerEmail("farzam.vat@gmail.com");
 		blit.setCustomerMobileNumber("09124337522");
-		blit.setEventDateAndTime("1396 5 4 4:30");
-		blit.setTrackCode("2387162378");
+		blit.setEventDateAndTime("چهار شنبه, تیر ۲۸, ۱:۲۷ ب ظ");
+		blit.setTrackCode("۱۲۳۵۴۳۴۵۷");
 		blit.setBlitTypeName("نوع ۲");
 		blit.setCount(10);
 		blit.setEventAddress("امیراباد خ ۱۲ بن بست ۷");
