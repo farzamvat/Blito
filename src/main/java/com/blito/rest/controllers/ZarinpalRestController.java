@@ -21,7 +21,7 @@ public class ZarinpalRestController {
 
 	@Autowired
 	private PaymentService paymentService;
-	@GetMapping("${api.base.url}" + "zarinpal")
+	@GetMapping("${api.base.url}" + "/zarinpal")
 	public CompletableFuture<RedirectView> zarinpalCallback(@RequestParam String Authority,@RequestParam String Status)
 	{
 		return paymentService.zarinpalPaymentFlow(Authority, Status)
