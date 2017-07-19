@@ -24,7 +24,7 @@ public class ZarinpalRestController {
 	@GetMapping("/zarinpal")
 	public CompletableFuture<RedirectView> zarinpalCallback(@RequestParam String Authority,@RequestParam String Status)
 	{
-		return paymentService.zarinpalPaymentFlow(Authority, Status)
+		return paymentService.zarinpalPaymentFlowAsync(Authority, Status)
 				.handle((blit,throwable) -> {
 					if(throwable != null)
 					{
