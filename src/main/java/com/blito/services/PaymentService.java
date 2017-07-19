@@ -64,39 +64,44 @@ public class PaymentService {
 		});
 	}
 	
-	@Transactional
-	public CompletableFuture<Blit> zarinpalPaymentFlow(String authority,String status)
+	public CompletableFuture<Blit> zarinpalPaymentFlowAsync(String authority,String status)
 	{
 		return CompletableFuture.supplyAsync(() -> {
-			Blit blit = blitRepository.findByToken(authority).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
-			if(status.equals("OK"))
+			return zarinpalPaymentFlow(authority, status);
+		});
+	}
+	
+	@Transactional
+	public Blit zarinpalPaymentFlow(String authority,String status)
+	{
+		Blit blit = blitRepository.findByToken(authority).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
+		if(status.equals("OK"))
+		{
+			if(blit.getSeatType().equals(SeatType.COMMON.name()))
 			{
-				if(blit.getSeatType().equals(SeatType.COMMON.name()))
-				{
-					log.info("success in zarinpal payment callback blit trackCode '{}' user email '{}'",blit.getTrackCode(),blit.getCustomerEmail());
-					CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
-					if(!commonBlit.getBlitType().getBlitTypeState().equals(State.OPEN.name()))
-						throw new BlitNotAvailableException(ResourceUtil.getMessage(Response.BLIT_NOT_AVAILABLE));
-					PaymentVerificationResponse verificationResponse = zarinpalClient.getPaymentVerificationResponse((int)commonBlit.getTotalAmount(), authority);
-					log.info("success in zarinpal verification response trackCode '{}' user email '{}' ref number '{}'",blit.getTrackCode(),blit.getCustomerEmail(), verificationResponse.getRefID());
-					Blit persistedBlit = persistZarinpalBoughtBlit(commonBlit, authority, String.valueOf(verificationResponse.getRefID()), ZarinpalException.generateMessage(verificationResponse.getStatus()));
-					Map<String,Object> map = new HashMap<>();
-					map.put("blit", persistedBlit);
-					mailService.sendEmail(blit.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map), ResourceUtil.getMessage(Response.BLIT_RECIEPT));
-					return blit;
-				}
-				else {
-					// TODO
-					return null;
-				}
+				log.info("success in zarinpal payment callback blit trackCode '{}' user email '{}'",blit.getTrackCode(),blit.getCustomerEmail());
+				CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
+				if(!commonBlit.getBlitType().getBlitTypeState().equals(State.OPEN.name()))
+					throw new BlitNotAvailableException(ResourceUtil.getMessage(Response.BLIT_NOT_AVAILABLE));
+				PaymentVerificationResponse verificationResponse = zarinpalClient.getPaymentVerificationResponse((int)commonBlit.getTotalAmount(), authority);
+				log.info("success in zarinpal verification response trackCode '{}' user email '{}' ref number '{}'",blit.getTrackCode(),blit.getCustomerEmail(), verificationResponse.getRefID());
+				Blit persistedBlit = persistZarinpalBoughtBlit(commonBlit, authority, String.valueOf(verificationResponse.getRefID()), ZarinpalException.generateMessage(verificationResponse.getStatus()));
+				Map<String,Object> map = new HashMap<>();
+				map.put("blit", persistedBlit);
+				mailService.sendEmail(blit.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map), ResourceUtil.getMessage(Response.BLIT_RECIEPT));
+				return blit;
 			}
 			else {
-				log.error("Error in zarinpal callback, blit id '{}' , user email '{}'",blit.getBlitId(),blit.getCustomerEmail());
-				blit.setPaymentError(status);
-				blit.setPaymentStatus(PaymentStatus.ERROR.name());
-				return blitRepository.save(blit);
+				// TODO
+				return null;
 			}
-		});
+		}
+		else {
+			log.error("Error in zarinpal callback, blit id '{}' , user email '{}'",blit.getBlitId(),blit.getCustomerEmail());
+			blit.setPaymentError(status);
+			blit.setPaymentStatus(PaymentStatus.ERROR.name());
+			return blitRepository.save(blit);
+		}
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
