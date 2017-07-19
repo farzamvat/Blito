@@ -1,10 +1,15 @@
 package com.blito.services;
 
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+
+import javax.validation.ValidationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +28,7 @@ import com.blito.enums.PaymentStatus;
 import com.blito.enums.Response;
 import com.blito.enums.State;
 import com.blito.exceptions.InconsistentDataException;
+import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.CommonBlitMapper;
 import com.blito.models.BlitType;
@@ -78,23 +84,28 @@ public class BlitService {
 		return htmlRenderer.renderHtml("ticket", null);
 	}
 	
+	@Transactional
 	public CompletableFuture<Object> createCommonBlit(CommonBlitViewModel vmodel) {
 
 		CommonBlit commonBlit = commonBlitMapper.createFromViewModel(vmodel);
 		BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(vmodel.getBlitTypeId()))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
-		
-		
+		if(!blitType.getEventDate().getEventDateState().equals(State.OPEN.name()))
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_OPEN));
+		if(!blitType.getEventDate().getEvent().getEventState().equals(State.OPEN.name()))
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_NOT_OPEN));
 		
 		// ADDITIONAL FIELDS VALIDATION
 		// if condition && instead of || ??
-		if( !blitType.getEventDate().getEvent().getAdditionalFields().isEmpty() || blitType.getEventDate().getEvent().getAdditionalFields() != null)
+		if(blitType.getEventDate().getEvent().getAdditionalFields() != null)
 		{
-			// TODO exception messages
 			Event event = blitType.getEventDate().getEvent();
 			if(!event.getAdditionalFields().isEmpty())
-				if(vmodel.getAdditionalFields().isEmpty() || vmodel.getAdditionalFields() == null)
-					throw new RuntimeException("additional fields map is empty");
+				if(vmodel.getAdditionalFields() == null)
+					throw new ValidationException(ResourceUtil.getMessage(Response.ADDITIONAL_FIELDS_CANT_BE_EMPTY));
+				if(vmodel.getAdditionalFields().isEmpty())
+					throw new ValidationException(ResourceUtil.getMessage(Response.ADDITIONAL_FIELDS_CANT_BE_EMPTY));
+				
 				vmodel.getAdditionalFields().forEach((k,v) -> {
 					event.getAdditionalFields().keySet().stream().filter(key -> key == k).findFirst()
 						.ifPresent(key -> {
@@ -104,7 +115,7 @@ public class BlitService {
 									Double.parseDouble(v);
 								} catch(Exception e) 
 								{
-									throw new RuntimeException(e.getMessage());
+									throw new ValidationException(ResourceUtil.getMessage(Response.ERROR_FIELD_TYPE_DOUBLE));
 								}
 							}
 							else if(event.getAdditionalFields().get(key).equals(Constants.FIELD_INT_TYPE))
@@ -113,7 +124,7 @@ public class BlitService {
 									Integer.parseInt(v);
 								} catch (Exception e)
 								{
-									throw new RuntimeException(e.getMessage());
+									throw new ValidationException(ResourceUtil.getMessage(Response.ERROR_FIELD_TYPE_INT));
 								}
 							}
 						});
@@ -128,7 +139,7 @@ public class BlitService {
 					.completedFuture(commonBlitMapper.createFromEntity(reserveFreeBlit(blitType, commonBlit, user)));
 		} else {
 			if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getTotalAmount())
-				throw new InconsistentDataException("total amount is not equal to price * count");
+				throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
 			return buyCommonBlit(blitType, commonBlit, user);
 		}
 	}
@@ -138,8 +149,10 @@ public class BlitService {
 		String trackCode = generateTrackCode();
 		switch (Enum.valueOf(BankGateway.class, commonBlit.getBankGateway())) {
 		case ZARINPAL:
+			log.debug("Befor requesting token from zarinpal gateway user email '{}' and blit track code '{}'",user.getEmail() , trackCode);
 			return paymentService.zarinpalRequestToken((int)commonBlit.getTotalAmount(), user.getEmail(), user.getMobile(), blitType.getEventDate().getEvent().getDescription())
 					.thenApply(token -> {
+						log.debug("Successfully get token from zarinpal gateway user email '{}' and token '{}'", user.getEmail() , token);
 						CommonBlit persisted = persistNoneFreeCommonBlit(blitType, commonBlit, user, token, trackCode);
 						ZarinpalPayRequetsResponseViewModel zarinpalResponse = new ZarinpalPayRequetsResponseViewModel();
 						zarinpalResponse.setGateway(BankGateway.ZARINPAL);
@@ -147,8 +160,10 @@ public class BlitService {
 						return zarinpalResponse;
 					});
 		case SAMAN:
+			log.debug("Befor requesting token from saman gateway user email '{}' and blit track code '{}'",user.getEmail() , trackCode);
 			return paymentService.samanBankRequestToken(trackCode, commonBlit.getTotalAmount())
 					.thenApply(token -> {
+						log.debug("Successfully get token from saman bank gateway user email '{}' and token '{}'", user.getEmail() , token);
 						CommonBlit persisted = persistNoneFreeCommonBlit(blitType, commonBlit, user, token, trackCode);
 						SamanPaymentRequestResponseViewModel samanResponse = new SamanPaymentRequestResponseViewModel();
 						samanResponse.setToken(persisted.getToken());
@@ -183,18 +198,27 @@ public class BlitService {
 		attachedBlitType.setSoldCount(attachedBlitType.getSoldCount() + commonBlit.getCount());
 		if(attachedBlitType.getSoldCount() == attachedBlitType.getCapacity())
 			attachedBlitType.setBlitTypeState(State.SOLD.name());
-		//TODO sold event dates and event
+		
+		if (attachedBlitType.getSoldCount() == attachedBlitType.getCapacity()) {
+			attachedBlitType.setBlitTypeState(State.SOLD.name());
+			if (attachedBlitType.getEventDate().getBlitTypes().stream()
+					.allMatch(b -> b.getBlitTypeState().equals(State.SOLD.name()))) {
+				attachedBlitType.getEventDate().setEventDateState(State.SOLD.name());
+			}
+			if (attachedBlitType.getEventDate().getEvent().getEventDates().stream()
+					.allMatch(ed -> ed.getEventDateState().equals(State.SOLD.name()))) {
+				attachedBlitType.getEventDate().getEvent().setEventState(State.SOLD.name());
+				attachedBlitType.getEventDate().getEvent().setEventSoldDate(
+						Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+			}
+		}
 		commonBlit.setTrackCode(generateTrackCode());
 		commonBlit.setUser(attachedUser);
 		commonBlit.setBlitType(attachedBlitType);
 		commonBlit.setPaymentStatus(PaymentStatus.FREE.name());
 		commonBlit.setBankGateway(BankGateway.NONE.name());
 		attachedUser.addBlits(commonBlit);
-		//
-		//
-		//
-		//
-		// sending email asynchronously
+		// TODO sending email asynchronously
 		return commonBlitRepository.save(commonBlit);
 	}
 
@@ -202,16 +226,16 @@ public class BlitService {
 		blitType = blitTypeRepository.findOne(blitType.getBlitTypeId());
 
 		if (blitType.getBlitTypeState().equals(State.SOLD))
-			throw new RuntimeException("sold out");
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_TYPE_SOLD));
 
 		if (blitType.getBlitTypeState().equals(State.CLOSED))
-			throw new RuntimeException("closed");
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_TYPE_CLOSED));
 		if(!blitType.getEventDate().getEvent().getEventState().equals(State.OPEN.name()))
 		{
-			throw new RuntimeException("closed or sold out or ended");
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_NOT_AVAILABLE));
 		}
 		if (commonBlit.getCount() + blitType.getSoldCount() > blitType.getCapacity())
-			throw new InconsistentDataException("more than blit type capacity");
+			throw new InconsistentDataException(ResourceUtil.getMessage(Response.REQUESTED_BLIT_COUNT_IS_MORE_THAN_CAPACITY));
 	}
 
 	public String generateTrackCode() {

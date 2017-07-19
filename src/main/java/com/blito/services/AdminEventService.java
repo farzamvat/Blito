@@ -95,7 +95,7 @@ public class AdminEventService {
 
 	@Transactional
 	public void changeEventDateState(ChangeEventDateStateVm vmodel) {
-		EventDate eventDate = Optional.ofNullable(eventDateRepository.findOne(vmodel.getEventDateId())).map(ed -> ed)
+		EventDate eventDate = Optional.ofNullable(eventDateRepository.findOne(vmodel.getEventDateId()))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
 		if(vmodel.getEventDateState() == State.CLOSED)
 		{
@@ -108,7 +108,7 @@ public class AdminEventService {
 	
 	@Transactional
 	public void changeBlitTypeState(ChangeBlitTypeStateVm vmodel) {
-		BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(vmodel.getBlitTypeId())).map(bt -> bt)
+		BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(vmodel.getBlitTypeId()))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
 		checkEventRestricitons(blitType.getEventDate().getEvent());
 		blitType.setBlitTypeState(vmodel.getBlitTypeState().name());
@@ -188,7 +188,7 @@ public class AdminEventService {
 
 	@Transactional
 	public Page<BlitBuyerViewModel> getEventBlitBuyersByEventDate(long eventDateId, Pageable pageable) {
-		EventDate eventDate = Optional.ofNullable(eventDateRepository.findOne(eventDateId)).map(ed -> ed)
+		EventDate eventDate = Optional.ofNullable(eventDateRepository.findOne(eventDateId))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
 
 		Page<CommonBlit> page = new PageImpl<CommonBlit>(eventDate.getBlitTypes().stream()

@@ -59,7 +59,16 @@ public enum Response {
 	USER_IS_BANNED("error.user.is.banned"),
 	ROLE_NAME_ALREADY_EXISTS("error.role.name.already.exists"),
 	SENDING_EMAIL_ERROR("error.sending.email"),
-	BLIT_NOT_AVAILABLE("error.blit.not.available");
+	BLIT_NOT_AVAILABLE("error.blit.not.available"),
+	ADDITIONAL_FIELDS_CANT_BE_EMPTY("error.additional.fields.are.empty"),
+	ERROR_FIELD_TYPE_INT("error.field.type.is.int"),
+	ERROR_FIELD_TYPE_DOUBLE("error.field.type.is.double"),
+	BLIT_TYPE_SOLD("error.blit.type.sold"),
+	BLIT_TYPE_CLOSED("error.blit.type.closed"),
+	REQUESTED_BLIT_COUNT_IS_MORE_THAN_CAPACITY("error.requested.blits.are.more.than.capacity"),
+	EVENT_DATE_NOT_OPEN("error.event.date.not.open"),
+	EVENT_NOT_OPEN("error.event.no.open"),
+	INCONSISTENT_TOTAL_AMOUNT("error.inconsistent.total.amount.blit.price.requested.count");
     
 
     private final String message;
