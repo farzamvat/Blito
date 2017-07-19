@@ -6,5 +6,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import com.blito.models.CommonBlit;
 
 public interface CommonBlitRepository extends BlitBaseRepository<CommonBlit>, JpaSpecificationExecutor<CommonBlit>, PagingAndSortingRepository<CommonBlit, Long>{
-	int countByEmailAndBlitTypeBlitTypeId(String email,long blitTypeId);
+	int countByCustomerEmailAndBlitTypeBlitTypeId(String email,long blitTypeId);
 }

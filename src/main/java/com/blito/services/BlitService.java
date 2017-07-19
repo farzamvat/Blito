@@ -138,7 +138,7 @@ public class BlitService {
 		if (blitType.isFree()) {
 			if(commonBlit.getCount() > 5)
 				throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_COUNT_EXCEEDS_LIMIT));
-			if(commonBlit.getCount() + commonBlitRepository.countByEmailAndBlitTypeBlitTypeId(user.getEmail(), blitType.getBlitTypeId()) > 5)
+			if(commonBlit.getCount() + commonBlitRepository.countByCustomerEmailAndBlitTypeBlitTypeId(user.getEmail(), blitType.getBlitTypeId()) > 5)
 				throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_COUNT_EXCEEDS_LIMIT_TOTAL));
 			return CompletableFuture
 					.completedFuture(commonBlitMapper.createFromEntity(reserveFreeBlit(blitType, commonBlit, user)));
