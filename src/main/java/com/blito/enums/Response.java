@@ -70,7 +70,8 @@ public enum Response {
 	EVENT_NOT_OPEN("error.event.no.open"),
 	INCONSISTENT_TOTAL_AMOUNT("error.inconsistent.total.amount.blit.price.requested.count"),
 	BLIT_COUNT_EXCEEDS_LIMIT("error.blit.count.exceeds.limit"),
-	BLIT_COUNT_EXCEEDS_LIMIT_TOTAL("error.blit.count.exceeds.limit.total");
+	BLIT_COUNT_EXCEEDS_LIMIT_TOTAL("error.blit.count.exceeds.limit.total"),
+	BLIT_RECIEPT("blit.reciept");
     
 
     private final String message;

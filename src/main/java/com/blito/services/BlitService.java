@@ -3,6 +3,7 @@ package com.blito.services;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
@@ -45,6 +46,7 @@ import com.blito.rest.viewmodels.payments.SamanPaymentRequestResponseViewModel;
 import com.blito.rest.viewmodels.payments.ZarinpalPayRequetsResponseViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.security.SecurityContextHolder;
+import com.blito.services.util.HtmlRenderer;
 
 @Service
 public class BlitService {
@@ -67,6 +69,10 @@ public class BlitService {
 	private ExcelService excelService;
 	@Autowired
 	private EventRepository eventRepository;
+	@Autowired
+	private HtmlRenderer htmlRenderer;
+	@Autowired
+	private MailService mailService;
 	
 	@Value("${zarinpal.web.gateway}")
 	private String zarinpalGatewayURL;
@@ -140,8 +146,12 @@ public class BlitService {
 				throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_COUNT_EXCEEDS_LIMIT));
 			if(commonBlit.getCount() + commonBlitRepository.countByCustomerEmailAndBlitTypeBlitTypeId(user.getEmail(), blitType.getBlitTypeId()) > 5)
 				throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_COUNT_EXCEEDS_LIMIT_TOTAL));
+			CommonBlitViewModel responseBlit = commonBlitMapper.createFromEntity(reserveFreeBlit(blitType, commonBlit, user));
+			Map<String,Object> map = new HashMap<>();
+			map.put("blit", responseBlit);
+			mailService.sendEmail(responseBlit.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map), ResourceUtil.getMessage(Response.BLIT_RECIEPT));
 			return CompletableFuture
-					.completedFuture(commonBlitMapper.createFromEntity(reserveFreeBlit(blitType, commonBlit, user)));
+					.completedFuture(responseBlit);
 		} else {
 			if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getTotalAmount())
 				throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
@@ -242,7 +252,6 @@ public class BlitService {
 		commonBlit.setPaymentStatus(PaymentStatus.FREE.name());
 		commonBlit.setBankGateway(BankGateway.NONE.name());
 		attachedUser.addBlits(commonBlit);
-		// TODO sending email asynchronously
 		return commonBlitRepository.save(commonBlit);
 	}
 

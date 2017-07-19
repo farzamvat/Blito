@@ -3,6 +3,8 @@ package com.blito.services;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -32,6 +34,7 @@ import com.blito.repositories.BlitRepository;
 import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.CommonBlitRepository;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.services.util.HtmlRenderer;
 
 @Service
 public class PaymentService {
@@ -45,6 +48,10 @@ public class PaymentService {
 	private ZarinpalClient zarinpalClient;
 	@Autowired
 	private CommonBlitRepository commonBlitRepository;
+	@Autowired
+	private HtmlRenderer htmlRenderer;
+	@Autowired
+	private MailService mailService;
 	private final Logger log = LoggerFactory.getLogger(PaymentService.class);
 
 	public CompletableFuture<String> samanBankRequestToken(String reservationNumber, long totalAmount) {
@@ -72,7 +79,11 @@ public class PaymentService {
 						throw new BlitNotAvailableException(ResourceUtil.getMessage(Response.BLIT_NOT_AVAILABLE));
 					PaymentVerificationResponse verificationResponse = zarinpalClient.getPaymentVerificationResponse((int)commonBlit.getTotalAmount(), authority);
 					log.info("success in zarinpal verification response trackCode '{}' user email '{}' ref number '{}'",blit.getTrackCode(),blit.getCustomerEmail(), verificationResponse.getRefID());
-					return persistZarinpalBoughtBlit(commonBlit, authority, String.valueOf(verificationResponse.getRefID()), ZarinpalException.generateMessage(verificationResponse.getStatus()));
+					Blit persistedBlit = persistZarinpalBoughtBlit(commonBlit, authority, String.valueOf(verificationResponse.getRefID()), ZarinpalException.generateMessage(verificationResponse.getStatus()));
+					Map<String,Object> map = new HashMap<>();
+					map.put("blit", persistedBlit);
+					mailService.sendEmail(blit.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map), ResourceUtil.getMessage(Response.BLIT_RECIEPT));
+					return blit;
 				}
 				else {
 					// TODO
