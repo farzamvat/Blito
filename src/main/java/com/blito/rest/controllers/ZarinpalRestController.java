@@ -35,16 +35,4 @@ public class ZarinpalRestController {
 					return new RedirectView(String.valueOf(new StringBuilder(serverAddress).append("/payment/").append(blit.getTrackCode())));
 				});
 	}
-	
-	@GetMapping("/payment/{trackCode}")
-	public ModelAndView paymentResult (@PathVariable String trackCode)
-	{
-		return new ModelAndView("index");
-	}
-	
-	@GetMapping("/payment/error/{message}")
-	public ModelAndView paymentResultInCaseOfError(@PathVariable String message)
-	{
-		return new ModelAndView("index");
-	}
 }
