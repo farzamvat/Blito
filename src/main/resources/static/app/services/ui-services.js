@@ -178,7 +178,7 @@ angular.module('UiServices', [])
                     return pdate.format(self.format);
                 },
                 altField: '#persianDigitAlt',
-                altFormat: "YYYY MM DD HH:mm:ss"
+                altFormat: "YYYY MMM DD HH"
 
             });
         };
@@ -271,8 +271,11 @@ angular.module('UiServices', [])
                 case "COFFEESHOP" :
                     persianType = 'کافی شاپ';
                     break;
+                case "OTHER" :
+                    persianType = 'سایر';
+                    break;
                 default :
-                    persianType = 'گونه'
+                    persianType = 'گونه';
                     break;
             }
             return persianType;
