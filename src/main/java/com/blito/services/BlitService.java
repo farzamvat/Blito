@@ -87,6 +87,7 @@ public class BlitService {
 		
 		
 		// ADDITIONAL FIELDS VALIDATION
+		// if condition && instead of || ??
 		if( !blitType.getEventDate().getEvent().getAdditionalFields().isEmpty() || blitType.getEventDate().getEvent().getAdditionalFields() != null)
 		{
 			// TODO exception messages
