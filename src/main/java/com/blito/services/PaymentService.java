@@ -102,7 +102,7 @@ public class PaymentService {
 		}
 	}
 	
-	@Transactional(propagation=Propagation.REQUIRES_NEW,isolation = Isolation.SERIALIZABLE)
+	@Transactional(propagation=Propagation.REQUIRED,isolation = Isolation.SERIALIZABLE)
 	private Blit persistZarinpalBoughtBlit(CommonBlit blit, String authority, String refNum, String paymentMessage) {
 		CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
 		BlitType blitType = blitTypeRepository.findByBlitTypeId(commonBlit.getBlitType().getBlitTypeId());
