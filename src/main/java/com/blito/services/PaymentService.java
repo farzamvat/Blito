@@ -83,11 +83,11 @@ public class PaymentService {
 					throw new BlitNotAvailableException(ResourceUtil.getMessage(Response.BLIT_NOT_AVAILABLE));
 				PaymentVerificationResponse verificationResponse = zarinpalClient.getPaymentVerificationResponse((int)commonBlit.getTotalAmount(), authority);
 				log.info("success in zarinpal verification response trackCode '{}' user email '{}' ref number '{}'",blit.getTrackCode(),blit.getCustomerEmail(), verificationResponse.getRefID());
-				Blit persistedBlit = persistZarinpalBoughtBlit(commonBlit, authority, String.valueOf(verificationResponse.getRefID()), ZarinpalException.generateMessage(verificationResponse.getStatus()));
+				return persistZarinpalBoughtBlit(commonBlit, authority, String.valueOf(verificationResponse.getRefID()), ZarinpalException.generateMessage(verificationResponse.getStatus()));
 //				Map<String,Object> map = new HashMap<>();
 //				map.put("blit", persistedBlit);
 //				mailService.sendEmail(blit.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map), ResourceUtil.getMessage(Response.BLIT_RECIEPT));
-				return blit;
+//				return blit;
 			}
 			else {
 				// TODO
