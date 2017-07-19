@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-@RequestMapping("${api.base.url}")
 public class PaymentController {
 	
 	@GetMapping("/payment/{trackCode}")
