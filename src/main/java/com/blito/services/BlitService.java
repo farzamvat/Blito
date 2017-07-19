@@ -212,7 +212,7 @@ public class BlitService {
 	private CommonBlit persistNoneFreeCommonBlit(BlitType blitType,CommonBlit commonBlit,Optional<User> optionalUser,String token,String trackCode)
 	{
 		checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
-		BlitType attachedBlitType = blitTypeRepository.findByBlitTypeId(blitType.getBlitTypeId());
+		BlitType attachedBlitType = blitTypeRepository.findOne(blitType.getBlitTypeId());
 		optionalUser.ifPresent(user -> {
 			User attachedUser = userRepository.findOne(user.getUserId());
 			commonBlit.setUser(attachedUser);

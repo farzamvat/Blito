@@ -69,6 +69,7 @@ public class PaymentService {
 		});
 	}
 	
+	@Transactional(propagation=Propagation.REQUIRED)
 	public Blit zarinpalPaymentFlow(String authority,String status)
 	{
 		Blit blit = blitRepository.findByToken(authority).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
@@ -101,10 +102,10 @@ public class PaymentService {
 		}
 	}
 	
-	@Transactional
+	@Transactional(propagation=Propagation.REQUIRES_NEW,isolation=Isolation.SERIALIZABLE)
 	private Blit persistZarinpalBoughtBlit(CommonBlit blit, String authority, String refNum, String paymentMessage) {
 		CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
-		BlitType blitType = blitTypeRepository.findByBlitTypeId(commonBlit.getBlitType().getBlitTypeId());
+		BlitType blitType = blitTypeRepository.findOne(commonBlit.getBlitType().getBlitTypeId());
 		commonBlit.setRefNum(refNum);
 		commonBlit.setPaymentStatus(PaymentStatus.PAID.name());
 		blitType.setSoldCount(blitType.getSoldCount() + commonBlit.getCount());
