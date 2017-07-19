@@ -3,8 +3,6 @@ package com.blito.services;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -71,6 +69,7 @@ public class PaymentService {
 		});
 	}
 	
+	@Transactional
 	public Blit zarinpalPaymentFlow(String authority,String status)
 	{
 		Blit blit = blitRepository.findByToken(authority).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
@@ -85,9 +84,9 @@ public class PaymentService {
 				PaymentVerificationResponse verificationResponse = zarinpalClient.getPaymentVerificationResponse((int)commonBlit.getTotalAmount(), authority);
 				log.info("success in zarinpal verification response trackCode '{}' user email '{}' ref number '{}'",blit.getTrackCode(),blit.getCustomerEmail(), verificationResponse.getRefID());
 				Blit persistedBlit = persistZarinpalBoughtBlit(commonBlit, authority, String.valueOf(verificationResponse.getRefID()), ZarinpalException.generateMessage(verificationResponse.getStatus()));
-				Map<String,Object> map = new HashMap<>();
-				map.put("blit", persistedBlit);
-				mailService.sendEmail(blit.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map), ResourceUtil.getMessage(Response.BLIT_RECIEPT));
+//				Map<String,Object> map = new HashMap<>();
+//				map.put("blit", persistedBlit);
+//				mailService.sendEmail(blit.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map), ResourceUtil.getMessage(Response.BLIT_RECIEPT));
 				return blit;
 			}
 			else {
@@ -103,7 +102,7 @@ public class PaymentService {
 		}
 	}
 	
-	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Transactional(propagation=Propagation.REQUIRES_NEW,isolation = Isolation.SERIALIZABLE)
 	private Blit persistZarinpalBoughtBlit(CommonBlit blit, String authority, String refNum, String paymentMessage) {
 		CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
 		BlitType blitType = blitTypeRepository.findByBlitTypeId(commonBlit.getBlitType().getBlitTypeId());
