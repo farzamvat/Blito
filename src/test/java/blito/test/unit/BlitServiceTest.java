@@ -176,7 +176,7 @@ public class BlitServiceTest {
 		commonBlitViewModel.setEventDate(eventDateViewModel.getDate());
 		commonBlitViewModel.setBankGateway(BankGateway.NONE);
 		
-		blitService.createCommonBlit(commonBlitViewModel);
+		blitService.createCommonBlitAuthorized(commonBlitViewModel);
 
 		BlitType blitType = blitTypeRepo.findOne(blitTypeId);
 		assertEquals(1, commonBlitRepo.count());

@@ -9,8 +9,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-import javax.validation.ValidationException;
-
 import org.apache.poi.ss.formula.eval.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +21,6 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.blito.configs.Constants;
 import com.blito.enums.BankGateway;
 import com.blito.enums.PaymentStatus;
 import com.blito.enums.Response;
@@ -89,7 +86,7 @@ public class BlitService {
 		}).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
 	}
 	@Transactional
-	public CompletableFuture<Object> createCommonBlit(CommonBlitViewModel vmodel) {
+	public CompletableFuture<Object> createCommonBlitAuthorized(CommonBlitViewModel vmodel) {
 
 		CommonBlit commonBlit = commonBlitMapper.createFromViewModel(vmodel);
 		BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(vmodel.getBlitTypeId()))
@@ -139,36 +136,57 @@ public class BlitService {
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		
 		if (blitType.isFree()) {
+			if(commonBlit.getCount() > 5)
+				throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_COUNT_EXCEEDS_LIMIT));
+			if(commonBlit.getCount() + commonBlitRepository.countByEmailAndBlitTypeBlitTypeId(user.getEmail(), blitType.getBlitTypeId()) > 5)
+				throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_COUNT_EXCEEDS_LIMIT_TOTAL));
 			return CompletableFuture
 					.completedFuture(commonBlitMapper.createFromEntity(reserveFreeBlit(blitType, commonBlit, user)));
 		} else {
 			if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getTotalAmount())
 				throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
-			return buyCommonBlit(blitType, commonBlit, user);
+			return buyCommonBlit(blitType, commonBlit, Optional.of(user));
 		}
 	}
-
-	private CompletableFuture<Object> buyCommonBlit(BlitType blitType, CommonBlit commonBlit, User user) {
+	
+	@Transactional
+	public CompletableFuture<Object> createCommonBlitUnauthorizedAndNoneFreeBlits(CommonBlitViewModel vmodel)
+	{
+		CommonBlit commonBlit = commonBlitMapper.createFromViewModel(vmodel);
+		BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(vmodel.getBlitTypeId()))
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
+		if(blitType.isFree())
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
+		if(!blitType.getEventDate().getEventDateState().equals(State.OPEN.name()))
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_OPEN));
+		if(!blitType.getEventDate().getEvent().getEventState().equals(State.OPEN.name()))
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_NOT_OPEN));
+		if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getTotalAmount())
+			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
+		return buyCommonBlit(blitType, commonBlit, Optional.empty());
+	}
+	
+	private CompletableFuture<Object> buyCommonBlit(BlitType blitType, CommonBlit commonBlit, Optional<User> optionalUser) {
 		checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
 		String trackCode = generateTrackCode();
 		switch (Enum.valueOf(BankGateway.class, commonBlit.getBankGateway())) {
 		case ZARINPAL:
-			log.debug("Befor requesting token from zarinpal gateway user email '{}' and blit track code '{}'",user.getEmail() , trackCode);
-			return paymentService.zarinpalRequestToken((int)commonBlit.getTotalAmount(), user.getEmail(), user.getMobile(), blitType.getEventDate().getEvent().getDescription())
+			log.debug("Befor requesting token from zarinpal gateway user email '{}' and blit track code '{}'",commonBlit.getCustomerEmail() , trackCode);
+			return paymentService.zarinpalRequestToken((int)commonBlit.getTotalAmount(), commonBlit.getCustomerEmail(), commonBlit.getCustomerMobileNumber(), blitType.getEventDate().getEvent().getDescription())
 					.thenApply(token -> {
-						log.debug("Successfully get token from zarinpal gateway user email '{}' and token '{}'", user.getEmail() , token);
-						CommonBlit persisted = persistNoneFreeCommonBlit(blitType, commonBlit, user, token, trackCode);
+						log.debug("Successfully get token from zarinpal gateway user email '{}' and token '{}'", commonBlit.getCustomerEmail() , token);
+						CommonBlit persisted = persistNoneFreeCommonBlit(blitType, commonBlit, optionalUser, token, trackCode);
 						ZarinpalPayRequetsResponseViewModel zarinpalResponse = new ZarinpalPayRequetsResponseViewModel();
 						zarinpalResponse.setGateway(BankGateway.ZARINPAL);
 						zarinpalResponse.setZarinpalWebGatewayURL(zarinpalGatewayURL + persisted.getToken());
 						return zarinpalResponse;
 					});
 		case SAMAN:
-			log.debug("Befor requesting token from saman gateway user email '{}' and blit track code '{}'",user.getEmail() , trackCode);
+			log.debug("Befor requesting token from saman gateway user email '{}' and blit track code '{}'",commonBlit.getCustomerEmail() , trackCode);
 			return paymentService.samanBankRequestToken(trackCode, commonBlit.getTotalAmount())
 					.thenApply(token -> {
-						log.debug("Successfully get token from saman bank gateway user email '{}' and token '{}'", user.getEmail() , token);
-						CommonBlit persisted = persistNoneFreeCommonBlit(blitType, commonBlit, user, token, trackCode);
+						log.debug("Successfully get token from saman bank gateway user email '{}' and token '{}'", commonBlit.getCustomerEmail() , token);
+						CommonBlit persisted = persistNoneFreeCommonBlit(blitType, commonBlit, optionalUser, token, trackCode);
 						SamanPaymentRequestResponseViewModel samanResponse = new SamanPaymentRequestResponseViewModel();
 						samanResponse.setToken(persisted.getToken());
 						samanResponse.setGateway(BankGateway.SAMAN);
@@ -181,12 +199,14 @@ public class BlitService {
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
-	private CommonBlit persistNoneFreeCommonBlit(BlitType blitType,CommonBlit commonBlit,User user,String token,String trackCode)
+	private CommonBlit persistNoneFreeCommonBlit(BlitType blitType,CommonBlit commonBlit,Optional<User> optionalUser,String token,String trackCode)
 	{
 		checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
 		BlitType attachedBlitType = blitTypeRepository.findOne(blitType.getBlitTypeId());
-		User attachedUser = userRepository.findOne(user.getUserId());
-		commonBlit.setUser(attachedUser);
+		optionalUser.ifPresent(user -> {
+			User attachedUser = userRepository.findOne(user.getUserId());
+			commonBlit.setUser(attachedUser);
+		});
 		commonBlit.setBlitType(attachedBlitType);
 		commonBlit.setToken(token);
 		commonBlit.setTrackCode(trackCode);

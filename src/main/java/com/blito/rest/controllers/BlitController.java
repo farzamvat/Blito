@@ -38,7 +38,7 @@ public class BlitController {
 	@PostMapping("/buy-request")
 	public CompletionStage<ResponseEntity<?>> buyBlit(@Validated @RequestBody CommonBlitViewModel vmodel,
 			HttpServletRequest req, HttpServletResponse res) {
-		return blitService.createCommonBlit(vmodel)
+		return blitService.createCommonBlitAuthorized(vmodel)
 				.handle((result, throwable) -> HandleUtility.generateResponseResult(() -> result, throwable, req, res));
 	}
 

@@ -215,8 +215,8 @@ public class ExcelServiceTest {
 		additionalFields2.put("Weight", "40.7");
 		commonBlitViewModel2.setAdditionalFields(additionalFields2);
 
-		blitService.createCommonBlit(commonBlitViewModel1);
-		blitService.createCommonBlit(commonBlitViewModel2);
+		blitService.createCommonBlitAuthorized(commonBlitViewModel1);
+		blitService.createCommonBlitAuthorized(commonBlitViewModel2);
 		
 		SearchViewModel<CommonBlit> searchViewModel = new SearchViewModel<>();
 		Simple<CommonBlit> simple = new Simple<>();

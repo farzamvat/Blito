@@ -184,7 +184,7 @@ public class BlitServicePaymentTest {
 		vmodel.setEventDate(eventViewModel.getEventDates().stream().findFirst().get().getDate());
 		vmodel.setEventName(eventViewModel.getEventName());
 		
-		blitService.createCommonBlit(vmodel)
+		blitService.createCommonBlitAuthorized(vmodel)
 		.thenAccept(res -> {
 			SamanPaymentRequestResponseViewModel samanRes = 
 					(SamanPaymentRequestResponseViewModel)res;

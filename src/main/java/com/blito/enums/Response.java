@@ -68,7 +68,9 @@ public enum Response {
 	REQUESTED_BLIT_COUNT_IS_MORE_THAN_CAPACITY("error.requested.blits.are.more.than.capacity"),
 	EVENT_DATE_NOT_OPEN("error.event.date.not.open"),
 	EVENT_NOT_OPEN("error.event.no.open"),
-	INCONSISTENT_TOTAL_AMOUNT("error.inconsistent.total.amount.blit.price.requested.count");
+	INCONSISTENT_TOTAL_AMOUNT("error.inconsistent.total.amount.blit.price.requested.count"),
+	BLIT_COUNT_EXCEEDS_LIMIT("error.blit.count.exceeds.limit"),
+	BLIT_COUNT_EXCEEDS_LIMIT_TOTAL("error.blit.count.exceeds.limit.total");
     
 
     private final String message;
