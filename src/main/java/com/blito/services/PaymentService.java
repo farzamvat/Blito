@@ -69,7 +69,7 @@ public class PaymentService {
 		});
 	}
 	
-	@Transactional
+	@Transactional(propagation=Propagation.REQUIRED)
 	public Blit zarinpalPaymentFlow(String authority,String status)
 	{
 		Blit blit = blitRepository.findByToken(authority).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
