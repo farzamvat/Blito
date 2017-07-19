@@ -101,39 +101,39 @@ public class BlitService {
 		
 		// ADDITIONAL FIELDS VALIDATION
 		// if condition && instead of || ??
-		if(blitType.getEventDate().getEvent().getAdditionalFields() != null)
-		{
-			Event event = blitType.getEventDate().getEvent();
-			if(!event.getAdditionalFields().isEmpty())
-				if(vmodel.getAdditionalFields() == null)
-					throw new ValidationException(ResourceUtil.getMessage(Response.ADDITIONAL_FIELDS_CANT_BE_EMPTY));
-				if(vmodel.getAdditionalFields().isEmpty())
-					throw new ValidationException(ResourceUtil.getMessage(Response.ADDITIONAL_FIELDS_CANT_BE_EMPTY));
-				
-				vmodel.getAdditionalFields().forEach((k,v) -> {
-					event.getAdditionalFields().keySet().stream().filter(key -> key == k).findFirst()
-						.ifPresent(key -> {
-							if(event.getAdditionalFields().get(key).equals(Constants.FIELD_DOUBLE_TYPE))
-							{
-								try {
-									Double.parseDouble(v);
-								} catch(Exception e) 
-								{
-									throw new ValidationException(ResourceUtil.getMessage(Response.ERROR_FIELD_TYPE_DOUBLE));
-								}
-							}
-							else if(event.getAdditionalFields().get(key).equals(Constants.FIELD_INT_TYPE))
-							{
-								try {
-									Integer.parseInt(v);
-								} catch (Exception e)
-								{
-									throw new ValidationException(ResourceUtil.getMessage(Response.ERROR_FIELD_TYPE_INT));
-								}
-							}
-						});
-				});
-		}
+//		if(blitType.getEventDate().getEvent().getAdditionalFields() != null)
+//		{
+//			Event event = blitType.getEventDate().getEvent();
+//			if(!event.getAdditionalFields().isEmpty())
+//				if(vmodel.getAdditionalFields() == null)
+//					throw new ValidationException(ResourceUtil.getMessage(Response.ADDITIONAL_FIELDS_CANT_BE_EMPTY));
+//				if(vmodel.getAdditionalFields().isEmpty())
+//					throw new ValidationException(ResourceUtil.getMessage(Response.ADDITIONAL_FIELDS_CANT_BE_EMPTY));
+//				
+//				vmodel.getAdditionalFields().forEach((k,v) -> {
+//					event.getAdditionalFields().keySet().stream().filter(key -> key == k).findFirst()
+//						.ifPresent(key -> {
+//							if(event.getAdditionalFields().get(key).equals(Constants.FIELD_DOUBLE_TYPE))
+//							{
+//								try {
+//									Double.parseDouble(v);
+//								} catch(Exception e) 
+//								{
+//									throw new ValidationException(ResourceUtil.getMessage(Response.ERROR_FIELD_TYPE_DOUBLE));
+//								}
+//							}
+//							else if(event.getAdditionalFields().get(key).equals(Constants.FIELD_INT_TYPE))
+//							{
+//								try {
+//									Integer.parseInt(v);
+//								} catch (Exception e)
+//								{
+//									throw new ValidationException(ResourceUtil.getMessage(Response.ERROR_FIELD_TYPE_INT));
+//								}
+//							}
+//						});
+//				});
+//		}
 		// ADDITIONAL FIELDS VALIDATION
 
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
