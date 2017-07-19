@@ -16,7 +16,7 @@ import com.blito.services.PaymentService;
 @RestController
 public class ZarinpalRestController {
 	
-	@Value("serverAddress")
+	@Value("${serverAddress}")
 	private String serverAddress;
 
 	@Autowired
