@@ -66,7 +66,7 @@ public class ExcelService {
 						v.getEventName(), v.getEventDateAndTime(), v.getEventAddress(),
 						v.getSeatType() == null ? " " : v.getSeatType().toString(),
 						v.getPaymentStatus() == null ? " " : v.getPaymentStatus().toString(), v.getPaymentError(),
-						v.getSamanBankToken(), v.getSamanBankRefNumber(),
+						v.getSamanBankToken(), v.getRefNum(),
 						v.getBankGateway() == null ? " " : v.getBankGateway().toString()))));
 		// NumericsColumns
 		model.put("numericcolumns", Arrays.asList("UserId", "BlitId", "Count", "Total Amount"));
@@ -105,7 +105,7 @@ public class ExcelService {
 				String.valueOf(v.getTotalAmount()), v.getEventName(), v.getEventDateAndTime(), v.getEventAddress(),
 				v.getSeatType() == null ? " " : v.getSeatType().toString(),
 				v.getPaymentStatus() == null ? " " : v.getPaymentStatus().toString(), v.getPaymentError(),
-				v.getSamanBankToken(), v.getSamanBankRefNumber(),
+				v.getSamanBankToken(), v.getRefNum(),
 				v.getBankGateway() == null ? " " : v.getBankGateway().toString()));
 		values.addAll(v.getAdditionalFields().entrySet().stream().map(entry -> entry.getValue())
 				.collect(Collectors.toList()));

@@ -11,6 +11,7 @@ import java.util.concurrent.CompletableFuture;
 
 import javax.validation.ValidationException;
 
+import org.apache.poi.ss.formula.eval.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import com.blito.configs.Constants;
 import com.blito.enums.BankGateway;
 import com.blito.enums.PaymentStatus;
 import com.blito.enums.Response;
+import com.blito.enums.SeatType;
 import com.blito.enums.State;
 import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotAllowedException;
@@ -46,7 +48,6 @@ import com.blito.rest.viewmodels.payments.SamanPaymentRequestResponseViewModel;
 import com.blito.rest.viewmodels.payments.ZarinpalPayRequetsResponseViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.security.SecurityContextHolder;
-import com.blito.services.util.HtmlRenderer;
 
 @Service
 public class BlitService {
@@ -68,8 +69,6 @@ public class BlitService {
 	@Autowired
 	private ExcelService excelService;
 	@Autowired
-	private HtmlRenderer htmlRenderer;
-	@Autowired
 	private EventRepository eventRepository;
 	
 	@Value("${zarinpal.web.gateway}")
@@ -77,13 +76,18 @@ public class BlitService {
 	
 	private final Logger log = LoggerFactory.getLogger(BlitService.class);
 
-	
-	public String generateCommonBlitHtml(CommonBlit commonBllit)
+	public Object getBlitByTrackCode(String trackCode)
 	{
-		// TODO
-		return htmlRenderer.renderHtml("ticket", null);
+		return blitRepository.findByTrackCode(trackCode)
+		.map(blit -> {
+			if(blit.getSeatType().equals(SeatType.COMMON.name()))
+				return commonBlitMapper.createFromEntity(commonBlitRepository.findOne(blit.getBlitId()));
+			else 
+				// TODO
+				throw new NotImplementedException("Seat Type blit not implemented yet");
+			
+		}).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
 	}
-	
 	@Transactional
 	public CompletableFuture<Object> createCommonBlit(CommonBlitViewModel vmodel) {
 

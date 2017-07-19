@@ -71,7 +71,7 @@ public class CommonBlitViewModel {
 	@JsonView(View.AdminBlit.class)
 	String samanBankToken;
 	@JsonView(View.AdminBlit.class)
-	String samanBankRefNumber;
+	String refNum;
 	@JsonView(View.Blit.class)
 	BankGateway bankGateway;
 	@JsonView(View.Blit.class)
@@ -197,12 +197,15 @@ public class CommonBlitViewModel {
 	public void setSamanBankToken(String samanBankToken) {
 		this.samanBankToken = samanBankToken;
 	}
-	public String getSamanBankRefNumber() {
-		return samanBankRefNumber;
+
+	public String getRefNum() {
+		return refNum;
 	}
-	public void setSamanBankRefNumber(String samanBankRefNumber) {
-		this.samanBankRefNumber = samanBankRefNumber;
+
+	public void setRefNum(String refNum) {
+		this.refNum = refNum;
 	}
+
 	public Timestamp getCreatedAt() {
 		return createdAt;
 	}

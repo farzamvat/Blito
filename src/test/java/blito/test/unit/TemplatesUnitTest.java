@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.blito.Application;
 import com.blito.models.User;
 import com.blito.repositories.UserRepository;
+import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.services.util.HtmlRenderer;
 
 @ActiveProfiles("test")
@@ -55,12 +56,36 @@ public class TemplatesUnitTest {
 	}
 	
 	@Test
-	public void forgetPasswordTemplateTest()
+	public void ticketTemplateTest()
 	{
-//		Map<String, Object> map = new HashMap<String, Object>();
-//        map.put("user", user);
-//        map.put("baseUrl", baseUrl);
-//        map.put("serverAddress",serverAddress);
-//        String content = htmlRenderer.renderHtml("forgetPassword", map);
+		CommonBlitViewModel blit = new CommonBlitViewModel();
+		blit.setEventName("زویداد");
+		blit.setCustomerName("فزارام وطن زاده");
+		blit.setCustomerEmail("farzam.vat@gmail.com");
+		blit.setCustomerMobileNumber("09124337522");
+		blit.setEventDateAndTime("1396 5 4 4:30");
+		blit.setTrackCode("2387162378");
+		blit.setBlitTypeName("نوع ۲");
+		blit.setCount(10);
+		blit.setEventAddress("امیراباد خ ۱۲ بن بست ۷");
+		blit.setTotalAmount(20000);
+		Map<String,Object> map = new HashMap<>();
+		map.put("blit", blit);
+		try {
+			String content = htmlRenderer.renderHtml("ticket", map);
+			assertTrue(true);
+		} catch(Exception e) {
+			assertTrue(false);
+		}
 	}
+	
+//	@Test
+//	public void forgetPasswordTemplateTest()
+//	{
+////		Map<String, Object> map = new HashMap<String, Object>();
+////        map.put("user", user);
+////        map.put("baseUrl", baseUrl);
+////        map.put("serverAddress",serverAddress);
+////        String content = htmlRenderer.renderHtml("forgetPassword", map);
+//	}
 }

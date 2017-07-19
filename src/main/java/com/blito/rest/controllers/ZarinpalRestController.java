@@ -20,8 +20,6 @@ public class ZarinpalRestController {
 	
 	@Value("serverAddress")
 	private String serverAddress;
-	@Autowired
-	private BlitRepository blitRepository;
 
 	@Autowired
 	private PaymentService paymentService;
@@ -32,7 +30,7 @@ public class ZarinpalRestController {
 				.handle((blit,throwable) -> {
 					if(throwable != null)
 					{
-						return new RedirectView(String.valueOf(new StringBuilder(serverAddress).append("/payment/error/").append(blit.getTrackCode())));
+						return new RedirectView(String.valueOf(new StringBuilder(serverAddress).append("/payment/error/").append(throwable.getCause().getMessage())));
 					}
 					return new RedirectView(String.valueOf(new StringBuilder(serverAddress).append("/payment/").append(blit.getTrackCode())));
 				});
@@ -41,20 +39,12 @@ public class ZarinpalRestController {
 	@GetMapping("/payment/{trackCode}")
 	public ModelAndView paymentResult (@PathVariable String trackCode)
 	{
-		return blitRepository.findByTrackCode(trackCode)
-				.map(blit -> {
-					if(blit.getPaymentStatus().equals(PaymentStatus.PAID.name()))
-						return new ModelAndView("ticket").addObject("blit", blit);
-					else
-						return new ModelAndView("paymentError").addObject("message","message");
-				}).orElseGet(() -> {
-					return new ModelAndView("paymentError").addObject("message", "message");
-				});
+		return new ModelAndView("index");
 	}
 	
-	@GetMapping("/payment/error/{trackCode}")
-	public ModelAndView ModelAndView(@PathVariable String trackCode)
+	@GetMapping("/payment/error/{message}")
+	public ModelAndView paymentResultInCaseOfError(@PathVariable String message)
 	{
-		return null;
+		return new ModelAndView("error").addObject("message", message);
 	}
 }
