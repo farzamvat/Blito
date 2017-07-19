@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.blito.enums.PaymentStatus;
-import com.blito.repositories.BlitRepository;
 import com.blito.services.PaymentService;
 
 @RestController
@@ -24,7 +22,7 @@ public class ZarinpalRestController {
 	@Autowired
 	private PaymentService paymentService;
 	@GetMapping("${api.base.url}" + "zarinpal")
-	public CompletableFuture<?> zarinpalCallback(@RequestParam String Authority,@RequestParam String Status)
+	public CompletableFuture<RedirectView> zarinpalCallback(@RequestParam String Authority,@RequestParam String Status)
 	{
 		return paymentService.zarinpalPaymentFlow(Authority, Status)
 				.handle((blit,throwable) -> {
