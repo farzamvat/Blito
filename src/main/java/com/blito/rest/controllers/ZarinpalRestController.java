@@ -18,6 +18,8 @@ public class ZarinpalRestController {
 	
 	@Value("${serverAddress}")
 	private String serverAddress;
+	@Value("${api.base.url}")
+	private String baseUrl;
 
 	@Autowired
 	private PaymentService paymentService;
@@ -28,9 +30,9 @@ public class ZarinpalRestController {
 				.handle((blit,throwable) -> {
 					if(throwable != null)
 					{
-						return new RedirectView(String.valueOf(new StringBuilder(serverAddress).append("/payment/error/").append(throwable.getCause().getMessage())));
+						return new RedirectView(String.valueOf(new StringBuilder(serverAddress).append(baseUrl).append("/payment/error/").append(throwable.getCause().getMessage())));
 					}
-					return new RedirectView(String.valueOf(new StringBuilder(serverAddress).append("/payment/").append(blit.getTrackCode())));
+					return new RedirectView(String.valueOf(new StringBuilder(serverAddress).append(baseUrl).append("/payment/").append(blit.getTrackCode())));
 				});
 	}
 }
