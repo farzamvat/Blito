@@ -58,7 +58,8 @@ public enum Response {
 	FORGET_PASS_EMAIL("forget.password.email"),
 	USER_IS_BANNED("error.user.is.banned"),
 	ROLE_NAME_ALREADY_EXISTS("error.role.name.already.exists"),
-	SENDING_EMAIL_ERROR("error.sending.email");
+	SENDING_EMAIL_ERROR("error.sending.email"),
+	BLIT_NOT_AVAILABLE("error.blit.not.available");
     
 
     private final String message;
