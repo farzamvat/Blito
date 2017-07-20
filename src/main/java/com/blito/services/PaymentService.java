@@ -88,7 +88,8 @@ public class PaymentService {
 				Blit persistedBlit = persistZarinpalBoughtBlit(commonBlit, authority, String.valueOf(verificationResponse.getRefID()), ZarinpalException.generateMessage(verificationResponse.getStatus()));
 				Map<String,Object> map = new HashMap<>();
 				map.put("blit", persistedBlit);
-				mailService.sendEmail(blit.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map), ResourceUtil.getMessage(Response.BLIT_RECIEPT));
+				log.info("Sending blit receipt to e-mail : '{}' with track code : '{}'",persistedBlit.getCustomerEmail(),persistedBlit.getTrackCode());
+				mailService.sendEmail(persistedBlit.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map), ResourceUtil.getMessage(Response.BLIT_RECIEPT));
 				return blit;
 			}
 			else {
@@ -113,6 +114,7 @@ public class PaymentService {
 		blitType.setSoldCount(blitType.getSoldCount() + commonBlit.getCount());
 		if (blitType.getSoldCount() == blitType.getCapacity()) {
 			blitType.setBlitTypeState(State.SOLD.name());
+			
 			if (blitType.getEventDate().getBlitTypes().stream()
 					.allMatch(b -> b.getBlitTypeState().equals(State.SOLD.name()))) {
 				blitType.getEventDate().setEventDateState(State.SOLD.name());
