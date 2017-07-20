@@ -1493,7 +1493,7 @@ angular.module('User')
 
             });
         //==================================================== ********* =================================
-        //==================================================== PERSIAN DATE PICKER =================================
+        //==================================================== PERSIAN DATE PICKER =======================
 
         $timeout(function () {
             dateSetterService.initDate("persianTimeEventStart");
@@ -1501,6 +1501,9 @@ angular.module('User')
             dateSetterService.initDate("persianExchangeTime");
             dateSetterService.initDate("eventDateClass0");
         }, 1000);
-
         //==================================================== ********* =================================
+        $scope.showMenuOnSm = function () {
+            $('.profileTabs').toggleClass("pullMenuLeft");
+            $('.profileToggleMenu').toggleClass("rotateToggleMenu");
+        }
     });

@@ -71,7 +71,7 @@ public class PaymentService {
 		});
 	}
 	
-	@Transactional
+	@Transactional(propagation=Propagation.REQUIRED)
 	public Blit zarinpalPaymentFlow(String authority,String status)
 	{
 		Blit blit = blitRepository.findByToken(authority).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
@@ -88,9 +88,8 @@ public class PaymentService {
 				Blit persistedBlit = persistZarinpalBoughtBlit(commonBlit, authority, String.valueOf(verificationResponse.getRefID()), ZarinpalException.generateMessage(verificationResponse.getStatus()));
 				Map<String,Object> map = new HashMap<>();
 				map.put("blit", persistedBlit);
-				log.info("Sending blit receipt to e-mail : '{}' with track code : '{}'",persistedBlit.getCustomerEmail(),persistedBlit.getTrackCode());
-				mailService.sendEmail(persistedBlit.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map), ResourceUtil.getMessage(Response.BLIT_RECIEPT));
-				return blit;
+				mailService.sendEmail(blit.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map), ResourceUtil.getMessage(Response.BLIT_RECIEPT));
+				return persistedBlit;
 			}
 			else {
 				// TODO
@@ -105,16 +104,15 @@ public class PaymentService {
 		}
 	}
 	
-	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
+	@Transactional(propagation=Propagation.REQUIRES_NEW,isolation=Isolation.SERIALIZABLE,rollbackFor=Exception.class)
 	private Blit persistZarinpalBoughtBlit(CommonBlit blit, String authority, String refNum, String paymentMessage) {
 		CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
-		BlitType blitType = blitTypeRepository.findByBlitTypeId(commonBlit.getBlitType().getBlitTypeId());
+		BlitType blitType = blitTypeRepository.findOne(commonBlit.getBlitType().getBlitTypeId());
 		commonBlit.setRefNum(refNum);
 		commonBlit.setPaymentStatus(PaymentStatus.PAID.name());
 		blitType.setSoldCount(blitType.getSoldCount() + commonBlit.getCount());
 		if (blitType.getSoldCount() == blitType.getCapacity()) {
 			blitType.setBlitTypeState(State.SOLD.name());
-			
 			if (blitType.getEventDate().getBlitTypes().stream()
 					.allMatch(b -> b.getBlitTypeState().equals(State.SOLD.name()))) {
 				blitType.getEventDate().setEventDateState(State.SOLD.name());
@@ -126,7 +124,7 @@ public class PaymentService {
 						Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 			}
 		}
-		return commonBlitRepository.save(commonBlit);
+		return commonBlit;
 	}
 
 	

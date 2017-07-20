@@ -642,6 +642,18 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     text-align: center;
     color: black;
 }
+.exchangePageDate {
+    width: 100%;
+    direction: ltr;
+    border: none;
+    border-radius: 3px;
+    height: 25px !important;
+    font-size: 12px;
+    padding-right: 5px;
+    text-align: center;
+    background-color: transparent;
+    color : white !important;
+}
 .eventPageListTitle {
     font-size: 10px !important;
 }
@@ -693,20 +705,58 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     padding: 15px 60px;
     font-size: 14px;
 }
-
-.eventPageHeaderTheatre {
-    background: url('../img/1.png') fixed ;
-    background-size: 100% 500px;
-    padding-top: 68px;
-    padding-bottom: 40px;
+.fontGreen {
+    color: #39A939;
 }
-
-
+.fontRed {
+    color: #a94442;
+}
+.eventPageHeaderTheatre {
+    background: url('../img/theater.png') fixed ;
+    background-size: 100% 380px;
+    padding-top: 68px;
+    padding-bottom: 20px;
+}
 .eventPageHeaderCinema {
-    background: url('../img/2.png') fixed ;
-    background-size: 100% 500px;
-    padding-top: 80px;
-    padding-bottom: 40px;
+    background: url('../img/cinema.png') fixed ;
+    background-size: 100% 380px;
+    padding-top: 68px;
+    padding-bottom: 20px;
+}
+.eventPageHeaderEducation {
+    background: url('../img/amoozeshi.png') fixed ;
+    background-size: 100% 380px;
+    padding-top: 68px;
+    padding-bottom: 20px;
+}
+.eventPageHeaderEntertainment {
+    background: url('../img/entertainment.png') fixed ;
+    background-size: 100% 380px;
+    padding-top: 68px;
+    padding-bottom: 20px;
+}
+.eventPageHeaderTour {
+    background: url('../img/gardeshgari.png') fixed ;
+    background-size: 100% 380px;
+    padding-top: 68px;
+    padding-bottom: 20px;
+}
+.eventPageHeaderMusic {
+    background: url('../img/music.png') fixed ;
+    background-size: 100% 380px;
+    padding-top: 88px;
+    padding-bottom: 20px;
+}
+.eventPageHeaderOther {
+    background: url('../img/sayer.png') fixed ;
+    background-size: 100% 380px;
+    padding-top: 68px;
+    padding-bottom: 20px;
+}
+.logoEventPage {
+    position: absolute;
+    top: 20px;
+    right: 10px;
 }
 .eventContent {
     margin-right: 0;
@@ -732,6 +782,9 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 }
 .panelMidSize {
     height: 250px ;
+}
+.eventPagePanelHeading {
+    opacity: 0.8;
 }
 
 .eventPageImage img {
@@ -871,9 +924,12 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
 #map {
     width: 80%;
     height: 300px;
-    margin: auto;
-    margin-top:50px;
-
+    margin:10px auto;
+}
+#ticketMap {
+    width: 80%;
+    margin:40px auto;
+    height: 300px;
 }
 #mapExchange {
     border: 2px solid #303030;
@@ -2165,6 +2221,10 @@ a{
     border-radius: 0px;
     brder:none;
 }
+.eventPageTimeField {
+    overflow: visible;
+    width: 250px;
+}
 .laptopcontainer img,
 .nolaptopcontainer img{
     max-width:50%;
@@ -2194,9 +2254,109 @@ a{
     border:2px solid #ddd;
     float:right;
 }
+
 table td{
     vertical-align: middle !important;
 }
+.profileToggleMenu {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    vertical-align: middle;
+    align-content: center;
+    padding-top: 10px;
+    position: fixed;
+    text-align: center;
+    z-index: 1000;
+    border: 1px solid #333;
+    right: 20px;
+    transition: 500ms;
+    background-color: rgb(252, 183, 49);
+}
+/*ticket style*/
+.ticketImage {
+    width: 100px;
+    margin: 60px auto 10px auto;
+}
+.cardWrap {
+    margin: 3em auto;
+    color: #fff;
+}
+
+.card {
+    background: linear-gradient(to bottom, rgb(252, 183, 49) 0%, rgb(252, 183, 49) 16%, #333 16%, #333 100%);
+    height: 550px;
+    float: left;
+    position: relative;
+    padding: 5px 10px;
+}
+.cardAddress {
+    background: linear-gradient(to bottom, rgb(252, 183, 49) 0%, rgb(252, 183, 49) 16%, #333 16%, #333 100%);
+    height: 550px;
+    float: left;
+    position: relative;
+    padding: 5px 10px;
+}
+
+.cardLeft {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.cardRight {
+    border-left: .18em dashed #fff;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+.cardRight:before, .cardRight:after {
+    content: "";
+    position: absolute;
+    display: block;
+    background: #fff;
+    border-radius: 50%;
+}
+.ticketTitle, .ticketName {
+    text-transform: uppercase;
+    font-weight: normal;
+}
+.ticketTitle h2, .ticketName h2{
+    font-size: 14px;
+    color: #ddd;
+    margin: 10px;
+    text-align: right;
+}
+.ticketTitle h4, .ticketName h4{
+    font-size: 16px;
+    margin: 10px;
+    text-align: right;
+    color: #fff;
+}
+.ticketAddress h2{
+    font-size: 14px;
+    color: #ddd;
+    margin: 10px;
+    text-align: right;
+}
+.ticketAddress h4{
+    font-size: 16px;
+    margin: 10px;
+    text-align: right;
+    color: #fff;
+}
+.ticketAddress {
+    margin-top: 100px;
+}
+.ticketTitle {
+    margin-top: 20px;
+}
+
+.ticketName {
+    margin-top: 30px;
+}
+
+
+
+
 @media (max-width: 770px) {
     .navbar-header-backcolor{
         width: 172px !important;
@@ -2231,6 +2391,24 @@ table td{
 
 
 @media (max-width: 992px) {
+    .ticketTitle h2, .ticketName h2{
+        font-size: 12px;
+    }
+    .ticketTitle h4, .ticketName h4{
+        font-size: 14px;
+
+    }
+    .ticketAddress h2{
+        font-size: 12px;
+
+    }
+    .ticketAddress h4{
+        font-size: 14px;
+    }
+    .datePickerFormatEventPage {
+        width: 190px;
+        font-size: 12px;
+    }
     .navbar-nav li a {
         color : white !important;
         font-size: 11px !important;
@@ -2258,8 +2436,7 @@ table td{
         width: 300px;
     }
     #map {
-        width: 400px;
-        height: 300px;
+
         margin: 10px auto;
     }
     .blitoTeamContainer{
@@ -2276,6 +2453,61 @@ table td{
 
 
 @media (max-width: 768px) {
+    .ticketTitleMobile {
+        text-align: center;
+    }
+    .ticketTitle h2, .ticketName h2{
+        text-align: center;
+    }
+    .ticketTitle h4, .ticketName h4{
+        text-align: center;
+
+    }
+    .ticketAddress h2{
+        text-align: center;
+
+    }
+    .ticketAddress h4{
+        text-align: center;
+    }
+    .cardLeft {
+        border-top-left-radius: 0;
+    }
+    .cardRight {
+        border-left: 1px solid #fff;
+        border-bottom-right-radius: 0;
+    }
+    .cardAddress {
+        background: #333;
+    }
+    .slidingEventsImg img:hover{
+        transform: scale(1);
+        -webkit-transform: scale(1);
+        -ms-transform: scale(1);
+    }
+    .logoEventPage {
+        top: 30px;
+    }
+    .eventContent {
+        padding-right: 30px;
+    }
+
+
+    .editForm {
+        width: 100%;
+        z-index: 1000000000000000000;
+    }
+    .profileTabs {
+        right: -185px;
+        transition: 500ms;
+    }
+    .pullMenuLeft {
+        right: 0;
+    }
+    .rotateToggleMenu {
+        right: 200px;
+        transform: rotate(45deg);
+    }
     .inputXsSize {
         width: 100%;
     }
@@ -2344,10 +2576,10 @@ table td{
     .eventPageHeader {
         background-size: 3000px auto;
     }
-    .imgMobileSize {
-        display: block;
-        margin: 10px auto;
-    }
+    /*.imgMobileSize {*/
+        /*display: block;*/
+        /*margin: 10px auto;*/
+    /*}*/
     .eventContent {
         text-align: center;
     }
@@ -2469,6 +2701,12 @@ table td{
 
 }
 @media (min-width: 992px) {
+    .datePickerFormatEventPage {
+        overflow: visible;
+        width: 190px;
+        color: black !important;
+        font-size: 12px;
+    }
     .paddingRight0 {
         padding-right: 0;
     }
@@ -2519,4 +2757,3 @@ table td{
         font-size:16px;
     }
 }
-

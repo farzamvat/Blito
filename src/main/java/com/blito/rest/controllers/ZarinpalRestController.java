@@ -18,6 +18,8 @@ public class ZarinpalRestController {
 	
 	@Value("${serverAddress}")
 	private String serverAddress;
+	@Value("${api.base.url}")
+	private String baseUrl;
 
 	@Autowired
 	private PaymentService paymentService;

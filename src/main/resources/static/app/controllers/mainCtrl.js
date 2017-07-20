@@ -67,6 +67,7 @@ angular.module('menuPagesModule', [])
         main.setUserData = function () {
             Auth.getUser()
                 .then(function (data, status) {
+                    console.log(data);
                     $scope.logoutMenu = true;
                     main.userData = data.data;
                     userInfo.setData(main.userData);

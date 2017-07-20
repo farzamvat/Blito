@@ -24,6 +24,7 @@ angular.module('exchangesPageModule', [])
                     console.log(data);
                 })
         };
+
         $scope.pageChanged = function (newpage) {
             $scope.getAllExchanges(newpage);
         };
