@@ -1,9 +1,23 @@
-<div ng-controller="eventPageCtrl as eventPage">
-    <div class="row eventPageHeader" ng-class="{'eventPageHeaderCinema': eventType === 'cinema', 'eventPageHeaderTheatre': eventType === 'theatre'}">
-        <div class="col-xs-12 col-sm-4 col-md-3 floatRight eventPageImage">
+<div ng-controller="eventPageCtrl as eventPage" style="margin-bottom: 20px">
+    <div class="row eventPageHeader eventPageHeaderCover" ng-class="{'eventPageHeaderCinema': eventType === 'CINEMA',
+                                                                     'eventPageHeaderTheatre': eventType === 'THEATER',
+                                                                     'eventPageHeaderEducation': eventType === 'WORKSHOP',
+                                                                     'eventPageHeaderEntertainment': eventType === 'SPORT',
+                                                                     'eventPageHeaderTour': eventType === 'TOURISM',
+                                                                     'eventPageHeaderMusic': eventType === 'CONCERT',
+                                                                     'eventPageHeaderOther': eventType === 'OTHER'}">
+        <img ng-show="eventType === 'CONCERT'" class="logoEventPage" src="assets/img/music-logo.png" alt="">
+        <img ng-show="eventType === 'CINEMA'" class="logoEventPage" src="assets/img/cinema-logo.png" alt="">
+        <img ng-show="eventType === 'THEATER'" class="logoEventPage" src="assets/img/theater-logo.png" alt="">
+        <img ng-show="eventType === 'WORKSHOP'" class="logoEventPage" src="assets/img/edu-logo.png" alt="">
+        <img ng-show="eventType === 'SPORT'" class="logoEventPage" src="assets/img/joy.png" alt="">
+        <img ng-show="eventType === 'TOURISM'" class="logoEventPage" src="assets/img/tour-logo.png" alt="">
+        <img ng-show="eventType === 'OTHER'" class="logoEventPage" src="assets/img/other-logo.png" alt="">
+
+        <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 floatRight eventPageImage">
             <img ng-src="{{eventDataPhoto.eventPhoto[0].imageUUID}}"   class="img-responsive imgMobileSize ">
         </div>
-        <div class="col-xs-12 col-sm-7 col-md-4 floatRight textAlignRight eventContent" >
+        <div class="col-xs-12 col-sm-7 col-md-3 col-lg-4 floatRight textAlignRight eventContent" >
             <h1>{{eventDataDetails.eventName}}</h1>
             <p>{{eventDataDetails.description}}</p>
 
@@ -11,12 +25,11 @@
             <button ng-show="eventDataDetails.eventState === 'OPEN'" ng-click="showBuyTicketModal()" class="btn btn-success buyTicket  marginTop10"><i class="fa fa-ticket" aria-hidden="true"></i>  خرید بلیت
 
             </button>
-
         </div>
-        <div class="col-xs-12   col-sm-12   col-md-4 floatRight textAlignRight paddingRight0 panelMidSize" >
+        <div class="col-xs-12   col-sm-12   col-md-5 col-lg-4 floatRight textAlignRight paddingRight0 panelMidSize" >
 
             <div class="panel panel-primary  customPanelEventPage eventPageShowTimeColor">
-                <div class="panel-heading">
+                <div class="panel-heading eventPagePanelHeading">
                     <span class="glyphicon glyphicon-list"></span> لیست سانس ها
                     <input height="60" id="searchShowTime" placeholder="&#xf002;" ng-model="search"   type="text"  class="form-group searchListInput" >
                 </div>
@@ -44,19 +57,19 @@
                             <td  class="dataCenter">
                                 {{item.name}}
                             </td>
-                            <td class="dataCenter"><input required  ng-class="setClass($index)"  disabled  type="text" class="form-group datePickerFormatEventPage marginBottom0" readonly></td>
+                            <td class="dataCenter eventPageTimeField"><input required  ng-class="setClass($index)"  disabled  type="text" class="form-group datePickerFormatEventPage marginBottom0" readonly></td>
 
                             <td ng-if="item.price === 0" class="dataCenter">رایگان</td>
                             <td ng-if="item.price !== 0" class="dataCenter">{{ item.price}}</td>
 
                             <!--<td class="dataCenter">{{ item.capacity - item.soldCount}}</td>-->
-                            <td ng-if="item.blitTypeState === 'OPEN'" class="dataCenter btn-success" >
+                            <td ng-if="item.blitTypeState === 'OPEN'" class="dataCenter fontGreen" >
                                 فعال
                                 </td>
-                            <td ng-if="item.blitTypeState === 'CLOSED'" class="dataCenter btn-danger">
+                            <td ng-if="item.blitTypeState === 'CLOSED'" class="dataCenter fontRed">
                                 بسته
                                 </td>
-                            <td ng-if="item.blitTypeState === 'SOLD'" class="dataCenter btn-danger">
+                            <td ng-if="item.blitTypeState === 'SOLD'" class="dataCenter fontRed">
                                 فروخته شد
                                 </td>
                         </tr>
@@ -102,7 +115,7 @@
             <div ng-show="eventDataDetails.aparatDisplayCode !== null" id="menu1" class="tab-pane fade">
                 <div class="eventVideo"  id="14931147738924580"><script type="text/JavaScript" src="https://www.aparat.com/embed/nv7Xg?data[rnddiv]=14931147738924580&data[responsive]=yes"></script></div>
             </div>
-            <div id="menu2" class="tab-pane fade slickFix marginTop30" ng-if="eventDataPhoto.gallery.length !== 0">
+            <div id="menu2" class="tab-pane fade  marginTop60" ng-if="eventDataPhoto.gallery.length !== 0">
                 <div id="photoGallery" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators hidden-xs">
                         <li ng-repeat="photo in eventDataPhoto.gallery" data-target="#photoGallery" data-slide-to="{{$index}}" ng-class="{active : $index === 0}"></li>

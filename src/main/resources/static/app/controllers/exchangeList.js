@@ -27,7 +27,6 @@ angular.module('exchangesPageModule', [])
         $scope.pageChanged = function (newpage) {
             $scope.getAllExchanges(newpage);
         };
-
         $scope.catchImagesExchange = function (events) {
             events.map(function (item) {
                 photoService.download(item.image.imageUUID)
@@ -41,7 +40,7 @@ angular.module('exchangesPageModule', [])
 
             });
             return events;
-        }
+        };
         $scope.getAllExchanges(1);
         $scope.currentPage = 1;
     });

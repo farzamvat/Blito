@@ -1,0 +1,41 @@
+<div  ng-controller="userTicketCtrl as userTicket">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="cardWrap">
+                <div class="col-xs-1 floatRight"></div>
+                <div class="card cardRight col-xs-10   col-sm-4 floatRight">
+                    <h1 class="textAlignRight ticketTitleMobile">{{ticketData.eventName}}</h1>
+                    <img ng-src="{{imageBase64}}"   class="img-responsive ticketImage"/>
+                    <div class="ticketTitle ">
+                        <h2> :تاریخ و ساعت رویداد </h2>
+                        <h4>{{ticketData.eventDateAndTime}}</h4>
+                    </div>
+                    <div class="ticketName ">
+                        <h2> :نام خریدار ‌</h2>
+                        <h4>{{ticketData.customerName}}</h4>
+                    </div>
+                    <div class="ticketName ">
+                        <h2> :نام بلیت ‌</h2>
+                        <h4>{{ticketData.blitTypeName}}</h4>
+                    </div>
+                    <div class="ticketName ">
+                        <h2> :تعداد بلیت ‌</h2>
+                        <h4>{{ticketData.count}}</h4>
+                    </div>
+                </div>
+                <div class="col-xs-12 floatRight hidden-sm hidden-md hidden-lg"></div>
+                <div class="col-xs-1 floatRight hidden-sm hidden-md hidden-lg"></div>
+
+                <div class="cardAddress cardLeft col-xs-10   col-sm-6  floatRight">
+                    <div class="ticketAddress ">
+                        <h2> :آدرس رویداد </h2>
+                        <h4 class="textAlignRight">{{ticketData.eventAddress}}</h4>
+                    </div>
+                    <div id="ticketMap">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

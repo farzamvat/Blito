@@ -203,15 +203,12 @@ angular.module('authServices', [])
 
     .service('userInfo', function () {
         var userInfo = this;
-        var userDataService = { firstname : 'کاربر', lastname : '', mobile : '09122011273', email : ''};
+        var userDataService = { firstname : 'کاربر', lastname : '', mobile : '', email : ''};
 
         userInfo.setData = function (userData) {
             userDataService.firstname = userData.firstname;
             userDataService.lastname = userData.lastname;
             userDataService.mobile = userData.mobile;
-            // userDataService.firstname = 'soroush';
-            // userDataService.lastname = 'yousefi';
-            // userDataService.mobile = '09122011273';
             userDataService.email = userData.email;
         };
         userInfo.getData = function () {

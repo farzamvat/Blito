@@ -14,27 +14,14 @@ angular.module('eventsPageModule')
             .then(function (data) {
                 $scope.exchangeData = data.data;
                 $scope.catchImagesExchange($scope.exchangeData.image.imageUUID)
-                var jqSelect = $(".dateInit");
                 mapMarkerService.initMapOnlyShowMarker(document.getElementById('map'));
                 mapMarkerService.setMarker($scope.exchangeData.latitude, $scope.exchangeData.longitude);
-                jqSelect.pDatepicker({
-                    timePicker: {
-                        enabled: true
-                    },
-                    altField: '#persianDigitAlt',
-                    altFormat: "YYYY MM DD HH:mm:ss",
-                    persianDigit : true,
-                    altFieldFormatter: function (unixDate) {
-                    }
-                });
-                jqSelect.pDatepicker("setDate",dateSetterService.persianToArray(persianDate($scope.exchangeData.eventDate).pDate));
+                dateSetterService.initDate("dateInit");
+                $(".dateInit").val(persianDate($scope.exchangeData.eventDate).format("dddd, MMMM DD, h:mm a"))
             })
             .catch(function (data) {
                 console.log(data);
             });
-
-
-
         $scope.catchImagesExchange = function (UUID) {
             photoService.download(UUID)
                 .then(function (data) {
@@ -43,7 +30,7 @@ angular.module('eventsPageModule')
                 .catch(function (data) {
                     console.log(data)
                 })
-        }
+        };
 
         $scope.eventType = "cinema";
 
