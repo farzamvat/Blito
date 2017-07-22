@@ -316,7 +316,27 @@ angular.module('UiServices', [])
                 default :
                     persianOperatorState = 'گونه';
                     break;
-
+            }
+            return persianOperatorState;
+        };
+        data.ticketStatusPersian = function (operatorState) {
+            var persianOperatorState = '';
+            switch (operatorState) {
+                case "PAID" :
+                    persianOperatorState = 'پرداخت شده';
+                    break;
+                case "ERROR" :
+                    persianOperatorState = 'خطا';
+                    break;
+                case "PENDING" :
+                    persianOperatorState = 'انتظار';
+                    break;
+                case "FREE" :
+                    persianOperatorState = 'رایگان';
+                    break;
+                default :
+                    persianOperatorState = 'گونه';
+                    break;
             }
             return persianOperatorState;
         };

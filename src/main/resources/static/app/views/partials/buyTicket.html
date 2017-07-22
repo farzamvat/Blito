@@ -87,7 +87,7 @@
 
                                                 </div>
                                                 <div ng-hide="itemWithCapacity[0].capacity === 0 || itemWithCapacity[0].blitTypeState === 'CLOSED'">
-                                                    <div ng-if="ticketInfo.sansSelect.$valid && itemWithCapacity[0].capacity>=10" class="form-group col-xs-12  formRegGroup floatRight marginTop30">
+                                                    <div ng-if="ticketInfo.sansSelect.$valid && itemWithCapacity[0].capacity >= 5" class="form-group col-xs-12  formRegGroup floatRight marginTop30">
                                                         <div class="col-xs-5 col-sm-4 floatRight text-center">
                                                             <label class="registerLabel" for="ticketNumber" > تعداد بلیت  :</label>
                                                         </div>
@@ -98,13 +98,13 @@
                                                         </div>
 
                                                     </div>
-                                                    <div ng-if="ticketInfo.sansSelect.$valid && itemWithCapacity[0].capacity<10" class="form-group col-xs-12  formRegGroup floatRight marginTop30">
+                                                    <div ng-if="ticketInfo.sansSelect.$valid && itemWithCapacity[0].capacity<5" class="form-group col-xs-12  formRegGroup floatRight marginTop30">
                                                         <div class="col-xs-5 col-sm-4 floatRight text-center">
                                                             <label class="registerLabel" for="ticketNumber" > تعداد بلیت  :</label>
                                                         </div>
                                                         <div class="col-xs-7 col-sm-8 floatRight ">
                                                             <select ng-model="eventInfo.ticketNumber"  id="ticketNumber2" class="form-control dropDownList" required>
-                                                                <option ng-repeat="number in itemWithCapacity[0].capacity">{{$index+1}}</option>
+                                                                <option ng-repeat="number in getTicketNumbers(itemWithCapacity[0].capacity)">{{$index+1}}</option>
                                                             </select>
                                                         </div>
 
@@ -112,7 +112,7 @@
                                                     <div ng-if="!logoutMenu" class="form-group col-xs-12 marginTop30  formRegGroup floatRight">
                                                         <p class="text-center">کاربر وبسایت هستید؟</p>
                                                         <p class="text-center"><a ng-click="hideTicketPaymentModal()" data-toggle="modal" data-target="#registrationModal" class="text-center">وارد شوید</a></p>
-                                                        <p class="text-center">اگر کاربر وبسایت نیستید پست الکترونیکی خود را وارد کنید</p>
+                                                        <p class="text-center">اگر کاربر وبسایت نیستید اطلاعات زیر را وارد کنید</p>
                                                     </div>
 
                                                     <div ng-if="!logoutMenu" class="form-group col-xs-12 marginTop30  formRegGroup floatRight">
@@ -226,7 +226,7 @@
                                             </div>
                                             <div  ng-if="itemWithCapacity[0].isFree" class="form-group col-xs-12 formRegGroup floatRight">
                                                 <div class="controls col-xs-12 col-sm-6 marginBottom20">
-                                                    <button id="nextStep2Free" ng-click="nextStep2Free()" name="freePayment" class="btn btn-success btn-lg btnLogin">  دریافت بلیت <i class="fa fa-spin fa-spinner dispNone freeBlitSpinner"></i><i class="fa fa-money"></i></button>
+                                                    <button id="nextStep2Free" ng-click="nextStep2Free()" ng-disabled="disableFreeButton" name="freePayment" class="btn btn-success btn-lg btnLogin">  دریافت بلیت <i class="fa fa-spin fa-spinner dispNone freeBlitSpinner"></i><i class="fa fa-money"></i></button>
                                                 </div>
                                                 <div class="controls col-xs-12 col-sm-6 marginBottom20">
                                                     <button id="prevStep2" ng-click="prevStep1()"  class="btn btn-danger btn-lg btnLogin"><i class="fa fa-arrow-right"></i>   مرحله قبل </button>
@@ -243,7 +243,8 @@
                                     <p class="text-center">خرید بلیت با موفقیت انجام شد</p>
                                 </div>
                                 <div class="tab-pane fade" id="ticketPayFree">
-                                    <p class="text-center">بلیت شما ثبت شد</p>
+                                    <p class="text-center"><button class="btn btn-success" ng-click="getFreeTicket()">دریافت بلیت</button></p>
+                                    <p class="text-center">با تشکر از خرید شما</p>
                                 </div>
 
 
