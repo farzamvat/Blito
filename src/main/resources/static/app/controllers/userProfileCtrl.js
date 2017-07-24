@@ -1512,5 +1512,14 @@ angular.module('User')
         $scope.showMenuOnSm = function () {
             $('.profileTabs').toggleClass("pullMenuLeft");
             $('.profileToggleMenu').toggleClass("rotateToggleMenu");
+        };
+        $timeout(function () {
+            var elements = document.querySelectorAll('input,select,textarea,checkbox');
+        var invalidListener = function(e){ e.preventDefault(); };
+
+        for(var i = elements.length; i--;) {
+            elements[i].addEventListener('invalid', invalidListener);
         }
+        }, 1000);
+
     });

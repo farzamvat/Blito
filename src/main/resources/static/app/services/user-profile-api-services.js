@@ -8,10 +8,14 @@ angular.module('userProfileApi', [])
 
 
         photo.upload = function (imageData) {
+            console.log(imageData);
             var blob = new Blob([imageData.encodedBase64], {type: 'image/png'});
+            console.log(blob);
             var file = new File([blob], 'imageFileName.png');
+            console.log(file);
             var fd = new FormData();
             fd.append("file", file);
+            console.log(fd);
             return $http.post(config.baseUrl+'/api/blito/v1.0/images/multipart/upload', fd,
                 {transformRequest : angular.identity, headers : {'Content-Type': undefined}})
         };
