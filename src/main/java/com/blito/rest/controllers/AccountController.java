@@ -86,15 +86,20 @@ public class AccountController {
 	{
 		return userRepository.findByEmail(email)
 		.map(u -> {
-			if(u.getActivationKey().equals(key))
-			{
-				u.setActive(true);
-				u.setActivationKey(null);
-				u = userRepository.save(u);
-				return new ModelAndView("activationSuccess").addObject("firstname", u.getFirstname()).addObject("serverAddresss", serverAddress);
+			if(u.getActivationKey() != null) {
+				if(u.getActivationKey().equals(key))
+				{
+					u.setActive(true);
+					u.setActivationKey(null);
+					u = userRepository.save(u);
+					return new ModelAndView("activationSuccess").addObject("firstname", u.getFirstname()).addObject("serverAddresss", serverAddress);
+				}
+				else {
+					return new ModelAndView("activationFailed").addObject("message",ResourceUtil.getMessage(Response.INVALID_ACTIVATION_KEY)).addObject("serverAddress", serverAddress);
+				}
 			}
 			else {
-				return new ModelAndView("activationFailed").addObject("message",ResourceUtil.getMessage(Response.INVALID_ACTIVATION_KEY)).addObject("serverAddress", serverAddress);
+				return new ModelAndView("activationFailed").addObject("message",ResourceUtil.getMessage(Response.USER_ALREADY_ACTIVATED)).addObject("serverAddress", serverAddress);
 			}
 		})
 		.orElseGet(() -> {

@@ -72,6 +72,7 @@ public enum Response {
 	BLIT_COUNT_EXCEEDS_LIMIT("error.blit.count.exceeds.limit"),
 	BLIT_COUNT_EXCEEDS_LIMIT_TOTAL("error.blit.count.exceeds.limit.total"),
 	INVALID_ACTIVATION_KEY("error.invalid.activation.key"),
+	USER_ALREADY_ACTIVATED("error.user.already.activated"),
 	PAYMENT_PENDING("info.payment.pending"),
 	PAYMENT_ERROR("info.payment.error"),
 	BLIT_RECIEPT("blit.reciept");
