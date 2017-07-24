@@ -1,6 +1,6 @@
 <div class="row" ng-controller="eventsListPageCtrl as events">
     <div class="col-md-12 eventsPageRows">
-        <div class="row" ng-class="{'eventPageHeaderCinema': type === 'CINEMA',
+        <div class="row noPadBot" ng-class="{'eventPageHeaderCinema': type === 'CINEMA',
                                                                      'eventPageHeaderTheatre':type === 'THEATER',
                                                                      'eventPageHeaderEducation': type === 'WORKSHOP',
                                                                      'eventPageHeaderEntertainment': type === 'SPORT',
@@ -53,11 +53,12 @@
                     <div class="image center-block" >
                         <img ng-src="{{item.image}}" class="center-block eventListImage"  >
                         <div class="name">
-                            <h3>{{ item.eventName }}</h3>
+                            <!--<h3>{{ item.eventName }}</h3>-->
                             <h5> برگزارکننده   : {{ item.eventHostName }}<i class="fa fa-calendar-check-o"></i></h5>
                             <h5>{{ item.views }}: بازدید  <i class="fa fa-eye"></i>‌</h5>
                             <h5>{{ item.capacity - item.soldCount }}: بلیت باقی مانده  <i class="fa fa-eye"></i>‌</h5>
                         </div>
+                        <h4 class="text-center slidingEventsTitle">{{item.eventName }}</h4>
                         <div class="eventDescription center-block">
                             {{item.description}}
                         </div>
@@ -72,6 +73,7 @@
                     </div>
                 </div>
             </a>
+
         </div>
     </div>
 
