@@ -18,7 +18,8 @@ angular.module('User')
                                              ticketsService,
                                              $q,
                                              dateSetterService,
-                                             imageServices) {
+                                             imageServices,
+                                             $window) {
         var userProfile = this;
 
         $scope.userData = userInfo.getData();
@@ -1399,6 +1400,9 @@ angular.module('User')
         };
         //==================================================== ********* =================================
         //==================================================== GET DATA =================================
+        $scope.getTicket = function (trackCode) {
+            $window.open('/payment/'+trackCode);
+        };
         $scope.showTickets = function (index) {
             $scope.eventTicketsPageChanged = function (newPage) {
                 $scope.getEventTickets(newPage);
@@ -1471,13 +1475,16 @@ angular.module('User')
                     console.log(data);
                 })
         };
-
         $scope.getUserTickets = function (pageNumber) {
             ticketsService.getUserTickets(pageNumber, $scope.userData.email)
                 .then(function (data) {
                     console.log(data);
                     $scope.totalUserTickets = data.data.totalElements;
                     $scope.userTickets = data.data.content;
+                    $scope.userTickets = $scope.userTickets.map(function (ticket) {
+                        ticket.paymentStatus = dataService.ticketStatusPersian(ticket.paymentStatus);
+                        return ticket;
+                    })
                 })
                 .catch(function (data) {
                     console.log(data);

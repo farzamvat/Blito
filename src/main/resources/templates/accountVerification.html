@@ -3,18 +3,24 @@
 <head>
 </head>
 <body
-	style="padding: 0px; width: 100%; margin: 0px; font-family: url();">
+	style="padding: 0px; width: 100%; margin: 0px; font-family:'Iranian Sans';">
 	<div
-		style="background: #eee; min-height: 550px; position: absolute; width: 100%; margin: 0px; height: 100%; float: right; direction: rtl;">
-		<div
-			style="width: 20px; height: 100%; background: rgb(252, 183, 49); float: left; margin-left: 20px; margin-top: 0px;"></div>
-		<div
-			style="width: 20px; height: 20px; background: #666; float: left; margin-left: 5px; margin-top: 0px;"></div>
-		<div
-			style="width: 20px; height: 50%; background: #666; float: left; margin-left: -20px; margin-top: 50px;"></div>
-		<img
-			src="https://gallery.mailchimp.com/1306cce44028ddafd3be236cd/images/b0960aba-69f5-49f2-87c1-3ac872cd8201.png"
-			style="float: left; margin-top: 20px; margin-left: -21px; width: 100px;"></img>
+		style="background: #eee;display:inline-table; min-height: 550px; position: absolute; width: 100%; margin: 0px; height: 100%; float: right; direction: rtl;">
+
+		<span
+			style="width: 1.5%; height: 550px; background: rgb(252, 183, 49); float: left; margin-left: 1.5%; margin-top: 0px;"></span>
+		<span
+				style="width: 1.5%; height:20px;display: inline; background: #666; float: left; margin-left:1.5%; margin-top: 0px;"></span>
+
+		<span style=" position: absolute;  width: 100%;height: 100%;"><img
+				src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/1044e7d4-65dd-4e00-b81b-6d6ac72d371f.png"
+				style="width:10%;display: inline;margin-right: 86%;"/>
+			</span>
+
+		<span
+			style="width: 1.5%; height:275px;display: inline; background: #666; float: left; margin-left:1.5%; margin-top: 0px;"></span>
+
+
 		<h1
 			style="margin-right: 60px; width: 30%; margin-top: 60px; border-bottom: 1px solid #ddd;">تائید
 			ایمیل</h1>
@@ -23,32 +29,30 @@
 		<p style="display: inline">عزیز</p>
 		<p style="margin-right: 120px;">حساب کاربری شما با موفقیت ثبت
 			گردید . لطفا برای تائید ایمیل خود از لینک زیر استفاده نمایید.</p>
-		<a
-			th:href=" @{|${serverAddress}${baseUrl}/activate?key=${user.activationKey}&amp;email=${user.email}|}"
-			style="color: #fff; font-weight: bold; text-decoration: none; display: block; width: 150px; padding: 15px; text-align: center; vertical-align: middle; margin-top: 40px; height: auto; background: #5cb85c; margin-right: auto; margin-left: auto; border-radius: 4px;">تائید
-			ایمیل</a>
-	</div>
+		<a th:href="@{|${serverAddress}${baseUrl}/activate?key=${user.activationKey}&amp;email=${user.email}|}" style="color: #fff; font-weight: bold; text-decoration: none; display: block; width: 150px; padding: 15px; text-align: center; vertical-align: middle; margin-top: 40px; height: auto; background: #5cb85c; margin-right: auto; margin-left: auto; border-radius: 4px;">
+		<p>تایید ایمیل</p>
+		</a>
 	<div
-		style="width: 100%; height: auto; bottom: 0%; Top: 400px; position: absolute;">
+		style="width: 100%; height: auto;">
 		<div style="height: 10px;"></div>
 		<div
 			style="margin-top: 5px; width: 200px; margin-right: auto; margin-left: auto;">
 			<a
-				style="background: rgb(252, 183, 49); position: absolute; text-decoration: none; width: 40px; height: 40px; border-radius: 50%; border: 2px solid rgb(252, 183, 49);"
+				style="background: rgb(252, 183, 49); display:inline-block;  margin-left:5px;  text-decoration: none; width: 40px; height: 40px; border-radius: 50%; border: 2px solid rgb(252, 183, 49);"
 				href="https://www.instagram.com/blito.ir/"><img
 				style="margin: 7px; width: 25px; height: 25px;"
 				src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/d0cf11b8-f7d3-4c59-8e62-91365dd175f9.png"/></a><a
-				style="background: rgb(252, 183, 49); margin-left: 60px; position: absolute; text-decoration: none; width: 40px; height: 40px; border-radius: 50%; border: 2px solid rgb(252, 183, 49);"
+				style="background: rgb(252, 183, 49);display:inline-block;  text-decoration: none; width: 40px; height: 40px; border-radius: 50%; border: 2px solid rgb(252, 183, 49);"
 				href="https://t.me/blito"><img
 				style="margin: 7px; width: 25px; height: 25px;"
 				src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/11b8524d-0856-4844-9786-b5aab92c9ea5.png"/></a>
 			<a
-				style="background: rgb(252, 183, 49); margin-left: 120px; position: absolute; text-decoration: none; width: 40px; height: 40px; border-radius: 50%; border: 2px solid rgb(252, 183, 49);"
+				style="background: rgb(252, 183, 49); display:inline-block; text-decoration: none; width: 40px; height: 40px; border-radius: 50%; border: 2px solid rgb(252, 183, 49);"
 				href="https://twitter.com/blittoir?s=09"><img
 				style="margin: 7px; width: 25px; height: 25px;"
 				src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/3a457013-f475-4d11-8c98-76f42a25d8e5.png"/>
 			</a> <a
-				style="background: rgb(252, 183, 49); margin-left: 180px; position: absolute; text-decoration: none; width: 40px; height: 40px; border-radius: 50%; border: 2px solid rgb(252, 183, 49);"
+				style="background: rgb(252, 183, 49);display:inline-block;  text-decoration: none; width: 40px; height: 40px; border-radius: 50%; border: 2px solid rgb(252, 183, 49);"
 				href="http://www.aparat.com/blito"><img
 				style="margin: 7px; width: 25px; height: 25px;"
 				src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/b8d9fb6a-abeb-40c6-a425-1a88eb44b7cb.png"/>
@@ -58,7 +62,7 @@
 			style="border-top: .5px solid #999; color: #666; direction: rtl; width: 70%; margin-right: auto; margin-left: auto; margin-top: 70px; text-align: center;">
 			<div style="height: 10px;"></div>
 			<p style="font-size: 10px; display: inline;">این ایمیل از طرف</p>
-			<a style="font-size: 10px; display: inline;" href="www.bili.to">bili.to</a>
+			<a style="font-size: 10px; display: inline;" href="https://www.bili.to">bili.to</a>
 			<p style="display: inline; font-size: 10px;">به</p>
 			<p style="display: inline; font-size: 10px;" th:text="${user.email}"></p>
 			<p style="display: inline; font-size: 10px;">فرستاده شده.</p>
@@ -66,11 +70,13 @@
 			<div style="font-size: 8px; height: 10px;"></div>
 			<p style="display: inline; font-size: 10px;">کلیه حقوق مادی و
 				معنوی این سایت متعلق به</p>
-			<a style="font-size: 10px;" href="www.bili.to">bili.to</a>
+			<a style="font-size: 10px;" href="https://www.bili.to">bili.to</a>
 			<p style="display: inline; font-size: 10px;">می باشد.</p>
 			<div style="height: 10px; font-size: 10px;"></div>
 		</div>
 	</div>
+	</div>
+
 
 </body>
 </html>

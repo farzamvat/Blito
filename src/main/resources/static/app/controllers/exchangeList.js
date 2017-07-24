@@ -6,8 +6,8 @@ angular.module('exchangesPageModule', [])
     .controller('exchangeListCtrl', function ($scope, exchangeService, photoService, dataService, config) {
 
         $scope.pageTitle = "بلیت های تعویضی ";
-        // $scope.urlExchange = "http://localhost:3000"+"/exchange-page/";
-        $scope.urlExchange = config.baseUrl+"/exchange-page/";
+        $scope.urlExchange = "http://localhost:3000"+"/exchange-page/";
+        // $scope.urlExchange = config.baseUrl+"/exchange-page/";
 
         $scope.getAllExchanges = function (page) {
             exchangeService.getAllExchanges(page)
@@ -24,11 +24,9 @@ angular.module('exchangesPageModule', [])
                     console.log(data);
                 })
         };
-
         $scope.pageChanged = function (newpage) {
             $scope.getAllExchanges(newpage);
         };
-
         $scope.catchImagesExchange = function (events) {
             events.map(function (item) {
                 photoService.download(item.image.imageUUID)
@@ -42,7 +40,7 @@ angular.module('exchangesPageModule', [])
 
             });
             return events;
-        }
+        };
         $scope.getAllExchanges(1);
         $scope.currentPage = 1;
     });

@@ -71,7 +71,11 @@
                                                 </th>
                                                 <th class="dataCenter" >تعداد
                                                 </th>
-                                                <th class="dataCenter" >شماره پیگیری
+                                                <th class="dataCenter" > وضعیت پرداخت
+                                                </th>
+                                                <th class="dataCenter" > کد پیگیری
+                                                </th>
+                                                <th class="dataCenter" > بلیت
                                                 </th>
                                             </tr>
                                             </thead>
@@ -82,7 +86,9 @@
                                                 <td ng-show="item.paymentStatus === 'FREE'" class="dataCenter">رایگان</td>
                                                 <td ng-hide="item.paymentStatus === 'FREE'" class="dataCenter">{{item.totalAmount}}</td>
                                                 <td class="dataCenter">{{ item.count}}</td>
+                                                <td class="dataCenter">{{ item.paymentStatus}}</td>
                                                 <td class="dataCenter">{{ item.trackCode}}</td>
+                                                <td class="dataCenter"><button type="button"  ng-click="getTicket(item.trackCode)" class="btn btn-info editButton" >مشاهده بلیت</button></td>
                                             </tr>
                                             </tbody>
                                         </table>
