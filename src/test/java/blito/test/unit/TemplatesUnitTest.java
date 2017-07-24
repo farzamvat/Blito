@@ -61,6 +61,7 @@ public class TemplatesUnitTest {
 		String firstname = "فرزام";
 		Map<String,Object> map = new HashMap<>();
 		map.put("firstname", firstname);
+		map.put("serverAddress", serverAddress);
 		try {
 			String content = htmlRenderer.renderHtml("activationSuccess", map);
 			assertTrue(true);
