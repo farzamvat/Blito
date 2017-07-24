@@ -95,7 +95,6 @@
                     <p class="marginTop30">
                         {{eventDataDetails.members}}
                     </p>
-
                 </div>
                     <div class="col-xs-12 col-sm-4  floatRight textAlignRight">
                         <h3 class="textAlignRight">برگزارکننده </h3>
@@ -112,8 +111,9 @@
                 </div>
                 </div>
             </div>
-            <div ng-show="eventDataDetails.aparatDisplayCode !== null" id="menu1" class="tab-pane fade">
-                <div class="eventVideo"  id="14931147738924580"><script type="text/JavaScript" src="https://www.aparat.com/embed/nv7Xg?data[rnddiv]=14931147738924580&data[responsive]=yes"></script></div>
+
+            <!--ng-if="eventDataDetails.aparatDisplayCode"-->
+            <div  id="menu1"  class="tab-pane fade videoDiv">
             </div>
             <div id="menu2" class="tab-pane fade  marginTop60" ng-if="eventDataPhoto.gallery.length !== 0">
                 <div id="photoGallery" class="carousel slide" data-ride="carousel">
@@ -136,9 +136,7 @@
                 <span class="sr-only">Next</span>
             </span>
                 </div>
-
             </div>
-
         </div>
     </div>
     <div class="col-xs-12 col-sm-2 col-md-2 floatRight">
@@ -149,3 +147,7 @@
 
 
 
+<!--<div id="videoDiv">-->
+<!--<div class="eventVideo"  id="15007319846304020"><script type="text/JavaScript" src="https://www.aparat.com/embed/iT0hD?data[rnddiv]=15007319846304020&data[responsive]=yes"></script></div>-->
+<!--</div>-->
+<!--<div class="eventVideo"  id="14931147738924580"><script type="text/JavaScript" src="https://www.aparat.com/embed/TpR1a?data[rnddiv]=15005321387633267&data[responsive]=yes"></script></div>-->

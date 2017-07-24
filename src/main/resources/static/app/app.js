@@ -23,6 +23,11 @@ angular.module('Blito',
     ])
     .config(function ($httpProvider) {
         $httpProvider.interceptors.push('AuthInterceptors');
+        if (!$httpProvider.defaults.headers.get) {
+            $httpProvider.defaults.headers.get = {};
+        }
+        $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+        $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
     })
     .constant('config', {
         baseUrl : 'http://89.163.225.16',

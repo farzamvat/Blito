@@ -4,6 +4,7 @@
 
 angular.module('eventsPageModule')
     .controller('userTicketCtrl', function($scope, ticketsService, $routeParams, mapMarkerService, photoService){
+        $("#buyTicket").modal("hide");
         $scope.imageDownload = function (UUID) {
             photoService.download(UUID)
                 .then(function (data) {
