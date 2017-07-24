@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -47,7 +48,10 @@ public class AccountController {
 	UserAccountService userAccountService;
 	@Autowired
 	UserRepository userRepository;
-	@Autowired UserMapper userMapper;
+	@Autowired 
+	UserMapper userMapper;
+	@Value("${serverAddress}")
+	private String serverAddress;
 	
 
 	// ***************** SWAGGER DOCS ***************** //
@@ -65,7 +69,7 @@ public class AccountController {
 		DeferredResult<ResponseEntity<ResultVm>> deferred = new DeferredResult<>();
 		return userAccountService.createUser(vmodel).thenApply(result -> {
 			deferred.setResult(ResponseEntity.status(HttpStatus.CREATED)
-					.body(new ResultVm(ResourceUtil.getMessage(Response.REGISTER_SUCCESS))));
+					.body(new ResultVm(ResourceUtil.getMessage(Response.REGISTER_SUCCESS),true)));
 			return deferred;
 		}).exceptionally(t -> {
 			deferred.setErrorResult(t.getCause());
@@ -87,14 +91,14 @@ public class AccountController {
 				u.setActive(true);
 				u.setActivationKey(null);
 				u = userRepository.save(u);
-				return new ModelAndView("activationSuccess").addObject("firstname", u.getFirstname());
+				return new ModelAndView("activationSuccess").addObject("firstname", u.getFirstname()).addObject("serverAddresss", serverAddress);
 			}
 			else {
-				return new ModelAndView("activationFailed").addObject("message",ResourceUtil.getMessage(Response.INVALID_ACTIVATION_KEY));
+				return new ModelAndView("activationFailed").addObject("message",ResourceUtil.getMessage(Response.INVALID_ACTIVATION_KEY)).addObject("serverAddress", serverAddress);
 			}
 		})
 		.orElseGet(() -> {
-			return new ModelAndView("activationFailed").addObject("message",ResourceUtil.getMessage(Response.USER_NOT_FOUND));
+			return new ModelAndView("activationFailed").addObject("message",ResourceUtil.getMessage(Response.USER_NOT_FOUND)).addObject("serverAddress", serverAddress);
 		});
 	}
 
@@ -136,7 +140,7 @@ public class AccountController {
 		DeferredResult<ResponseEntity<?>> deferred = new DeferredResult<>();
 		return userAccountService.changePassword(vmodel)
 				.thenApply(user -> {
-					deferred.setResult(ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS))));
+					deferred.setResult(ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS),true)));
 					return deferred;
 				})
 				.exceptionally(throwable -> {
@@ -160,7 +164,7 @@ public class AccountController {
 		}
 		return userAccountService.forgetPassword(email)
 				.thenApply(result -> {
-					deferred.setResult(ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.RESET_PASSWORD_EMAIL_SENT))));
+					deferred.setResult(ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.RESET_PASSWORD_EMAIL_SENT),true)));
 					return deferred;
 				})
 				.exceptionally(throwable -> {

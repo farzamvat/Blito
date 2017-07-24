@@ -38,6 +38,7 @@ public class MailService {
 
 	@Autowired
 	private HtmlRenderer htmlRenderer;
+	
 
 	public void sendActivationEmail(User user) {
         log.debug("Sending user activation e-mail to '{}'", user.getEmail());
@@ -46,7 +47,7 @@ public class MailService {
         map.put("baseUrl", baseUrl);
         map.put("serverAddress",serverAddress);
         String content = htmlRenderer.renderHtml("accountVerification", map);
-        System.out.println(content);
+        log.debug(content);
         sendEmail(user.getEmail(), content,ResourceUtil.getMessage(Response.ACTIVATE_ACCOUNT_EMAIL));
     }
 	
@@ -71,7 +72,7 @@ public class MailService {
 			message.setSubject(subject);
 			message.setText(content, true);
 			javaMailSender.send(mimeMessage);
-			log.debug("Sent e-mail to User '{}'", to);
+			log.info("Sent e-mail to User '{}'", to);
 		} catch (Exception e) {
 			log.error("E-mail could not be sent to user '{}'", to, e);
 			throw new SendingEmailException(ResourceUtil.getMessage(Response.SENDING_EMAIL_ERROR));

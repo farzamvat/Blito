@@ -56,6 +56,21 @@ public class TemplatesUnitTest {
 	}
 	
 	@Test
+	public void activationSuccessTest()
+	{
+		String firstname = "فرزام";
+		Map<String,Object> map = new HashMap<>();
+		map.put("firstname", firstname);
+		try {
+			String content = htmlRenderer.renderHtml("activationSuccess", map);
+			assertTrue(true);
+		} catch(Exception e)
+		{
+			assertTrue(false);
+		}
+	}
+	
+	@Test
 	public void ticketTemplateTest()
 	{
 		CommonBlitViewModel blit = new CommonBlitViewModel();

@@ -13,14 +13,14 @@ import com.blito.annotations.MobileNumber;
 import com.blito.enums.BankGateway;
 import com.blito.enums.PaymentStatus;
 import com.blito.enums.SeatType;
+import com.blito.rest.viewmodels.AbstractViewModel;
 import com.blito.rest.viewmodels.LocationViewModel;
+import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 
-@JsonIgnoreProperties(ignoreUnknown=true)
-public class CommonBlitViewModel {
+public class CommonBlitViewModel extends AbstractViewModel {
 	@JsonView(View.SimpleBlit.class)
 	long blitId;
 	
@@ -84,6 +84,10 @@ public class CommonBlitViewModel {
 	@JsonView(View.Blit.class)
 	private String eventPhotoId;
 	
+	public CommonBlitViewModel(ResultVm result)
+	{
+		this.setResult(result);
+	}
 	
 	public CommonBlitViewModel() {
 		additionalFields = new HashMap<>();

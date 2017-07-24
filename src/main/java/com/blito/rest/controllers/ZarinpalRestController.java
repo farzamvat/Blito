@@ -26,13 +26,14 @@ public class ZarinpalRestController {
 	@GetMapping("/zarinpal")
 	public CompletableFuture<RedirectView> zarinpalCallback(@RequestParam String Authority,@RequestParam String Status)
 	{
-		return paymentService.zarinpalPaymentFlowAsync(Authority, Status)
-				.handle((blit,throwable) -> {
-					if(throwable != null)
-					{
-						return new RedirectView(String.valueOf(new StringBuilder(serverAddress).append("/payment/error/").append(throwable.getCause().getMessage())));
-					}
-					return new RedirectView(String.valueOf(new StringBuilder(serverAddress).append("/payment/").append(blit.getTrackCode())));
-				});
+		return CompletableFuture.supplyAsync(() -> {
+			return paymentService.zarinpalPaymentFlow(Authority, Status);
+		}).handle((blit,throwable) -> {
+			if(throwable != null)
+			{
+				return new RedirectView(String.valueOf(new StringBuilder(serverAddress).append("/payment/error/").append(throwable.getCause().getMessage())));
+			}
+			return new RedirectView(String.valueOf(new StringBuilder(serverAddress).append("/payment/").append(blit.getTrackCode())));
+		});
 	}
 }

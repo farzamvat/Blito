@@ -21,6 +21,7 @@ import com.blito.enums.Response;
 import com.blito.enums.SeatType;
 import com.blito.enums.State;
 import com.blito.exceptions.BlitNotAvailableException;
+import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.exceptions.ZarinpalException;
 import com.blito.models.Blit;
@@ -53,25 +54,8 @@ public class PaymentService {
 	@Autowired
 	private MailService mailService;
 	private final Logger log = LoggerFactory.getLogger(PaymentService.class);
-
-	public CompletableFuture<String> samanBankRequestToken(String reservationNumber, long totalAmount) {
-		return samanBankService.requestToken(reservationNumber, totalAmount);
-	}
-
-	public CompletableFuture<String> zarinpalRequestToken(int amount, String email, String mobile, String description) {
-		return CompletableFuture.supplyAsync(() -> {
-			return zarinpalClient.getPaymentRequest(amount, email, mobile, description);
-		});
-	}
 	
-	public CompletableFuture<Blit> zarinpalPaymentFlowAsync(String authority,String status)
-	{
-		return CompletableFuture.supplyAsync(() -> {
-			return zarinpalPaymentFlow(authority, status);
-		});
-	}
-	
-	@Transactional(propagation=Propagation.REQUIRED)
+	@Transactional
 	public Blit zarinpalPaymentFlow(String authority,String status)
 	{
 		Blit blit = blitRepository.findByToken(authority).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
@@ -83,6 +67,7 @@ public class PaymentService {
 				CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
 				if(!commonBlit.getBlitType().getBlitTypeState().equals(State.OPEN.name()))
 					throw new BlitNotAvailableException(ResourceUtil.getMessage(Response.BLIT_NOT_AVAILABLE));
+				checkBlitCapacity(commonBlit);
 				PaymentVerificationResponse verificationResponse = zarinpalClient.getPaymentVerificationResponse((int)commonBlit.getTotalAmount(), authority);
 				log.info("success in zarinpal verification response trackCode '{}' user email '{}' ref number '{}'",blit.getTrackCode(),blit.getCustomerEmail(), verificationResponse.getRefID());
 				Blit persistedBlit = persistZarinpalBoughtBlit(commonBlit, authority, String.valueOf(verificationResponse.getRefID()), ZarinpalException.generateMessage(verificationResponse.getStatus()));
@@ -105,6 +90,15 @@ public class PaymentService {
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRES_NEW,isolation=Isolation.SERIALIZABLE,rollbackFor=Exception.class)
+	private void checkBlitCapacity(CommonBlit blit)
+	{
+		BlitType fethedBlitType = blitTypeRepository.findOne(blit.getBlitType().getBlitTypeId());
+		if(blit.getCount() + fethedBlitType.getSoldCount() > fethedBlitType.getCapacity())
+			throw new InconsistentDataException(
+					ResourceUtil.getMessage(Response.REQUESTED_BLIT_COUNT_IS_MORE_THAN_CAPACITY));
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRES_NEW,isolation=Isolation.SERIALIZABLE,rollbackFor=Exception.class)
 	private Blit persistZarinpalBoughtBlit(CommonBlit blit, String authority, String refNum, String paymentMessage) {
 		CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
 		BlitType blitType = blitTypeRepository.findOne(commonBlit.getBlitType().getBlitTypeId());
@@ -124,9 +118,8 @@ public class PaymentService {
 						Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 			}
 		}
-		return commonBlitRepository.save(commonBlit);
+		return commonBlit;
 	}
-
 	
 	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
 	private void completePaymentOperation(FinalizePaymentRequest paymentRequestArgs) {

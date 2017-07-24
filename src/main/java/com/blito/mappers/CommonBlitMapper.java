@@ -11,6 +11,7 @@ import com.blito.enums.ImageType;
 import com.blito.enums.PaymentStatus;
 import com.blito.models.CommonBlit;
 import com.blito.rest.viewmodels.LocationViewModel;
+import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 
 @Component
@@ -63,6 +64,7 @@ public class CommonBlitMapper implements GenericMapper<CommonBlit, CommonBlitVie
 		vmodel.setAdditionalFields(blit.getAdditionalFields());
 		vmodel.setLocation(new LocationViewModel(blit.getBlitType().getEventDate().getEvent().getLatitude(),blit.getBlitType().getEventDate().getEvent().getLongitude()));
 		vmodel.setEventPhotoId(blit.getBlitType().getEventDate().getEvent().getImages().stream().filter(i -> i.getImageType().equals(ImageType.EVENT_PHOTO.name())).findFirst().get().getImageUUID());
+		vmodel.setResult(new ResultVm("success",true));
 		return vmodel;
 	}
 
