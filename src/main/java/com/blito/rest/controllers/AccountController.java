@@ -80,19 +80,21 @@ public class AccountController {
 	@GetMapping("/activate")
 	public ModelAndView activateAccount(@RequestParam String key,@RequestParam String email)
 	{
-		return userRepository.findByEmailAndActivationKey(email,key)
+		return userRepository.findByEmail(email)
 		.map(u -> {
-			u.setActive(true);
-			u.setActivationKey(null);
-			userRepository.save(u);
-			ModelAndView mv = new ModelAndView();
-			mv.setViewName("activationSuccess");
-			return mv;
+			if(u.getActivationKey().equals(key))
+			{
+				u.setActive(true);
+				u.setActivationKey(null);
+				u = userRepository.save(u);
+				return new ModelAndView("activationSuccess").addObject("firstname", u.getFirstname());
+			}
+			else {
+				return new ModelAndView("activationFailed").addObject("message",ResourceUtil.getMessage(Response.INVALID_ACTIVATION_KEY));
+			}
 		})
 		.orElseGet(() -> {
-			ModelAndView mv = new ModelAndView();
-			mv.setViewName("activationFailed");
-			return mv;
+			return new ModelAndView("activationFailed").addObject("message",ResourceUtil.getMessage(Response.USER_NOT_FOUND));
 		});
 	}
 
@@ -175,7 +177,6 @@ public class AccountController {
 	@GetMapping("/account/user-info")
 	public ResponseEntity<UserViewModel> getCurrentUserInfo()
 	{
-		System.out.println("HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEELLLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 		return ResponseEntity.ok(userMapper.createFromEntity(user));
 	}

@@ -71,6 +71,7 @@ public enum Response {
 	INCONSISTENT_TOTAL_AMOUNT("error.inconsistent.total.amount.blit.price.requested.count"),
 	BLIT_COUNT_EXCEEDS_LIMIT("error.blit.count.exceeds.limit"),
 	BLIT_COUNT_EXCEEDS_LIMIT_TOTAL("error.blit.count.exceeds.limit.total"),
+	INVALID_ACTIVATION_KEY("error.invalid.activation.key"),
 	BLIT_RECIEPT("blit.reciept");
     
 
