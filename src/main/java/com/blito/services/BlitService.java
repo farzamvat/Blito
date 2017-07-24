@@ -252,8 +252,8 @@ public class BlitService {
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_UNCOMMITTED)
 	private CommonBlit reserveFreeBlit(BlitType blitType, CommonBlit commonBlit, User user) {
-		checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
 		BlitType attachedBlitType = blitTypeRepository.findByBlitTypeId(blitType.getBlitTypeId());
+		checkBlitTypeRestrictionsForBuy(attachedBlitType, commonBlit);
 		User attachedUser = userRepository.findOne(user.getUserId());
 		attachedBlitType.setSoldCount(attachedBlitType.getSoldCount() + commonBlit.getCount());
 		
