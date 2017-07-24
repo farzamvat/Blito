@@ -234,7 +234,7 @@ public class BlitService {
 		}
 	}
 
-	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
+	@Transactional/*(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)*/
 	private CommonBlit persistNoneFreeCommonBlit(BlitType blitType, CommonBlit commonBlit, Optional<User> optionalUser,
 			String token, String trackCode) {
 		checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
@@ -250,12 +250,15 @@ public class BlitService {
 		return commonBlitRepository.save(commonBlit);
 	}
 
-	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
+	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_UNCOMMITTED)
 	private CommonBlit reserveFreeBlit(BlitType blitType, CommonBlit commonBlit, User user) {
 		checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
 		BlitType attachedBlitType = blitTypeRepository.findByBlitTypeId(blitType.getBlitTypeId());
 		User attachedUser = userRepository.findOne(user.getUserId());
 		attachedBlitType.setSoldCount(attachedBlitType.getSoldCount() + commonBlit.getCount());
+		
+		
+		log.info("************************************* FREE BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}'",user.getEmail(),attachedBlitType.getSoldCount());
 		if (attachedBlitType.getSoldCount() == attachedBlitType.getCapacity())
 			attachedBlitType.setBlitTypeState(State.SOLD.name());
 
