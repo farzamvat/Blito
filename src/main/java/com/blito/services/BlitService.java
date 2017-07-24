@@ -285,7 +285,6 @@ public class BlitService {
 	}
 
 	private void checkBlitTypeRestrictionsForBuy(BlitType blitType, CommonBlit commonBlit) {
-		blitType = blitTypeRepository.findOne(blitType.getBlitTypeId());
 
 		if (blitType.getBlitTypeState().equals(State.SOLD))
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_TYPE_SOLD));
