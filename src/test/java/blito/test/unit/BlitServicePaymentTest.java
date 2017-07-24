@@ -41,6 +41,7 @@ import com.blito.rest.viewmodels.payments.SamanPaymentRequestResponseViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.BlitService;
 import com.blito.services.EventService;
+import com.blito.services.PaymentRequestServiceAsync;
 import com.blito.services.PaymentService;
 
 import mockit.Expectations;
@@ -72,7 +73,7 @@ public class BlitServicePaymentTest {
 	@Injectable
 	ImageRepository imageRepository;
 	@Injectable
-	PaymentService paymentService;
+	PaymentRequestServiceAsync paymentService;
 	EventHost eventHost;
 	private EventViewModel eventViewModel = null;
 	private BlitTypeViewModel blitTypeViewModel = null;
