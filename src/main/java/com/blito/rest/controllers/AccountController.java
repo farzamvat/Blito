@@ -140,7 +140,7 @@ public class AccountController {
 		DeferredResult<ResponseEntity<?>> deferred = new DeferredResult<>();
 		return userAccountService.changePassword(vmodel)
 				.thenApply(user -> {
-					deferred.setResult(ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS),true)));
+					deferred.setResult(ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS))));
 					return deferred;
 				})
 				.exceptionally(throwable -> {
@@ -164,7 +164,7 @@ public class AccountController {
 		}
 		return userAccountService.forgetPassword(email)
 				.thenApply(result -> {
-					deferred.setResult(ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.RESET_PASSWORD_EMAIL_SENT),true)));
+					deferred.setResult(ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.RESET_PASSWORD_EMAIL_SENT))));
 					return deferred;
 				})
 				.exceptionally(throwable -> {

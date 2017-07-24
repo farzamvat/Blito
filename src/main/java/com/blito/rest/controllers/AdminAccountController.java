@@ -68,7 +68,7 @@ public class AdminAccountController {
 	@PutMapping("/ban-user/{userId}")
 	public ResponseEntity<ResultVm> banUser(@PathVariable long userId) {
 		adminAccountService.banUser(userId);
-		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
+		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS),true));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //
@@ -79,7 +79,7 @@ public class AdminAccountController {
 	@PutMapping("/unban-user/{userId}")
 	public ResponseEntity<ResultVm> unBanUser(@PathVariable long userId) {
 		adminAccountService.unBanUser(userId);
-		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
+		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS),true));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //
@@ -89,7 +89,7 @@ public class AdminAccountController {
 	@GetMapping("/assign/{userId}/{roleId}")
 	public ResponseEntity<?> assignRoleToUser(@PathVariable long userId, @PathVariable long roleId) {
 		roleService.assignRole(roleId, userId);
-		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
+		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS),true));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //

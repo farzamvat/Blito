@@ -14,6 +14,12 @@ public class ResultVm {
 		this.status = status;
 	}
 	
+	public ResultVm(String message)
+	{
+		this.message = message;
+		this.status = true;
+	}
+	
 
 	public boolean isStatus() {
 		return status;

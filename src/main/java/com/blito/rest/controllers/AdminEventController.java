@@ -62,7 +62,7 @@ public class AdminEventController {
 	@PutMapping("/change-event-state")
 	public ResponseEntity<ResultVm> changeEventState(@Validated @RequestBody ChangeEventStateVm vmodel) {
 		adminEventService.changeEventState(vmodel);
-		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
+		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS),true));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //
@@ -73,7 +73,7 @@ public class AdminEventController {
 	@PutMapping("/change-event-date-state")
 	public ResponseEntity<ResultVm> changeEventDateState(@Validated @RequestBody ChangeEventDateStateVm vmodel) {
 		adminEventService.changeEventDateState(vmodel);
-		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
+		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS),true));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //
@@ -84,7 +84,7 @@ public class AdminEventController {
 	@PutMapping("/change-blit-type-state")
 	public ResponseEntity<ResultVm> changeBlitTypeState(@Validated @RequestBody ChangeBlitTypeStateVm vmodel) {
 		adminEventService.changeBlitTypeState(vmodel);
-		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
+		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS),true));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //
