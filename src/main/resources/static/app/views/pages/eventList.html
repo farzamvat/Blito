@@ -1,39 +1,50 @@
 <div class="row" ng-controller="eventsListPageCtrl as events">
     <div class="col-md-12 eventsPageRows">
-        <div class="row">
-            <h1 class="text-center">{{pageTitle}}</h1>
-        </div>
+        <div class="row" ng-class="{'eventPageHeaderCinema': type === 'CINEMA',
+                                                                     'eventPageHeaderTheatre':type === 'THEATER',
+                                                                     'eventPageHeaderEducation': type === 'WORKSHOP',
+                                                                     'eventPageHeaderEntertainment': type === 'SPORT',
+                                                                     'eventPageHeaderTour': type === 'TOURISM',
+                                                                     'eventPageHeaderMusic': type === 'CONCERT',
+                                                                     'eventPageHeaderOther': type === 'OTHER'}">
+            <div class="eventListBeautifer"><h2 class="text-center">{{pageTitle}}</h2></div>
+            <div class="eventListHeaderBorderBottom"></div>
+
         <div class="row eventListHeaderContainer">
             <div class="hidden-xs col-sm-3  floatRight"></div>
-
-            <a ng-show="pageTitle !== 'کنسرت' " class="eventListAnchor" href="/concert"><div id="eventListConcert" class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight" >
+            <div class="col-xs-12 col-sm-6 floatRight eventListAnchorContainer">
+            <a  class="eventListAnchor" href="/concert"><div id="eventListConcert" class=" col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight" >
                 <h4 class="text-center pageHeaderLinks">کنسرت</h4>
             </div>
             </a>
-            <a ng-show="pageTitle !== 'تور' " class="eventListAnchor" href="/tour"><div id="eventListTour" class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight">
+            <a class="eventListAnchor" href="/tour"><div id="eventListTour" class="col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight">
                 <h4 class="text-center pageHeaderLinks">تور</h4>
             </div>
             </a>
-            <a ng-show="pageTitle !== 'تئاتر' " class="eventListAnchor" href="/theater"><div id="eventListTheater" class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight">
+            <a  class="eventListAnchor" href="/theater"><div id="eventListTheater" class=" col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight">
                 <h4 class="text-center pageHeaderLinks">تئاتر</h4>
             </div>
             </a>
-            <a  ng-show="pageTitle !== 'ورزشی' " class="eventListAnchor" href="/sports"><div id="eventListSport" class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight">
+            <a class="eventListAnchor" href="/sports"><div id="eventListSport" class=" col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight">
                 <h4 class="text-center pageHeaderLinks">ورزشی</h4>
             </div>
             </a>
-            <a ng-show="pageTitle !== 'کارگاه' " class="eventListAnchor" href="/workshop"><div id="eventListWorkshop" class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight">
+            <a class="eventListAnchor" href="/workshop"><div id="eventListWorkshop" class=" col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight">
                 <h4 class="text-center pageHeaderLinks">کارگاه</h4>
             </div>
             </a>
-            <a ng-show="pageTitle !== 'سینما' " class="eventListAnchor" href="/cinema"><div  id="eventListCinema"class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight">
+            <a class="eventListAnchor" href="/cinema"><div  id="eventListCinema"class=" col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight">
                 <h4 class="text-center pageHeaderLinks">سینما</h4>
             </div>
             </a>
-            <a ng-show="pageTitle !== 'سایر' " class="eventListAnchor" href="/other"><div id="eventListOther" class="col-xs-2 col-sm-1 marginTop30 pageHeaderLinksDiv floatRight" >
+            <a class="eventListAnchor" href="/other"><div id="eventListOther" class=" col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight" >
                 <h4 class="text-center pageHeaderLinks">سایر</h4>
             </div>
+
             </a>
+            </div>
+            <div class="hidden-xs col-sm-3  floatLeft"></div>
+        </div>
         </div>
 
         <div class="col-xs-6 col-sm-4 col-md-3 floatRight marginTop10" pagination-id="eventPagination" total-items="totalEventsNumber" dir-paginate="item in eventList | itemsPerPage: 12"  current-page="currentPage">
