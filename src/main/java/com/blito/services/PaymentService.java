@@ -55,7 +55,7 @@ public class PaymentService {
 	private MailService mailService;
 	private final Logger log = LoggerFactory.getLogger(PaymentService.class);
 	
-	@Transactional
+	@Transactional(rollbackFor=Exception.class)
 	public Blit zarinpalPaymentFlow(String authority,String status)
 	{
 		Blit blit = blitRepository.findByToken(authority).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
@@ -89,7 +89,6 @@ public class PaymentService {
 		}
 	}
 	
-	@Transactional(propagation=Propagation.REQUIRES_NEW,isolation=Isolation.SERIALIZABLE,rollbackFor=Exception.class)
 	private void checkBlitCapacity(CommonBlit blit)
 	{
 		BlitType fethedBlitType = blitTypeRepository.findOne(blit.getBlitType().getBlitTypeId());
@@ -98,10 +97,10 @@ public class PaymentService {
 					ResourceUtil.getMessage(Response.REQUESTED_BLIT_COUNT_IS_MORE_THAN_CAPACITY));
 	}
 	
-	@Transactional(propagation=Propagation.REQUIRES_NEW,isolation=Isolation.SERIALIZABLE,rollbackFor=Exception.class)
+	@Transactional(propagation=Propagation.REQUIRES_NEW,isolation=Isolation.READ_COMMITTED,rollbackFor=Exception.class)
 	private Blit persistZarinpalBoughtBlit(CommonBlit blit, String authority, String refNum, String paymentMessage) {
 		CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
-		BlitType blitType = blitTypeRepository.findOne(commonBlit.getBlitType().getBlitTypeId());
+		BlitType blitType = blitTypeRepository.findByBlitTypeId(commonBlit.getBlitType().getBlitTypeId());
 		commonBlit.setRefNum(refNum);
 		commonBlit.setPaymentStatus(PaymentStatus.PAID.name());
 		blitType.setSoldCount(blitType.getSoldCount() + commonBlit.getCount());

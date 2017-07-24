@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import org.apache.poi.ss.formula.eval.NotImplementedException;
+import org.hibernate.exception.LockAcquisitionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -249,10 +250,10 @@ public class BlitService {
 		return commonBlitRepository.save(commonBlit);
 	}
 
-	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
+	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
 	private CommonBlit reserveFreeBlit(BlitType blitType, CommonBlit commonBlit, User user) {
 		checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
-		BlitType attachedBlitType = blitTypeRepository.findOne(blitType.getBlitTypeId());
+		BlitType attachedBlitType = blitTypeRepository.findByBlitTypeId(blitType.getBlitTypeId());
 		User attachedUser = userRepository.findOne(user.getUserId());
 		attachedBlitType.setSoldCount(attachedBlitType.getSoldCount() + commonBlit.getCount());
 		if (attachedBlitType.getSoldCount() == attachedBlitType.getCapacity())
