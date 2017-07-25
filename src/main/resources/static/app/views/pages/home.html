@@ -97,7 +97,7 @@
                 <slick ng-if="showSections[0]" dots="true" lazy-load="ondemand"   infinite="true" autoplay="true"   speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
                     <div ng-repeat="event in concertRow" >
                         <a class="slidingEventsImg" href="{{url+event.eventLink}}">
-                            <img ng-src="{{event.image}}" class="img-responsive center-block homePageImage" />
+                            <img ng-src="{{event.image}}" class=" center-block homePageImage" />
                             <div class="moreInfo">
                                 <h4>{{ event.eventName }}</h4>
                                 <h5>{{ event.capacity - event.soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
@@ -127,7 +127,7 @@
                 <div class="col-sm-1 floatRight">
                 </div>
                 <div ng-show="showSections[1]" class="col-sm-10 floatRight blitoOfferMain  ">
-                    <a class="slidingEventsImg  " href="{{url+ourOfferConcert[0].eventLink}}"><img ng-src="{{ourOfferConcert[0].image}}" class="img-responsive center-block homePageImage">
+                    <a class="slidingEventsImg  " href="{{url+ourOfferConcert[0].eventLink}}"><img ng-src="{{ourOfferConcert[0].image}}" class=" center-block homePageImage">
                         <div class="moreInfo">
                             <h4>{{ ourOfferConcert[0].eventName }}</h4>
                             <h5>{{ ourOfferConcert[0].capacity - ourOfferConcert[0].soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
@@ -163,7 +163,7 @@
                 <slick ng-if="showSections[2]" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=4 touch-move="true" slides-to-scroll=1  >
                     <div ng-repeat="event in tourRow" >
                         <a class="slidingEventsImg" href="{{url+event.eventLink}}">
-                            <img ng-src="{{event.image}}" class="img-responsive center-block homePageImage">
+                            <img ng-src="{{event.image}}" class=" center-block homePageImage">
                             <div class="moreInfo">
                                 <h4>{{ event.eventName }}</h4>
                                 <h5>{{ event.capacity - event.soldCount | number | pNumber}}: جای خالی <i class="fa fa-calendar-check-o"></i></h5>
@@ -192,7 +192,7 @@
                 <div class="col-sm-1 floatRight">
                 </div>
                 <div ng-show="showSections[3]" class="col-sm-10 floatRight blitoOfferMain">
-                    <a class="slidingEventsImg" href="{{url+ourOfferTour[0].eventLink}}"><img ng-src="{{ourOfferTour[0].image}}" class="img-responsive center-block homePageImage">
+                    <a class="slidingEventsImg" href="{{url+ourOfferTour[0].eventLink}}"><img ng-src="{{ourOfferTour[0].image}}" class=" center-block homePageImage">
                         <div class="moreInfo">
                             <h4>{{ ourOfferTour[0].eventName }}</h4>
                             <h5>{{ ourOfferTour[0].capacity - ourOfferTour[0].soldCount | number | pNumber}}: جای خالی <i class="fa fa-calendar-check-o"></i></h5>
@@ -224,7 +224,7 @@
                 <slick ng-if="showSections[4]" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
                     <div ng-repeat="event in evento" >
                         <a class="slidingEventsImg" href="{{url+event.eventLink}}">
-                            <img ng-src="{{event.image}}" class="img-responsive center-block homePageImage">
+                            <img ng-src="{{event.image}}" class=" center-block homePageImage">
                             <div class="moreInfo">
                                 <h4>{{ event.eventName }}</h4>
                                 <h5>{{ event.capacity - event.soldCount | number | pNumber}}: جای خالی <i class="fa fa-calendar-check-o"></i></h5>
@@ -256,7 +256,7 @@
                 <div class="col-sm-1 floatRight">
                 </div>
                 <div ng-show="showSections[5]" class="col-sm-10 floatRight blitoOfferMain">
-                    <a class="slidingEventsImg" href="{{url+ourOfferEvento[0].eventLink}}"><img ng-src="{{ourOfferEvento[0].image}}" class="img-responsive center-block homePageImage">
+                    <a class="slidingEventsImg" href="{{url+ourOfferEvento[0].eventLink}}"><img ng-src="{{ourOfferEvento[0].image}}" class=" center-block homePageImage">
                         <div class="moreInfo">
                             <h4>{{ ourOfferEvento[0].eventName }}</h4>
                             <h5>{{ ourOfferEvento[0].capacity - ourOfferEvento[0].soldCount | number | pNumber}}: جای خالی <i class="fa fa-calendar-check-o"></i></h5>
@@ -314,7 +314,10 @@
                 <slick ng-if="showSectionsExcahnge[1]" dots="true" lazy-load="ondemand" infinite="true"    speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1 autoplay="true"  >
                     <div ng-repeat="event in exchange" >
                         <a class="slidingEventsImg" href="{{urlExchange+event.exchangeLink}}">
-                            <img ng-src="{{event.newImage}}" class="img-responsive center-block homePageImage">
+                            <!--==================================================================img-->
+                            <img ng-src="{{event.newImage}}" class=" center-block homePageImage">
+                            <!--==================================================================img-->
+
                             <div class="moreInfo">
                                 <h4>{{ event.title }}</h4>
                                 <h5>{{ event.blitCost | number | pNumber}}: قیمت <i class="fa fa-calendar-check-o"></i></h5>
@@ -356,7 +359,7 @@
                 <slick ng-if="showSections[6]" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
                     <div ng-repeat="event in ended" >
                         <a class="slidingEventsImg" href="">
-                            <img ng-src="{{event.image}}" class="img-responsive center-block homePageImage">
+                            <img ng-src="{{event.image}}" class=" center-block homePageImage">
                             <div class="moreInfo">
                                 <h4>{{ event.eventName }}</h4>
                                 <h5>{{ event.view | number | pNumber}}: بازدید <i class="fa fa-eye"></i></h5>
