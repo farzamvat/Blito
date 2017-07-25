@@ -60,34 +60,33 @@ $(document).ready(function () {
 
 
 function scrollEvent(){
-    if(!is_touch_device()){
+    // if(!is_touch_device()){
        var viewportTop = $(window).scrollTop(),
         windowHeight = $(window).height(),
         viewportBottom = windowHeight+viewportTop;
 
-        if($(window).width())
-
-            $('[data-parallax="true"]').each(function(){
+        if($(window).width()) {
+            $('[data-parallax="true"]').each(function () {
                 var distance = (viewportTop) * $(this).attr('data-speed');
-                if($(this).attr('data-direction') === 'up') {
+                if ($(this).attr('data-direction') === 'up') {
                     sym = '-';
-                    $(this).css('transform','translate3d(0, ' + sym + distance +'px,0)');
+                    $(this).css('transform', 'translate3d(0, ' + sym + distance + 'px,0)');
 
-                } else if($(this).attr('data-direction') === 'right') {
+                } else if ($(this).attr('data-direction') === 'right') {
                     sym = '';
-                    $(this).css('transform','translate3d(' + sym + distance +'px, 0,0)');
+                    $(this).css('transform', 'translate3d(' + sym + distance + 'px, 0,0)');
                 }
-                else if($(this).attr('data-direction') === 'left') {
+                else if ($(this).attr('data-direction') === 'left') {
                     sym = '-';
-                    $(this).css('transform','translate3d(' + sym + distance +'px, 0,0)');
+                    $(this).css('transform', 'translate3d(' + sym + distance + 'px, 0,0)');
                 }
                 else {
                     sym = '';
-                    $(this).css('transform','translate3d(0, ' + sym + distance +'px,0)');
+                    $(this).css('transform', 'translate3d(0, ' + sym + distance + 'px,0)');
                 }
             });
-
-    }
+        }
+    // }
 }
 
 

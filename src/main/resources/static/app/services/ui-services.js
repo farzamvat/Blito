@@ -21,6 +21,7 @@ angular.module('UiServices', [])
         try {
             var mapOptions = {
                 zoom: 14,
+                scrollwheel: false,
                 center: new google.maps.LatLng(latitudeLongtitude.lat, latitudeLongtitude.lng),
                 mapTypeId: google.maps.MapTypeId.TERRAIN
             };
