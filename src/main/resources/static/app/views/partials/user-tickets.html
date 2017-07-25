@@ -21,9 +21,10 @@
                             <thead>
                             <tr>
                                 <th class="text-center">نام خریدار</th>
+                                <th class="text-center">تعداد بلیت</th>
                                 <th class="text-center" >تاریخ بلیت</th>
                                 <th class="text-center">شماره خریدار</th>
-                                <th class="text-center">مبلغ</th>
+                                <th class="text-center">مبلغ (تومان)</th>
 
 
                             </tr>
@@ -31,9 +32,10 @@
                             <tbody>
                             <tr  pagination-id="eventTicketsPagination" total-items="totalTicketNumber" dir-paginate="item in eventsTickets | itemsPerPage: 4"  current-page="currentPage">
                                 <td class="text-center">{{item.customerName}}</td>
+                                <td class="text-center">{{item.count | pNumber}}</td>
                                 <td class="text-center">{{item.eventDateAndTime}}</td>
-                                <td class="text-center">{{item.customerMobileNumber}}</td>
-                                <td class="text-center" ng-show="item.totalAmount !== 0" >{{item.totalAmount}}</td>
+                                <td class="text-center">{{item.customerMobileNumber | pNumber}}</td>
+                                <td class="text-center" ng-show="item.totalAmount !== 0" >{{item.totalAmount | number | pNumber}}</td>
                                 <td class="text-center" ng-show="item.totalAmount === 0" >رایگان</td>
                             </tr>
                             </tbody>
@@ -47,8 +49,7 @@
                         <div class="col-md-4 col-md-offset-4">
                             <dir-pagination-controls pagination-id="eventTicketsPagination" on-page-change="eventTicketsPageChanged(newPageNumber)" class="col-xs-12"
                                                      max-size="2"
-                                                     direction-links="true"
-                                                     boundary-links="true">
+                                                     >
                             </dir-pagination-controls>
                         </div>
                     </div>

@@ -5,21 +5,21 @@
         </div>
         <div class="col-xs-12 col-sm-7 col-md-8 floatRight textAlignRight eventContent" >
             <h1>{{exchangeData.title}}</h1>
-            <h3>شماره تماس فروشنده : {{exchangeData.phoneNumber}}</h3>
+            <h3>شماره تماس فروشنده : {{ exchangeData.phoneNumber | pNumber}}</h3>
             <p>{{exchangeData.description}}</p>
             <table class="table">
                 <thead class="tableHeader">
                 <tr>
                     <th class="dataCenter">تاریخ و ساعت
                     </th>
-                    <th class="dataCenter" >قیمت
+                    <th class="dataCenter" >قیمت (تومان)
                     </th>
                 </tr>
                 </thead>
                 <tbody class="showTimeList">
                 <tr >
                     <td class="dataCenter"><input  disabled  type="text" class="form-group exchangePageDate dateInit" readonly></td>
-                    <td class="dataCenter">{{ exchangeData.blitCost}}</td>
+                    <td class="dataCenter">{{ exchangeData.blitCost | number | pNumber}}</td>
                 </tr>
                 </tbody>
             </table>

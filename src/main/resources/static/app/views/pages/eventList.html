@@ -55,8 +55,8 @@
                         <div class="name">
                             <!--<h3>{{ item.eventName }}</h3>-->
                             <h5> برگزارکننده   : {{ item.eventHostName }}<i class="fa fa-calendar-check-o"></i></h5>
-                            <h5>{{ item.views }}: بازدید  <i class="fa fa-eye"></i>‌</h5>
-                            <h5>{{ item.capacity - item.soldCount }}: بلیت باقی مانده  <i class="fa fa-eye"></i>‌</h5>
+                            <h5>{{ item.views | number | pNumber}}: بازدید  <i class="fa fa-eye"></i>‌</h5>
+                            <h5>{{ item.capacity - item.soldCount | number | pNumber}}: بلیت باقی مانده  <i class="fa fa-eye"></i>‌</h5>
                         </div>
                         <h4 class="text-center slidingEventsTitle">{{item.eventName }}</h4>
                         <div class="eventDescription center-block">

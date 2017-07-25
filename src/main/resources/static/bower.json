@@ -22,6 +22,7 @@
     "angularUtils-pagination": "angular-utils-pagination#0.11.1",
     "slick-carousel": "1.4.1",
     "angular-slick": "0.2.0",
-    "persian-datepicker": "0.4.5"
+    "persian-datepicker": "0.4.5",
+    "angular-persian": "2.0.3"
   }
 }
