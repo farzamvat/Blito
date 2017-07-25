@@ -5,8 +5,8 @@
 angular.module('eventsPageModule', [])
     .controller('eventsListPageCtrl', function ($scope, $location, eventService, photoService, eventDetailService, config) {
 
-        $scope.url = "http://localhost:3000"+"/event-page/";
-        // $scope.url = config.baseUrl+"/event-page/";
+        // $scope.url = "http://localhost:3000"+"/event-page/";
+        $scope.url = config.baseUrl+"/event-page/";
 
         $scope.getEventsByTypeData = function (type,page) {
             eventService.getEventsByType(type, page)
@@ -14,6 +14,7 @@ angular.module('eventsPageModule', [])
                     $scope.totalEventsNumber = data.data.totalElements;
                     $scope.eventList = $scope.catchImagesEvents(data.data.content);
                     $scope.eventList = $scope.eventList.map(eventDetailService.calculateFreeBlits);
+                    $scope.calculateCapacitySoldOut($scope.eventList);
                     console.log($scope.eventList);
                 })
                 .catch(function (data) {
@@ -81,6 +82,15 @@ angular.module('eventsPageModule', [])
             });
         };
 
-
+        $scope.calculateCapacitySoldOut = function (eventList) {
+            eventList.forEach(function (item) {
+                item.capacity = 0;
+                item.soldCount = 0;
+                item.eventDates.forEach(function (eventDate) {
+                    item.soldCount += eventDate.soldCount;
+                    item.capacity += eventDate.capacity;
+                })
+            });
+        };
         $scope.currentPage = 1;
     });

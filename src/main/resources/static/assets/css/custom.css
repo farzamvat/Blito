@@ -120,29 +120,21 @@ color: white !important;
     padding: 20px 5px;
 }
 
-.slick-next, .slick-prev {
-    top: 10%;
+button.slick-next {
+    color: #303030;
+}
+.slick-prev, .slick-next {
     border-radius: 5px;
-    padding: 40px 20px;
+    background: #303030;
+    padding: 15px 10px 14px 10px;
 }
-.slick-next {
-    right: -25px;
+.slick-prev:hover, .slick-next:hover {
+    background: #303030;
 }
-.slick-prev {
-    left: 0;
+.slick-prev:focus, .slick-next:focus {
+    background: #303030;
 }
-.slick-next::before, .slick-next::after{
-    background-color: #303030;
-    border-radius: 5px;
-    padding: 40px 20px;
-    margin-left: -20px;
-}
-.slick-prev::before, .slick-prev::after{
-    background-color: #303030;
-    border-radius: 5px;
-    padding: 40px 20px;
-    margin-left: -20px;
-}
+
 .marginTop20 {
     margin-top: 150px !important;
 }
@@ -1769,16 +1761,18 @@ a{
     float: left;
 }
 .btnPaymentActive {
-    border: 1px solid #303030;
-    background-color: #efefef;
+    padding: 10px 20px;
+    border: 2px solid #303030;
+    border-radius: 3px;
+    background-color: white;
     transition: 500ms;
 }
 .btnPaymentActive:active {
-    border:1px solid #39A939;
-    background-color: white;
+    border:2px solid #39A939;
 }
+
 .btnPaymentActive:focus{
-    border:1px solid #39A939;
+    border:2px solid #39A939;
     background-color: white;
 }
 .navbar-header-backcolor{
@@ -1894,7 +1888,10 @@ a{
         margin-top: -10px;
     }
 }
-
+.pickPayment {
+    margin-top: 40px;
+    font-size: 20px ;
+}
 .loadingSlider {
     background-color: #101010;
     -webkit-transition:all linear 0.5s;

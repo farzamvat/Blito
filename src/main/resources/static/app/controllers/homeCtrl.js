@@ -10,11 +10,11 @@ angular.module('homePageModule', [])
         $scope.bannerData = [];
         var promises = [[],[],[],[],[],[],[]];
         var promisesExchange = [[], []];
-        $scope.url = "http://localhost:3000"+"/event-page/";
-
-        $scope.urlExchange = "http://localhost:3000"+"/exchange-page/";
-        // $scope.url = config.baseUrl+"/event-page/";
-        // $scope.urlExchange = config.baseUrl+"/exchange-page/";
+        // $scope.url = "http://localhost:3000"+"/event-page/";
+        //
+        // $scope.urlExchange = "http://localhost:3000"+"/exchange-page/";
+        $scope.url = config.baseUrl+"/event-page/";
+        $scope.urlExchange = config.baseUrl+"/exchange-page/";
         indexBannerService.getIndexBanner()
             .then(function (data) {
                 console.log(data);
@@ -27,6 +27,7 @@ angular.module('homePageModule', [])
             .then(function (data) {
                 $scope.concertRow = $scope.catchImagesEvents(data.data.content, 0);
                 $scope.concertRow = $scope.concertRow.map(eventDetailService.calculateFreeBlits);
+                $scope.calculateCapacitySoldOut($scope.concertRow);
                 console.log($scope.concertRow);
             })
             .catch(function (data) {
@@ -35,6 +36,8 @@ angular.module('homePageModule', [])
         ourOffersService.getOurOffer("CONCERT", false)
             .then(function (data) {
                 $scope.ourOfferConcert = $scope.catchImagesEvents(data.data.content, 1);
+                $scope.calculateCapacitySoldOut($scope.ourOfferConcert);
+
             })
             .catch(function (data) {
                 console.log(data);
@@ -43,6 +46,8 @@ angular.module('homePageModule', [])
             .then(function (data) {
                 $scope.tourRow = $scope.catchImagesEvents(data.data.content, 2);
                 $scope.tourRow = $scope.tourRow.map(eventDetailService.calculateFreeBlits);
+                $scope.calculateCapacitySoldOut($scope.tourRow);
+
                 console.log(data);
             })
             .catch(function (data) {
@@ -51,6 +56,7 @@ angular.module('homePageModule', [])
         ourOffersService.getOurOffer("TOURISM", false)
             .then(function (data) {
                 $scope.ourOfferTour = $scope.catchImagesEvents(data.data.content, 3);
+                $scope.calculateCapacitySoldOut($scope.ourOfferTour);
                 console.log(data);
             })
             .catch(function (data) {
@@ -60,6 +66,7 @@ angular.module('homePageModule', [])
             .then(function (data) {
                 $scope.evento = $scope.catchImagesEvents(data.data.content, 4);
                 $scope.evento = $scope.evento.map(eventDetailService.calculateFreeBlits);
+                $scope.calculateCapacitySoldOut($scope.evento);
                 console.log(data);
             })
             .catch(function (data) {
@@ -69,6 +76,7 @@ angular.module('homePageModule', [])
         ourOffersService.getOurOffer("evento", true)
             .then(function (data) {
                 $scope.ourOfferEvento = $scope.catchImagesEvents(data.data.content, 5);
+                $scope.calculateCapacitySoldOut($scope.ourOfferEvento);
                 console.log(data);
             })
             .catch(function (data) {
@@ -112,6 +120,16 @@ angular.module('homePageModule', [])
                     $scope.showSections[i] = true;
                 })
             return events;
+        };
+        $scope.calculateCapacitySoldOut = function (eventList) {
+            eventList.forEach(function (item) {
+                item.capacity = 0;
+                item.soldCount = 0;
+                item.eventDates.forEach(function (eventDate) {
+                    item.soldCount += eventDate.soldCount;
+                    item.capacity += eventDate.capacity;
+                })
+            });
         };
         $scope.catchImagesExchange = function (events, i) {
             events.map(function (item) {

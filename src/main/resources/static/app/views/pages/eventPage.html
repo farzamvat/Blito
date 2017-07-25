@@ -46,8 +46,8 @@
 
                             <th class="dataCenter eventPageListTitle" >قیمت(تومان)
                             </th>
-                            <!--<th class="dataCenter eventPageListTitle" >ظرفیت-->
-                            <!--</th>-->
+                            <th class="dataCenter eventPageListTitle" >ظرفیت
+                            </th>
                             <th class="dataCenter eventPageListTitle" >وضعیت بلیت
                             </th>
                         </tr>
@@ -60,7 +60,8 @@
                             <td class="dataCenter eventPageTimeField"><input required  ng-class="setClass($index)"  disabled  type="text" class="form-group datePickerFormatEventPage marginBottom0" readonly></td>
 
                             <td ng-if="item.price === 0" class="dataCenter">رایگان</td>
-                            <td ng-if="item.price !== 0" class="dataCenter">{{ item.price}}</td>
+                            <td ng-if="item.price !== 0" class="dataCenter">{{ item.price | number | pNumber}}</td>
+                            <td class="dataCenter">{{ item.capacity - item.soldCount | number | pNumber}}</td>
 
                             <!--<td class="dataCenter">{{ item.capacity - item.soldCount}}</td>-->
                             <td ng-if="item.blitTypeState === 'OPEN'" class="dataCenter fontGreen" >

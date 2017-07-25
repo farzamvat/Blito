@@ -8,7 +8,7 @@ angular.module('blitoDirectives')
             require: 'ngModel',
             link: function(scope, element, attr, dirCtrl) {
                 function lengthValidation(value) {
-                    if (value.split("").length > 6) {
+                    if (value.split("").length > 7) {
                         dirCtrl.$setValidity('charE', true);
                     } else {
                         dirCtrl.$setValidity('charE', false);

@@ -147,7 +147,6 @@ angular.module('UiServices', [])
             var f = fileSelector.files[0], r = new FileReader();
 
             r.onloadend = function (e) {
-                console.log(e);
                 var base64Data = e.target.result;
                 $rootScope.$apply();
                 angular.element(document.getElementsByClassName(className))[0].src = base64Data;
@@ -179,8 +178,7 @@ angular.module('UiServices', [])
                     return pdate.format(self.format);
                 },
                 altField: '#persianDigitAlt',
-                altFormat: "YYYY MMM DD HH"
-
+                format: "YYYY/MM/DD , HH:mm"
             });
         };
         dateSetter.persianToArray = function (date) {
@@ -199,9 +197,8 @@ angular.module('UiServices', [])
         };
 
         dateSetter.persianToMs = function (date) {
-            var newData = date.replace(/:|-/gi , ' ').split(" ");
-            newData.pop();
-            newData.pop();
+            var newData = date.replace(/:|\/|,/gi , ' ').split(" ");
+            newData.splice(3,2);
             newData = newData.map(function (persianNumb) {
                 var persian = {'۰':0,'۱':1,'۲':2,'۳':3,'۴':4,'۵': 5,'۶': 6,'۷': 7,'۸' : 8,'۹': 9};
                 return persianNumb.split('').map(function (persianDigit) {
