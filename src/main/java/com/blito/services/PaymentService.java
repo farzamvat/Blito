@@ -6,7 +6,6 @@ import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,9 +52,11 @@ public class PaymentService {
 	private HtmlRenderer htmlRenderer;
 	@Autowired
 	private MailService mailService;
+	@Autowired
+	private BlitService blitService;
+	private static Object paymentCompletionLock = new Object();
 	private final Logger log = LoggerFactory.getLogger(PaymentService.class);
 	
-	@Transactional(rollbackFor=Exception.class)
 	public Blit zarinpalPaymentFlow(String authority,String status)
 	{
 		Blit blit = blitRepository.findByToken(authority).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
@@ -70,7 +71,12 @@ public class PaymentService {
 				checkBlitCapacity(commonBlit);
 				PaymentVerificationResponse verificationResponse = zarinpalClient.getPaymentVerificationResponse((int)commonBlit.getTotalAmount(), authority);
 				log.info("success in zarinpal verification response trackCode '{}' user email '{}' ref number '{}'",blit.getTrackCode(),blit.getCustomerEmail(), verificationResponse.getRefID());
-				Blit persistedBlit = persistZarinpalBoughtBlit(commonBlit, authority, String.valueOf(verificationResponse.getRefID()), ZarinpalException.generateMessage(verificationResponse.getStatus()));
+				Blit persistedBlit = null;
+				synchronized (paymentCompletionLock) {
+					log.info("User with email '{}' holding the lock after payment",commonBlit.getCustomerEmail());
+					persistedBlit = persistZarinpalBoughtBlit(commonBlit, authority, String.valueOf(verificationResponse.getRefID()), ZarinpalException.generateMessage(verificationResponse.getStatus()));
+					log.info("User with email '{}' released the lock after payment",commonBlit.getCustomerEmail());
+				}
 				Map<String,Object> map = new HashMap<>();
 				map.put("blit", persistedBlit);
 				mailService.sendEmail(blit.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map), ResourceUtil.getMessage(Response.BLIT_RECIEPT));
@@ -97,13 +103,15 @@ public class PaymentService {
 					ResourceUtil.getMessage(Response.REQUESTED_BLIT_COUNT_IS_MORE_THAN_CAPACITY));
 	}
 	
-	@Transactional(propagation=Propagation.REQUIRES_NEW,isolation=Isolation.READ_COMMITTED,rollbackFor=Exception.class)
 	private Blit persistZarinpalBoughtBlit(CommonBlit blit, String authority, String refNum, String paymentMessage) {
 		CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
 		BlitType blitType = blitTypeRepository.findByBlitTypeId(commonBlit.getBlitType().getBlitTypeId());
 		commonBlit.setRefNum(refNum);
+		blit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 		commonBlit.setPaymentStatus(PaymentStatus.PAID.name());
+		blitService.checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
 		blitType.setSoldCount(blitType.getSoldCount() + commonBlit.getCount());
+		log.info("****** NONE FREE BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}'",commonBlit.getCustomerEmail(),blitType.getSoldCount());
 		if (blitType.getSoldCount() == blitType.getCapacity()) {
 			blitType.setBlitTypeState(State.SOLD.name());
 			if (blitType.getEventDate().getBlitTypes().stream()
@@ -117,7 +125,8 @@ public class PaymentService {
 						Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 			}
 		}
-		return commonBlit;
+		blitTypeRepository.saveAndFlush(blitType);
+		return commonBlitRepository.saveAndFlush(commonBlit);
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
