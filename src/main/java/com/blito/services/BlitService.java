@@ -276,7 +276,7 @@ public class BlitService {
 		return commonBlitRepository.save(commonBlit);
 	}
 	
-	@Transactional(propagation= Propagation.REQUIRES_NEW, isolation=Isolation.READ_COMMITTED)
+	@Transactional(propagation= Propagation.SUPPORTS, isolation=Isolation.READ_COMMITTED)
 	private BlitType increaseSoldCount(long blitTypeId,CommonBlit commonBlit)
 	{
 		BlitType blitType = blitTypeRepository.findByBlitTypeId(blitTypeId);
