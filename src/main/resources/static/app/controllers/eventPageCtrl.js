@@ -151,7 +151,7 @@ angular.module('eventsPageModule')
                 blitTypeName : $scope.itemWithCapacity[0].name,
                 count : $scope.totalNumber,
                 customerEmail : buyerData.email,
-                customerMobileNumber : buyerData.mobile,
+                customerMobileNumber : dataService.persianToEnglishDigit(persianJs(buyerData.mobile).englishNumber().toString()),
                 customerName : buyerData.firstname+ " " + buyerData.lastname,
                 eventAddress : $scope.eventDataDetails.address,
                 eventDate : $scope.itemWithCapacity[0].date,
