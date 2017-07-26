@@ -45,6 +45,7 @@ import com.blito.security.SecurityContextHolder;
 import com.blito.services.AdminEventService;
 import com.blito.services.BlitService;
 import com.blito.services.EventService;
+import com.blito.services.PaymentRequestServiceAsync;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
@@ -71,6 +72,8 @@ public class BlitServiceTest {
 	AdminEventService adminEventService;
 	@Autowired
 	CommonBlitRepository commonBlitRepo;
+	@Autowired
+	PaymentRequestServiceAsync paymentRequestService;
 	
 
 	private EventHost eventHost = new EventHost();
@@ -176,7 +179,7 @@ public class BlitServiceTest {
 		commonBlitViewModel.setEventDate(eventDateViewModel.getDate());
 		commonBlitViewModel.setBankGateway(BankGateway.NONE);
 		
-		blitService.createCommonBlitAuthorized(commonBlitViewModel);
+		paymentRequestService.createCommonBlitAuthorized(commonBlitViewModel);
 
 		BlitType blitType = blitTypeRepo.findOne(blitTypeId);
 		assertEquals(1, commonBlitRepo.count());

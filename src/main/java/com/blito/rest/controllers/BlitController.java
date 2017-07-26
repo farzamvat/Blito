@@ -22,6 +22,7 @@ import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.services.BlitService;
+import com.blito.services.PaymentRequestServiceAsync;
 import com.blito.view.ExcelView;
 
 import io.swagger.annotations.ApiOperation;
@@ -34,11 +35,13 @@ public class BlitController {
 
 	@Autowired
 	BlitService blitService;
+	@Autowired
+	PaymentRequestServiceAsync paymentRequestService;
 
 	@PostMapping("/buy-request")
 	public CompletionStage<ResponseEntity<?>> buyBlit(@Validated @RequestBody CommonBlitViewModel vmodel,
 			HttpServletRequest req, HttpServletResponse res) {
-		return blitService.createCommonBlitAuthorized(vmodel)
+		return paymentRequestService.createCommonBlitAuthorized(vmodel)
 				.handle((result, throwable) -> HandleUtility.generateResponseResult(() -> result, throwable, req, res));
 	}
 
