@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.IntStream;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +41,7 @@ import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
 import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventViewModel;
+import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.AdminEventService;
@@ -79,7 +81,6 @@ public class BlitServiceTest {
 	private EventHost eventHost = new EventHost();
 	private EventViewModel eventViewModel = new EventViewModel();
 	private User user = new User();
-	private CommonBlitViewModel commonBlitViewModel = new CommonBlitViewModel();
 	private EventDateViewModel eventDateViewModel = new EventDateViewModel();
 	private BlitTypeViewModel blitTypeViewModel1 = new BlitTypeViewModel();
 	private BlitTypeViewModel blitTypeViewModel2 = new BlitTypeViewModel();
@@ -116,6 +117,8 @@ public class BlitServiceTest {
 		eventViewModel.setEventHostName(eventHost.getHostName());
 		eventViewModel.setEventName("My Event");
 		eventViewModel.setEventType(EventType.CONCERT);
+		eventViewModel.setLatitude(2.2);
+		eventViewModel.setLongitude(3.2);
 
 		eventDateViewModel.setDate(Timestamp.from(ZonedDateTime.now().plusDays(10).toInstant()));
 
@@ -170,16 +173,25 @@ public class BlitServiceTest {
 		changeEventStateVm.setState(State.OPEN);
 		adminEventService.changeEventState(changeEventStateVm);
 		
+		ChangeEventDateStateVm vm = new ChangeEventDateStateVm();
+		vm.setEventDateId(eventViewModel.getEventDates().stream().findFirst().get().getEventDateId());
+		vm.setEventDateState(State.OPEN);
+		adminEventService.changeEventDateState(vm);
+		
+		CommonBlitViewModel commonBlitViewModel = new CommonBlitViewModel();
 		commonBlitViewModel.setBlitTypeId(blitTypeId);
-		commonBlitViewModel.setCount(20);
+		commonBlitViewModel.setCount(1);
+		commonBlitViewModel.setCustomerEmail("farzam.vat@gmail.com");
 		commonBlitViewModel.setSeatType(SeatType.COMMON);
 		commonBlitViewModel.setEventName(eventViewModel.getEventName());
 		commonBlitViewModel.setUserId(user.getUserId());
 		commonBlitViewModel.setCustomerName(user.getFirstname()+ " " + user.getLastname());
 		commonBlitViewModel.setEventDate(eventDateViewModel.getDate());
 		commonBlitViewModel.setBankGateway(BankGateway.NONE);
-		
-		paymentRequestService.createCommonBlitAuthorized(commonBlitViewModel);
+		IntStream.range(1, 3).parallel().forEach(i -> {
+			SecurityContextHolder.setCurrentUser(user);
+			paymentRequestService.createCommonBlitAuthorized(commonBlitViewModel);
+		});
 
 		BlitType blitType = blitTypeRepo.findOne(blitTypeId);
 		assertEquals(1, commonBlitRepo.count());

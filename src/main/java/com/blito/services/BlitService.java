@@ -3,16 +3,12 @@ package com.blito.services;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.poi.ss.formula.eval.NotImplementedException;
-import org.hibernate.exception.LockAcquisitionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.enums.BankGateway;
@@ -92,7 +86,6 @@ public class BlitService {
 		}).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
 	}
 
-	@Transactional/*(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)*/
 	public CommonBlit persistNoneFreeCommonBlit(BlitType blitType, CommonBlit commonBlit, Optional<User> optionalUser,
 			String token, String trackCode) {
 		checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
@@ -108,7 +101,6 @@ public class BlitService {
 		return commonBlitRepository.save(commonBlit);
 	}
 
-	@Transactional
 	public CommonBlit reserveFreeBlit(BlitType blitType, CommonBlit commonBlit, User user) {
 		User attachedUser = userRepository.findOne(user.getUserId());
 		BlitType attachedBlitType = increaseSoldCount(blitType.getBlitTypeId(), commonBlit);
@@ -122,7 +114,6 @@ public class BlitService {
 		return commonBlitRepository.save(commonBlit);
 	}
 	
-	@Transactional
 	private BlitType increaseSoldCount(long blitTypeId,CommonBlit commonBlit)
 	{
 		BlitType blitType = blitTypeRepository.findByBlitTypeId(blitTypeId);

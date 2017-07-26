@@ -62,7 +62,8 @@ public class CommonBlitMapper implements GenericMapper<CommonBlit, CommonBlitVie
 		vmodel.setCreatedAt(blit.getCreatedAt());
 		vmodel.setUserId(blit.getUser().getUserId());
 		vmodel.setAdditionalFields(blit.getAdditionalFields());
-		vmodel.setLocation(new LocationViewModel(blit.getBlitType().getEventDate().getEvent().getLatitude(),blit.getBlitType().getEventDate().getEvent().getLongitude()));
+		if(blit.getBlitType().getEventDate().getEvent().getLongitude() != null && blit.getBlitType().getEventDate().getEvent().getLatitude() != null)
+			vmodel.setLocation(new LocationViewModel(blit.getBlitType().getEventDate().getEvent().getLatitude(),blit.getBlitType().getEventDate().getEvent().getLongitude()));
 		vmodel.setEventPhotoId(blit.getBlitType().getEventDate().getEvent().getImages().stream().filter(i -> i.getImageType().equals(ImageType.EVENT_PHOTO.name())).findFirst().get().getImageUUID());
 		vmodel.setResult(new ResultVm("success",true));
 		return vmodel;

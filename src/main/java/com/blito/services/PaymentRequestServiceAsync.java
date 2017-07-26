@@ -138,10 +138,10 @@ public class PaymentRequestServiceAsync {
 			CommonBlitViewModel responseBlit = null;
 			// LOCK
 			synchronized (reserveFreeBlitLock) {
-				log.debug("User with email '{}' holding the lock",user.getEmail());
+				log.info("User with email '{}' holding the lock",user.getEmail());
 				responseBlit = commonBlitMapper
 						.createFromEntity(blitService.reserveFreeBlit(blitType, commonBlit, user));
-				log.debug("User with email '{}' released the lock",user.getEmail());
+				log.info("User with email '{}' released the lock",user.getEmail());
 			}
 			// UNLOCK
 			Map<String, Object> map = new HashMap<>();
