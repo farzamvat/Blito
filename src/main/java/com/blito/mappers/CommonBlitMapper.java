@@ -60,7 +60,7 @@ public class CommonBlitMapper implements GenericMapper<CommonBlit, CommonBlitVie
 		vmodel.setRefNum(blit.getRefNum());
 		vmodel.setBankGateway(Enum.valueOf(BankGateway.class, blit.getBankGateway()));
 		vmodel.setCreatedAt(blit.getCreatedAt());
-		vmodel.setUserId(blit.getUser().getUserId());
+		vmodel.setUserId(blit.getUser() == null ? null : blit.getUser().getUserId());
 		vmodel.setAdditionalFields(blit.getAdditionalFields());
 		if(blit.getBlitType().getEventDate().getEvent().getLongitude() != null && blit.getBlitType().getEventDate().getEvent().getLatitude() != null)
 			vmodel.setLocation(new LocationViewModel(blit.getBlitType().getEventDate().getEvent().getLatitude(),blit.getBlitType().getEventDate().getEvent().getLongitude()));

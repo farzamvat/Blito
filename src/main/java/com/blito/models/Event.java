@@ -83,7 +83,7 @@ public class Event {
 	private String operatorState;
 	
 	private boolean isDeleted = false;
-	
+	@Column(columnDefinition="TEXT")
 	private String aparatDisplayCode;
 	
 	private int orderNumber;
