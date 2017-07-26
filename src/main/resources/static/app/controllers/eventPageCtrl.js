@@ -66,8 +66,8 @@ angular.module('eventsPageModule')
             $timeout(function () {
                 for(var i = 0 ; i < $scope.eventFlatDates.length; i++) {
                     dateSetterService.initDate("classDate"+i);
-                    $scope.eventFlatDates[i].persianDate = persianDate($scope.eventFlatDates[i].date).format("dddd,DD MMMM, ساعت HH:MM");
-                    $(".classDate"+i).val(persianDate($scope.eventFlatDates[i].date).format("dddd,DD MMMM, ساعت HH:MM"))
+                    $scope.eventFlatDates[i].persianDate = persianDate($scope.eventFlatDates[i].date).format("dddd,DD MMMM, ساعت HH:mm");
+                    $(".classDate"+i).val(persianDate($scope.eventFlatDates[i].date).format("dddd,DD MMMM, ساعت HH:mm"))
                 }
             }, 300);
         };
@@ -239,7 +239,7 @@ angular.module('eventsPageModule')
         };
         $scope.buyTicketFormatData = function (eventNestedData) {
             $scope.buyTicketPickData = eventNestedData.map(function (eventDate) {
-                eventDate.date = persianDate(eventDate.date).format("dddd,DD MMMM, ساعت HH:MM");
+                eventDate.date = persianDate(eventDate.date).format("dddd,DD MMMM, ساعت HH:mm");
                 return eventDate;
             })
         };
