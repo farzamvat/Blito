@@ -130,10 +130,10 @@ public class PaymentRequestServiceAsync {
 		User user = userRepository.findOne(SecurityContextHolder.currentUser().getUserId());
 
 		if (blitType.isFree()) {
-			if (commonBlit.getCount() > 5)
+			if (commonBlit.getCount() > 10)
 				throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_COUNT_EXCEEDS_LIMIT));
 			if (commonBlit.getCount() + commonBlitRepository.countByCustomerEmailAndBlitTypeBlitTypeId(user.getEmail(),
-					blitType.getBlitTypeId()) > 5)
+					blitType.getBlitTypeId()) > 10)
 				throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_COUNT_EXCEEDS_LIMIT_TOTAL));
 			CommonBlitViewModel responseBlit = null;
 			// LOCK
