@@ -111,7 +111,7 @@ public class BlitService {
 		commonBlit.setPaymentStatus(PaymentStatus.FREE.name());
 		commonBlit.setBankGateway(BankGateway.NONE.name());
 		attachedUser.addBlits(commonBlit);
-		return commonBlitRepository.save(commonBlit);
+		return commonBlitRepository.saveAndFlush(commonBlit);
 	}
 	
 	private BlitType increaseSoldCount(long blitTypeId,CommonBlit commonBlit)
@@ -132,7 +132,7 @@ public class BlitService {
 						.setEventSoldDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 			}
 		}
-		return blitTypeRepository.save(blitType);
+		return blitTypeRepository.saveAndFlush(blitType);
 	}
 
 	public void checkBlitTypeRestrictionsForBuy(BlitType blitType, CommonBlit commonBlit) {
