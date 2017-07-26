@@ -13,7 +13,7 @@ angular.module('eventsPageModule')
                                            userInfo,
                                            ticketsService,
                                            $window,
-                                           $location) {
+                                           dataService) {
         var promises = [];
         $scope.persianSans = [];
         $scope.eventInfo = {};
@@ -135,6 +135,7 @@ angular.module('eventsPageModule')
         $scope.paymentSelected = function (payment) {
             var buyerData = userInfo.getData();
             $scope.paymentSelectedDone = "selected";
+            console.log(buyerData);
             $scope.setPaymentData(payment, buyerData);
         };
         $scope.buyerInfo = {};
