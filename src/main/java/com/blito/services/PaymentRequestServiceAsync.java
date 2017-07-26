@@ -59,11 +59,11 @@ public class PaymentRequestServiceAsync {
 	
 	@Value("${zarinpal.web.gateway}")
 	private String zarinpalGatewayURL;
-
-	private final Logger log = LoggerFactory.getLogger(BlitService.class);
 	
-	private ReentrantLock lock = new ReentrantLock(true);
+	private Object reserveFreeBlitLock = new Object();
 
+	private final Logger log = LoggerFactory.getLogger(PaymentRequestServiceAsync.class);
+	
 	public CompletableFuture<String> samanBankRequestToken(String reservationNumber, long totalAmount) {
 		return samanBankService.requestToken(reservationNumber, totalAmount);
 	}
@@ -135,15 +135,12 @@ public class PaymentRequestServiceAsync {
 			if (commonBlit.getCount() + commonBlitRepository.countByCustomerEmailAndBlitTypeBlitTypeId(user.getEmail(),
 					blitType.getBlitTypeId()) > 5)
 				throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_COUNT_EXCEEDS_LIMIT_TOTAL));
-			// LOCK
-			lock.lock();
-			log.debug("User with email '{}' holding the lock",user.getEmail());
 			CommonBlitViewModel responseBlit = null;
-			try {
+			// LOCK
+			synchronized (reserveFreeBlitLock) {
+				log.debug("User with email '{}' holding the lock",user.getEmail());
 				responseBlit = commonBlitMapper
 						.createFromEntity(blitService.reserveFreeBlit(blitType, commonBlit, user));
-			} finally {
-				lock.unlock();
 				log.debug("User with email '{}' released the lock",user.getEmail());
 			}
 			// UNLOCK
