@@ -29,10 +29,6 @@ public class ZarinpalRestController {
 		return CompletableFuture.supplyAsync(() -> {
 			return paymentService.zarinpalPaymentFlow(Authority, Status);
 		}).handle((blit,throwable) -> {
-			if(throwable != null)
-			{
-				return new RedirectView(String.valueOf(new StringBuilder(serverAddress).append("/payment/error/").append(throwable.getCause().getMessage())));
-			}
 			return new RedirectView(String.valueOf(new StringBuilder(serverAddress).append("/payment/").append(blit.getTrackCode())));
 		});
 	}

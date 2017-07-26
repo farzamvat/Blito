@@ -46,7 +46,6 @@ import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.search.SearchViewModel;
-import com.blito.services.util.HtmlRenderer;
 
 @Service
 public class BlitService {
