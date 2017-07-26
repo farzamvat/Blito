@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.poi.ss.formula.eval.NotImplementedException;
 import org.hibernate.exception.LockAcquisitionException;
@@ -75,6 +76,8 @@ public class BlitService {
 	private MailService mailService;
 	@Autowired
 	private PaymentRequestServiceAsync paymentRequestService;
+	
+	private ReentrantLock lock = new ReentrantLock(true);
 
 	@Value("${zarinpal.web.gateway}")
 	private String zarinpalGatewayURL;
@@ -163,8 +166,18 @@ public class BlitService {
 			if (commonBlit.getCount() + commonBlitRepository.countByCustomerEmailAndBlitTypeBlitTypeId(user.getEmail(),
 					blitType.getBlitTypeId()) > 5)
 				throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_COUNT_EXCEEDS_LIMIT_TOTAL));
-			CommonBlitViewModel responseBlit = commonBlitMapper
-					.createFromEntity(reserveFreeBlit(blitType, commonBlit, user));
+			// LOCK
+			lock.lock();
+			log.debug("User with email '{}' holding the lock",user.getEmail());
+			CommonBlitViewModel responseBlit = null;
+			try {
+				responseBlit = commonBlitMapper
+						.createFromEntity(reserveFreeBlit(blitType, commonBlit, user));
+			} finally {
+				lock.unlock();
+				log.debug("User with email '{}' released the lock",user.getEmail());
+			}
+			// UNLOCK
 			Map<String, Object> map = new HashMap<>();
 			map.put("blit", responseBlit);
 			mailService.sendEmail(responseBlit.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map),
