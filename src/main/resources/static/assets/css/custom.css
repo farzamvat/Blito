@@ -1760,6 +1760,9 @@ a{
 .floatLeft{
     float: left;
 }
+.aparatLink {
+    width: 30px;
+}
 .btnPaymentActive {
     padding: 10px 20px;
     border: 2px solid #303030;

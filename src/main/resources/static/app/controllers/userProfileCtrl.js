@@ -837,7 +837,7 @@ angular.module('User')
                 instagramLink: plannerData.instagram,
                 linkedinLink: plannerData.linkedin,
                 telegramLink: plannerData.telegram,
-                telephone: plannerData.mobile,
+                telephone: dataService.persianToEnglishDigit(persianJs(plannerData.mobile).englishNumber().toString()),
                 twitterLink: plannerData.twitter,
                 websiteLink: plannerData.website,
                 description : plannerData.description
@@ -1184,6 +1184,7 @@ angular.module('User')
             imageServices.downloadPhotos($scope.coverImageIdEdit, "coverPhotoUploadEdit");
         };
         $scope.editHostSubmit = function (editHostData) {
+            editHostData.telephone = dataService.persianToEnglishDigit(persianJs(editHostData.telephone).englishNumber().toString());
             editHostData.images.forEach(function (item) {
                 if(item.type === "HOST_PHOTO") {
                     item.imageUUID = $scope.plannerImageIdEdit;

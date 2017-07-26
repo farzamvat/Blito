@@ -18,6 +18,7 @@ angular.module('eventsPageModule')
         ticketsService.getBoughtTicket($routeParams.trackCode)
             .then(function (data) {
                 $scope.paymentStatus = data.data.result.status;
+                console.log(data);
                 if($scope.paymentStatus) {
                     $scope.ticketData = data.data;
                     mapMarkerService.initMapOnlyShowMarker(document.getElementById('ticketMap'));

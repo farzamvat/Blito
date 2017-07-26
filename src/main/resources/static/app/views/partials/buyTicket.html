@@ -144,7 +144,16 @@
                                                             </div>
 
                                                             <div class="col-xs-7 col-sm-8 floatRight ">
-                                                                <input height="60" id="name" ng-model="eventInfo.name"   type="text"  class="form-group registerInput" required>
+                                                                <input height="60" id="name" ng-model="buyerInfo.name"   type="text"  class="form-group registerInput" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row marginTop10">
+                                                            <div class="col-xs-5 col-sm-4 floatRight text-center">
+                                                                <label class="registerLabel" for="name" > نام خانوادگی :</label>
+                                                            </div>
+
+                                                            <div class="col-xs-7 col-sm-8 floatRight ">
+                                                                <input height="60" id="lastname" ng-model="buyerInfo.lastname"   type="text"  class="form-group registerInput" required>
                                                             </div>
                                                         </div>
                                                         <div class="row marginTop10">
@@ -153,16 +162,16 @@
                                                             </div>
 
                                                             <div class="col-xs-7 col-sm-8 floatRight ">
-                                                                <input height="60" id="email" ng-model="eventInfo.email"   type="email"  class="form-group registerInput" required>
+                                                                <input height="60" id="email" ng-model="buyerInfo.email"   type="email"  class="form-group registerInput" required>
                                                             </div>
                                                         </div>
                                                         <div class="row marginTop10">
                                                             <div class="col-xs-5 col-sm-4 floatRight text-center ">
-                                                                <label class="registerLabel" for="mobile" > شماهره تماس  :</label>
+                                                                <label class="registerLabel" for="mobile" > شماره تماس  :</label>
                                                             </div>
 
                                                             <div class="col-xs-7 col-sm-8 floatRight ">
-                                                                <input height="60" id="mobile" ng-model="eventInfo.mobile"   type="text"  class="form-group registerInput" required>
+                                                                <input height="60" id="mobile" ng-model="buyerInfo.mobile"   type="text"  class="form-group registerInput" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -225,7 +234,7 @@
                                             <div id="buyBlitError"  class="text-center dispNone alert alert-danger col-xs-12">
                                                 <strong></strong>
                                             </div>
-                                            <div  ng-if="!itemWithCapacity[0].isFree" class="form-group col-xs-12 formRegGroup floatRight">
+                                            <div  ng-if="!itemWithCapacity[0].isFree && logoutMenu" class="form-group col-xs-12 formRegGroup floatRight">
                                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
                                                     <label class="registerLabel pickPayment" > انتخاب درگاه  :</label>
                                                 </div>
@@ -242,6 +251,26 @@
                                                     </div>
                                                     <div class="controls col-xs-12 col-sm-6 marginBottom20">
                                                         <button id="prevStep1" ng-click="prevStep1()"  class="btn btn-danger btn-lg btnLogin"><i class="fa fa-arrow-right"></i>   مرحله قبل </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div  ng-if="!itemWithCapacity[0].isFree && !logoutMenu" class="form-group col-xs-12 formRegGroup floatRight">
+                                                <div class="col-xs-5 col-sm-6 floatRight text-center">
+                                                    <label class="registerLabel pickPayment" > انتخاب درگاه  :</label>
+                                                </div>
+                                                <div class="col-xs-12  floatRight ">
+                                                    <div class="col-xs-12 col-sm-6 marginTop10">
+                                                        <button ng-click="paymentSelectedNotUser('ZARINPAL')" class=" btnPaymentActive">
+                                                            <img class="paymentImages" src="../../../assets/img/zarrinpal.png" alt="">
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="control-group text-center marginBottom20">
+                                                    <div class="controls col-xs-12 col-sm-6 marginBottom20">
+                                                        <button  ng-disabled="paymentStatus.$invalid" id="nextStep2NotUser" ng-click="nextStep2NotUser()" type="submit"  class="btn btn-success btn-lg btnLogin">  پرداخت <i class="fa fa-spin fa-spinner dispNone payedBlitSpinner"></i><i class="fa fa-money"></i></button>
+                                                    </div>
+                                                    <div class="controls col-xs-12 col-sm-6 marginBottom20">
+                                                        <button id="prevStep1NotUser" ng-click="prevStep1()"  class="btn btn-danger btn-lg btnLogin"><i class="fa fa-arrow-right"></i>   مرحله قبل </button>
                                                     </div>
                                                 </div>
                                             </div>
