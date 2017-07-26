@@ -31,7 +31,7 @@ angular.module('Blito',
         $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
     })
     .constant('config', {
-        baseUrl : 'http://192.168.200.78:8086',
+        baseUrl : 'http://89.163.225.16',
         redirectToUrlAfterLogin : {url : '/'}
     })
 ;
