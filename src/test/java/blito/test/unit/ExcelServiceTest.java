@@ -28,7 +28,6 @@ import com.blito.enums.SeatType;
 import com.blito.enums.State;
 import com.blito.mappers.CommonBlitMapper;
 import com.blito.models.CommonBlit;
-import com.blito.models.Event;
 import com.blito.models.EventHost;
 import com.blito.models.Image;
 import com.blito.models.User;
@@ -50,6 +49,7 @@ import com.blito.security.SecurityContextHolder;
 import com.blito.services.AdminEventService;
 import com.blito.services.BlitService;
 import com.blito.services.EventService;
+import com.blito.services.PaymentRequestServiceAsync;
 import com.blito.services.SearchService;
 
 @ActiveProfiles("test")
@@ -78,6 +78,8 @@ public class ExcelServiceTest {
 	CommonBlitRepository commonBlitRepository;
 	@Autowired
 	EventRepository eventRepository;
+	@Autowired
+	PaymentRequestServiceAsync paymentRequestService;
 	
 	private EventHost eventHost = new EventHost();
 	private EventViewModel eventViewModel = new EventViewModel();
@@ -215,8 +217,8 @@ public class ExcelServiceTest {
 		additionalFields2.put("Weight", "40.7");
 		commonBlitViewModel2.setAdditionalFields(additionalFields2);
 
-		blitService.createCommonBlitAuthorized(commonBlitViewModel1);
-		blitService.createCommonBlitAuthorized(commonBlitViewModel2);
+		paymentRequestService.createCommonBlitAuthorized(commonBlitViewModel1);
+		paymentRequestService.createCommonBlitAuthorized(commonBlitViewModel2);
 		
 		SearchViewModel<CommonBlit> searchViewModel = new SearchViewModel<>();
 		Simple<CommonBlit> simple = new Simple<>();
