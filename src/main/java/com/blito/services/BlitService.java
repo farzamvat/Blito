@@ -116,7 +116,7 @@ public class BlitService {
 	
 	private BlitType increaseSoldCount(long blitTypeId,CommonBlit commonBlit)
 	{
-		BlitType blitType = blitTypeRepository.findByBlitTypeId(blitTypeId);
+		BlitType blitType = blitTypeRepository.findOne(blitTypeId);
 		blitType.setSoldCount(blitType.getSoldCount() + commonBlit.getCount());
 		checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
 		if (blitType.getSoldCount() == blitType.getCapacity()) {
