@@ -2,6 +2,8 @@ package com.blito.rest.controllers;
 
 import java.util.concurrent.CompletableFuture;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,15 +22,21 @@ public class ZarinpalRestController {
 	private String serverAddress;
 	@Value("${api.base.url}")
 	private String baseUrl;
-
 	@Autowired
 	private PaymentService paymentService;
+	
+	private Logger log = LoggerFactory.getLogger(getClass());
+	
 	@GetMapping("/zarinpal")
 	public CompletableFuture<RedirectView> zarinpalCallback(@RequestParam String Authority,@RequestParam String Status)
 	{
 		return CompletableFuture.supplyAsync(() -> {
 			return paymentService.zarinpalPaymentFlow(Authority, Status);
 		}).handle((blit,throwable) -> {
+			if(throwable != null)
+			{
+				log.error("******* ERROR IN ZARINPAL PAYMENT FLOW '{}'",throwable.getCause());
+			}
 			return new RedirectView(String.valueOf(new StringBuilder(serverAddress).append("/payment/").append(blit.getTrackCode())));
 		});
 	}
