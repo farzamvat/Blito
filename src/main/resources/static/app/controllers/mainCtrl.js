@@ -2,7 +2,19 @@
  * Created by soroush on 4/18/17.
  */
 angular.module('menuPagesModule', [])
-    .controller('mainCtrl', function ($rootScope, $scope, Auth, userCreate, $window, $timeout, $interval, $location, userInfo, AuthToken, refresh, config) {
+    .controller('mainCtrl', function ($rootScope,
+                                      $scope,
+                                      Auth,
+                                      userCreate,
+                                      $window,
+                                      $timeout,
+                                      $interval,
+                                      $location,
+                                      userInfo,
+                                      AuthToken,
+                                      refresh,
+                                      config,
+                                      dataService) {
         var main = this;
         main.checkingSession = false;
         $scope.loadPage = false;
@@ -36,11 +48,10 @@ angular.module('menuPagesModule', [])
                             var base64Url = token.split('.')[1];
                             var base64 = base64Url.replace('-', '+').replace('_', '/');
                             return JSON.parse($window.atob(base64));
-                        }
+                        };
                         var expireTime = self.parseJwt(token);
                         var timeStamp = Math.floor(Date.now() / 1000);
                         var timeCheck = expireTime.exp - timeStamp;
-                        console.log(timeCheck);
                         if(timeCheck < 11) {
                             main.checkingSession = false;
                             $scope.loggedIn = false;
@@ -83,8 +94,9 @@ angular.module('menuPagesModule', [])
         };
         if(main.checkingSession) {
             main.setUserData();
-         }
+        }
         $rootScope.$on("$locationChangeStart", function(event, next, current) {
+            $window.scroll(0,0);
             main.checkRefreshTokenValue();
             if(Auth.isLoggedIn()) {
                 main.setUserData();
@@ -99,23 +111,22 @@ angular.module('menuPagesModule', [])
             main.errorMsg = false;
             $scope.registerErrorNotif = false;
             $scope.submitRegister = true;
-            $timeout(function () {
-                userCreate.create(regData)
-                    .then(function (data, status) {
-                        $scope.submitRegister = false;
-                        main.successMsg = data.data.message;
-                        userInfo.setData(data.config.data);
-                        $location.path('/activate-user');
-                        $("#registrationModal").modal("hide");
-                    })
-                    .catch(function (data, status) {
-                        $scope.submitRegister = false;
-                        $scope.registerErrorNotif = true;
+            regData.mobile = dataService.persianToEnglishDigit(persianJs(regData.mobile).englishNumber().toString());
+            userCreate.create(regData)
+                .then(function (data, status) {
+                    $scope.submitRegister = false;
+                    main.successMsg = data.data.message;
+                    userInfo.setData(data.config.data);
+                    $location.path('/activate-user');
+                    $("#registrationModal").modal("hide");
+                })
+                .catch(function (data, status) {
+                    $scope.submitRegister = false;
+                    $scope.registerErrorNotif = true;
 
-                        document.getElementById("registerError").innerHTML= data.data.message;
-                        console.log(data);
-                    })
-            },200)
+                    document.getElementById("registerError").innerHTML= data.data.message;
+                    console.log(data);
+                })
         };
 
         $scope.login = function (loginData) {
@@ -142,7 +153,7 @@ angular.module('menuPagesModule', [])
                     $timeout(function () {
                         $("#notification").modal("hide");
                     },2000)
-                    })
+                })
                 .catch(function (data, status) {
                     $scope.loginErrorNotif = true;
                     $scope.submitLogin = false;
