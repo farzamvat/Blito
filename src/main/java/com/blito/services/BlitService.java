@@ -104,7 +104,6 @@ public class BlitService {
 		}).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
 	}
 
-	@Transactional
 	public CompletableFuture<Object> createCommonBlitAuthorized(CommonBlitViewModel vmodel) {
 
 		CommonBlit commonBlit = commonBlitMapper.createFromViewModel(vmodel);
