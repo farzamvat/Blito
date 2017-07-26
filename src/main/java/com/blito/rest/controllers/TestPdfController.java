@@ -1,12 +1,15 @@
 package com.blito.rest.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.blito.services.ExcelService;
+import com.blito.models.EventHost;
+import com.blito.search.SearchViewModel;
+import com.blito.services.EventHostService;
 import com.blito.view.PdfView;
 
 @RestController
@@ -14,11 +17,13 @@ import com.blito.view.PdfView;
 public class TestPdfController {
 	
 	@Autowired
-	ExcelService excelService;
+	EventHostService eventHostService;
 	
-	@GetMapping
-	public ModelAndView getPdf() {
-		return new ModelAndView(new PdfView(), excelService.test());
+	
+	
+	@PostMapping("/blits.pdf")
+	public ModelAndView getPdf(@RequestBody SearchViewModel<EventHost> search) {
+		return new ModelAndView(new PdfView(), eventHostService.searchEventHostsForExcel(search));
 	}
 
 }

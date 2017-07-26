@@ -126,18 +126,4 @@ public class ExcelService {
 		model.put("numericcolumns", Arrays.asList("EventHostId"));
 		return model;
 	}
-	
-	public Map<String, Object> test(){
-		Map<String, Object> model = new HashMap<String, Object>();
-		// Sheet Name
-		model.put("sheetname", "testPdf");
-		// Headers
-		model.put("headers", Arrays.asList("Name", "LastName", "Gender"));
-		// Results
-		Map<Object, Object> results = new HashMap<Object, Object>();
-		results.put("1", Arrays.asList("hasti", "sahabi", "female"));
-		results.put("2", Arrays.asList("farzam", "vatan", "male"));
-		model.put("results", results);
-		return model;
-	}
 }
