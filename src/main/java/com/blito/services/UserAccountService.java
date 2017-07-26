@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -21,8 +22,10 @@ import com.blito.exceptions.UnauthorizedException;
 import com.blito.exceptions.UserNotActivatedException;
 import com.blito.exceptions.WrongPasswordException;
 import com.blito.mappers.UserMapper;
+import com.blito.models.Blit;
 import com.blito.models.Role;
 import com.blito.models.User;
+import com.blito.repositories.BlitRepository;
 import com.blito.repositories.RoleRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
@@ -43,6 +46,7 @@ public class UserAccountService {
 	@Autowired JwtService jwtService;
 	@Autowired UserMapper userMapper;
 	@Autowired RoleRepository roleRepository;
+	@Autowired BlitRepository blitRepository;
 	
 	@Transactional
 	public CompletableFuture<User> createUser(RegisterVm vmodel)
@@ -61,6 +65,11 @@ public class UserAccountService {
 		user.setPassword(encoder.encode(user.getPassword()));
 		user.getRoles().add(userRole);
 		user.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+		Set<Blit> userBlits = blitRepository.findByCustomerEmail(vmodel.getEmail());
+		if(!userBlits.isEmpty())
+		{
+			userBlits.forEach(blit -> blit.setUser(user));
+		}
 		return CompletableFuture.completedFuture(user)
 				.thenAccept(savedUser -> 
 					mailService.sendActivationEmail(savedUser)

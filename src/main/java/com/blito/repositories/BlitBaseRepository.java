@@ -20,5 +20,5 @@ public interface BlitBaseRepository <T extends Blit> extends JpaRepository<T,Lon
 	Set<T> findBySeatType(SeatType type);
 	Optional<T> findByTrackCodeAndPaymentStatus(String trackCode,PaymentStatus status);
 	Set<T> findByUserUserId(long userId);
-	
+	Set<T> findByCustomerEmail(String email);
 }
