@@ -60,7 +60,7 @@ public class PaymentRequestServiceAsync {
 	@Value("${zarinpal.web.gateway}")
 	private String zarinpalGatewayURL;
 	
-	private Object reserveFreeBlitLock = new Object();
+	private static Object reserveFreeBlitLock = new Object();
 
 	private final Logger log = LoggerFactory.getLogger(PaymentRequestServiceAsync.class);
 	
