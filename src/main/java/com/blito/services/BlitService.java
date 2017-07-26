@@ -250,31 +250,11 @@ public class BlitService {
 		return commonBlitRepository.save(commonBlit);
 	}
 
-	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_UNCOMMITTED)
+	@Transactional(propagation = Propagation.REQUIRED)
 	private CommonBlit reserveFreeBlit(BlitType blitType, CommonBlit commonBlit, User user) {
-		BlitType attachedBlitType = blitTypeRepository.findByBlitTypeId(blitType.getBlitTypeId());
-		checkBlitTypeRestrictionsForBuy(attachedBlitType, commonBlit);
 		User attachedUser = userRepository.findOne(user.getUserId());
-		attachedBlitType.setSoldCount(attachedBlitType.getSoldCount() + commonBlit.getCount());
-		
-		
-		log.info("************************************* FREE BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}'",user.getEmail(),attachedBlitType.getSoldCount());
-		if (attachedBlitType.getSoldCount() == attachedBlitType.getCapacity())
-			attachedBlitType.setBlitTypeState(State.SOLD.name());
-
-		if (attachedBlitType.getSoldCount() == attachedBlitType.getCapacity()) {
-			attachedBlitType.setBlitTypeState(State.SOLD.name());
-			if (attachedBlitType.getEventDate().getBlitTypes().stream()
-					.allMatch(b -> b.getBlitTypeState().equals(State.SOLD.name()))) {
-				attachedBlitType.getEventDate().setEventDateState(State.SOLD.name());
-			}
-			if (attachedBlitType.getEventDate().getEvent().getEventDates().stream()
-					.allMatch(ed -> ed.getEventDateState().equals(State.SOLD.name()))) {
-				attachedBlitType.getEventDate().getEvent().setEventState(State.SOLD.name());
-				attachedBlitType.getEventDate().getEvent()
-						.setEventSoldDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
-			}
-		}
+		BlitType attachedBlitType = increaseSoldCount(blitType.getBlitTypeId(), commonBlit);
+		log.info("****** FREE BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}'",user.getEmail(),attachedBlitType.getSoldCount());
 		commonBlit.setTrackCode(generateTrackCode());
 		commonBlit.setUser(attachedUser);
 		commonBlit.setBlitType(attachedBlitType);
@@ -283,13 +263,35 @@ public class BlitService {
 		attachedUser.addBlits(commonBlit);
 		return commonBlitRepository.save(commonBlit);
 	}
+	
+	@Transactional(propagation= Propagation.REQUIRES_NEW, isolation=Isolation.READ_COMMITTED)
+	private BlitType increaseSoldCount(long blitTypeId,CommonBlit commonBlit)
+	{
+		BlitType blitType = blitTypeRepository.findByBlitTypeId(blitTypeId);
+		blitType.setSoldCount(blitType.getSoldCount() + commonBlit.getCount());
+		checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
+		if (blitType.getSoldCount() == blitType.getCapacity()) {
+			blitType.setBlitTypeState(State.SOLD.name());
+			if (blitType.getEventDate().getBlitTypes().stream()
+					.allMatch(b -> b.getBlitTypeState().equals(State.SOLD.name()))) {
+				blitType.getEventDate().setEventDateState(State.SOLD.name());
+			}
+			if (blitType.getEventDate().getEvent().getEventDates().stream()
+					.allMatch(ed -> ed.getEventDateState().equals(State.SOLD.name()))) {
+				blitType.getEventDate().getEvent().setEventState(State.SOLD.name());
+				blitType.getEventDate().getEvent()
+						.setEventSoldDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+			}
+		}
+		return blitType;
+	}
 
 	private void checkBlitTypeRestrictionsForBuy(BlitType blitType, CommonBlit commonBlit) {
 
-		if (blitType.getBlitTypeState().equals(State.SOLD))
+		if (blitType.getBlitTypeState().equals(State.SOLD.name()))
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_TYPE_SOLD));
 
-		if (blitType.getBlitTypeState().equals(State.CLOSED))
+		if (blitType.getBlitTypeState().equals(State.CLOSED.name()))
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_TYPE_CLOSED));
 		if (!blitType.getEventDate().getEvent().getEventState().equals(State.OPEN.name())) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_NOT_OPEN));
