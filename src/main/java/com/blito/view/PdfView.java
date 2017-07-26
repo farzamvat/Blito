@@ -1,5 +1,6 @@
 package com.blito.view;
 
+import java.awt.Color;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
@@ -34,10 +35,13 @@ public class PdfView extends AbstractPdfView {
 		Font font = new Font(bf,12);
 		
 		headers.forEach(header-> {
-			Phrase phrase = new Phrase(header);
+			Phrase phrase = new Phrase();
+			phrase.setFont(font);
+			phrase.add(header);
 			PdfPCell cell = new PdfPCell(phrase);
 			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(Color.LIGHT_GRAY);
 			table.addCell(cell);
 		});
 		
