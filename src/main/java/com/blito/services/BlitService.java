@@ -262,7 +262,7 @@ public class BlitService {
 		return commonBlitRepository.save(commonBlit);
 	}
 
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional
 	private CommonBlit reserveFreeBlit(BlitType blitType, CommonBlit commonBlit, User user) {
 		User attachedUser = userRepository.findOne(user.getUserId());
 		BlitType attachedBlitType = increaseSoldCount(blitType.getBlitTypeId(), commonBlit);

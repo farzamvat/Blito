@@ -18,8 +18,11 @@ import com.blito.rest.viewmodels.LocationViewModel;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonView;
 
+@JsonInclude(Include.NON_EMPTY)
 public class CommonBlitViewModel extends AbstractViewModel {
 	@JsonView(View.SimpleBlit.class)
 	long blitId;
