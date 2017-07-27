@@ -24,6 +24,7 @@ import com.blito.exceptions.AlreadyExistsException;
 import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
+import com.blito.exceptions.ResourceNotFoundException;
 import com.blito.mappers.BlitTypeMapper;
 import com.blito.mappers.DiscountMapper;
 import com.blito.mappers.EventDateMapper;
@@ -37,7 +38,6 @@ import com.blito.models.Event;
 import com.blito.models.EventHost;
 import com.blito.models.Image;
 import com.blito.models.User;
-import com.blito.payments.saman.SamanBankService;
 import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.DiscountRepository;
 import com.blito.repositories.EventDateRepository;
@@ -124,7 +124,7 @@ public class EventService {
 	@Transactional
 	public EventFlatViewModel getFlatEventByLink(String link) {
 		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(link)
-				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+				.orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 		event.setViews(event.getViews() + 1);
 		return eventFlatMapper.createFromEntity(event);
 	}
@@ -132,7 +132,7 @@ public class EventService {
 	@Transactional
 	public EventViewModel getEventByLink(String eventLink) {
 		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(eventLink)
-				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+				.orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 		event.setViews(event.getViews() + 1);
 		return eventMapper.createFromEntity(event);
 	}

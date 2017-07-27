@@ -6,7 +6,6 @@ import javax.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MultipartException;
@@ -21,6 +20,7 @@ import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.InternalServerException;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
+import com.blito.exceptions.ResourceNotFoundException;
 import com.blito.exceptions.SendingEmailException;
 import com.blito.exceptions.UnauthorizedException;
 import com.blito.exceptions.UserNotActivatedException;
@@ -46,9 +46,15 @@ public class GlobalControllerExceptionHandler {
 		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception);
 	}
 
-	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler({ NotFoundException.class })
 	public ExceptionViewModel notFounds(HttpServletRequest request, RuntimeException exception) {
+		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception);
+	}
+	
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ExceptionHandler({ ResourceNotFoundException.class })
+	public ExceptionViewModel resurceNotFounds(HttpServletRequest request, RuntimeException exception) {
 		return ExceptionUtil.generate(HttpStatus.NOT_FOUND, request, exception);
 	}
 	

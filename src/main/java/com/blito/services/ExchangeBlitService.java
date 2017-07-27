@@ -1,11 +1,9 @@
 package com.blito.services;
 
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,9 +13,9 @@ import com.blito.enums.ImageType;
 import com.blito.enums.OperatorState;
 import com.blito.enums.Response;
 import com.blito.enums.State;
-import com.blito.exceptions.AlreadyExistsException;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
+import com.blito.exceptions.ResourceNotFoundException;
 import com.blito.mappers.ExchangeBlitMapper;
 import com.blito.models.ExchangeBlit;
 import com.blito.models.Image;
@@ -142,6 +140,6 @@ public class ExchangeBlitService {
 	public ExchangeBlitViewModel getExchangeBlitByLink(String exchangeLink) {
 		return exchangeBlitMapper.createFromEntity(
 				exchangeBlitRepository.findByExchangeLinkAndIsDeletedFalse(exchangeLink)
-				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND))));
+				.orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND))));
 	}
 }

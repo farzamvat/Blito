@@ -3,7 +3,6 @@ package com.blito.services;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.enums.BankGateway;
 import com.blito.enums.PaymentStatus;
@@ -25,7 +23,7 @@ import com.blito.enums.SeatType;
 import com.blito.enums.State;
 import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotAllowedException;
-import com.blito.exceptions.NotFoundException;
+import com.blito.exceptions.ResourceNotFoundException;
 import com.blito.mappers.CommonBlitMapper;
 import com.blito.models.BlitType;
 import com.blito.models.CommonBlit;
@@ -83,7 +81,7 @@ public class BlitService {
 				// TODO
 				throw new NotImplementedException("Seat Type blit not implemented yet");
 
-		}).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
+		}).orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
 	}
 
 	public CommonBlit persistNoneFreeCommonBlit(BlitType blitType, CommonBlit commonBlit, Optional<User> optionalUser,
