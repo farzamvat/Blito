@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blito.annotations.Permission;
+import com.blito.enums.ApiBusinessName;
 import com.blito.enums.Response;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
@@ -38,6 +40,7 @@ public class AdminExchangeBlitController {
 					@ApiResponse(code = 400, message = "ValidationException", response = ExceptionViewModel.class),
 					@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.ADMIN)
 	@JsonView(View.ExchangeBlit.class)
 	@PutMapping("/change-operator-state")
 	public ResponseEntity<ExchangeBlitViewModel> changeExchangeBlitOperatorState(@Validated @RequestBody AdminChangeExchangeBlitOperatorStateViewModel vmodel)
@@ -45,6 +48,7 @@ public class AdminExchangeBlitController {
 		return ResponseEntity.accepted().body(adminExchangeBlitService.changeExchangeBlitOperatorState(vmodel));
 	}
 	
+	@Permission(value = ApiBusinessName.ADMIN)
 	@JsonView(View.ExchangeBlit.class)
 	@PutMapping("/change-state")
 	public ResponseEntity<ExchangeBlitViewModel> changeExchangeBlitState(@Validated @RequestBody AdminChangeExchangeBlitStateViewModel vmodel)
@@ -52,6 +56,7 @@ public class AdminExchangeBlitController {
 		return ResponseEntity.accepted().body(adminExchangeBlitService.changeExchangeBlitState(vmodel));
 	}
 	
+	@Permission(value = ApiBusinessName.ADMIN)
 	@DeleteMapping("/{exchangeBlitId}")
 	public ResponseEntity<ResultVm> delete(@PathVariable long exchangeBlitId)
 	{

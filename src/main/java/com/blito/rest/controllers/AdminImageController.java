@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.blito.annotations.Permission;
+import com.blito.enums.ApiBusinessName;
 import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.image.ImageViewModel;
 import com.blito.services.ImageService;
@@ -26,6 +28,7 @@ public class AdminImageController {
 	@Autowired
 	private ImageService imageService;
 	
+	@Permission(value = ApiBusinessName.ADMIN)
 	@PostMapping
 	public CompletionStage<ResponseEntity<?>> uploadDefaultImages(@RequestParam("file") MultipartFile file,@RequestParam("defaultId") String defaultId, HttpServletRequest req,HttpServletResponse res)
 	{
@@ -33,6 +36,7 @@ public class AdminImageController {
 				.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result, throwable, req, res));
 	}
 	
+	@Permission(value = ApiBusinessName.ADMIN)
 	@GetMapping
 	public ResponseEntity<Page<ImageViewModel>> getDeafaultImages(){
 		return ResponseEntity.accepted().body(imageService.getDefaultImages());

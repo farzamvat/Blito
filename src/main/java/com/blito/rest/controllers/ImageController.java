@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.blito.annotations.Permission;
+import com.blito.enums.ApiBusinessName;
 import com.blito.enums.Response;
 import com.blito.exceptions.NotFoundException;
 import com.blito.models.Image;
@@ -41,6 +43,7 @@ public class ImageController {
 	@Autowired
 	ImageRepository imageRepository;
 	
+	@Permission(value = ApiBusinessName.USER)
 	@JsonView(View.DefaultView.class)
 	@PostMapping("/images/upload")
 	public DeferredResult<ResponseEntity<ImageViewModel>> upload(@RequestBody ImageBase64ViewModel vmodel)
@@ -62,6 +65,7 @@ public class ImageController {
 				}).join();
 	}
 	
+	@Permission(value = ApiBusinessName.USER)
 	@JsonView(View.DefaultView.class)
 	@PostMapping("/images/multipart/upload")
 	public CompletionStage<ResponseEntity<?>> uploadMultipartFile(@RequestParam("file") MultipartFile file,HttpServletRequest req,HttpServletResponse res)
@@ -77,12 +81,14 @@ public class ImageController {
 		}, throwable, req, res));
 	}
 	
+	@Permission(value = ApiBusinessName.USER)
 	@DeleteMapping("/images/{uuid}")
 	public CompletionStage<ResponseEntity<?>> delete(@PathVariable String uuid,HttpServletRequest req,HttpServletResponse res)
 	{
 		return CompletableFuture.runAsync(() -> imageService.delete(uuid))
 				.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result, throwable, req, res));
 	}
+	
 	
 	@JsonView(View.DefaultView.class)
 	@GetMapping("/download")

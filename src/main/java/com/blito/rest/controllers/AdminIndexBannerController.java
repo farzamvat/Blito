@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
+import com.blito.annotations.Permission;
+import com.blito.enums.ApiBusinessName;
 import com.blito.enums.Response;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.utility.HandleUtility;
@@ -34,12 +36,14 @@ public class AdminIndexBannerController {
 	@Autowired
 	IndexBannerService indexBannerService;
 
+	@Permission(value = ApiBusinessName.ADMIN)
 	@JsonView(View.AdminIndexBanner.class)
 	@PostMapping
 	public ResponseEntity<?> create(@RequestBody @Validated BannerViewModel vmodel) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(indexBannerService.create(vmodel));
 	}
 
+	@Permission(value = ApiBusinessName.ADMIN)
 	@JsonView(View.AdminIndexBanner.class)
 	@PutMapping
 	public DeferredResult<ResponseEntity<?>> update(@RequestBody @Validated BannerViewModel vmodel) {
@@ -53,6 +57,7 @@ public class AdminIndexBannerController {
 		}).join();
 	}
 
+	@Permission(value = ApiBusinessName.ADMIN)
 	@DeleteMapping("/{indexBannerId}")
 	public CompletionStage<ResponseEntity<?>> delete(@PathVariable long indexBannerId, HttpServletRequest req,
 			HttpServletResponse res) {

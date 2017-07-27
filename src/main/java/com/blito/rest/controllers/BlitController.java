@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.blito.annotations.Permission;
+import com.blito.enums.ApiBusinessName;
 import com.blito.models.CommonBlit;
 import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
@@ -38,6 +40,7 @@ public class BlitController {
 	@Autowired
 	PaymentRequestServiceAsync paymentRequestService;
 
+	@Permission(value = ApiBusinessName.USER)
 	@PostMapping("/buy-request")
 	public CompletionStage<ResponseEntity<?>> buyBlit(@Validated @RequestBody CommonBlitViewModel vmodel,
 			HttpServletRequest req, HttpServletResponse res) {
@@ -45,6 +48,7 @@ public class BlitController {
 				.handle((result, throwable) -> HandleUtility.generateResponseResult(() -> result, throwable, req, res));
 	}
 
+	@Permission(value = ApiBusinessName.USER)
 	@PostMapping("/search")
 	public ResponseEntity<Page<CommonBlitViewModel>> search(@RequestBody SearchViewModel<CommonBlit> searchViewModel,
 			Pageable pageable) {
@@ -56,14 +60,10 @@ public class BlitController {
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "get blits with excel ok", response = ModelAndView.class) })
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.USER)
 	@PostMapping("/blits.xlsx")
 	public ModelAndView searchBlitsForExcel(@RequestBody SearchViewModel<CommonBlit> search) {
 		return new ModelAndView(new ExcelView(), blitService.searchCommonBlitsForExcel(search));
-	}
-	
-	@GetMapping("/blits2.xlsx")
-	public ModelAndView getExcel() {
-		return new ModelAndView(new ExcelView(), blitService.getExcel());
 	}
 
 }

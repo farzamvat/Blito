@@ -12,9 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.blito.enums.AdminApiBusinessName;
 import com.blito.enums.ApiBusinessName;
-import com.blito.enums.ApiBusinessNameInterface;
 import com.blito.models.Permission;
 import com.blito.models.Role;
 import com.blito.models.User;
@@ -46,15 +44,14 @@ public class Initiallizer {
 	public void importPermissionsToDataBase() {
 		if (permissionRepository.findAll().isEmpty()) {
 			List<Permission> permissions = new ArrayList<>();
-			(new ArrayList<ApiBusinessNameInterface>(AdminApiBusinessName.getValues())).forEach(e -> {
+			Arrays.asList(ApiBusinessName.values()).forEach(e -> {
 				Permission permission = new Permission();
 				permission.setApiBusinessName(e.name());
 				permissions.add(permission);
 			});
 			permissionRepository.save(permissions);
 		} else {
-			List<Permission> finalPermissions = (new ArrayList<ApiBusinessNameInterface>(
-					AdminApiBusinessName.getValues()))
+			List<Permission> finalPermissions = Arrays.asList(ApiBusinessName.values())
 							.stream()
 							.map(e -> permissionRepository.findAll().stream()
 									.filter(p -> p.getApiBusinessName().equals(e.name())).findFirst().map(p -> p)
@@ -85,7 +82,7 @@ public class Initiallizer {
 		Role userRole = roleRepository.findByName("USER").map(r->{
 			r.setPermissions(permissionRepository
 					.findByApiBusinessNameIn(
-							ApiBusinessName.getValues().stream().map(p -> p.name()).collect(Collectors.toSet()))
+							Arrays.asList(ApiBusinessName.values()).stream().filter(p->p.name().equals("USER")).map(p -> p.name()).collect(Collectors.toSet()))
 					.stream().collect(Collectors.toSet()));
 			return roleRepository.save(r);
 		}).orElseGet(() -> {
@@ -93,7 +90,7 @@ public class Initiallizer {
 			r.setName("USER");
 			r.setPermissions(permissionRepository
 					.findByApiBusinessNameIn(
-							ApiBusinessName.getValues().stream().map(p -> p.name()).collect(Collectors.toSet()))
+							Arrays.asList(ApiBusinessName.values()).stream().filter(p->p.name().equals("USER")).map(p -> p.name()).collect(Collectors.toSet()))
 					.stream().collect(Collectors.toSet()));
 			return roleRepository.save(r);
 		});

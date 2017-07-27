@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.blito.annotations.Permission;
-import com.blito.enums.AdminApiBusinessName;
+import com.blito.enums.ApiBusinessName;
+
 import com.blito.enums.Response;
 import com.blito.models.User;
 import com.blito.resourceUtil.ResourceUtil;
@@ -56,6 +57,7 @@ public class AdminAccountController {
 	@ApiResponses({ @ApiResponse(code = 200, message = "get user ok", response = UserViewModel.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.ADMIN)
 	@JsonView(View.AdminUser.class)
 	@GetMapping("/{userId}")
 	public ResponseEntity<UserViewModel> getUser(@PathVariable long userId) {
@@ -67,6 +69,7 @@ public class AdminAccountController {
 	@ApiResponses({ @ApiResponse(code = 202, message = "ban user accepted", response = ResultVm.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.ADMIN)
 	@PutMapping("/ban-user/{userId}")
 	public ResponseEntity<ResultVm> banUser(@PathVariable long userId) {
 		adminAccountService.banUser(userId);
@@ -78,6 +81,7 @@ public class AdminAccountController {
 	@ApiResponses({ @ApiResponse(code = 202, message = "unban user accepted", response = ResultVm.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.ADMIN)
 	@PutMapping("/unban-user/{userId}")
 	public ResponseEntity<ResultVm> unBanUser(@PathVariable long userId) {
 		adminAccountService.unBanUser(userId);
@@ -88,6 +92,7 @@ public class AdminAccountController {
 	@ApiOperation(value = "assign role to user")
 	@ApiResponses({ @ApiResponse(code = 202, message = "role accepted", response = ResultVm.class) })
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.ADMIN)
 	@GetMapping("/assign/{userId}/{roleId}")
 	public ResponseEntity<?> assignRoleToUser(@PathVariable long userId, @PathVariable long roleId) {
 		roleService.assignRole(roleId, userId);
@@ -98,6 +103,7 @@ public class AdminAccountController {
 	@ApiOperation(value = "get users with excel")
 	@ApiResponses({ @ApiResponse(code = 200, message = "get all users ok", response = ModelAndView.class) })
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.ADMIN)
 	@PostMapping("/users-excel.xlsx")
 	public ModelAndView searchUsersForExcel(@RequestBody SearchViewModel<User> search) {
 		return new ModelAndView(new ExcelView(), adminAccountService.searchUsersForExcel(search));
@@ -108,6 +114,7 @@ public class AdminAccountController {
 	@ApiResponses({ @ApiResponse(code = 200, message = "update successful", response = UserViewModel.class),
 			@ApiResponse(code = 400, message = "ValidationException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.ADMIN)
 	@JsonView(View.SimpleUser.class)
 	@PostMapping("/update-info")
 	public ResponseEntity<UserViewModel> updateUserInfo(@Validated @RequestBody UserViewModel vmodel) {

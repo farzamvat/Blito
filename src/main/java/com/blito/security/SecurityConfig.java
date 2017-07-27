@@ -29,11 +29,10 @@ public class SecurityConfig {
 		filterRegistration.setUrlPatterns(
 				PathBuilder.build()
 					.setBaseUrl(baseUrl)
+					.addMatcher("/admin/*")
 					.addMatcher("/events/*")
 					.addMatcher("/event-hosts/*")
 					.addMatcher("/account/*")
-					.addMatcher("/operator/*")
-					.addMatcher("/enums/*")
 					.addMatcher("/exchange-blits/*")
 					.addMatcher("/blits/*")
 					.addMatcher("/images/*")

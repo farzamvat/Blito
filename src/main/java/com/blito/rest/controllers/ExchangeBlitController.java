@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blito.annotations.Permission;
+import com.blito.enums.ApiBusinessName;
 import com.blito.enums.Response;
 import com.blito.mappers.ExchangeBlitMapper;
 import com.blito.repositories.UserRepository;
@@ -47,6 +49,7 @@ public class ExchangeBlitController {
 			@ApiResponse(code = 400, message = "ValidationException", response = ExceptionViewModel.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.USER)
 	@JsonView(View.ExchangeBlit.class)
 	@PostMapping
 	public ResponseEntity<ExchangeBlitViewModel> create(@Validated @RequestBody ExchangeBlitViewModel vmodel)
@@ -60,6 +63,7 @@ public class ExchangeBlitController {
 			@ApiResponse(code = 400, message = "ValidationException or NotAllowedException", response = ExceptionViewModel.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.USER)
 	@JsonView(View.ExchangeBlit.class)
 	@PutMapping
 	public ResponseEntity<ExchangeBlitViewModel> update(@Validated @RequestBody ExchangeBlitViewModel vmodel)
@@ -72,6 +76,7 @@ public class ExchangeBlitController {
 	@ApiResponses({ @ApiResponse(code = 202, message = "delete exchange blit accepted", response = ResultVm.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.USER)
 	@DeleteMapping("/{exchangeBlitId}")
 	public ResponseEntity<ResultVm> delete(@PathVariable long exchangeBlitId)
 	{
@@ -84,6 +89,7 @@ public class ExchangeBlitController {
 	@ApiResponses({ @ApiResponse(code = 200, message = "get all user's exchange blits ok", response = ExchangeBlitViewModel.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.USER)
 	@JsonView(View.ExchangeBlit.class)
 	@GetMapping("/all")
 	public ResponseEntity<Page<ExchangeBlitViewModel>> currentUserExchangeBlits(Pageable pageable)
@@ -97,6 +103,7 @@ public class ExchangeBlitController {
 			@ApiResponse(code = 400, message = "ValidationException or NotAllowedException", response = ExceptionViewModel.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.USER)
 	@PostMapping("/change-state")
 	public ResponseEntity<ResultVm> changeExchangeBlitState(@RequestBody @Validated ExchangeBlitChangeStateViewModel vmodel)
 	{
