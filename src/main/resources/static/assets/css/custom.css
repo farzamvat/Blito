@@ -254,7 +254,7 @@ button.slick-next {
 .eventMore:hover {
     color: white;
     background-color: rgb(252, 170, 49);
-    box-shadow: 2px 2px  10px #303030;
+    box-shadow: 0px 0px  7px #303030;
 }
 .eventMore:active {
     color: white !important;
