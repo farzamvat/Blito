@@ -4,7 +4,6 @@
 
 angular.module('User', [])
     .controller('activateUserCtrl', function ($scope, userInfo) {
-        console.log(userInfo.getData());
         $scope.userData = userInfo.getData();
 
     })

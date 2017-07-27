@@ -401,7 +401,7 @@
                     <legend class="legendStyle marginTop30 text-center "> مدیریت رویداد   </legend>
                     <div class="col-xs-12 marginTop10">
                         <div class="panel " id="eventList">
-                            <div class="panel-heading EmakeEventFormHeader text-center orangeBackground" id="eventListSection" ng-click="toggleBody('eventListSection')"><h6> <i  class="fa fa-arrow-circle-down " aria-hidden="true"></i>  لسیت رویداد ها و برگزارکننده ها </h6></div>
+                            <div class="panel-heading EmakeEventFormHeader text-center orangeBackground" id="eventListSection" ng-click="toggleBody('eventListSection')"><h6> <i  class="fa fa-arrow-circle-down " aria-hidden="true"></i>  لیست رویداد ها و برگزارکننده ها </h6></div>
                             <div class="panel-body ">
                                 <form class="form-inline textAlignRight">
                                     <fieldset class="fieldsetStyle">
@@ -428,12 +428,8 @@
                                                             </th>
                                                             <th class="dataCenter" >وضعیت رویداد
                                                             </th>
-                                                            <th class="dataCenter" >تنظیمات
-                                                            </th>
                                                             <th class="dataCenter" >ویرایش  رویداد
                                                             </th>
-                                                            <!--<th class="dataCenter" >بلیت های خریداری شده-->
-                                                            <!--</th>-->
                                                         </tr>
                                                         </thead>
                                                         <tbody class="showTimeList">
@@ -443,12 +439,10 @@
                                                             <td class="dataCenter">{{ item.eventHostName}}</td>
                                                             <td class="dataCenter">{{ item.operatorState}}</td>
                                                             <td class="dataCenter">{{ item.eventState}}</td>
-                                                            <td class="dataCenter"><button type="button" ng-click="showSetting($index)"  class="btn editButton btn-info" >تنظیمات رویداد </button></td>
                                                             <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editEvent($index)">ویرایش</button></td>
                                                             <td ng-show="item.operatorState === 'تأیید شده'" class="dataCenter"><button class="btn editButton btn-default" ng-click="showTickets($index)">بلیت های فروش رفته</button></td>
-
+                                                            <td ng-if="item.operatorState === 'رد شده'" class="dataCenter"><button type="button" ng-click="showSetting($index)"  class="btn editButton btn-info" >تنظیمات رویداد </button></td>
                                                         </tr>
-
                                                         </tbody>
                                                     </table>
 
@@ -456,7 +450,7 @@
                                                 <div class="col-xs-12">
                                                     <div class="col-md-4 col-md-offset-4">
                                                         <dir-pagination-controls pagination-id="events" on-page-change="pageChangedEvents(newPageNumber)" class="col-xs-12"
-                                                                                 max-size="4"
+                                                                                 max-size="2"
                                                         >
                                                         </dir-pagination-controls>
                                                     </div>

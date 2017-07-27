@@ -30,7 +30,6 @@ angular.module('eventsPageModule')
         eventService.getEvent($routeParams.eventLink)
             .then(function (data, status) {
                 $scope.eventDataDetails = angular.copy(data.data);
-                console.log($scope.eventDataDetails.eventDates);
                 $scope.eventType = $scope.eventDataDetails.eventType;
                 $scope.buyTicketFormatData(data.data.eventDates);
                 mapMarkerService.initMapOnlyShowMarker(document.getElementById('map'));
@@ -43,7 +42,6 @@ angular.module('eventsPageModule')
                 }
             })
             .catch(function (data) {
-                console.log(data);
             });
         $scope.eventFlatDates = [];
         $scope.flatEventDates = function (dates) {
@@ -86,7 +84,6 @@ angular.module('eventsPageModule')
                             return imageItem;
                         })
                         .catch(function (data) {
-                            console.log(data);
                         })
                 )
             });
@@ -97,17 +94,14 @@ angular.module('eventsPageModule')
             });
         };
         $scope.setCapacityBlit = function (sansId) {
-            console.log(sansId);
             $scope.eventDatePicked = $scope.eventDataDetails.eventDates.filter(function (item) {
                 return item.eventDateId === sansId;
             });
-            console.log($scope.eventDatePicked);
         };
         $scope.blitTypePicked = function (blitId) {
             $scope.itemWithCapacity = $scope.eventFlatDates.filter(function (item) {
                 return item.blitTypeId === blitId;
             });
-            console.log($scope.itemWithCapacity);
         };
         $scope.nextStep1 = function (eventInfo) {
             document.getElementById("buyBlitError").style.display = "none";
@@ -136,14 +130,12 @@ angular.module('eventsPageModule')
         $scope.paymentSelected = function (payment) {
             var buyerData = userInfo.getData();
             $scope.paymentSelectedDone = "selected";
-            console.log(buyerData);
             $scope.setPaymentData(payment, buyerData);
         };
         $scope.buyerInfo = {};
         $scope.paymentSelectedNotUser = function (payment) {
             $scope.paymentSelectedDone = "selected";
             var buyerData = $scope.buyerInfo;
-            console.log(buyerData);
             $scope.setPaymentData(payment, buyerData)
         };
         $scope.setPaymentData = function (payment, buyerData) {
@@ -232,7 +224,6 @@ angular.module('eventsPageModule')
                     angular.element(document.getElementById('paymentComplete')).addClass('active');
                 })
                 .catch(function (data) {
-                    console.log(data);
                     document.getElementsByClassName("freeBlitSpinner")[0].style.display = "none";
                     document.getElementById("buyBlitError").innerHTML= data.data.message;
                     document.getElementById("buyBlitError").style.display = "inline";
@@ -255,10 +246,6 @@ angular.module('eventsPageModule')
         };
         $scope.hideTicketPaymentModal = function () {
             $("#buyTicket").modal("hide");
-        };
-        $scope.zarinPalGateWay = function (gateWayDetails, paymentWindow) {
-            console.log($window.location);
-            paymentWindow.location = gateWayDetails.zarinpalWebGatewayURL;
         };
 
         $scope.getTicketNumbers = function(num) {

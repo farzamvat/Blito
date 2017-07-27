@@ -8,14 +8,10 @@ angular.module('userProfileApi', [])
 
 
         photo.upload = function (imageData) {
-            console.log(imageData);
             var blob = new Blob([imageData.encodedBase64], {type: 'image/png'});
-            console.log(blob);
             var file = new File([blob], 'imageFileName.png');
-            console.log(file);
             var fd = new FormData();
             fd.append("file", file);
-            console.log(fd);
             return $http.post(config.baseUrl+'/api/blito/v1.0/images/multipart/upload', fd,
                 {transformRequest : angular.identity, headers : {'Content-Type': undefined}})
         };
@@ -50,9 +46,7 @@ angular.module('userProfileApi', [])
         event.deleteEvent = function (eventId) {
             return $http.delete(config.baseUrl+'/api/blito/v1.0/events/'+eventId)
         };
-        event.editEventState = function (stateChange) {
-            return $http.put(config.baseUrl+'/api/blito/v1.0/events/change-event-state', stateChange)
-        };
+
         event.getEvent = function (eventLink) {
             return $http.get(config.baseUrl+'/api/blito/v1.0/public/events/link/'+eventLink)
         };
