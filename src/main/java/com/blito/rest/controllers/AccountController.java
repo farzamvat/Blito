@@ -62,7 +62,6 @@ public class AccountController {
 					+ "or EmailAlreadyExistsException", response = ExceptionViewModel.class),
 			@ApiResponse(code = 500, message = "InternalServerException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
-	@Permission(value = ApiBusinessName.USER)
 	@PostMapping("/register")
 	public DeferredResult<ResponseEntity<ResultVm>> register(@Validated @RequestBody RegisterVm vmodel) {
 		if (!vmodel.getPassword().equals(vmodel.getConfirmPassword())) {
@@ -83,7 +82,6 @@ public class AccountController {
 	@ApiOperation(value = "activate user")
 	@ApiResponses({ @ApiResponse(code = 200, message = "", response = ModelAndView.class) })
 	// ***************** SWAGGER DOCS ***************** //
-	@Permission(value = ApiBusinessName.USER)
 	@GetMapping("/activate")
 	public ModelAndView activateAccount(@RequestParam String key, @RequestParam String email) {
 		return userRepository.findByEmail(email).map(u -> {
