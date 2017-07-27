@@ -111,6 +111,8 @@ public class EventHostService {
 		if (!eventHostResult.isPresent()) {
 			throw new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND));
 		} else {
+			if(!eventHostResult.get().getEvents().isEmpty())
+				throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_HOST_CAN_NOT_DELETE_WHEN_EVENT_EXISTS));
 			if (eventHostResult.get().getUser().getUserId() != SecurityContextHolder.currentUser()
 					.getUserId()) {
 				throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));

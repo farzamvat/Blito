@@ -75,6 +75,7 @@ public enum Response {
 	USER_ALREADY_ACTIVATED("error.user.already.activated"),
 	PAYMENT_PENDING("info.payment.pending"),
 	PAYMENT_ERROR("info.payment.error"),
+	EVENT_HOST_CAN_NOT_DELETE_WHEN_EVENT_EXISTS("error.event.host.can.not.delete.when.event.exists"),
 	BLIT_RECIEPT("blit.reciept");
     
 
