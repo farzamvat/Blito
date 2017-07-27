@@ -47,6 +47,12 @@ public class Application {
 	public ModelAndView event(@PathVariable String eventLink) {
 		return new ModelAndView("index");
 	}
+	
+	@GetMapping("/exchange-page/{exchangeLink}")
+	public ModelAndView exchangeBlit(@PathVariable String exchangeLink)
+	{
+		return new ModelAndView("index");
+	}
 
 	@Bean
 	public CommonsRequestLoggingFilter requestLoggingFilter() {
