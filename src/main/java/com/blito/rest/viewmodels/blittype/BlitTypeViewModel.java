@@ -1,5 +1,6 @@
 package com.blito.rest.viewmodels.blittype;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -17,6 +18,7 @@ public class BlitTypeViewModel {
 	String name;
 	@JsonView(View.BlitType.class)
 	@NotNull
+	@Min(1)
 	int capacity;
 	@JsonView(View.BlitType.class)
 	int soldCount;

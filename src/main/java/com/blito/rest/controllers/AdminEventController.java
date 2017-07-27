@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.blito.annotations.Permission;
+import com.blito.enums.ApiBusinessName;
 import com.blito.enums.Response;
 import com.blito.mappers.EventMapper;
 import com.blito.models.Event;
@@ -59,6 +61,7 @@ public class AdminEventController {
 	@ApiResponses({ @ApiResponse(code = 200, message = "change event state ok", response = ResultVm.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.ADMIN)
 	@PutMapping("/change-event-state")
 	public ResponseEntity<ResultVm> changeEventState(@Validated @RequestBody ChangeEventStateVm vmodel) {
 		adminEventService.changeEventState(vmodel);
@@ -70,6 +73,7 @@ public class AdminEventController {
 	@ApiResponses({ @ApiResponse(code = 200, message = "change event date state ok", response = ResultVm.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.ADMIN)
 	@PutMapping("/change-event-date-state")
 	public ResponseEntity<ResultVm> changeEventDateState(@Validated @RequestBody ChangeEventDateStateVm vmodel) {
 		adminEventService.changeEventDateState(vmodel);
@@ -81,6 +85,7 @@ public class AdminEventController {
 	@ApiResponses({ @ApiResponse(code = 200, message = "change blit type state ok", response = ResultVm.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.ADMIN)
 	@PutMapping("/change-blit-type-state")
 	public ResponseEntity<ResultVm> changeBlitTypeState(@Validated @RequestBody ChangeBlitTypeStateVm vmodel) {
 		adminEventService.changeBlitTypeState(vmodel);
@@ -92,6 +97,7 @@ public class AdminEventController {
 	@ApiResponses({ @ApiResponse(code = 200, message = "change event operator state ok", response = ResultVm.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.ADMIN)
 	@PutMapping("/change-event-operator-state")
 	public ResponseEntity<ResultVm> changeEventOperatorState(
 			@Validated @RequestBody AdminChangeEventOperatorStateVm vmodel) {
@@ -104,6 +110,7 @@ public class AdminEventController {
 	@ApiResponses({ @ApiResponse(code = 200, message = "set event as isEvento ok", response = ResultVm.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.ADMIN)
 	@PutMapping("/set-is-evento")
 	public ResponseEntity<ResultVm> setIsEvento(@Validated @RequestBody AdminSetIsEventoViewModel vmodel) {
 		adminEventService.setIsEvento(vmodel);
@@ -115,12 +122,14 @@ public class AdminEventController {
 	@ApiResponses({ @ApiResponse(code = 200, message = "set event offers", response = ResultVm.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.ADMIN)
 	@PutMapping("/set-event-offers")
 	public ResponseEntity<ResultVm> setEventOffers(@Validated @RequestBody AdminChangeOfferTypeViewModel vmodel) {
 		adminEventService.setEventOffers(vmodel);
 		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
 
+	@Permission(value = ApiBusinessName.ADMIN)
 	@PutMapping("/remove-event-offers")
 	public ResponseEntity<ResultVm> removeEventOffers(@Validated @RequestBody AdminChangeOfferTypeViewModel vmodel) {
 		adminEventService.removeEventOffers(vmodel);
@@ -132,6 +141,7 @@ public class AdminEventController {
 	@ApiResponses({ @ApiResponse(code = 200, message = "set event order number ok", response = ResultVm.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.ADMIN)
 	@PutMapping("/set-event-order-number")
 	public ResponseEntity<ResultVm> setEventOrderNumber(@Validated @RequestBody AdminSetEventOrderViewModel vmodel) {
 		adminEventService.setEventOrderNumber(vmodel.getEventId(), vmodel.getOrder());
@@ -143,12 +153,14 @@ public class AdminEventController {
 	@ApiResponses({ @ApiResponse(code = 200, message = "delete event ok", response = ResultVm.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.ADMIN)
 	@DeleteMapping("/{eventId}")
 	public ResponseEntity<ResultVm> deleteEvent(@PathVariable long eventId) {
 		adminEventService.deleteEvent(eventId);
 		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
 
+	@Permission(value = ApiBusinessName.ADMIN)
 	@JsonView(View.AdminEvent.class)
 	@PostMapping("/search")
 	public ResponseEntity<Page<EventViewModel>> search(@RequestBody SearchViewModel<Event> search, Pageable pageable) {
@@ -160,6 +172,7 @@ public class AdminEventController {
 	@ApiResponses({ @ApiResponse(code = 200, message = "get event ok", response = EventFlatViewModel.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.ADMIN)
 	@JsonView(View.AdminEvent.class)
 	@GetMapping("/{eventId}")
 	public ResponseEntity<EventFlatViewModel> getFlatEvent(@PathVariable long eventId) {
@@ -172,6 +185,7 @@ public class AdminEventController {
 			@ApiResponse(code = 200, message = "get event blit buyers by datee ok", response = BlitBuyerViewModel.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
+	@Permission(value = ApiBusinessName.ADMIN)
 	@GetMapping("/get-event-blit-buyers-by-date")
 	public ResponseEntity<Page<BlitBuyerViewModel>> getEventBlitBuyers(@RequestParam long eventDateId, Pageable page) {
 		return ResponseEntity.ok(adminEventService.getEventBlitBuyersByEventDate(eventDateId, page));

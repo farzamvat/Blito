@@ -175,9 +175,4 @@ public class BlitService {
 
 		return excelService.getBlitsExcelMap(blits);
 	}
-
-	public Map<String, Object> getExcel() {
-		return excelService
-				.getBlitsExcelMap(commonBlitMapper.createFromEntities(new HashSet<>(commonBlitRepository.findAll())));
-	}
 }

@@ -21,7 +21,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.blito.Application;
-import com.blito.enums.AdminApiBusinessName;
 import com.blito.enums.ApiBusinessName;
 import com.blito.models.User;
 import com.blito.repositories.PermissionRepository;
@@ -65,8 +64,7 @@ public class RoleServiceTest {
 
 		roleVmodel.setName("OPERATOR");
 
-		Set<String> names = new HashSet<String>(Arrays.asList(ApiBusinessName.API1.name(), ApiBusinessName.API2.name(),
-				ApiBusinessName.API2.name(), AdminApiBusinessName.ADMINAPI1.name()));
+		Set<String> names = new HashSet<String>(Arrays.asList(ApiBusinessName.USER.name(), ApiBusinessName.OPERATOR.name()));
 
 		roleVmodel.setPermissionIds(permissionRepo.findByApiBusinessNameIn(names).stream().map(p -> p.getPermissionId())
 				.collect(Collectors.toSet()));
@@ -75,15 +73,15 @@ public class RoleServiceTest {
 
 	@Test
 	public void createRoleTest() {
-		assertEquals(8, permissionRepo.count());
+		assertEquals(3, permissionRepo.count());
 		roleVmodel = roleService.createRole(roleVmodel);
 		assertEquals(3, roleRepo.count());
-		assertEquals(3, roleVmodel.getPermissionIds().size());
+		assertEquals(2, roleVmodel.getPermissionIds().size());
 	}
 	
 	@Test
 	public void assignRoleTest() {
-		assertEquals(8, permissionRepo.count());
+		assertEquals(3, permissionRepo.count());
 		roleVmodel = roleService.createRole(roleVmodel);
 		assertEquals(3, roleRepo.count());
 		
@@ -94,7 +92,7 @@ public class RoleServiceTest {
 	
 	@Test
 	public void getRolesTest() {
-		assertEquals(8, permissionRepo.count());
+		assertEquals(3, permissionRepo.count());
 		roleVmodel = roleService.createRole(roleVmodel);
 		assertEquals(3, roleRepo.count());
 		
@@ -126,15 +124,14 @@ public class RoleServiceTest {
 		assertEquals(3, roleRepo.count());
 		
 
-		Set<String> editedNames = new HashSet<String>(Arrays.asList(ApiBusinessName.API1.name(), ApiBusinessName.API2.name(),
-				ApiBusinessName.API3.name(), AdminApiBusinessName.ADMINAPI1.name()));
+		Set<String> editedNames = new HashSet<String>(Arrays.asList(ApiBusinessName.USER.name()));
 
 		roleVmodel.setPermissionIds(permissionRepo.findByApiBusinessNameIn(editedNames).stream().map(p -> p.getPermissionId())
 				.collect(Collectors.toSet()));
 		
 		roleVmodel = roleService.editRole(roleVmodel);
 		assertEquals(3, roleRepo.count());
-		assertEquals(4, roleVmodel.getPermissionIds().size());
+		assertEquals(1, roleVmodel.getPermissionIds().size());
 	}
 	
 	@Test
