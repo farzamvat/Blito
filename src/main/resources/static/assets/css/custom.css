@@ -2491,7 +2491,9 @@ table td{
 .ticketTitleTrackCodeMargin {
     margin-top: 40px;
 }
-
+.ticketTitle {
+    font-size: 18px;
+}
 .ticketName {
     margin-top: 30px;
 }
