@@ -31,16 +31,16 @@ public class Application {
 		initializer.importPermissionsToDataBase();
 		initializer.insertAdminUserAndRoleAndOldBlitoUsers();
 	}
-	@GetMapping("/*")
+	@GetMapping("/")
 	public ModelAndView index() {
 		return new ModelAndView("index");
 	}
 	
-	@GetMapping("/not-found")
-	public ModelAndView notFound()
-	{
-		return new ModelAndView("index");
-	}
+//	@GetMapping("/not-found")
+//	public ModelAndView notFound()
+//	{
+//		return new ModelAndView("index");
+//	}
 
 
 	@GetMapping("/event-page/{eventLink}")
