@@ -6,6 +6,7 @@
                                                                      'eventPageHeaderTour': eventType === 'TOURISM',
                                                                      'eventPageHeaderMusic2': eventType === 'CONCERT',
                                                                      'eventPageHeaderOther': eventType === 'OTHER'}">
+        <div class="circle"></div>
         <img ng-show="eventType === 'CONCERT'" class="logoEventPage" src="assets/img/music-logo.png" alt="">
         <img ng-show="eventType === 'CINEMA'" class="logoEventPage" src="assets/img/cinema-logo.png" alt="">
         <img ng-show="eventType === 'THEATER'" class="logoEventPage" src="assets/img/theater-logo.png" alt="">
@@ -40,7 +41,7 @@
                     <input height="60" id="searchShowTime" placeholder="&#xf002;" ng-model="search"   type="text"  class="form-group searchListInput" >
                 </div>
 
-                <div class="panel-body textAlignRight">
+                <div class="panel-body noScrollBar noscrollX textAlignRight">
 
                     <table class="table" >
                         <thead class="tableHeader">
