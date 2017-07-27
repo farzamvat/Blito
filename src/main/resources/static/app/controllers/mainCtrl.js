@@ -97,6 +97,8 @@ angular.module('menuPagesModule', [])
         }
         $rootScope.$on("$locationChangeStart", function(event, next, current) {
             $window.scroll(0,0);
+            $("#navbar").removeClass("in");
+
             main.checkRefreshTokenValue();
             if(Auth.isLoggedIn()) {
                 main.setUserData();
