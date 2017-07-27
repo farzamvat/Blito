@@ -41,6 +41,7 @@ public class EventHostMapper implements GenericMapper<EventHost,EventHostViewMod
 		vmodel.setTwitterLink(eventHost.getTwitterLink());
 		vmodel.setWebsiteLink(eventHost.getWebsiteLink());
 		vmodel.setTelephone(eventHost.getTelephone());
+		vmodel.setDeleted(eventHost.isDeleted());
 		vmodel.setImages(imageMapper.createFromEntities(eventHost.getImages()));
 		return vmodel;
 	}

@@ -9,6 +9,7 @@ import com.blito.annotations.Url;
 import com.blito.enums.HostType;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.image.ImageViewModel;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 
 public class EventHostViewModel {
@@ -50,6 +51,9 @@ public class EventHostViewModel {
 	@NotNull
 	HostType hostType;
 	
+	@JsonView(View.AdminEventHost.class)
+	boolean isDeleted;
+	
 	@JsonView(View.SimpleEventHost.class)
 	Set<ImageViewModel> images;
 	
@@ -58,6 +62,15 @@ public class EventHostViewModel {
 		images = new HashSet<>();
 	}
 	
+	@JsonProperty("isDeleted")
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
 	public Set<ImageViewModel> getImages() {
 		return images;
 	}
