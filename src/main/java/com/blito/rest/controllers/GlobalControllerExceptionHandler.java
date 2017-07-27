@@ -1,7 +1,6 @@
 package com.blito.rest.controllers;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.ValidationException;
 
 import org.springframework.http.HttpStatus;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MultipartException;
 
 import com.blito.enums.Response;
@@ -28,10 +28,10 @@ import com.blito.exceptions.WrongPasswordException;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 
+@RestControllerAdvice
 public class GlobalControllerExceptionHandler {
 	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ResponseBody
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ExceptionViewModel argumentValidation(HttpServletRequest request,
 			MethodArgumentNotValidException exception) {
@@ -39,7 +39,6 @@ public class GlobalControllerExceptionHandler {
 	}
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ResponseBody
 	@ExceptionHandler({ AlreadyExistsException.class, UserNotActivatedException.class,
 			WrongPasswordException.class, ValidationException.class, NotAllowedException.class,
 			InconsistentDataException.class , SendingEmailException.class})
@@ -48,28 +47,24 @@ public class GlobalControllerExceptionHandler {
 	}
 
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	@ResponseBody
 	@ExceptionHandler({ NotFoundException.class })
 	public ExceptionViewModel notFounds(HttpServletRequest request, RuntimeException exception) {
 		return ExceptionUtil.generate(HttpStatus.NOT_FOUND, request, exception);
 	}
 	
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	@ResponseBody
 	@ExceptionHandler({ InternalServerException.class })
 	public ExceptionViewModel internal(HttpServletRequest request, InternalServerException exception) {
 		return ExceptionUtil.generate(HttpStatus.INTERNAL_SERVER_ERROR, request, exception);
 	}
 
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
-	@ResponseBody
 	@ExceptionHandler(UnauthorizedException.class)
 	public ExceptionViewModel unauthorized(HttpServletRequest request, UnauthorizedException exception) {
 		return ExceptionUtil.generate(HttpStatus.UNAUTHORIZED, request, exception);
 	}
 	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ResponseBody
 	@ExceptionHandler(MultipartException.class)
 	public ExceptionViewModel fileSizeExceeds(HttpServletRequest request,MultipartException exception)
 	{
@@ -77,7 +72,6 @@ public class GlobalControllerExceptionHandler {
 	}
 	
 	@ResponseStatus(HttpStatus.FORBIDDEN)
-	@ResponseBody
 	@ExceptionHandler(ForbiddenException.class)
 	public ExceptionViewModel forbidden(HttpServletRequest request,ForbiddenException exception)
 	{
