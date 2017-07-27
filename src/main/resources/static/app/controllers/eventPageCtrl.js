@@ -37,6 +37,7 @@ angular.module('eventsPageModule')
                 mapMarkerService.setMarker($scope.eventDataDetails.latitude, $scope.eventDataDetails.longitude);
                 $scope.flatEventDates($scope.eventDataDetails.eventDates);
                 $scope.getImages(data.data);
+                document.getElementById('showStartTime').innerHTML = persianDate($scope.eventDataDetails.blitSaleStartDate).format("dddd,DD MMMM, ساعت HH:mm");
                 if($scope.eventDataDetails.aparatDisplayCode) {
                     document.getElementById('menu1').insertAdjacentHTML('afterbegin',$scope.eventDataDetails.aparatDisplayCode);
                 }
@@ -67,7 +68,7 @@ angular.module('eventsPageModule')
                 for(var i = 0 ; i < $scope.eventFlatDates.length; i++) {
                     dateSetterService.initDate("classDate"+i);
                     $scope.eventFlatDates[i].persianDate = persianDate($scope.eventFlatDates[i].date).format("dddd,DD MMMM, ساعت HH:mm");
-                    $(".classDate"+i).val(persianDate($scope.eventFlatDates[i].date).format("dddd,DD MMMM, ساعت HH:mm"))
+                    $(".classDate"+i).val(persianDate($scope.eventFlatDates[i].date).format("dddd,DD MMMM, ساعت HH:mm"));
                 }
             }, 300);
         };

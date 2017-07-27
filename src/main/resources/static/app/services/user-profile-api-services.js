@@ -104,7 +104,8 @@ angular.module('userProfileApi', [])
             };
             var bodyJson = {
                 restrictions : [
-                    {field : "isDeleted", type : "simple", operation : "eq", value: "false"}
+                    {field : "isDeleted", type : "simple", operation : "eq", value: "false"},
+                    {field: "operatorState", type: "simple", operation: "eq", value: "APPROVED"}
                 ]
             };
             return $http.post(config.baseUrl+'/api/blito/v1.0/public/exchange-blits/search', bodyJson,queryParam);

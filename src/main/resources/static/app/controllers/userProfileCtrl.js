@@ -859,8 +859,10 @@ angular.module('User')
                     $scope.eventPlanner = [];
                     $scope.plannerImageId = '';
                     $scope.coverImageId = '';
-                    angular.element(document.getElementsByClassName("coverPhotoUploadEdit"))[0].src = '';
-                    angular.element(document.getElementsByClassName("eventPlannerPhotoUploadEdit"))[0].src = '';
+                    $scope.coverPhotoSuccess = false;
+                    $scope.plannerPhotoSuccess = false;
+                    angular.element(document.getElementsByClassName("coverPhotoUpload"))[0].src = '';
+                    angular.element(document.getElementsByClassName("eventPlannerPhotoUpload"))[0].src = '';
                 }, function (data, status) {
                     $scope.submitPlannerErrorNotif = true;
                     document.getElementById("submitPlannerErrorNotif").innerHTML= data.data.message;
@@ -926,7 +928,15 @@ angular.module('User')
 
             eventService.submitEventForm(eventSubmitData)
                 .then(function (data, status) {
-                    // $scope.submitEventForm.$setPristine();
+                    angular.element(document.getElementsByClassName("profilePhotoUpload"))[0].src = '';
+                    angular.element(document.getElementsByClassName("galleryOne"))[0].src = '';
+                    angular.element(document.getElementsByClassName("galleryTwo"))[0].src = '';
+                    angular.element(document.getElementsByClassName("galleryThree"))[0].src = '';
+                    angular.element(document.getElementsByClassName("galleryFour"))[0].src = '';
+                    angular.element(document.getElementsByClassName("galleryFive"))[0].src = '';
+                    angular.element(document.getElementsByClassName("gallerySix"))[0].src = '';
+                    $scope.showTimeForms = [{blitTypes : [{}]}];
+
                     $scope.createEventSpinner = false;
                     $scope.createEventNotif = true;
                     $scope.createEventErrorNotif = false;
