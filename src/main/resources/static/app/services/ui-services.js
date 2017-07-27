@@ -223,13 +223,17 @@ angular.module('UiServices', [])
             dateArray = dateArray.map(function (item) {
                 return parseInt(item);
             });
-
             return dateArray;
         };
     })
     .service('dataService', function () {
         var data = this;
-
+        data.persianToEnglishDigit = function (persianDigit) {
+                var persian = {'۰':0,'۱':1,'۲':2,'۳':3,'۴':4,'۵': 5,'۶': 6,'۷': 7,'۸' : 8,'۹': 9};
+                return persianDigit.split('').map(function (persianNumb) {
+                    return persian[persianNumb];
+                }).join('');
+        };
         data.eventTypePersian = function (type) {
             var persianType = '';
             switch (type) {

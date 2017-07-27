@@ -12,7 +12,8 @@ angular.module('eventsPageModule')
                                            $timeout,
                                            userInfo,
                                            ticketsService,
-                                           $window) {
+                                           $window,
+                                           dataService) {
         var promises = [];
         $scope.persianSans = [];
         $scope.eventInfo = {};
@@ -65,8 +66,8 @@ angular.module('eventsPageModule')
             $timeout(function () {
                 for(var i = 0 ; i < $scope.eventFlatDates.length; i++) {
                     dateSetterService.initDate("classDate"+i);
-                    $scope.eventFlatDates[i].persianDate = persianDate($scope.eventFlatDates[i].date).format("dddd,DD MMMM, ساعت HH:MM");
-                    $(".classDate"+i).val(persianDate($scope.eventFlatDates[i].date).format("dddd,DD MMMM, ساعت HH:MM"))
+                    $scope.eventFlatDates[i].persianDate = persianDate($scope.eventFlatDates[i].date).format("dddd,DD MMMM, ساعت HH:mm");
+                    $(".classDate"+i).val(persianDate($scope.eventFlatDates[i].date).format("dddd,DD MMMM, ساعت HH:mm"))
                 }
             }, 300);
         };
@@ -132,16 +133,27 @@ angular.module('eventsPageModule')
         };
         var buyPaymentTicket = {};
         $scope.paymentSelected = function (payment) {
-            var userData = userInfo.getData();
+            var buyerData = userInfo.getData();
             $scope.paymentSelectedDone = "selected";
+            console.log(buyerData);
+            $scope.setPaymentData(payment, buyerData);
+        };
+        $scope.buyerInfo = {};
+        $scope.paymentSelectedNotUser = function (payment) {
+            $scope.paymentSelectedDone = "selected";
+            var buyerData = $scope.buyerInfo;
+            console.log(buyerData);
+            $scope.setPaymentData(payment, buyerData)
+        };
+        $scope.setPaymentData = function (payment, buyerData) {
             var eventPersianDate = $scope.eventFlatDates.filter(function (ticket) { return ticket.name === $scope.itemWithCapacity[0].name});
             buyPaymentTicket = {
                 blitTypeId : $scope.itemWithCapacity[0].blitTypeId,
                 blitTypeName : $scope.itemWithCapacity[0].name,
                 count : $scope.totalNumber,
-                customerEmail : userData.email,
-                customerMobileNumber : userData.mobile,
-                customerName : userData.firstname+ " " + userData.lastname,
+                customerEmail : buyerData.email,
+                customerMobileNumber : dataService.persianToEnglishDigit(persianJs(buyerData.mobile).englishNumber().toString()),
+                customerName : buyerData.firstname+ " " + buyerData.lastname,
                 eventAddress : $scope.eventDataDetails.address,
                 eventDate : $scope.itemWithCapacity[0].date,
                 eventDateAndTime : eventPersianDate[0].persianDate,
@@ -154,22 +166,34 @@ angular.module('eventsPageModule')
         $scope.nextStep2 = function () {
             document.getElementsByClassName("payedBlitSpinner")[0].style.display = "inline";
             document.getElementById("buyBlitError").style.display = "none";
-            var paymentWindow = $window.open('');
             ticketsService.buyTicket(buyPaymentTicket)
                 .then(function (data) {
                     document.getElementsByClassName("payedBlitSpinner")[0].style.display = "none";
                     $scope.gateWayDetails = data.data;
                     if($scope.gateWayDetails.gateway === 'ZARINPAL') {
-                        $scope.zarinPalGateWay($scope.gateWayDetails, paymentWindow);
+                        $window.location.href = $scope.gateWayDetails.zarinpalWebGatewayURL;
                     }
-                    angular.element(document.getElementsByClassName('progress-bar')).css('width', '100%');
-                    angular.element(document.getElementById('ticketPay2')).removeClass('active');
-                    angular.element(document.getElementById('payment')).removeClass('active');
-                    angular.element(document.getElementById('ticketPay3')).addClass('active').addClass('in');
-                    angular.element(document.getElementById('paymentComplete')).addClass('active');
                 })
                 .catch(function (data) {
-                    console.log(data);
+                    $scope.paymentSelectedDone = '';
+                    document.getElementsByClassName("payedBlitSpinner")[0].style.display = "none";
+                    document.getElementById("buyBlitError").innerHTML= data.data.message;
+                    document.getElementById("buyBlitError").style.display = "inline";
+                })
+        };
+        $scope.nextStep2NotUser = function () {
+            document.getElementsByClassName("payedBlitSpinner")[0].style.display = "inline";
+            document.getElementById("buyBlitError").style.display = "none";
+            ticketsService.buyTicketNotUser(buyPaymentTicket)
+                .then(function (data) {
+                    document.getElementsByClassName("payedBlitSpinner")[0].style.display = "none";
+                    $scope.gateWayDetails = data.data;
+                    if($scope.gateWayDetails.gateway === 'ZARINPAL') {
+                        $window.location.href = $scope.gateWayDetails.zarinpalWebGatewayURL;
+                    }
+                })
+                .catch(function (data) {
+                    $scope.paymentSelectedDone = '';
                     document.getElementsByClassName("payedBlitSpinner")[0].style.display = "none";
                     document.getElementById("buyBlitError").innerHTML= data.data.message;
                     document.getElementById("buyBlitError").style.display = "inline";
@@ -216,7 +240,7 @@ angular.module('eventsPageModule')
         };
         $scope.buyTicketFormatData = function (eventNestedData) {
             $scope.buyTicketPickData = eventNestedData.map(function (eventDate) {
-                eventDate.date = persianDate(eventDate.date).format("dddd,DD MMMM, ساعت HH:MM");
+                eventDate.date = persianDate(eventDate.date).format("dddd,DD MMMM, ساعت HH:mm");
                 return eventDate;
             })
         };
@@ -235,6 +259,7 @@ angular.module('eventsPageModule')
             console.log($window.location);
             paymentWindow.location = gateWayDetails.zarinpalWebGatewayURL;
         };
+
         $scope.getTicketNumbers = function(num) {
             var ratings = [];
             for (var i = 0; i < num; i++) {

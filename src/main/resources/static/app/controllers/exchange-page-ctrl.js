@@ -17,7 +17,7 @@ angular.module('eventsPageModule')
                 mapMarkerService.initMapOnlyShowMarker(document.getElementById('map'));
                 mapMarkerService.setMarker($scope.exchangeData.latitude, $scope.exchangeData.longitude);
                 dateSetterService.initDate("dateInit");
-                $(".dateInit").val(persianDate($scope.exchangeData.eventDate).format("dddd,DD MMMM, ساعت HH:MM"))
+                $(".dateInit").val(persianDate($scope.exchangeData.eventDate).format("dddd,DD MMMM, ساعت HH:mm"))
             })
             .catch(function (data) {
                 console.log(data);

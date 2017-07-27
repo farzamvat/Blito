@@ -113,7 +113,10 @@ angular.module('userProfileApi', [])
     .service('ticketsService', function ($http, config) {
         var ticket = this;
         ticket.buyTicket = function (ticketInfo) {
-            return $http.post(config.baseUrl+'/api/blito/v1.0/blits/buy-request', ticketInfo)
+            return $http.post(config.baseUrl+'/api/blito/v1.0/blits/buy-request', ticketInfo);
+        };
+        ticket.buyTicketNotUser = function (ticketInfo) {
+            return $http.post(config.baseUrl+'/api/blito/v1.0/public/blits/buy-request', ticketInfo);
         };
         ticket.getUserTickets = function (pageNumber, userEmail) {
             var queryParam = {
