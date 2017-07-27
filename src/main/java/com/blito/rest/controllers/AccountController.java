@@ -118,7 +118,6 @@ public class AccountController {
 					+ "or ValidationException"),
 			@ApiResponse(code = 404, message = "User not found exception", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
-	@Permission(value = ApiBusinessName.USER)
 	@PostMapping("/login")
 	public DeferredResult<ResponseEntity<TokenModel>> login(@Validated @RequestBody LoginViewModel vmodel) {
 		DeferredResult<ResponseEntity<TokenModel>> deferred = new DeferredResult<>();
