@@ -205,7 +205,6 @@ public class AccountController {
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class),
 			@ApiResponse(code = 401, message = "UnauthorizedException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
-	@Permission(value = ApiBusinessName.USER)
 	@GetMapping("/refresh")
 	public DeferredResult<ResponseEntity<TokenModel>> getAccessToken(@RequestParam String refresh_token) {
 		DeferredResult<ResponseEntity<TokenModel>> deferred = new DeferredResult<>();
