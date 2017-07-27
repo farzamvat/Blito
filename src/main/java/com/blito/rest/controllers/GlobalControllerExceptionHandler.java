@@ -6,10 +6,10 @@ import javax.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MultipartException;
-import org.springframework.web.servlet.view.RedirectView;
 
 import com.blito.enums.Response;
 import com.blito.enums.validation.ControllerEnumValidation;
@@ -48,8 +48,8 @@ public class GlobalControllerExceptionHandler {
 
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler({ NotFoundException.class })
-	public RedirectView notFounds(HttpServletRequest request, RuntimeException exception) {
-		return new RedirectView("/not-found");
+	public ExceptionViewModel notFounds(HttpServletRequest request, RuntimeException exception) {
+		return ExceptionUtil.generate(HttpStatus.NOT_FOUND, request, exception);
 	}
 	
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
