@@ -14,7 +14,7 @@
                         <div class="row">
                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                 <div class="col-xs-10 floatRight text-center">
-                                    <label class="registerLabel floatRight" for="exchangeName" >نام رویداد :</label>
+                                    <label class="registerLabel floatRight" for="exchangeName" >نام بلیت :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
                                     <input height="60" id="exchangeName" ng-model="exchangeEdit.title"  type="text"  class="form-group registerInput" required>
@@ -22,7 +22,7 @@
                             </div>
                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                 <div class="col-xs-10 floatRight text-center">
-                                    <label class="registerLabel floatRight" for="exchangeType">نوع رویداد :</label>
+                                    <label class="registerLabel floatRight" for="exchangeType">نوع بلیت :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
                                     <select id="exchangeType" ng-model="exchangeEdit.type" required placeholder="exchangeEdit.type" class="form-control dropDownList" ng-options="o.v as o.n for o in [{n : 'تئاتر', v: 'THEATER'},{n : 'سینما', v: 'CINEMA'},{n : 'کنسرت', v: 'CONCERT'},{n : 'تور', v: 'TOURISM'},{n : 'ورزشی', v: 'SPORT'},{n : 'کارگاه', v: 'WORKSHOP'}, {n : 'بن تخفیف', v: 'DISCOUNT_TICKET'}, {n : 'سایر', v: 'OTHER'}]">
@@ -51,7 +51,7 @@
                         <div class="row marginTop30">
                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
                                 <div class="col-xs-10 floatRight text-center">
-                                    <label class="registerLabel floatRight" for="exchangeDescription" >توضیحات رویداد :(حداکثر {{100 - exchangeEdit.description.length}} کاراکتر مجاز)</label>
+                                    <label class="registerLabel floatRight" for="exchangeDescription" >توضیحات  :(حداکثر {{100 - exchangeEdit.description.length}} کاراکتر مجاز)</label>
                                 </div>
                                 <div class="col-xs-11  floatRight ">
                                     <textarea ng-model="exchangeEdit.description" maxlength="100"  id="exchangeDescription" required   type="text"  class="form-group textAreaForm" ></textarea>

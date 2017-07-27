@@ -141,6 +141,12 @@ button.slick-next {
 .marginTop30 {
     margin-top: 30px;
 }
+.text-blito {
+    color: rgb(252, 183, 49);
+}
+.ta-scroll-window.form-control {
+    width: 100%;
+}
 .sliderSection {
     margin-top: 0;
     padding: 0 !important;
@@ -151,6 +157,10 @@ button.slick-next {
 }
 .slidingEventsTitle {
     font-size: 14px;
+    transition: .2s;
+    transition-delay: .1s;
+    text-decoration: none;
+    color:#000;
 }
 .slidingEvents a {
     margin-top: 15px;
@@ -166,7 +176,7 @@ button.slick-next {
 .blitoOffer {
     color : white;
     height: 500px;
-    background: url('../img/back.png') fixed;
+    background: url('../img/back.jpg') fixed;
     padding: 15px 20px;
     border-left: 2px solid #404040;
 }
@@ -250,7 +260,7 @@ button.slick-next {
 .eventMore:hover {
     color: white;
     background-color: rgb(252, 170, 49);
-    box-shadow: 2px 2px  10px #303030;
+    box-shadow: 0px 0px  7px #303030;
 }
 .eventMore:active {
     color: white !important;
@@ -444,6 +454,7 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     width: 100%;
     height: 110px;
     resize: none;
+    margin-top:5px;
 }
 .mapInput {
     margin-right: 20px;
@@ -454,6 +465,9 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 }
 .carouselGallery .item img {
     height: 300px !important;
+}
+.blitoOfferMain h4{
+    color:#fff !important;
 }
 /*------------------------------------------------------------*/
 /*-------------------------------- USER PROFILE PAGE -------------------------------- */
@@ -741,6 +755,9 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 .fontRed {
     color: #a94442;
 }
+.displayInline{
+    display: inline-block !important;
+}
 .eventPageHeaderTheatre {
     background: url('../img/theater.png') fixed ;
     background-size: 100% 380px;
@@ -752,6 +769,8 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     background: url('../img/cinema.png') fixed ;
     background-size: 100% 380px;
     padding-top: 68px;
+    padding-bottom: 20px;
+
 }
 .eventPageHeaderEducation {
     background: url('../img/amoozeshi.png') fixed ;
@@ -764,6 +783,8 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     background: url('../img/entertainment.png') fixed ;
     background-size: 100% 380px;
     padding-top: 68px;
+    padding-bottom: 20px;
+
 }
 .eventPageHeaderTour {
     background: url('../img/gardeshgari.png') fixed ;
@@ -834,9 +855,7 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     opacity: 0.8;
 }
 
-.eventPageImage img {
-    height: 250px;
-}
+
 .imgMobileSize {
     height: 325px;
 }
@@ -1149,6 +1168,9 @@ dir-pagination-controls ul {
     position:absolute;
     bottom:125px;
     left: 40px;
+    opacity:0;
+    pointer-events: none;
+    transition: .5s;
     color: #000;
     padding-bottom: 90px;
     text-align: center;
@@ -1294,6 +1316,7 @@ dir-pagination-controls ul {
     -moz-transform: rotate(180deg);
 
 }
+
 .curved-line {
     width: 50%;
     height: 29px;
@@ -1343,6 +1366,7 @@ dir-pagination-controls ul {
     border-bottom: 1px solid #ddd;
     line-height: 55px;
     color:#444;
+    text-align: center;
 
 }
 .beautifier{
@@ -1639,6 +1663,9 @@ footer h6 {
     -ms-transform: scale(1.4);
     -moz-transform: scale(1.4);
 }
+.slidingEventsImg img:hover ~ .slidingEventsTitle {
+    opacity: 0;
+}
 .blitoOfferMain {
     overflow: hidden;
 
@@ -1803,6 +1830,9 @@ a{
     Top:0px;
     height:40px;
     background: #000;
+}
+.notFountLogoContainer{
+    margin-right:100px;
 }
 .notFoundHeaderBeautifier{
     float:left;
@@ -2031,7 +2061,9 @@ a{
     margin-left: auto;
     text-align: center;
 }
-
+.recipe img:hover ~.name{
+    opacity:1;
+}
 .soldout img,
 .recipe .soldout img{
     width: 100%;
@@ -2387,9 +2419,27 @@ a{
     border:2px solid #ddd;
     float:right;
 }
+.circle{
+    position: absolute;
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    background: #ddd;
+    right: -48px;
+    top: -61px;
+    border: 5px solid #222;
+    box-shadow: -5px 4px 30px #333;
+}
 
 table td{
     vertical-align: middle !important;
+}
+.noScrollBar::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+.noscrollX{
+    overflow-x: hidden;
 }
 .profileToggleMenu {
     width: 50px;
@@ -2397,14 +2447,14 @@ table td{
     border-radius: 50%;
     vertical-align: middle;
     align-content: center;
-    padding-top: 10px;
+    padding-top: 12px;
     position: fixed;
     text-align: center;
     z-index: 1000;
-    border: 1px solid #333;
     right: 20px;
     transition: 500ms;
     background-color: rgb(252, 183, 49);
+    box-shadow: 0px 0px 20px #222;
 }
 /*ticket style*/
 .ticketImage {
@@ -2485,7 +2535,9 @@ table td{
 .ticketTitleTrackCodeMargin {
     margin-top: 40px;
 }
-
+.ticketTitle {
+    font-size: 18px;
+}
 .ticketName {
     margin-top: 30px;
 }
@@ -2494,7 +2546,10 @@ table td{
     width: 106px !important;
     height: 150px !important;
 }
-
+.eventPageImage img {
+    height: 250px !important;
+    width: 176px !important;
+}
 @media (max-width: 770px) {
     .navbar-header-backcolor{
         width: 172px !important;
@@ -2603,6 +2658,10 @@ table td{
 
 
 @media (max-width: 768px) {
+    .notFountLogoContainer{
+        max-width: 60%;
+        margin-right:20%;
+    }
     .navbar-collapse li{
         display:block;
         width:100%;
@@ -2614,23 +2673,30 @@ table td{
     .navbar-collapse li>a{
         font-size: 20px !important;
     }
+    /*.ticketTitleMobile {*/
+        /*text-align: center;*/
+    /*}*/
+    /*.ticketTitle h2, .ticketName h2{*/
+        /*text-align: center;*/
+    /*}*/
+    /*.ticketTitle h4, .ticketName h4{*/
+        /*text-align: center;*/
+
+    /*}*/
+    .ticketAddress h2,
+    .ticketAddress h4,
+    .ticketTitle h4,
+    .ticketName h4,
+    .ticketTitle h2,
+    .ticketName h2,
     .ticketTitleMobile {
         text-align: center;
-    }
-    .ticketTitle h2, .ticketName h2{
-        text-align: center;
-    }
-    .ticketTitle h4, .ticketName h4{
-        text-align: center;
 
     }
-    .ticketAddress h2{
-        text-align: center;
 
-    }
-    .ticketAddress h4{
-        text-align: center;
-    }
+    /*.ticketAddress h4{*/
+        /*text-align: center;*/
+    /*}*/
     .cardLeft {
         border-top-left-radius: 0;
     }
@@ -2689,9 +2755,13 @@ table td{
     .profileTabs {
         right: -185px;
         transition: 500ms;
+        width: 190px;
+
     }
     .pullMenuLeft {
         right: 0;
+        width:190px;
+        box-shadow: 0px 0px 10px #222;
     }
     .rotateToggleMenu {
         right: 200px;
@@ -2717,6 +2787,7 @@ table td{
         bottom:20px;
         left: 10px;
         color:#000;
+        opacity: 1;
     }
     .slidingEvents {
         /*background-color: #eee;*/
@@ -2841,52 +2912,22 @@ table td{
         color : white !important;
         font-size: 14px;
     }
-    .exchangeBlitHeader{
-        /*background: url('../img/exchange.jpg') fixed ;*/
-        background-size: 200% 380px;
-        padding-top: 120px;
-    }
-    .eventPageHeaderTheatre {
-        background-size: 200% 380px;
-        padding-top: 120px;
-        background-position: center;
-    }
-    .eventPageHeaderCinema {
-        background-size: 200% 380px;
-        padding-top: 120px;
-        background-position: center;
-
-    }
+    .exchangeBlitHeader ,
+    .eventPageHeaderMusic,
     .eventPageHeaderEducation {
         background-size: 200% 380px;
         padding-top: 120px;
-
     }
-    .eventPageHeaderEntertainment {
+    .eventPageHeaderOther ,
+    .eventPageHeaderTour,
+    .eventPageHeaderEntertainment,
+    .eventPageHeaderCinema,
+    .eventPageHeaderTheatre{
         background-size: 200% 380px;
         padding-top: 120px;
         background-position: center;
 
     }
-    .eventPageHeaderTour {
-        background-size: 200% 380px;
-        padding-top: 120px;
-        background-position: center;
-
-    }
-    .eventPageHeaderMusic {
-        background-size: 200% 380px;
-        padding-top: 120px;
-        background-position: center;
-
-    }
-    .eventPageHeaderOther {
-        background-size: 200% 380px;
-        background-position: center;
-        padding-top: 120px;
-    }
-
-/*siaaaaaaaaaaaaaaaaaaaaaaaa*/
 }
 @media (max-width: 991px) and (min-width:615px) {
     .customPanelEventPage {

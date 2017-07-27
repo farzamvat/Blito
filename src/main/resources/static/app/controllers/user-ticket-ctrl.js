@@ -9,16 +9,13 @@ angular.module('eventsPageModule')
             photoService.download(UUID)
                 .then(function (data) {
                     $scope.imageBase64 = data.data.encodedBase64;
-                    console.log(data);
                 })
                 .catch(function (data) {
-                    console.log(data);
                 })
         };
         ticketsService.getBoughtTicket($routeParams.trackCode)
             .then(function (data) {
                 $scope.paymentStatus = data.data.result.status;
-                console.log(data);
                 if($scope.paymentStatus) {
                     $scope.ticketData = data.data;
                     mapMarkerService.initMapOnlyShowMarker(document.getElementById('ticketMap'));
@@ -26,11 +23,9 @@ angular.module('eventsPageModule')
                     $scope.imageDownload($scope.ticketData.eventPhotoId);
                 } else {
                     $scope.ticketMessage = data.data.result.message;
-                    console.log($scope.ticketMessage);
                 }
             })
             .catch(function (data) {
-                console.log(data);
             })
 
     })

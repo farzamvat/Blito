@@ -112,8 +112,8 @@
                             <div ng-show="event.eventState === 'SOLD'" class="soldout">
                                 <img src="../../../assets/img/soldout.png"/>
                             </div>
+                            <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
                         </a>
-                        <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
                         <a href="{{url+event.eventLink}}" class="btn btn-success slidingEventsBtn center-block hidden-xs">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
                     </div>
 
@@ -142,8 +142,8 @@
                             <img src="../../../assets/img/soldout.png"/>
                         </div>
 
+                        <h4 class="text-center slidingEventsTitle">{{ ourOfferConcert[0].eventName }}</h4>
                     </a>
-                    <h4 class="text-center slidingEventsTitle">{{ ourOfferConcert[0].eventName }}</h4>
                     <a href="{{url+ourOfferConcert[0].eventLink}}" class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
                 </div>
                 <div ng-if="!showSections[1]" class="homePageLoader"></div>
@@ -178,8 +178,8 @@
                                 <img src="../../../assets/img/soldout.png"/>
                             </div>
 
+                            <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
                         </a>
-                        <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
                         <a href="{{url+event.eventLink}}" class="btn btn-success slidingEventsBtn center-block hidden-xs">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
                     </div>
                 </slick>
@@ -206,8 +206,8 @@
                         <div ng-show="ourOfferTour[0].eventState === 'SOLD'" class="soldout">
                             <img src="../../../assets/img/soldout.png"/>
                         </div>
+                        <h4 class="text-center slidingEventsTitle">{{ ourOfferTour[0].eventName }}</h4>
                     </a>
-                    <h4 class="text-center slidingEventsTitle">{{ ourOfferTour[0].eventName }}</h4>
                     <a href="{{url+ourOfferTour[0].eventLink}}" class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
                 </div>
                 <div ng-if="!showSections[3]" class="homePageLoader"></div>
@@ -239,8 +239,8 @@
                                 <img src="../../../assets/img/soldout.png"/>
                             </div>
 
+                            <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
                         </a>
-                        <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
                         <a href="{{url+event.eventLink}}" class="btn btn-success slidingEventsBtn center-block hidden-xs">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
                     </div>
 
@@ -270,8 +270,8 @@
                         <div ng-show="ourOfferEvento[0].eventState === 'SOLD'" class="soldout">
                             <img src="../../../assets/img/soldout.png"/>
                         </div>
+                        <h4 class="text-center slidingEventsTitle">{{ ourOfferEvento[0].eventName }}</h4>
                     </a>
-                    <h4 class="text-center slidingEventsTitle">{{ ourOfferEvento[0].eventName }}</h4>
                     <a href="{{url+ourOfferEvento[0].eventLink}}" class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
                 </div>
                 <div ng-if="!showSections[5]" class="homePageLoader"></div>
@@ -331,8 +331,8 @@
                             <div ng-show="event.state === 'SOLD'" class="soldout">
                                 <img src="../../../assets/img/soldout.png"/>
                             </div>
+                            <h4 class="text-center slidingEventsTitle">{{event.title}}</h4>
                         </a>
-                        <h4 class="text-center slidingEventsTitle">{{event.title}}</h4>
                         <a href="{{urlExchange+event.exchangeLink}}" class="btn btn-success slidingEventsBtn center-block hidden-xs">مشاهده رویداد  <i class="fa fa-ticket"></i></a>
                     </div>
 
@@ -364,8 +364,8 @@
                                 <h4>{{ event.eventName }}</h4>
                                 <h5>{{ event.view | number | pNumber}}: بازدید <i class="fa fa-eye"></i></h5>
                             </div>
+                            <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
                         </a>
-                        <h4 class="text-center slidingEventsTitle">{{event.eventName}}</h4>
                         <!--<button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></button>-->
                     </div>
 

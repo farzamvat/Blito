@@ -19,6 +19,14 @@
                     <div class="eventDescription center-block">
                         {{item.desc}}
                     </div>
+                    <div ng-show="item.state === 'CLOSED'" class="closed">
+                        <h1><i class="fa fa-lock"></i>
+                            <p>بسته</p>
+                        </h1>
+                    </div>
+                    <div ng-show="item.state === 'SOLD'" class="soldout">
+                        <img src="../../../assets/img/soldout.png"/>
+                    </div>
                 </div>
             </div>
             </a>
