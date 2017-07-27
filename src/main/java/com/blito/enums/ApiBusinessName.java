@@ -5,5 +5,4 @@ public enum ApiBusinessName{
 	ADMIN,
 	USER,
 	OPERATOR;
-	
 }
