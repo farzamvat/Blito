@@ -46,7 +46,7 @@ public class GlobalControllerExceptionHandler {
 		return ExceptionUtil.generate(HttpStatus.BAD_REQUEST, request, exception);
 	}
 
-	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler({ NotFoundException.class })
 	public ExceptionViewModel notFounds(HttpServletRequest request, RuntimeException exception) {
 		return ExceptionUtil.generate(HttpStatus.NOT_FOUND, request, exception);
