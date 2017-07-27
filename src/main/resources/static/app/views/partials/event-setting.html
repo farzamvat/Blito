@@ -12,21 +12,9 @@
                     <strong></strong>
                 </div>
                 <div  class="text-center alert alert-success col-xs-12 marginTop10 approveSuccessSetting">
-                    <strong>عملیات با موفقیت تایید شد!</strong>
+                    <strong> !عملیات با موفقیت تایید شد</strong>
                 </div>
                 <div class="row">
-                    <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight marginTop30">
-                        <div class="col-xs-11 floatRight text-center">
-                            <label class="registerLabel floatRight textAlignRight"  for="eventStatus">وضعیت رویداد :</label>
-                        </div>
-                        <div class="col-xs-6 floatRight ">
-                            <select id="eventStatus" required  ng-model="eventStateSetting" ng-options="o.v as o.n for o in [{n : 'باز', v: 'OPEN'},{n : 'بسته', v: 'CLOSED'},{n : 'فروخته شده', v: 'SOLD'}]" class="form-control dropDownList">
-                            </select>
-                        </div>
-                        <div class="col-xs-6 floatRight ">
-                            <button id="settingEventStatus"  ng-click="changeEventState(eventStateSetting)" class="btn btn-success btn-lg adminStatus">اعمال  <i class="fa fa-spinner fa-spin eventStatusSpinner"></i></button>
-                        </div>
-                    </div>
                     <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight marginTop30">
                         <div class="col-xs-11 floatRight text-center">
                             <label class="registerLabel floatRight textAlignRight" >پاک کردن رویداد</label>

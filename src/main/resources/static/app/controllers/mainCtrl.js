@@ -78,7 +78,6 @@ angular.module('menuPagesModule', [])
         main.setUserData = function () {
             Auth.getUser()
                 .then(function (data, status) {
-                    console.log(data);
                     $scope.logoutMenu = true;
                     main.userData = data.data;
                     userInfo.setData(main.userData);
@@ -89,7 +88,6 @@ angular.module('menuPagesModule', [])
                 },function (data, status) {
 
                 }, function (data) {
-                    console.log("updated");
                 })
         };
         if(main.checkingSession) {
@@ -125,9 +123,7 @@ angular.module('menuPagesModule', [])
                 .catch(function (data, status) {
                     $scope.submitRegister = false;
                     $scope.registerErrorNotif = true;
-
                     document.getElementById("registerError").innerHTML= data.data.message;
-                    console.log(data);
                 })
         };
 
@@ -145,10 +141,8 @@ angular.module('menuPagesModule', [])
                     $scope.submitLogin = false;
                     $scope.loggedIn = true;
                     main.checkSession();
-                    console.log(data);
                     $location.path(config.redirectToUrlAfterLogin.url);
                     main.setUserData();
-                    console.log("ok");
                     $("#registrationModal").modal("hide");
                     $scope.Msg = "با موفقیت وارد شدید !";
                     $("#notification").modal("show");
@@ -159,8 +153,6 @@ angular.module('menuPagesModule', [])
                 .catch(function (data, status) {
                     $scope.loginErrorNotif = true;
                     $scope.submitLogin = false;
-                    console.log(data.data.message);
-                    console.log(document.getElementById("loginError"));
                     document.getElementById("loginError").innerHTML = data.data.message;
                     $scope.submitLogin = false;
                     $scope.Msg = "ورود نا موفق بود";

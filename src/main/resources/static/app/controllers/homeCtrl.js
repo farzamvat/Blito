@@ -17,21 +17,17 @@ angular.module('homePageModule', [])
         $scope.urlExchange = config.baseUrl+"/exchange-page/";
         indexBannerService.getIndexBanner()
             .then(function (data) {
-                console.log(data);
                 $scope.bannerData = $scope.catchImagesExchange(data.data.content, 0);
             })
             .catch(function (data) {
-                console.log(data);
             });
         miniSliderService.getSlidingDataEvents("CONCERT", 6, false)
             .then(function (data) {
                 $scope.concertRow = $scope.catchImagesEvents(data.data.content, 0);
                 $scope.concertRow = $scope.concertRow.map(eventDetailService.calculateFreeBlits);
                 $scope.calculateCapacitySoldOut($scope.concertRow);
-                console.log($scope.concertRow);
             })
             .catch(function (data) {
-                console.log(data);
             });
         ourOffersService.getOurOffer("CONCERT", false)
             .then(function (data) {
@@ -40,62 +36,49 @@ angular.module('homePageModule', [])
 
             })
             .catch(function (data) {
-                console.log(data);
             });
         miniSliderService.getSlidingDataEvents("TOURISM", 6, false)
             .then(function (data) {
                 $scope.tourRow = $scope.catchImagesEvents(data.data.content, 2);
                 $scope.tourRow = $scope.tourRow.map(eventDetailService.calculateFreeBlits);
                 $scope.calculateCapacitySoldOut($scope.tourRow);
-
-                console.log(data);
             })
             .catch(function (data) {
-                console.log(data);
             });
         ourOffersService.getOurOffer("TOURISM", false)
             .then(function (data) {
                 $scope.ourOfferTour = $scope.catchImagesEvents(data.data.content, 3);
                 $scope.calculateCapacitySoldOut($scope.ourOfferTour);
-                console.log(data);
             })
             .catch(function (data) {
-                console.log(data);
             });
         miniSliderService.getSlidingDataEvents("evento", 6, true)
             .then(function (data) {
                 $scope.evento = $scope.catchImagesEvents(data.data.content, 4);
                 $scope.evento = $scope.evento.map(eventDetailService.calculateFreeBlits);
                 $scope.calculateCapacitySoldOut($scope.evento);
-                console.log(data);
             })
             .catch(function (data) {
-                console.log(data);
             });
 
         ourOffersService.getOurOffer("evento", true)
             .then(function (data) {
                 $scope.ourOfferEvento = $scope.catchImagesEvents(data.data.content, 5);
                 $scope.calculateCapacitySoldOut($scope.ourOfferEvento);
-                console.log(data);
             })
             .catch(function (data) {
-                console.log(data);
             });
         miniSliderService.getSlidingDataExchange(6)
             .then(function (data) {
                 $scope.exchange = $scope.catchImagesExchange(data.data.content, 1);
-                console.log($scope.exchange);
             })
             .catch(function (data) {
-                console.log(data);
             });
         miniSliderService.getEndedEvents(6)
             .then(function (data) {
                 $scope.ended = $scope.catchImagesEvents(data.data.content, 6);
             })
             .catch(function (data) {
-                console.log(data);
             });
 
 
@@ -109,7 +92,6 @@ angular.module('homePageModule', [])
                         item.image = data.data.encodedBase64;
                     })
                     .catch(function (data) {
-                        console.log(data);
                     })
                 );
                 return item;
@@ -138,7 +120,6 @@ angular.module('homePageModule', [])
                         item.newImage = data.data.encodedBase64;
                     })
                     .catch(function (data) {
-                        console.log(data);
                     }))
                 return item;
 

@@ -15,10 +15,8 @@ angular.module('eventsPageModule', [])
                     $scope.eventList = $scope.catchImagesEvents(data.data.content);
                     $scope.eventList = $scope.eventList.map(eventDetailService.calculateFreeBlits);
                     $scope.calculateCapacitySoldOut($scope.eventList);
-                    console.log($scope.eventList);
                 })
                 .catch(function (data) {
-                    console.log(data)
                 });
         };
         switch($location.path()) {
@@ -75,7 +73,6 @@ angular.module('eventsPageModule', [])
                         item.image = data.data.encodedBase64;
                     })
                     .catch(function (data, status) {
-                        console.log(data);
                     });
                 return item;
 

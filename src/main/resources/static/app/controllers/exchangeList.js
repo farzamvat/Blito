@@ -12,7 +12,6 @@ angular.module('exchangesPageModule', [])
         $scope.getAllExchanges = function (page) {
             exchangeService.getAllExchanges(page)
                 .then(function (data) {
-                    console.log(data);
                     $scope.totalElements = data.data.totalElements;
                     $scope.exchangeList = $scope.catchImagesExchange(data.data.content);
                     $scope.exchangeList = $scope.exchangeList.map(function (item) {
@@ -21,7 +20,6 @@ angular.module('exchangesPageModule', [])
                     })
                 })
                 .catch(function (data) {
-                    console.log(data);
                 })
         };
         $scope.pageChanged = function (newpage) {
@@ -34,7 +32,6 @@ angular.module('exchangesPageModule', [])
                         item.newImage = data.data.encodedBase64;
                     })
                     .catch(function (data) {
-                        console.log(data);
                     });
                 return item;
 

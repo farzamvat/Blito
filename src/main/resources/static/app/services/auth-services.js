@@ -12,7 +12,6 @@ angular.module('authServices', [])
             authService.saveAttemptUrl();
             return $http.post(config.baseUrl+'/api/blito/v1.0/login', loginData)
                 .then(function (data) {
-                    console.log(data)
                     AuthToken.setToken(data.data);
                     return data;
                 })
@@ -170,25 +169,18 @@ angular.module('authServices', [])
                             AuthToken.setToken();
                             defer.reject();
                         });
-                    console.log("401");
                     break;
                 case 404 :
-                    console.dir("404");
-                    // $location.path('/not-found');
+                    $location.path('/not-found');
                     defer.reject(rejection);
                     break;
                 case 400 :
-                    // $location.path('/');
-                    // AuthToken.setToken();
-                    console.dir("400");
                     defer.reject(rejection);
                     break;
                 case 500 :
-                    console.dir("500");
                     defer.reject(rejection);
                     break;
                 default :
-                    console.dir("default");
                     defer.reject(rejection);
                     break;
             }

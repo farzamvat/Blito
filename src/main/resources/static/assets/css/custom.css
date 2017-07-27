@@ -141,6 +141,12 @@ button.slick-next {
 .marginTop30 {
     margin-top: 30px;
 }
+.text-blito {
+    color: rgb(252, 183, 49);
+}
+.ta-scroll-window.form-control {
+    width: 100%;
+}
 .sliderSection {
     margin-top: 0;
     padding: 0 !important;
@@ -2529,7 +2535,9 @@ table td{
 .ticketTitleTrackCodeMargin {
     margin-top: 40px;
 }
-
+.ticketTitle {
+    font-size: 18px;
+}
 .ticketName {
     margin-top: 30px;
 }

@@ -20,7 +20,6 @@ angular.module('eventsPageModule')
                 $(".dateInit").val(persianDate($scope.exchangeData.eventDate).format("dddd,DD MMMM, ساعت HH:mm"))
             })
             .catch(function (data) {
-                console.log(data);
             });
         $scope.catchImagesExchange = function (UUID) {
             photoService.download(UUID)
@@ -28,7 +27,6 @@ angular.module('eventsPageModule')
                     $scope.exchangeData.newImage = data.data.encodedBase64;
                 })
                 .catch(function (data) {
-                    console.log(data)
                 })
         };
 

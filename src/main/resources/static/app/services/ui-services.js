@@ -26,14 +26,12 @@ angular.module('UiServices', [])
                 mapTypeId: google.maps.MapTypeId.TERRAIN
             };
         } catch (err) {
-            console.log(err);
         }
         mapMarkerService.initMap = function (mapInput) {
 
             try {
                 map = new google.maps.Map(mapInput, mapOptions);
             } catch(err) {
-                console.log(err);
             }
             mapMarker(map);
 
@@ -43,7 +41,6 @@ angular.module('UiServices', [])
             try {
                 map = new google.maps.Map(mapInput, mapOptions);
             } catch(err) {
-                console.log(err);
             }
             mapMarkerOnlyShow(map);
 
@@ -57,7 +54,6 @@ angular.module('UiServices', [])
                     try {
                         google.maps.event.trigger(map, 'resize');
                     } catch (err) {
-                        console.log(err);
                     }
                 }, 300);
 
@@ -87,7 +83,6 @@ angular.module('UiServices', [])
 
                 }
             } catch (err) {
-                console.log(err);
             }
         };
         var mapMarkerOnlyShow = function (map) {
@@ -98,7 +93,6 @@ angular.module('UiServices', [])
                     try {
                         google.maps.event.trigger(map, 'resize');
                     } catch (err) {
-                        console.log(err);
                     }
                 }, 300);
 
@@ -124,7 +118,6 @@ angular.module('UiServices', [])
 
                 }
             } catch (err) {
-                console.log(err);
             }
         }
     })
@@ -160,7 +153,6 @@ angular.module('UiServices', [])
                     angular.element(document.getElementsByClassName(className))[0].src = data.data.encodedBase64;
                 })
                 .catch(function (data, status) {
-                    console.log(status);
                 });
         };
     })
