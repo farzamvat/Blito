@@ -36,7 +36,7 @@ public class RoleAspect {
 
 		if (currentUserAttachedRoles != null) {
 			if (currentUserAttachedRoles.stream().flatMap(r -> r.getPermissions().stream()).distinct()
-					.noneMatch(p -> p.getApiBusinessName().equals(permission.value()))) {
+					.noneMatch(p -> p.getApiBusinessName().equals(permission.value().name()))) {
 				throw new ForbiddenException(ResourceUtil.getMessage(Response.ACCESS_DENIED));
 			}
 		} else {
