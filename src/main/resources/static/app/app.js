@@ -20,7 +20,8 @@ angular.module('Blito',
         'exchangesPageModule',
         'homePageApi',
         'notFound',
-        'ngPersian'
+        'ngPersian',
+        'textAngular'
     ])
     .config(function ($httpProvider) {
         $httpProvider.interceptors.push('AuthInterceptors');

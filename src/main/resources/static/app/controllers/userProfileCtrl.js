@@ -1474,7 +1474,6 @@ angular.module('User')
             });
         //==================================================== ********* =================================
         //==================================================== PERSIAN DATE PICKER =======================
-
         $timeout(function () {
             dateSetterService.initDate("persianTimeEventStart");
             dateSetterService.initDate("persianTimeEventEnd");

@@ -144,6 +144,9 @@ button.slick-next {
 .text-blito {
     color: rgb(252, 183, 49);
 }
+.ta-scroll-window.form-control {
+    width: 100%;
+}
 .sliderSection {
     margin-top: 0;
     padding: 0 !important;
