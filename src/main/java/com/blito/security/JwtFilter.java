@@ -44,8 +44,7 @@ public class JwtFilter extends GenericFilterBean {
 		final String token = authHeader.substring(7);
 		try {
 			final Claims claims = Jwts.parser().setSigningKey(tokenSecret).parseClaimsJws(token).getBody();
-			Optional<User> currentUser = Optional
-					.ofNullable(userRepository.findOne(Long.parseLong(claims.getSubject())));
+			Optional<User> currentUser = userRepository.findByEmail(claims.getSubject());
 			if (currentUser.isPresent()) {
 				SecurityContextHolder.setCurrentUser(currentUser.get());
 			} else {

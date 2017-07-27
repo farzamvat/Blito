@@ -98,7 +98,7 @@ public class UserAccountService {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.USER_IS_BANNED));
 		}
 		return CompletableFuture.supplyAsync(() -> encoder.matches(vmodel.getPassword(), user.getPassword()))
-				.thenCombine(jwtService.generateToken(user.getUserId()), (isMatchedAsyncResult,asyncTokenResult) -> {
+				.thenCombine(jwtService.generateToken(user.getEmail()), (isMatchedAsyncResult,asyncTokenResult) -> {
 					if(isMatchedAsyncResult)
 					{
 						if(user.isFirstTimeLogin())
@@ -155,10 +155,9 @@ public class UserAccountService {
 	{
 		if(refresh_token == null || refresh_token.equals(""))
 			throw new UnauthorizedException(ResourceUtil.getMessage(Response.REFRESH_TOKEN_NOT_PRESENT));
-		User user = Optional.ofNullable(userRepository.findOne(jwtService.refreshTokenValidation(refresh_token)))
-				.map(u -> u)
+		User user = userRepository.findByEmail(jwtService.refreshTokenValidation(refresh_token))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
-		return jwtService.generateAccessToken(user.getUserId())
+		return jwtService.generateAccessToken(user.getEmail())
 				.thenApply(tokenModel -> {
 					tokenModel.setRefreshToken(refresh_token);
 					return tokenModel;

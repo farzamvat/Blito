@@ -108,7 +108,7 @@ public class EventControllerAdditionalFieldsTest {
 	@Test
 	public void create() throws URISyntaxException
 	{
-		TokenModel tokenModel = jwtService.generateAccessToken(userRepository.findByEmail("farzam.vat@gmail.com").get().getUserId()).join();
+		TokenModel tokenModel = jwtService.generateAccessToken(userRepository.findByEmail("farzam.vat@gmail.com").get().getEmail()).join();
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
