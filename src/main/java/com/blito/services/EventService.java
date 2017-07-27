@@ -197,6 +197,8 @@ public class EventService {
 	@Transactional
 	public void delete(long eventId) {
 		eventRepository.findByEventIdAndIsDeletedFalse(eventId).map(event -> {
+			if(!event.getOperatorState().equals(OperatorState.REJECTED.name()))
+				throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 			if (event.getEventHost().getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
 				throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 			} else {
@@ -204,6 +206,7 @@ public class EventService {
 				event.setDeleted(true);
 			}
 			return event;
+			
 		}).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 	}
 

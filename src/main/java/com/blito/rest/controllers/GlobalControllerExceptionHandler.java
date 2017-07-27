@@ -1,15 +1,17 @@
 package com.blito.rest.controllers;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ValidationException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartException;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.blito.enums.Response;
 import com.blito.enums.validation.ControllerEnumValidation;
@@ -28,9 +30,8 @@ import com.blito.exceptions.WrongPasswordException;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 
-@ControllerAdvice
 public class GlobalControllerExceptionHandler {
-
+	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ResponseBody
 	@ExceptionHandler(MethodArgumentNotValidException.class)

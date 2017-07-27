@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 public class CorsFilter extends OncePerRequestFilter {
 
@@ -21,7 +22,16 @@ public class CorsFilter extends OncePerRequestFilter {
         if ("OPTIONS".equals(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
         } else { 
-            filterChain.doFilter(request, response);
+            try {
+            	filterChain.doFilter(request, response);
+            }
+            catch(RuntimeException exception)
+            {
+            	if(exception.getClass().equals(NoHandlerFoundException.class))
+            	{
+            		response.setStatus(404);
+            	}
+            }
         }
     }
 }
