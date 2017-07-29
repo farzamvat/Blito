@@ -173,6 +173,9 @@ button.slick-next {
     font-size: 18px;
     padding: 15px 15px;
 }
+.categorySectionBackground {
+    background: url('../img/back.jpg') fixed;
+}
 .blitoOffer {
     color : white;
     height: 500px;
@@ -193,7 +196,7 @@ button.slick-next {
 .categorySection {
     /*background: url("../img/movie.png") repeat-x;*/
     padding: 10px;
-    background-color: #202020;
+    background-color: rgba(20,20,20, 0.9);
 }
 .categorySection a {
     text-decoration: none;
@@ -217,17 +220,17 @@ button.slick-next {
     cursor: pointer;
     background-color: rgba(252,183,49,0.6);
 }
-.categoryCinema {
-    background: url('../img/cin.jpg') ;
+.categoryConcert {
+    background: url('../img/concert-thumbnail.png') ;
 }
 .categoryTheatre {
-    background: url('../img/th.jpg') ;
+    background: url('../img/theater-thumbnail.png') ;
 }
-.categorySport {
-    background: url('../img/sp.jpg') ;
+.categoryWorkshop {
+    background: url('../img/workshop-thumbnail.png') ;
 }
-.categoryConcert {
-    background: url('../img/concert.jpg') ;
+.categoryTour {
+    background: url('../img/tour-thumbnail.png') ;
 }
 .categoryTitle {
   text-align: center;
