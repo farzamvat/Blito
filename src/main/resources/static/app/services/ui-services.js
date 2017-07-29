@@ -4,7 +4,7 @@
 angular.module('UiServices', [])
     .service('mapMarkerService', function ($timeout) {
         var mapMarkerService = this;
-        var markers = [], map, latitudeLongtitude = {lat : 35.7023, lng : 51.3957};
+        var markers = [], map, latitudeLongtitude = {lat : 35.724569, lng : 51.387749};
 
         mapMarkerService.getMarker = function () {
             return latitudeLongtitude;
@@ -58,14 +58,14 @@ angular.module('UiServices', [])
                 }, 300);
 
                 $timeout(function () {
-                    mapMarkerService.placeMarker(latitudeLongtitude, map);
+                    // mapMarkerService.placeMarker(latitudeLongtitude, map);
                     map.setCenter(new google.maps.LatLng(latitudeLongtitude.lat, latitudeLongtitude.lng));
                 }, 600);
 
                 map.addListener('click', function (e) {
                     mapMarkerService.setMarker(e.latLng.lat(), e.latLng.lng());
                     mapMarkerService.placeMarker(e.latLng, map);
-                })
+                });
 
                 mapMarkerService.placeMarker = function (latLong, map) {
 

@@ -166,7 +166,7 @@
                             <img ng-src="{{event.image}}" class=" center-block homePageImage">
                             <div class="moreInfo">
                                 <h4>{{ event.eventName }}</h4>
-                                <h5>{{ event.capacity - event.soldCount | number | pNumber}}: جای خالی <i class="fa fa-calendar-check-o"></i></h5>
+                                <h5>{{ event.capacity - event.soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
                                 <h5>{{ event.views | number | pNumber }}: بازدید <i class="fa fa-eye"></i></h5>
                             </div>
                             <div ng-show="event.eventState === 'CLOSED'" class="closed">
@@ -195,7 +195,7 @@
                     <a class="slidingEventsImg" href="{{url+ourOfferTour[0].eventLink}}"><img ng-src="{{ourOfferTour[0].image}}" class=" center-block homePageImage">
                         <div class="moreInfo">
                             <h4>{{ ourOfferTour[0].eventName }}</h4>
-                            <h5>{{ ourOfferTour[0].capacity - ourOfferTour[0].soldCount | number | pNumber}}: جای خالی <i class="fa fa-calendar-check-o"></i></h5>
+                            <h5>{{ ourOfferTour[0].capacity - ourOfferTour[0].soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
                             <h5>{{ ourOfferTour[0].views | number | pNumber}}: بازدید <i class="fa fa-eye"></i></h5>
                         </div>
                         <div ng-show="ourOfferTour[0].eventState === 'CLOSED'" class="closed">
@@ -227,7 +227,7 @@
                             <img ng-src="{{event.image}}" class=" center-block homePageImage">
                             <div class="moreInfo">
                                 <h4>{{ event.eventName }}</h4>
-                                <h5>{{ event.capacity - event.soldCount | number | pNumber}}: جای خالی <i class="fa fa-calendar-check-o"></i></h5>
+                                <h5>{{ event.capacity - event.soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
                                 <h5>{{ event.views | number | pNumber}}: بازدید <i class="fa fa-eye"></i></h5>
                             </div>
                             <div ng-show="event.eventState === 'CLOSED'" class="closed">
@@ -259,7 +259,7 @@
                     <a class="slidingEventsImg" href="{{url+ourOfferEvento[0].eventLink}}"><img ng-src="{{ourOfferEvento[0].image}}" class=" center-block homePageImage">
                         <div class="moreInfo">
                             <h4>{{ ourOfferEvento[0].eventName }}</h4>
-                            <h5>{{ ourOfferEvento[0].capacity - ourOfferEvento[0].soldCount | number | pNumber}}: جای خالی <i class="fa fa-calendar-check-o"></i></h5>
+                            <h5>{{ ourOfferEvento[0].capacity - ourOfferEvento[0].soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
                             <h5>{{ ourOfferEvento[0].views | number | pNumber}}: بازدید <i class="fa fa-eye"></i></h5>
                         </div>
                         <div ng-show="ourOfferEvento[0].eventState === 'CLOSED'" class="closed">
@@ -364,7 +364,7 @@
                                 <h4>{{ event.eventName }}</h4>
                                 <h5>{{ event.view | number | pNumber}}: بازدید <i class="fa fa-eye"></i></h5>
                             </div>
-                            <h4 class="text-center slidingEventsTitle"><span ng-if="event.eventName.length > 20">...</span>{{event.eventName | limitTo:20}}</h4>
+                            <h4 class="text-center slidingEventsTitle"><span ng-if="event.eventName.length > 20">...</span>{{event.eventName | limitTo}}</h4>
                         </a>
                         <!--<button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></button>-->
                     </div>

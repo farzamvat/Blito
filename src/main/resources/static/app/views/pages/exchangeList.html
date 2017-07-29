@@ -14,7 +14,7 @@
                         <h5>    نوع رویداد : {{ item.type }}<i class="fa fa-star"></i></h5>
 
                     </div>
-                    <h4 class="text-center slidingEventsTitle">{{item.title }}</h4>
+                    <h4 class="text-center slidingEventsTitle"><span ng-if="item.title.length > 20">...</span>{{item.title | limitTo : 20}}</h4>
 
                     <div class="eventDescription center-block">
                         {{item.desc}}
