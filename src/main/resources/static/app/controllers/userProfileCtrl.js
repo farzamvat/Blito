@@ -753,8 +753,7 @@ angular.module('User')
             $location.hash(id);
             $location.hash(old);
             scrollAnimation.scrollTo(id);
-            mapMarkerService.initMap(document.getElementById('map'));
-            mapMarkerService.initMap(document.getElementById('mapExchange'));
+            setInitMaps(section);
             $(angular.element(document.getElementById(section)).siblings()[0]).slideDown(300);
             $(angular.element(document.getElementById(section))).addClass('orangeBackground');
         };
@@ -930,6 +929,8 @@ angular.module('User')
                     angular.element(document.getElementsByClassName("galleryFour"))[0].src = '';
                     angular.element(document.getElementsByClassName("galleryFive"))[0].src = '';
                     angular.element(document.getElementsByClassName("gallerySix"))[0].src = '';
+                    $scope.mapMarkerClickCheckEvent = true;
+                    setInitMaps('makeEventSection');
                     $scope.showTimeForms = [{blitTypes : [{}]}];
 
                     $scope.createEventSpinner = false;
@@ -982,8 +983,10 @@ angular.module('User')
                     $scope.exchangePhotoError = false;
                     $scope.exchangePhotoSuccess = false;
                     $scope.getExchangeData(1);
-                    $scope.exchange = [];
+                    $scope.exchange = {};
                     $scope.exchangeImageId = '';
+                    setInitMaps('exchangeTicketSection');
+                    $scope.mapMarkerClickCheckExchange = true;
                     angular.element(document.getElementsByClassName("exchangePhotoUpload"))[0].src = '';
 
                 }, function (data, status) {
@@ -999,14 +1002,11 @@ angular.module('User')
         $scope.dropDownTabToggleEvent = function (event) {
             $scope.getPlannersData(1);
             $scope.getUserEvents(1);
-            mapMarkerService.initMap(document.getElementById('map'));
             $(angular.element(document.getElementById('toggleExchange'))).slideUp(300);
             $(angular.element(event.currentTarget).siblings()[0]).slideDown(300);
         };
         $scope.dropDownTabToggleExchange = function (event) {
             $scope.getExchangeData(1);
-            mapMarkerService.initMap(document.getElementById('mapExchange'));
-
             $(angular.element(document.getElementById('toggleEvent'))).slideUp(300);
             $(angular.element(event.currentTarget).siblings()[0]).slideDown(300);
         };
@@ -1015,10 +1015,21 @@ angular.module('User')
         };
 
         $scope.toggleBody = function (section) {
-            mapMarkerService.initMap(document.getElementById('map'));
-            mapMarkerService.initMap(document.getElementById('mapExchange'));
+            setInitMaps(section);
             $(angular.element(document.getElementById(section)).siblings()[0]).slideToggle(300);
             $(angular.element(document.getElementById(section))).toggleClass('orangeBackground');
+        };
+        var setInitMaps = function (section) {
+            if(section === 'makeEventSection') {
+                $scope.mapMarkerClickCheckEvent = true;
+                mapMarkerService.initMap(document.getElementById('map'));
+                console.log("event");
+            }
+            if(section === 'exchangeTicketSection') {
+                $scope.mapMarkerClickCheckExchange = true;
+                mapMarkerService.initMap(document.getElementById('mapExchange'));
+                console.log("exchange");
+            }
         };
 
         $scope.exchangeTickets = [];
@@ -1382,6 +1393,14 @@ angular.module('User')
         };
         //==================================================== ********* =================================
         //==================================================== GET DATA =================================
+        $scope.mapMarkerClickCheckEvent = true;
+        $scope.mapMarkerClickCheckExchange = true;
+        $scope.clickMapValidationChangeEvent = function () {
+            $scope.mapMarkerClickCheckEvent = false;
+        };
+        $scope.clickMapValidationChangeExchange = function () {
+            $scope.mapMarkerClickCheckExchange = false;
+        };
         $scope.getTicket = function (trackCode) {
             $window.open('/payment/'+trackCode);
         };
@@ -1401,13 +1420,13 @@ angular.module('User')
             };
             $scope.getEventTickets(1);
             $('#eventTickets').modal('show');
-
         };
         $scope.getExchangeData = function (page) {
             exchangeService.getExchangeTickets(page)
                 .then(function (data, status) {
                     $scope.totalExchangeNumber = data.data.totalElements;
                     $scope.exchangeTickets = data.data.content;
+                    console.log($scope.exchangeTickets);
                     $scope.exchangeEditTickets = angular.copy(data.data.content);
                     $scope.exchangeTickets = $scope.exchangeTickets.map(function (ticket) {
                         ticket.operatorState = dataService.operatorStatePersian(ticket.operatorState);

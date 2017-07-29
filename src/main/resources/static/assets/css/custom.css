@@ -237,6 +237,7 @@ button.slick-next {
     padding-top: 20px;
     color: white;
 }
+
 .btn {
     border-radius: 2px !important;
 }
@@ -1037,7 +1038,7 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
 .colorRed {
     color: red;
 }
-input.ng-invalid.ng-touched {
+input.ng-invalid.ng-dirty {
     border-color: red;
 }
 .dataCenter {
@@ -2437,6 +2438,10 @@ a{
 table td{
     vertical-align: middle !important;
 }
+.eventPageSoldOut {
+    display: block;
+    margin: 0 auto;
+}
 .noScrollBar::-webkit-scrollbar {
     width: 0px;
     background: transparent; /* make scrollbar transparent */
@@ -2598,7 +2603,9 @@ table td{
 
 
 @media (max-width: 992px) {
-
+    .eventPageSoldOut {
+        width: 150px;
+    }
     .ticketTitle h2, .ticketName h2{
         font-size: 12px;
     }
@@ -2977,6 +2984,9 @@ table td{
 
 }
 @media (min-width: 992px) {
+    .eventPageSoldOut {
+        width: 90px;
+    }
     .datePickerFormatEventPage {
         overflow: visible;
         width: 190px;
@@ -3021,7 +3031,9 @@ table td{
 
 
 @media (min-width: 1200px) {
-
+    .eventPageSoldOut {
+        width: 150px;
+    }
     .carousel-caption {
         background-color: rgba(30, 30, 30, 0.6);
         padding: 5px 40px;
