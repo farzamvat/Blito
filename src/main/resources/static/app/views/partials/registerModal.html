@@ -26,7 +26,7 @@
                                         <input height="60" id="userIdSingIn" name="email" ng-model="loginFields.email" type="email"  class="form-group registerInput" required>
                                     </div>
                                 </div>
-                                <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signInForm.email.$touched && signInForm.email.$invalid">پست الکترونیکی نا معتبر است</div>
+                                <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signInForm.email.$dirty && signInForm.email.$invalid">پست الکترونیکی نا معتبر است</div>
 
                                 <!-- Password input-->
                                 <div class="form-group col-xs-12 marginTop10 formRegGroup">
@@ -38,7 +38,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signInForm.passwordinput.$touched && signInForm.passwordinput.$invalid">رمز خود را وارد کنید</div>
+                                <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signInForm.passwordinput.$dirty && signInForm.passwordinput.$invalid">رمز خود را وارد کنید</div>
 
 
 
@@ -91,7 +91,7 @@
                                         <input id="mobile" name="mobile" class="form-group  registerInput" type="text" ng-model="fields.mobile" required>
                                     </div>
                                 </div>
-                                <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signupForm.mobile.$touched && signupForm.mobile.$invalid" >شماره تلفن فیلد اجباری می باشد</div>
+                                <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signupForm.mobile.$dirty && signupForm.mobile.$invalid" >شماره تلفن فیلد اجباری می باشد</div>
                                 <div class="form-group col-xs-12 marginTop10 formRegGroup">
                                     <div class="col-xs-5 col-sm-4 floatRight text-center">
                                     <label class="registerLabel" for="Email">پست الکترونیکی :</label>
@@ -100,7 +100,7 @@
                                         <input id="Email" name="email" class="form-group  registerInput" type="email" ng-model="fields.email" required>
                                     </div>
                                 </div>
-                                <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signupForm.email.$touched && signupForm.email.$invalid" >پست الکترونیکی نا معتبر است</div>
+                                <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signupForm.email.$dirty && signupForm.email.$invalid" >پست الکترونیکی نا معتبر است</div>
 
 
 
@@ -113,7 +113,7 @@
                                         <input id="password" name="password" class="form-group  registerInput" type="password" ng-model="fields.password"  length-validation required>
                                     </div>
                                 </div>
-                                <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signupForm.password.$touched && signupForm.password.$invalid" >رمز عبور باید حداقل ۸ کاراکتر باشد</div>
+                                <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signupForm.password.$dirty && signupForm.password.$invalid" >رمز عبور باید حداقل ۸ کاراکتر باشد</div>
 
                                 <!-- Text input-->
                                 <div class="form-group col-xs-12 marginTop10 formRegGroup">
@@ -126,7 +126,7 @@
                                 </div>
 
                                 <span data-ng-show="signupForm.reenterpassword.$error.match">رمزهای عبور برابر نیستند</span>
-                                <div class="col-xs-12 form-control-static text-center colorRed" ng-match="fields.password" ng-show="signupForm.reenterpassword.$touched && signupForm.reenterpassword.$invalid">رمز نا معتبر است</div>
+                                <div class="col-xs-12 form-control-static text-center colorRed" ng-match="fields.password" ng-show="signupForm.reenterpassword.$dirty && signupForm.reenterpassword.$invalid">رمز نا معتبر است</div>
 
                                 <!-- Multiple Radios (inline) -->
                                 <br>

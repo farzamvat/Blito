@@ -44,7 +44,6 @@ angular.module('blitoDirectives')
                     var expression = /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi;
                     var regex= new RegExp(expression);
                     if(value.match(regex)) {
-                        console.log("a");
                         dirCtrl.$setValidity('charE', true);
                     } else {
                         dirCtrl.$setValidity('charE', false);

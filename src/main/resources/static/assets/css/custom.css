@@ -173,6 +173,9 @@ button.slick-next {
     font-size: 18px;
     padding: 15px 15px;
 }
+.categorySectionBackground {
+    background: url('../img/back.jpg') fixed;
+}
 .blitoOffer {
     color : white;
     height: 500px;
@@ -193,7 +196,7 @@ button.slick-next {
 .categorySection {
     /*background: url("../img/movie.png") repeat-x;*/
     padding: 10px;
-    background-color: #202020;
+    background-color: rgba(20,20,20, 0.9);
 }
 .categorySection a {
     text-decoration: none;
@@ -217,23 +220,24 @@ button.slick-next {
     cursor: pointer;
     background-color: rgba(252,183,49,0.6);
 }
-.categoryCinema {
-    background: url('../img/cin.jpg') ;
+.categoryConcert {
+    background: url('../img/concert-thumbnail.png') ;
 }
 .categoryTheatre {
-    background: url('../img/th.jpg') ;
+    background: url('../img/theater-thumbnail.png') ;
 }
-.categorySport {
-    background: url('../img/sp.jpg') ;
+.categoryWorkshop {
+    background: url('../img/workshop-thumbnail.png') ;
 }
-.categoryConcert {
-    background: url('../img/concert.jpg') ;
+.categoryTour {
+    background: url('../img/tour-thumbnail.png') ;
 }
 .categoryTitle {
   text-align: center;
     padding-top: 20px;
     color: white;
 }
+
 .btn {
     border-radius: 2px !important;
 }
@@ -277,6 +281,82 @@ button.slick-next {
 }
 .btn-blito:hover {
     box-shadow: none;
+}
+.socialmedia{
+    background: rgb(252, 183, 49);
+    border-radius: 50%;
+    width:35px;
+    float:right;
+    height:35px !important;
+    margin-right:5px;
+    margin-left:5px;
+    margin-bottom: 4px;
+}
+/*.socialmedia:hover{*/
+    /*animation:socialmediaanimation 2s infinite ease-in-out both;*/
+/*}*/
+.instagram{
+     background: radial-gradient(circle farthest-corner at 32% 106%, rgb(255, 225, 125) 0%, rgb(255, 205, 105) 10%, rgb(250, 145, 55) 28%, rgb(235, 65, 65) 42%, transparent 82%), linear-gradient(135deg, rgb(35, 75, 215) 12%, rgb(195, 60, 190) 58%);
+     border-radius: 50%;
+     width:35px;
+     float:right;
+     height:35px !important;
+     opacity:0;
+     transition: .5s;
+ }
+.telegram{
+    background:#2ca5e0 ;
+    border-radius: 50%;
+    width:35px;
+    float:right;
+    height:35px !important;
+    opacity:0;
+    transition: .5s;
+}
+.aparat{
+    background:#ed145b ;
+    border-radius: 50%;
+    width:35px;
+    float:right;
+    height:35px !important;
+    opacity:0;
+    transition: .5s;
+}
+.twitter{
+    background:#3fcdfd ;
+    border-radius: 50%;
+    width:35px;
+    float:right;
+    height:35px !important;
+    opacity:0;
+    transition: .5s;
+}
+
+.socialmedia:hover span{
+    opacity:1;
+}
+.socialmedia:hover img{
+    filter:invert(100%);
+}
+/*@keyframes socialmediaanimation{*/
+    /*0% {transform:scale(1);}*/
+    /*50% {transform: scale(1.1);}*/
+    /*100% {transform: scale(1);}*/
+/*}*/
+.socialmediaHolder{
+    margin-bottom:15px;
+    border-top: 1px solid #444;
+    padding-top:15px;
+    padding-bottom: 0px;
+}
+.socialmediaHolder div{
+    width:200px;
+}
+.socialmedia img{
+    height: 70%;
+    margin-top: -56px;
+    margin-right: 5px;
+    transition: .5s;
 }
 .searchBarHomePage {
     margin: 0 auto;
@@ -1034,7 +1114,7 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
 .colorRed {
     color: red;
 }
-input.ng-invalid.ng-touched {
+input.ng-invalid.ng-dirty {
     border-color: red;
 }
 .dataCenter {
@@ -1583,7 +1663,7 @@ dir-pagination-controls ul {
 /*--------------------------------------*/
 footer {
     background-color:#303030;
-    min-height:350px;
+    /*min-height:350px;*/
     bottom: 0 !important;
 }
 footer h6 {
@@ -1738,6 +1818,7 @@ a{
 .eventListHeaderContainer{
     height: 110px;
     background:rgba(0,0,0,.5);
+    box-shadow: 2px 2px 5px #222;
 }
 /*#eventListOther:not(:active),*/
 /*#eventListCinema:not(:active),*/
@@ -2328,7 +2409,7 @@ a{
     opacity: 0;
     background:#444;
     border-radius: 50%;
-    border:3px solid rgb(252, 183, 49);
+    border:3px solid #fff;
     transition: .4s;
     margin-top:-120px;
     margin-left:70px;
@@ -2340,7 +2421,10 @@ a{
     margin-right: 12.5%;
 }
 .marginRight0{
-    margin-right: 0px;
+    margin-right: 0px !important;
+}
+.marginLeft0{
+    margin-left:0px !important;
 }
 .aboutUsText{
     width:70%;
@@ -2433,6 +2517,10 @@ a{
 
 table td{
     vertical-align: middle !important;
+}
+.eventPageSoldOut {
+    display: block;
+    margin: 0 auto;
 }
 .noScrollBar::-webkit-scrollbar {
     width: 0px;
@@ -2595,7 +2683,9 @@ table td{
 
 
 @media (max-width: 992px) {
-
+    .eventPageSoldOut {
+        width: 150px;
+    }
     .ticketTitle h2, .ticketName h2{
         font-size: 12px;
     }
@@ -2974,6 +3064,9 @@ table td{
 
 }
 @media (min-width: 992px) {
+    .eventPageSoldOut {
+        width: 90px;
+    }
     .datePickerFormatEventPage {
         overflow: visible;
         width: 190px;
@@ -3018,7 +3111,9 @@ table td{
 
 
 @media (min-width: 1200px) {
-
+    .eventPageSoldOut {
+        width: 150px;
+    }
     .carousel-caption {
         background-color: rgba(30, 30, 30, 0.6);
         padding: 5px 40px;
