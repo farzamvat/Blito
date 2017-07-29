@@ -2,6 +2,7 @@ package com.blito.rest.viewmodels.account;
 
 import java.util.Set;
 
+import com.blito.annotations.MobileNumber;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
@@ -19,6 +20,7 @@ public class UserViewModel {
 	@JsonView(View.SimpleUser.class)
 	String email;
 	@JsonView(View.SimpleUser.class)
+	@MobileNumber
 	String mobile;
 	@JsonIgnore
 	String password;

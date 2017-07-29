@@ -48,7 +48,7 @@ public class JwtFilter extends GenericFilterBean {
 			if (currentUser.isPresent()) {
 				SecurityContextHolder.setCurrentUser(currentUser.get());
 			} else {
-				servletResponse.sendError(HttpStatus.BAD_REQUEST.value(), "User not found");
+				servletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
 				return;
 			}
 
