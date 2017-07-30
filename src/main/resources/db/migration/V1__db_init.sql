@@ -2,7 +2,7 @@ CREATE DATABASE  IF NOT EXISTS `blito` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `blito`;
 -- MySQL dump 10.13  Distrib 5.6.19, for osx10.7 (i386)
 --
--- Host: 127.0.0.1    Database: Blito
+-- Host: 127.0.0.1    Database: blito
 -- ------------------------------------------------------
 -- Server version	5.7.18
 
@@ -65,7 +65,7 @@ CREATE TABLE `blit` (
   PRIMARY KEY (`blit_id`),
   KEY `FK1eyi6n57440oa9jleq40j88qt` (`user_id`),
   CONSTRAINT `FK1eyi6n57440oa9jleq40j88qt` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,7 +103,7 @@ CREATE TABLE `blit_type` (
   PRIMARY KEY (`blit_type_id`),
   KEY `FKtncyui7mdo9yit76oyb4ia9gg` (`event_date_id`),
   CONSTRAINT `FKtncyui7mdo9yit76oyb4ia9gg` FOREIGN KEY (`event_date_id`) REFERENCES `event_time` (`event_date_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,7 +133,7 @@ DROP TABLE IF EXISTS `blit_type_seat`;
 CREATE TABLE `blit_type_seat` (
   `blit_type_seat_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `sold_date` datetime DEFAULT NULL,
-  `state` int(11) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
   `blit_type_id` bigint(20) DEFAULT NULL,
   `seat_id` bigint(20) DEFAULT NULL,
   `blit_id` bigint(20) DEFAULT NULL,
@@ -198,7 +198,7 @@ DROP TABLE IF EXISTS `event`;
 CREATE TABLE `event` (
   `event_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `address` text,
-  `aparat_display_code` varchar(255) DEFAULT NULL,
+  `aparat_display_code` text,
   `blit_sale_end_date` datetime DEFAULT NULL,
   `blit_sale_start_date` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -217,13 +217,13 @@ CREATE TABLE `event` (
   `members` text,
   `operator_state` varchar(255) DEFAULT NULL,
   `order_number` int(11) NOT NULL,
-  `event_host_id` bigint(20) NOT NULL,
   `views` bigint(20) NOT NULL,
+  `event_host_id` bigint(20) NOT NULL,
   PRIMARY KEY (`event_id`),
   UNIQUE KEY `UK_7b964t681s0qajt72j7gr9ebi` (`event_link`),
   KEY `FK3i1dqb4qd1axtjsd75h321wty` (`event_host_id`),
   CONSTRAINT `FK3i1dqb4qd1axtjsd75h321wty` FOREIGN KEY (`event_host_id`) REFERENCES `event_host` (`event_host_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -251,7 +251,8 @@ DROP TABLE IF EXISTS `event_host`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `event_host` (
   `event_host_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `description` varchar(255) DEFAULT NULL,
+  `description` text,
+  `event_host_link` varchar(255) DEFAULT NULL,
   `host_name` varchar(255) DEFAULT NULL,
   `event_type` varchar(255) DEFAULT NULL,
   `instagram_link` varchar(255) DEFAULT NULL,
@@ -260,12 +261,13 @@ CREATE TABLE `event_host` (
   `telegram_link` varchar(255) DEFAULT NULL,
   `telephone` varchar(255) NOT NULL,
   `twitter_link` varchar(255) DEFAULT NULL,
+  `views` bigint(20) NOT NULL,
   `website_link` varchar(255) DEFAULT NULL,
   `user_id` bigint(20) NOT NULL,
   PRIMARY KEY (`event_host_id`),
   KEY `FK4u610t14n3errr34sh6m2x4kb` (`user_id`),
   CONSTRAINT `FK4u610t14n3errr34sh6m2x4kb` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -335,7 +337,7 @@ CREATE TABLE `event_time` (
   KEY `FK6acqr278v7ljjbcert1fxlmil` (`salon_id`),
   CONSTRAINT `FK6acqr278v7ljjbcert1fxlmil` FOREIGN KEY (`salon_id`) REFERENCES `salon` (`salon_id`),
   CONSTRAINT `FKaei54puj14hjeo5ndpbk8n4os` FOREIGN KEY (`event_id`) REFERENCES `event` (`event_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -371,7 +373,7 @@ CREATE TABLE `exchange_blit` (
   KEY `FKnrto3jmf4865iij13qp42vssm` (`user_id`),
   CONSTRAINT `FKe4onf1umgu713suwcfw9dysah` FOREIGN KEY (`image_image_id`) REFERENCES `image` (`image_id`),
   CONSTRAINT `FKnrto3jmf4865iij13qp42vssm` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -386,7 +388,7 @@ CREATE TABLE `image` (
   `image_type` varchar(255) DEFAULT NULL,
   `imageuuid` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`image_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -439,7 +441,7 @@ CREATE TABLE `permission` (
   `api_business_name` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`permission_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -455,7 +457,7 @@ CREATE TABLE `profile` (
   `biography` varchar(255) DEFAULT NULL,
   `instagram` varchar(255) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `profile_type` int(11) DEFAULT NULL,
+  `profile_type` varchar(255) DEFAULT NULL,
   `telegram` varchar(255) DEFAULT NULL,
   `twitter` varchar(255) DEFAULT NULL,
   `website` varchar(255) DEFAULT NULL,
@@ -604,7 +606,7 @@ CREATE TABLE `user` (
   `reset_key` varchar(255) DEFAULT NULL,
   `wrong_try` int(11) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -633,4 +635,4 @@ CREATE TABLE `user_role` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-29 18:22:19
+-- Dump completed on 2017-07-31  0:00:21

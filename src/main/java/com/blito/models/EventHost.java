@@ -47,8 +47,12 @@ public class EventHost {
 	@Column(name="twitter_link")
 	private String twitterLink;
 	
+	private String eventHostLink;
+	
 	@Column(name="linkedin_link")
 	private String linkedinLink;
+	
+	private long views;
 	
 	@Column(name="event_type")
 	private String hostType;
@@ -56,7 +60,6 @@ public class EventHost {
 	@ManyToOne(targetEntity=User.class, optional=false)
 	@JoinColumn(name="userId")
 	User user;
-	
 	
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
     @JoinTable(name="event_host_image" , joinColumns=@JoinColumn(name="event_host_id"), 
@@ -73,6 +76,22 @@ public class EventHost {
 		events = new HashSet<>();
 	}
 	
+	public long getViews() {
+		return views;
+	}
+
+	public void setViews(long views) {
+		this.views = views;
+	}
+
+	public String getEventHostLink() {
+		return eventHostLink;
+	}
+
+	public void setEventHostLink(String eventHostLink) {
+		this.eventHostLink = eventHostLink;
+	}
+
 	public Set<Image> getImages() {
 		return images;
 	}

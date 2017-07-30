@@ -10,7 +10,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.filter.GenericFilterBean;
 
 import com.blito.models.User;
@@ -38,7 +37,7 @@ public class JwtFilter extends GenericFilterBean {
 		final HttpServletResponse servletResponse = (HttpServletResponse) response;
 		final String authHeader = servletRequest.getHeader("X-AUTH-TOKEN");
 		if (authHeader == null || !authHeader.startsWith("Bearer")) {
-			servletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
+			servletResponse.setStatus(401);
 			return;
 		}
 		final String token = authHeader.substring(7);

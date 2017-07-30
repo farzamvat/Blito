@@ -15,4 +15,5 @@ public interface EventHostRepository extends JpaRepository<EventHost,Long>, JpaS
 	Page<EventHost> findByUserUserIdAndIsDeletedFalse(long userId,Pageable pagable);
 	Optional<EventHost> findByEventHostIdAndIsDeletedFalse(long eventHostId);
 	Page<EventHost> findByIsDeletedFalse(Pageable pageable);
+	Optional<EventHost> findByEventHostLinkAndIsDeletedFalse(String link);
 }
