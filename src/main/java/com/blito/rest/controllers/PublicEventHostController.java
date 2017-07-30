@@ -40,6 +40,13 @@ public class PublicEventHostController {
 		return ResponseEntity.ok(eventHostService.get(eventHostId));
 	}
 	
+	@JsonView(View.EventHost.class)
+	@GetMapping("/link/{link}")
+	public ResponseEntity<EventHostViewModel> getByLink(@PathVariable String link)
+	{
+		return ResponseEntity.ok(eventHostService.findByEventLink(link));
+	}
+	
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "search event hosts")
 	@ApiResponses({@ApiResponse(code = 200, message="search ok", response = EventHostViewModel.class),

@@ -42,7 +42,6 @@ public class Application {
 		return new ModelAndView("index");
 	}
 
-
 	@GetMapping("/event-page/{eventLink}")
 	public ModelAndView event(@PathVariable String eventLink) {
 		return new ModelAndView("index");
@@ -50,6 +49,12 @@ public class Application {
 	
 	@GetMapping("/exchange-page/{exchangeLink}")
 	public ModelAndView exchangeBlit(@PathVariable String exchangeLink)
+	{
+		return new ModelAndView("index");
+	}
+	
+	@GetMapping("/event-host-page/{eventHostLink}")
+	public ModelAndView eventHost(@PathVariable String eventHostLink)
 	{
 		return new ModelAndView("index");
 	}
