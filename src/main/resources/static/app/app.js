@@ -21,7 +21,8 @@ angular.module('Blito',
         'homePageApi',
         'notFound',
         'ngPersian',
-        'textAngular'
+        'textAngular',
+        'ngFileSaver'
     ])
     .config(function ($httpProvider) {
         $httpProvider.interceptors.push('AuthInterceptors');

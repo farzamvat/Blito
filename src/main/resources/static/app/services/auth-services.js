@@ -149,6 +149,7 @@ angular.module('authServices', [])
             };
             switch (rejection.status) {
                 case 401 :
+                    console.log(401);
                     if(!inFlightAuthRequest) {
                         inFlightAuthRequest = $injector.get("$http").get(config.baseUrl + '/api/blito/v1.0/refresh', refreshToken)
                     }

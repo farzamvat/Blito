@@ -19,7 +19,8 @@ angular.module('User')
                                              $q,
                                              dateSetterService,
                                              imageServices,
-                                             $window) {
+                                             $window,
+                                             FileSaver) {
         var userProfile = this;
 
         $scope.userData = userInfo.getData();
@@ -932,7 +933,9 @@ angular.module('User')
                     $scope.mapMarkerClickCheckEvent = true;
                     setInitMaps('makeEventSection');
                     $scope.showTimeForms = [{blitTypes : [{}]}];
-
+                    $timeout(function () {
+                        dateSetterService.initDate("eventDateClass0");
+                    }, 1000);
                     $scope.createEventSpinner = false;
                     $scope.createEventNotif = true;
                     $scope.createEventErrorNotif = false;
@@ -1404,12 +1407,31 @@ angular.module('User')
         $scope.getTicket = function (trackCode) {
             $window.open('/payment/'+trackCode);
         };
+        $scope.dateClassGetTicket = function (i) {
+            return "classDateTicket"+i;
+        };
+        $scope.getTicketsSubmit = function (index) {
+            ticketsService.getExcelTickets($scope.eventDatesTickets[index].eventDateId)
+                .then(function (data) {
+                    var excelData = new Blob([data.data], { type: 'application/vnd.ms-excel;charset=UTF-8'});
+                    FileSaver.saveAs(excelData, 'blits.xls');
+                })
+                .catch(function (data) {
+                    console.log(data);
+                })
+        };
         $scope.showTickets = function (index) {
             $scope.eventTicketsPageChanged = function (newPage) {
                 $scope.getEventTickets(newPage);
             };
-            $scope.getEventTickets = function (pageNumber) {
+            $scope.eventDatesTickets = $scope.userEvents[index].eventDates;
+            $timeout(function () {
+                for(var i = 0 ; i < $scope.eventDatesTickets.length; i++) {
+                    $(".classDateTicket"+i).val(persianDate($scope.eventDatesTickets[i].date).format("dddd,DD MMMM, ساعت HH:mm"));
+                }
+            }, 500);
 
+            $scope.getEventTickets = function (pageNumber) {
                 ticketsService.getEventTickets(pageNumber, $scope.userEvents[index].eventId)
                     .then(function (data) {
                         $scope.totalTicketNumber = data.data.totalElements;
