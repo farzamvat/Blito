@@ -2985,6 +2985,7 @@ table td{
     }
     .slick-next, .slick-prev, .slick-next::before, .slick-prev::before {
         display: none;
+        background: none;
     }
     .exchangeTicketText {
         margin-top: 30px;
