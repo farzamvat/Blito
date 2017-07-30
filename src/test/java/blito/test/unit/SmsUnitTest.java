@@ -24,8 +24,12 @@ public class SmsUnitTest {
 	@Test
 	public void sendSmsKaveNegar()
 	{
-		ResponseEntity<String> response = rest.getForEntity("https://api.kavenegar.com/v1/"+ apiKey + "/sms/send.json?receptor=09127976837,09124337522&message=خدمات پیام کوتاه کاوه نگار", String.class);
+
+		ResponseEntity<String> response = rest.getForEntity("https://api.kavenegar.com/v1/"+ apiKey + "/verify/lookup.json?receptor=09127976837&token=852596&template=Blito", String.class);
+		System.out.println("******************************");
 		System.out.println(response.getBody());
+		System.out.println("******************************");
+
 		
 	}
 }
