@@ -48,12 +48,12 @@ public class JwtFilter extends GenericFilterBean {
 			if (currentUser.isPresent()) {
 				SecurityContextHolder.setCurrentUser(currentUser.get());
 			} else {
-				servletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
+				servletResponse.setStatus(401);
 				return;
 			}
 
 		} catch (final Exception e) {
-			servletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
+			servletResponse.setStatus(401);
 			return;
 		}
 		chain.doFilter(request, response);
