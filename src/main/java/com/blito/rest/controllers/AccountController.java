@@ -96,7 +96,7 @@ public class AccountController {
 					u.setActivationKey(null);
 					u = userRepository.save(u);
 					return new ModelAndView("activationSuccess").addObject("firstname", u.getFirstname())
-							.addObject("serverAddresss", serverAddress);
+							.addObject("serverAddress", serverAddress);
 				} else {
 					return new ModelAndView("activationFailed")
 							.addObject("message", ResourceUtil.getMessage(Response.INVALID_ACTIVATION_KEY))
