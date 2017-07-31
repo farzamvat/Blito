@@ -55,6 +55,9 @@ public class EventHostViewModel {
 	boolean isDeleted;
 	
 	@JsonView(View.SimpleEventHost.class)
+	private String eventHostLink;
+	
+	@JsonView(View.SimpleEventHost.class)
 	Set<ImageViewModel> images;
 	
 	public EventHostViewModel()
@@ -65,6 +68,14 @@ public class EventHostViewModel {
 	@JsonProperty("isDeleted")
 	public boolean isDeleted() {
 		return isDeleted;
+	}
+
+	public String getEventHostLink() {
+		return eventHostLink;
+	}
+
+	public void setEventHostLink(String eventHostLink) {
+		this.eventHostLink = eventHostLink;
 	}
 
 	public void setDeleted(boolean isDeleted) {

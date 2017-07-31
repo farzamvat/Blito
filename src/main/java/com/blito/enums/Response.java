@@ -76,6 +76,7 @@ public enum Response {
 	PAYMENT_PENDING("info.payment.pending"),
 	PAYMENT_ERROR("info.payment.error"),
 	EVENT_HOST_CAN_NOT_DELETE_WHEN_EVENT_EXISTS("error.event.host.can.not.delete.when.event.exists"),
+	EVENT_HOST_LINK_ALREADY_EXIST("error.event.host.link.already.exists"),
 	BLIT_RECIEPT("blit.reciept");
     
 

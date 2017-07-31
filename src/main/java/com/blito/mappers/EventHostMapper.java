@@ -25,6 +25,7 @@ public class EventHostMapper implements GenericMapper<EventHost,EventHostViewMod
 		eventHost.setTwitterLink(vmodel.getTwitterLink());
 		eventHost.setWebsiteLink(vmodel.getWebsiteLink());
 		eventHost.setTelephone(vmodel.getTelephone());
+		eventHost.setEventHostLink(vmodel.getEventHostLink());
 		return eventHost;
 	}
 
@@ -42,6 +43,7 @@ public class EventHostMapper implements GenericMapper<EventHost,EventHostViewMod
 		vmodel.setWebsiteLink(eventHost.getWebsiteLink());
 		vmodel.setTelephone(eventHost.getTelephone());
 		vmodel.setDeleted(eventHost.isDeleted());
+		vmodel.setEventHostLink(eventHost.getEventHostLink());
 		vmodel.setImages(imageMapper.createFromEntities(eventHost.getImages()));
 		return vmodel;
 	}
@@ -57,6 +59,7 @@ public class EventHostMapper implements GenericMapper<EventHost,EventHostViewMod
 		eventHost.setTwitterLink(vmodel.getTwitterLink());
 		eventHost.setWebsiteLink(vmodel.getWebsiteLink());
 		eventHost.setTelephone(vmodel.getTelephone());
+		eventHost.setEventHostLink(vmodel.getEventHostLink());
 		return eventHost;
 	}
 }
