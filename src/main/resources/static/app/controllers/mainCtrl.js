@@ -185,8 +185,6 @@ angular.module('menuPagesModule', [])
         $scope.isActive = function (viewLocation) {
             return viewLocation === $location.path();
         };
-        $scope.$on('$viewContentLoaded', function(event) {
-            $window.ga('send', 'pageview', { page: $location.url() });
-        });
+
     });
 
