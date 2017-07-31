@@ -155,7 +155,7 @@ public class AccountController {
 	@ApiResponses({ @ApiResponse(code = 200, message = "", response = ResultVm.class),
 			@ApiResponse(code = 400, message = "ValidationException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
-	@PostMapping("/forget-password")
+	@GetMapping("/forget-password")
 	public DeferredResult<ResponseEntity<?>> forgetPassword(@RequestParam String email) {
 		DeferredResult<ResponseEntity<?>> deferred = new DeferredResult<ResponseEntity<?>>();
 		if (!Pattern.compile(Constants.EMAIL_REGEX).matcher(email).matches()) {
