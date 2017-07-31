@@ -87,6 +87,10 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 templateUrl : 'app/views/pages/user-ticket-error.html',
                 authenticated: false
             })
+            .when('/googleff49a2b1f8ef08ba.html ', {
+                templateUrl : 'app/views/pages/googleff49a2b1f8ef08ba.html',
+                authenticated: false
+            })
             .otherwise({redirectTo: '/not-found'})
     });
 
