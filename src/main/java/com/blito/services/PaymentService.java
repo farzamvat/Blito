@@ -82,7 +82,7 @@ public class PaymentService {
 				Map<String,Object> map = new HashMap<>();
 				map.put("blit", persistedBlit);
 				mailService.sendEmail(blit.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map), ResourceUtil.getMessage(Response.BLIT_RECIEPT));
-				smsService.sendBlitRecieptSms(blit.getCustomerMobileNumber(), blit.getCustomerName(), blit.getEventName(), blit.getTrackCode());
+				smsService.sendBlitRecieptSms(blit.getCustomerMobileNumber(), blit.getTrackCode());
 				return persistedBlit;
 			}
 			else {
