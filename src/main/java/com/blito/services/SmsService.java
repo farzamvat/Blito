@@ -17,9 +17,10 @@ public class SmsService {
 
 	private final Logger log = LoggerFactory.getLogger(SmsService.class);
 	
-	public void sendBlitRecieptSms(String receptor, String token, String token2, String token3) {
+	public void sendBlitRecieptSms(String receptor, String token) {
+		
 		ResponseEntity<String> response = rest.getForEntity("https://api.kavenegar.com/v1/" + apiKey
-				+ "/verify/lookup.json?receptor=" + receptor + "&token=" + token + "6&template=" + "BlitoTrackCode",
+				+ "/verify/lookup.json?receptor=" + receptor + "&token=" + token +"&template=" + "BlitoTrackCode",
 				String.class);
 		
 		log.debug(response.getBody());

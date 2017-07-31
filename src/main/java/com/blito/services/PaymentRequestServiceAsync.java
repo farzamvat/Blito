@@ -150,7 +150,7 @@ public class PaymentRequestServiceAsync {
 			map.put("blit", responseBlit);
 			mailService.sendEmail(responseBlit.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map),
 					ResourceUtil.getMessage(Response.BLIT_RECIEPT));
-			smsService.sendBlitRecieptSms(responseBlit.getCustomerMobileNumber(), responseBlit.getCustomerName(), responseBlit.getEventName(), responseBlit.getTrackCode());
+			smsService.sendBlitRecieptSms(responseBlit.getCustomerMobileNumber(), responseBlit.getTrackCode());
 			return CompletableFuture.completedFuture(responseBlit);
 		} else {
 			if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getTotalAmount())
