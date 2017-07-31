@@ -67,8 +67,7 @@ angular.module('eventsPageModule')
             $timeout(function () {
                 for(var i = 0 ; i < $scope.eventFlatDates.length; i++) {
                     dateSetterService.initDate("classDate"+i);
-                    $scope.eventFlatDates[i].persianDate = persianDate($scope.eventFlatDates[i].date).format("dddd,DD MMMM, ساعت HH:mm");
-                    $(".classDate"+i).val(persianDate($scope.eventFlatDates[i].date).format("dddd,DD MMMM, ساعت HH:mm"));
+                    $(".classDate"+i).text(persianDate($scope.eventFlatDates[i].date).format("dddd,DD MMMM, ساعت HH:mm"));
                 }
             }, 300);
         };

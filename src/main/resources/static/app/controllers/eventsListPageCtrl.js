@@ -11,6 +11,7 @@ angular.module('eventsPageModule', [])
         $scope.getEventsByTypeData = function (type,page) {
             eventService.getEventsByType(type, page)
                 .then(function (data) {
+                    console.log(data);
                     $scope.totalEventsNumber = data.data.totalElements;
                     $scope.eventList = $scope.catchImagesEvents(data.data.content);
                     $scope.eventList = $scope.eventList.map(eventDetailService.calculateFreeBlits);
