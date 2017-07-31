@@ -23,18 +23,20 @@ angular.module('Blito',
         'ngPersian',
         'textAngular',
         'ngFileSaver',
-        'angular-google-analytics'
+        'angulartics',
+        'angulartics.google.analytics'
     ])
-    .config(function ($httpProvider, AnalyticsProvider) {
+    .config(function ($httpProvider, $analyticsProvider) {
         $httpProvider.interceptors.push('AuthInterceptors');
         if (!$httpProvider.defaults.headers.get) {
             $httpProvider.defaults.headers.get = {};
         }
         $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
         $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
-        AnalyticsProvider.setAccount('UA-103668411-1');
+        $analyticsProvider.settings.ga.account = 'UA-103668411-1';
+        $analyticsProvider.firstPageview(true);
+        $analyticsProvider.withBase(true);
     })
-    .run(['Analytics', function (Analytics) {}])
     .constant('config', {
         baseUrl : 'https://bili.to',
         redirectToUrlAfterLogin : {url : '/'}

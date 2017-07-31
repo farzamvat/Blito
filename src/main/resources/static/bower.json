@@ -26,6 +26,7 @@
     "angular-persian": "2.0.3",
     "textAngular": "1.5.16",
     "angular-file-saver": "1.1.3",
-    "angular-google-analytics": "1.1.9"
+    "angulartics-google-analytics": "0.4.0",
+    "angulartics": "1.4.0"
   }
 }
