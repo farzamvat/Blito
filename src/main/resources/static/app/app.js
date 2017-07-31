@@ -33,7 +33,6 @@ angular.module('Blito',
         }
         $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
         $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
-        // AnalyticsProvider.setAccount('UA-103668411-1');
         $analyticsProvider.settings.ga.account = 'UA-103668411-1';
         $analyticsProvider.firstPageview(true);
         $analyticsProvider.withBase(true);
