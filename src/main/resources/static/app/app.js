@@ -22,16 +22,19 @@ angular.module('Blito',
         'notFound',
         'ngPersian',
         'textAngular',
-        'ngFileSaver'
+        'ngFileSaver',
+        'angular-google-analytics'
     ])
-    .config(function ($httpProvider) {
+    .config(function ($httpProvider, AnalyticsProvider) {
         $httpProvider.interceptors.push('AuthInterceptors');
         if (!$httpProvider.defaults.headers.get) {
             $httpProvider.defaults.headers.get = {};
         }
         $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
         $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+        AnalyticsProvider.setAccount('UA-103668411-1');
     })
+    .run(['Analytics', function (Analytics) {}])
     .constant('config', {
         baseUrl : 'https://bili.to',
         redirectToUrlAfterLogin : {url : '/'}
