@@ -53,6 +53,8 @@ public class PaymentService {
 	@Autowired
 	private MailService mailService;
 	@Autowired
+	private SmsService smsService;
+	@Autowired
 	private BlitService blitService;
 	private static Object paymentCompletionLock = new Object();
 	private final Logger log = LoggerFactory.getLogger(PaymentService.class);
@@ -80,6 +82,7 @@ public class PaymentService {
 				Map<String,Object> map = new HashMap<>();
 				map.put("blit", persistedBlit);
 				mailService.sendEmail(blit.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map), ResourceUtil.getMessage(Response.BLIT_RECIEPT));
+				smsService.sendBlitRecieptSms(blit.getCustomerMobileNumber(), blit.getCustomerName(), blit.getEventName(), blit.getTrackCode());
 				return persistedBlit;
 			}
 			else {
