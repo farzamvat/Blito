@@ -1,7 +1,11 @@
 package com.blito.rest.controllers;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,7 @@ import com.blito.mappers.UserMapper;
 import com.blito.models.User;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.account.ChangePasswordViewModel;
@@ -156,20 +161,14 @@ public class AccountController {
 			@ApiResponse(code = 400, message = "ValidationException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
 	@GetMapping("/forget-password")
-	public DeferredResult<ResponseEntity<?>> forgetPassword(@RequestParam String email) {
-		DeferredResult<ResponseEntity<?>> deferred = new DeferredResult<ResponseEntity<?>>();
-		if (!Pattern.compile(Constants.EMAIL_REGEX).matcher(email).matches()) {
-			deferred.setErrorResult(new ValidationException(ResourceUtil.getMessage(ControllerEnumValidation.EMAIL)));
-			return deferred;
-		}
-		return userAccountService.forgetPassword(email).thenApply(result -> {
-			deferred.setResult(ResponseEntity.accepted()
-					.body(new ResultVm(ResourceUtil.getMessage(Response.RESET_PASSWORD_EMAIL_SENT))));
-			return deferred;
-		}).exceptionally(throwable -> {
-			deferred.setErrorResult(throwable.getCause());
-			return deferred;
-		}).join();
+	public CompletionStage<ResponseEntity<?>> forgetPassword(@RequestParam String email, HttpServletRequest req,
+			HttpServletResponse res) {
+		if (!Pattern.compile(Constants.EMAIL_REGEX).matcher(email).matches())
+			throw new ValidationException(ResourceUtil.getMessage(ControllerEnumValidation.EMAIL));
+		return CompletableFuture.runAsync(() -> userAccountService.forgetPassword(email))
+				.handle((result, throwable) -> HandleUtility.generateResponseResult(
+						() -> new ResultVm(ResourceUtil.getMessage(Response.RESET_PASSWORD_EMAIL_SENT)), throwable, req,
+						res));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //

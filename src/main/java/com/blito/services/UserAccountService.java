@@ -122,7 +122,7 @@ public class UserAccountService {
 	}
 	
 	@Transactional
-	public CompletableFuture<Void> forgetPassword(String email)
+	public void forgetPassword(String email)
 	{
 		User user = userRepository.findByEmail(email)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
@@ -130,11 +130,9 @@ public class UserAccountService {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.USER_IS_BANNED));
 		user.setResetKey(RandomUtil.generatePassword());
 		user.setPassword(encoder.encode(user.getResetKey()));
-		return CompletableFuture.runAsync(() -> mailService.sendPasswordResetEmail(user))
-				.thenAccept(result -> userRepository.findByEmail(email).ifPresent(u -> {
-					u.setResetKey(null);
-					userRepository.save(user);
-				}));
+		mailService.sendPasswordResetEmail(user);
+		user.setResetKey(null);
+		userRepository.save(user);
 	}
 	
 	public CompletableFuture<User> changePassword(ChangePasswordViewModel vmodel)
