@@ -78,7 +78,6 @@
 </head>
 <body ng-cloak="">
 
-<!-- Fixed navbar -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
 
 
@@ -106,7 +105,6 @@
             <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema') || isActive('/sports') || isActive('/theater') || isActive('/concert') || isActive('/other') || isActive('/tour') || isActive('/workshop')}">
                 <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-calendar" aria-hidden="true"></i> رویداد ها   <span class="caret"></span></a>
                 <ul class="dropdown-menu textAlignRight">
-                    <!--<li role="separator" class="divider"></li>-->
                     <li><a href="/concert">کنسرت</a></li>
                     <li><a href="/tour">تور</a></li>
                     <li><a href="/theater">تئاتر</a></li>
@@ -115,9 +113,6 @@
                     <li><a href="/cinema">سینما</a></li>
                     <li><a href="/other">سایر</a></li>
 
-                    <!--<li class="dropdown-header">Nav header</li>-->
-                    <!--<li><a href="#">Separated link</a></li>-->
-                    <!--<li><a href="#">One more separated link</a></li>-->
                 </ul>
             </li>
             <li class="floatRight" ng-class="{ active: isActive('/exchange-tickets')}"><a href="/exchange-tickets"><i class="fa fa-ticket" aria-hidden="true"></i> بلیت های تعویضی   </a>
@@ -127,7 +122,7 @@
             <li ng-show="logoutMenu" ng-click="logout()" class="floatRight signInButton"><a href=""><i class="fa fa-sign-out" aria-hidden="true"></i> خروج</a></li>
 
         </ul>
-    </div><!--/.nav-collapse -->
+    </div>
 </nav>
 <div class="container">
 
@@ -137,7 +132,7 @@
     </div>
 
 
-</div><!-- container-->
+</div>
 <footer id="footer">
     <div class="row">
         <div class=" col-sm-6 col-md-6 paddingtop-bottom footerleft floatRight textAlignRight ">
@@ -181,11 +176,6 @@
             </div>
         </div>
     </div>
-        <!--<div class="col-md-4 col-sm-4 paddingtop-bottom footerleft floatRight textAlignRight">-->
-        <!--<div class="logofooter">-->
-        <!--</div>-->
-        <!--</div>-->
-
 
 </footer>
 <div ng-include="'app/views/partials/registerModal.html'"></div>
