@@ -6,6 +6,7 @@
         <div class="modal-content registerBody">
             <br>
             <div class="bs-example bs-example-tabs">
+
                 <ul id="myTab" class="nav nav-tabs">
                     <li class=""><a data-target="#signup" class="signInButton tabAnchor registerTab" data-toggle="tab">ثبت نام</a></li>
                     <li class="active"><a data-target="#signin" class="signInButton tabAnchor registerTab" data-toggle="tab">ورود</a></li>
@@ -56,6 +57,7 @@
                                 <div class="controls">
                                     <button id="signInButton" ng-disabled="signInForm.$invalid" ng-click="login(loginFields)" name="signin" class="btn btn-success btn-lg btnLogin">ورود <i ng-show="submitLogin" class="fa fa-spinner fa-spin"></i></button>
                                 </div>
+                                <p class="text-center marginTop30 forgetPassword"><a ng-click="forgetPassModal()">رمز خود را فراموش کرده اید؟</a></p>
                             </div>
                         </form>
 
