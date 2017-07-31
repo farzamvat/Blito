@@ -19,7 +19,7 @@ public class SmsService {
 	
 	public void sendBlitRecieptSms(String receptor, String token, String token2, String token3) {
 		ResponseEntity<String> response = rest.getForEntity("https://api.kavenegar.com/v1/" + apiKey
-				+ "/verify/lookup.json?receptor=" + receptor + "&token=" + token + "6&template=" + "BlitoTrackCode",
+				+ "/verify/lookup.json?receptor=" + receptor + "&token=" + token + "&token2="+ token2 + "&token3=" + token3 +"&template=" + "BlitoTrackCode",
 				String.class);
 		
 		log.debug(response.getBody());
