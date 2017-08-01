@@ -67,7 +67,7 @@
                             <td  class="dataCenter">
                                 {{item.name}}
                             </td>
-                            <td class="dataCenter eventPageTimeField"><input required  ng-class="setClass($index)"  disabled  type="text" class="form-group datePickerFormatEventPage marginBottom0" readonly></td>
+                            <td class="dataCenter eventPageTimeField"><span  ng-class="setClass($index)"    class="form-group  marginBottom0" ></span></td>
 
                             <td ng-if="item.price === 0" class="dataCenter">رایگان</td>
                             <td ng-if="item.price !== 0" class="dataCenter">{{ item.price | number | pNumber}}</td>

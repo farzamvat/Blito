@@ -14,7 +14,8 @@ angular.module('menuPagesModule', [])
                                       AuthToken,
                                       refresh,
                                       config,
-                                      dataService) {
+                                      dataService,
+                                      updateInfo) {
         var main = this;
         main.checkingSession = false;
         $scope.loadPage = false;
@@ -159,7 +160,27 @@ angular.module('menuPagesModule', [])
                 })
             ;
         };
-
+        $scope.forgetPassModal = function () {
+            $("#registrationModal").modal("hide");
+            $("#forgetPass").modal("show");
+            document.getElementById("successForgetPass").style.display = "none";
+            document.getElementById("errorForgetPass").style.display = "none";
+        };
+        $scope.resetPasswordSubmit = function (email) {
+            document.getElementById("successForgetPass").style.display = "none";
+            document.getElementById("errorForgetPass").style.display = "none";
+            document.getElementById("spinnerForgetPass").style.display = "inline";
+            updateInfo.resetPassword(email)
+                .then(function () {
+                    document.getElementById("spinnerForgetPass").style.display = "none";
+                    document.getElementById("successForgetPass").style.display = "block";
+                })
+                .catch(function (data) {
+                    document.getElementById("spinnerForgetPass").style.display = "none";
+                    document.getElementById("errorForgetPass").style.display = "block";
+                    document.getElementById("errorForgetPass").innerHTML= data.data.message;
+                })
+        };
 
         $scope.isActive = function (viewLocation) {
             return viewLocation === $location.path();

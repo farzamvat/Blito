@@ -549,15 +549,7 @@
                                                     <textarea ng-model="eventFields.description" required maxlength="200" id="eventDescription"  type="text"  class="form-group textAreaForm" ></textarea>
                                                 </div>
                                             </div>
-                                            <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
-                                                <!--<div class="col-xs-10 floatRight text-center">-->
-                                                    <!--<label class="registerLabel floatRight" for="eventDescription" >عوامل رویداد :</label>-->
-                                                <!--</div>-->
-                                                <!--<div class="col-xs-11  floatRight ">-->
-                                                    <!--<textarea ng-model="eventFields.members" required  id="eventMembers"  type="text"  class="form-group textAreaForm" ></textarea>-->
-                                                <!--</div>-->
 
-                                            </div>
                                         </div>
                                         <div class="row marginTop30">
                                             <div class="form-group col-xs-11  formRegGroup  floatRight ">
@@ -805,7 +797,7 @@
                                             <div class="form-group col-xs-12 col-sm-12 formRegGroup floatRight marginTop30 " ng-repeat="showTime in showTimeForms">
                                                 <div class="col-xs-10 col-xs-offset-1 showTimeSection">
                                                     <div class="col-xs-12">
-                                                        <h4 class="text-center" > سانس  {{$index + 1}}</h4>
+                                                        <h4 class="text-center" > سانس  {{$index + 1 | pNumber}}</h4>
                                                         <div class="col-xs-12 col-sm-6 floatRight text-center">
 
                                                             <label class="registerLabel" >تاریخ و ساعت : </label>
@@ -824,7 +816,7 @@
 
                                                             <div class="col-xs-12  col-sm-12 floatRight text-center">
 
-                                                                <label class="registerLabel" for="eventTicket" >{{$index + 1}}. نوع بلیت :</label>
+                                                                <label class="registerLabel" for="eventTicket" >{{$index + 1 | pNumber}}. نوع بلیت :</label>
                                                             </div>
 
                                                         </div>
@@ -920,10 +912,10 @@
 
                                         <div class="form-group col-xs-12 col-sm-6 formRegGroup marginTop30 floatRight">
                                             <div class="col-xs-10 floatRight text-center">
-                                                <label class="registerLabel floatRight" for="eventPlannerWebsite" > لینک وبسایت  :</label>
+                                                <label class="registerLabel floatRight" for="eventPlannerWebsite" > لینک وبسایت  :(اختیاری)</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
-                                                <input height="60" id="eventPlannerWebsite" required  ng-model="eventPlanner.website" url-validation  type="text"  class="form-group registerInput" >
+                                                <input height="60" id="eventPlannerWebsite"   ng-model="eventPlanner.website" url-validation  type="text"  class="form-group registerInput" >
                                             </div>
                                         </div>
 
@@ -1001,7 +993,7 @@
                                         </div>
                                     </fieldset>
                                     <fieldset class="marginBottom20 fieldsetStyle marginTop30">
-                                        <legend class="legendStyle">لینک های  شبکه اجتماعی </legend>
+                                        <legend class="legendStyle">لینک های  شبکه اجتماعی (اختیاری)</legend>
                                         <div class="form-group col-sm-6 formRegGroup floatRight">
                                             <div class="col-xs-10 floatRight text-center">
                                                 <label class="registerLabel floatRight" for="plannerTelegram" > تلگرام :</label>

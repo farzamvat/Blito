@@ -58,7 +58,13 @@ angular.module('authServices', [])
         };
         updateInfo.changePasswordSubmit = function (changePassword) {
             return $http.post(config.baseUrl + '/api/blito/v1.0/account/change-password', changePassword);
-        }
+        };
+        updateInfo.resetPassword = function (forgetPassEmail) {
+            var queryParam = {
+                params : {email: forgetPassEmail}
+            };
+            return $http.get(config.baseUrl + '/api/blito/v1.0/forget-password', queryParam);
+        };
     })
     .service('userCreate', function ($http, config) {
         var userService = this;
