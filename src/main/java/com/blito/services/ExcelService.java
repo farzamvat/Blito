@@ -126,4 +126,19 @@ public class ExcelService {
 		model.put("numericcolumns", Arrays.asList("EventHostId"));
 		return model;
 	}
+	
+	public Map<String, Object> testPdfData(){
+		Map<String, Object> model = new HashMap<String, Object>();
+
+		model.put("event name", "کنسرت نیلز");
+		model.put("customer name", "هستی سحابی");
+		model.put("customer mobile", "۰۹۱۲۷۹۷۶۸۳۷");
+		model.put("customer email", "hasti.sahabi@gmail.com");
+		model.put("event date", "شنبه ۱۱ اردیبهشت، ساعت ۲۱:۰۰");
+		model.put("track code", "92322178");
+		model.put("blit type", "VIP");
+		model.put("count", 5);
+		model.put("event address", "میدان الف، خیابان چهارم، موسسه‌ی ققنوس");
+		return model;
+	}
 }
