@@ -4,7 +4,7 @@
     <title>بلیتو</title>
     <style type="text/css">
         .container{
-            background:rgb(252, 183, 49);
+            background:#ddd;
             width:100%;
             overflow: hidden;
             height:100%;
@@ -24,15 +24,14 @@
             position: absolute;
         }
         .textHolder{
-            color:#fff;
-            font-size: 120%;
+            color:#444;
+            font-size: 25px;
             float:right;
             font-weight: bold;
             right:20%;
             left:20%;
             text-align: center;
             margin-top:10%;
-            text-shadow: 2px 2px 5px #222;
             position: absolute;
             display: inline;
         }
@@ -48,32 +47,13 @@
             border-radius: 5px;
             vertical-align: middle;
             padding: 2px;
-            box-shadow: 2px 2px 5px #222;
+            box-shadow: 0px 0px 10px #222;
             margin:auto;
         }
-        .beauifier{
-            height:100%;
-            transform:skew(15deg);
-            width:250px;
-            float: left;
-            left:-89px;
-            background: #4e1517;
-            position: absolute;
-            box-shadow: 1px 1px 10px #222;
-        }
-        .beauifier2{
-            height:100%;
-            transform:skew(-15deg);
-            width: 300px;
-            float: left;
-            left:-150px;
-            background: #ddd;
-            position: absolute;
-            box-shadow: 1px 1px 10px #222;
-        }
+
         .beauifier3{
             height:100%;
-            width:45%;
+            width:10%;
             float: right;
             z-index: 1;
             right:0px;
@@ -81,29 +61,38 @@
             background: url("https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/4bab1646-f321-4316-90bc-6453bcb4f94a.png");
             box-shadow: 1px 1px 10px #222;
         }
+        .beauifier{
+            height:100%;
+            width:5%;
+            float: right;
+            right:10%;
+            position: absolute;
+            background: rgb(252,183,49);
+            box-shadow: 1px 1px 10px #222;
+        }
         #logo{
             width:10% !important;
             height:auto;
-            top:44.5%;
-            right:40%;
+            top:5%;
+            right:5%;
             z-index: 2;
             float:right;
             position: absolute;
             animation: logo 1.5s infinite;
         }
         #logoText{
-            width:10% !important;
+            width:20% !important;
             height:auto;
-            top:44.5%;
-            right:50%;
+            bottom:5%;
+            right:70%;
             float:right;
             position: absolute;
         }
 @keyframes logo {
-    0% {transform:scaleX(1) scaleY(1)}
+    0% {transform:scaleX(1) scaleY(1);}
     50% {
         transform:scaleX(0) scaleY(1.2);}
-    100% {transform:scaleX(1) scaleY(1)}
+    100% {transform:scaleX(1) scaleY(1);}
 
 }
     </style>
@@ -111,24 +100,19 @@
 <body>
 <div class="container">
 <div class="logoContainer">
-    <div class="beauifier3">
-
-        <div class="textHolder">
-            <p style="color:rgb(252, 183, 49);display:inline">فلانی</p><p style="display: inline">   عزیز</p>
-            <p>.حساب کاربری شما با موفقیت تایید شد</p>
-            <p>. هم اکنون به صفحه اصلی هدایت خواهید شد</p>
-            <a href="www.blito.ir">
-                <div class="textHolderButton">
+    <div class="beauifier3"></div>
+    <div class="textHolder">
+        <p style="color:rgb(252,183,49);display:inline">فلانی</p><p style="display: inline">   عزیز</p>
+        <p>.حساب کاربری شما با موفقیت تایید شد</p>
+        <p>. هم اکنون به صفحه اصلی هدایت خواهید شد</p>
+        <a href="www.blito.ir">
+            <div class="textHolderButton">
                 <p>ورود به سایت</p>
-                </div>
-            </a>
-        </div>
-
+            </div>
+        </a>
     </div>
-    <div class="beauifier2"></div>
     <div class="beauifier"></div>
     <img id="logo" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/02cfa661-9a18-45d9-ad48-2f747472a307.png"/>
-    <img id="logoText" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/a32fae58-aef3-4432-934a-91c2011c3606.png"/>
 
 </div>
 <footer class="bottomSection">

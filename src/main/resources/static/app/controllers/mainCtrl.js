@@ -185,6 +185,13 @@ angular.module('menuPagesModule', [])
         $scope.isActive = function (viewLocation) {
             return viewLocation === $location.path();
         };
-
+        var isOpen =false;
+        $scope.DropDownMenue = function () {
+            isOpen=!isOpen;
+            if(isOpen)
+                $(angular.element(document.getElementsByClassName('dropdown-menu'))).slideDown(300);
+            else
+                $(angular.element(document.getElementsByClassName('dropdown-menu'))).slideUp(300);
+        };
     });
 
