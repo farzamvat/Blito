@@ -815,7 +815,9 @@ angular.module('User')
         //==================================================== EVENT PLANNER SUBMIT =================================
         $scope.submitPlannerSpinner = false;
         $scope.submitPlannerNotif = false;
+        $scope.plannerSubmitOnce = false;
         $scope.submitEventPlanner = function (plannerData) {
+            $scope.plannerSubmitOnce = true;
             $scope.submitPlannerNotif = false;
             var eventPlannerData = {
                 hostName: plannerData.name,
@@ -847,6 +849,7 @@ angular.module('User')
             $scope.submitPlannerSpinner = true;
             plannerService.submitPlannerForm(eventPlannerData)
                 .then(function (data, status) {
+                    $scope.plannerSubmitOnce = false;
                     $scope.submitPlannerSpinner = false;
                     $scope.submitPlannerNotif = true;
                     $scope.submitPlannerErrorNotif = false;
@@ -859,6 +862,7 @@ angular.module('User')
                     angular.element(document.getElementsByClassName("coverPhotoUpload"))[0].src = '';
                     angular.element(document.getElementsByClassName("eventPlannerPhotoUpload"))[0].src = '';
                 }, function (data, status) {
+                    $scope.plannerSubmitOnce = false;
                     $scope.submitPlannerErrorNotif = true;
                     document.getElementById("submitPlannerErrorNotif").innerHTML= data.data.message;
                     $scope.submitPlannerSpinner = false;
@@ -872,10 +876,12 @@ angular.module('User')
         $scope.galleryFourUUID = null;
         $scope.galleryFiveUUID = null;
         $scope.gallerySixUUID = null;
+        $scope.eventSubmitOnce = false;
         $scope.eventDateClass = function (index) {
             return "eventDateClass"+index;
         };
         $scope.submitEvent = function (eventFields) {
+            $scope.eventSubmitOnce = true;
             $scope.createEventNotif = false;
             $scope.eventPhotoSuccess = false;
             $scope.eventPhotoOneSuccess = false;
@@ -923,6 +929,7 @@ angular.module('User')
 
             eventService.submitEventForm(eventSubmitData)
                 .then(function (data, status) {
+                    $scope.eventSubmitOnce = false;
                     angular.element(document.getElementsByClassName("profilePhotoUpload"))[0].src = '';
                     angular.element(document.getElementsByClassName("galleryOne"))[0].src = '';
                     angular.element(document.getElementsByClassName("galleryTwo"))[0].src = '';
@@ -943,6 +950,7 @@ angular.module('User')
                     $scope.eventFields = [];
 
                 }, function (data, status) {
+                    $scope.eventSubmitOnce = false;
                     $scope.createEventErrorNotif = true;
                     document.getElementById("createEventErrorNotif").innerHTML= data.data.message;
                     $scope.createEventSpinner = false;
@@ -952,8 +960,10 @@ angular.module('User')
         //==================================================== EXCHANGE SUBMIT =================================
         $scope.submitExchangeSpinner = false;
         $scope.submitExchangeNotif = false;
+        $scope.exchangeSubmitOnce = false;
 
         $scope.submitExchangeTicket = function (exchangeFields) {
+            $scope.exchangeSubmitOnce = true;
 
             $scope.submitExchangeNotif = false;
             var latLng = mapMarkerService.getMarker();
@@ -980,6 +990,7 @@ angular.module('User')
             }
             exchangeService.submitExchangeForm(exchangeData)
                 .then(function (data, status) {
+                    $scope.exchangeSubmitOnce = false;
                     $scope.submitExchangeSpinner = false;
                     $scope.submitExchangeNotif = true;
                     $scope.submitExchangeErrorNotif = false;
@@ -993,6 +1004,7 @@ angular.module('User')
                     angular.element(document.getElementsByClassName("exchangePhotoUpload"))[0].src = '';
 
                 }, function (data, status) {
+                    $scope.exchangeSubmitOnce = false;
                     $scope.submitExchangeErrorNotif = true;
                     $scope.submitExchangeSpinner = false;
                     $scope.exchangePhotoError = false;

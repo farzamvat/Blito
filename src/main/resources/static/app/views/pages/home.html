@@ -8,7 +8,7 @@
             </ol>
             <div class="carousel-inner" role="listbox" >
                 <div  ng-repeat="item in bannerData" class="item" ng-class="{active : $index === 0}">
-                    <img ng-src="{{item.newImage}}" alt="First slide " class="firstSliderSectionImage">
+                    <img ng-src="{{item.newImage}}" alt="{{item.name}}" class="firstSliderSectionImage">
                     <a href="{{url+item.eventLink}}" class="btn btn-success btn-lg buyTicketBanner"><i class="fa fa-ticket fa-1x" aria-hidden="true"></i>                       مشاهده و خرید بلیت
                     </a>
                 </div>

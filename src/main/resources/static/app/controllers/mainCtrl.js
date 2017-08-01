@@ -15,7 +15,8 @@ angular.module('menuPagesModule', [])
                                       refresh,
                                       config,
                                       dataService,
-                                      updateInfo) {
+                                      updateInfo,
+                                      $routeParams) {
         var main = this;
         main.checkingSession = false;
         $scope.loadPage = false;
@@ -101,6 +102,100 @@ angular.module('menuPagesModule', [])
             main.checkRefreshTokenValue();
             if(Auth.isLoggedIn()) {
                 main.setUserData();
+            }
+            switch ($location.path()) {
+                case '/':
+                    $scope.title = 'رویدادها';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'index';
+                    break;
+                case '/not-found' :
+                    $scope.title = 404;
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'noindex';
+                    break;
+                case '/about-us' :
+                    $scope.title = 'درباره ما';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'noindex';
+                    break;
+                case '/term-of-use' :
+                    $scope.title = 'قوانین';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'noindex,nofollow';
+                    break;
+                case '/privacy-policy' :
+                    $scope.title = 'حریم خصوصی';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'noindex,nofollow';
+                    break;
+                case '/sports' :
+                    $scope.title = 'سرگرمی';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'index';
+                    break;
+                case '/tour' :
+                    $scope.title = 'تور';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'index';
+                    break;
+                case '/theater' :
+                    $scope.title = 'تئاتر';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'index';
+                    break;
+                case '/concert' :
+                    $scope.title = 'کنسرت';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'index';
+                    break;
+                case '/cinema' :
+                    $scope.title = 'سینما';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'index';
+                    break;
+                case '/workshop' :
+                    $scope.title = 'کارگاه';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'index';
+                    break;
+                case '/other' :
+                    $scope.title = 'سایر';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'index';
+                    break;
+                case '/exchange-tickets' :
+                    $scope.title = 'آگهی بلیت';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'index';
+                    break;
+                case '/activate-user' :
+                    $scope.title = 'فعال سازی';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'noindex,nofollow';
+                    break;
+                case '/user-profile' :
+                    $scope.title = 'صفحه کاربر';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'noindex,nofollow';
+                    break;
+                default :
+                    if($location.path().indexOf('event-page') > -1) {
+                        $scope.title = $location.path().replace('/event-page/','').replace( /\d+/,'');
+                        $scope.pageDescription = 'توضیحات صفحه اصلی';
+                        $scope.robotValue = 'index';
+                    }
+                    if($location.path().indexOf('exchange-page') > -1) {
+                        $scope.title = $location.path().replace('/exchange-page/','').replace( /\d+/,'');
+                        $scope.pageDescription = 'توضیحات صفحه اصلی';
+                        $scope.robotValue = 'index';
+                    }
+                    if($location.path().indexOf('payment') > -1) {
+                        $scope.title = 'صفحه بلیت';
+                        $scope.pageDescription = 'توضیحات صفحه اصلی';
+                        $scope.robotValue = 'noindex,nofollow';
+                    }
+                    break;
             }
 
         });

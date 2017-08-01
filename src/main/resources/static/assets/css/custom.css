@@ -175,7 +175,7 @@ button.slick-next {
     padding: 15px 15px;
 }
 .categorySectionBackground {
-    background: url('../img/back.jpg') fixed;
+    background: url('../img/back.png') fixed;
 }
 .nav-dropdown-menu>li>a:focus, .nav-dropdown-menu>li>a:hover{
 background-color: #303030;
@@ -192,7 +192,7 @@ background-color: #303030;
 .blitoOffer {
     color : white;
     height: 500px;
-    background: url('../img/back.jpg') fixed;
+    background: url('../img/back.png') fixed;
     padding: 15px 20px;
     border-left: 2px solid #404040;
 }

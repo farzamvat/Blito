@@ -83,10 +83,6 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 templateUrl : 'app/views/pages/user-ticket.html',
                 authenticated: false
             })
-            .when('/payment/error/:message', {
-                templateUrl : 'app/views/pages/user-ticket-error.html',
-                authenticated: false
-            })
             .otherwise({redirectTo: '/not-found'})
     });
 

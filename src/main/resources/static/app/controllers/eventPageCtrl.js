@@ -36,7 +36,6 @@ angular.module('eventsPageModule')
                 mapMarkerService.setMarker($scope.eventDataDetails.latitude, $scope.eventDataDetails.longitude);
                 $scope.flatEventDates($scope.eventDataDetails.eventDates);
                 $scope.getImages(data.data);
-                console.log(data);
                 document.getElementById('members').insertAdjacentHTML('afterbegin',$scope.eventDataDetails.members);
                 document.getElementById('showStartTime').innerHTML = persianDate($scope.eventDataDetails.blitSaleStartDate).format("dddd,DD MMMM, ساعت HH:mm");
                 if($scope.eventDataDetails.aparatDisplayCode) {

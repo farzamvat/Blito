@@ -11,51 +11,60 @@
                         <legend class="legendStyle text-center">اطلاعات برگزارکننده </legend>
                         <div class="row">
 
-                        <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
-                            <div class="col-xs-10 floatRight text-center">
-                                <label class="registerLabel floatRight" for="PlannerName" >نام برگزارکننده :</label>
+                            <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
+                                <div class="col-xs-10 floatRight text-center">
+                                    <label class="registerLabel floatRight" for="PlannerName" >نام برگزارکننده :</label>
+                                </div>
+                                <div class="col-xs-11 floatRight ">
+                                    <input height="60" id="PlannerName" ng-model="eventPlannerEdit.hostName" required   type="text"  class="form-group registerInput" >
+                                </div>
                             </div>
-                            <div class="col-xs-11 floatRight ">
-                                <input height="60" id="PlannerName" ng-model="eventPlannerEdit.hostName" required   type="text"  class="form-group registerInput" >
-                            </div>
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
-                            <div class="col-xs-10 floatRight text-center">
-                                <label class="registerLabel floatRight" for="eventPlannerTelephone" > شماره تلفن برگزارکننده  :</label>
-                            </div>
-                            <div class="col-xs-11 floatRight ">
-                                <input height="60" id="eventPlannerTelephone" required ng-model="eventPlannerEdit.telephone "   type="text"  class="form-group registerInput" >
-                            </div>
+                            <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
+                                <div class="col-xs-10 floatRight text-center">
+                                    <label class="registerLabel floatRight" for="eventPlannerTelephone" > شماره تلفن برگزارکننده  :</label>
+                                </div>
+                                <div class="col-xs-11 floatRight ">
+                                    <input height="60" id="eventPlannerTelephone" required ng-model="eventPlannerEdit.telephone "   type="text"  class="form-group registerInput" >
+                                </div>
 
+                            </div>
                         </div>
                         <div class="row">
-                        <div class="form-group col-xs-12 col-sm-6 formRegGroup marginTop30 floatRight">
-                            <div class="col-xs-10 floatRight text-center">
-                                <label class="registerLabel floatRight" for="eventPlannerWebsite" > لینک وبسایت  :</label>
+                            <div class="form-group col-xs-12 col-sm-6 formRegGroup marginTop30 floatRight">
+                                <div class="col-xs-10 floatRight text-center">
+                                    <label class="registerLabel floatRight" for="eventPlannerWebsite" > لینک وبسایت  :</label>
+                                </div>
+                                <div class="col-xs-11 floatRight ">
+                                    <input height="60" id="eventPlannerWebsite"  url-validation ng-model="eventPlannerEdit.websiteLink"   type="text"  class="form-group registerInput" >
+                                </div>
                             </div>
-                            <div class="col-xs-11 floatRight ">
-                                <input height="60" id="eventPlannerWebsite" required url-validation ng-model="eventPlannerEdit.websiteLink"   type="text"  class="form-group registerInput" >
+                            <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight marginTop30">
+                                <div class="col-xs-11 floatRight text-center">
+                                    <label class="registerLabel floatRight" for="eventPlannerType">نوع برگزارکننده :</label>
+                                </div>
+                                <div class="col-xs-11 floatRight ">
+                                    <select id="eventPlannerType" required ng-model="eventPlannerEdit.hostType" placeholder="eventPlannerEdit.hostType" ng-options="o.v as o.n for o in [{n : 'نهاد', v: 'ORGANIZATION'},{n : 'کافی شاپ', v: 'COFFEESHOP'},{n : 'فرهنگسرا', v: 'CULTURALCENTER'},{n : 'تئاتر', v: 'THEATER'},{n : 'مؤسسه', v: 'INSTITUTION'},{n : 'فرد', v: 'INDIVIDUAL'}, {n : 'سایر', v: 'OTHER'}]" class="form-control dropDownList">
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight marginTop30">
-                            <div class="col-xs-11 floatRight text-center">
-                                <label class="registerLabel floatRight" for="eventPlannerType">نوع برگزارکننده :</label>
-                            </div>
-                            <div class="col-xs-11 floatRight ">
-                                <select id="eventPlannerType" required ng-model="eventPlannerEdit.hostType" placeholder="eventPlannerEdit.hostType" ng-options="o.v as o.n for o in [{n : 'نهاد', v: 'ORGANIZATION'},{n : 'کافی شاپ', v: 'COFFEESHOP'},{n : 'فرهنگسرا', v: 'CULTURALCENTER'},{n : 'تئاتر', v: 'THEATER'},{n : 'مؤسسه', v: 'INSTITUTION'},{n : 'فرد', v: 'INDIVIDUAL'}, {n : 'سایر', v: 'OTHER'}]" class="form-control dropDownList">
-                                </select>
-                            </div>
-                        </div>
                         </div>
                         <div class="row">
-                        <div class="form-group col-xs-12 col-sm-6 formRegGroup marginTop30 floatRight">
-                            <div class="col-xs-10 floatRight text-center">
-                                <label class="registerLabel floatRight" for="eventPlannerEditDescription" > توضیحات برگزارکننده :(حداکثر {{200 - eventPlannerEdit.description.length}} کاراکتر مجاز)</label>
+                            <div class="form-group col-xs-12 col-sm-6 formRegGroup marginTop30 floatRight">
+                                <div class="col-xs-10 floatRight text-center">
+                                    <label class="registerLabel floatRight" for="eventPlannerWebsite" > لینک برگزارکننده  :</label>
+                                </div>
+                                <div class="col-xs-11 floatRight ">
+                                    <input height="60" id="eventHostLink" required  ng-model="eventPlannerEdit.eventHostLink"   type="text"  class="form-group registerInput" >
+                                </div>
                             </div>
-                            <div class="col-xs-11 floatRight ">
-                                <textarea ng-model="eventPlannerEdit.description" maxlength="200" required  id="eventPlannerEditDescription"  type="text"  class="form-group textAreaForm marginTop30" ></textarea>
+                            <div class="form-group col-xs-12 col-sm-6 formRegGroup marginTop30 floatRight marginTop30">
+                                <div class="col-xs-10 floatRight text-center">
+                                    <label class="registerLabel floatRight" for="eventPlannerEditDescription" > توضیحات برگزارکننده :(حداکثر {{200 - eventPlannerEdit.description.length}} کاراکتر مجاز)</label>
+                                </div>
+                                <div class="col-xs-11 floatRight ">
+                                    <textarea ng-model="eventPlannerEdit.description" maxlength="200" required  id="eventPlannerEditDescription"  type="text"  class="form-group textAreaForm marginTop30" ></textarea>
+                                </div>
                             </div>
-                        </div>
                         </div>
                     </fieldset>
                     <fieldset class="marginTop30 fieldsetStyle">
