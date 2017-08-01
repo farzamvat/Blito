@@ -9,6 +9,7 @@ body, html {
     font-family: "iranian Sans" !important;
     max-width: 100%;
     overflow-x: hidden;
+    padding:0px !important;
 }
 h1,h2,h3,h4,h5,h6 {
     font-weight: bold;
@@ -52,7 +53,8 @@ textarea:focus, input:focus {
     background-color: #303030;
 }
 .dropdown-menu {
-    right: 0 !important;
+    right: -1px !important;
+    margin-top:-1px !important;
 }
 
 /*.navbar-fixed-top {*/
@@ -169,12 +171,23 @@ button.slick-next {
 .slidingEvents h3 {
     float: right;
     display: inline-block;
-    cursor: pointer;
     font-size: 18px;
     padding: 15px 15px;
 }
 .categorySectionBackground {
     background: url('../img/back.png') fixed;
+}
+.nav-dropdown-menu>li>a:focus, .nav-dropdown-menu>li>a:hover{
+background-color: #303030;
+}
+.notification{
+    background: #eee;
+    height:150px;
+}
+.notification h4{
+    margin-top: 42px;
+    direction: rtl;
+    font-size: 27px;
 }
 .blitoOffer {
     color : white;
@@ -1029,6 +1042,9 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
 }
 .navbar-nav>li:hover {
     background-color: rgba(252, 183, 49, 0.5);
+}
+.navbar-nav>li:hover ul{
+    background-color: #444 !important;
 }
 .dropdown-menu {
     background-color: #303030;
@@ -2203,7 +2219,7 @@ a{
 .recipe  h4{
     height:15px;
     color:#222;
-    line-height:50px;
+    line-height:25px;
 }
 .recipe .closed p{
     font-size: 20px;
@@ -2218,6 +2234,9 @@ a{
 
 .marginBottom0{
     margin-bottom: 0px;
+}
+.marginBottom50{
+    margin-bottom: 50px;
 }
 .aboutUsContainer{
     margin-top:30px;
@@ -2253,7 +2272,8 @@ a{
     color:#444;
     margin:30px 30%;
     width: 40%;
-    height:65px;
+    line-height: 40px;
+    padding-bottom:20px;
     text-align: center;
     border-bottom: 2px solid #ddd;
 }
@@ -2841,6 +2861,12 @@ table td{
         -webkit-transform: scale(1);
         -ms-transform: scale(1);
         -moz-transform: scale(1);
+    }
+    .slidingEventsImg img:hover ~ .slidingEventsTitle {
+        opacity: 1;
+    }
+    .footerInfo{
+        margin-top:20px !important;
     }
     .logoEventPage {
         top: 30px;

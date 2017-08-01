@@ -15,7 +15,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="fav-icons/favicon-16x16.png"/>
     <link rel="manifest" href="fav-icons/manifest.json"/>
     <link rel="mask-icon" href="fav-icons/safari-pinned-tab.svg" />
-    <meta name="theme-color" content="#ffffff"/>
+    <meta name="theme-color" content="#1e1e1e"/>
     <!-- external css libraries-->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css"/>
@@ -114,8 +114,8 @@
             <li ng-show="logoutMenu" class="floatRight" ng-class="{ active: isActive('/user-profile')}"><a class="" href="/user-profile"><i class="fa fa-user" aria-hidden="true"></i>  {{firstname}} {{lastname}} </a></li>
             <li class="floatRight" ng-class="{ active: isActive('/')}"><a class="" href="/"><i class="fa fa-home" aria-hidden="true"></i> خانه </a></li>
             <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema') || isActive('/sports') || isActive('/theater') || isActive('/concert') || isActive('/other') || isActive('/tour') || isActive('/workshop')}">
-                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-calendar" aria-hidden="true"></i> رویداد ها   <span class="caret"></span></a>
-                <ul class="dropdown-menu textAlignRight">
+                <a href="" ng-click="DropDownMenue()"class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-calendar" aria-hidden="true"></i> رویداد ها   <span class="caret"></span></a>
+                <ul class="dropdown-menu nav-dropdown-menu textAlignRight">
                     <li><a href="/concert">کنسرت</a></li>
                     <li><a href="/tour">تور</a></li>
                     <li><a href="/theater">تئاتر</a></li>
@@ -159,7 +159,7 @@
         <div class="verticalLine">
 
         </div>
-        <div class=" col-sm-6 col-md-6 paddingtop-bottom footerleft floatRight textAlignRight">
+        <div class=" col-sm-6 col-md-6 footerInfo paddingtop-bottom footerleft floatRight textAlignRight">
 
             <h6 class="heading7">اطلاعات</h6>
             <p><i class="fa fa-info"></i><a href="/about-us" class="footerAnchor footerP">درباره ما</a></p>
