@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.view.document.AbstractPdfView;
 
+import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
@@ -24,7 +25,7 @@ public class BlitRecieptPdfView extends AbstractPdfView {
 
 	private String fontPath = "src/main/resources/static/assets/fonts/website-fonts/IranSans.ttf";
 	private String boldFontPath = "src/main/resources/static/assets/fonts/website-fonts/IranSans Bold.ttf";
-	private String englishFontPath = "src/main/resources/static/assets/fonts/website-fonts/Futura-Medium.ttf";
+	private String fontelloPath = "src/main/resources/static/assets/fonts/website-fonts/fontello.ttf";
 	private String imagePath = "src/main/resources/static/assets/img/logoTicket2.jpg";
 
 	@Override
@@ -53,15 +54,15 @@ public class BlitRecieptPdfView extends AbstractPdfView {
 		
 		document.add(image);
 		
-		BaseFont bf = BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-		Font textFont = new Font(bf, 12);
+		BaseFont textBf = BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+		Font textFont = new Font(textBf, 12);
 		textFont.setColor(Color.GRAY);
-		BaseFont bf2 = BaseFont.createFont(boldFontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-		Font boldFont = new Font(bf2, 12);
-		Font titleFont = new Font(bf2, 16);
-		BaseFont bf3 = BaseFont.createFont(englishFontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-		Font englishFont = new Font(bf3, 11);
-		englishFont.setColor(Color.GRAY);
+		BaseFont boldBf = BaseFont.createFont(boldFontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+		Font boldFont = new Font(boldBf, 12);
+		Font titleFont = new Font(boldBf, 16);
+		BaseFont fontelloBf = BaseFont.createFont(fontelloPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+		Font fontello = new Font(fontelloBf, 10);
+		fontello.setColor(Color.GRAY);
 
 		Phrase eventNamePhrase = new Phrase();
 		eventNamePhrase.setFont(titleFont);
@@ -79,8 +80,8 @@ public class BlitRecieptPdfView extends AbstractPdfView {
 		table.addCell(eventNameCell);
 		////////////////////////////////////////////////////////////////
 		Phrase customerNameTitlePhrase = new Phrase();
-		customerNameTitlePhrase.setFont(boldFont);
-		customerNameTitlePhrase.add("نام");
+		customerNameTitlePhrase.add(new Chunk("\ue806", fontello));
+		customerNameTitlePhrase.add(new Chunk(" نام: ",  boldFont));
 
 		PdfPCell customerNameTitleCell = new PdfPCell(customerNameTitlePhrase);
 		customerNameTitleCell.setBorder(Rectangle.NO_BORDER);
@@ -91,8 +92,8 @@ public class BlitRecieptPdfView extends AbstractPdfView {
 		table.addCell(customerNameTitleCell);
 		///////////////////////////////////////////////////////////////
 		Phrase eventDateTitlePhrase = new Phrase();
-		eventDateTitlePhrase.setFont(boldFont);
-		eventDateTitlePhrase.add("تاریخ رویداد");
+		eventDateTitlePhrase.add(new Chunk("\ue802", fontello));
+		eventDateTitlePhrase.add(new Chunk(" تاریخ رویداد: ", boldFont));
 
 		PdfPCell eventDateTitleCell = new PdfPCell(eventDateTitlePhrase);
 		eventDateTitleCell.setBorder(Rectangle.NO_BORDER);		
@@ -129,9 +130,9 @@ public class BlitRecieptPdfView extends AbstractPdfView {
 		table.addCell(eventDateCell);
 		//////////////////////////////////////////////////////////////
 		Phrase telephoneTitlePhrase = new Phrase();
-		telephoneTitlePhrase.setFont(boldFont);
-		telephoneTitlePhrase.add("تلفن");
-
+		telephoneTitlePhrase.add(new Chunk("\ue800", fontello));
+		telephoneTitlePhrase.add(new Chunk(" تلفن: ", boldFont));
+		
 		PdfPCell telephoneTitleCell = new PdfPCell(telephoneTitlePhrase);
 		telephoneTitleCell.setBorder(Rectangle.NO_BORDER);
 		telephoneTitleCell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
@@ -141,8 +142,8 @@ public class BlitRecieptPdfView extends AbstractPdfView {
 		table.addCell(telephoneTitleCell);
 		///////////////////////////////////////////////////////////////
 		Phrase trackCodeTitlePhrase = new Phrase();
-		trackCodeTitlePhrase.setFont(boldFont);
-		trackCodeTitlePhrase.add("کد پیگیری");
+		trackCodeTitlePhrase.add(new Chunk("\ue803", fontello));
+		trackCodeTitlePhrase.add(new Chunk(" کد پیگیری: ", boldFont));
 
 		PdfPCell trackCodeTitleCell = new PdfPCell(trackCodeTitlePhrase);
 		trackCodeTitleCell.setBorder(Rectangle.NO_BORDER);
@@ -179,8 +180,8 @@ public class BlitRecieptPdfView extends AbstractPdfView {
 		table.addCell(trackCodeCell);
 		//////////////////////////////////////////////////////////////
 		Phrase emailTitlePhrase = new Phrase();
-		emailTitlePhrase.setFont(boldFont);
-		emailTitlePhrase.add("ایمیل");
+		emailTitlePhrase.add(new Chunk("\ue801", fontello));
+		emailTitlePhrase.add(new Chunk(" ایمیل: ", boldFont));
 
 		PdfPCell emailTitleCell = new PdfPCell(emailTitlePhrase);
 		emailTitleCell.setBorder(Rectangle.NO_BORDER);
@@ -191,8 +192,8 @@ public class BlitRecieptPdfView extends AbstractPdfView {
 		table.addCell(emailTitleCell);
 		///////////////////////////////////////////////////////////////
 		Phrase countTitlePhrase = new Phrase();
-		countTitlePhrase.setFont(boldFont);
-		countTitlePhrase.add("تعداد");
+		countTitlePhrase.add(new Chunk("\ue804", fontello));
+		countTitlePhrase.add(new Chunk(" تعداد: ", boldFont));
 
 		PdfPCell countTitleCell = new PdfPCell(countTitlePhrase);
 		countTitleCell.setBorder(Rectangle.NO_BORDER);
@@ -241,8 +242,8 @@ public class BlitRecieptPdfView extends AbstractPdfView {
 		table.addCell(blankTitleCell);
 		///////////////////////////////////////////////////////////////
 		Phrase blitTypeTitlePhrase = new Phrase();
-		blitTypeTitlePhrase.setFont(boldFont);
-		blitTypeTitlePhrase.add("نوع بلیت");
+		blitTypeTitlePhrase.add(new Chunk("\uf145", fontello));
+		blitTypeTitlePhrase.add(new Chunk(" نوع بلیت: ", boldFont));
 
 		PdfPCell blitTypeTitleCell = new PdfPCell(blitTypeTitlePhrase);
 		blitTypeTitleCell.setBorder(Rectangle.NO_BORDER);
@@ -280,8 +281,9 @@ public class BlitRecieptPdfView extends AbstractPdfView {
 		//////////////////////////////////////////////////////////////
 
 		Phrase addressPhrase = new Phrase();
-		addressPhrase.setFont(textFont);
-		addressPhrase.add("آدرس: " + address);
+		addressPhrase.add(new Chunk("\ue805", fontello));
+		addressPhrase.add(new Chunk(" آدرس: ", boldFont));
+		addressPhrase.add(new Chunk(address, textFont));
 
 		PdfPCell addressCell = new PdfPCell(addressPhrase);
 		addressCell.setColspan(2);
