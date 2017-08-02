@@ -64,10 +64,10 @@ angular.module('UiServices', [])
 
                 map.addListener('click', function (e) {
                     mapMarkerService.setMarker(e.latLng.lat(), e.latLng.lng());
-                    mapMarkerService.placeMarker(e.latLng, map);
+                    mapMarkerService.placeMarker(e.latLng);
                 });
 
-                mapMarkerService.placeMarker = function (latLong, map) {
+                mapMarkerService.placeMarker = function (latLong) {
 
                     var marker = new google.maps.Marker({
                         position: latLong,

@@ -26,7 +26,6 @@ angular.module('menuPagesModule', [])
             $window.location.assign('/');
 
         };
-
         main.checkSession = function () {
             if(AuthToken.getRefreshToken() === "logOut") {
                 main.checkingSession = false;
@@ -111,22 +110,18 @@ angular.module('menuPagesModule', [])
                     break;
                 case '/not-found' :
                     $scope.title = 404;
-                    $scope.pageDescription = 'توضیحات صفحه اصلی';
                     $scope.robotValue = 'noindex';
                     break;
                 case '/about-us' :
                     $scope.title = 'درباره ما';
-                    $scope.pageDescription = 'توضیحات صفحه اصلی';
                     $scope.robotValue = 'noindex';
                     break;
                 case '/term-of-use' :
                     $scope.title = 'قوانین';
-                    $scope.pageDescription = 'توضیحات صفحه اصلی';
                     $scope.robotValue = 'noindex,nofollow';
                     break;
                 case '/privacy-policy' :
                     $scope.title = 'حریم خصوصی';
-                    $scope.pageDescription = 'توضیحات صفحه اصلی';
                     $scope.robotValue = 'noindex,nofollow';
                     break;
                 case '/sports' :
@@ -171,12 +166,10 @@ angular.module('menuPagesModule', [])
                     break;
                 case '/activate-user' :
                     $scope.title = 'فعال سازی';
-                    $scope.pageDescription = 'توضیحات صفحه اصلی';
                     $scope.robotValue = 'noindex,nofollow';
                     break;
                 case '/user-profile' :
                     $scope.title = 'صفحه کاربر';
-                    $scope.pageDescription = 'توضیحات صفحه اصلی';
                     $scope.robotValue = 'noindex,nofollow';
                     break;
                 default :
@@ -197,12 +190,10 @@ angular.module('menuPagesModule', [])
                     }
                     break;
             }
-
         });
-
-
-
+        $scope.registerOnce = false;
         $scope.regUser = function (regData) {
+            $scope.registerOnce = true;
             main.loading = true;
             main.errorMsg = false;
             $scope.registerErrorNotif = false;
@@ -218,12 +209,14 @@ angular.module('menuPagesModule', [])
                 })
                 .catch(function (data, status) {
                     $scope.submitRegister = false;
+                    $scope.submitRegister = false;
                     $scope.registerErrorNotif = true;
                     document.getElementById("registerError").innerHTML= data.data.message;
                 })
         };
-
+        $scope.loginOnce = false;
         $scope.login = function (loginData) {
+            $scope.loginOnce = true;
             main.loading = true;
             main.errorMsg = false;
             $scope.loginErrorNotif = false;
@@ -233,6 +226,7 @@ angular.module('menuPagesModule', [])
 
             Auth.login(loginData)
                 .then(function (data, status) {
+                    $scope.loginOnce = false;
                     $scope.loginSuccessNotif = true;
                     $scope.submitLogin = false;
                     $scope.loggedIn = true;
@@ -247,6 +241,7 @@ angular.module('menuPagesModule', [])
                     },2000)
                 })
                 .catch(function (data, status) {
+                    $scope.loginOnce = false;
                     $scope.loginErrorNotif = true;
                     $scope.submitLogin = false;
                     document.getElementById("loginError").innerHTML = data.data.message;

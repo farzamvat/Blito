@@ -926,7 +926,6 @@ angular.module('User')
                 delete eventSubmitData.images;
             }
             $scope.createEventSpinner = true;
-
             eventService.submitEventForm(eventSubmitData)
                 .then(function (data, status) {
                     $scope.eventSubmitOnce = false;
@@ -1038,12 +1037,10 @@ angular.module('User')
             if(section === 'makeEventSection') {
                 $scope.mapMarkerClickCheckEvent = true;
                 mapMarkerService.initMap(document.getElementById('map'));
-                console.log("event");
             }
             if(section === 'exchangeTicketSection') {
                 $scope.mapMarkerClickCheckExchange = true;
                 mapMarkerService.initMap(document.getElementById('mapExchange'));
-                console.log("exchange");
             }
         };
 
@@ -1140,8 +1137,9 @@ angular.module('User')
                 $(".blitSaleStartDate").pDatepicker("setDate",dateSetterService.persianToArray(persianDate($scope.userEventsEdit[index].blitSaleStartDate).pDate));
             }, 500);
             $timeout(function () {
-                mapMarkerService.initMap(document.getElementById('editEventMap'));
                 mapMarkerService.setMarker($scope.userEventsEdit[index].latitude, $scope.userEventsEdit[index].longitude);
+                mapMarkerService.initMap(document.getElementById('editEventMap'));
+                mapMarkerService.placeMarker(mapMarkerService.getMarker());
             },500);
         };
 
@@ -1265,6 +1263,7 @@ angular.module('User')
             imageServices.downloadPhotos($scope.exchangeEditImageId, "exchangePhotoUploadEdit");
             mapMarkerService.initMap(document.getElementById('mapExchangeEdit'));
             mapMarkerService.setMarker(latlng.lat, latlng.lng);
+            mapMarkerService.placeMarker(mapMarkerService.getMarker());
             $("#editExchange").modal("show");
         };
 
@@ -1429,7 +1428,6 @@ angular.module('User')
                     FileSaver.saveAs(excelData, 'blits.xls');
                 })
                 .catch(function (data) {
-                    console.log(data);
                 })
         };
         $scope.showTickets = function (index) {
@@ -1460,7 +1458,6 @@ angular.module('User')
                 .then(function (data, status) {
                     $scope.totalExchangeNumber = data.data.totalElements;
                     $scope.exchangeTickets = data.data.content;
-                    console.log($scope.exchangeTickets);
                     $scope.exchangeEditTickets = angular.copy(data.data.content);
                     $scope.exchangeTickets = $scope.exchangeTickets.map(function (ticket) {
                         ticket.operatorState = dataService.operatorStatePersian(ticket.operatorState);
