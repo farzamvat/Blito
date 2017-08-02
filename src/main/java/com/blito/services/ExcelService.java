@@ -139,6 +139,7 @@ public class ExcelService {
 		model.put("blit type", "VIP");
 		model.put("count", 5);
 		model.put("event address", "میدان الف، خیابان چهارم، موسسه‌ی ققنوس");
+		model.put("event photo", "17e9678e-168a-4dd1-840f-11111d900b94");
 		return model;
 	}
 }
