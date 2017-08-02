@@ -9,6 +9,7 @@ body, html {
     font-family: "iranian Sans" !important;
     max-width: 100%;
     overflow-x: hidden;
+    padding:0px !important;
 }
 h1,h2,h3,h4,h5,h6 {
     font-weight: bold;
@@ -52,7 +53,8 @@ textarea:focus, input:focus {
     background-color: #303030;
 }
 .dropdown-menu {
-    right: 0 !important;
+    right: -1px !important;
+    margin-top:-1px !important;
 }
 
 /*.navbar-fixed-top {*/
@@ -169,12 +171,23 @@ button.slick-next {
 .slidingEvents h3 {
     float: right;
     display: inline-block;
-    cursor: pointer;
     font-size: 18px;
     padding: 15px 15px;
 }
 .categorySectionBackground {
     background: url('../img/back.jpg') fixed;
+}
+.nav-dropdown-menu>li>a:focus, .nav-dropdown-menu>li>a:hover{
+background-color: #303030;
+}
+.notification{
+    background: #eee;
+    height:150px;
+}
+.notification h4{
+    margin-top: 42px;
+    direction: rtl;
+    font-size: 27px;
 }
 .blitoOffer {
     color : white;
@@ -387,7 +400,7 @@ button.slick-next {
 .searchSection {
     padding-top: 10px;
     padding-bottom: 15px;
-    background: url('../img/back.png') fixed;
+    background: url('../img/back.jpg') fixed;
     border-bottom: 2px solid #202020;
 }
 .slidingEvents h2:hover {
@@ -789,7 +802,7 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     color : white !important;
 }
 .eventPageListTitle {
-    font-size: 10px !important;
+    font-size: 12px !important;
 }
 .editDataInput {
     width: 50%;
@@ -1030,6 +1043,9 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
 .navbar-nav>li:hover {
     background-color: rgba(252, 183, 49, 0.5);
 }
+.navbar-nav>li:hover ul{
+    background-color: #444 !important;
+}
 .dropdown-menu {
     background-color: #303030;
 }
@@ -1067,7 +1083,9 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
     cursor: pointer;
 }
 .verticalLine {
-    border-left: thick solid #808080;
+    border-right: 2px solid rgb(252, 183, 49);
+    height: 200px;
+    margin-bottom: 40px;
 }
 .checkBoxInline {
     display: inline;
@@ -1132,7 +1150,9 @@ input.ng-invalid.ng-dirty {
 }
 .dataCenter {
     text-align: center;
-    font-size: 12px;
+    font-size: 13px;
+}
+.showTimeList {
 }
 dir-pagination-controls {
     margin: 10px 0;
@@ -1590,8 +1610,7 @@ dir-pagination-controls ul {
     height: 200px ;
     overflow-y:scroll;
 }
-.showTimeList {
-}
+
 .customPanelUser {
     max-height: 100%;
     overflow-y: scroll;
@@ -1613,6 +1632,7 @@ dir-pagination-controls ul {
 .customPanelEventPage {
     border: none;
     height: 250px;
+    width: 95%;
 }
 .bioPageCoverPhoto {
     background-size: auto auto;
@@ -1680,7 +1700,7 @@ footer {
     bottom: 0 !important;
 }
 footer h6 {
-    font-size: 16px !important;
+    font-size: 18px !important;
 }
 .footerleft { margin-top:50px; padding: 5px 40px;}
 .logofooter { margin-bottom:10px; font-size:25px; color:#fff; font-weight:700;  }
@@ -1688,7 +1708,7 @@ footer h6 {
     width: 150px ;
 }
 
-.footerleft p { color:#fff; font-size:11px !important;  margin-bottom:15px;}
+.footerleft p { color:#fff; font-size:14px !important;  margin-bottom:15px;}
 .footerleft p i { width:20px; color:#999;}
 
 
@@ -2203,7 +2223,7 @@ a{
 .recipe  h4{
     height:15px;
     color:#222;
-    line-height:50px;
+    line-height:25px;
 }
 .recipe .closed p{
     font-size: 20px;
@@ -2218,6 +2238,9 @@ a{
 
 .marginBottom0{
     margin-bottom: 0px;
+}
+.marginBottom50{
+    margin-bottom: 50px;
 }
 .aboutUsContainer{
     margin-top:30px;
@@ -2253,7 +2276,8 @@ a{
     color:#444;
     margin:30px 30%;
     width: 40%;
-    height:65px;
+    line-height: 40px;
+    padding-bottom:20px;
     text-align: center;
     border-bottom: 2px solid #ddd;
 }
@@ -2764,6 +2788,14 @@ table td{
 
 
 @media (max-width: 768px) {
+    .footerleft {
+        text-align: center;
+    }
+    .customPanelEventPage {
+        margin-right: auto;
+        margin-left: auto;
+        width: 95%;
+    }
     .notFountLogoContainer{
         max-width: 60%;
         margin-right:20%;
@@ -2841,6 +2873,12 @@ table td{
         -webkit-transform: scale(1);
         -ms-transform: scale(1);
         -moz-transform: scale(1);
+    }
+    .slidingEventsImg img:hover ~ .slidingEventsTitle {
+        opacity: 1;
+    }
+    .footerInfo{
+        margin-top:20px !important;
     }
     .logoEventPage {
         top: 30px;
@@ -3081,6 +3119,7 @@ table td{
 
 }
 @media (min-width: 992px) {
+
     .eventPageSoldOut {
         width: 90px;
     }
@@ -3099,7 +3138,11 @@ table td{
     }
 
 }
-
+@media (min-width : 992px) and (max-width: 1200px) {
+    .customPanelEventPage {
+        width: calc(98% + 5px);
+    }
+}
 
 @media (max-width: 1200px) {
 

@@ -47,7 +47,7 @@
         </div>
         </div>
 
-        <div class="col-xs-6 col-sm-4 col-md-3 floatRight marginTop10" pagination-id="eventPagination" total-items="totalEventsNumber" dir-paginate="item in eventList | itemsPerPage: 12"  current-page="currentPage">
+        <div class="col-xs-6 col-sm-4 col-md-3 floatRight marginTop10 marginBottom50" pagination-id="eventPagination" total-items="totalEventsNumber" dir-paginate="item in eventList | itemsPerPage: 12"  current-page="currentPage">
             <a href="{{url+item.eventLink}}">
                 <div class="recipe"  >
                     <div class="image center-block" >
@@ -62,11 +62,7 @@
                         <div class="eventDescription center-block">
                             {{item.description}}
                         </div>
-                        <div ng-show="item.eventState === 'CLOSED'" class="closed">
-                            <h1><i class="fa fa-lock"></i>
-                                <p>بسته</p>
-                            </h1>
-                        </div>
+
                         <div ng-show="item.eventState === 'SOLD'" class="soldout ">
                             <img src="../../../assets/img/soldout.png"/>
                         </div>

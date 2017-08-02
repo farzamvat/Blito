@@ -387,7 +387,7 @@
                                         </div>
                                         <div class="controls">
                                             <p class="text-center colorRed" ng-show="(!exchangeBlitForm.$invalid && mapMarkerClickCheckExchange)">مکان را روی نقشه مشخص کنید</p>
-                                            <button id="exchangeEventSubmit" ng-disabled="(exchangeBlitForm.$invalid || mapMarkerClickCheckExchange)" ng-click="submitExchangeTicket(exchange)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت آگهی <i ng-show="submitExchangeSpinner" class="fa fa-spinner fa-spin"></i></button>
+                                            <button id="exchangeEventSubmit" ng-disabled="(exchangeBlitForm.$invalid || mapMarkerClickCheckExchange || exchangeSubmitOnce)" ng-click="submitExchangeTicket(exchange)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت آگهی <i ng-show="submitExchangeSpinner" class="fa fa-spinner fa-spin"></i></button>
                                         </div>
 
                                     </div>
@@ -874,7 +874,7 @@
                                         </div>
                                         <div class="controls">
                                             <p class="text-center colorRed" ng-show="(!submitEventForm.$invalid && mapMarkerClickCheckEvent)">مکان را روی نقشه مشخص کنید</p>
-                                            <button id="signInButton" type="submit"  ng-disabled="submitEventForm.$invalid || mapMarkerClickCheckEvent" ng-click="submitEvent(eventFields)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت رویداد <i ng-show="createEventSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
+                                            <button id="signInButton" type="submit"  ng-disabled="submitEventForm.$invalid || mapMarkerClickCheckEvent || eventSubmitOnce" ng-click="submitEvent(eventFields)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت رویداد <i ng-show="createEventSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
                                         </div>
 
                                     </div>
@@ -1036,7 +1036,7 @@
                                             <strong></strong>
                                         </div>
                                         <div class="controls">
-                                            <button id="eventPlannerSubmit" ng-disabled="submitPlannerForm.$invalid" ng-click="submitEventPlanner(eventPlanner)"  class="btn btn-success btn-lg btnLogin">ثبت برگزارکننده <i ng-show="submitPlannerSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
+                                            <button id="eventPlannerSubmit" ng-disabled="submitPlannerForm.$invalid || plannerSubmitOnce" ng-click="submitEventPlanner(eventPlanner)"  class="btn btn-success btn-lg btnLogin">ثبت برگزارکننده <i ng-show="submitPlannerSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
                                         </div>
                                     </div>
                                 </form>

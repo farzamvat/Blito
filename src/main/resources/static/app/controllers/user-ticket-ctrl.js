@@ -27,6 +27,5 @@ angular.module('eventsPageModule')
             })
             .catch(function (data) {
             })
-
     })
     ;
