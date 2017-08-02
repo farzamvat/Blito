@@ -94,10 +94,21 @@ angular.module('menuPagesModule', [])
         if(main.checkingSession) {
             main.setUserData();
         }
+        var isOpen =false;
+        $scope.DropDownMenue = function () {
+            isOpen=!isOpen;
+            if(isOpen) {
+                $(angular.element(document.getElementsByClassName('dropdown-menu'))).slideDown(300);
+            }
+            else {
+                $(angular.element(document.getElementsByClassName('dropdown-menu'))).slideUp(300);
+            }
+        };
         $rootScope.$on("$locationChangeStart", function(event, next, current) {
             $window.scroll(0,0);
-            $("#navbar").removeClass("in");
-
+            // $("#navbar").removeClass("in");
+            isOpen =true;
+            $scope.DropDownMenue();
             main.checkRefreshTokenValue();
             if(Auth.isLoggedIn()) {
                 main.setUserData();
@@ -275,13 +286,6 @@ angular.module('menuPagesModule', [])
         $scope.isActive = function (viewLocation) {
             return viewLocation === $location.path();
         };
-        var isOpen =false;
-        $scope.DropDownMenue = function () {
-            isOpen=!isOpen;
-            if(isOpen)
-                $(angular.element(document.getElementsByClassName('dropdown-menu'))).slideDown(300);
-            else
-                $(angular.element(document.getElementsByClassName('dropdown-menu'))).slideUp(300);
-        };
+
     });
 

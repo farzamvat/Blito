@@ -241,12 +241,14 @@ angular.module('UiServices', [])
                 case "CONCERT" :
                     persianType = 'کنسرت';
                     break;
-                case "SPORT" :
-                    persianType = 'ورزشی';
+                case "ENTERTAINMENT" :
+                    persianType = 'سرگرمی';
                     break;
                 case "DISCOUNT_TICKET" :
                     persianType = 'بن تخفیف';
                     break;
+                case "EXHIBITION" :
+                    persianType = 'نمایشگاه';
                 case "WORKSHOP" :
                     persianType = 'کارگاه';
                     break;
