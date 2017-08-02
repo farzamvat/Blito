@@ -166,7 +166,7 @@ public class ImageService {
 						throw new RuntimeException(e.getMessage());
 					}
 					image.setImageType(imageType.name());
-					return image;
+					return imageRepository.save(image);
 				});
 
 	}
