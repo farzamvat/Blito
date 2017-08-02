@@ -179,7 +179,7 @@ public class EventServiceTest {
 		event3.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER.name(), OfferTypeEnum.SPECIAL_OFFER.name()).stream().collect(Collectors.toSet()));
 		event3.setEventName("D");
 		event3.setLatitude(1D);
-		event3.setEventType(EventType.SPORT.name());
+		event3.setEventType(EventType.ENTERTAINMENT.name());
 		event3.setBlitSaleStartDate(Timestamp.from(ZonedDateTime.now().minusHours(24).toInstant()));
 		event3.setBlitSaleEndDate(Timestamp.from(ZonedDateTime.now().plusDays(2).toInstant()));
 
@@ -363,7 +363,7 @@ public class EventServiceTest {
 		SearchViewModel<Event> searchViewModel = new SearchViewModel<>();
 		Simple<Event> simple = new Simple<>();
 		simple.setField("eventType");
-		simple.setValue(EventType.SPORT.name());
+		simple.setValue(EventType.ENTERTAINMENT.name());
 		simple.setOperation(Operation.eq);
 
 		searchViewModel.setRestrictions(new ArrayList<>());
