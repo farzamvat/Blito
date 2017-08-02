@@ -38,48 +38,45 @@ public class IndexBannerService {
 	@Transactional
 	public BannerViewModel create(BannerViewModel vmodel) {
 		IndexBanner indexBanner = indexBannerMapper.createFromViewModel(vmodel);
-		indexBanner = setIndexBannerImageAndEvent(indexBanner,vmodel);
+		indexBanner = setIndexBannerImageAndEvent(indexBanner, vmodel);
 		return indexBannerMapper.createFromEntity(indexBannerRepository.save(indexBanner));
 	}
 
 	@Transactional
-	public CompletableFuture<?> update(BannerViewModel vmodel) {
+	public BannerViewModel update(BannerViewModel vmodel) {
 		IndexBanner indexBanner = Optional.ofNullable(indexBannerRepository.findOne(vmodel.getIndexBannerId()))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.INDEX_BANNER_NOT_FOUND)));
-		if(!vmodel.getImage().getImageUUID().equals(indexBanner.getImage().getImageUUID()))
-		{
-			return imageService.deleteAsync(indexBanner.getImage().getImageUUID());
+		if (!vmodel.getImage().getImageUUID().equals(indexBanner.getImage().getImageUUID())) {
+			imageService.delete(indexBanner.getImage().getImageUUID());
 		}
 		indexBanner = indexBannerMapper.updateEntity(vmodel, indexBanner);
-		indexBanner = setIndexBannerImageAndEvent(indexBanner,vmodel);
-		return CompletableFuture.completedFuture(indexBannerMapper.createFromEntity(indexBanner));
+		indexBanner = setIndexBannerImageAndEvent(indexBanner, vmodel);
+		return indexBannerMapper.createFromEntity(indexBannerRepository.save(indexBanner));
 	}
-	
-	private IndexBanner setIndexBannerImageAndEvent(IndexBanner indexBanner,BannerViewModel vmodel)
-	{
+
+	private IndexBanner setIndexBannerImageAndEvent(IndexBanner indexBanner, BannerViewModel vmodel) {
 		Image image = imageRepository.findByImageUUID(vmodel.getImage().getImageUUID())
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
 		image.setImageType(vmodel.getImage().getType().name());
 		indexBanner.setImage(image);
-		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(vmodel.getEventLink())
-				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
-		indexBanner.setEvent(event);
+		if (vmodel.getEventLink() != null && !vmodel.getEventLink().isEmpty()) {
+			Optional<Event> optionalEvent = eventRepository.findByEventLinkAndIsDeletedFalse(vmodel.getEventLink());
+			optionalEvent.ifPresent(event -> {
+				indexBanner.setEvent(event);
+			});
+		}
 		return indexBanner;
 	}
-	
-	public CompletableFuture<Page<BannerViewModel>> getIndexBanners(Pageable pageable)
-	{
-		return CompletableFuture.supplyAsync(() -> indexBannerMapper.toPage(indexBannerRepository.findAll(pageable)));
+
+	public Page<BannerViewModel> getIndexBanners(Pageable pageable) {
+		return indexBannerMapper.toPage(indexBannerRepository.findAll(pageable));
 	}
-	
-	public CompletableFuture<?> delete(long indexBannerId)
-	{
-		return CompletableFuture.runAsync(() -> {
-			Optional<IndexBanner> result = Optional.ofNullable(indexBannerRepository.findOne(indexBannerId));
-			if(result.isPresent())
-				indexBannerRepository.delete(indexBannerId);
-			else
-				throw new NotFoundException(ResourceUtil.getMessage(Response.INDEX_BANNER_NOT_FOUND));
-		});
+
+	public void delete(long indexBannerId) {
+		Optional<IndexBanner> result = Optional.ofNullable(indexBannerRepository.findOne(indexBannerId));
+		if (result.isPresent())
+			indexBannerRepository.delete(indexBannerId);
+		else
+			throw new NotFoundException(ResourceUtil.getMessage(Response.INDEX_BANNER_NOT_FOUND));
 	}
 }

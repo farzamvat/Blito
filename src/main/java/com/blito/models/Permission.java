@@ -17,6 +17,14 @@ public class Permission {
 	String apiBusinessName;
 	
 	String description;
+	
+	public Permission(String name,String description)
+	{
+		this.apiBusinessName = name;
+		this.description = description;
+	}
+	
+	public Permission() {}
 
 	public long getPermissionId() {
 		return permissionId;

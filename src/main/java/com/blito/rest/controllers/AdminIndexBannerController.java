@@ -1,5 +1,6 @@
 package com.blito.rest.controllers;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,22 +47,17 @@ public class AdminIndexBannerController {
 	@Permission(value = ApiBusinessName.ADMIN)
 	@JsonView(View.AdminIndexBanner.class)
 	@PutMapping
-	public DeferredResult<ResponseEntity<?>> update(@RequestBody @Validated BannerViewModel vmodel) {
-		DeferredResult<ResponseEntity<?>> deferred = new DeferredResult<>();
-		return indexBannerService.update(vmodel).thenApply(result -> {
-			deferred.setResult(ResponseEntity.accepted().body(result));
-			return deferred;
-		}).exceptionally(throwable -> {
-			deferred.setErrorResult(throwable.getCause());
-			return deferred;
-		}).join();
+	public CompletionStage<ResponseEntity<?>> update(@RequestBody @Validated BannerViewModel vmodel,
+			HttpServletRequest req,HttpServletResponse res) {
+		return CompletableFuture.supplyAsync(() -> indexBannerService.update(vmodel))
+				.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result, throwable, req, res));
 	}
 
 	@Permission(value = ApiBusinessName.ADMIN)
 	@DeleteMapping("/{indexBannerId}")
 	public CompletionStage<ResponseEntity<?>> delete(@PathVariable long indexBannerId, HttpServletRequest req,
 			HttpServletResponse res) {
-		return indexBannerService.delete(indexBannerId)
+		return CompletableFuture.runAsync(() -> indexBannerService.delete(indexBannerId))
 				.handle((result, throwable) -> HandleUtility.generateResponseResult(
 						() -> new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)), throwable, req, res));
 	}

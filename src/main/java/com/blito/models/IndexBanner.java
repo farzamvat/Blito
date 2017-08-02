@@ -14,7 +14,7 @@ public class IndexBanner {
 	String description;
 	@OneToOne
 	Image image;
-	@OneToOne
+	@OneToOne(optional=true)
 	Event event;
 	public long getIndexBannerId() {
 		return indexBannerId;

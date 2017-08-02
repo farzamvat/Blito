@@ -29,7 +29,7 @@ public class HandleUtility {
 	private static ResponseEntity<?> generateErrorResult(Throwable throwable, HttpServletRequest req,
 			HttpServletResponse res) {
 		if (throwable.equals(NotFoundException.class))
-			return ResponseEntity.status(404).body(ExceptionUtil.generate(HttpStatus.NOT_FOUND, req, throwable));
+			return ResponseEntity.status(400).body(ExceptionUtil.generate(HttpStatus.NOT_FOUND, req, throwable));
 		else if (throwable.equals(UnauthorizedException.class))
 			return ResponseEntity.status(401).body(ExceptionUtil.generate(HttpStatus.UNAUTHORIZED, req, throwable));
 		else if (throwable.equals(AlreadyExistsException.class) 
