@@ -106,7 +106,7 @@ angular.module('menuPagesModule', [])
         };
         $rootScope.$on("$locationChangeStart", function(event, next, current) {
             $window.scroll(0,0);
-            // $("#navbar").removeClass("in");
+            $("#navbar").removeClass("in");
             isOpen =true;
             $scope.DropDownMenue();
             main.checkRefreshTokenValue();
