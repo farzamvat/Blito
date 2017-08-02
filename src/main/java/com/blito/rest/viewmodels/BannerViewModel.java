@@ -2,11 +2,14 @@ package com.blito.rest.viewmodels;
 
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import com.blito.rest.viewmodels.image.ImageViewModel;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonView;
 
+@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonInclude(Include.NON_EMPTY)
 public class BannerViewModel {
 	@JsonView(View.IndexBanner.class)
 	long indexBannerId;
@@ -17,7 +20,6 @@ public class BannerViewModel {
 	@NotNull
 	@JsonView(View.IndexBanner.class)
 	ImageViewModel image;
-	@NotNull
 	@JsonView(View.IndexBanner.class)
 	String eventLink;
 	

@@ -6,6 +6,7 @@
         <div class="modal-content registerBody">
             <br>
             <div class="bs-example bs-example-tabs">
+
                 <ul id="myTab" class="nav nav-tabs">
                     <li class=""><a data-target="#signup" class="signInButton tabAnchor registerTab" data-toggle="tab">ثبت نام</a></li>
                     <li class="active"><a data-target="#signin" class="signInButton tabAnchor registerTab" data-toggle="tab">ورود</a></li>
@@ -54,8 +55,9 @@
                                 </div>
                                 <label class="control-label" for="signInButton"></label>
                                 <div class="controls">
-                                    <button id="signInButton" ng-disabled="signInForm.$invalid" ng-click="login(loginFields)" name="signin" class="btn btn-success btn-lg btnLogin">ورود <i ng-show="submitLogin" class="fa fa-spinner fa-spin"></i></button>
+                                    <button id="signInButton" ng-disabled="signInForm.$invalid || loginOnce" ng-click="login(loginFields)" name="signin" class="btn btn-success btn-lg btnLogin">ورود <i ng-show="submitLogin" class="fa fa-spinner fa-spin"></i></button>
                                 </div>
+                                <p class="text-center marginTop30 forgetPassword"><a ng-click="forgetPassModal()">رمز خود را فراموش کرده اید؟</a></p>
                             </div>
                         </form>
 
@@ -141,7 +143,7 @@
                             <div class="control-group marginTop30">
                                 <label class="registerLabel" for="confirmsignup"></label>
                                 <div class="controls">
-                                    <button ng-disabled="signupForm.$invalid" id="confirmsignup" ng-click="regUser(fields)" name="confirmsignup" class="btn btn-success btn-lg btnReg">ثبت نام <i ng-show="submitRegister" class="fa fa-spinner fa-spin"></i></button>
+                                    <button ng-disabled="signupForm.$invalid || submitRegister" id="confirmsignup" ng-click="regUser(fields)" name="confirmsignup" class="btn btn-success btn-lg btnReg">ثبت نام <i ng-show="submitRegister" class="fa fa-spinner fa-spin"></i></button>
                                 </div>
                             </div>
                         </form>

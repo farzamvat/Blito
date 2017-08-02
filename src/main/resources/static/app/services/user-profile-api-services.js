@@ -52,7 +52,7 @@ angular.module('userProfileApi', [])
         };
         event.getEventsByType = function (type, page) {
             var queryParam = {
-                params : {page: page-1, size: 12}
+                params : {page: page-1, size: 12, sort: "createdAt,desc"}
             };
             var bodyJson = {
                 restrictions: [
@@ -119,7 +119,9 @@ angular.module('userProfileApi', [])
             };
             var bodyJson = {
                 restrictions : [
-                    {field : "user-email", type : "simple", operation : "eq", value: userEmail}
+                    {field : "user-email", type : "simple", operation : "eq", value: userEmail},
+                    {field : "paymentStatus", type : "simple", operation : "neq", value: 'PENDING'},
+                    {field : "paymentStatus", type : "simple", operation : "neq", value : 'ERROR'}
                 ]
             };
             return $http.post(config.baseUrl+'/api/blito/v1.0/blits/search', bodyJson, queryParam)
@@ -138,6 +140,21 @@ angular.module('userProfileApi', [])
         ticket.getBoughtTicket = function (trackCode) {
             return $http.get(config.baseUrl+'/api/blito/v1.0/public/blits/'+trackCode)
         };
+        ticket.getExcelTickets = function (sansId) {
+            var bodyJson = {
+                restrictions : [
+                    {field : "blitType-eventDate-eventDateId", type : "simple", operation : "eq", value : sansId},
+                    {field : "paymentStatus", type : "simple", operation : "neq", value : 'PENDING'},
+                    {field : "paymentStatus", type : "simple", operation : "neq", value : 'ERROR'}
+                ]
+            };
+            return $http({
+                method: 'POST',
+                url: config.baseUrl+'/api/blito/v1.0/blits/blits.xlsx',
+                data: bodyJson,
+                responseType: "arraybuffer"
+            });
+        }
     })
     .service('plannerService', function ($http, config) {
         var planner = this;

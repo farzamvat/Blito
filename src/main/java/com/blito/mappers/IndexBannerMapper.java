@@ -1,5 +1,7 @@
 package com.blito.mappers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +29,7 @@ public class IndexBannerMapper implements GenericMapper<IndexBanner,BannerViewMo
 		vmodel.setDescription(entity.getDescription());
 		vmodel.setImage(imageMapper.createFromEntity(entity.getImage()));
 		vmodel.setIndexBannerId(entity.getIndexBannerId());
-		vmodel.setEventLink(entity.getEvent().getEventLink());
+		Optional.ofNullable(entity.getEvent()).ifPresent(event -> vmodel.setEventLink(event.getEventLink()));
 		return vmodel;
 	}
 

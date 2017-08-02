@@ -8,8 +8,8 @@
             </ol>
             <div class="carousel-inner" role="listbox" >
                 <div  ng-repeat="item in bannerData" class="item" ng-class="{active : $index === 0}">
-                    <img ng-src="{{item.newImage}}" alt="First slide " class="firstSliderSectionImage">
-                    <a href="{{url+item.eventLink}}" class="btn btn-success btn-lg buyTicketBanner"><i class="fa fa-ticket fa-1x" aria-hidden="true"></i>                       مشاهده و خرید بلیت
+                    <img ng-src="{{item.newImage}}" alt="{{item.name}}" class="firstSliderSectionImage">
+                    <a ng-if="item.eventLink" href="{{url+item.eventLink}}" class="btn btn-success btn-lg buyTicketBanner"><i class="fa fa-ticket fa-1x" aria-hidden="true"></i>                       مشاهده و خرید بلیت
                     </a>
                 </div>
 
@@ -103,11 +103,7 @@
                                 <h5>{{ event.capacity - event.soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
                                 <h5>{{ event.views | number | pNumber}}: بازدید <i class="fa fa-eye"></i></h5>
                             </div>
-                            <div ng-show="event.eventState === 'CLOSED'" class="closed">
-                                <h1><i class="fa fa-lock"></i>
-                                    <p>بسته</p>
-                                </h1>
-                            </div>
+
 
                             <div ng-show="event.eventState === 'SOLD'" class="soldout">
                                 <img src="../../../assets/img/soldout.png"/>
@@ -133,11 +129,7 @@
                             <h5>{{ ourOfferConcert[0].capacity - ourOfferConcert[0].soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
                             <h5>{{ ourOfferConcert[0].views | number | pNumber}}: بازدید <i class="fa fa-eye"></i></h5>
                         </div>
-                        <div ng-show="ourOfferConcert[0].eventState === 'CLOSED'" class="closed">
-                            <h1><i class="fa fa-lock"></i>
-                                <p>بسته</p>
-                            </h1>
-                        </div>
+
                         <div ng-show="ourOfferConcert[0].eventState === 'SOLD'" class="soldout">
                             <img src="../../../assets/img/soldout.png"/>
                         </div>
@@ -169,11 +161,7 @@
                                 <h5>{{ event.capacity - event.soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
                                 <h5>{{ event.views | number | pNumber }}: بازدید <i class="fa fa-eye"></i></h5>
                             </div>
-                            <div ng-show="event.eventState === 'CLOSED'" class="closed">
-                                <h1><i class="fa fa-lock"></i>
-                                    <p>بسته</p>
-                                </h1>
-                            </div>
+
                             <div ng-show="event.eventState === 'SOLD'" class="soldout">
                                 <img src="../../../assets/img/soldout.png"/>
                             </div>
@@ -198,11 +186,7 @@
                             <h5>{{ ourOfferTour[0].capacity - ourOfferTour[0].soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
                             <h5>{{ ourOfferTour[0].views | number | pNumber}}: بازدید <i class="fa fa-eye"></i></h5>
                         </div>
-                        <div ng-show="ourOfferTour[0].eventState === 'CLOSED'" class="closed">
-                            <h1><i class="fa fa-lock"></i>
-                                <p>بسته</p>
-                            </h1>
-                        </div>
+
                         <div ng-show="ourOfferTour[0].eventState === 'SOLD'" class="soldout">
                             <img src="../../../assets/img/soldout.png"/>
                         </div>
@@ -230,11 +214,7 @@
                                 <h5>{{ event.capacity - event.soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
                                 <h5>{{ event.views | number | pNumber}}: بازدید <i class="fa fa-eye"></i></h5>
                             </div>
-                            <div ng-show="event.eventState === 'CLOSED'" class="closed">
-                                <h1><i class="fa fa-lock"></i>
-                                    <p>بسته</p>
-                                </h1>
-                            </div>
+
                             <div ng-show="event.eventState === 'SOLD'" class="soldout">
                                 <img src="../../../assets/img/soldout.png"/>
                             </div>
@@ -262,11 +242,7 @@
                             <h5>{{ ourOfferEvento[0].capacity - ourOfferEvento[0].soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
                             <h5>{{ ourOfferEvento[0].views | number | pNumber}}: بازدید <i class="fa fa-eye"></i></h5>
                         </div>
-                        <div ng-show="ourOfferEvento[0].eventState === 'CLOSED'" class="closed">
-                            <h1><i class="fa fa-lock"></i>
-                                <p>بسته</p>
-                            </h1>
-                        </div>
+
                         <div ng-show="ourOfferEvento[0].eventState === 'SOLD'" class="soldout">
                             <img src="../../../assets/img/soldout.png"/>
                         </div>
@@ -323,11 +299,7 @@
                                 <h5>{{ event.blitCost | number | pNumber}}: قیمت <i class="fa fa-calendar-check-o"></i></h5>
                                 <h5>{{ event.view | number | pNumber}}: بازدید <i class="fa fa-eye"></i></h5>
                             </div>
-                            <div ng-show="event.state === 'CLOSED'" class="closed">
-                                <h1><i class="fa fa-lock"></i>
-                                    <p>بسته</p>
-                                </h1>
-                            </div>
+
                             <div ng-show="event.state === 'SOLD'" class="soldout">
                                 <img src="../../../assets/img/soldout.png"/>
                             </div>

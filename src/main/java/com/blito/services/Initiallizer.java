@@ -42,7 +42,9 @@ public class Initiallizer {
 
 	@Transactional
 	public void importPermissionsToDataBase() {
-		if (permissionRepository.findAll().isEmpty()) {
+		List<Permission> allPermission = permissionRepository.findAll();
+
+		if (allPermission.isEmpty()) {
 			List<Permission> permissions = new ArrayList<>();
 			Arrays.asList(ApiBusinessName.values()).forEach(e -> {
 				Permission permission = new Permission();
@@ -51,16 +53,13 @@ public class Initiallizer {
 			});
 			permissionRepository.save(permissions);
 		} else {
+			List<String> permStrs = allPermission.stream().map(permission -> permission.getApiBusinessName()).collect(Collectors.toList());
+
 			List<Permission> finalPermissions = Arrays.asList(ApiBusinessName.values())
-							.stream()
-							.map(e -> permissionRepository.findAll().stream()
-									.filter(p -> p.getApiBusinessName().equals(e.name())).findFirst().map(p -> p)
-									.orElseGet(() -> {
-										Permission permission = new Permission();
-										permission.setApiBusinessName(e.name());
-										return permission;
-									}))
-							.collect(Collectors.toList());
+					.stream()
+					.filter(p -> !permStrs.contains(p.name()))
+					.map(p1 -> new Permission(p1.name(), ""))
+					.collect(Collectors.toList());
 			permissionRepository.save(finalPermissions);
 		}
 	}

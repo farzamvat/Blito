@@ -7,12 +7,10 @@
                 <h2 class="modal-title text-center">خرید بلیت</h2>
             </div>
             <div class="modal-body">
-                <!-- How it Works section -->
                 <section  class="section how-it-works" id="how-it-works">
 
                     <div class="row">
                         <div class=" board">
-                            <!-- <h2>Welcome to IGHALO!<sup>™</sup></h2>-->
                             <div class="board-inner">
                                 <ul class="nav nav-tabs" id="myTab">
                                     <div class="progress hidden-xs">
@@ -72,15 +70,15 @@
                                             </div>
                                             <div ng-show="showSans" class="form-group col-xs-12  formRegGroup floatRight marginTop30">
 
-                                            <div class="col-xs-5 col-sm-4 floatRight text-center">
-                                                <label class="registerLabel" for="eventShowTime" > انتخاب بلیت  :</label>
-                                            </div>
-                                            <div class="col-xs-7 col-sm-8 floatRight ">
+                                                <div class="col-xs-5 col-sm-4 floatRight text-center">
+                                                    <label class="registerLabel" for="eventShowTime" > انتخاب بلیت  :</label>
+                                                </div>
+                                                <div class="col-xs-7 col-sm-8 floatRight ">
 
-                                                <select id="blitType" name="blitSelect" ng-change="blitTypePicked(ticketTypePicked)" required ng-model="ticketTypePicked" class="form-control dropDownList" ng-options="o.blitTypeId as o.name for o in eventDatePicked[0].blitTypes">
+                                                    <select id="blitType" name="blitSelect" ng-change="blitTypePicked(ticketTypePicked)" required ng-model="ticketTypePicked" class="form-control dropDownList" ng-options="o.blitTypeId as o.name for o in eventDatePicked[0].blitTypes">
 
-                                                </select>
-                                            </div>
+                                                    </select>
+                                                </div>
                                             </div>
                                             <div ng-show="!loggedIn && itemWithCapacity[0].isFree">
                                                 <div   class="text-center  alert alert-danger col-xs-12">
@@ -99,27 +97,27 @@
                                                 </div>
                                                 <div ng-hide="itemWithCapacity[0].capacity === 0 || itemWithCapacity[0].blitTypeState === 'CLOSED'">
                                                     <div ng-if="ticketInfo.blitSelect.$valid && itemWithCapacity[0].isFree">
-                                                    <div ng-show="itemWithCapacity[0].capacity >= 5" class="form-group col-xs-12  formRegGroup floatRight marginTop30">
-                                                        <div class="col-xs-5 col-sm-4 floatRight text-center">
-                                                            <label class="registerLabel" for="ticketNumber" > تعداد بلیت  :</label>
-                                                        </div>
-                                                        <div class="col-xs-7 col-sm-8 floatRight ">
-                                                            <select ng-model="eventInfo.ticketNumber"  id="ticketNumber" class="form-control dropDownList" required>
-                                                                <option ng-repeat="number in capacityArray">{{$index+1 }}</option>
-                                                            </select>
-                                                        </div>
+                                                        <div ng-show="itemWithCapacity[0].capacity >= 5" class="form-group col-xs-12  formRegGroup floatRight marginTop30">
+                                                            <div class="col-xs-5 col-sm-4 floatRight text-center">
+                                                                <label class="registerLabel" for="ticketNumber" > تعداد بلیت  :</label>
+                                                            </div>
+                                                            <div class="col-xs-7 col-sm-8 floatRight ">
+                                                                <select ng-model="eventInfo.ticketNumber"  id="ticketNumber" class="form-control dropDownList" required>
+                                                                    <option ng-repeat="number in capacityArray">{{$index+1 }}</option>
+                                                                </select>
+                                                            </div>
 
-                                                    </div>
-                                                    <div ng-show="itemWithCapacity[0].capacity<5" class="form-group col-xs-12  formRegGroup floatRight marginTop30">
-                                                        <div class="col-xs-5 col-sm-4 floatRight text-center">
-                                                            <label class="registerLabel" for="ticketNumber" > تعداد بلیت  :</label>
                                                         </div>
-                                                        <div class="col-xs-7 col-sm-8 floatRight ">
-                                                            <select ng-model="eventInfo.ticketNumber"  id="ticketNumber2" class="form-control dropDownList" required>
-                                                                <option ng-repeat="number in getTicketNumbers(itemWithCapacity[0].capacity - itemWithCapacity[0].soldCount)">{{$index+1 }}</option>
-                                                            </select>
+                                                        <div ng-show="itemWithCapacity[0].capacity<5" class="form-group col-xs-12  formRegGroup floatRight marginTop30">
+                                                            <div class="col-xs-5 col-sm-4 floatRight text-center">
+                                                                <label class="registerLabel" for="ticketNumber" > تعداد بلیت  :</label>
+                                                            </div>
+                                                            <div class="col-xs-7 col-sm-8 floatRight ">
+                                                                <select ng-model="eventInfo.ticketNumber"  id="ticketNumber2" class="form-control dropDownList" required>
+                                                                    <option ng-repeat="number in getTicketNumbers(itemWithCapacity[0].capacity - itemWithCapacity[0].soldCount)">{{$index+1 }}</option>
+                                                                </select>
+                                                            </div>
                                                         </div>
-                                                    </div>
                                                     </div>
                                                     <div ng-show="ticketInfo.blitSelect.$valid && !itemWithCapacity[0].isFree" class="form-group col-xs-12  formRegGroup floatRight marginTop30">
                                                         <div class="col-xs-5 col-sm-4 floatRight text-center">
@@ -206,7 +204,6 @@
                                                 </div>
                                                 <div class="col-xs-7 col-sm-6 floatRight ">
                                                     <label>{{itemWithCapacity[0].name}}</label>
-                                                    <!--<input height="60" id="finalTicketType"  name="userid"  type="text"  class="form-group registerInput disabledInput" disabled>-->
                                                 </div>
 
                                             </div>
@@ -216,7 +213,6 @@
                                                 </div>
                                                 <div class="col-xs-7 col-sm-6 floatRight ">
                                                     <label>{{totalNumber  | number | pNumber}}</label>
-                                                    <!--<input height="60" id="TotalTicketNumber" value="" name="userid"  type="text"  class="form-group registerInput disabledInput" disabled>-->
                                                 </div>
 
                                             </div>
@@ -226,7 +222,6 @@
                                                 </div>
                                                 <div class="col-xs-7 col-sm-6 floatRight ">
                                                     <label>{{totalPrice  | number | pNumber}}</label>
-                                                    <!--<input class="form-group" name="paymentInput"   type="text">-->
                                                     <input height="60" id="registerLabel" ng-model="paymentSelectedDone" name="userid"  type="text"  class="form-group registerInput " ng-show="" required>
                                                 </div>
 

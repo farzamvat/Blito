@@ -5,13 +5,17 @@
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=0.6, maximum-scale=1, user-scalable=0.5" />
-    <title>بلیتو</title>
+    <meta name="google-site-verification" content="Ae0XnHBmGrtad5c_FptpZisRSO68n0CfHx3OE2iq138" />
+    <meta name="description" content="{{pageDescription}}"/>
+    <title ng-bind="title + ' | بلیتو'"></title>
+    <meta name="robots" content="{{robotValue}}" />
+    <meta name="googlebot" content="{{robotValue}}" />
     <link rel="apple-touch-icon" sizes="180x180" href="fav-icons/apple-touch-icon.png"/>
     <link rel="icon" type="image/png" sizes="32x32" href="fav-icons/favicon-32x32.png"/>
     <link rel="icon" type="image/png" sizes="16x16" href="fav-icons/favicon-16x16.png"/>
     <link rel="manifest" href="fav-icons/manifest.json"/>
     <link rel="mask-icon" href="fav-icons/safari-pinned-tab.svg" />
-    <meta name="theme-color" content="#ffffff"/>
+    <meta name="theme-color" content="#1e1e1e"/>
     <!-- external css libraries-->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css"/>
@@ -27,6 +31,10 @@
     <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
     <script type="text/javascript" src="bower_components/angularUtils-pagination/dirPagination.js"></script>
     <!-- external js libraries-->
+    <script type="text/javascript" src="bower_components/angulartics/dist/angulartics.min.js"></script>
+    <script type="text/javascript" src="bower_components/angulartics-google-analytics/dist/angulartics-ga.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-file-saver/dist/angular-file-saver.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-file-saver/dist/angular-file-saver.bundle.min.js"></script>
     <link rel='stylesheet' href='bower_components/textAngular/dist/textAngular.css'/>
     <script type="text/javascript" src='bower_components/textAngular/dist/textAngular-rangy.min.js'></script>
     <script type="text/javascript" src='bower_components/textAngular/dist/textAngular-sanitize.min.js'></script>
@@ -69,12 +77,18 @@
     <!-- angular directives-->
     <script type="text/javascript" src="app/directives/changeClassBySize.js"></script>
     <script type="text/javascript" src="app/directives/validation.js"></script>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
+        ga('create', 'UA-103668411-1', 'auto');
+    </script>
 
 </head>
 <body ng-cloak="">
 
-<!-- Fixed navbar -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
 
 
@@ -100,9 +114,8 @@
             <li ng-show="logoutMenu" class="floatRight" ng-class="{ active: isActive('/user-profile')}"><a class="" href="/user-profile"><i class="fa fa-user" aria-hidden="true"></i>  {{firstname}} {{lastname}} </a></li>
             <li class="floatRight" ng-class="{ active: isActive('/')}"><a class="" href="/"><i class="fa fa-home" aria-hidden="true"></i> خانه </a></li>
             <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema') || isActive('/sports') || isActive('/theater') || isActive('/concert') || isActive('/other') || isActive('/tour') || isActive('/workshop')}">
-                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-calendar" aria-hidden="true"></i> رویداد ها   <span class="caret"></span></a>
-                <ul class="dropdown-menu textAlignRight">
-                    <!--<li role="separator" class="divider"></li>-->
+                <a href="" ng-click="DropDownMenue()" class="dropdown-toggle"><i class="fa fa-calendar" aria-hidden="true"></i> رویداد ها   <span class="caret"></span></a>
+                <ul class="dropdown-menu nav-dropdown-menu textAlignRight">
                     <li><a href="/concert">کنسرت</a></li>
                     <li><a href="/tour">تور</a></li>
                     <li><a href="/theater">تئاتر</a></li>
@@ -111,9 +124,6 @@
                     <li><a href="/cinema">سینما</a></li>
                     <li><a href="/other">سایر</a></li>
 
-                    <!--<li class="dropdown-header">Nav header</li>-->
-                    <!--<li><a href="#">Separated link</a></li>-->
-                    <!--<li><a href="#">One more separated link</a></li>-->
                 </ul>
             </li>
             <li class="floatRight" ng-class="{ active: isActive('/exchange-tickets')}"><a href="/exchange-tickets"><i class="fa fa-ticket" aria-hidden="true"></i> بلیت های تعویضی   </a>
@@ -123,7 +133,7 @@
             <li ng-show="logoutMenu" ng-click="logout()" class="floatRight signInButton"><a href=""><i class="fa fa-sign-out" aria-hidden="true"></i> خروج</a></li>
 
         </ul>
-    </div><!--/.nav-collapse -->
+    </div>
 </nav>
 <div class="container">
 
@@ -133,23 +143,24 @@
     </div>
 
 
-</div><!-- container-->
+</div>
 <footer id="footer">
     <div class="row">
-        <div class=" col-sm-6 col-md-6 paddingtop-bottom footerleft floatRight textAlignRight ">
+        <div class="hidden-xs col-sm-2 floatRight"></div>
+        <div class="col-xs-12 col-sm-5  paddingtop-bottom footerleft floatRight textAlignRight verticalLine">
             <div class="logofooter"> <img href="#" src="assets/img/logo.png" alt=""/>
             </div>
             <p class="footerP"><i class="fa fa-phone"></i>شماره پشتیبانی: ۸۸۳۵۰۵۳۶</p>
-            <p class="footerP" style="font-size: 11px"><i class="fa fa-envelope"></i>ایمیل پشتیبانی:
+            <p class="footerP" ><i class="fa fa-envelope"></i>ایمیل پشتیبانی:
                 support@blito.ir</p>
             <p><i class="fa fa-location-arrow"></i> ادرس: خیابان کارگر شمالی، پردیس فنی دانشگاه تهران، شتاب دهنده دیموند</p>
             <p><i class="fa fa-support"></i>پیشنهادات و انتقادات خود را با من در میان بگذارید.</p>
 
         </div>
-        <div class="verticalLine">
+        <!--<div class="verticalLine">-->
 
-        </div>
-        <div class=" col-sm-6 col-md-6 paddingtop-bottom footerleft floatRight textAlignRight">
+        <!--</div>-->
+        <div class="col-xs-12 col-sm-5  paddingtop-bottom footerleft floatRight textAlignRight verticalLine">
 
             <h6 class="heading7">اطلاعات</h6>
             <p><i class="fa fa-info"></i><a href="/about-us" class="footerAnchor footerP">درباره ما</a></p>
@@ -158,35 +169,31 @@
         </div>
         <div class="col-xs-12 socialmediaHolder floatRight textAlignRight">
             <div class="marginAuto">
-                <a class="socialmedia " href="https://www.instagram.com/blito.ir/">
+                <a class="socialmedia " href="https://www.instagram.com/blito.ir/" target="_blank">
                     <span class="instagram"></span>
                     <img class="displayInline"  src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/d0cf11b8-f7d3-4c59-8e62-91365dd175f9.png"/>
                 </a>
                 <a class="socialmedia"
-                   href="https://t.me/blito">
+                   href="https://t.me/blito" target="_blank">
                     <span class="telegram"></span>
                     <img class="displayInline" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/11b8524d-0856-4844-9786-b5aab92c9ea5.png"/></a>
-                <a class="socialmedia" href="https://twitter.com/blittoir?s=09">
+                <a class="socialmedia" href="https://twitter.com/blittoir?s=09" target="_blank">
                     <span class="twitter"></span>
                     <img class="displayInline" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/3a457013-f475-4d11-8c98-76f42a25d8e5.png"/>
                 </a>
-                <a class="socialmedia" href="http://www.aparat.com/blito">
+                <a class="socialmedia" href="http://www.aparat.com/blito" target="_blank">
                     <span class="aparat"></span>
                     <img class="displayInline" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/b8d9fb6a-abeb-40c6-a425-1a88eb44b7cb.png"/>
                 </a>
             </div>
         </div>
     </div>
-        <!--<div class="col-md-4 col-sm-4 paddingtop-bottom footerleft floatRight textAlignRight">-->
-        <!--<div class="logofooter">-->
-        <!--</div>-->
-        <!--</div>-->
-
 
 </footer>
 <div ng-include="'app/views/partials/registerModal.html'"></div>
 <div ng-include="'app/views/partials/loading.html'"></div>
 <div ng-include="'app/views/partials/showNotif.html'"></div>
+<div ng-include="'app/views/partials/forget-password.html'"></div>
 
 </body>
 <script  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0K9LZjvsK4TGAOLzQVVnGfY20eyO5nbY"></script>

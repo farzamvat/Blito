@@ -19,7 +19,8 @@ angular.module('User')
                                              $q,
                                              dateSetterService,
                                              imageServices,
-                                             $window) {
+                                             $window,
+                                             FileSaver) {
         var userProfile = this;
 
         $scope.userData = userInfo.getData();
@@ -814,7 +815,9 @@ angular.module('User')
         //==================================================== EVENT PLANNER SUBMIT =================================
         $scope.submitPlannerSpinner = false;
         $scope.submitPlannerNotif = false;
+        $scope.plannerSubmitOnce = false;
         $scope.submitEventPlanner = function (plannerData) {
+            $scope.plannerSubmitOnce = true;
             $scope.submitPlannerNotif = false;
             var eventPlannerData = {
                 hostName: plannerData.name,
@@ -846,6 +849,7 @@ angular.module('User')
             $scope.submitPlannerSpinner = true;
             plannerService.submitPlannerForm(eventPlannerData)
                 .then(function (data, status) {
+                    $scope.plannerSubmitOnce = false;
                     $scope.submitPlannerSpinner = false;
                     $scope.submitPlannerNotif = true;
                     $scope.submitPlannerErrorNotif = false;
@@ -858,6 +862,7 @@ angular.module('User')
                     angular.element(document.getElementsByClassName("coverPhotoUpload"))[0].src = '';
                     angular.element(document.getElementsByClassName("eventPlannerPhotoUpload"))[0].src = '';
                 }, function (data, status) {
+                    $scope.plannerSubmitOnce = false;
                     $scope.submitPlannerErrorNotif = true;
                     document.getElementById("submitPlannerErrorNotif").innerHTML= data.data.message;
                     $scope.submitPlannerSpinner = false;
@@ -871,10 +876,12 @@ angular.module('User')
         $scope.galleryFourUUID = null;
         $scope.galleryFiveUUID = null;
         $scope.gallerySixUUID = null;
+        $scope.eventSubmitOnce = false;
         $scope.eventDateClass = function (index) {
             return "eventDateClass"+index;
         };
         $scope.submitEvent = function (eventFields) {
+            $scope.eventSubmitOnce = true;
             $scope.createEventNotif = false;
             $scope.eventPhotoSuccess = false;
             $scope.eventPhotoOneSuccess = false;
@@ -919,9 +926,9 @@ angular.module('User')
                 delete eventSubmitData.images;
             }
             $scope.createEventSpinner = true;
-
             eventService.submitEventForm(eventSubmitData)
                 .then(function (data, status) {
+                    $scope.eventSubmitOnce = false;
                     angular.element(document.getElementsByClassName("profilePhotoUpload"))[0].src = '';
                     angular.element(document.getElementsByClassName("galleryOne"))[0].src = '';
                     angular.element(document.getElementsByClassName("galleryTwo"))[0].src = '';
@@ -932,7 +939,9 @@ angular.module('User')
                     $scope.mapMarkerClickCheckEvent = true;
                     setInitMaps('makeEventSection');
                     $scope.showTimeForms = [{blitTypes : [{}]}];
-
+                    $timeout(function () {
+                        dateSetterService.initDate("eventDateClass0");
+                    }, 1000);
                     $scope.createEventSpinner = false;
                     $scope.createEventNotif = true;
                     $scope.createEventErrorNotif = false;
@@ -940,6 +949,7 @@ angular.module('User')
                     $scope.eventFields = [];
 
                 }, function (data, status) {
+                    $scope.eventSubmitOnce = false;
                     $scope.createEventErrorNotif = true;
                     document.getElementById("createEventErrorNotif").innerHTML= data.data.message;
                     $scope.createEventSpinner = false;
@@ -949,8 +959,10 @@ angular.module('User')
         //==================================================== EXCHANGE SUBMIT =================================
         $scope.submitExchangeSpinner = false;
         $scope.submitExchangeNotif = false;
+        $scope.exchangeSubmitOnce = false;
 
         $scope.submitExchangeTicket = function (exchangeFields) {
+            $scope.exchangeSubmitOnce = true;
 
             $scope.submitExchangeNotif = false;
             var latLng = mapMarkerService.getMarker();
@@ -977,6 +989,7 @@ angular.module('User')
             }
             exchangeService.submitExchangeForm(exchangeData)
                 .then(function (data, status) {
+                    $scope.exchangeSubmitOnce = false;
                     $scope.submitExchangeSpinner = false;
                     $scope.submitExchangeNotif = true;
                     $scope.submitExchangeErrorNotif = false;
@@ -990,6 +1003,7 @@ angular.module('User')
                     angular.element(document.getElementsByClassName("exchangePhotoUpload"))[0].src = '';
 
                 }, function (data, status) {
+                    $scope.exchangeSubmitOnce = false;
                     $scope.submitExchangeErrorNotif = true;
                     $scope.submitExchangeSpinner = false;
                     $scope.exchangePhotoError = false;
@@ -1023,12 +1037,10 @@ angular.module('User')
             if(section === 'makeEventSection') {
                 $scope.mapMarkerClickCheckEvent = true;
                 mapMarkerService.initMap(document.getElementById('map'));
-                console.log("event");
             }
             if(section === 'exchangeTicketSection') {
                 $scope.mapMarkerClickCheckExchange = true;
                 mapMarkerService.initMap(document.getElementById('mapExchange'));
-                console.log("exchange");
             }
         };
 
@@ -1125,8 +1137,9 @@ angular.module('User')
                 $(".blitSaleStartDate").pDatepicker("setDate",dateSetterService.persianToArray(persianDate($scope.userEventsEdit[index].blitSaleStartDate).pDate));
             }, 500);
             $timeout(function () {
-                mapMarkerService.initMap(document.getElementById('editEventMap'));
                 mapMarkerService.setMarker($scope.userEventsEdit[index].latitude, $scope.userEventsEdit[index].longitude);
+                mapMarkerService.initMap(document.getElementById('editEventMap'));
+                mapMarkerService.placeMarker(mapMarkerService.getMarker());
             },500);
         };
 
@@ -1250,6 +1263,7 @@ angular.module('User')
             imageServices.downloadPhotos($scope.exchangeEditImageId, "exchangePhotoUploadEdit");
             mapMarkerService.initMap(document.getElementById('mapExchangeEdit'));
             mapMarkerService.setMarker(latlng.lat, latlng.lng);
+            mapMarkerService.placeMarker(mapMarkerService.getMarker());
             $("#editExchange").modal("show");
         };
 
@@ -1404,12 +1418,30 @@ angular.module('User')
         $scope.getTicket = function (trackCode) {
             $window.open('/payment/'+trackCode);
         };
+        $scope.dateClassGetTicket = function (i) {
+            return "classDateTicket"+i;
+        };
+        $scope.getTicketsSubmit = function (index) {
+            ticketsService.getExcelTickets($scope.eventDatesTickets[index].eventDateId)
+                .then(function (data) {
+                    var excelData = new Blob([data.data], { type: 'application/vnd.ms-excel;charset=UTF-8'});
+                    FileSaver.saveAs(excelData, 'blits.xls');
+                })
+                .catch(function (data) {
+                })
+        };
         $scope.showTickets = function (index) {
             $scope.eventTicketsPageChanged = function (newPage) {
                 $scope.getEventTickets(newPage);
             };
-            $scope.getEventTickets = function (pageNumber) {
+            $scope.eventDatesTickets = $scope.userEvents[index].eventDates;
+            $timeout(function () {
+                for(var i = 0 ; i < $scope.eventDatesTickets.length; i++) {
+                    $(".classDateTicket"+i).val(persianDate($scope.eventDatesTickets[i].date).format("dddd,DD MMMM, ساعت HH:mm"));
+                }
+            }, 500);
 
+            $scope.getEventTickets = function (pageNumber) {
                 ticketsService.getEventTickets(pageNumber, $scope.userEvents[index].eventId)
                     .then(function (data) {
                         $scope.totalTicketNumber = data.data.totalElements;
@@ -1426,7 +1458,6 @@ angular.module('User')
                 .then(function (data, status) {
                     $scope.totalExchangeNumber = data.data.totalElements;
                     $scope.exchangeTickets = data.data.content;
-                    console.log($scope.exchangeTickets);
                     $scope.exchangeEditTickets = angular.copy(data.data.content);
                     $scope.exchangeTickets = $scope.exchangeTickets.map(function (ticket) {
                         ticket.operatorState = dataService.operatorStatePersian(ticket.operatorState);

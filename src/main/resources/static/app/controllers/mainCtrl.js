@@ -14,7 +14,9 @@ angular.module('menuPagesModule', [])
                                       AuthToken,
                                       refresh,
                                       config,
-                                      dataService) {
+                                      dataService,
+                                      updateInfo,
+                                      $routeParams) {
         var main = this;
         main.checkingSession = false;
         $scope.loadPage = false;
@@ -24,7 +26,6 @@ angular.module('menuPagesModule', [])
             $window.location.assign('/');
 
         };
-
         main.checkSession = function () {
             if(AuthToken.getRefreshToken() === "logOut") {
                 main.checkingSession = false;
@@ -101,12 +102,98 @@ angular.module('menuPagesModule', [])
             if(Auth.isLoggedIn()) {
                 main.setUserData();
             }
-
+            switch ($location.path()) {
+                case '/':
+                    $scope.title = 'رویدادهای فرهنگی و هنری';
+                    $scope.pageDescription = 'خرید بلیت کنسرت ، خرید بلیت تیاتر، خرید بلیط کنسرت ، خرید بلیط تیاتر، بلیت جشنواره فیلم فجر، بلیط جشنواره فیلم فجر، لاکی کلاور کافه ، کافه گالری شناخت، موسسه فرهنگی و هنری رایزن، اجرای کافه ای، کارگاه عکاسی ، جز، عمارت رو به رو، رویداد های فرهنگی و هنری، کافه گالری، وزرات ارشاد، بلیت تعویضی، اگهی بلیط، فیلم کوتاه ، جشنواره فیلم کوتاه ، جشنواره موسیقی، فرهنگ و هنر، کارگاه تیاتر، کارگاه نویسندگی ، کارگاه بازیگری، خانه نمایش دا ، کافه های تهران، کنسرت تهران، اجرای موسیقی، رویداد فرهنگی و هنری، پلتفرم داربست، گالری محسن، گالری تهران، گالری، تور گردشگری، تور طبیعت گردی، کافه گالری، ایران کنسرت ، تیوال ، ایوند ، اکران کافه ای، رویداد های شهر تهران ، بلیت، بلیط،تئاتر';
+                    $scope.robotValue = 'index';
+                    break;
+                case '/not-found' :
+                    $scope.title = 404;
+                    $scope.robotValue = 'noindex';
+                    break;
+                case '/about-us' :
+                    $scope.title = 'درباره ما';
+                    $scope.robotValue = 'noindex';
+                    break;
+                case '/term-of-use' :
+                    $scope.title = 'قوانین';
+                    $scope.robotValue = 'noindex,nofollow';
+                    break;
+                case '/privacy-policy' :
+                    $scope.title = 'حریم خصوصی';
+                    $scope.robotValue = 'noindex,nofollow';
+                    break;
+                case '/sports' :
+                    $scope.title = 'سرگرمی';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'index';
+                    break;
+                case '/tour' :
+                    $scope.title = 'تور';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'index';
+                    break;
+                case '/theater' :
+                    $scope.title = 'تئاتر';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'index';
+                    break;
+                case '/concert' :
+                    $scope.title = 'کنسرت';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'index';
+                    break;
+                case '/cinema' :
+                    $scope.title = 'سینما';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'index';
+                    break;
+                case '/workshop' :
+                    $scope.title = 'کارگاه';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'index';
+                    break;
+                case '/other' :
+                    $scope.title = 'سایر';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'index';
+                    break;
+                case '/exchange-tickets' :
+                    $scope.title = 'آگهی بلیت';
+                    $scope.pageDescription = 'توضیحات صفحه اصلی';
+                    $scope.robotValue = 'index';
+                    break;
+                case '/activate-user' :
+                    $scope.title = 'فعال سازی';
+                    $scope.robotValue = 'noindex,nofollow';
+                    break;
+                case '/user-profile' :
+                    $scope.title = 'صفحه کاربر';
+                    $scope.robotValue = 'noindex,nofollow';
+                    break;
+                default :
+                    if($location.path().indexOf('event-page') > -1) {
+                        $scope.title = $location.path().replace('/event-page/','').replace( /\d+/,'');
+                        $scope.pageDescription = 'توضیحات صفحه اصلی';
+                        $scope.robotValue = 'index';
+                    }
+                    if($location.path().indexOf('exchange-page') > -1) {
+                        $scope.title = $location.path().replace('/exchange-page/','').replace( /\d+/,'');
+                        $scope.pageDescription = 'توضیحات صفحه اصلی';
+                        $scope.robotValue = 'index';
+                    }
+                    if($location.path().indexOf('payment') > -1) {
+                        $scope.title = 'صفحه بلیت';
+                        $scope.pageDescription = 'توضیحات صفحه اصلی';
+                        $scope.robotValue = 'noindex,nofollow';
+                    }
+                    break;
+            }
         });
-
-
-
+        $scope.registerOnce = false;
         $scope.regUser = function (regData) {
+            $scope.registerOnce = true;
             main.loading = true;
             main.errorMsg = false;
             $scope.registerErrorNotif = false;
@@ -122,12 +209,14 @@ angular.module('menuPagesModule', [])
                 })
                 .catch(function (data, status) {
                     $scope.submitRegister = false;
+                    $scope.submitRegister = false;
                     $scope.registerErrorNotif = true;
                     document.getElementById("registerError").innerHTML= data.data.message;
                 })
         };
-
+        $scope.loginOnce = false;
         $scope.login = function (loginData) {
+            $scope.loginOnce = true;
             main.loading = true;
             main.errorMsg = false;
             $scope.loginErrorNotif = false;
@@ -137,6 +226,7 @@ angular.module('menuPagesModule', [])
 
             Auth.login(loginData)
                 .then(function (data, status) {
+                    $scope.loginOnce = false;
                     $scope.loginSuccessNotif = true;
                     $scope.submitLogin = false;
                     $scope.loggedIn = true;
@@ -151,6 +241,7 @@ angular.module('menuPagesModule', [])
                     },2000)
                 })
                 .catch(function (data, status) {
+                    $scope.loginOnce = false;
                     $scope.loginErrorNotif = true;
                     $scope.submitLogin = false;
                     document.getElementById("loginError").innerHTML = data.data.message;
@@ -159,11 +250,38 @@ angular.module('menuPagesModule', [])
                 })
             ;
         };
-
+        $scope.forgetPassModal = function () {
+            $("#registrationModal").modal("hide");
+            $("#forgetPass").modal("show");
+            document.getElementById("successForgetPass").style.display = "none";
+            document.getElementById("errorForgetPass").style.display = "none";
+        };
+        $scope.resetPasswordSubmit = function (email) {
+            document.getElementById("successForgetPass").style.display = "none";
+            document.getElementById("errorForgetPass").style.display = "none";
+            document.getElementById("spinnerForgetPass").style.display = "inline";
+            updateInfo.resetPassword(email)
+                .then(function () {
+                    document.getElementById("spinnerForgetPass").style.display = "none";
+                    document.getElementById("successForgetPass").style.display = "block";
+                })
+                .catch(function (data) {
+                    document.getElementById("spinnerForgetPass").style.display = "none";
+                    document.getElementById("errorForgetPass").style.display = "block";
+                    document.getElementById("errorForgetPass").innerHTML= data.data.message;
+                })
+        };
 
         $scope.isActive = function (viewLocation) {
             return viewLocation === $location.path();
         };
-
+        var isOpen =false;
+        $scope.DropDownMenue = function () {
+            isOpen=!isOpen;
+            if(isOpen)
+                $(angular.element(document.getElementsByClassName('dropdown-menu'))).slideDown(300);
+            else
+                $(angular.element(document.getElementsByClassName('dropdown-menu'))).slideUp(300);
+        };
     });
 

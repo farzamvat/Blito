@@ -1,5 +1,6 @@
 package com.blito.rest.controllers;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,11 +23,12 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class PublicIndexBannerController {
 	@Autowired
 	private IndexBannerService indexBannerService;
-	
+
 	@JsonView(View.IndexBanner.class)
 	@GetMapping
-	public CompletionStage<ResponseEntity<?>> getIndexBanners(Pageable pageable,HttpServletRequest req,HttpServletResponse res)
-	{
-		return indexBannerService.getIndexBanners(pageable).handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result, throwable, req, res));
+	public CompletionStage<ResponseEntity<?>> getIndexBanners(Pageable pageable, HttpServletRequest req,
+			HttpServletResponse res) {
+		return CompletableFuture.supplyAsync(() -> indexBannerService.getIndexBanners(pageable))
+				.handle((result, throwable) -> HandleUtility.generateResponseResult(() -> result, throwable, req, res));
 	}
 }

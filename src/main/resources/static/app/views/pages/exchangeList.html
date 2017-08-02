@@ -19,11 +19,7 @@
                     <div class="eventDescription center-block">
                         {{item.desc}}
                     </div>
-                    <div ng-show="item.state === 'CLOSED'" class="closed">
-                        <h1><i class="fa fa-lock"></i>
-                            <p>بسته</p>
-                        </h1>
-                    </div>
+
                     <div ng-show="item.state === 'SOLD'" class="soldout">
                         <img src="../../../assets/img/soldout.png"/>
                     </div>
@@ -35,9 +31,7 @@
     <div class="col-xs-12">
         <div class="col-md-4 col-md-offset-4">
             <dir-pagination-controls pagination-id="exchangePagination" on-page-change="pageChanged(newPageNumber)"
-                    max-size="9"
-                    direction-links="true"
-                    boundary-links="true">
+                    max-size="5">
             </dir-pagination-controls>
         </div>
     </div>
