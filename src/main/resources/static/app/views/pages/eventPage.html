@@ -2,7 +2,7 @@
     <div class="row eventPageHeader eventPageHeaderCover" ng-class="{'eventPageHeaderCinema': eventType === 'CINEMA',
                                                                      'eventPageHeaderTheatre': eventType === 'THEATER',
                                                                      'eventPageHeaderEducation': eventType === 'WORKSHOP',
-                                                                     'eventPageHeaderEntertainment': eventType === 'SPORT',
+                                                                     'eventPageHeaderEntertainment': eventType === 'ENTERTAINMENT',
                                                                      'eventPageHeaderTour': eventType === 'TOURISM',
                                                                      'eventPageHeaderMusic2': eventType === 'CONCERT',
                                                                      'eventPageHeaderOther': eventType === 'OTHER'}">
@@ -11,7 +11,7 @@
         <img ng-show="eventType === 'CINEMA'" class="logoEventPage" src="assets/img/cinema-logo.png" alt="">
         <img ng-show="eventType === 'THEATER'" class="logoEventPage" src="assets/img/theater-logo.png" alt="">
         <img ng-show="eventType === 'WORKSHOP'" class="logoEventPage" src="assets/img/edu-logo.png" alt="">
-        <img ng-show="eventType === 'SPORT'" class="logoEventPage" src="assets/img/joy.png" alt="">
+        <img ng-show="eventType === 'ENTERTAINMENT'" class="logoEventPage" src="assets/img/joy.png" alt="">
         <img ng-show="eventType === 'TOURISM'" class="logoEventPage" src="assets/img/tour-logo.png" alt="">
         <img ng-show="eventType === 'OTHER'" class="logoEventPage" src="assets/img/other-logo.png" alt="">
 
@@ -71,7 +71,7 @@
 
                             <td ng-if="item.price === 0 && eventType !== 'EXHIBITION'" class="dataCenter">رایگان</td>
                             <td ng-if="item.price !== 0 && eventType !== 'EXHIBITION'" class="dataCenter">{{ item.price | number | pNumber}}</td>
-                            <td class="dataCenter">{{ item.capacity - item.soldCount | number | pNumber}}</td>
+                            <td ng-if="eventType !== 'EXHIBITION'" class="dataCenter">{{ item.capacity - item.soldCount | number | pNumber}}</td>
 
                             <td ng-if="item.blitTypeState === 'OPEN' && eventType !== 'EXHIBITION'" class="dataCenter fontGreen" >
                                 فعال
