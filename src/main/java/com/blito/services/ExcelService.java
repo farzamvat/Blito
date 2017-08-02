@@ -126,4 +126,38 @@ public class ExcelService {
 		model.put("numericcolumns", Arrays.asList("EventHostId"));
 		return model;
 	}
+	
+	public Map<String, Object> blitMapForPdf(CommonBlitViewModel blit){
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+
+		model.put("event name", blit.getEventName());
+		model.put("customer name", blit.getCustomerName() );
+		model.put("customer mobile",blit.getCustomerMobileNumber());
+		model.put("customer email", blit.getCustomerEmail());
+		model.put("event date", blit.getEventDateAndTime());
+		model.put("track code", blit.getTrackCode());
+		model.put("blit type", blit.getBlitTypeName());
+		model.put("count", blit.getCount());
+		model.put("event address", blit.getEventAddress());
+		model.put("event photo", blit.getEventPhotoId());
+		return model;
+	}
+	
+	public Map<String, Object> testPdfData(){
+		Map<String, Object> model = new HashMap<String, Object>();
+
+		model.put("event name", "کنسرت نیلز");
+		model.put("customer name", "هستی سحابی");
+		model.put("customer mobile", "۰۹۱۲۷۹۷۶۸۳۷");
+		model.put("customer email", "hasti.sahabi@gmail.com");
+		model.put("event date", "شنبه ۱۱ اردیبهشت، ساعت ۲۱:۰۰");
+		model.put("track code", "92322178");
+		model.put("blit type", "VIP");
+		model.put("count", 5);
+		model.put("event address", "میدان الف، خیابان چهارم، موسسه‌ی ققنوس");
+		model.put("event photo", "17e9678e-168a-4dd1-840f-11111d900b94");
+		return model;
+	}
+	
 }

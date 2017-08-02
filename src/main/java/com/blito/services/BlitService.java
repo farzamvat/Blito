@@ -23,6 +23,7 @@ import com.blito.enums.SeatType;
 import com.blito.enums.State;
 import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotAllowedException;
+import com.blito.exceptions.NotFoundException;
 import com.blito.exceptions.ResourceNotFoundException;
 import com.blito.mappers.CommonBlitMapper;
 import com.blito.models.BlitType;
@@ -102,7 +103,8 @@ public class BlitService {
 	public CommonBlit reserveFreeBlit(BlitType blitType, CommonBlit commonBlit, User user) {
 		User attachedUser = userRepository.findOne(user.getUserId());
 		BlitType attachedBlitType = increaseSoldCount(blitType.getBlitTypeId(), commonBlit);
-		log.info("****** FREE BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}'",user.getEmail(),attachedBlitType.getSoldCount());
+		log.info("****** FREE BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}'", user.getEmail(),
+				attachedBlitType.getSoldCount());
 		commonBlit.setTrackCode(generateTrackCode());
 		commonBlit.setUser(attachedUser);
 		commonBlit.setBlitType(attachedBlitType);
@@ -111,9 +113,8 @@ public class BlitService {
 		attachedUser.addBlits(commonBlit);
 		return commonBlitRepository.saveAndFlush(commonBlit);
 	}
-	
-	private BlitType increaseSoldCount(long blitTypeId,CommonBlit commonBlit)
-	{
+
+	private BlitType increaseSoldCount(long blitTypeId, CommonBlit commonBlit) {
 		BlitType blitType = blitTypeRepository.findOne(blitTypeId);
 		checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
 		blitType.setSoldCount(blitType.getSoldCount() + commonBlit.getCount());
@@ -172,5 +173,11 @@ public class BlitService {
 		}
 
 		return excelService.getBlitsExcelMap(blits);
+	}
+
+	public Map<String, Object> getBlitPdf(String trackCode) {
+		CommonBlitViewModel blit = commonBlitMapper.createFromEntity(commonBlitRepository.findByTrackCode(trackCode)
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND))));
+		return excelService.blitMapForPdf(blit);
 	}
 }

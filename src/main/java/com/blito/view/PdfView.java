@@ -21,6 +21,8 @@ import com.lowagie.text.pdf.PdfWriter;
 
 public class PdfView extends AbstractPdfView {
 
+	private String fontPath = "src/main/resources/static/assets/fonts/website-fonts/IranSans.ttf";
+	
 	@Override
 	protected void buildPdfDocument(Map<String, Object> model, Document document, PdfWriter pdfWriter,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -31,7 +33,7 @@ public class PdfView extends AbstractPdfView {
 		
 		PdfPTable table = new PdfPTable(headers.size());
 		
-		BaseFont bf = BaseFont.createFont("src/main/resources/static/assets/fonts/website-fonts/X Zar.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+		BaseFont bf = BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 		Font font = new Font(bf,12);
 		
 		headers.forEach(header-> {
