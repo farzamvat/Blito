@@ -175,7 +175,7 @@ button.slick-next {
     padding: 15px 15px;
 }
 .categorySectionBackground {
-    background: url('../img/back.png') fixed;
+    background: url('../img/back.jpg') fixed;
 }
 .nav-dropdown-menu>li>a:focus, .nav-dropdown-menu>li>a:hover{
 background-color: #303030;
@@ -192,7 +192,7 @@ background-color: #303030;
 .blitoOffer {
     color : white;
     height: 500px;
-    background: url('../img/back.png') fixed;
+    background: url('../img/back.jpg') fixed;
     padding: 15px 20px;
     border-left: 2px solid #404040;
 }
@@ -400,7 +400,7 @@ background-color: #303030;
 .searchSection {
     padding-top: 10px;
     padding-bottom: 15px;
-    background: url('../img/back.png') fixed;
+    background: url('../img/back.jpg') fixed;
     border-bottom: 2px solid #202020;
 }
 .slidingEvents h2:hover {
@@ -1083,7 +1083,9 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
     cursor: pointer;
 }
 .verticalLine {
-    border-left: thick solid #808080;
+    border-right: 2px solid rgb(252, 183, 49);
+    height: 200px;
+    margin-bottom: 40px;
 }
 .checkBoxInline {
     display: inline;
@@ -1698,7 +1700,7 @@ footer {
     bottom: 0 !important;
 }
 footer h6 {
-    font-size: 16px !important;
+    font-size: 18px !important;
 }
 .footerleft { margin-top:50px; padding: 5px 40px;}
 .logofooter { margin-bottom:10px; font-size:25px; color:#fff; font-weight:700;  }
@@ -1706,7 +1708,7 @@ footer h6 {
     width: 150px ;
 }
 
-.footerleft p { color:#fff; font-size:11px !important;  margin-bottom:15px;}
+.footerleft p { color:#fff; font-size:14px !important;  margin-bottom:15px;}
 .footerleft p i { width:20px; color:#999;}
 
 
@@ -2786,6 +2788,9 @@ table td{
 
 
 @media (max-width: 768px) {
+    .footerleft {
+        text-align: center;
+    }
     .customPanelEventPage {
         margin-right: auto;
         margin-left: auto;
