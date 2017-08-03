@@ -464,6 +464,9 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     background: rgb(252, 183, 49);
     box-shadow: 2px 2px 5px #222;
 }
+.eventListBeautifer h1 {
+    font-size: 27px;
+}
 .eventListHeaderBorderBottom{
     width:100%;
     border-bottom: 3px solid rgb(252, 183, 49);
@@ -911,6 +914,13 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 }
 .eventPageHeaderOther {
     background: url('../img/sayer.png') fixed ;
+    background-size: 100% 380px;
+    padding-top: 68px;
+    padding-bottom: 20px;
+
+}
+.eventPageHeaderGallery {
+    background: url('../img/gallery.png') fixed ;
     background-size: 100% 380px;
     padding-top: 68px;
     padding-bottom: 20px;
