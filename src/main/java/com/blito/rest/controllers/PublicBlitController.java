@@ -20,7 +20,7 @@ import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.services.BlitService;
 import com.blito.services.PaymentRequestServiceAsync;
-import com.blito.view.BlitRecieptPdfView;
+import com.blito.view.BlitReceiptPdfView;
 
 @RestController
 @RequestMapping("${api.base.url}" + "/public/blits")
@@ -46,6 +46,6 @@ public class PublicBlitController {
 	
 	@GetMapping("/{trackCode}/blit.pdf")
 	public ModelAndView getBlitPdfReciept(@PathVariable String trackCode) {
-		return new ModelAndView(new BlitRecieptPdfView(), blitService.getBlitPdf(trackCode));
+		return new ModelAndView(new BlitReceiptPdfView(), blitService.getBlitPdf(trackCode));
 	}
 }

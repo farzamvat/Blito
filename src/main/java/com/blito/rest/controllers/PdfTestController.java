@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.blito.services.ExcelService;
-import com.blito.view.BlitRecieptPdfView;
+import com.blito.view.BlitReceiptPdfView;
 
 @RestController
 @RequestMapping("${api.base.url}"+ "/test-pdf")
@@ -18,7 +18,7 @@ public class PdfTestController {
 	
 	@GetMapping("/xx.pdf")
 	public ModelAndView testPdf() {
-		return new ModelAndView(new BlitRecieptPdfView(), excelService.testPdfData());
+		return new ModelAndView(new BlitReceiptPdfView(), excelService.testPdfData());
 	}
 	
 }
