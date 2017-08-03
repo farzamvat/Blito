@@ -1332,6 +1332,7 @@ angular.module('User')
             document.getElementsByClassName("exchangeStatusSpinner")[0].style.display = "none";
             document.getElementById("approveSuccessSettingExchange").style.display = "none";
             document.getElementById("approveErrorSettingExchange").style.display = "none";
+            document.getElementsByClassName("deleteExchangeSpinner")[0].style.display = "none";
 
             settingExchangeIndex = index;
             $scope.exchangeStateSetting = $scope.exchangeEditTickets[index].state;
