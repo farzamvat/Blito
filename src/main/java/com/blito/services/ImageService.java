@@ -106,6 +106,7 @@ public class ImageService {
 		});
 	}
 
+	@Transactional
 	public void delete(String uid) {
 		List<String> defaults = Arrays.asList(Constants.DEFAULT_EVENT_PHOTO,Constants.DEFAULT_EXCHANGEBLIT_PHOTO
 				,Constants.DEFAULT_HOST_COVER_PHOTO,Constants.DEFAULT_HOST_PHOTO);
