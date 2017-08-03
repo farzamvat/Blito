@@ -1342,8 +1342,8 @@ angular.module('User')
         $scope.deleteExchange= function () {
             document.getElementsByClassName("deleteExchangeSpinner")[0].style.display = "inline";
             exchangeService.deleteExchange($scope.exchangeEditTickets[settingExchangeIndex].exchangeBlitId)
-                .then(function () {
-                    document.getElementById("approveSuccessSettingExchange")[0].style.display = "inline";
+                .then(function (data) {
+                    document.getElementById("approveSuccessSettingExchange").style.display = "inline";
                     document.getElementsByClassName("deleteExchangeSpinner")[0].style.display = "none";
                 })
                 .catch(function (data) {
