@@ -3,7 +3,7 @@
  */
 
 angular.module('eventsPageModule')
-    .controller('userTicketCtrl', function($scope, ticketsService, $routeParams, mapMarkerService, photoService){
+    .controller('userTicketCtrl', function($scope, ticketsService, $routeParams, mapMarkerService, photoService, FileSaver){
         $("#buyTicket").modal("hide");
         $scope.imageDownload = function (UUID) {
             photoService.download(UUID)
@@ -27,6 +27,15 @@ angular.module('eventsPageModule')
             })
             .catch(function (data) {
             })
-
+        $scope.getPdf = function () {
+            ticketsService.getPdfTicket($scope.ticketData.trackCode)
+                .then(function (data) {
+                    var excelData = new Blob([data.data], { type: 'application/pdf;charset=UTF-8'});
+                    FileSaver.saveAs(excelData, 'blit.pdf');
+                })
+                .catch(function (data) {
+                    console.log(data)
+                })
+        }
     })
     ;

@@ -175,7 +175,7 @@ button.slick-next {
     padding: 15px 15px;
 }
 .categorySectionBackground {
-    background: url('../img/back.png') fixed;
+    background: url('../img/back.jpg') fixed;
 }
 .nav-dropdown-menu>li>a:focus, .nav-dropdown-menu>li>a:hover{
 background-color: #303030;
@@ -192,7 +192,7 @@ background-color: #303030;
 .blitoOffer {
     color : white;
     height: 500px;
-    background: url('../img/back.png') fixed;
+    background: url('../img/back.jpg') fixed;
     padding: 15px 20px;
     border-left: 2px solid #404040;
 }
@@ -400,7 +400,7 @@ background-color: #303030;
 .searchSection {
     padding-top: 10px;
     padding-bottom: 15px;
-    background: url('../img/back.png') fixed;
+    background: url('../img/back.jpg') fixed;
     border-bottom: 2px solid #202020;
 }
 .slidingEvents h2:hover {
@@ -802,7 +802,7 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     color : white !important;
 }
 .eventPageListTitle {
-    font-size: 10px !important;
+    font-size: 12px !important;
 }
 .editDataInput {
     width: 50%;
@@ -1083,7 +1083,9 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
     cursor: pointer;
 }
 .verticalLine {
-    border-left: thick solid #808080;
+    border-right: 2px solid rgb(252, 183, 49);
+    height: 200px;
+    margin-bottom: 40px;
 }
 .checkBoxInline {
     display: inline;
@@ -1148,7 +1150,9 @@ input.ng-invalid.ng-dirty {
 }
 .dataCenter {
     text-align: center;
-    font-size: 12px;
+    font-size: 13px;
+}
+.showTimeList {
 }
 dir-pagination-controls {
     margin: 10px 0;
@@ -1606,8 +1610,7 @@ dir-pagination-controls ul {
     height: 200px ;
     overflow-y:scroll;
 }
-.showTimeList {
-}
+
 .customPanelUser {
     max-height: 100%;
     overflow-y: scroll;
@@ -1629,6 +1632,7 @@ dir-pagination-controls ul {
 .customPanelEventPage {
     border: none;
     height: 250px;
+    width: 95%;
 }
 .bioPageCoverPhoto {
     background-size: auto auto;
@@ -1696,7 +1700,7 @@ footer {
     bottom: 0 !important;
 }
 footer h6 {
-    font-size: 16px !important;
+    font-size: 18px !important;
 }
 .footerleft { margin-top:50px; padding: 5px 40px;}
 .logofooter { margin-bottom:10px; font-size:25px; color:#fff; font-weight:700;  }
@@ -1704,7 +1708,7 @@ footer h6 {
     width: 150px ;
 }
 
-.footerleft p { color:#fff; font-size:11px !important;  margin-bottom:15px;}
+.footerleft p { color:#fff; font-size:14px !important;  margin-bottom:15px;}
 .footerleft p i { width:20px; color:#999;}
 
 
@@ -1891,7 +1895,7 @@ a{
     width: 100px;
 }
 .col-sm-8-5{
-    width:13.1% !important;
+    width:11.5% !important;
 }
 .floatLeft{
     float: left;
@@ -2784,6 +2788,14 @@ table td{
 
 
 @media (max-width: 768px) {
+    .footerleft {
+        text-align: center;
+    }
+    .customPanelEventPage {
+        margin-right: auto;
+        margin-left: auto;
+        width: 95%;
+    }
     .notFountLogoContainer{
         max-width: 60%;
         margin-right:20%;
@@ -3107,6 +3119,7 @@ table td{
 
 }
 @media (min-width: 992px) {
+
     .eventPageSoldOut {
         width: 90px;
     }
@@ -3125,7 +3138,11 @@ table td{
     }
 
 }
-
+@media (min-width : 992px) and (max-width: 1200px) {
+    .customPanelEventPage {
+        width: calc(98% + 5px);
+    }
+}
 
 @media (max-width: 1200px) {
 

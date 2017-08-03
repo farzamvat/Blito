@@ -11,7 +11,6 @@ angular.module('eventsPageModule', [])
         $scope.getEventsByTypeData = function (type,page) {
             eventService.getEventsByType(type, page)
                 .then(function (data) {
-                    console.log(data);
                     $scope.totalEventsNumber = data.data.totalElements;
                     $scope.eventList = $scope.catchImagesEvents(data.data.content);
                     $scope.eventList = $scope.eventList.map(eventDetailService.calculateFreeBlits);
@@ -21,10 +20,15 @@ angular.module('eventsPageModule', [])
                 });
         };
         switch($location.path()) {
-            case '/sports':
-                $scope.pageTitle = "ورزشی";
-                $scope.type = "SPORT";
-                $scope.getEventsByTypeData("SPORT", 1);
+            case '/entertainment':
+                $scope.pageTitle = "سرگرمی";
+                $scope.type = "ENTERTAINMENT";
+                $scope.getEventsByTypeData("ENTERTAINMENT", 1);
+                break;
+            case '/exhibition':
+                $scope.pageTitle = "نمایشگاه";
+                $scope.type = "EXHIBITION";
+                $scope.getEventsByTypeData("EXHIBITION", 1);
                 break;
             case '/cinema':
                 $scope.pageTitle = "سینما";

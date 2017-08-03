@@ -2,7 +2,7 @@
     <div class="row eventPageHeader eventPageHeaderCover" ng-class="{'eventPageHeaderCinema': eventType === 'CINEMA',
                                                                      'eventPageHeaderTheatre': eventType === 'THEATER',
                                                                      'eventPageHeaderEducation': eventType === 'WORKSHOP',
-                                                                     'eventPageHeaderEntertainment': eventType === 'SPORT',
+                                                                     'eventPageHeaderEntertainment': eventType === 'ENTERTAINMENT',
                                                                      'eventPageHeaderTour': eventType === 'TOURISM',
                                                                      'eventPageHeaderMusic2': eventType === 'CONCERT',
                                                                      'eventPageHeaderOther': eventType === 'OTHER'}">
@@ -11,32 +11,32 @@
         <img ng-show="eventType === 'CINEMA'" class="logoEventPage" src="assets/img/cinema-logo.png" alt="">
         <img ng-show="eventType === 'THEATER'" class="logoEventPage" src="assets/img/theater-logo.png" alt="">
         <img ng-show="eventType === 'WORKSHOP'" class="logoEventPage" src="assets/img/edu-logo.png" alt="">
-        <img ng-show="eventType === 'SPORT'" class="logoEventPage" src="assets/img/joy.png" alt="">
+        <img ng-show="eventType === 'ENTERTAINMENT'" class="logoEventPage" src="assets/img/joy.png" alt="">
         <img ng-show="eventType === 'TOURISM'" class="logoEventPage" src="assets/img/tour-logo.png" alt="">
         <img ng-show="eventType === 'OTHER'" class="logoEventPage" src="assets/img/other-logo.png" alt="">
 
-        <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 floatRight eventPageImage">
+        <div class="col-xs-12 col-sm-4 col-md-2 col-lg-2 floatRight eventPageImage">
             <img ng-src="{{eventDataPhoto.eventPhoto[0].imageUUID}}"   class="img-responsive imgMobileSize ">
         </div>
-        <div class="col-xs-12 col-sm-7 col-md-3 col-lg-4 floatRight textAlignRight eventContent" >
+        <div class="col-xs-12 col-sm-7 col-md-4 col-lg-4 floatRight textAlignRight eventContent" >
             <h1>{{eventDataDetails.eventName}}</h1>
             <p>{{eventDataDetails.description}}</p>
 
 
-            <button ng-show="eventDataDetails.eventState === 'OPEN'" ng-click="showBuyTicketModal()" class="btn btn-success buyTicket  marginTop10"><i class="fa fa-ticket" aria-hidden="true"></i>  خرید بلیت
+            <button ng-show="eventDataDetails.eventState === 'OPEN' && eventType !== 'EXHIBITION'" ng-click="showBuyTicketModal()" class="btn btn-success buyTicket  marginTop10"><i class="fa fa-ticket" aria-hidden="true"></i>  خرید بلیت
             </button>
-            <div  ng-show="eventDataDetails.eventState === 'CLOSED'"  class="text-blito  marginTop10 ">
+            <div  ng-show="eventDataDetails.eventState === 'CLOSED' && eventType !== 'EXHIBITION'"  class="text-blito  marginTop10 ">
                 <div class="col-xs-12">
                     <label class="">  شروع فروش بلیت :</label>
                     <label class="" id="showStartTime"></label>
                 </div>
 
             </div>
-            <div  ng-show="eventDataDetails.eventState === 'SOLD'"  class="marginTop10 ">
+            <div  ng-show="eventDataDetails.eventState === 'SOLD' && eventType !== 'EXHIBITION'"  class="marginTop10 ">
                 <img class="eventPageSoldOut" src="assets/img/soldout.png" alt="">
             </div>
         </div>
-        <div class="col-xs-12   col-sm-12   col-md-5 col-lg-4 floatRight textAlignRight paddingRight0 panelMidSize" >
+        <div class="col-xs-12   col-sm-12   col-md-6 col-lg-6 floatRight textAlignRight paddingRight0 panelMidSize" >
 
             <div class="panel panel-primary  customPanelEventPage eventPageShowTimeColor">
                 <div class="panel-heading eventPagePanelHeading">
@@ -54,11 +54,11 @@
                             <th class="dataCenter eventPageListTitle">روز و ساعت
                             </th>
 
-                            <th class="dataCenter eventPageListTitle" >قیمت(تومان)
+                            <th ng-show="eventType !== 'EXHIBITION'" class="dataCenter eventPageListTitle" >قیمت(تومان)
                             </th>
-                            <th class="dataCenter eventPageListTitle" >ظرفیت
+                            <th ng-show="eventType !== 'EXHIBITION'" class="dataCenter eventPageListTitle" >ظرفیت
                             </th>
-                            <th class="dataCenter eventPageListTitle" >وضعیت بلیت
+                            <th ng-show="eventType !== 'EXHIBITION'" class="dataCenter eventPageListTitle" >وضعیت بلیت
                             </th>
                         </tr>
                         </thead>
@@ -69,18 +69,17 @@
                             </td>
                             <td class="dataCenter eventPageTimeField"><span  ng-class="setClass($index)"    class="form-group  marginBottom0" ></span></td>
 
-                            <td ng-if="item.price === 0" class="dataCenter">رایگان</td>
-                            <td ng-if="item.price !== 0" class="dataCenter">{{ item.price | number | pNumber}}</td>
-                            <td class="dataCenter">{{ item.capacity - item.soldCount | number | pNumber}}</td>
+                            <td ng-if="item.price === 0 && eventType !== 'EXHIBITION'" class="dataCenter">رایگان</td>
+                            <td ng-if="item.price !== 0 && eventType !== 'EXHIBITION'" class="dataCenter">{{ item.price | number | pNumber}}</td>
+                            <td ng-if="eventType !== 'EXHIBITION'" class="dataCenter">{{ item.capacity - item.soldCount | number | pNumber}}</td>
 
-                            <!--<td class="dataCenter">{{ item.capacity - item.soldCount}}</td>-->
-                            <td ng-if="item.blitTypeState === 'OPEN'" class="dataCenter fontGreen" >
+                            <td ng-if="item.blitTypeState === 'OPEN' && eventType !== 'EXHIBITION'" class="dataCenter fontGreen" >
                                 فعال
                             </td>
-                            <td ng-if="item.blitTypeState === 'CLOSED'" class="dataCenter fontRed">
+                            <td ng-if="item.blitTypeState === 'CLOSED' && eventType !== 'EXHIBITION'" class="dataCenter fontRed">
                                 بسته
                             </td>
-                            <td ng-if="item.blitTypeState === 'SOLD'" class="dataCenter fontRed">
+                            <td ng-if="item.blitTypeState === 'SOLD' && eventType !== 'EXHIBITION'" class="dataCenter fontRed">
                                 فروخته شد
                             </td>
                         </tr>
