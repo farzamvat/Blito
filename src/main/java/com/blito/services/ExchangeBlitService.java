@@ -98,6 +98,7 @@ public class ExchangeBlitService {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
 		imageService.delete(exchangeBlit.getImage().getImageUUID());
+		exchangeBlit.setImage(null);
 		exchangeBlit.setDeleted(true);
 	}
 

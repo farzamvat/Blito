@@ -55,7 +55,7 @@ public class ExchangeBlit {
 	@JoinColumn(name="userId")
 	private User user;
 	
-	@OneToOne
+	@OneToOne(orphanRemoval=true)
 	private Image image;
 	
 	
