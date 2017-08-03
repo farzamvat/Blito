@@ -1,5 +1,6 @@
 package com.blito.mappers;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,7 @@ public class ImageMapper implements GenericMapper<Image,ImageViewModel> {
 	@Override
 	public ImageViewModel createFromEntity(Image image) {
 		ImageViewModel vmodel = new ImageViewModel();
-		vmodel.setImageUUID(image.getImageUUID());
+		Optional.ofNullable(image.getImageUUID()).ifPresent(uuid -> vmodel.setImageUUID(image.getImageUUID()));
 		vmodel.setType(Enum.valueOf(ImageType.class, image.getImageType()));
 		return vmodel;
 	}

@@ -1,5 +1,7 @@
 package com.blito.mappers;
 
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -46,9 +48,8 @@ public class UserMapper implements GenericMapper <User, UserViewModel> {
 		vmodel.setEmail(user.getEmail());
 		vmodel.setActive(user.isActive());
 		vmodel.setBanned(user.isBanned());
-		vmodel.setEventHosts(eventHostMapper.createFromEntities(user.getEventHosts()));
-		vmodel.setExchangeBlits(exchangeBlitMapper.createFromEntities(user.getExchangeBlits()));
-//		vmodel.setBlits(BlitMapper.createFromEntities(user.getBlits()));
+		vmodel.setEventHosts(eventHostMapper.createFromEntities(user.getEventHosts().stream().filter(eh -> !eh.isDeleted()).collect(Collectors.toSet())));
+		vmodel.setExchangeBlits(exchangeBlitMapper.createFromEntities(user.getExchangeBlits().stream().filter(e -> !e.isDeleted()).collect(Collectors.toSet())));
 		return vmodel;
 	}
 

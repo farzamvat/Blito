@@ -1346,7 +1346,7 @@ angular.module('User')
                     document.getElementById("approveSuccessSettingExchange")[0].style.display = "inline";
                     document.getElementsByClassName("deleteExchangeSpinner")[0].style.display = "none";
                 })
-                .catch(function () {
+                .catch(function (data) {
                     document.getElementById("approveErrorSettingExchange").innerHTML = data.data.message;
                     document.getElementById("approveErrorSettingExchange").style.display = "inline";
                     document.getElementsByClassName("deleteExchangeSpinner")[0].style.display = "none";
