@@ -16,7 +16,7 @@ public class BlitTypeMapper implements GenericMapper<BlitType,BlitTypeViewModel>
 		blitType.setCapacity(vmodel.getCapacity());
 		blitType.setFree(vmodel.isFree());
 		blitType.setPrice(vmodel.getPrice());
-		blitType.setBlitTypeState(State.CLOSED);
+		blitType.setBlitTypeState(State.CLOSED.name());
 		return blitType;
 	}
 
@@ -28,7 +28,7 @@ public class BlitTypeMapper implements GenericMapper<BlitType,BlitTypeViewModel>
 		vmodel.setPrice(blitType.getPrice());
 		vmodel.setCapacity(blitType.getCapacity());
 		vmodel.setSoldCount(blitType.getSoldCount());
-		vmodel.setBlitTypeState(blitType.getBlitTypeState());
+		vmodel.setBlitTypeState(Enum.valueOf(State.class, blitType.getBlitTypeState()));
 		vmodel.setFree(blitType.isFree());
 		vmodel.setSoldCount(blitType.getSoldCount());
 		return vmodel;
@@ -41,7 +41,7 @@ public class BlitTypeMapper implements GenericMapper<BlitType,BlitTypeViewModel>
 		blitType.setCapacity(vmodel.getCapacity());
 		blitType.setFree(vmodel.isFree());
 		blitType.setPrice(vmodel.getPrice());
-		blitType.setBlitTypeState(vmodel.getBlitTypeState());
+		blitType.setBlitTypeState(State.CLOSED.name());
 		return blitType;
 	}
 

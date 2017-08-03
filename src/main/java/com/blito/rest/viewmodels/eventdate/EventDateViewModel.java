@@ -1,18 +1,20 @@
 package com.blito.rest.viewmodels.eventdate;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import com.blito.enums.DayOfWeek;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.blito.enums.State;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 
 public class EventDateViewModel {
 	long eventDateId;
-	DayOfWeek dayOfWeek;
+	@NotEmpty
 	Timestamp date;
-	List<BlitTypeViewModel> blitTypes;
+	@NotEmpty
+	Set<BlitTypeViewModel> blitTypes;
 	State state;
 	
 	public long getEventDateId() {
@@ -33,22 +35,14 @@ public class EventDateViewModel {
 
 	public EventDateViewModel()
 	{
-		blitTypes = new ArrayList<>();
+		blitTypes = new HashSet<>();
 	}
 	
-	public List<BlitTypeViewModel> getBlitTypes() {
+	public Set<BlitTypeViewModel> getBlitTypes() {
 		return blitTypes;
 	}
-	public void setBlitTypes(List<BlitTypeViewModel> blitTypes) {
+	public void setBlitTypes(Set<BlitTypeViewModel> blitTypes) {
 		this.blitTypes = blitTypes;
-	}
-
-	public DayOfWeek getDayOfWeek() {
-		return dayOfWeek;
-	}
-
-	public void setDayOfWeek(DayOfWeek dayOfWeek) {
-		this.dayOfWeek = dayOfWeek;
 	}
 
 	public Timestamp getDate() {

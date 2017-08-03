@@ -1,12 +1,12 @@
 <!-- Modal -->
 <div id="editExchange" class="modal fade" role="dialog">
-    <div class="modal-dialog ">
+    <div class="modal-dialog editForm">
 
         <!-- Modal content-->
         <div class="modal-content registerBody">
 
             <div class="modal-body ">
-                <form class="form-inline textAlignRight ">
+                <form class="form-inline textAlignRight " name="exchangeEditForm">
                     <fieldset class="fieldsetStyle">
                         <!-- Sign In Form -->
                         <!-- Text input-->
@@ -14,21 +14,18 @@
                         <div class="row">
                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                 <div class="col-xs-10 floatRight text-center">
-                                    <label class="registerLabel floatRight" for="exchangeName" >نام رویداد :</label>
+                                    <label class="registerLabel floatRight" for="exchangeName" >نام بلیت :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <input height="60" id="exchangeName" ng-model="exchange.title"  type="text"  class="form-group registerInput" >
+                                    <input height="60" id="exchangeName" ng-model="exchangeEdit.title"  type="text"  class="form-group registerInput" required>
                                 </div>
                             </div>
-
                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                 <div class="col-xs-10 floatRight text-center">
-                                    <label class="registerLabel floatRight" for="exchangeType">نوع رویداد :</label>
+                                    <label class="registerLabel floatRight" for="exchangeType">نوع بلیت :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <select id="exchangeType" ng-model="exchange.type" class="form-control dropDownList" ng-options="o.v as o.n for o in [{n : 'تئاتر', v: 'THEATER'},{n : 'سینما', v: 'CINEMA'},{n : 'کنسرت', v: 'CONCERT'},{n : 'تور', v: 'TOURISM'},{n : 'ورزشی', v: 'SPORT'},{n : 'کارگاه', v: 'WORKSHOP'}, {n : 'بن تخفیف', v: 'DISCOUNT_TICKET'}, {n : 'سایر', v: 'OTHER'}]">
-
-
+                                    <select id="exchangeType" ng-model="exchangeEdit.type" required placeholder="exchangeEdit.type" class="form-control dropDownList" ng-options="o.v as o.n for o in [{n : 'تئاتر', v: 'THEATER'},{n : 'سینما', v: 'CINEMA'},{n : 'کنسرت', v: 'CONCERT'},{n : 'تور', v: 'TOURISM'},{n : 'سرگرمی', v: 'ENTERTAINMENT'},{n : 'کارگاه', v: 'WORKSHOP'},{n : 'نمایشگاه', v: 'EXHIBITION'}, {n : 'بن تخفیف', v: 'DISCOUNT_TICKET'}, {n : 'سایر', v: 'OTHER'}]">
                                     </select>
                                 </div>
                             </div>
@@ -39,7 +36,7 @@
                                     <label class="registerLabel floatRight" for="eventExchangeDate" >تاریخ و ساعت رویداد  :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <input type="text" id="eventExchangeDate" ng-model="showTime.eventDate" class="persianExchangeTimeEdit datePickerFormat"/>
+                                    <input type="text" id="eventExchangeDate" ng-model="exchangeEdit.eventDate" required class="persianEditExchangeTime datePickerFormat" readonly/>
                                 </div>
                             </div>
                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
@@ -47,42 +44,40 @@
                                     <label class="registerLabel floatRight" for="exchangePrice" >قیمت بلیت  :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <input height="60" id="exchangePrice" ng-model="exchange.blitCost"   type="number"  class="form-group registerInput" >
+                                    <input height="60" id="exchangePrice" ng-model="exchangeEdit.blitCost" required  type="number"  class="form-group registerInput" >
                                 </div>
                             </div>
                         </div>
                         <div class="row marginTop30">
                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
                                 <div class="col-xs-10 floatRight text-center">
-                                    <label class="registerLabel floatRight" for="exchangeDescription" >توضیحات رویداد :</label>
+                                    <label class="registerLabel floatRight" for="exchangeDescription" >توضیحات  :(حداکثر {{100 - exchangeEdit.description.length}} کاراکتر مجاز)</label>
                                 </div>
                                 <div class="col-xs-11  floatRight ">
-                                    <textarea ng-model="exchange.description"  id="exchangeDescription"   type="text"  class="form-group textAreaForm" ></textarea>
+                                    <textarea ng-model="exchangeEdit.description" maxlength="100"  id="exchangeDescription" required   type="text"  class="form-group textAreaForm" ></textarea>
                                 </div>
                             </div>
                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
-                                <label  class="marginRight30"><input class="checkboxStyle" ng-model="exchange.isBlito"    type="checkbox" value=""> رویداد در وبسایت بلیتو بوده</label>
+                                <label  class="marginRight30"><input class="checkboxStyle" ng-model="exchangeEdit.isBlitoEvent"    type="checkbox" value=""> رویداد در وبسایت بلیتو بوده</label>
                             </div>
                         </div>
-
-
                     </fieldset>
-
                     <fieldset class="marginTop30 fieldsetStyle">
                         <legend class="legendStyle"> بارگذاری عکس  </legend>
                         <div class="row marginTop30">
-
                             <div class="col-xs-12 col-sm-12 floatRight marginTop30">
-
                                 <label class="marginRight30"> عکس رویداد :</label>
-                                <button class="btn btn-default " ng-click='uploadPicEventExchange()'>انتخاب <i class="fa fa-image"></i></button>
-                                <div class="col-xs-12" ng-show="showThumbnailEventExchange">
-                                    <img class="img-responsive exchangePhotoUploadEdit marginTop30"  src="" alt="">
+                                <button class="btn btn-default " ng-click='uploadPicEditExchange()'>انتخاب <i class="fa fa-image"></i></button>
+                                <div class="col-xs-12" >
+                                    <img class=" exchangePhotoUploadEdit marginTop30"  src="" alt="">
                                     <div class="col-xs-12">
-                                        <button class="btn btn-success marginTop10" ng-click="photoUploadExchange()">بارگذاری   <i ng-show="uploadExchangePhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></button>
-                                        <button ng-click="deletePicEventExchange()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>
+                                        <button class="btn btn-success marginTop10" ng-click="photoUploadEditExchange()">بارگذاری   <i ng-show="uploadEditExchangePhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></button>
+                                        <!--<button ng-click="deletePicEditExchange()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                     </div>
-                                    <div ng-show="exchangePhotoSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
+                                    <div id="exchangeEditPhotoError" ng-show="exchangeEditPhotoError" class="text-center alert alert-danger col-xs-12">
+                                        <strong></strong>
+                                    </div>
+                                    <div ng-show="exchangeEditPhotoSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
                                         <strong>عکس با موفقیت بارگذاری شد</strong>
                                     </div>
                                 </div>
@@ -90,7 +85,6 @@
                         </div>
                     </fieldset>
                     <fieldset class="marginTop30 fieldsetStyle">
-
                         <legend class="legendStyle">  اطلاعات مکانی </legend>
                         <div class="row">
                             <div class="form-group col-xs-12 col-md-12 formRegGroup floatRight">
@@ -98,10 +92,9 @@
                                     <label class="registerLabel floatRight" for="exchangeAddress" >آدرس :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <textarea ng-model="exchange.address"  id="exchangeAddress"   type="text"  class="form-group textAreaForm marginTop30" ></textarea>
+                                    <textarea ng-model="exchangeEdit.eventAddress" required  id="exchangeAddress"   type="text"  class="form-group textAreaForm marginTop30" ></textarea>
                                 </div>
                             </div>
-
                             <div class="form-group col-xs-12 col-md-12 formRegGroup floatRight">
                                 <div class="col-xs-10 floatRight text-center">
                                     <label class="registerLabel floatRight" >مختصات جغرافیایی رویداد :</label>
@@ -111,26 +104,29 @@
                                     <div id="mapExchangeEdit" ng-click="addMarker()" >
                                     </div>
                                 </div>
-
                             </div>
-
-
                         </div>
-
                     </fieldset>
                     <div class="control-group text-center marginBottom20">
-                        <label class="control-label" for="signInButton"></label>
+                        <label class="control-label" ></label>
                         <div ng-show="editExchangeNotif" class="text-center alert alert-success col-xs-12 marginTop10">
                             <strong>آگهی با موفقیت ویرایش شد</strong>
                         </div>
+                        <div id="editExchangeErrorNotif" ng-show="editExchangeErrorNotif" class="text-center alert alert-danger col-xs-12">
+                            <strong></strong>
+                        </div>
                         <div class="controls">
-                            <button id="exchangeEventSubmit" ng-click="submitExchangeTicket(exchange)" name="signin" class="btn btn-success btn-lg btnLogin">ویرایش آگهی <i ng-show="editExchangeSpinner" class="fa fa-spinner fa-spin"></i></button>
+                            <button id="exchangeEventSubmit" ng-disabled="exchangeEditForm.$invalid" ng-click="editExchangeTicket(exchangeEdit)" name="signin" class="btn btn-success btn-lg btnLogin">ویرایش آگهی <i ng-show="editExchangeSpinner" class="fa fa-spinner fa-spin"></i></button>
                         </div>
 
                     </div>
 
                 </form>
             </div>
+            <div class="modal-footer ">
+                <button type="button" class="btn btn-default center-block" data-dismiss="modal">بستن</button>
+            </div>
         </div>
     </div>
+
 </div>

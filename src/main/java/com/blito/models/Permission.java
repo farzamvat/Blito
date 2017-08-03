@@ -14,10 +14,17 @@ public class Permission {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	long permissionId;
 	
-	@Enumerated(EnumType.STRING)
-	ApiBusinessName apiBusinessName;
+	String apiBusinessName;
 	
 	String description;
+	
+	public Permission(String name,String description)
+	{
+		this.apiBusinessName = name;
+		this.description = description;
+	}
+	
+	public Permission() {}
 
 	public long getPermissionId() {
 		return permissionId;
@@ -27,11 +34,11 @@ public class Permission {
 		this.permissionId = permissionId;
 	}
 
-	public ApiBusinessName getApiBusinessName() {
+	public String getApiBusinessName() {
 		return apiBusinessName;
 	}
 
-	public void setApiBusinessName(ApiBusinessName apiBusinessName) {
+	public void setApiBusinessName(String apiBusinessName) {
 		this.apiBusinessName = apiBusinessName;
 	}
 

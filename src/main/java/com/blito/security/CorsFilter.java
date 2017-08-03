@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 public class CorsFilter extends OncePerRequestFilter {
 
@@ -16,12 +17,21 @@ public class CorsFilter extends OncePerRequestFilter {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "authorization, content-type, xsrf-token, X-AUTH-TOKEN");
+        response.setHeader("Access-Control-Allow-Headers", "authorization, content-type, cache-control, xsrf-token, X-AUTH-TOKEN, pragma");
         response.addHeader("Access-Control-Expose-Headers", "xsrf-token");
         if ("OPTIONS".equals(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
         } else { 
-            filterChain.doFilter(request, response);
+            try {
+            	filterChain.doFilter(request, response);
+            }
+            catch(RuntimeException exception)
+            {
+            	if(exception.getClass().equals(NoHandlerFoundException.class))
+            	{
+            		response.setStatus(404);
+            	}
+            }
         }
     }
 }

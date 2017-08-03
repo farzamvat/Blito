@@ -1,6 +1,10 @@
 package com.blito.services;
 
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -12,13 +16,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.blito.enums.Response;
 import com.blito.exceptions.AlreadyExistsException;
 import com.blito.exceptions.InternalServerException;
+import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.exceptions.UnauthorizedException;
 import com.blito.exceptions.UserNotActivatedException;
 import com.blito.exceptions.WrongPasswordException;
 import com.blito.mappers.UserMapper;
+import com.blito.models.Blit;
 import com.blito.models.Role;
 import com.blito.models.User;
+import com.blito.repositories.BlitRepository;
 import com.blito.repositories.RoleRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
@@ -39,8 +46,10 @@ public class UserAccountService {
 	@Autowired JwtService jwtService;
 	@Autowired UserMapper userMapper;
 	@Autowired RoleRepository roleRepository;
+	@Autowired BlitRepository blitRepository;
 	
-	public CompletableFuture<Void> createUser(RegisterVm vmodel)
+	@Transactional
+	public CompletableFuture<User> createUser(RegisterVm vmodel)
 	{
 
 		Optional<User> result = userRepository.findByEmail(vmodel.getEmail());
@@ -55,10 +64,18 @@ public class UserAccountService {
 		user.setActivationKey(UUID.randomUUID().toString());
 		user.setPassword(encoder.encode(user.getPassword()));
 		user.getRoles().add(userRole);
-		return CompletableFuture.completedFuture(userRepository.save(user))
-				.thenAcceptAsync(savedUser -> 
+		user.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+		Set<Blit> userBlits = blitRepository.findByCustomerEmail(vmodel.getEmail());
+		if(!userBlits.isEmpty())
+		{
+			userBlits.forEach(blit -> blit.setUser(user));
+		}
+		return CompletableFuture.completedFuture(user)
+				.thenAccept(savedUser -> 
 					mailService.sendActivationEmail(savedUser)
-				);
+				).thenApply((res) -> {
+					return userRepository.save(user);
+				});
 	}
 	
 	@Transactional
@@ -73,13 +90,15 @@ public class UserAccountService {
 	public CompletableFuture<TokenModel> login(LoginViewModel vmodel)
 	{
 		User user = userRepository.findByEmail(vmodel.getEmail())
-				.map(u -> u)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
 		if(!user.isActive())
 			throw new UserNotActivatedException(ResourceUtil.getMessage(Response.USER_NOT_ACTIVATED));
 			
+		if(user.isBanned()) {
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.USER_IS_BANNED));
+		}
 		return CompletableFuture.supplyAsync(() -> encoder.matches(vmodel.getPassword(), user.getPassword()))
-				.thenCombine(jwtService.generateToken(user.getUserId()), (isMatchedAsyncResult,asyncTokenResult) -> {
+				.thenCombine(jwtService.generateToken(user.getEmail()), (isMatchedAsyncResult,asyncTokenResult) -> {
 					if(isMatchedAsyncResult)
 					{
 						if(user.isFirstTimeLogin())
@@ -103,15 +122,17 @@ public class UserAccountService {
 	}
 	
 	@Transactional
-	public CompletableFuture<Void> forgetPassword(String email)
+	public void forgetPassword(String email)
 	{
 		User user = userRepository.findByEmail(email)
-				.map(u -> u)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
+		if(user.isBanned())
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.USER_IS_BANNED));
 		user.setResetKey(RandomUtil.generatePassword());
 		user.setPassword(encoder.encode(user.getResetKey()));
-		return CompletableFuture.runAsync(() -> mailService.sendPasswordResetEmail(user))
-				.thenAccept(result -> user.setResetKey(null));
+		mailService.sendPasswordResetEmail(user);
+		user.setResetKey(null);
+		userRepository.save(user);
 	}
 	
 	public CompletableFuture<User> changePassword(ChangePasswordViewModel vmodel)
@@ -132,10 +153,9 @@ public class UserAccountService {
 	{
 		if(refresh_token == null || refresh_token.equals(""))
 			throw new UnauthorizedException(ResourceUtil.getMessage(Response.REFRESH_TOKEN_NOT_PRESENT));
-		User user = Optional.ofNullable(userRepository.findOne(jwtService.refreshTokenValidation(refresh_token)))
-				.map(u -> u)
+		User user = userRepository.findByEmail(jwtService.refreshTokenValidation(refresh_token))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
-		return jwtService.generateAccessToken(user.getUserId())
+		return jwtService.generateAccessToken(user.getEmail())
 				.thenApply(tokenModel -> {
 					tokenModel.setRefreshToken(refresh_token);
 					return tokenModel;

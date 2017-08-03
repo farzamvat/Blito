@@ -1,5 +1,7 @@
 package com.blito.rest.controllers;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blito.mappers.EventFlatMapper;
+import com.blito.mappers.EventMapper;
 import com.blito.models.Event;
+import com.blito.repositories.EventRepository;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
@@ -28,9 +33,15 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping("${api.base.url}" + "/public/events")
 public class PublicEventController {
-	
-	@Autowired EventService eventService;
-	
+
+	@Autowired
+	EventService eventService;
+	@Autowired
+	EventRepository eventRepository;
+	@Autowired
+	EventFlatMapper flatMapper;
+	@Autowired
+	EventMapper eventMapper;
 
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "get all events")
@@ -44,12 +55,13 @@ public class PublicEventController {
 
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "search events")
-	@ApiResponses({ @ApiResponse(code = 202, message = "search events ok", response = EventViewModel.class) })
+	@ApiResponses({ @ApiResponse(code = 202, message = "search events ok", response = EventFlatViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.SimpleEvent.class)
 	@PostMapping("/search")
-	public ResponseEntity<?> search(@RequestBody SearchViewModel<Event> searchViewModel, Pageable pageable) {
-		return ResponseEntity.ok(eventService.searchEvents(searchViewModel, pageable));
+	public ResponseEntity<Page<EventFlatViewModel>> search(
+			@RequestBody SearchViewModel<Event> searchViewModel, Pageable pageable,HttpServletRequest req,HttpServletResponse res) {
+		return ResponseEntity.ok(eventService.searchEvents(searchViewModel, pageable,flatMapper));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //
@@ -62,13 +74,18 @@ public class PublicEventController {
 	public ResponseEntity<EventFlatViewModel> getFlatEvent(@PathVariable long eventId) {
 		return ResponseEntity.ok(eventService.getFlatEventById(eventId));
 	}
-	
-	
+
 	@JsonView(View.Event.class)
 	@GetMapping("/flat/link/{eventLink}")
-	public ResponseEntity<EventFlatViewModel> getFlatEventByLink(@PathVariable String eventLink)
-	{
+	public ResponseEntity<EventFlatViewModel> getFlatEventByLink(@PathVariable String eventLink) {
 		return ResponseEntity.ok(eventService.getFlatEventByLink(eventLink));
+	}
+	
+	@JsonView(View.Event.class)
+	@GetMapping("/link/{eventLink}")
+	public ResponseEntity<EventViewModel> getEventByEventLink(@PathVariable String eventLink)
+	{
+		return ResponseEntity.ok(eventService.getEventByLink(eventLink));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //

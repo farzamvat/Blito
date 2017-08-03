@@ -13,3 +13,9 @@ src/main/resources/node_modules/
 src/main/resources/server.js
 /nohup.out
 /.DS_Store
+src/main/webapp
+classpath.txt
+launch.json
+settings.json
+task.json
+/var/

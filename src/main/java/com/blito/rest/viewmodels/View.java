@@ -9,10 +9,24 @@ public class View {
 	public interface SimpleExchangeBlit extends DefaultView {}
 	public interface ExchangeBlit extends SimpleExchangeBlit {}
 	
-	public interface SimpleEvent extends DefaultView {}
-	public interface Event extends SimpleEvent {}
+	public interface SimpleEvent extends DefaultView,EventDateFlat {}
+	public interface Event extends SimpleEvent,BlitType,EventDateFlat {}
 	public interface AdminEvent extends Event {}
+	
+	public interface EventDateFlat extends DefaultView {}
+	
+	public interface BlitType extends DefaultView {}
 	
 	public interface SimpleEventHost extends DefaultView {}
 	public interface EventHost extends SimpleEventHost {}
+	public interface AdminEventHost extends EventHost {}
+	
+	public interface IndexBanner extends DefaultView {}
+	public interface AdminIndexBanner extends IndexBanner {}
+	
+	public interface SimpleBlit extends DefaultView {}
+	public interface CommonBlit extends SimpleBlit {}
+	public interface SeatBlit extends SimpleBlit {}
+	public interface Blit extends SeatBlit,CommonBlit {}
+	public interface AdminBlit extends Blit {}
 }

@@ -1,5 +1,6 @@
 package com.blito.services;
 
+import java.util.HashSet;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,7 @@ public class RoleService {
 		return roleMapper.createFromEntity(role);
 	}
 
+	@Transactional
 	public RoleViewModel createRole(RoleViewModel vmodel) {
 		Optional<Role> result = roleRepository.findByName(vmodel.getName());
 		if (result.isPresent()) {
@@ -47,27 +49,32 @@ public class RoleService {
 		return roleMapper.createFromEntity(roleRepository.save(roleMapper.createFromViewModel(vmodel)));
 	}
 
+	@Transactional
 	public RoleViewModel editRole(RoleViewModel vmodel) {
 		Role roleById = findRoleById(vmodel.getRoleId());
 		return roleRepository.findByName(vmodel.getName()).map(r -> {
 			if (r.getRoleId() == roleById.getRoleId()) {
-				return roleMapper.createFromEntity(roleRepository.save(roleMapper.updateEntity(vmodel, r)));
+				return roleMapper.createFromEntity(roleMapper.updateEntity(vmodel, r));
 			}
-			throw new AlreadyExistsException(ResourceUtil.getMessage(Response.ROLE_ALREADY_EXISTS));
-		}).orElseGet(() -> roleMapper.createFromEntity(roleRepository.save(roleMapper.createFromViewModel(vmodel))));
+			
+			throw new AlreadyExistsException(ResourceUtil.getMessage(Response.ROLE_NAME_ALREADY_EXISTS));
+			
+		}).orElseGet(() -> roleMapper.createFromEntity(roleMapper.createFromViewModel(vmodel)));
 	}
 	
+	@Transactional
 	public void deleteRoleById(long id)
 	{
 		Role role = findRoleById(id);
+		role.getPermissions().clear();
 		roleRepository.delete(role);
 	}
 
+	@Transactional
 	public void assignRole(long roleId, long userId) {
-		Role roleById = findRoleById(roleId);
-		User userById = userService.findUserById(userId);
-		userById.getRoles().add(roleById);
-		userRepository.save(userById);
+		Role role = findRoleById(roleId);
+		User user = userService.findUserById(userId);
+		user.getRoles().add(role);
 	}
 
 	public Page<RoleViewModel> getRoles(Pageable pageable) {

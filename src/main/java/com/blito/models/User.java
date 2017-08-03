@@ -1,7 +1,10 @@
 package com.blito.models;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -29,6 +32,7 @@ public class User {
 	private String lastname;
 	
 	@NotNull
+	@Column(unique=true)
 	private String email;
 	
 	@Size(min=8, max=60)
@@ -52,39 +56,55 @@ public class User {
 	
 	private boolean isOldUser = false;
 	
+	private Timestamp createdAt;
+	
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
     @JoinTable(name="user_role" , joinColumns=@JoinColumn(name="user_id"), 
     inverseJoinColumns=@JoinColumn(name="role_id"))
-    private List<Role> roles;
+    private Set<Role> roles;
 	
 	@OneToMany(mappedBy="user",targetEntity=EventHost.class, cascade=CascadeType.ALL, orphanRemoval = true)
-	private List<EventHost> eventHosts;
+	private Set<EventHost> eventHosts;
 	
 	@OneToMany(mappedBy="user",targetEntity=Blit.class, cascade=CascadeType.ALL)
-	private List<Blit> blits;
+	private Set<Blit> blits;
 	
 	@OneToMany(mappedBy="user", targetEntity=ExchangeBlit.class, fetch=FetchType.LAZY)
-	private List<ExchangeBlit> exchangeBlits;
+	private Set<ExchangeBlit> exchangeBlits;
 	
-	public User() {
-		roles = new ArrayList<>();
-		eventHosts = new ArrayList<>();
-		blits = new ArrayList<>();
-		exchangeBlits = new ArrayList<>();
+	public Timestamp getCreatedAt() {
+		return createdAt;
 	}
 	
+	public void removeExchangeBlit(ExchangeBlit blit) {
+		this.exchangeBlits.removeIf(b -> b.getExchangeBlitId() == blit.getExchangeBlitId());
+		blit.removeUser();
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public User() {
+		roles = new HashSet<>();
+		eventHosts = new HashSet<>();
+		blits = new HashSet<>();
+		exchangeBlits = new HashSet<>();
+	}
+	
+	public void addBlits(Blit blit)
+	{
+		this.blits.add(blit);
+		blit.setUser(this);
+	}
 	
 	public boolean isOldUser() {
 		return isOldUser;
 	}
 
-
-
 	public void setOldUser(boolean isOldUser) {
 		this.isOldUser = isOldUser;
 	}
-
-
 
 	public String getResetKey() {
 		return resetKey;
@@ -142,27 +162,27 @@ public class User {
 		this.activationKey = activationKey;
 	}
 
-	public List<EventHost> getEventHosts() {
+	public Set<EventHost> getEventHosts() {
 		return eventHosts;
 	}
 
-	public void setEventHosts(List<EventHost> eventHosts) {
+	public void setEventHosts(Set<EventHost> eventHosts) {
 		this.eventHosts = eventHosts;
 	}
 
-	public List<Blit> getBlits() {
+	public Set<Blit> getBlits() {
 		return blits;
 	}
 
-	public void setBlits(List<Blit> blits) {
+	public void setBlits(Set<Blit> blits) {
 		this.blits = blits;
 	}
 
-	public List<ExchangeBlit> getExchangeBlits() {
+	public Set<ExchangeBlit> getExchangeBlits() {
 		return exchangeBlits;
 	}
 
-	public void setExchangeBlits(List<ExchangeBlit> exchangeBlits) {
+	public void setExchangeBlits(Set<ExchangeBlit> exchangeBlits) {
 		this.exchangeBlits = exchangeBlits;
 	}
 
@@ -174,11 +194,11 @@ public class User {
 		this.userId = userId;
 	}
 
-	public List<Role> getRoles() {
+	public Set<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<Role> roles) {
+	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
 

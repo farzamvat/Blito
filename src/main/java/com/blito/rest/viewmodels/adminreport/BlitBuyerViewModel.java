@@ -50,8 +50,5 @@ public class BlitBuyerViewModel {
 	}
 	public void setBlitTypeName(String blitTypeName) {
 		this.blitTypeName = blitTypeName;
-	}
-	
-	
-	
+	}	
 }

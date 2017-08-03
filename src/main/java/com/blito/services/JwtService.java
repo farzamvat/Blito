@@ -27,16 +27,16 @@ public class JwtService {
 
 	
 
-	public CompletableFuture<TokenModel> generateToken(Long userid) {
+	public CompletableFuture<TokenModel> generateToken(String email) {
 		TokenModel tokenModel = new TokenModel();
 		Long expire = System.currentTimeMillis();
 		tokenModel.setAccessTokenExipreTime(expire + accessTokenMilliSeconds);
 		tokenModel.setRefreshtokenExpireTime(expire + refreshTokenMilliSeconds);
 
 		return CompletableFuture.supplyAsync(() -> {
-			return generateJwtToken(userid, expire + accessTokenMilliSeconds);
+			return generateJwtToken(email, expire + accessTokenMilliSeconds);
 		}).thenCombine(CompletableFuture.supplyAsync(() -> {
-			return generateJwtToken(userid, expire + refreshTokenMilliSeconds);
+			return generateJwtToken(email, expire + refreshTokenMilliSeconds);
 		}), (accessToken, refreshToken) -> {
 			tokenModel.setAccessToken(accessToken);
 			tokenModel.setRefreshToken(refreshToken);
@@ -44,33 +44,33 @@ public class JwtService {
 		});
 	}
 	
-	public CompletableFuture<TokenModel> generateAccessToken(Long userId)
+	public CompletableFuture<TokenModel> generateAccessToken(String email)
 	{
 		TokenModel tokenModel = new TokenModel();
 		Long expire = System.currentTimeMillis();
 		tokenModel.setAccessTokenExipreTime(expire + accessTokenMilliSeconds);
 		
 		return CompletableFuture.supplyAsync(() -> {
-			return generateJwtToken(userId, expire + accessTokenMilliSeconds); 
+			return generateJwtToken(email, expire + accessTokenMilliSeconds); 
 		}).thenApply(accessToken -> {
 			tokenModel.setAccessToken(accessToken);
 			return tokenModel;
 		});
 	}
 	
-	public long refreshTokenValidation(String refresh_token)
+	public String refreshTokenValidation(String refresh_token)
 	{
 		try {
 			Claims claims = Jwts.parser().setSigningKey(tokenSecret).parseClaimsJws(refresh_token).getBody();
-			return Long.parseLong(claims.getSubject());
+			return claims.getSubject();
 		} catch(Exception e)
 		{
 			throw new UnauthorizedException(ResourceUtil.getMessage(Response.ACCESS_DENIED));
 		}
 	}
 
-	private String generateJwtToken(Long userid, Long expireDate) {
-		String generatedToken = Jwts.builder().setSubject(String.valueOf(userid))
+	private String generateJwtToken(String email, Long expireDate) {
+		String generatedToken = Jwts.builder().setSubject(email)
 				.signWith(SignatureAlgorithm.HS256, tokenSecret).setExpiration(new Date(expireDate)).compact();
 		return generatedToken;
 	}

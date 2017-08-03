@@ -38,7 +38,7 @@ public class DiscountMapper implements GenericMapper<Discount, DiscountViewModel
 		vmodel.setAmount(discount.getAmount());
 		vmodel.setUserId(discount.getUser().getUserId());
 		vmodel.setBlitTypeIds(
-				discount.getBlitTypes().stream().map(bt -> bt.getBlitTypeId()).collect(Collectors.toList()));
+				discount.getBlitTypes().stream().map(bt -> bt.getBlitTypeId()).collect(Collectors.toSet()));
 		return vmodel;
 	}
 

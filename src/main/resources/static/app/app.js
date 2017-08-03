@@ -17,13 +17,31 @@ angular.module('Blito',
         'animationServices',
         'UiServices',
         'userProfileApi',
-        'exchangesPageModule'
+        'exchangesPageModule',
+        'homePageApi',
+        'notFound',
+        'ngPersian',
+        'textAngular',
+        'ngFileSaver',
+        'angulartics',
+        'angulartics.google.analytics'
     ])
-    .config(function ($httpProvider) {
+    .config(function ($httpProvider, $analyticsProvider) {
         $httpProvider.interceptors.push('AuthInterceptors');
+        if (!$httpProvider.defaults.headers.get) {
+            $httpProvider.defaults.headers.get = {};
+        }
+        $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+        $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+        $analyticsProvider.settings.ga.account = 'UA-103668411-1';
+        $analyticsProvider.firstPageview(true);
+        $analyticsProvider.withBase(true);
     })
     .constant('config', {
-        baseUrl : 'http://192.168.201.228:8085',
+        baseUrl : 'https://bili.to',
         redirectToUrlAfterLogin : {url : '/'}
     })
 ;
+
+// http://89.163.225.16/\
+//192.168.202.19:8085

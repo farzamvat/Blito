@@ -1,0 +1,49 @@
+<div ng-controller="exchangePageCtrl as eventPage">
+    <div class="row eventPageHeader exchangePageCover" >
+        <div class="col-xs-12 col-sm-4 col-md-3 floatRight eventPageImage">
+            <img ng-src="{{exchangeData.newImage}}"   class="img-responsive imgMobileSize ">
+        </div>
+        <div class="col-xs-12 col-sm-7 col-md-8 floatRight textAlignRight eventContent" >
+            <h1>{{exchangeData.title}}</h1>
+            <h3 ng-if="exchangeData.state === 'OPEN'">شماره تماس فروشنده : {{ exchangeData.phoneNumber | pNumber}}</h3>
+            <p>{{exchangeData.description}}</p>
+            <table ng-if="exchangeData.state === 'OPEN'" class="table">
+                <thead class="tableHeader">
+                <tr>
+                    <th class="dataCenter">تاریخ و ساعت
+                    </th>
+                    <th class="dataCenter" >قیمت (تومان)
+                    </th>
+                </tr>
+                </thead>
+                <tbody class="showTimeList">
+                <tr >
+                    <td class="dataCenter"><input  disabled  type="text" class="form-group exchangePageDate dateInit" readonly></td>
+                    <td class="dataCenter">{{ exchangeData.blitCost | number | pNumber}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-12 floatRight">
+
+
+
+        <div class="col-xs-12 col-sm-12  floatRight textAlignRight">
+            <h3 class="text-center">مکان رویداد</h3>
+            <p class="text-center">{{exchangeData.eventAddress}}</p>
+            <div id="map" class="center-block">
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <div ng-include="'app/views/partials/buyTicket.html'"></div>
+</div>
+
+
+

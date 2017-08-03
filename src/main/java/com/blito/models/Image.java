@@ -16,8 +16,7 @@ public class Image {
 	
 	String imageUUID;
 	
-	@Enumerated(EnumType.STRING)
-	ImageType imageType;
+	String imageType;
 
 	public long getImageId() {
 		return imageId;
@@ -27,11 +26,11 @@ public class Image {
 		this.imageId = imageId;
 	}
 
-	public ImageType getImageType() {
+	public String getImageType() {
 		return imageType;
 	}
 
-	public void setImageType(ImageType imageType) {
+	public void setImageType(String imageType) {
 		this.imageType = imageType;
 	}
 

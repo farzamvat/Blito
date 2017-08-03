@@ -32,7 +32,7 @@ import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.EventHostService;
 
-//@ActiveProfiles("test")
+@ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 @Transactional
@@ -48,6 +48,8 @@ public class EventHostServiceTest {
 	private EventHostService hostService;
 	
 	private User user = new User();
+	private User user2 = new User();
+	private boolean isinit = false;
 	private EventHostViewModel createVmodel = new EventHostViewModel();
 	private EventHostViewModel updateVmodel = new EventHostViewModel();
 	private EventHostViewModel updateExceptionVmodel = new EventHostViewModel();
@@ -60,40 +62,46 @@ public class EventHostServiceTest {
 
 	@Before
 	public void init() {
-			user.setFirstname("hasti");
-			user.setEmail("hasti.sahabi@gmail.com");
-			user = userRepo.save(user);
-			user.setActive(true);
-			SecurityContextHolder.setCurrentUser(user);
-			Image image1 = new Image();
-			image1.setImageUUID(Constants.DEFAULT_HOST_PHOTO);
-			image1.setImageType(ImageType.HOST_PHOTO);
-			imageRepo.save(image1);
-			Image image2 = new Image();
-			image2.setImageType(ImageType.HOST_COVER_PHOTO);
-			image2.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO);
-			imageRepo.save(image2);
+		
+		user.setFirstname("hasti");
+		user.setEmail("hasti.sahabi@gmail.com");
+		user = userRepo.save(user);
+		user.setActive(true);
+		user2.setFirstname("farzam");
+		user2.setEmail("farzam.vat@gmail.com");
+		user2 = userRepo.save(user2);
+		user2.setActive(true);
+		SecurityContextHolder.setCurrentUser(user);
+		Image image1 = new Image();
+		image1.setImageUUID(Constants.DEFAULT_HOST_PHOTO);
+		image1.setImageType(ImageType.HOST_PHOTO.name());
+		imageRepo.save(image1);
+		Image image2 = new Image();
+		image2.setImageType(ImageType.HOST_COVER_PHOTO.name());
+		image2.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO);
+		imageRepo.save(image2);
 
-			createVmodel.setHostName("Shenakht");
-			createVmodel.setTelephone("22431103");
-			createVmodel.setHostType(HostType.COFFEESHOP);
+		createVmodel.setHostName("Shenakht");
+		createVmodel.setTelephone("22431103");
+		createVmodel.setHostType(HostType.COFFEESHOP);
 
-			updateVmodel.setHostName("Lucky Clover Cafe");
-			updateVmodel.setTelephone("22431103");
-			updateVmodel.setHostType(HostType.COFFEESHOP);
-			
 
-			updateExceptionVmodel.setHostName("Roo Be Roo");
-			updateExceptionVmodel.setTelephone("22411254");
-			updateExceptionVmodel.setHostType(HostType.COFFEESHOP);
-			
-			getVmodel.setHostName("Wispo");
-			getVmodel.setTelephone("22412345");
-			getVmodel.setHostType(HostType.COFFEESHOP);
-			
-			deleteVmodel.setHostName("Azadi");
-			deleteVmodel.setTelephone("22412345");
-			deleteVmodel.setHostType(HostType.CULTURALCENTER);
+		updateVmodel.setHostName("Lucky Clover Cafe");
+		updateVmodel.setTelephone("22431103");
+		updateVmodel.setHostType(HostType.COFFEESHOP);
+		
+
+		updateExceptionVmodel.setHostName("Roo Be Roo");
+		updateExceptionVmodel.setTelephone("22411254");
+		updateExceptionVmodel.setHostType(HostType.COFFEESHOP);
+		
+		getVmodel.setHostName("Wispo");
+		getVmodel.setTelephone("22412345");
+		getVmodel.setHostType(HostType.COFFEESHOP);
+		
+		deleteVmodel.setHostName("Azadi");
+		deleteVmodel.setTelephone("22412345");
+		deleteVmodel.setHostType(HostType.CULTURALCENTER);
 			
 	}
 
@@ -149,8 +157,7 @@ public class EventHostServiceTest {
 		assertNotNull(hostRepo.findOne(deleteVmodel.getEventHostId()));
 		assertEquals(1, SecurityContextHolder.currentUser().getEventHosts().size());
 		hostService.delete(deleteVmodel.getEventHostId());
-		assertNull(hostRepo.findOne(deleteVmodel.getEventHostId()));
-		assertEquals(0, SecurityContextHolder.currentUser().getEventHosts().size());
+		assertEquals(true, hostRepo.findOne(deleteVmodel.getEventHostId()).isDeleted());
 
 	}
 	
@@ -171,6 +178,7 @@ public class EventHostServiceTest {
 		vmodel3.setTelephone("22411254");
 		vmodel3.setHostType(HostType.COFFEESHOP);
 		
+		
 		vmodel4.setHostName("Wispo");
 		vmodel4.setTelephone("22412345");
 		vmodel4.setHostType(HostType.COFFEESHOP);
@@ -178,49 +186,61 @@ public class EventHostServiceTest {
 		vmodel1 = hostService.create(vmodel1);
 		vmodel2 = hostService.create(vmodel2);
 		vmodel3 = hostService.create(vmodel3);
+		SecurityContextHolder.setCurrentUser(user2);
 		vmodel4 = hostService.create(vmodel4);
+		SecurityContextHolder.setCurrentUser(user);
 		
-		assertEquals(4, SecurityContextHolder.currentUser().getEventHosts().size());
+		assertEquals(3, SecurityContextHolder.currentUser().getEventHosts().size());
 		
 		Pageable pageable = new PageRequest(0,5);
 		
-//		Page<EventHostViewModel> hosts = hostService.getCurrentUserEventHosts(pageable);
-//		
-//		assertEquals(4, hosts.getNumberOfElements());
+		Page<EventHostViewModel> hosts = hostService.getCurrentUserEventHosts(pageable);
+		
+		assertEquals(3, hosts.getNumberOfElements());
+		
+		hostService.delete(vmodel1.getEventHostId());
+		hosts = hostService.getCurrentUserEventHosts(pageable);
+		assertEquals(2, hosts.getNumberOfElements());
 
 	}
 	
-	@Test 
-	public void getAllEventHostsTest() {
-		assertEquals(0, hostRepo.count());
-		
-		vmodel1.setHostName("Shenakht");
-		vmodel1.setTelephone("22431103");
-		vmodel1.setHostType(HostType.COFFEESHOP);
-
-		vmodel2.setHostName("Lucky Clover Cafe");
-		vmodel2.setTelephone("22431103");
-		vmodel2.setHostType(HostType.COFFEESHOP);
-		
-
-		vmodel3.setHostName("Roo Be Roo");
-		vmodel3.setTelephone("22411254");
-		vmodel3.setHostType(HostType.COFFEESHOP);
-		
-		vmodel4.setHostName("Wispo");
-		vmodel4.setTelephone("22412345");
-		vmodel4.setHostType(HostType.COFFEESHOP);
-		
-		vmodel1 = hostService.create(vmodel1);
-		vmodel2 = hostService.create(vmodel2);
-		vmodel3 = hostService.create(vmodel3);
-		vmodel4 = hostService.create(vmodel4);
-		
-		assertEquals(4, hostRepo.count());
-		
-		Pageable pageable = new PageRequest(0,5);
-		Page<EventHostViewModel> eventHosts = hostService.getAllEventHosts(pageable);
-		assertEquals(4, eventHosts.getNumberOfElements());
-	}
+//	@Test 
+//	public void getAllEventHostsTest() {
+//		assertEquals(0, hostRepo.count());
+//		
+//		vmodel1.setHostName("Shenakht");
+//		vmodel1.setTelephone("22431103");
+//		vmodel1.setHostType(HostType.COFFEESHOP);
+//
+//		vmodel2.setHostName("Lucky Clover Cafe");
+//		vmodel2.setTelephone("22431103");
+//		vmodel2.setHostType(HostType.COFFEESHOP);
+//		
+//
+//		vmodel3.setHostName("Roo Be Roo");
+//		vmodel3.setTelephone("22411254");
+//		vmodel3.setHostType(HostType.COFFEESHOP);
+//		
+//		vmodel4.setHostName("Wispo");
+//		vmodel4.setTelephone("22412345");
+//		vmodel4.setHostType(HostType.COFFEESHOP);
+//		
+//		vmodel1 = hostService.create(vmodel1);
+//		vmodel2 = hostService.create(vmodel2);
+//		vmodel3 = hostService.create(vmodel3);
+//		vmodel4 = hostService.create(vmodel4);
+//		
+//		assertEquals(4, hostRepo.count());
+//		
+//		Pageable pageable = new PageRequest(0,5);
+//		Page<EventHostViewModel> eventHosts = hostService.getAllEventHosts(pageable);
+//		assertEquals(4, eventHosts.getNumberOfElements());
+//		
+//		hostService.delete(vmodel4.getEventHostId());
+//		
+//		eventHosts = hostService.getAllEventHosts(pageable);
+//		assertEquals(3, eventHosts.getNumberOfElements());
+//		
+//	}
 
 }

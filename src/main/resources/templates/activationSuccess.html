@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>بلیتو</title>
+    <style type="text/css">
+        .container{
+            background:#ddd;
+            width:100%;
+            overflow: hidden;
+            height:100%;
+            position:absolute;
+            margin:0px;
+        }
+        body{
+            margin: 0px;
+            font-family: "Iranian Sans";
+        }
+        .logoContainer img{
+            width:20% !important;
+            height:auto;
+            top:44.5%;
+            right:40%;
+            float:right;
+            position: absolute;
+        }
+        .textHolder{
+            color:#444;
+            font-size: 25px;
+            float:right;
+            font-weight: bold;
+            right:20%;
+            left:20%;
+            text-align: center;
+            margin-top:10%;
+            position: absolute;
+            display: inline;
+        }
+        .textHolder a{
+            font-size: 80%;
+            text-decoration: none;
+            color: #fff;
+            vertical-align: middle;
+        }
+        .textHolderButton{
+            background: rgb(252, 183, 49);
+            width: 100px;
+            border-radius: 5px;
+            vertical-align: middle;
+            padding: 2px;
+            box-shadow: 0px 0px 10px #222;
+            margin:auto;
+        }
+
+        .beauifier3{
+            height:100%;
+            width:10%;
+            float: right;
+            z-index: 1;
+            right:0px;
+            position: absolute;
+            background: url("https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/4bab1646-f321-4316-90bc-6453bcb4f94a.png");
+            box-shadow: 1px 1px 10px #222;
+        }
+        .beauifier{
+            height:100%;
+            width:5%;
+            float: right;
+            right:10%;
+            position: absolute;
+            background: rgb(252,183,49);
+            box-shadow: 1px 1px 10px #222;
+        }
+        #logo{
+            width:10% !important;
+            height:auto;
+            top:5%;
+            right:5%;
+            z-index: 2;
+            float:right;
+            position: absolute;
+            animation: logo 1.5s infinite;
+        }
+        #logoText{
+            width:20% !important;
+            height:auto;
+            bottom:5%;
+            right:70%;
+            float:right;
+            position: absolute;
+        }
+@keyframes logo {
+    0% {transform:scaleX(1) scaleY(1);}
+    50% {
+        transform:scaleX(0) scaleY(1.2);}
+    100% {transform:scaleX(1) scaleY(1);}
+
+}
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="logoContainer">
+    <div class="beauifier3"></div>
+        <div class="textHolder">
+            <p style="color:rgb(252, 183, 49);display:inline" th:text="${firstname}">فلانی</p><p style="display: inline">   عزیز</p>
+            <p>.حساب کاربری شما با موفقیت تایید شد</p>
+            <p>. هم اکنون به صفحه اصلی هدایت خواهید شد</p>
+            <a th:href="@{|${serverAddress}|}">
+                <div class="textHolderButton">
+                <p>ورود به سایت</p>
+            </div>
+        </a>
+    </div>
+    <div class="beauifier"></div>
+    <img id="logo" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/02cfa661-9a18-45d9-ad48-2f747472a307.png"/>
+
+</div>
+<footer class="bottomSection">
+
+</footer>
+</div>
+</body>
+</html>

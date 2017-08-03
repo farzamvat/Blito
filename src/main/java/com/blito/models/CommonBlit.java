@@ -18,6 +18,5 @@ public class CommonBlit extends Blit {
 
 	public void setBlitType(BlitType blitType) {
 		this.blitType = blitType;
-		blitType.getCommonBlits().add(this);
 	}
 }

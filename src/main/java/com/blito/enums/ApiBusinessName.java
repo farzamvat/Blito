@@ -1,5 +1,8 @@
 package com.blito.enums;
 
-public enum ApiBusinessName {
-	TEST
+
+public enum ApiBusinessName{
+	ADMIN,
+	USER,
+	OPERATOR;
 }

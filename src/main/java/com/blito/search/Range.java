@@ -3,6 +3,7 @@ package com.blito.search;
 
 import org.springframework.data.jpa.domain.Specification;
 
+
 public class Range<T> extends AbstractSearchViewModel<T> {
 
 	public long minValue;
@@ -31,6 +32,4 @@ public class Range<T> extends AbstractSearchViewModel<T> {
 	public void setMaxValue(long maxValue) {
 		this.maxValue = maxValue;
 	}
-
-	
 }

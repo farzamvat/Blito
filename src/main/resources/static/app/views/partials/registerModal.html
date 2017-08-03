@@ -6,6 +6,7 @@
         <div class="modal-content registerBody">
             <br>
             <div class="bs-example bs-example-tabs">
+
                 <ul id="myTab" class="nav nav-tabs">
                     <li class=""><a data-target="#signup" class="signInButton tabAnchor registerTab" data-toggle="tab">ثبت نام</a></li>
                     <li class="active"><a data-target="#signin" class="signInButton tabAnchor registerTab" data-toggle="tab">ورود</a></li>
@@ -14,7 +15,7 @@
             <div class="modal-body ">
                 <div id="myTabContent" class="tab-content">
                     <div class="tab-pane fade active in" id="signin">
-                        <form class="form-inline textAlignRight">
+                        <form class="form-inline textAlignRight" name="signInForm">
                             <fieldset>
                                 <!-- Sign In Form -->
                                 <!-- Text input-->
@@ -23,9 +24,10 @@
                                         <label class="registerLabel" for="userIdSingIn" >پست الکترونيکی :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input height="60" id="userIdSingIn" name="userid" ng-model="loginFields.email" type="text"  class="form-group registerInput" >
+                                        <input height="60" id="userIdSingIn" name="email" ng-model="loginFields.email" type="email"  class="form-group registerInput" required>
                                     </div>
                                 </div>
+                                <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signInForm.email.$dirty && signInForm.email.$invalid">پست الکترونیکی نا معتبر است</div>
 
                                 <!-- Password input-->
                                 <div class="form-group col-xs-12 marginTop10 formRegGroup">
@@ -37,31 +39,31 @@
                                     </div>
 
                                 </div>
-
-                                <!-- Multiple Checkboxes (inline) -->
-                                <!--<div class="control-group">-->
-                                <!--<div class="controls">-->
+                                <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signInForm.passwordinput.$dirty && signInForm.passwordinput.$invalid">رمز خود را وارد کنید</div>
 
 
-                                <!--<input class="checkBoxInline" type="checkbox" name="rememberme" id="rememberme" value="Remember me">-->
-                                <!--<span style="display: inline" class="checkbox inline" for="rememberme">مرا به خاطر بسپار-->
-                                <!--</span>-->
-                                <!--</div>-->
-                                <!--</div>-->
 
-                                <!-- Button -->
-                                <div class="control-group ">
-                                    <label class="control-label" for="signInButton"></label>
-                                    <div class="controls">
-                                        <button id="signInButton" ng-click="login(loginFields)" name="signin" class="btn btn-success btn-lg btnLogin">ورود</button>
-                                    </div>
-                                </div>
+
                             </fieldset>
+                            <!-- Button -->
+                            <div class="control-group ">
+                                <div ng-show="loginSuccessNotif" class="text-center alert alert-success col-xs-12" >
+                                    <strong>با موفقیت وارد شدید !</strong>
+                                </div>
+                                <div id="loginError" ng-show="loginErrorNotif" class="text-center alert alert-danger col-xs-12" >
+                                    <strong></strong>
+                                </div>
+                                <label class="control-label" for="signInButton"></label>
+                                <div class="controls">
+                                    <button id="signInButton" ng-disabled="signInForm.$invalid || loginOnce" ng-click="login(loginFields)" name="signin" class="btn btn-success btn-lg btnLogin">ورود <i ng-show="submitLogin" class="fa fa-spinner fa-spin"></i></button>
+                                </div>
+                                <p class="text-center marginTop30 forgetPassword"><a ng-click="forgetPassModal()">رمز خود را فراموش کرده اید؟</a></p>
+                            </div>
                         </form>
 
                     </div>
                     <div class="tab-pane fade" id="signup">
-                        <form class="form-inline textAlignRight">
+                        <form class="form-inline textAlignRight" name="signupForm">
                             <fieldset>
                                 <!-- Sign Up Form -->
                                 <!-- Text input-->
@@ -70,7 +72,7 @@
                                     <label class="registerLabel" for="name">نام :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input id="name" name="userid" class="form-group  registerInput" type="text" ng-model="fields.firstname" >
+                                        <input id="name" name="name" class="form-group  registerInput" type="text" ng-model="fields.firstname"  required>
                                     </div>
                                 </div>
                                 <!-- Text input-->
@@ -79,7 +81,7 @@
                                     <label class="registerLabel" for="familyName">نام خانوادگی :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input id="familyName" name="userid" class="form-group  registerInput"  type="text" ng-model="fields.lastname" >
+                                        <input id="familyName" name="familyName" class="form-group  registerInput"  type="text" ng-model="fields.lastname" required>
                                     </div>
                                 </div>
                                 <!-- Text input-->
@@ -88,29 +90,32 @@
                                     <label class="registerLabel" for="mobile">شماره تلفن همراه :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input id="mobile" name="mobile" class="form-group  registerInput" type="text" ng-model="fields.mobile" >
+                                        <input id="mobile" name="mobile" class="form-group  registerInput" type="text" ng-model="fields.mobile" required>
                                     </div>
                                 </div>
+                                <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signupForm.mobile.$dirty && signupForm.mobile.$invalid" >شماره تلفن فیلد اجباری می باشد</div>
                                 <div class="form-group col-xs-12 marginTop10 formRegGroup">
                                     <div class="col-xs-5 col-sm-4 floatRight text-center">
                                     <label class="registerLabel" for="Email">پست الکترونیکی :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input id="Email" name="Email" class="form-group  registerInput" type="text" ng-model="fields.email" >
+                                        <input id="Email" name="email" class="form-group  registerInput" type="email" ng-model="fields.email" required>
                                     </div>
                                 </div>
+                                <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signupForm.email.$dirty && signupForm.email.$invalid" >پست الکترونیکی نا معتبر است</div>
 
 
 
                                 <!-- Password input-->
                                 <div class="form-group col-xs-12 marginTop10 formRegGroup">
                                     <div class="col-xs-5 col-sm-4 floatRight text-center">
-                                    <label class="registerLabel" for="password">رموز عبور :</label>
+                                    <label class="registerLabel" for="password">رمز عبور :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input id="password" name="password" class="form-group  registerInput" type="password" ng-model="fields.password">
+                                        <input id="password" name="password" class="form-group  registerInput" type="password" ng-model="fields.password"  length-validation required>
                                     </div>
                                 </div>
+                                <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signupForm.password.$dirty && signupForm.password.$invalid" >رمز عبور باید حداقل ۸ کاراکتر باشد</div>
 
                                 <!-- Text input-->
                                 <div class="form-group col-xs-12 marginTop10 formRegGroup">
@@ -118,29 +123,36 @@
                                     <label class="registerLabel" for="reenterpassword">تکرار رمز عبور :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input id="reenterpassword" class="form-group  registerInput" name="reenterpassword" type="password" ng-model="fields.confirmPassword" >
+                                        <input id="reenterpassword" class="form-group  registerInput" name="reenterpassword" type="password" password-validation="password" length-validation ng-model="fields.confirmPassword" required>
                                     </div>
                                 </div>
+
+                                <span data-ng-show="signupForm.reenterpassword.$error.match">رمزهای عبور برابر نیستند</span>
+                                <div class="col-xs-12 form-control-static text-center colorRed" ng-match="fields.password" ng-show="signupForm.reenterpassword.$dirty && signupForm.reenterpassword.$invalid">رمز نا معتبر است</div>
 
                                 <!-- Multiple Radios (inline) -->
                                 <br>
 
 
-                                <!-- Button -->
-                                <div class="control-group">
-                                    <label class="registerLabel" for="confirmsignup"></label>
-                                    <div class="controls">
-                                        <button id="confirmsignup" ng-click="regUser(fields)" name="confirmsignup" class="btn btn-success btn-lg btnReg">ثبت نام</button>
-                                    </div>
+                                <div id="registerError" ng-show="registerErrorNotif" class="text-center alert alert-danger col-xs-12" >
+                                    <strong></strong>
                                 </div>
+
                             </fieldset>
+                            <!-- Button -->
+                            <div class="control-group marginTop30">
+                                <label class="registerLabel" for="confirmsignup"></label>
+                                <div class="controls">
+                                    <button ng-disabled="signupForm.$invalid || submitRegister" id="confirmsignup" ng-click="regUser(fields)" name="confirmsignup" class="btn btn-success btn-lg btnReg">ثبت نام <i ng-show="submitRegister" class="fa fa-spinner fa-spin"></i></button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <center>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times " aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
                 </center>
             </div>
         </div>

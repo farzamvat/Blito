@@ -1,7 +1,7 @@
 package com.blito.rest.viewmodels.eventhost;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
@@ -9,6 +9,7 @@ import com.blito.annotations.Url;
 import com.blito.enums.HostType;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.image.ImageViewModel;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 
 public class EventHostViewModel {
@@ -20,7 +21,10 @@ public class EventHostViewModel {
 	String hostName;
 	
 	@JsonView(View.EventHost.class)
-	@NotNull
+	String description;
+	
+	@JsonView(View.EventHost.class)
+	//@Telephone
 	String telephone;
 	
 	@JsonView(View.EventHost.class)
@@ -47,18 +51,41 @@ public class EventHostViewModel {
 	@NotNull
 	HostType hostType;
 	
+	@JsonView(View.AdminEventHost.class)
+	boolean isDeleted;
+	
 	@JsonView(View.SimpleEventHost.class)
-	List<ImageViewModel> images;
+	private String eventHostLink;
+	
+	@JsonView(View.SimpleEventHost.class)
+	Set<ImageViewModel> images;
 	
 	public EventHostViewModel()
 	{
-		images = new ArrayList<>();
+		images = new HashSet<>();
 	}
 	
-	public List<ImageViewModel> getImages() {
+	@JsonProperty("isDeleted")
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public String getEventHostLink() {
+		return eventHostLink;
+	}
+
+	public void setEventHostLink(String eventHostLink) {
+		this.eventHostLink = eventHostLink;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	public Set<ImageViewModel> getImages() {
 		return images;
 	}
-	public void setImages(List<ImageViewModel> images) {
+	public void setImages(Set<ImageViewModel> images) {
 		this.images = images;
 	}
 	public long getEventHostId() {
@@ -78,6 +105,13 @@ public class EventHostViewModel {
 	}
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
+	}
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	public String getTelegramLink() {
 		return telegramLink;

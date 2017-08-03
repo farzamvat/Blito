@@ -8,20 +8,20 @@ public enum ControllerEnumValidation implements ValidationInterface {
 	EMAIL("validation.register.email"),
 	PASSWORD("validation.register.password"),
 	MOBILE("validation.register.mobile"),
-	EVENT_NAME("validation.create.event.name"),
-	EVENT_TYPE("validation.create.event.type"),
+	EVENTNAME("validation.create.event.name"),
+	EVENTTYPE("validation.create.event.type"),
 	HOSTNAME("validation.eventhost.hostname"),
 	TELEPHONE("validation.eventhost.telephone"),
-	TELEGRAM_LINK("validation.eventhost.telegram.link"),
-	INSTAGRAM_LINK("validation.eventhost.instagram.link"),
-	TWITTER_LINK("validation.eventhost.twitter.link"),
-	LINKEDIN_LINK("validation.eventhost.linkedin.link"),
-	WEBSITE_LINK("validation.eventhost.website.link"),
-	HOST_TYPE("validation.eventhost.host.type"),
+	TELEGRAMLINK("validation.eventhost.telegram.link"),
+	INSTAGRAMLINK("validation.eventhost.instagram.link"),
+	TWITTERLINK("validation.eventhost.twitter.link"),
+	LINKEDINLINK("validation.eventhost.linkedin.link"),
+	WEBSITELINK("validation.eventhost.website.link"),
+	HOSTTYPE("validation.eventhost.host.type"),
 	TITLE("validation.exchangeblit.title"),
-	EVENT_DATE("validation.exchangeblit.event.date"),
-	IS_BLITO_EVENT("validation.exchangeblit.is.blito.event"),
-	PHONE_NUMBER("validation.exchangeblit.phone.number");
+	EVENTDATE("validation.exchangeblit.event.date"),
+	ISBLITOEVENT("validation.exchangeblit.is.blito.event"),
+	PHONENUMBER("validation.exchangeblit.phone.number");
 	
 	private final String message;
 	

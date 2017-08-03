@@ -1,6 +1,6 @@
 package com.blito.models;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,8 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.blito.enums.ProfileType;
@@ -27,11 +27,11 @@ public class Profile {
 	boolean active;
 	
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
-	List<Event> events;
+	Set<Event> events;
 	
 	String biography;
 	
-	ProfileType profileType;
+	String profileType;
 	
 	String name;
 	
@@ -43,15 +43,16 @@ public class Profile {
 	
 	String twitter;
 	
-	@OneToMany
-	@JoinColumn(name="profileId")
-	private List<Image> images; 
+	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+    @JoinTable(name="profile_image" , joinColumns=@JoinColumn(name="profile_id"), 
+    inverseJoinColumns=@JoinColumn(name="image_id"))
+	private Set<Image> images; 
 
-	public List<Image> getImages() {
+	public Set<Image> getImages() {
 		return images;
 	}
 
-	public void setImages(List<Image> images) {
+	public void setImages(Set<Image> images) {
 		this.images = images;
 	}
 
@@ -111,11 +112,11 @@ public class Profile {
 		this.active = active;
 	}
 
-	public List<Event> getEvents() {
+	public Set<Event> getEvents() {
 		return events;
 	}
 
-	public void setEvents(List<Event> events) {
+	public void setEvents(Set<Event> events) {
 		this.events = events;
 	}
 
@@ -127,11 +128,11 @@ public class Profile {
 		this.biography = biography;
 	}
 
-	public ProfileType getProfileType() {
+	public String getProfileType() {
 		return profileType;
 	}
 
-	public void setProfileType(ProfileType profileType) {
+	public void setProfileType(String profileType) {
 		this.profileType = profileType;
 	}
 }

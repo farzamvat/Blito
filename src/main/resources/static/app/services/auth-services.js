@@ -12,13 +12,10 @@ angular.module('authServices', [])
             authService.saveAttemptUrl();
             return $http.post(config.baseUrl+'/api/blito/v1.0/login', loginData)
                 .then(function (data) {
-                    console.log(data)
                     AuthToken.setToken(data.data);
                     return data;
                 })
-                .catch(function (data, status) {
-                    console.log("cant login");
-                })
+
         };
 
         authService.isLoggedIn = function () {
@@ -58,7 +55,16 @@ angular.module('authServices', [])
         var updateInfo = this;
         updateInfo.updateData = function (updateData) {
             return $http.post(config.baseUrl + '/api/blito/v1.0/account/update-info', updateData);
-        }
+        };
+        updateInfo.changePasswordSubmit = function (changePassword) {
+            return $http.post(config.baseUrl + '/api/blito/v1.0/account/change-password', changePassword);
+        };
+        updateInfo.resetPassword = function (forgetPassEmail) {
+            var queryParam = {
+                params : {email: forgetPassEmail}
+            };
+            return $http.get(config.baseUrl + '/api/blito/v1.0/forget-password', queryParam);
+        };
     })
     .service('userCreate', function ($http, config) {
         var userService = this;
@@ -105,8 +111,24 @@ angular.module('authServices', [])
 
         };
         authTokenService.getRefreshToken = function () {
+            if($window.localStorage.getItem('refresh-token')) {
+                self.parseJwt = function (token) {
+                    var base64Url = token.split('.')[1];
+                    var base64 = base64Url.replace('-', '+').replace('_', '/');
+                    return JSON.parse($window.atob(base64));
+                };
+                var expireTime = self.parseJwt($window.localStorage.getItem('refresh-token'));
+                var timeStamp = Math.floor(Date.now() / 1000);
+                var timeCheck = expireTime.exp - timeStamp;
+                if(timeCheck < 10) {
+                    return "logOut";
+                } else {
+                    return $window.localStorage.getItem('refresh-token');
+                }
+            } else {
+                return false;
+            }
 
-                return $window.localStorage.getItem('refresh-token');
         }
     })
 
@@ -152,25 +174,20 @@ angular.module('authServices', [])
                             inFlightAuthRequest = null;
                             AuthToken.setToken();
                             defer.reject();
-                        })
-                    console.log("401");
+                        });
                     break;
                 case 404 :
-                    console.dir("404");
+                    $location.path('/not-found');
                     defer.reject(rejection);
                     break;
                 case 400 :
-                    // $location.path('/');
-                    // AuthToken.setToken();
-                    console.dir("400");
                     defer.reject(rejection);
                     break;
                 case 500 :
-                    console.dir("500");
                     defer.reject(rejection);
                     break;
                 default :
-                    console.dir("default");
+                    defer.reject(rejection);
                     break;
             }
 
@@ -191,7 +208,7 @@ angular.module('authServices', [])
             userDataService.lastname = userData.lastname;
             userDataService.mobile = userData.mobile;
             userDataService.email = userData.email;
-        }
+        };
         userInfo.getData = function () {
             return userDataService;
         }

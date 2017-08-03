@@ -1,8 +1,9 @@
 package com.blito.rest.viewmodels.event;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
@@ -13,23 +14,26 @@ import com.blito.enums.State;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.eventdate.EventDateFlatViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 
 public class EventFlatViewModel {
 	@JsonView(View.SimpleEvent.class)
 	private long eventId;
-	@JsonView(View.Event.class)
+	@JsonView(View.SimpleEvent.class)
 	private String eventLink; 
 	@JsonView(View.SimpleEvent.class)
 	private State eventState;
 	@JsonView(View.Event.class)
 	private long eventHostId;
 	@JsonView(View.SimpleEvent.class)
-	private List<OfferTypeEnum> offers;
-	@JsonView(View.Event.class)
-	private List<EventDateFlatViewModel> eventDates;
+	private String eventHostName;
 	@JsonView(View.SimpleEvent.class)
-	private List<ImageViewModel> images;
+	private Set<OfferTypeEnum> offers;
+	@JsonView(View.SimpleEvent.class)
+	private Set<EventDateFlatViewModel> eventDates;
+	@JsonView(View.SimpleEvent.class)
+	private Set<ImageViewModel> images;
 	@JsonView(View.SimpleEvent.class)
 	@NotNull
 	private String eventName;
@@ -41,9 +45,13 @@ public class EventFlatViewModel {
 	@JsonView(View.SimpleEvent.class)
 	private Timestamp blitSaleEndDate;
 	@JsonView(View.Event.class)
+	private Timestamp eventSoldDate;
+	@JsonView(View.Event.class)
 	private String address;
 	@JsonView(View.Event.class)
 	private String description;
+	@JsonView(View.SimpleEvent.class)
+	private long views;
 	@JsonView(View.Event.class)
 	private Double latitude;
 	@JsonView(View.Event.class)
@@ -52,8 +60,78 @@ public class EventFlatViewModel {
 	private String aparatDisplayCode;
 	@JsonView(View.SimpleEvent.class)
 	private OperatorState operatorState;
+	@JsonView(View.AdminEvent.class)
 	private int orderNumber;
+	@JsonView(View.Event.class)
+	private String members;
+	@JsonView(View.Event.class)
+	private Timestamp createdAt;
+	@JsonView(View.AdminEvent.class)
+	private boolean isDeleted;
+	@JsonView(View.AdminEvent.class)
+	private boolean isEvento;
+	@JsonView(View.Event.class)
+	private Map<String,String> additionalFields;
 	
+	
+	public Map<String, String> getAdditionalFields() {
+		return additionalFields;
+	}
+
+	public void setAdditionalFields(Map<String, String> additionalFields) {
+		this.additionalFields = additionalFields;
+	}
+
+	public Timestamp getEventSoldDate() {
+		return eventSoldDate;
+	}
+
+	public void setEventSoldDate(Timestamp eventSoldDate) {
+		this.eventSoldDate = eventSoldDate;
+	}
+
+	public long getViews() {
+		return views;
+	}
+
+	public void setViews(long views) {
+		this.views = views;
+	}
+
+	@JsonProperty("isDeleted")
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	@JsonProperty("isEvento")
+	public boolean isEvento() {
+		return isEvento;
+	}
+
+	public void setEvento(boolean isEvento) {
+		this.isEvento = isEvento;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public String getMembers() {
+		return members;
+	}
+
+	public void setMembers(String members) {
+		this.members = members;
+	}
+
 	public int getOrderNumber() {
 		return orderNumber;
 	}
@@ -72,9 +150,9 @@ public class EventFlatViewModel {
 
 	public EventFlatViewModel()
 	{
-		offers = new ArrayList<>();
-		eventDates = new ArrayList<>();
-		images = new ArrayList<>();
+		offers = new HashSet<>();
+		eventDates = new HashSet<>();
+		images = new HashSet<>();
 	}
 
 	public long getEventId() {
@@ -109,27 +187,27 @@ public class EventFlatViewModel {
 		this.eventHostId = eventHostId;
 	}
 
-	public List<OfferTypeEnum> getOffers() {
+	public Set<OfferTypeEnum> getOffers() {
 		return offers;
 	}
 
-	public void setOffers(List<OfferTypeEnum> offers) {
+	public void setOffers(Set<OfferTypeEnum> offers) {
 		this.offers = offers;
 	}
 
-	public List<EventDateFlatViewModel> getEventDates() {
+	public Set<EventDateFlatViewModel> getEventDates() {
 		return eventDates;
 	}
 
-	public void setEventDates(List<EventDateFlatViewModel> eventDates) {
+	public void setEventDates(Set<EventDateFlatViewModel> eventDates) {
 		this.eventDates = eventDates;
 	}
 
-	public List<ImageViewModel> getImages() {
+	public Set<ImageViewModel> getImages() {
 		return images;
 	}
 
-	public void setImages(List<ImageViewModel> images) {
+	public void setImages(Set<ImageViewModel> images) {
 		this.images = images;
 	}
 
@@ -204,5 +282,14 @@ public class EventFlatViewModel {
 	public void setAparatDisplayCode(String aparatDisplayCode) {
 		this.aparatDisplayCode = aparatDisplayCode;
 	}
+
+	public String getEventHostName() {
+		return eventHostName;
+	}
+
+	public void setEventHostName(String eventHostName) {
+		this.eventHostName = eventHostName;
+	}
+	
 	
 }

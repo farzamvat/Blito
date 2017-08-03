@@ -29,26 +29,22 @@ public class PublicEventHostController {
 	@Autowired EventHostService eventHostService;
 	
 	// ***************** SWAGGER DOCS ***************** //
-	@ApiOperation(value = "get all event hosts")
-	@ApiResponses({@ApiResponse(code = 200, message="get all event hosts ok", response = EventHostViewModel.class)})
-	// ***************** SWAGGER DOCS ***************** //
-	@JsonView(View.SimpleEventHost.class)
-	@GetMapping
-	public ResponseEntity<Page<EventHostViewModel>> getAllEventHosts(Pageable pageable)
-	{
-		return ResponseEntity.ok(eventHostService.getAllEventHosts(pageable));
-	}
-	
-	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "get event host by ID")
 	@ApiResponses({@ApiResponse(code = 200, message="get event host by ID ok", response = EventHostViewModel.class),
 				   @ApiResponse(code = 404, message="NotFoundException", response = ExceptionViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.EventHost.class)
 	@GetMapping("/{eventHostId}")
-	public ResponseEntity<EventHostViewModel> getEventHostById(@PathVariable long eventHostId)
+	public ResponseEntity<EventHostViewModel> getEventHost(@PathVariable long eventHostId)
 	{
 		return ResponseEntity.ok(eventHostService.get(eventHostId));
+	}
+	
+	@JsonView(View.EventHost.class)
+	@GetMapping("/link/{link}")
+	public ResponseEntity<EventHostViewModel> getByLink(@PathVariable String link)
+	{
+		return ResponseEntity.ok(eventHostService.findByEventLink(link));
 	}
 	
 	// ***************** SWAGGER DOCS ***************** //
@@ -56,7 +52,7 @@ public class PublicEventHostController {
 	@ApiResponses({@ApiResponse(code = 200, message="search ok", response = EventHostViewModel.class),
 				   @ApiResponse(code = 404, message="NotFoundException", response = ExceptionViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
-	@JsonView(View.SimpleEventHost.class)
+	@JsonView(View.EventHost.class)
 	@PostMapping("/search")
 	public ResponseEntity<Page<EventHostViewModel>> search(@RequestBody SearchViewModel<EventHost> searchViewModel,Pageable pageable)
 	{

@@ -22,7 +22,7 @@ import com.blito.rest.viewmodels.account.UserViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.AdminAccountService;
 
-//@ActiveProfiles("test")
+@ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 @Transactional
@@ -78,13 +78,6 @@ public class AdminAccountServiceTest {
 	@Test(expected = NotFoundException.class)
 	public void getWithNotFoundException() {
 		UserViewModel foundUser = adminAccService.getUser(2342);
-	}
-	
-	@Test
-	public void getAll() {
-		Pageable pageable = new PageRequest(0,10);
-		Page<UserViewModel> users = adminAccService.getAllUsers(pageable);
-		assertEquals(6, users.getNumberOfElements());
 	}
 	
 	@Test

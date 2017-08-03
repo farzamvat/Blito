@@ -1,6 +1,6 @@
 package com.blito.security;
 
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.aspectj.lang.JoinPoint;
@@ -27,13 +27,16 @@ public class RoleAspect {
 	@Before("@annotation(permission)")
 	public void filterByRole(JoinPoint joinPoint, Permission permission) {
 		User currentUser = SecurityContextHolder.currentUser();
-
-		List<Role> currentUserAttachedRoles = roleRepository
+		
+		if(currentUser.isBanned())
+			throw new ForbiddenException(ResourceUtil.getMessage(Response.USER_IS_BANNED));
+		
+		Set<Role> currentUserAttachedRoles = roleRepository
 				.findByRoleIdIn(currentUser.getRoles().stream().map(r -> r.getRoleId()).collect(Collectors.toList()));
 
 		if (currentUserAttachedRoles != null) {
 			if (currentUserAttachedRoles.stream().flatMap(r -> r.getPermissions().stream()).distinct()
-					.noneMatch(p -> p.getApiBusinessName().equals(permission.value()))) {
+					.noneMatch(p -> p.getApiBusinessName().equals(permission.value().name()))) {
 				throw new ForbiddenException(ResourceUtil.getMessage(Response.ACCESS_DENIED));
 			}
 		} else {

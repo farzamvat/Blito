@@ -1,6 +1,6 @@
 package com.blito.models;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -10,12 +10,12 @@ import javax.persistence.PrimaryKeyJoinColumn;
 @PrimaryKeyJoinColumn(referencedColumnName="blitId")
 public class SeatBlit extends Blit {
 	@OneToMany(mappedBy="seatBlit",targetEntity=BlitTypeSeat.class)
-	List<BlitTypeSeat> blitTypeSeats;
+	Set<BlitTypeSeat> blitTypeSeats;
 	String seats;
-	public List<BlitTypeSeat> getBlitTypeSeats() {
+	public Set<BlitTypeSeat> getBlitTypeSeats() {
 		return blitTypeSeats;
 	}
-	public void setBlitTypeSeats(List<BlitTypeSeat> blitTypeSeats) {
+	public void setBlitTypeSeats(Set<BlitTypeSeat> blitTypeSeats) {
 		this.blitTypeSeats = blitTypeSeats;
 	}
 	public String getSeats() {

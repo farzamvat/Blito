@@ -1,6 +1,6 @@
 package com.blito.models;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,14 +18,14 @@ public class Salon {
 	private String address;
 	private String planPath;
 	@OneToMany(mappedBy="salon",targetEntity=Seat.class)
-	List<Seat> seats;
+	Set<Seat> seats;
 	@OneToMany(mappedBy="salon",targetEntity=EventDate.class)
-	List<EventDate> eventDates;
+	Set<EventDate> eventDates;
 	
-	public List<EventDate> getEventDates() {
+	public Set<EventDate> getEventDates() {
 		return eventDates;
 	}
-	public void setEventDates(List<EventDate> eventDates) {
+	public void setEventDates(Set<EventDate> eventDates) {
 		this.eventDates = eventDates;
 	}
 	public long getSalonId() {
@@ -64,10 +64,10 @@ public class Salon {
 	public void setPlanPath(String planPath) {
 		this.planPath = planPath;
 	}
-	public List<Seat> getSeats() {
+	public Set<Seat> getSeats() {
 		return seats;
 	}
-	public void setSeats(List<Seat> seats) {
+	public void setSeats(Set<Seat> seats) {
 		this.seats = seats;
 	}
 }

@@ -16,7 +16,7 @@ public class BlitTypeSeat {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	long blitTypeSeatId;
 	Timestamp soldDate;
-	BlitTypeSeatState state;
+	String state;
 	@ManyToOne
 	@JoinColumn(name="seatId")
 	Seat seat;
@@ -39,10 +39,10 @@ public class BlitTypeSeat {
 	public void setSoldDate(Timestamp soldDate) {
 		this.soldDate = soldDate;
 	}
-	public BlitTypeSeatState getState() {
+	public String getState() {
 		return state;
 	}
-	public void setState(BlitTypeSeatState state) {
+	public void setState(String state) {
 		this.state = state;
 	}
 	public Seat getSeat() {
