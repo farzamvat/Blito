@@ -49,6 +49,5 @@ public class AdminExchangeBlitService {
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
 		imageService.delete(exchangeBlit.getImage().getImageUUID());
 		exchangeBlit.setDeleted(true);
-		exchangeBlitRepository.save(exchangeBlit);
 	}
 }
