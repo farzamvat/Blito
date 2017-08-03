@@ -3,7 +3,7 @@
  */
 
 angular.module('eventsPageModule')
-    .controller('exchangePageCtrl', function ($scope, $routeParams, exchangeService, mapMarkerService, dateSetterService, photoService) {
+    .controller('exchangePageCtrl', function ($scope, $routeParams, exchangeService, mapMarkerService, dateSetterService, photoService, $timeout) {
         $scope.userEmail = 'email';
         $scope.mapOptions = {
             zoom: 14,
@@ -16,8 +16,9 @@ angular.module('eventsPageModule')
                 $scope.catchImagesExchange($scope.exchangeData.image.imageUUID)
                 mapMarkerService.initMapOnlyShowMarker(document.getElementById('map'));
                 mapMarkerService.setMarker($scope.exchangeData.latitude, $scope.exchangeData.longitude);
-                dateSetterService.initDate("dateInit");
-                $(".dateInit").val(persianDate($scope.exchangeData.eventDate).format("dddd,DD MMMM, ساعت HH:mm"))
+                $timeout(function () {
+                    $(".dateInit").val(persianDate($scope.exchangeData.eventDate).format("dddd,DD MMMM, ساعت HH:mm"));
+                },1000)
             })
             .catch(function (data) {
             });
