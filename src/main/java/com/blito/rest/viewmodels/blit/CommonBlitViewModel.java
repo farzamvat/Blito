@@ -190,7 +190,7 @@ public class CommonBlitViewModel extends AbstractViewModel {
 		return customerEmail;
 	}
 	public void setCustomerEmail(String customerEmail) {
-		this.customerEmail = customerEmail;
+		this.customerEmail = customerEmail.toLowerCase();
 	}
 	public String getEventAddress() {
 		return eventAddress;
