@@ -39,8 +39,8 @@
                         <i class="fa fa-exchange" aria-hidden="true"></i>
                     </a>
                     <ul class="tabDropDown" id="toggleExchange">
-                        <li ng-click="scrollTo('exchangeTicket', 'exchangeTicketSection')"><a><span class="">ایجاد آگهی</span><i class="fa fa-magic"></i></a></li>
                         <li ng-click="scrollTo('exchangeTicketList', 'exchangeTicketListSection')"><a><span class=""> لیست آگهی ها </span><i class="fa fa-list"></i></a></li>
+                        <li ng-click="scrollTo('exchangeTicket', 'exchangeTicketSection')"><a><span class="">ایجاد آگهی</span><i class="fa fa-magic"></i></a></li>
                     </ul>
                 </li>
                 <li ng-click="editUserInfo()"><a ng-click="closeTabDropDowns()" data-target="#2" data-toggle="tab"><span class=" ">   ویرایش اطلاعات </span><i class="fa fa-edit" aria-hidden="true"></i></a></li>
@@ -274,7 +274,7 @@
                                                     <label class="registerLabel floatRight" for="exchangeName" >نام بلیت :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input height="60" id="exchangeName" ng-model="exchange.name"  type="text"  class="form-group registerInput" required>
+                                                    <input height="60" id="exchangeName" ng-model="exchange.name " name="exchangeName"  type="text"  class="form-group registerInput" required>
                                                 </div>
                                             </div>
 
@@ -283,7 +283,7 @@
                                                     <label class="registerLabel floatRight" for="exchangeType">نوع بلیت :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <select id="exchangeType" ng-model="exchange.type" required class="form-control dropDownList" ng-options="o.v as o.n for o in [{n : 'تئاتر', v: 'THEATER'},{n : 'سینما', v: 'CINEMA'},{n : 'کنسرت', v: 'CONCERT'},{n : 'تور', v: 'TOURISM'},{n : 'سرگرمی', v: 'ENTERTAINMENT'},{n : 'کارگاه', v: 'WORKSHOP'}, {n : 'نمایشگاه', v: 'EXHIBITION'},{n : 'بن تخفیف', v: 'DISCOUNT_TICKET'}, {n : 'سایر', v: 'OTHER'}]">
+                                                    <select id="exchangeType" ng-model="exchange.type" name="exchangeType" required class="form-control dropDownList" ng-options="o.v as o.n for o in [{n : 'تئاتر', v: 'THEATER'},{n : 'سینما', v: 'CINEMA'},{n : 'کنسرت', v: 'CONCERT'},{n : 'تور', v: 'TOURISM'},{n : 'سرگرمی', v: 'ENTERTAINMENT'},{n : 'کارگاه', v: 'WORKSHOP'}, {n : 'نمایشگاه', v: 'EXHIBITION'},{n : 'بن تخفیف', v: 'DISCOUNT_TICKET'}, {n : 'سایر', v: 'OTHER'}]">
                                                     </select>
                                                 </div>
                                             </div>
@@ -294,7 +294,7 @@
                                                     <label class="registerLabel floatRight" for="eventExchangeDate" >تاریخ و ساعت رویداد  :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input type="text" id="eventExchangeDate" required ng-model="exchange.eventTime" class="persianExchangeTime datePickerFormat" readonly/>
+                                                    <input type="text" id="eventExchangeDate" name="exchangeDateTime"required ng-model="exchange.eventTime" class="persianExchangeTime datePickerFormat" readonly/>
                                                 </div>
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
@@ -302,7 +302,7 @@
                                                     <label class="registerLabel floatRight" for="exchangePrice" >قیمت بلیت (تومان) :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input height="60" id="exchangePrice" required ng-model="exchange.price"   type="number"  class="form-group registerInput" >
+                                                    <input height="60" id="exchangePrice" required ng-model="exchange.price" name="exchangePrice"  type="number"  class="form-group registerInput" >
                                                 </div>
                                             </div>
                                         </div>
@@ -312,7 +312,7 @@
                                                     <label class="registerLabel floatRight" for="exchangeDescription" >توضیحات  :(حداکثر {{100 - exchange.description.length | pNumber}} کاراکتر مجاز)</label>
                                                 </div>
                                                 <div class="col-xs-11  floatRight ">
-                                                    <textarea ng-model="exchange.description" required maxlength="100" id="exchangeDescription"   type="text"  class="form-group textAreaForm" ></textarea>
+                                                    <textarea ng-model="exchange.description" required maxlength="100" id="exchangeDescription"  name="exchangeDescription" type="text"  class="form-group textAreaForm" ></textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
@@ -356,7 +356,7 @@
                                                     <label class="registerLabel floatRight" for="exchangeAddress" >آدرس :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <textarea ng-model="exchange.address"  required id="exchangeAddress"   type="text"  class="form-group textAreaForm marginTop30" ></textarea>
+                                                    <textarea ng-model="exchange.address" name="exchangeAddress"  required id="exchangeAddress"   type="text"  class="form-group textAreaForm marginTop30" ></textarea>
                                                 </div>
                                             </div>
 
@@ -386,7 +386,16 @@
                                             <strong></strong>
                                         </div>
                                         <div class="controls">
-                                            <p class="text-center colorRed" ng-show="(!exchangeBlitForm.$invalid && mapMarkerClickCheckExchange)">مکان را روی نقشه مشخص کنید</p>
+                                            <div ng-show="!submitExchangeNotif">
+                                            <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangeName.$dirty && exchangeBlitForm.exchangeName.$invalid)">*نام بلیت را وارد نمایید.</p>
+                                            <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangeType.$invalid)">*نوع بلیت را انخاب نمایید.</p>
+                                            <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangeDateTime.$untouched )">*تاریخ و ساعت رویداد را انخاب نمایید.</p>
+                                            <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangePrice.$dirty && exchangeBlitForm.exchangePrice.$invalid)">*قیمت بلیت را وارد نمایید.</p>
+                                            <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangeDescription.$dirty && exchangeBlitForm.exchangeDescription.$invalid)">*توضیحات مربوط به بلیت را وارد نمایید.</p>
+                                            <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangeAddress.$dirty && exchangeBlitForm.exchangeAddress.$invalid)">*آدرس را وارد نمایید.</p>
+                                            <p class="text-center colorRed" ng-show="(!exchangeBlitForm.$invalid && mapMarkerClickCheckExchange)">*مکان را روی نقشه مشخص نمایید.</p>
+                                            </div>
+                                            <p class="text-center colorRed" ng-show="(((exchangeBlitForm.$invalid || mapMarkerClickCheckExchange)) && !(exchangeBlitForm.exchangeDateTime.$untouched || exchangeBlitForm.exchangeType.$invalid ))">*همه فیلد های اجباری را پر نمایید.</p>
                                             <button id="exchangeEventSubmit" ng-disabled="(exchangeBlitForm.$invalid || mapMarkerClickCheckExchange || exchangeSubmitOnce)" ng-click="submitExchangeTicket(exchange)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت آگهی <i ng-show="submitExchangeSpinner" class="fa fa-spinner fa-spin"></i></button>
                                         </div>
 
@@ -523,7 +532,7 @@
                                                     <label class="registerLabel floatRight" for="eventName" >نام رویداد :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input height="60" id="eventName" ng-model="eventFields.name" required  type="text"  class="form-group registerInput" >
+                                                    <input height="60" id="eventName" ng-model="eventFields.name" required  name="eventName" type="text"  class="form-group registerInput" >
                                                 </div>
                                             </div>
 
@@ -532,7 +541,7 @@
                                                     <label class="registerLabel floatRight" for="eventType">نوع رویداد :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <select id="eventType" required  ng-model="eventFields.eventType" class="form-control dropDownList"
+                                                    <select id="eventType" required name="eventType" ng-model="eventFields.eventType" class="form-control dropDownList"
                                                             ng-options="o.v as o.n for o in [{n : 'تئاتر', v: 'THEATER'},{n : 'سینما', v: 'CINEMA'},{n : 'کنسرت', v: 'CONCERT'},{n : 'تور', v: 'TOURISM'},{n : 'سرگرمی', v: 'ENTERTAINMENT'},{n : 'کارگاه', v: 'WORKSHOP'}, {n : 'نمایشگاه', v: 'EXHIBITION'},{n : 'سایر', v: 'OTHER'}]">
                                                     </select>
 
@@ -545,8 +554,8 @@
                                                 <div class="col-xs-10 floatRight text-center">
                                                     <label class="registerLabel floatRight" for="eventDescription" >توضیحات رویداد :(حداکثر {{ 200 -  eventFields.description.length | pNumber}} کاراکتر مجاز)</label>
                                                 </div>
-                                                <div class="col-xs-11  floatRight ">
-                                                    <textarea ng-model="eventFields.description" required maxlength="200" id="eventDescription"  type="text"  class="form-group textAreaForm" ></textarea>
+                                                <div class="col-xs-11  floatRight">
+                                                    <textarea ng-model="eventFields.description" required name="eventDescription" maxlength="200" id="eventDescription"  type="text"  class="form-group textAreaForm" ></textarea>
                                                 </div>
                                             </div>
 
@@ -573,7 +582,7 @@
                                                     <label class="registerLabel floatRight" for="eventTicketStartTime">زمان شروع :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input height="60" id="eventTicketStartTime" required  ng-model="eventFields.ticketStartTime" type="text"  class="form-group datePickerFormat persianTimeEventStart" readonly>
+                                                    <input height="60" id="eventTicketStartTime" required name="eventStartTime" ng-model="eventFields.ticketStartTime" type="text"  class="form-group datePickerFormat persianTimeEventStart" readonly>
                                                 </div>
 
                                             </div>
@@ -583,7 +592,7 @@
                                                     <label class="registerLabel floatRight" for="eventTicketEndTime" > زمان پایان :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input height="60" id="eventTicketEndTime" required ng-model="eventFields.ticketEndTime"  type="text"  class="form-group datePickerFormat persianTimeEventEnd" readonly>
+                                                    <input height="60" id="eventTicketEndTime" required name="eventEndTime" ng-model="eventFields.ticketEndTime"  type="text"  class="form-group datePickerFormat persianTimeEventEnd" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -598,7 +607,7 @@
                                                     <label class="registerLabel floatRight" for="eventAddress" >آدرس :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <textarea ng-model="eventFields.address" required  id="eventAddress"  type="text"  class="form-group textAreaForm marginTop30" ></textarea>
+                                                    <textarea ng-model="eventFields.address" required name="eventAddress" id="eventAddress"  type="text"  class="form-group textAreaForm marginTop30" ></textarea>
                                                 </div>
                                             </div>
 
@@ -774,7 +783,7 @@
                                                     <label class="registerLabel" for="eventPlanner">انتخاب برگزارکننده   :</label>
                                                 </div>
                                                 <div class="col-xs-7 col-sm-6 floatRight ">
-                                                    <select id="eventPlanner" required  ng-model="eventFields.eventPlanner" ng-options="obj.hostName for obj in eventHosts track by obj.eventHostId" class="form-control dropDownList">
+                                                    <select id="eventPlanner" required name="eventPlannerSelect" ng-model="eventFields.eventPlanner" ng-options="obj.hostName for obj in eventHosts track by obj.eventHostId" class="form-control dropDownList">
 
                                                     </select>
                                                 </div>
@@ -873,7 +882,18 @@
                                             <strong></strong>
                                         </div>
                                         <div class="controls">
+
+                                            <div ng-show="!createEventNotif">
+                                            <p class="text-center colorRed" ng-show="(submitEventForm.eventName.$dirty && submitEventForm.eventName.$invalid)">*نام رویداد را وارد نمایید.</p>
+                                            <p class="text-center colorRed" ng-show="(submitEventForm.eventType.$invalid)">*نوع رویداد را انتخاب نمایید.</p>
+                                            <p class="text-center colorRed" ng-show="(submitEventForm.eventDescription.$dirty && submitEventForm.eventDescription.$invalid)">*توضیحات مربوط به رویداد را وارد نمایید.</p>
+                                            <p class="text-center colorRed" ng-show="(submitEventForm.eventStartTime.$untouched)">*زمان شروع رویداد را وارد نمایید.</p>
+                                            <p class="text-center colorRed" ng-show="(submitEventForm.eventSEndTime.$untouched)">*زمان پایان رویداد را وارد نمایید.</p>
+                                            <p class="text-center colorRed" ng-show="(submitEventForm.eventAddress.$dirty && submitEventForm.eventAddress.$invalid)">* آدرس رویداد را وارد نمایید.</p>
                                             <p class="text-center colorRed" ng-show="(!submitEventForm.$invalid && mapMarkerClickCheckEvent)">مکان را روی نقشه مشخص کنید</p>
+                                            <p class="text-center colorRed" ng-show="(submitEventForm.eventPlannerSelect.$invalid)">* برگزار کننده رویداد را انتخاب نمایید.</p>
+                                            </div>
+                                            <p class="text-center colorRed" ng-show="(submitEventForm.$invalid || mapMarkerClickCheckEvent) && !((submitEventForm.eventSEndTime.$untouched)||(submitEventForm.eventStartTime.$untouched)||(submitEventForm.eventType.$invalid)||(submitEventForm.eventPlannerSelect.$invalid))">* همه فیلد های اجباری را پر نمایید.</p>
                                             <button id="signInButton" type="submit"  ng-disabled="submitEventForm.$invalid || mapMarkerClickCheckEvent || eventSubmitOnce" ng-click="submitEvent(eventFields)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت رویداد <i ng-show="createEventSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
                                         </div>
 
@@ -893,18 +913,18 @@
                                         <div class="row">
                                         <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                             <div class="col-xs-10 floatRight text-center">
-                                                <label class="registerLabel floatRight" for="PlannerName" >نام برگزار کننده :</label>
+                                                <label class="registerLabel floatRight"  for="PlannerName" >نام برگزار کننده :</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
-                                                <input height="60" id="PlannerName" required ng-model="eventPlanner.name"   type="text"  class="form-group registerInput" >
+                                                <input height="60" id="PlannerName" required name="plannerName" ng-model="eventPlanner.name"   type="text"  class="form-group registerInput" >
                                             </div>
                                         </div>
                                         <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                             <div class="col-xs-10 floatRight text-center">
-                                                <label class="registerLabel floatRight" for="eventPlannerTelephone" > شماره تلفن برگزارکننده  :</label>
+                                                <label class="registerLabel floatRight"  for="eventPlannerTelephone" > شماره تلفن برگزارکننده  :</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
-                                                <input height="60" id="eventPlannerTelephone" required  ng-model="eventPlanner.mobile "   type="text"  class="form-group registerInput" >
+                                                <input height="60" id="eventPlannerTelephone" required  name="plannerPhoneNumber" ng-model="eventPlanner.mobile "   type="text"  class="form-group registerInput" >
                                             </div>
                                         </div>
                                         </div>
@@ -921,10 +941,10 @@
 
                                         <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight marginTop30">
                                             <div class="col-xs-11 floatRight text-center">
-                                                <label class="registerLabel floatRight"  for="eventPlannerType">نوع برگزارکننده :</label>
+                                                <label class="registerLabel floatRight"   for="eventPlannerType">نوع برگزارکننده :</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
-                                                <select id="eventPlannerType" required  ng-model="eventPlanner.type" ng-options="o.v as o.n for o in [{n : 'نهاد', v: 'ORGANIZATION'},{n : 'کافی شاپ', v: 'COFFEESHOP'},{n : 'فرهنگسرا', v: 'CULTURALCENTER'},{n : 'تئاتر', v: 'THEATER'},{n : 'مؤسسه', v: 'INSTITUTION'},{n : 'فرد', v: 'INDIVIDUAL'}, {n : 'سایر', v: 'OTHER'}]" class="form-control dropDownList">
+                                                <select id="eventPlannerType" required  name="plannerType" ng-model="eventPlanner.type" ng-options="o.v as o.n for o in [{n : 'نهاد', v: 'ORGANIZATION'},{n : 'کافی شاپ', v: 'COFFEESHOP'},{n : 'فرهنگسرا', v: 'CULTURALCENTER'},{n : 'تئاتر', v: 'THEATER'},{n : 'مؤسسه', v: 'INSTITUTION'},{n : 'فرد', v: 'INDIVIDUAL'}, {n : 'سایر', v: 'OTHER'}]" class="form-control dropDownList">
 
 
                                                 </select>
@@ -940,7 +960,7 @@
                                                 <label class="registerLabel floatRight" for="eventPlannerWebsite" > توضیحات برگزارکننده :(حداکثر {{200 - eventPlanner.description.length | pNumber}} کاراکتر مجاز)</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
-                                                <textarea ng-model="eventPlanner.description" maxlength="200" required  id="plannerDescription"  type="text"  class="form-group textAreaForm marginTop30" ></textarea>
+                                                <textarea ng-model="eventPlanner.description" maxlength="200" required name="plannerDescription"  id="plannerDescription"  type="text"  class="form-group textAreaForm marginTop30" ></textarea>
                                             </div>
                                         </div>
                                         </div>
@@ -1036,6 +1056,13 @@
                                             <strong></strong>
                                         </div>
                                         <div class="controls">
+                                            <div ng-show="!submitPlannerNotif">
+                                            <p class="text-center colorRed" ng-show="(submitPlannerForm.plannerName.$dirty && submitPlannerForm.plannerName.$invalid) ">*نام برگزار کننده را وارد نمایید.</p>
+                                            <p class="text-center colorRed" ng-show="(submitPlannerForm.plannerPhoneNumber.$dirty && submitPlannerForm.plannerPhoneNumber.$invalid) ">*شماره تلفن برگزار کننده را وارد نمایید.</p>
+                                            <p class="text-center colorRed" ng-show="(submitPlannerForm.plannerType.$invalid) ">*نوع برگزار کننده را انتخاب نمایید.</p>
+                                            <p class="text-center colorRed" ng-show="(submitPlannerForm.plannerDescription.$dirty && submitPlannerForm.plannerDescription.$invalid) ">*توضیحات مربوط به برگزار کننده را وارد نمایید.</p>
+                                            </div>
+                                            <p class="text-center colorRed" ng-show="(submitPlannerForm.$invalid )&& !(submitPlannerForm.plannerType.$invalid)">*همه فیلد های اجباری را پر نمایید.</p>
                                             <button id="eventPlannerSubmit" ng-disabled="submitPlannerForm.$invalid || plannerSubmitOnce" ng-click="submitEventPlanner(eventPlanner)"  class="btn btn-success btn-lg btnLogin">ثبت برگزارکننده <i ng-show="submitPlannerSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
                                         </div>
                                     </div>
