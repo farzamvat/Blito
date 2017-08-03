@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.services.BlitService;
 import com.blito.services.PaymentRequestServiceAsync;
+import com.blito.view.BlitReceiptPdfView;
 
 @RestController
 @RequestMapping("${api.base.url}" + "/public/blits")
@@ -40,5 +42,10 @@ public class PublicBlitController {
 	{
 		return paymentRequestServicec.createCommonBlitUnauthorizedAndNoneFreeBlits(vmodel)
 				.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result, throwable, req, res));
+	}
+	
+	@GetMapping("/{trackCode}/blit.pdf")
+	public ModelAndView getBlitPdfReciept(@PathVariable String trackCode) {
+		return new ModelAndView(new BlitReceiptPdfView(), blitService.getBlitPdf(trackCode));
 	}
 }

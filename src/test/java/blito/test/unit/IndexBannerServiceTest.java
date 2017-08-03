@@ -140,7 +140,7 @@ public class IndexBannerServiceTest {
 			event3.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER.name(), OfferTypeEnum.SPECIAL_OFFER.name()).stream().collect(Collectors.toSet()));
 			event3.setEventName("D");
 			event3.setLatitude(1D);
-			event3.setEventType(EventType.SPORT.name());
+			event3.setEventType(EventType.ENTERTAINMENT.name());
 
 			event4 = new Event();
 			event4.setAddress("ABC");

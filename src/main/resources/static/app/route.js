@@ -31,7 +31,11 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 templateUrl : 'app/views/pages/privacy-policy.html',
                 authenticated: false
             })
-            .when('/sports', {
+            .when('/entertainment', {
+                templateUrl : 'app/views/pages/eventList.html',
+                authenticated: false
+            })
+            .when('/exhibition', {
                 templateUrl : 'app/views/pages/eventList.html',
                 authenticated: false
             })

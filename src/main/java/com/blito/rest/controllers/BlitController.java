@@ -67,12 +67,6 @@ public class BlitController {
 	@PostMapping("/blits.xlsx")
 	public ModelAndView searchBlitsForExcel(@RequestBody SearchViewModel<CommonBlit> search) {
 		return new ModelAndView(new ExcelView(), blitService.searchCommonBlitsForExcel(search));
+		
 	}
-	
-	@Permission(value = ApiBusinessName.USER)
-	@GetMapping("{trackCode}/blit.pdf")
-	public ModelAndView getBlitPdfReciept(@PathVariable String trackCode) {
-		return new ModelAndView(new BlitReceiptPdfView(), blitService.getBlitPdf(trackCode));
-	}
-
 }

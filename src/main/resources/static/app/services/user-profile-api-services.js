@@ -140,6 +140,13 @@ angular.module('userProfileApi', [])
         ticket.getBoughtTicket = function (trackCode) {
             return $http.get(config.baseUrl+'/api/blito/v1.0/public/blits/'+trackCode)
         };
+        ticket.getPdfTicket = function (trackCode) {
+            return $http({
+                method: 'GET',
+                url: config.baseUrl+"/api/blito/v1.0/public/blits/"+trackCode+"/blit.pdf",
+                responseType: "arraybuffer"
+            });
+        };
         ticket.getExcelTickets = function (sansId) {
             var bodyJson = {
                 restrictions : [
