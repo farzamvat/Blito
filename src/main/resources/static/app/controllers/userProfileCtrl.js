@@ -1329,8 +1329,8 @@ angular.module('User')
         var settingExchangeIndex;
         $scope.showSettingExchange = function (index) {
             document.getElementsByClassName("exchangeStatusSpinner")[0].style.display = "none";
-            document.getElementsByClassName("approveSuccessSettingExchange")[0].style.display = "none";
-            document.getElementsByClassName("approveErrorSettingExchange")[0].style.display = "none";
+            document.getElementById("approveSuccessSettingExchange").style.display = "none";
+            document.getElementById("approveErrorSettingExchange").style.display = "none";
 
             settingExchangeIndex = index;
             $scope.exchangeStateSetting = $scope.exchangeEditTickets[index].state;
@@ -1339,16 +1339,16 @@ angular.module('User')
             document.getElementsByClassName("deleteSpinner")[0].style.display = "none";
         };
         $scope.deleteExchange= function () {
-            document.getElementsByClassName("deleteSpinner")[0].style.display = "inline";
+            document.getElementsByClassName("deleteExchangeSpinner")[0].style.display = "inline";
             exchangeService.deleteExchange($scope.exchangeEditTickets[settingExchangeIndex].exchangeBlitId)
                 .then(function () {
-                    document.getElementsByClassName("approveSuccessSettingExchange")[0].style.display = "inline";
-                    document.getElementsByClassName("deleteSpinner")[0].style.display = "none";
+                    document.getElementById("approveSuccessSettingExchange")[0].style.display = "inline";
+                    document.getElementsByClassName("deleteExchangeSpinner")[0].style.display = "none";
                 })
                 .catch(function () {
                     document.getElementById("approveErrorSettingExchange").innerHTML = data.data.message;
-                    document.getElementsByClassName("approveErrorSettingExchange")[0].style.display = "inline";
-                    document.getElementsByClassName("deleteSpinner")[0].style.display = "none";
+                    document.getElementById("approveErrorSettingExchange").style.display = "inline";
+                    document.getElementsByClassName("deleteExchangeSpinner")[0].style.display = "none";
                 })
         };
         $scope.changeExchangeState = function (stateChange) {
@@ -1359,12 +1359,12 @@ angular.module('User')
             document.getElementsByClassName("exchangeStatusSpinner")[0].style.display = "inline";
             exchangeService.editExchangeState(stateData)
                 .then(function () {
-                    document.getElementsByClassName("approveSuccessSettingExchange")[0].style.display = "inline";
+                    document.getElementById("approveSuccessSettingExchange").style.display = "inline";
                     document.getElementsByClassName("exchangeStatusSpinner")[0].style.display = "none";
                 })
                 .catch(function (data) {
                     document.getElementById("approveErrorSettingExchange").innerHTML = data.data.message;
-                    document.getElementsByClassName("approveErrorSettingExchange")[0].style.display = "inline";
+                    document.getElementById("approveErrorSettingExchange").style.display = "inline";
                     document.getElementsByClassName("exchangeStatusSpinner")[0].style.display = "none";
                 })
         };
