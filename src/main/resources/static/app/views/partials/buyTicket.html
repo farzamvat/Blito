@@ -97,7 +97,7 @@
                                                 </div>
                                                 <div ng-hide="itemWithCapacity[0].capacity === 0 || itemWithCapacity[0].blitTypeState === 'CLOSED'">
                                                     <div ng-if="ticketInfo.blitSelect.$valid && itemWithCapacity[0].isFree">
-                                                        <div ng-show="itemWithCapacity[0].capacity >= 5" class="form-group col-xs-12  formRegGroup floatRight marginTop30">
+                                                        <div ng-show="itemWithCapacity[0].capacity - itemWithCapacity[0].soldCount > 5" class="form-group col-xs-12  formRegGroup floatRight marginTop30">
                                                             <div class="col-xs-5 col-sm-4 floatRight text-center">
                                                                 <label class="registerLabel" for="ticketNumber" > تعداد بلیت  :</label>
                                                             </div>
@@ -108,7 +108,7 @@
                                                             </div>
 
                                                         </div>
-                                                        <div ng-show="itemWithCapacity[0].capacity<5" class="form-group col-xs-12  formRegGroup floatRight marginTop30">
+                                                        <div ng-show="(itemWithCapacity[0].capacity - itemWithCapacity[0].soldCount) <6 && (itemWithCapacity[0].capacity - itemWithCapacity[0].soldCount) > 1" class="form-group col-xs-12  formRegGroup floatRight marginTop30">
                                                             <div class="col-xs-5 col-sm-4 floatRight text-center">
                                                                 <label class="registerLabel" for="ticketNumber" > تعداد بلیت  :</label>
                                                             </div>
@@ -118,8 +118,13 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div ng-show="ticketInfo.blitSelect.$valid && !itemWithCapacity[0].isFree" class="form-group col-xs-12  formRegGroup floatRight marginTop30">
+                                                        <div ng-show="(itemWithCapacity[0].capacity - itemWithCapacity[0].soldCount) < 1" class="form-group col-xs-12  formRegGroup floatRight marginTop30">
+                                                            <div   class="text-center  alert alert-danger col-xs-12">
+                                                                <strong>این بلیت تمام شده است!</strong>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                    <div ng-show="ticketInfo.blitSelect.$valid && !itemWithCapacity[0].isFree && (itemWithCapacity[0].capacity - itemWithCapacity[0].soldCount) > 1" class="form-group col-xs-12  formRegGroup floatRight marginTop30">
                                                         <div class="col-xs-5 col-sm-4 floatRight text-center">
                                                             <label class="registerLabel" for="ticketNumber" > تعداد بلیت  :</label>
                                                         </div>
@@ -127,6 +132,11 @@
                                                             <select ng-model="eventInfo.ticketNumber"  id="ticketNumber3" class="form-control dropDownList" required>
                                                                 <option ng-repeat="number in getTicketNumbers(itemWithCapacity[0].capacity - itemWithCapacity[0].soldCount)">{{$index+1}}</option>
                                                             </select>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-show="ticketInfo.blitSelect.$valid && !itemWithCapacity[0].isFree && (itemWithCapacity[0].capacity - itemWithCapacity[0].soldCount) < 1" class="form-group col-xs-12  formRegGroup floatRight marginTop30">
+                                                        <div   class="text-center  alert alert-danger col-xs-12">
+                                                            <strong>این بلیت تمام شده است!</strong>
                                                         </div>
                                                     </div>
                                                     <div ng-if="!logoutMenu" class="form-group col-xs-12 marginTop30  formRegGroup floatRight">
