@@ -23,7 +23,7 @@ public class SmsService {
 
 	public void sendBlitRecieptSms(String receptor, String token) {
 
-		String blitPdfUrl = String.valueOf(new StringBuilder(serverAddress).append("/payment").append(token));
+		String blitPdfUrl = String.valueOf(new StringBuilder(serverAddress).append("/payment/").append(token));
 		
 		urlShortenerService.generateShortenUrl(blitPdfUrl)
 			.thenApply(urlShortenerResponse -> {
