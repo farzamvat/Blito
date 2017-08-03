@@ -27,7 +27,7 @@ import com.blito.search.SearchViewModel;
 import com.blito.services.BlitService;
 import com.blito.services.ExcelService;
 import com.blito.services.PaymentRequestServiceAsync;
-import com.blito.view.BlitRecieptPdfView;
+import com.blito.view.BlitReceiptPdfView;
 import com.blito.view.ExcelView;
 
 import io.swagger.annotations.ApiOperation;
@@ -72,7 +72,7 @@ public class BlitController {
 	@Permission(value = ApiBusinessName.USER)
 	@GetMapping("{trackCode}/blit.pdf")
 	public ModelAndView getBlitPdfReciept(@PathVariable String trackCode) {
-		return new ModelAndView(new BlitRecieptPdfView(), blitService.getBlitPdf(trackCode));
+		return new ModelAndView(new BlitReceiptPdfView(), blitService.getBlitPdf(trackCode));
 	}
 
 }

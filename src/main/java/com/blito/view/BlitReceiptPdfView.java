@@ -24,7 +24,7 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
-public class BlitRecieptPdfView extends AbstractPdfView {
+public class BlitReceiptPdfView extends AbstractPdfView {
 
 	private String fontPath = "src/main/resources/static/assets/fonts/website-fonts/IranSans.ttf";
 	private String boldFontPath = "src/main/resources/static/assets/fonts/website-fonts/IranSans Bold.ttf";
