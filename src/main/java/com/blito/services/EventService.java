@@ -97,7 +97,7 @@ public class EventService {
 		
 		if(vmodel.getBlitSaleStartDate().before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()))
 				|| vmodel.getBlitSaleEndDate().before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant())))
-			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_DATES));
+			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INVALID_START_END_DATE));
 		
 		if (vmodel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream()).anyMatch(bt -> {
 			return bt.isFree() ? bt.getPrice() != 0 : bt.getPrice() <= 0;
@@ -163,7 +163,7 @@ public class EventService {
 		
 		if(vmodel.getBlitSaleStartDate().before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()))
 				|| vmodel.getBlitSaleEndDate().before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant())))
-			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_DATES));
+			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INVALID_START_END_DATE));
 
 		if (vmodel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream()).anyMatch(bt -> {
 			return bt.isFree() ? bt.getPrice() != 0 : bt.getPrice() <= 0;

@@ -43,6 +43,7 @@ public enum Response {
 	INDEX_BANNER_NOT_FOUND("error.index.banner.not.found"),
 	DISCOUNT_CODE_ALREADY_EXISTS("error.discount.code.exists"),
 	INCONSISTENT_DATES("error.inconsistent.dates"),
+	INVALID_START_END_DATE("error.invalid.start.end.date"),
 	INCONSISTENT_PERCENT("error.inconsistent.percentage"),
 	INCONSISTENT_AMOUNT_WHEN_PERCENT_IS_TRUE("error.inconsistent.data.is.percentage"),
 	INCONSISTENT_AMOUNT("error.inconsistent.data.amount"),
