@@ -605,7 +605,8 @@ CREATE TABLE `user` (
   `refresh_token` varchar(255) DEFAULT NULL,
   `reset_key` varchar(255) DEFAULT NULL,
   `wrong_try` int(11) DEFAULT NULL,
-  PRIMARY KEY (`user_id`)
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `UK_ob8kqyqqgmefl0aco34akdtpe` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -635,4 +636,4 @@ CREATE TABLE `user_role` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-31  0:00:21
+-- Dump completed on 2017-08-03 13:27:58
