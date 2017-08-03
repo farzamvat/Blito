@@ -16,6 +16,8 @@ public class SmsService {
 	private String apiKey;
 	@Value("${serverAddress}")
 	private String serverAddress;
+	@Value("${api.base.url}")
+	private String baseUrl;
 
 	RestTemplate rest = new RestTemplate();
 
@@ -23,7 +25,7 @@ public class SmsService {
 
 	public void sendBlitRecieptSms(String receptor, String token) {
 
-		String blitPdfUrl = String.valueOf(new StringBuilder(serverAddress).append("/payment/").append(token));
+		String blitPdfUrl = String.valueOf(new StringBuilder(serverAddress).append(baseUrl).append("/public/blits/").append(token).append("/blit.pdf"));
 		
 		urlShortenerService.generateShortenUrl(blitPdfUrl)
 			.thenApply(urlShortenerResponse -> {
