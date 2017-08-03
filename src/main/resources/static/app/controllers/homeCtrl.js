@@ -37,15 +37,15 @@ angular.module('homePageModule', [])
             })
             .catch(function (data) {
             });
-        miniSliderService.getSlidingDataEvents("TOURISM", 6, false)
+        miniSliderService.getSlidingDataEvents("WORKSHOP", 6, false)
             .then(function (data) {
-                $scope.tourRow = $scope.catchImagesEvents(data.data.content, 2);
-                $scope.tourRow = $scope.tourRow.map(eventDetailService.calculateFreeBlits);
-                $scope.calculateCapacitySoldOut($scope.tourRow);
+                $scope.secondSection = $scope.catchImagesEvents(data.data.content, 2);
+                $scope.secondSection = $scope.secondSection.map(eventDetailService.calculateFreeBlits);
+                $scope.calculateCapacitySoldOut($scope.secondSection);
             })
             .catch(function (data) {
             });
-        ourOffersService.getOurOffer("TOURISM", false)
+        ourOffersService.getOurOffer("WORKSHOP", false)
             .then(function (data) {
                 $scope.ourOfferTour = $scope.catchImagesEvents(data.data.content, 3);
                 $scope.calculateCapacitySoldOut($scope.ourOfferTour);

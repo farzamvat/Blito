@@ -464,6 +464,9 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     background: rgb(252, 183, 49);
     box-shadow: 2px 2px 5px #222;
 }
+.eventListBeautifer h1 {
+    font-size: 27px;
+}
 .eventListHeaderBorderBottom{
     width:100%;
     border-bottom: 3px solid rgb(252, 183, 49);
@@ -634,6 +637,7 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     padding-left: 0;
     position: fixed;
     z-index: 100;
+    border-bottom: none;
 }
 .profileTabs>li>a {
     border-radius: 0;
@@ -717,7 +721,7 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 }
 
 .nav-tabs>li>a {
-    background-color: #555;
+    background-color: #222;
     cursor: pointer !important;
     color: white;
 }
@@ -915,6 +919,13 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     padding-bottom: 20px;
 
 }
+.eventPageHeaderGallery {
+    background: url('../img/gallery.png') fixed ;
+    background-size: 100% 380px;
+    padding-top: 68px;
+    padding-bottom: 20px;
+
+}
 .exchangePageCover {
     background: url('../img/exchange.jpg') fixed ;
     background-size: 100% 380px;
@@ -1083,7 +1094,6 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
     cursor: pointer;
 }
 .verticalLine {
-    border-right: 2px solid rgb(252, 183, 49);
     height: 200px;
     margin-bottom: 40px;
 }
@@ -1903,20 +1913,37 @@ a{
 .aparatLink {
     width: 30px;
 }
+.how-it-works{
+    padding:15px;
+}
+.padding0{
+    padding:0px;
+}
+.buyticketModalHeader{
+    background: #222;
+    color: rgb(252,183,49);
+}
+.printTicketButtom{
+    margin:20px;
+}
+
 .btnPaymentActive {
     padding: 10px 20px;
     border: 2px solid #303030;
     border-radius: 3px;
     background-color: white;
     transition: 500ms;
+    filter: grayscale(100%);
 }
-.btnPaymentActive:active {
+.btnPaymentActive:active not:hover{
     border:2px solid #39A939;
+    filter: grayscale(0%);
 }
 
 .btnPaymentActive:focus{
     border:2px solid #39A939;
     background-color: white;
+    filter: grayscale(0%);
 }
 .navbar-header-backcolor{
     background: rgb(252, 183, 49);
@@ -2594,16 +2621,20 @@ table td{
     color: #fff;
 }
 
+.ticketTitleMobile {
+    margin-top:35px !important;
+    color:#222;
+}
 .card {
     background: linear-gradient(to bottom, rgb(252, 183, 49) 0%, rgb(252, 183, 49) 16%, #333 16%, #333 100%);
-    height: 600px;
+    height: 620px;
     float: left;
     position: relative;
     padding: 5px 10px;
 }
 .cardAddress {
     background: linear-gradient(to bottom, rgb(252, 183, 49) 0%, rgb(252, 183, 49) 16%, #333 16%, #333 100%);
-    height: 600px;
+    height: 620px;
     float: left;
     position: relative;
     padding: 5px 10px;
@@ -2651,11 +2682,11 @@ table td{
 .ticketAddress h4{
     font-size: 14px;
     margin: 10px;
-    text-align: c;
+    text-align: center;
     color: #fff;
 }
 .ticketAddress {
-    margin-top: 100px;
+    margin-top: 115px;
 }
 .ticketTitle {
     margin-top: 20px;
@@ -2665,6 +2696,7 @@ table td{
 }
 .ticketTitle {
     font-size: 18px;
+    font-weight: bold;
 }
 .ticketName {
     margin-top: 30px;
@@ -2841,9 +2873,15 @@ table td{
     .cardRight {
         border-left: 1px solid #fff;
         border-bottom-right-radius: 0;
+        border-top-left-radius: 8px;
+        padding-bottom: 10px;
     }
     .cardAddress {
         background: #333;
+        margin-bottom:25px;
+        border-radius:0;
+        border-bottom-right-radius: 8px;
+        border-bottom-left-radius: 8px;
     }
     .slidingEventsImg img:hover{
         transform: scale(1);
