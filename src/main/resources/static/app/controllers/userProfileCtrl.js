@@ -1328,6 +1328,7 @@ angular.module('User')
 
         var settingExchangeIndex;
         $scope.showSettingExchange = function (index) {
+            $("#settingExchangeModal").modal("show");
             document.getElementsByClassName("exchangeStatusSpinner")[0].style.display = "none";
             document.getElementById("approveSuccessSettingExchange").style.display = "none";
             document.getElementById("approveErrorSettingExchange").style.display = "none";
@@ -1335,7 +1336,6 @@ angular.module('User')
             settingExchangeIndex = index;
             $scope.exchangeStateSetting = $scope.exchangeEditTickets[index].state;
 
-            $("#settingExchangeModal").modal("show");
             document.getElementsByClassName("deleteSpinner")[0].style.display = "none";
         };
         $scope.deleteExchange= function () {
