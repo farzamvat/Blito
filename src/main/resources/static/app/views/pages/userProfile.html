@@ -389,13 +389,12 @@
                                             <div ng-show="!submitExchangeNotif">
                                             <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangeName.$dirty && exchangeBlitForm.exchangeName.$invalid)">*نام بلیت را وارد نمایید.</p>
                                             <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangeType.$invalid)">*نوع بلیت را انخاب نمایید.</p>
-                                            <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangeDateTime.$untouched )">*تاریخ و ساعت رویداد را انخاب نمایید.</p>
                                             <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangePrice.$dirty && exchangeBlitForm.exchangePrice.$invalid)">*قیمت بلیت را وارد نمایید.</p>
                                             <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangeDescription.$dirty && exchangeBlitForm.exchangeDescription.$invalid)">*توضیحات مربوط به بلیت را وارد نمایید.</p>
                                             <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangeAddress.$dirty && exchangeBlitForm.exchangeAddress.$invalid)">*آدرس را وارد نمایید.</p>
                                             <p class="text-center colorRed" ng-show="(!exchangeBlitForm.$invalid && mapMarkerClickCheckExchange)">*مکان را روی نقشه مشخص نمایید.</p>
                                             </div>
-                                            <p class="text-center colorRed" ng-show="(((exchangeBlitForm.$invalid || mapMarkerClickCheckExchange)) && !(exchangeBlitForm.exchangeDateTime.$untouched || exchangeBlitForm.exchangeType.$invalid ))">*همه فیلد های اجباری را پر نمایید.</p>
+                                            <p class="text-center colorRed" ng-show="(((exchangeBlitForm.$invalid || mapMarkerClickCheckExchange)) && !(exchangeBlitForm.exchangeType.$invalid))">*همه فیلد های اجباری را پر نمایید.</p>
                                             <button id="exchangeEventSubmit" ng-disabled="(exchangeBlitForm.$invalid || mapMarkerClickCheckExchange || exchangeSubmitOnce)" ng-click="submitExchangeTicket(exchange)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت آگهی <i ng-show="submitExchangeSpinner" class="fa fa-spinner fa-spin"></i></button>
                                         </div>
 
@@ -887,13 +886,11 @@
                                             <p class="text-center colorRed" ng-show="(submitEventForm.eventName.$dirty && submitEventForm.eventName.$invalid)">*نام رویداد را وارد نمایید.</p>
                                             <p class="text-center colorRed" ng-show="(submitEventForm.eventType.$invalid)">*نوع رویداد را انتخاب نمایید.</p>
                                             <p class="text-center colorRed" ng-show="(submitEventForm.eventDescription.$dirty && submitEventForm.eventDescription.$invalid)">*توضیحات مربوط به رویداد را وارد نمایید.</p>
-                                            <p class="text-center colorRed" ng-show="(submitEventForm.eventStartTime.$untouched)">*زمان شروع رویداد را وارد نمایید.</p>
-                                            <p class="text-center colorRed" ng-show="(submitEventForm.eventSEndTime.$untouched)">*زمان پایان رویداد را وارد نمایید.</p>
                                             <p class="text-center colorRed" ng-show="(submitEventForm.eventAddress.$dirty && submitEventForm.eventAddress.$invalid)">* آدرس رویداد را وارد نمایید.</p>
                                             <p class="text-center colorRed" ng-show="(!submitEventForm.$invalid && mapMarkerClickCheckEvent)">مکان را روی نقشه مشخص کنید</p>
                                             <p class="text-center colorRed" ng-show="(submitEventForm.eventPlannerSelect.$invalid)">* برگزار کننده رویداد را انتخاب نمایید.</p>
                                             </div>
-                                            <p class="text-center colorRed" ng-show="(submitEventForm.$invalid || mapMarkerClickCheckEvent) && !((submitEventForm.eventSEndTime.$untouched)||(submitEventForm.eventStartTime.$untouched)||(submitEventForm.eventType.$invalid)||(submitEventForm.eventPlannerSelect.$invalid))">* همه فیلد های اجباری را پر نمایید.</p>
+                                            <p class="text-center colorRed" ng-show="(submitEventForm.$invalid || mapMarkerClickCheckEvent) && !((submitEventForm.eventType.$invalid)||(submitEventForm.eventPlannerSelect.$invalid))">* همه فیلد های اجباری را پر نمایید.</p>
                                             <button id="signInButton" type="submit"  ng-disabled="submitEventForm.$invalid || mapMarkerClickCheckEvent || eventSubmitOnce" ng-click="submitEvent(eventFields)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت رویداد <i ng-show="createEventSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
                                         </div>
 
@@ -1019,7 +1016,7 @@
                                                 <label class="registerLabel floatRight" for="plannerTelegram" > تلگرام :</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
-                                                <input height="60" id="plannerTelegram"  ng-model="eventPlanner.telegram"  url-validation type="text"  class="form-group registerInput" >
+                                                <input height="60" id="plannerTelegram"  ng-model="eventPlanner.telegram"   type="text"  class="form-group registerInput" >
                                             </div>
                                         </div>
                                         <div class="form-group col-sm-6 formRegGroup floatRight">
@@ -1027,7 +1024,7 @@
                                                 <label class="registerLabel floatRight"  for="plannerInstagram" > اینستاگرام :</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
-                                                <input height="60" id="plannerInstagram" ng-model="eventPlanner.instagram" url-validation   type="text"  class="form-group registerInput" >
+                                                <input height="60" id="plannerInstagram" ng-model="eventPlanner.instagram"    type="text"  class="form-group registerInput" >
                                             </div>
                                         </div>
                                         <div class="form-group col-sm-6 formRegGroup floatRight">
@@ -1035,7 +1032,7 @@
                                                 <label class="registerLabel floatRight" for="plannerTwitter" > تویتر :</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
-                                                <input height="60" id="plannerTwitter" ng-model="eventPlanner.twitter" url-validation  type="text"  class="form-group registerInput" >
+                                                <input height="60" id="plannerTwitter" ng-model="eventPlanner.twitter"   type="text"  class="form-group registerInput" >
                                             </div>
                                         </div>
                                         <div class="form-group col-sm-6 formRegGroup floatRight">
@@ -1043,7 +1040,7 @@
                                                 <label class="registerLabel floatRight" for="plannerLinkedIn" >لینکداین :</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
-                                                <input height="60" id="plannerLinkedIn" ng-model="eventPlanner.linkedin"  url-validation  type="text"  class="form-group registerInput" >
+                                                <input height="60" id="plannerLinkedIn" ng-model="eventPlanner.linkedin"    type="text"  class="form-group registerInput" >
                                             </div>
                                         </div>
 
