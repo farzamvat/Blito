@@ -3,6 +3,7 @@ package com.blito.mappers;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,9 +15,10 @@ import com.blito.models.ExchangeBlit;
 import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
 
 @Component
-public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit,ExchangeBlitViewModel> {
-	@Autowired ImageMapper imageMapper;
-	
+public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit, ExchangeBlitViewModel> {
+	@Autowired
+	ImageMapper imageMapper;
+
 	@Override
 	public ExchangeBlit createFromViewModel(ExchangeBlitViewModel vmodel) {
 		ExchangeBlit exchangeBlit = new ExchangeBlit();
@@ -52,7 +54,8 @@ public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit,ExchangeBl
 		vmodel.setState(Enum.valueOf(State.class, exchangeBlit.getState()));
 		vmodel.setOperatorState(Enum.valueOf(OperatorState.class, exchangeBlit.getOperatorState()));
 		vmodel.setType(Enum.valueOf(ExchangeBlitType.class, exchangeBlit.getExchangeBlitType()));
-		vmodel.setImage(imageMapper.createFromEntity(exchangeBlit.getImage()));
+		Optional.ofNullable(exchangeBlit.getImage())
+		.ifPresent(image -> vmodel.setImage(imageMapper.createFromEntity(image)));
 		vmodel.setLatitude(exchangeBlit.getLatitude());
 		vmodel.setLongitude(exchangeBlit.getLongitude());
 		vmodel.setCreatedAt(exchangeBlit.getCreatedAt());
