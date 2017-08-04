@@ -90,8 +90,8 @@ public class EventFlatMapper implements GenericMapper<Event,EventFlatViewModel> 
 													.map(bt->flatMapper.eventDateToEventDateViewModelFlat(bt.getEventDate(), bt))
 													.collect(Collectors.toSet()));		
 		vmodel.setEventHostId(event.getEventHost().getEventHostId());
-		vmodel.setImages(
-				event.getImages().stream().map(i -> imageMapper.createFromEntity(i)).collect(Collectors.toSet()));
+		if(!event.getImages().isEmpty())
+			vmodel.setImages(imageMapper.createFromEntities(event.getImages()));
 		vmodel.setAdditionalFields(event.getAdditionalFields());
 		return vmodel;
 	}

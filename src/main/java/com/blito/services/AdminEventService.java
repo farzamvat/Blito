@@ -1,5 +1,6 @@
 package com.blito.services;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -138,6 +139,7 @@ public class AdminEventService {
 			throw new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND));
 		} else {
 			eventResult.get().getImages().forEach(i->imageService.delete(i.getImageUUID()));
+			eventResult.get().setImages(new HashSet<>());
 			eventResult.get().setDeleted(true);
 		}
 	}
