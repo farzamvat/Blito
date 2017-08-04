@@ -73,7 +73,8 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
 		vmodel.setLatitude(event.getLatitude());
 		vmodel.setLongitude(event.getLongitude());
 		vmodel.setEvento(event.isEvento());
-		vmodel.setImages(imageMapper.createFromEntities(event.getImages()));
+		if(!event.getImages().isEmpty())
+			vmodel.setImages(imageMapper.createFromEntities(event.getImages()));
 		vmodel.setCreatedAt(event.getCreatedAt());
 		vmodel.setMembers(event.getMembers());
 		vmodel.setEventSoldDate(event.getEventSoldDate());

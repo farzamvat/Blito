@@ -3,6 +3,7 @@ package com.blito.services;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -212,6 +213,7 @@ public class EventService {
 				throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 			} else {
 				event.getImages().forEach(i -> imageService.delete(i.getImageUUID()));
+				event.setImages(new HashSet<>());
 				event.setDeleted(true);
 			}
 			return event;
