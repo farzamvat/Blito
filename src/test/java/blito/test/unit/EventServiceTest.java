@@ -99,14 +99,6 @@ public class EventServiceTest {
 	@Before
 	public void init() {
 			
-			
-			
-			user.setEmail("farzam.vat@gmail.com");
-			user.setActive(true);
-			user.setFirstname("farzam");
-			user.setLastname("vatanzadeh");
-			user.setMobile("09124337522");
-
 		user.setEmail("farzam.vat@gmail.com");
 		user.setActive(true);
 		user.setFirstname("farzam");
@@ -553,33 +545,17 @@ public class EventServiceTest {
 		assertEquals(5, events.getNumberOfElements());
 		
 		eventViewModel = eventService.create(eventViewModel);
-		SecurityContextHolder.setCurrentUser(user2);
-		eventViewModel.setEventHostId(eventHost2.getEventHostId());
-		eventViewModel.setEventHostName(eventHost2.getHostName());
-		eventViewModel = eventService.create(eventViewModel);
-		SecurityContextHolder.setCurrentUser(user);
+		events = eventService.getUserEvents(pageable);
+		assertEquals(6, events.getNumberOfElements());
+//		SecurityContextHolder.setCurrentUser(user2);
+//		eventViewModel.setEventHostId(eventHost2.getEventHostId());
+//		eventViewModel.setEventHostName(eventHost2.getHostName());
+//		eventViewModel = eventService.create(eventViewModel);
+//		SecurityContextHolder.setCurrentUser(user);
 		events = eventService.getUserEvents(pageable);
 		assertEquals(6, events.getNumberOfElements());
 		eventService.delete(event1.getEventId());
 		events = eventService.getUserEvents(pageable);
 		assertEquals(5, events.getNumberOfElements());
 	}
-
-	// @Test
-	// public void rangeSearch() {
-	// SearchViewModel<Event> searchViewModel = new SearchViewModel<>();
-	// Range<Event> range = new Range<>();
-	// range.setField("blitSaleStartDate");
-	// range.setMinValue(Timestamp.from(ZonedDateTime.now().minusHours(24).toInstant()).getTime());
-	// range.setMaxValue(Timestamp.from(ZonedDateTime.now().plusHours(15).toInstant()).getTime());
-	// searchViewModel.setRestrictions(new ArrayList<>());
-	// searchViewModel.getRestrictions().add(range);
-	// Pageable pageable = new PageRequest(0, 5);
-	//
-	// Page<Event> eventsPage = eventService.searchEvents(searchViewModel,
-	// pageable);
-	// assertEquals(eventsPage.getNumberOfElements(), 2);
-	//
-	// }
-
 }

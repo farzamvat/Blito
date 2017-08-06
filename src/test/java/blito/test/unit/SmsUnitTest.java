@@ -35,7 +35,7 @@ public class SmsUnitTest {
 //		System.out.println("******************************");
 //		
 		
-		smsService.sendBlitRecieptSms("09124337522", "32816213");
+		smsService.sendBlitRecieptSms("09127976837", "32816213");
 		Thread.sleep(5000);
 	}
 }
