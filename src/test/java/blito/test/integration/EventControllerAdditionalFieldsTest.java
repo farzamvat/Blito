@@ -24,6 +24,7 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.Application;
 import com.blito.configs.Constants;
@@ -36,7 +37,6 @@ import com.blito.models.Role;
 import com.blito.models.User;
 import com.blito.repositories.EventHostRepository;
 import com.blito.repositories.ImageRepository;
-import com.blito.repositories.PermissionRepository;
 import com.blito.repositories.RoleRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.rest.viewmodels.account.TokenModel;
@@ -59,10 +59,6 @@ public class EventControllerAdditionalFieldsTest {
 	@Autowired
 	private EventHostRepository eventHostRepository;
 	@Autowired
-	private RoleRepository roleRepository;
-	@Autowired
-	private PermissionRepository permissionRepository;
-	@Autowired
 	private ImageRepository imageRepository;
 	@Autowired
 	private JwtService jwtService;
@@ -73,7 +69,7 @@ public class EventControllerAdditionalFieldsTest {
 	public void init()
 	{
 		user = new User();
-		user.setEmail("farzam.vat@gmail.com");
+		user.setEmail("farzam.vat@gmail.com");	
 		user = userRepository.save(user);
 		
 		eventHost = new EventHost();
