@@ -249,6 +249,7 @@ angular.module('UiServices', [])
                     break;
                 case "EXHIBITION" :
                     persianType = 'نمایشگاه';
+                    break;
                 case "WORKSHOP" :
                     persianType = 'کارگاه';
                     break;

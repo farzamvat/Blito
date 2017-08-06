@@ -58,10 +58,8 @@
                     <div class="image center-block" >
                         <img ng-src="{{item.image}}" class="center-block eventListImage"  >
                         <div class="name">
-                            <!--<h3>{{ item.eventName }}</h3>-->
                             <h5> برگزارکننده   : {{ item.eventHostName }} <i class="fa fa-calendar-check-o"></i> </h5>
-                            <h5>{{ item.views | number | pNumber}}: بازدید  <i class="fa fa-eye"></i>‌</h5>
-                            <h5>{{ item.capacity - item.soldCount | number | pNumber}}: بلیت باقی مانده  <i class="fa fa-ticket"></i>‌</h5>
+                            <h5 ng-show="item.eventType !== 'EXHIBITION'">{{ item.capacity - item.soldCount | number | pNumber}}: بلیت باقی مانده  <i class="fa fa-ticket"></i>‌</h5>
                         </div>
                         <h4 class="text-center slidingEventsTitle"><span ng-if="item.eventName.length > 20">...</span>{{item.eventName | limitTo : 20}}</h4>
                         <div class="eventDescription center-block">
