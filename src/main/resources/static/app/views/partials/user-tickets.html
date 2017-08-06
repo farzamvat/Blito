@@ -24,6 +24,7 @@
                                 <th class="text-center">تعداد بلیت</th>
                                 <th class="text-center" >تاریخ بلیت</th>
                                 <th class="text-center">شماره خریدار</th>
+                                <th class="text-center">وضعیت خرید</th>
                                 <th class="text-center">مبلغ (تومان)</th>
 
 
@@ -35,6 +36,7 @@
                                 <td class="text-center">{{item.count | pNumber}}</td>
                                 <td class="text-center">{{item.eventDateAndTime}}</td>
                                 <td class="text-center">{{item.customerMobileNumber | pNumber}}</td>
+                                <td class="text-center">{{item.paymentStatus}}</td>
                                 <td class="text-center" ng-show="item.totalAmount !== 0" >{{item.totalAmount | number | pNumber}}</td>
                                 <td class="text-center" ng-show="item.totalAmount === 0" >رایگان</td>
                             </tr>
