@@ -1447,6 +1447,10 @@ angular.module('User')
                     .then(function (data) {
                         $scope.totalTicketNumber = data.data.totalElements;
                         $scope.eventsTickets = data.data.content;
+                        $scope.eventsTickets = $scope.eventsTickets.map(function (ticket) {
+                            ticket.paymentStatus = dataService.ticketStatusPersian(ticket.paymentStatus);
+                            return ticket;
+                        })
                     })
                     .catch(function (data) {
                     })

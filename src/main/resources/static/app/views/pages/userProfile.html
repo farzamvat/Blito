@@ -551,7 +551,7 @@
                                         <div class="row marginTop30">
                                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="eventDescription" >توضیحات رویداد :(حداکثر {{ 200 -  eventFields.description.length | pNumber}} کاراکتر مجاز)</label>
+                                                    <label class="registerLabel floatRight" for="eventDescription" >توضیحات کلی  :(حداکثر {{ 200 -  eventFields.description.length | pNumber}} کاراکتر مجاز)</label>
                                                 </div>
                                                 <div class="col-xs-11  floatRight">
                                                     <textarea ng-model="eventFields.description" required name="eventDescription" maxlength="200" id="eventDescription"  type="text"  class="form-group textAreaForm" ></textarea>
@@ -562,10 +562,10 @@
                                         <div class="row marginTop30">
                                             <div class="form-group col-xs-11  formRegGroup  floatRight ">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="eventDescription" >عوامل رویداد :</label>
+                                                    <label class="registerLabel floatRight" for="eventDescription" >توضیحات تکمیلی :</label>
                                                 </div>
                                                 <div class="col-xs-11  floatRight ">
-                                                <div text-angular="text-angular" name="htmlcontent" ng-model="eventFields.members" ta-toolbar="[['h1','h2','h3','p'],['bold','italics','ul', 'ol'],['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent']]" ta-disabled='disabled'></div>
+                                                <div text-angular="text-angular" name="htmlcontent" required ng-model="eventFields.members" ta-toolbar="[['h1','h2','h3','p'],['bold','italics','ul', 'ol'],['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent']]" ta-disabled='disabled'></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -578,7 +578,7 @@
                                         <div class="row">
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="eventTicketStartTime">زمان شروع :</label>
+                                                    <label class="registerLabel floatRight" for="eventTicketStartTime">زمان شروع فروش بلیت :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
                                                     <input height="60" id="eventTicketStartTime" required name="eventStartTime" ng-model="eventFields.ticketStartTime" type="text"  class="form-group datePickerFormat persianTimeEventStart" readonly>
@@ -588,7 +588,7 @@
 
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="eventTicketEndTime" > زمان پایان :</label>
+                                                    <label class="registerLabel floatRight" for="eventTicketEndTime" > زمان پایان فروش بلیت :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
                                                     <input height="60" id="eventTicketEndTime" required name="eventEndTime" ng-model="eventFields.ticketEndTime"  type="text"  class="form-group datePickerFormat persianTimeEventEnd" readonly>
