@@ -182,7 +182,6 @@ public class EventService {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
 
-		// handle exception message
 		if (event.getEventState().equals(State.SOLD.name()) || event.getEventState().equals(State.ENDED.name())) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_IS_SOLD));
 		}
@@ -338,7 +337,7 @@ public class EventService {
 		event.setEventState(vmodel.getState().name());
 		return;
 	}
-
+	// TODO test if image deletes from event or not
 	@Transactional
 	public void deleteEventGalleryPhoto(long eventId, String uuid) {
 		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId)
