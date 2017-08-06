@@ -265,8 +265,27 @@
                             <div class="panel-body makeEventForm makeEventPlannerForm">
                                 <form class="form-inline textAlignRight " name="exchangeBlitForm">
                                     <fieldset class="fieldsetStyle">
-                                        <!-- Sign In Form -->
-                                        <!-- Text input-->
+                                        <legend class="legendStyle">مشخصات فروشنده</legend>
+                                        <div class="row">
+
+                                            <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
+                                                <div class="col-xs-10 floatRight text-center">
+                                                    <label class="registerLabel floatRight" for="exchangeName" >تلفن فروشنده :</label>
+                                                </div>
+                                                <div class="col-xs-11 floatRight ">
+                                                    <input height="60" id="sellerPhoneNumber" ng-model="exchange.sellerPhoneNumber " name="exchangeName"  type="text"  class="form-group registerInput" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
+                                                <div class="col-xs-10 floatRight text-center">
+                                                    <label class="registerLabel floatRight" for="exchangeName" >پست الکترونیکی فروشنده :</label>
+                                                </div>
+                                                <div class="col-xs-11 floatRight ">
+                                                    <input height="60" id="sellerEmail" ng-model="exchange.sellerEmail " name="exchangeName"  type="text"  class="form-group registerInput" required>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <legend class="legendStyle">مشخصات رویداد</legend>
                                         <div class="row">
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
