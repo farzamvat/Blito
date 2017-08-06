@@ -3144,6 +3144,7 @@ table td{
     }
     .exchangeBlitHeader ,
     .eventPageHeaderMusic,
+    .eventPageHeaderGallery,
     .eventPageHeaderEducation {
         background-size: 200% 380px;
         padding-top: 120px;
@@ -3155,7 +3156,7 @@ table td{
     .eventPageHeaderTheatre{
         background-size: 200% 380px;
         padding-top: 120px;
-        background-position: center;
+        background-position: 50% 10%;
 
     }
 }
