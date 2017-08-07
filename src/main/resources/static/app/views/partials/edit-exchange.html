@@ -8,8 +8,26 @@
             <div class="modal-body ">
                 <form class="form-inline textAlignRight " name="exchangeEditForm">
                     <fieldset class="fieldsetStyle">
-                        <!-- Sign In Form -->
-                        <!-- Text input-->
+                        <legend class="legendStyle">مشخصات فروشنده</legend>
+                        <div class="row">
+
+                            <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
+                                <div class="col-xs-10 floatRight text-center">
+                                    <label class="registerLabel floatRight" for="exchangeName" >تلفن فروشنده :</label>
+                                </div>
+                                <div class="col-xs-11 floatRight ">
+                                    <input height="60" id="sellerPhoneNumberEdit" ng-model="exchangeEdit.phoneNumber " name="exchangeName"  type="text"  class="form-group registerInput" required>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
+                                <div class="col-xs-10 floatRight text-center">
+                                    <label class="registerLabel floatRight" for="exchangeName" >پست الکترونیکی فروشنده :</label>
+                                </div>
+                                <div class="col-xs-11 floatRight ">
+                                    <input height="60" id="sellerEmailEdit" ng-model="exchangeEdit.email" name="exchangeName"  type="text"  class="form-group registerInput" required>
+                                </div>
+                            </div>
+                        </div>
                         <legend class="legendStyle text-center">اطلاعات آگهی</legend>
                         <div class="row">
                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">

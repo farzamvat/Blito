@@ -970,7 +970,7 @@ angular.module('User')
             var exchangeData = {
                 blitCost: exchangeFields.price,
                 description: exchangeFields.description,
-                email: $scope.userData.email,
+                email: exchangeFields.sellerEmail,
                 eventAddress: exchangeFields.address,
                 eventDate:  dateSetterService.persianToMs(exchangeFields.eventTime),
                 image: {
@@ -978,7 +978,7 @@ angular.module('User')
                     type: "EXCHANGEBLIT_PHOTO"
                 },
                 isBlitoEvent: exchangeFields.isBlito,
-                phoneNumber: $scope.userData.mobile,
+                phoneNumber: dataService.persianToEnglishDigit(persianJs(exchangeFields.sellerPhoneNumber).englishNumber().toString()),
                 latitude: latLng.lat,
                 longitude: latLng.lng,
                 title: exchangeFields.name,
@@ -1179,7 +1179,6 @@ angular.module('User')
                     $scope.editEventSpinner = false;
                     $scope.editEventNotif = true;
                     $scope.editEventErrorNotif = false;
-                    $scope.getUserEvents(1);
                 })
                 .catch(function (data, status) {
                     $scope.editEventErrorNotif = true;
@@ -1227,7 +1226,6 @@ angular.module('User')
                     $scope.submitPlannerEditNotif = true;
                     $scope.editPlannerSpinner = false;
                     $scope.submitPlannerEditErrorNotif = false;
-                    $scope.getPlannersData(1);
                 })
                 .catch(function (data, status) {
                     $scope.submitPlannerEditErrorNotif = true;
@@ -1251,7 +1249,10 @@ angular.module('User')
                 type : $scope.exchangeEditTickets[index].type,
                 exchangeBlitId : $scope.exchangeEditTickets[index].exchangeBlitId,
                 description :  $scope.exchangeEditTickets[index].description,
-                eventAddress : $scope.exchangeEditTickets[index].eventAddress
+                eventAddress : $scope.exchangeEditTickets[index].eventAddress,
+                email : $scope.exchangeEditTickets[index].email,
+                phoneNumber : $scope.exchangeEditTickets[index].phoneNumber
+
             };
             var latlng = {
                 lat : $scope.exchangeEditTickets[index].latitude,
@@ -1271,11 +1272,10 @@ angular.module('User')
             var latLng = mapMarkerService.getMarker();
             $scope.editExchangeSpinner = true;
             editExchangeData.eventDate = dateSetterService.persianToMs(editExchangeData.eventDate);
-            editExchangeData.email = $scope.userData.email;
             editExchangeData.exchangeBlitId = $scope.exchangeEdit.exchangeBlitId;
             editExchangeData.latitude = latLng.lat;
             editExchangeData.longitude = latLng.lng;
-            editExchangeData.phoneNumber = $scope.userData.mobile;
+            editExchangeData.phoneNumber = dataService.persianToEnglishDigit(persianJs(editExchangeData.phoneNumber).englishNumber().toString());
             editExchangeData.image = {
                 imageUUID : $scope.exchangeEditImageId,
                 type : "EXCHANGEBLIT_PHOTO"
@@ -1288,7 +1288,6 @@ angular.module('User')
                     $scope.editExchangeNotif = true;
                     $scope.editExchangeSpinner = false;
                     $scope.editExchangeErrorNotif = false;
-                    $scope.getExchangeData(1);
                 }, function (data, status) {
                     $scope.editExchangeErrorNotif = true;
                     $scope.editExchangeSpinner = false;
@@ -1447,6 +1446,10 @@ angular.module('User')
                     .then(function (data) {
                         $scope.totalTicketNumber = data.data.totalElements;
                         $scope.eventsTickets = data.data.content;
+                        $scope.eventsTickets = $scope.eventsTickets.map(function (ticket) {
+                            ticket.paymentStatus = dataService.ticketStatusPersian(ticket.paymentStatus);
+                            return ticket;
+                        })
                     })
                     .catch(function (data) {
                     })

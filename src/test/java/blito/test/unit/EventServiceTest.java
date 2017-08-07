@@ -34,6 +34,7 @@ import com.blito.enums.OfferTypeEnum;
 import com.blito.enums.OperatorState;
 import com.blito.enums.State;
 import com.blito.exceptions.InconsistentDataException;
+import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.EventFlatMapper;
 import com.blito.models.Event;
@@ -99,6 +100,14 @@ public class EventServiceTest {
 	@Before
 	public void init() {
 			
+			
+			
+			user.setEmail("farzam.vat@gmail.com");
+			user.setActive(true);
+			user.setFirstname("farzam");
+			user.setLastname("vatanzadeh");
+			user.setMobile("09124337522");
+
 		user.setEmail("farzam.vat@gmail.com");
 		user.setActive(true);
 		user.setFirstname("farzam");
@@ -304,7 +313,11 @@ public class EventServiceTest {
 		assertEquals(5, eventRepository.count());
 		assertEquals(5, eventHostRepository.findByEventHostIdAndIsDeletedFalse(eventViewModel.getEventHostId()).get().getEvents().size());
 		EventViewModel vmodel = eventService.create(eventViewModel);
+		Event event = eventRepository.findOne(vmodel.getEventId());
+		event.setOperatorState(OperatorState.REJECTED.name());
+		eventRepository.save(event);
 		eventService.delete(vmodel.getEventId());
+		assertEquals(0,eventRepository.findOne(vmodel.getEventId()).getImages().size());
 		assertEquals(6, eventHostRepository.findByEventHostIdAndIsDeletedFalse(eventViewModel.getEventHostId()).get().getEvents().size());
 		assertEquals(true, eventRepository.findOne(vmodel.getEventId()).isDeleted());
 	}
@@ -545,16 +558,10 @@ public class EventServiceTest {
 		assertEquals(5, events.getNumberOfElements());
 		
 		eventViewModel = eventService.create(eventViewModel);
+		SecurityContextHolder.setCurrentUser(user);
 		events = eventService.getUserEvents(pageable);
 		assertEquals(6, events.getNumberOfElements());
-//		SecurityContextHolder.setCurrentUser(user2);
-//		eventViewModel.setEventHostId(eventHost2.getEventHostId());
-//		eventViewModel.setEventHostName(eventHost2.getHostName());
-//		eventViewModel = eventService.create(eventViewModel);
-//		SecurityContextHolder.setCurrentUser(user);
-		events = eventService.getUserEvents(pageable);
-		assertEquals(6, events.getNumberOfElements());
-		eventService.delete(event1.getEventId());
+		eventService.delete(event4.getEventId());
 		events = eventService.getUserEvents(pageable);
 		assertEquals(5, events.getNumberOfElements());
 	}
