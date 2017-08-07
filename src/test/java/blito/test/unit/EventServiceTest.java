@@ -565,22 +565,4 @@ public class EventServiceTest {
 		events = eventService.getUserEvents(pageable);
 		assertEquals(5, events.getNumberOfElements());
 	}
-
-	// @Test
-	// public void rangeSearch() {
-	// SearchViewModel<Event> searchViewModel = new SearchViewModel<>();
-	// Range<Event> range = new Range<>();
-	// range.setField("blitSaleStartDate");
-	// range.setMinValue(Timestamp.from(ZonedDateTime.now().minusHours(24).toInstant()).getTime());
-	// range.setMaxValue(Timestamp.from(ZonedDateTime.now().plusHours(15).toInstant()).getTime());
-	// searchViewModel.setRestrictions(new ArrayList<>());
-	// searchViewModel.getRestrictions().add(range);
-	// Pageable pageable = new PageRequest(0, 5);
-	//
-	// Page<Event> eventsPage = eventService.searchEvents(searchViewModel,
-	// pageable);
-	// assertEquals(eventsPage.getNumberOfElements(), 2);
-	//
-	// }
-
 }

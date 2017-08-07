@@ -1,10 +1,9 @@
 package blito.test.unit;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.IntStream;
 
 import org.junit.Before;
@@ -16,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.Application;
 import com.blito.configs.Constants;
@@ -52,7 +52,7 @@ import com.blito.services.PaymentRequestServiceAsync;
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
-//@Transactional
+@Transactional
 public class BlitServiceTest {
 	@Autowired
 	BlitService blitService;
@@ -92,11 +92,11 @@ public class BlitServiceTest {
 	@Before
 	public void init() {
 
-		user.setEmail("farzam.vat@gmail.com");
+		user.setEmail("hasti.sahabi@yahoo.com");
 		user.setActive(true);
-		user.setFirstname("farzam");
-		user.setLastname("vatanzadeh");
-		user.setMobile("09124337522");
+		user.setFirstname("hasti");
+		user.setLastname("sahabi");
+		user.setMobile("09127976837");
 
 		user = userRepository.save(user);
 
@@ -181,7 +181,7 @@ public class BlitServiceTest {
 		CommonBlitViewModel commonBlitViewModel = new CommonBlitViewModel();
 		commonBlitViewModel.setBlitTypeId(blitTypeId);
 		commonBlitViewModel.setCount(1);
-		commonBlitViewModel.setCustomerEmail("farzam.vat@gmail.com");
+		commonBlitViewModel.setCustomerEmail(user.getEmail());
 		commonBlitViewModel.setSeatType(SeatType.COMMON);
 		commonBlitViewModel.setEventName(eventViewModel.getEventName());
 		commonBlitViewModel.setUserId(user.getUserId());

@@ -132,7 +132,7 @@ public class EventHostServiceTest {
 		updateExceptionVmodel = hostService.create(updateExceptionVmodel);
 		User newUser = new User();
 		newUser.setFirstname("farzam");
-		newUser.setEmail("farzam.vat@gmail.com");
+		newUser.setEmail("farzam.vatan@gmail.com");
 		newUser.setActive(true);
 		newUser = userRepo.save(newUser);
 		SecurityContextHolder.setCurrentUser(newUser);
