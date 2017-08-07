@@ -298,9 +298,9 @@ public class EventService {
 			throw new AlreadyExistsException(ResourceUtil.getMessage(Response.DISCOUNT_CODE_ALREADY_EXISTS));
 		Discount discount = discountMapper.createFromViewModel(vmodel);
 		discount.setUser(userRepository.findOne(SecurityContextHolder.currentUser().getUserId()));
-		discount.setBlitTypes(
-				vmodel.getBlitTypeIds().stream().map(bt -> getBlitTypeFromRepository(bt)).collect(Collectors.toSet()));
-
+		discount.setBlitTypes(blitTypeRepository.findByBlitTypeIdIn(vmodel.getBlitTypeIds()));
+		if(discount.getBlitTypes().isEmpty())
+			throw new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND));
 		discount = discountRepository.save(discount);
 		return discountMapper.createFromEntity(discount);
 	}
