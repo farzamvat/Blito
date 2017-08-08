@@ -8,6 +8,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,9 +54,12 @@ import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
+import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.security.SecurityContextHolder;
+
+import io.vavr.control.Either;
 
 @Service
 public class EventService {
@@ -278,31 +284,30 @@ public class EventService {
 	}
 
 	@Transactional
-	public DiscountViewModel setDiscountCode(DiscountViewModel vmodel) {
+	public Either<ExceptionViewModel,DiscountViewModel> setDiscountCode(DiscountViewModel vmodel) {
+		
 		if (vmodel.getEffectDate().after(vmodel.getExpirationDate()))
-			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_DATES));
+			return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.INCONSISTENT_DATES),400));
 		if (vmodel.isPercent()) {
 			if (!(vmodel.getPercent() > 0 && vmodel.getPercent() < 100))
-				throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_PERCENT));
+				return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.INCONSISTENT_PERCENT),400));
 			if (vmodel.getAmount() != 0)
-				throw new InconsistentDataException(
-						ResourceUtil.getMessage(Response.INCONSISTENT_AMOUNT_WHEN_PERCENT_IS_TRUE));
+				return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.INCONSISTENT_AMOUNT_WHEN_PERCENT_IS_TRUE),400));
 		} else {
 			if (vmodel.getAmount() <= 0)
-				throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_AMOUNT));
+				return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.INCONSISTENT_AMOUNT),400));
 			if (vmodel.getPercent() > 0)
-				throw new InconsistentDataException(
-						ResourceUtil.getMessage(Response.INCONSISTENT_PERCENTAGE_WHEN_PERCENT_IS_FALSE));
+				return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.INCONSISTENT_PERCENTAGE_WHEN_PERCENT_IS_FALSE),400));
 		}
 		if (discountRepository.findByCode(vmodel.getCode()).isPresent())
-			throw new AlreadyExistsException(ResourceUtil.getMessage(Response.DISCOUNT_CODE_ALREADY_EXISTS));
+			return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.DISCOUNT_CODE_ALREADY_EXISTS),400));
 		Discount discount = discountMapper.createFromViewModel(vmodel);
 		discount.setUser(userRepository.findOne(SecurityContextHolder.currentUser().getUserId()));
 		discount.setBlitTypes(blitTypeRepository.findByBlitTypeIdIn(vmodel.getBlitTypeIds()));
 		if(discount.getBlitTypes().isEmpty())
-			throw new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND));
+			return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND),400));
 		discount = discountRepository.save(discount);
-		return discountMapper.createFromEntity(discount);
+		return Either.right(discountMapper.createFromEntity(discount));
 	}
 
 	public Page<EventViewModel> getUserEvents(Pageable pageable) {

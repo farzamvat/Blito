@@ -14,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.blito.enums.OperatorState;
 import com.blito.enums.Response;
 import com.blito.enums.State;
-import com.blito.exceptions.AlreadyExistsException;
-import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.AdminReportsMapper;
@@ -25,7 +23,6 @@ import com.blito.mappers.EventMapper;
 import com.blito.mappers.GenericMapper;
 import com.blito.models.BlitType;
 import com.blito.models.CommonBlit;
-import com.blito.models.Discount;
 import com.blito.models.Event;
 import com.blito.models.EventDate;
 import com.blito.repositories.BlitTypeRepository;
@@ -44,8 +41,10 @@ import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
+import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.search.SearchViewModel;
-import com.blito.security.SecurityContextHolder;
+
+import io.vavr.control.Either;
 
 @Service
 public class AdminEventService {
@@ -203,11 +202,6 @@ public class AdminEventService {
 	public BlitType getBlitTypeFromRepository(long blitTypeId) {
 		return Optional.ofNullable(blitTypeRepository.findOne(blitTypeId)).map(e -> e)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
-	}
-
-	@Transactional
-	public DiscountViewModel setDiscountCode(DiscountViewModel vmodel) {
-		return eventService.setDiscountCode(vmodel);
 	}
 
 	public Page<EventViewModel> getAllPendingEvents(Pageable pageable) {

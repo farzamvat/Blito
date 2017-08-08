@@ -1,17 +1,18 @@
 package com.blito.rest.controllers;
 
-
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.blito.annotations.Permission;
 import com.blito.enums.ApiBusinessName;
 import com.blito.enums.Response;
+import com.blito.enums.validation.ControllerEnumValidation;
+import com.blito.exceptions.ExceptionUtil;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.ResultVm;
@@ -39,6 +42,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.vavr.control.Try;
 
 @RestController
 @RequestMapping("${api.base.url}" + "/events")
@@ -63,8 +67,8 @@ public class EventController {
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "update event")
 	@ApiResponses({ @ApiResponse(code = 202, message = "update event accepted", response = EventViewModel.class),
-			@ApiResponse(code = 400, message = "ValidationException or NotAllowedException" 
-												+ " or EventLinkAlreadyExistsException", response = ExceptionViewModel.class),
+			@ApiResponse(code = 400, message = "ValidationException or NotAllowedException"
+					+ " or EventLinkAlreadyExistsException", response = ExceptionViewModel.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
 	@Permission(value = ApiBusinessName.USER)
@@ -86,29 +90,34 @@ public class EventController {
 		eventService.delete(eventId);
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
-	
+
 	@Permission(value = ApiBusinessName.USER)
 	@PostMapping("/set-discount-code")
-	public ResponseEntity<DiscountViewModel> setDiscountCode(@Validated @RequestBody DiscountViewModel vmodel) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(eventService.setDiscountCode(vmodel));
+	public CompletionStage<ResponseEntity<?>> setDiscountCode(@Valid @RequestBody DiscountViewModel vmodel,
+			BindingResult bindingResult, HttpServletRequest req, HttpServletResponse res) {
+		if (bindingResult.hasFieldErrors())
+			return CompletableFuture.completedFuture(ResponseEntity.badRequest().body(ExceptionUtil
+					.generate(HttpStatus.BAD_REQUEST, req, bindingResult, ControllerEnumValidation.class)));
+		return CompletableFuture.supplyAsync(() -> eventService.setDiscountCode(vmodel))
+				.handle((either, throwable) -> HandleUtility.generateEitherResponse(either, throwable, req, res));
 	}
-	
+
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "get all user's events")
-	@ApiResponses({ @ApiResponse(code = 200, message = "get all user's events ok", response = EventViewModel.class)})
+	@ApiResponses({ @ApiResponse(code = 200, message = "get all user's events ok", response = EventViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
 	@Permission(value = ApiBusinessName.USER)
 	@JsonView(View.Event.class)
 	@GetMapping("/all-user-events")
-	public ResponseEntity<Page<EventViewModel>> getAllUserEvents(Pageable pageable){
+	public ResponseEntity<Page<EventViewModel>> getAllUserEvents(Pageable pageable) {
 		return ResponseEntity.ok(eventService.getUserEvents(pageable));
 	}
-	
+
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "change event state")
 	@ApiResponses({ @ApiResponse(code = 200, message = "change event state ok", response = ResultVm.class),
 			@ApiResponse(code = 404, message = "NotFoundException", response = ExceptionViewModel.class),
-			@ApiResponse(code = 400, message = "NotAllowedException", response = ExceptionViewModel.class)})
+			@ApiResponse(code = 400, message = "NotAllowedException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
 	@Permission(value = ApiBusinessName.USER)
 	@PutMapping("/change-event-state")
@@ -116,12 +125,13 @@ public class EventController {
 		eventService.changeEventState(vmodel);
 		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
-	
+
 	@Permission(value = ApiBusinessName.USER)
 	@DeleteMapping("/{eventId}/{uuid}")
-	public CompletionStage<ResponseEntity<?>> deleteGalleryPhoto(@PathVariable long eventId, @PathVariable String uuid,HttpServletRequest req,HttpServletResponse res){
-		
+	public CompletionStage<ResponseEntity<?>> deleteGalleryPhoto(@PathVariable long eventId, @PathVariable String uuid,
+			HttpServletRequest req, HttpServletResponse res) {
+
 		return CompletableFuture.runAsync(() -> eventService.deleteEventGalleryPhoto(eventId, uuid))
-				.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result, throwable, req, res));
+				.handle((result, throwable) -> HandleUtility.generateResponseResult(() -> result, throwable, req, res));
 	}
 }
