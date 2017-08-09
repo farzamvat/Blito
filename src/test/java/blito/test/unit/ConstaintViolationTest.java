@@ -38,12 +38,12 @@ public class ConstaintViolationTest {
 			user1.setEmail("farzam.vat@gmail.com");
 			user1.setPassword("12345678");
 			userRepository.save(user1);
-			assertTrue(true);
+			assertTrue(false);
 		}
 		catch(Exception e)
 		{
 			System.err.println(e);
-			assertTrue(false);
+			assertTrue(true);
 		}
 	}
 }
