@@ -145,7 +145,7 @@ public class AdminEventService {
 	
 	private void checkEventRestricitons(Event event)
 	{
-		if(event.getEventState().equals(State.ENDED.name()) || event.getEventState().equals(State.SOLD.name())) {
+		if(event.getEventState().equals(State.ENDED.name())) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
 	}

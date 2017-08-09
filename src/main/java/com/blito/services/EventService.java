@@ -184,8 +184,8 @@ public class EventService {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		}
 
-		if (event.getEventState().equals(State.SOLD.name()) || event.getEventState().equals(State.ENDED.name())) {
-			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_IS_SOLD));
+		if (event.getEventState().equals(State.ENDED.name())) {
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.CANNOT_EDIT_EVENT_WHEN_CLOSED));
 		}
 
 		if (!vmodel.getEventLink().equals(event.getEventLink())) {
@@ -257,9 +257,9 @@ public class EventService {
 			}
 
 			if (event.getBlitSaleEndDate().before(now) && !event.isDeleted()
-					&& !event.getEventState().equals(State.ENDED.name())
+					&& event.getEventState().equals(State.OPEN.name())
 					&& event.getOperatorState().equals(OperatorState.APPROVED.name())
-					&& !event.getEventState().equals(State.CLOSED.name()) && !event.isClosedInit()) {
+					&& !event.isClosedInit()) {
 				event.setClosedInit(true);
 				event.setEventState(State.CLOSED.name());
 				event.getEventDates().forEach(ed -> {
