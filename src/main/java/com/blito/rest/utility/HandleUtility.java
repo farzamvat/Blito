@@ -16,6 +16,9 @@ import com.blito.exceptions.NotFoundException;
 import com.blito.exceptions.UnauthorizedException;
 import com.blito.exceptions.UserNotActivatedException;
 import com.blito.exceptions.WrongPasswordException;
+import com.blito.rest.viewmodels.exception.ExceptionViewModel;
+
+import io.vavr.control.Either;
 
 public class HandleUtility {
 	public static <T> ResponseEntity<?> generateResponseResult(Supplier<T> supplier, Throwable throwable,
@@ -24,6 +27,18 @@ public class HandleUtility {
 			return generateErrorResult(throwable.getCause(), req, res);
 		}
 		return ResponseEntity.ok(supplier.get());
+	}
+	public static <T> ResponseEntity<?> generateEitherResponse(Either<ExceptionViewModel,?> either,Throwable throwable,HttpServletRequest req,HttpServletResponse res)
+	{
+		if(throwable != null)
+			return generateErrorResult(throwable.getCause(), req, res);
+		if(either.isLeft())
+		{
+			either.getLeft().setPath(req.getServletPath());
+			return ResponseEntity.status(400).body(either.getLeft());
+		}
+		else
+			return ResponseEntity.ok(either.get());
 	}
 
 	private static ResponseEntity<?> generateErrorResult(Throwable throwable, HttpServletRequest req,
