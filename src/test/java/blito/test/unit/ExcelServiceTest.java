@@ -41,6 +41,7 @@ import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
 import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventViewModel;
+import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.search.Operation;
 import com.blito.search.SearchViewModel;
@@ -92,6 +93,7 @@ public class ExcelServiceTest {
 	private BlitTypeViewModel blitTypeViewModel2 = new BlitTypeViewModel();
 	private ChangeBlitTypeStateVm changeBlitTypeStateVm = new ChangeBlitTypeStateVm();
 	private ChangeEventStateVm changeEventStateVm = new ChangeEventStateVm();
+	private ChangeEventDateStateVm changeEventDateStateVm = new ChangeEventDateStateVm();
 	
 
 	@Before
@@ -187,11 +189,16 @@ public class ExcelServiceTest {
 		changeEventStateVm.setState(State.OPEN);
 		adminEventService.changeEventState(changeEventStateVm);
 		
+		changeEventDateStateVm.setEventDateId(eventViewModel.getEventDates().stream().findFirst().get().getEventDateId());
+		changeEventDateStateVm.setEventDateState(State.OPEN);
+		adminEventService.changeEventDateState(changeEventDateStateVm);
+		
 		commonBlitViewModel1.setBlitTypeId(blitTypeId);
 		commonBlitViewModel1.setCount(4);
 		commonBlitViewModel1.setSeatType(SeatType.COMMON);
 		commonBlitViewModel1.setEventName(eventViewModel.getEventName());
 		commonBlitViewModel1.setUserId(user1.getUserId());
+		commonBlitViewModel1.setCustomerEmail(user1.getEmail());
 		commonBlitViewModel1.setCustomerName(user1.getFirstname()+ " " + user1.getLastname());
 		commonBlitViewModel1.setEventDate(eventDateViewModel.getDate());
 		commonBlitViewModel1.setBankGateway(BankGateway.NONE);
@@ -208,6 +215,7 @@ public class ExcelServiceTest {
 		commonBlitViewModel2.setEventName(eventViewModel.getEventName());
 		commonBlitViewModel2.setUserId(user2.getUserId());
 		commonBlitViewModel2.setCustomerName(user2.getFirstname()+ " " + user2.getLastname());
+		commonBlitViewModel2.setCustomerEmail(user2.getEmail());
 		commonBlitViewModel2.setEventDate(eventDateViewModel.getDate());
 		commonBlitViewModel2.setBankGateway(BankGateway.NONE);
 		Map<String, String> additionalFields2 = new HashMap<String, String>();

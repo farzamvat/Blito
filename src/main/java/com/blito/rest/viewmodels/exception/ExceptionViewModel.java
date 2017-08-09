@@ -1,8 +1,15 @@
 package com.blito.rest.viewmodels.exception;
 
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_EMPTY)
 public class ExceptionViewModel {
 	private long timestamp;
     private int status;
@@ -11,6 +18,15 @@ public class ExceptionViewModel {
     private String message;
     private String path;
     private List<Object> errors;
+    
+    public ExceptionViewModel() {}
+    public ExceptionViewModel(String message,int status)
+    {
+    	timestamp = Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()).getTime();
+    	this.message = message;
+    	this.status = status;
+    }
+    
 	public long getTimestamp() {
 		return timestamp;
 	}

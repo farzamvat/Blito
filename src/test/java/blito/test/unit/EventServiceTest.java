@@ -1,7 +1,6 @@
 package blito.test.unit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
@@ -26,7 +25,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.blito.Application;
 import com.blito.configs.Constants;
-import com.blito.enums.DayOfWeek;
 import com.blito.enums.EventType;
 import com.blito.enums.HostType;
 import com.blito.enums.ImageType;
@@ -34,7 +32,6 @@ import com.blito.enums.OfferTypeEnum;
 import com.blito.enums.OperatorState;
 import com.blito.enums.State;
 import com.blito.exceptions.InconsistentDataException;
-import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.EventFlatMapper;
 import com.blito.models.Event;
@@ -52,6 +49,7 @@ import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
+import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.search.Collection;
 import com.blito.search.Operation;
 import com.blito.search.SearchViewModel;
@@ -59,6 +57,8 @@ import com.blito.search.Simple;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.EventService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.vavr.control.Either;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class,webEnvironment=WebEnvironment.RANDOM_PORT)
@@ -465,12 +465,12 @@ public class EventServiceTest {
 		vmodel.setPercent(true);
 		vmodel.setPercent(30);
 
-		vmodel = eventService.setDiscountCode(vmodel);
+		vmodel = eventService.setDiscountCode(vmodel).get();
 		assertEquals(2, vmodel.getBlitTypeIds().size());
 		assertEquals(1, blitTypeRepo.findOne(vmodel.getBlitTypeIds().stream().findFirst().get()).getDiscounts().size());
 	}
 
-	@Test(expected = InconsistentDataException.class)
+	@Test
 	public void setDiscountCodeTestInvalidPercentage() {
 		assertEquals(0, discountRepo.count());
 		eventViewModel = eventService.create(eventViewModel);
@@ -486,10 +486,15 @@ public class EventServiceTest {
 		vmodel.setPercent(true);
 		vmodel.setPercent(0);
 
-		vmodel = eventService.setDiscountCode(vmodel);
+		Either<ExceptionViewModel,DiscountViewModel> either = eventService.setDiscountCode(vmodel);
+		if(either.isLeft())
+			assertTrue(true);
+		else {
+			assertTrue(false);
+		}
 	}
 
-	@Test(expected = InconsistentDataException.class)
+	@Test
 	public void setDiscountCodeTestInvalidPercentageWithAmount() {
 		assertEquals(0, discountRepo.count());
 		eventViewModel = eventService.create(eventViewModel);
@@ -505,10 +510,15 @@ public class EventServiceTest {
 		vmodel.setPercent(true);
 		vmodel.setPercent(30);
 		vmodel.setAmount(100);
-		vmodel = eventService.setDiscountCode(vmodel); 
+		Either<ExceptionViewModel,DiscountViewModel> either = eventService.setDiscountCode(vmodel);
+		if(either.isLeft())
+			assertTrue(true);
+		else {
+			assertTrue(false);
+		}
 	}
 
-	@Test(expected = InconsistentDataException.class)
+	@Test
 	public void setDiscountCodeTestInvalidAmount() {
 		assertEquals(0, discountRepo.count());
 		eventViewModel = eventService.create(eventViewModel);
@@ -524,12 +534,15 @@ public class EventServiceTest {
 		vmodel.setPercent(false);
 		vmodel.setAmount(-20);
 
-		vmodel = eventService.setDiscountCode(vmodel);
-		assertEquals(2, vmodel.getBlitTypeIds().size());
-		assertEquals(1, blitTypeRepo.findOne(vmodel.getBlitTypeIds().stream().findFirst().get()).getDiscounts().size());
+		Either<ExceptionViewModel,DiscountViewModel> either = eventService.setDiscountCode(vmodel);
+		if(either.isLeft())
+			assertTrue(true);
+		else {
+			assertTrue(false);
+		}
 	}
 
-	@Test(expected = InconsistentDataException.class)
+	@Test
 	public void setDiscountCodeTestInvalidPercentageWhenIsPercentIsFalse() {
 		assertEquals(0, discountRepo.count());
 		eventViewModel = eventService.create(eventViewModel);
@@ -546,9 +559,12 @@ public class EventServiceTest {
 		vmodel.setPercent(30);
 		vmodel.setAmount(1000);
 
-		vmodel = eventService.setDiscountCode(vmodel);
-		assertEquals(2, vmodel.getBlitTypeIds().size());
-		assertEquals(1, blitTypeRepo.findOne(vmodel.getBlitTypeIds().stream().findFirst().get()).getDiscounts().size());
+		Either<ExceptionViewModel,DiscountViewModel> either = eventService.setDiscountCode(vmodel);
+		if(either.isLeft())
+			assertTrue(true);
+		else {
+			assertTrue(false);
+		}
 	}
 
 	@Test
@@ -565,22 +581,4 @@ public class EventServiceTest {
 		events = eventService.getUserEvents(pageable);
 		assertEquals(5, events.getNumberOfElements());
 	}
-
-	// @Test
-	// public void rangeSearch() {
-	// SearchViewModel<Event> searchViewModel = new SearchViewModel<>();
-	// Range<Event> range = new Range<>();
-	// range.setField("blitSaleStartDate");
-	// range.setMinValue(Timestamp.from(ZonedDateTime.now().minusHours(24).toInstant()).getTime());
-	// range.setMaxValue(Timestamp.from(ZonedDateTime.now().plusHours(15).toInstant()).getTime());
-	// searchViewModel.setRestrictions(new ArrayList<>());
-	// searchViewModel.getRestrictions().add(range);
-	// Pageable pageable = new PageRequest(0, 5);
-	//
-	// Page<Event> eventsPage = eventService.searchEvents(searchViewModel,
-	// pageable);
-	// assertEquals(eventsPage.getNumberOfElements(), 2);
-	//
-	// }
-
 }

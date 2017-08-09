@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.blito.services.Initiallizer;
 
+
 @SpringBootApplication
 @RestController
 public class Application {
@@ -31,7 +32,7 @@ public class Application {
 		initializer.importPermissionsToDataBase();
 		initializer.insertAdminUserAndRoleAndOldBlitoUsers();
 	}
-	@GetMapping("/*")
+	@GetMapping("/")
 	public ModelAndView index() {
 		return new ModelAndView("index");
 	}
