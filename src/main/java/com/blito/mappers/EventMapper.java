@@ -48,6 +48,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
 		event.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 		event.setEventState(State.CLOSED.name());
 		event.setEvento(false);
+		event.setPrivate(vmodel.isPrivate());
 		return event;
 	}
 
@@ -81,6 +82,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
 		vmodel.setDeleted(event.isDeleted());
 		vmodel.setViews(event.getViews());
 		vmodel.setAdditionalFields(event.getAdditionalFields());
+		vmodel.setPrivate(event.isPrivate());
 		return vmodel;
 	}
 
@@ -124,7 +126,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
 			}
 
 		});
-		
+		event.setPrivate(vmodel.isPrivate());
 		return event;
 	}
 }

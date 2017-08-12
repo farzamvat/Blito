@@ -3,13 +3,11 @@ package com.blito.services;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +54,9 @@ import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
+import com.blito.search.Operation;
 import com.blito.search.SearchViewModel;
+import com.blito.search.Simple;
 import com.blito.security.SecurityContextHolder;
 
 import io.vavr.control.Either;
@@ -239,6 +239,10 @@ public class EventService {
 	@Transactional
 	public <V> Page<V> searchEvents(SearchViewModel<Event> searchViewModel, Pageable pageable,
 			GenericMapper<Event, V> mapper) {
+		Simple<Event> isDeletedRestriction = new Simple<>(Operation.eq, "isDeleted", "false");
+		Simple<Event> isPrivateRestriction = new Simple<>(Operation.eq, "isPrivate", "false");
+		Simple<Event> isApprovedRestriction = new Simple<>(Operation.eq, "operatorState", OperatorState.APPROVED.name()); 
+		searchViewModel.getRestrictions().addAll(Arrays.asList(isDeletedRestriction, isPrivateRestriction, isApprovedRestriction));
 		Page<Event> page = searchService.search(searchViewModel, pageable, eventRepository);
 		Timestamp now = Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant());
 		page.forEach(event -> {

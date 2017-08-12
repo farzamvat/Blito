@@ -581,4 +581,11 @@ public class EventServiceTest {
 		events = eventService.getUserEvents(pageable);
 		assertEquals(5, events.getNumberOfElements());
 	}
+	
+	@Test
+	public void privateEventTest() {
+		eventViewModel.setPrivate(true);
+		eventViewModel = eventService.create(eventViewModel);
+		assertTrue(eventViewModel.isPrivate());
+	}
 }
