@@ -20,7 +20,8 @@ angular.module('userProfileApi', [])
         };
         photo.download = function (imageData) {
             var queryParam = {
-                params : { id : imageData}
+                params : { id : imageData},
+                headers: {'Cache-Control': 'private, max-age=31536000', 'Pragma' : ''}
             };
             return $http.get(config.baseUrl + '/api/blito/v1.0/download', queryParam);
         };

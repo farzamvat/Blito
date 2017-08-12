@@ -5,7 +5,7 @@
 angular.module('exchangesPageModule', [])
     .controller('exchangeListCtrl', function ($scope, exchangeService, photoService, dataService, config) {
 
-        $scope.pageTitle = "بلیت های تعویضی ";
+        $scope.pageTitle = "آگهی بلیت";
         // $scope.urlExchange = "http://localhost:3000"+"/exchange-page/";
         $scope.urlExchange = config.baseUrl+"/exchange-page/";
 
