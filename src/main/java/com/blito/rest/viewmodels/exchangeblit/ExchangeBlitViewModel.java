@@ -13,6 +13,7 @@ import com.blito.enums.OperatorState;
 import com.blito.enums.State;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.image.ImageViewModel;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 
 public class ExchangeBlitViewModel {
@@ -57,6 +58,8 @@ public class ExchangeBlitViewModel {
 	private ImageViewModel image;
 	@JsonView(View.ExchangeBlit.class)
 	private Timestamp createdAt;
+	@JsonView(View.AdminExchangeBlit.class)
+	private boolean isDeleted;
 	
 	public ImageViewModel getImage() {
 		return image;
@@ -193,5 +196,16 @@ public class ExchangeBlitViewModel {
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
+
+	@JsonProperty("isDeleted")
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+	
 	
 }
