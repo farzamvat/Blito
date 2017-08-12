@@ -52,15 +52,16 @@
     url('../fonts/website-fonts/fonts/woff/IRANSansWeb.woff') format('woff'),  /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
     url('../fonts/website-fonts/fonts/ttf/IRANSansWeb.ttf') format('truetype');
 }
+
 body, html {
     font-family: "iranian Sans" !important;
-    max-width: 100%;
     overflow-x: hidden;
-    padding:0px !important;
+    width: 100% ;
+    padding:0 !important;
 }
+
 h1,h2,h3,h4,h5,h6 {
     font-weight: bold;
-
 }
 
 a {
@@ -84,6 +85,7 @@ textarea:focus, input:focus {
 .container {
     font-family: "iranian Sans" !important;
     width: 100%;
+    white-space: normal;
     min-height: 800px;
     background:#efefef;
     padding: 0;
@@ -404,9 +406,9 @@ background-color: #303030;
     /*100% {transform: scale(1);}*/
 /*}*/
 .socialmediaHolder{
-    margin-bottom:15px;
+    margin-bottom:30px;
     border-top: 1px solid #444;
-    padding-top:15px;
+    padding-top:30px;
     padding-bottom: 0px;
 }
 .socialmediaHolder div{
@@ -2485,7 +2487,8 @@ a{
     margin-top:2px;
 }
 .marginAuto{
-    margin:auto;
+    display: block;
+    margin: 0 auto;
 }
 .blitoTeamPicturebeautifier:hover .blitoTeamPicturebeautifier2{
     transform: rotate(225deg);

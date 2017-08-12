@@ -43,5 +43,3 @@ angular.module('Blito',
     })
 ;
 
-//https://bili.to/\
-//192.168.202.19:8085

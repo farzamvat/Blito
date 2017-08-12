@@ -3,16 +3,6 @@
  */
 
 $(document).ready(function () {
-    // window.addEventListener("scroll", function() {
-    //     if (window.scrollY > 10) {
-    //         $('.navbar').css("background-color", "rgba(50, 50, 50, 1)");
-    //     }
-    //     else {
-    //         if (!(window.matchMedia('(max-width: 767px)').matches)) {
-    //             $('.navbar').css("background-color", "rgba(30, 30, 30, 0.4)");
-    //         }
-    //     }
-    // },false);
 
 
     $('.carousel-control').click(function ($e) {
@@ -46,13 +36,9 @@ $(document).ready(function () {
     })
 
 
-// for every slide in carousel, copy the next slide's item in the slide.
-// Do the same for the next, next item.
-
 
     function draw() {
         requestAnimationFrame(draw);
-        // Drawing code goes here
         scrollEvent();
     }
     draw();
@@ -60,11 +46,7 @@ $(document).ready(function () {
 
 
 function scrollEvent(){
-    // if(!is_touch_device()){
-       var viewportTop = $(window).scrollTop(),
-        windowHeight = $(window).height(),
-        viewportBottom = windowHeight+viewportTop;
-
+       var viewportTop = $(window).scrollTop();
         if($(window).width()) {
             $('[data-parallax="true"]').each(function () {
                 var distance = (viewportTop) * $(this).attr('data-speed');
@@ -86,11 +68,4 @@ function scrollEvent(){
                 }
             });
         }
-    // }
-}
-
-
-function is_touch_device() {
-    return 'ontouchstart' in window // works on most browsers
-        || 'onmsgesturechange' in window; // works on ie10
 }
