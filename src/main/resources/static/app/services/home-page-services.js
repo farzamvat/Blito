@@ -12,9 +12,7 @@ angular.module('homePageApi', [])
             if(!evento) {
                 var bodyJson = {
                     restrictions: [
-                        {field: "isDeleted", type: "simple", operation: "eq", value: "false"},
                         {field: "eventState", type: "simple", operation: "neq", value: "ENDED"},
-                        {field: "operatorState", type: "simple", operation: "eq", value: "APPROVED"},
                         {field: "eventType", type: "simple", operation: "eq", value: eventType}
 
                     ]
@@ -22,9 +20,7 @@ angular.module('homePageApi', [])
             } else if(evento) {
                 var bodyJson = {
                     restrictions: [
-                        {field: "isDeleted", type: "simple", operation: "eq", value: "false"},
                         {field: "eventState", type: "simple", operation: "neq", value: "ENDED"},
-                        {field: "operatorState", type: "simple", operation: "eq", value: "APPROVED"},
                         {field: "isEvento", type: "simple", operation: "eq", value: "true"}
 
                     ]
@@ -32,29 +28,24 @@ angular.module('homePageApi', [])
             }
             return $http.post(config.baseUrl + '/api/blito/v1.0/public/events/search',bodyJson, queryParam);
 
-        }
+        };
         miniSlider.getSlidingDataExchange = function (size) {
             var queryParam = {
                 params : {page: 0, size: size, sort: "createdAt,desc"}
             };
                 var bodyJson = {
-                    restrictions: [
-                        {field: "isDeleted", type: "simple", operation: "eq", value: "false"},
-                        {field: "operatorState", type: "simple", operation: "eq", value: "APPROVED"}
-                    ]
+                    restrictions: []
                 };
 
             return $http.post(config.baseUrl + '/api/blito/v1.0/public/exchange-blits/search',bodyJson, queryParam);
-        }
+        };
         miniSlider.getEndedEvents = function (size) {
             var queryParam = {
                 params : {page: 0, size: size, sort: "createdAt,desc"}
             };
             var bodyJson = {
                 restrictions: [
-                    {field: "isDeleted", type: "simple", operation: "eq", value: "false"},
                     {field: "eventState", type: "simple", operation: "eq", value: "ENDED"},
-                    {field: "operatorState", type: "simple", operation: "eq", value: "APPROVED"}
                     ]
             };
 
@@ -82,9 +73,7 @@ angular.module('homePageApi', [])
             if(!evento) {
                 bodyJson = {
                     restrictions: [
-                        {field: "isDeleted", type: "simple", operation: "eq", value: "false"},
                         {field: "eventState", type: "simple", operation: "neq", value: "ENDED"},
-                        {field: "operatorState", type: "simple", operation: "eq", value: "APPROVED"},
                         {field: "eventType", type: "simple", operation: "eq", value: type},
                         {field: "isEvento", type: "simple", operation: "eq", value: "false"},
                         {field: "offers", type: "collection", values: ["OUR_OFFER"]}
@@ -93,9 +82,7 @@ angular.module('homePageApi', [])
             } else if(evento) {
                 bodyJson = {
                     restrictions: [
-                        {field: "isDeleted", type: "simple", operation: "eq", value: "false"},
                         {field: "eventState", type: "simple", operation: "neq", value: "ENDED"},
-                        {field: "operatorState", type: "simple", operation: "eq", value: "APPROVED"},
                         {field: "isEvento", type: "simple", operation: "eq", value: "true"},
                         {field: "offers", type: "collection", values: ["OUR_OFFER"]}
                     ]
@@ -105,4 +92,4 @@ angular.module('homePageApi', [])
 
         }
 
-    })
+    });

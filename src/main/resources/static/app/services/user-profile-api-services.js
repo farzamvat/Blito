@@ -57,9 +57,7 @@ angular.module('userProfileApi', [])
             };
             var bodyJson = {
                 restrictions: [
-                    {field: "isDeleted", type: "simple", operation: "eq", value: "false"},
                     {field: "eventState", type: "simple", operation: "neq", value: "ENDED"},
-                    {field: "operatorState", type: "simple", operation: "eq", value: "APPROVED"},
                     {field: "eventType", type: "simple", operation: "eq", value: type}
                 ]
             };
@@ -98,10 +96,7 @@ angular.module('userProfileApi', [])
                 params : {page: pageNumber-1, size: 12, sort: "createdAt,desc"}
             };
             var bodyJson = {
-                restrictions : [
-                    {field : "isDeleted", type : "simple", operation : "eq", value: "false"},
-                    {field: "operatorState", type: "simple", operation: "eq", value: "APPROVED"}
-                ]
+                restrictions : []
             };
             return $http.post(config.baseUrl+'/api/blito/v1.0/public/exchange-blits/search', bodyJson,queryParam);
         };
