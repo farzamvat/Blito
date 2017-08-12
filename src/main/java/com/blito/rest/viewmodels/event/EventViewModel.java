@@ -104,6 +104,8 @@ public class EventViewModel {
 	@AdditionalFields
 	@JsonView(View.Event.class)
 	private Map<String,String> additionalFields;
+	
+	private boolean isPrivate;
 
 	public EventViewModel() {
 		eventDates = new HashSet<>();
@@ -319,4 +321,16 @@ public class EventViewModel {
 	public void setImages(Set<ImageViewModel> images) {
 		this.images = images;
 	}
+
+
+	public boolean isPrivate() {
+		return isPrivate;
+	}
+
+
+	public void setPrivate(boolean isPrivate) {
+		this.isPrivate = isPrivate;
+	}
+	
+	
 }

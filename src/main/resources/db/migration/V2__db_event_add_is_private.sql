@@ -1,0 +1,1 @@
+alter table event add is_private bit(1) not null default 0;
