@@ -35,7 +35,6 @@
                 </div>
             </div>
             <div class="co_name">!بی برنامه نمونید </div>
-            <!--<div class="load_msg">LOADING...</div>-->
             <div class="ground"></div>
         </div>
     </div>
@@ -221,7 +220,7 @@
                     <a class="slidingEventsImg" href="{{url+ourOfferEvento[0].eventLink}}"><img ng-src="{{ourOfferEvento[0].image}}" class=" center-block homePageImage">
                         <div class="moreInfo">
                             <h4>{{ ourOfferEvento[0].eventName }}</h4>
-                            <h5>{{ ourOfferEvento[0].capacity - ourOfferEvento[0].soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
+                            <h5 ng-show="event.eventType !== 'EXHIBITION'">{{ ourOfferEvento[0].capacity - ourOfferEvento[0].soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
                         </div>
 
                         <div ng-show="ourOfferEvento[0].eventState === 'SOLD'" class="soldout">
@@ -317,7 +316,6 @@
                             </div>
                             <h4 class="text-center slidingEventsTitle"><span ng-if="event.eventName.length > 20">...</span>{{event.eventName | limitTo}}</h4>
                         </a>
-                        <!--<button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  <i class="fa fa-ticket"></i></button>-->
                     </div>
 
                 </slick>
