@@ -15,8 +15,7 @@ angular.module('menuPagesModule', [])
                                       refresh,
                                       config,
                                       dataService,
-                                      updateInfo,
-                                      $routeParams) {
+                                      updateInfo) {
         var main = this;
         main.checkingSession = false;
         $scope.loadPage = false;
@@ -190,13 +189,18 @@ angular.module('menuPagesModule', [])
                     break;
                 default :
                     if($location.path().indexOf('event-page') > -1) {
-                        $scope.title = $location.path().replace('/event-page/','').replace( /\d+/,'');
-                        $scope.pageDescription = 'توضیحات صفحه اصلی';
+                        $scope.title = $location.path().replace('/event-page/','').replace( /\d+/,'').replace( /-/,'');
+                        $scope.pageDescription = 'رویداد، فروش بلیت، بلیت کنسرت، بلیت تئاتر، بلیت موسیقی';
                         $scope.robotValue = 'index';
                     }
                     if($location.path().indexOf('exchange-page') > -1) {
-                        $scope.title = $location.path().replace('/exchange-page/','').replace( /\d+/,'');
-                        $scope.pageDescription = 'توضیحات صفحه اصلی';
+                        $scope.title = $location.path().replace('/exchange-page/','').replace( /\d+/,'').replace( /-/,'');
+                        $scope.pageDescription = 'آگهی بلیت، فروش بلیت، بلیت فوری، تعویض بلیت';
+                        $scope.robotValue = 'index';
+                    }
+                    if($location.path().indexOf('bio') > -1) {
+                        $scope.title = $location.path().replace('/bio/','').replace( /\d+/,'').replace( /-/,'');
+                        $scope.pageDescription = 'برگزارکننده، کافه، اجرای کافه ای، موسیقی کافه ای';
                         $scope.robotValue = 'index';
                     }
                     if($location.path().indexOf('payment') > -1) {
