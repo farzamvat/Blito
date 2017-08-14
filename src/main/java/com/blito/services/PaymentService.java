@@ -128,7 +128,7 @@ public class PaymentService {
 						Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 			}
 		}
-		return commonBlit;
+		return commonBlitRepository.save(commonBlit);
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
