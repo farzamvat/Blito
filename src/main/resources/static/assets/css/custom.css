@@ -364,11 +364,9 @@ background-color: #303030;
     background: #222;
     border-radius: 50%;
     width:25px;
-    float:right;
     height:25px !important;
-    margin-right:5px;
-    margin-left:5px;
-    margin-bottom: 4px;
+    margin:auto;
+    margin-bottom: 10px;
 }
 .plannerPageSocialmedia img{
     width:60%;
@@ -442,9 +440,9 @@ background-color: #303030;
 .socialmediaHolder div{
     width:180px;
 }
-.plannerPagesocialmediaHolder div{
-    width:140px;
-}
+/*.plannerPagesocialmediaHolder div{*/
+    /*width:140px;*/
+/*}*/
 .socialmedia img{
     height: 70%;
     margin-top: -56px;
@@ -2868,6 +2866,9 @@ table td{
 .noPadding{
     padding: 0 !important;
 }
+.plannerPageSocialMediaUrl{
+    margin-bottom: 10px;
+}
 @media (max-width: 770px) {
     .navbar-header-backcolor{
         width: 172px !important;
@@ -2981,6 +2982,7 @@ table td{
     .footerleft {
         text-align: center;
     }
+
     .customPanelEventPage {
         margin-right: auto;
         margin-left: auto;
