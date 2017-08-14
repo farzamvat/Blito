@@ -2249,6 +2249,9 @@ a{
     margin-left: auto;
     text-align: center;
 }
+.marginBottomOurOffer {
+    margin-bottom: -150px;
+}
 .recipe img:hover ~.name{
     opacity:1;
 }
