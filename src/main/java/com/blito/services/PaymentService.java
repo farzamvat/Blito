@@ -59,6 +59,7 @@ public class PaymentService {
 	private static Object paymentCompletionLock = new Object();
 	private final Logger log = LoggerFactory.getLogger(PaymentService.class);
 	
+	@Transactional
 	public Blit zarinpalPaymentFlow(String authority,String status)
 	{
 		Blit blit = blitRepository.findByToken(authority).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
@@ -128,7 +129,7 @@ public class PaymentService {
 						Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 			}
 		}
-		return commonBlitRepository.save(commonBlit);
+		return commonBlit;
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
