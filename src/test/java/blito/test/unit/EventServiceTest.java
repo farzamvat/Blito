@@ -99,14 +99,6 @@ public class EventServiceTest {
 
 	@Before
 	public void init() {
-			
-			
-			
-			user.setEmail("farzam.vat@gmail.com");
-			user.setActive(true);
-			user.setFirstname("farzam");
-			user.setLastname("vatanzadeh");
-			user.setMobile("09124337522");
 
 		user.setEmail("farzam.vat@gmail.com");
 		user.setActive(true);

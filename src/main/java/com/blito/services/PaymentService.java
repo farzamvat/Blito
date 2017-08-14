@@ -106,9 +106,9 @@ public class PaymentService {
 					ResourceUtil.getMessage(Response.REQUESTED_BLIT_COUNT_IS_MORE_THAN_CAPACITY));
 	}
 	@Transactional
-	private Blit persistZarinpalBoughtBlit(CommonBlit blit, String authority, String refNum, String paymentMessage) {
+	public Blit persistZarinpalBoughtBlit(CommonBlit blit, String authority, String refNum, String paymentMessage) {
 		CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
-		BlitType blitType = commonBlit.getBlitType();
+		BlitType blitType = blitTypeRepository.findOne(commonBlit.getBlitType().getBlitTypeId());
 		commonBlit.setRefNum(refNum);
 		blit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 		commonBlit.setPaymentStatus(PaymentStatus.PAID.name());

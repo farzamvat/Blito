@@ -37,6 +37,7 @@ public class ZarinpalRestController {
 			{
 				log.error("******* ERROR IN ZARINPAL PAYMENT FLOW '{}'",throwable.getCause());
 			}
+			//TODO
 			return new RedirectView(String.valueOf(new StringBuilder(serverAddress).append("/payment/").append(blit.getTrackCode())));
 		});
 	}
