@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.blito.enums.Response;
+import com.blito.exceptions.ResourceNotFoundException;
+import com.blito.repositories.BlitRepository;
+import com.blito.resourceUtil.ResourceUtil;
 import com.blito.services.PaymentService;
 
 @RestController
@@ -24,6 +28,8 @@ public class ZarinpalRestController {
 	private String baseUrl;
 	@Autowired
 	private PaymentService paymentService;
+	@Autowired
+	BlitRepository blitRepository;
 	
 	private Logger log = LoggerFactory.getLogger(getClass());
 	
@@ -36,6 +42,12 @@ public class ZarinpalRestController {
 			if(throwable != null)
 			{
 				log.error("******* ERROR IN ZARINPAL PAYMENT FLOW '{}'",throwable.getCause());
+				return blitRepository.findByToken(Authority)
+						.map(b -> {
+							b.setPaymentError(throwable.getCause().getMessage());
+							b = blitRepository.save(b);
+							return new RedirectView(String.valueOf(new StringBuilder(serverAddress).append("/payment/").append(b.getTrackCode())));
+						}).orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
 			}
 			return new RedirectView(String.valueOf(new StringBuilder(serverAddress).append("/payment/").append(blit.getTrackCode())));
 		});
