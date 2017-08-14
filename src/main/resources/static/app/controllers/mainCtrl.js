@@ -99,11 +99,18 @@ angular.module('menuPagesModule', [])
             isOpen=!isOpen;
             if(isOpen) {
                 $(angular.element(document.getElementsByClassName('dropdown-menu'))).slideDown(300);
+                $(angular.element(document.getElementsByClassName('navbar-collapse'))).css("height","415px");
             }
             else {
                 $(angular.element(document.getElementsByClassName('dropdown-menu'))).slideUp(300);
+                $(angular.element(document.getElementsByClassName('navbar-collapse'))).css("height","187px");
             }
         };
+
+        // $(angular.element(document.getElementsByClassName("navbar-toggle"))).onclick = function () {
+        //     $(angular.element(document.getElementsByClassName('dropdown-menu'))).slideUp(300);
+        // };
+
         $rootScope.$on("$locationChangeStart", function(event, next, current) {
             $window.scroll(0,0);
             $("#navbar").removeClass("in");
@@ -290,6 +297,11 @@ angular.module('menuPagesModule', [])
 
         $scope.isActive = function (viewLocation) {
             return viewLocation === $location.path();
+        };
+
+        $scope.closeDropDown = function () {
+            $(angular.element(document.getElementsByClassName('dropdown-menu'))).slideUp(300);
+            isOpen=false;
         };
 
     });

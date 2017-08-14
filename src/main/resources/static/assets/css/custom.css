@@ -185,7 +185,10 @@ button.slick-next {
 .slick-prev:focus, .slick-next:focus {
     background: #303030;
 }
-
+.navbar-collapse{
+    transition: .3s !important;
+    max-height:415px !important;
+}
 .marginTop20 {
     margin-top: 150px !important;
 }
@@ -434,7 +437,7 @@ background-color: #303030;
     text-align: center;
  }
 .socialmediaHolder div{
-    width:200px;
+    width:180px;
 }
 .plannerPagesocialmediaHolder div{
     width:140px;
@@ -2833,7 +2836,9 @@ table td{
 .ticketName {
     margin-top: 30px;
 }
-
+.paddingLeft50{
+    padding-left: 50px !important;
+}
 .homePageImage {
     width: 106px !important;
     height: 150px !important;
@@ -2842,7 +2847,9 @@ table td{
     height: 250px !important;
     width: 176px !important;
 }
-
+.noPadding{
+    padding: 0 !important;
+}
 @media (max-width: 770px) {
     .navbar-header-backcolor{
         width: 172px !important;
@@ -2976,6 +2983,10 @@ table td{
     .navbar-collapse li>a{
         font-size: 20px !important;
     }
+    /*.navbar-collapse {*/
+        /*height: 200px;*/
+    /*}*/
+
     /*.ticketTitleMobile {*/
         /*text-align: center;*/
     /*}*/
@@ -3049,7 +3060,7 @@ table td{
         opacity: 1;
     }
     .footerInfo{
-        margin-top:20px !important;
+        margin-top:0px !important;
     }
     .logoEventPage {
         top: 30px;
@@ -3063,6 +3074,9 @@ table td{
 
     }
 
+    .paddingLeft30-sm{
+        padding-left: 30px !important;
+    }
     .editForm {
         width: 100%;
         z-index: 1000000000000000000;
