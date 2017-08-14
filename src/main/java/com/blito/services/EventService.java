@@ -187,7 +187,7 @@ public class EventService {
 		if (event.getEventState().equals(State.ENDED.name())) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.CANNOT_EDIT_EVENT_WHEN_CLOSED));
 		}
-
+		vmodel.setEventLink(vmodel.getEventLink().replaceAll(" ", "-"));
 		if (!vmodel.getEventLink().equals(event.getEventLink())) {
 			Optional<Event> eventResult = eventRepository.findByEventLinkAndIsDeletedFalse(vmodel.getEventLink());
 			if (eventResult.isPresent() && eventResult.get().getEventId() != vmodel.getEventId()) {
