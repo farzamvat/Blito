@@ -108,9 +108,9 @@ public class PaymentService {
 	@Transactional
 	public Blit persistZarinpalBoughtBlit(CommonBlit blit, String authority, String refNum, String paymentMessage) {
 		CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
-		BlitType blitType = blitTypeRepository.findOne(commonBlit.getBlitType().getBlitTypeId());
+		BlitType blitType = commonBlit.getBlitType();
 		commonBlit.setRefNum(refNum);
-		blit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+		commonBlit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 		commonBlit.setPaymentStatus(PaymentStatus.PAID.name());
 		blitService.checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
 		blitType.setSoldCount(blitType.getSoldCount() + commonBlit.getCount());
