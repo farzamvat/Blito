@@ -71,7 +71,7 @@ public class BlitService {
 			if (blit.getSeatType().equals(SeatType.COMMON.name())) {
 				if (blit.getPaymentStatus().equals(PaymentStatus.PENDING.name()))
 					return new CommonBlitViewModel(
-							new ResultVm(ResourceUtil.getMessage(Response.PAYMENT_PENDING), false));
+							new ResultVm(blit.getPaymentError(), false));
 				else if (blit.getPaymentStatus().equals(PaymentStatus.ERROR.name()))
 					return new CommonBlitViewModel(
 							new ResultVm((blit.getPaymentError() == null || blit.getPaymentError().isEmpty())
