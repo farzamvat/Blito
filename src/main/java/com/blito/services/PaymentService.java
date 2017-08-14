@@ -113,6 +113,7 @@ public class PaymentService {
 		commonBlit.setRefNum(refNum);
 		commonBlit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 		commonBlit.setPaymentStatus(PaymentStatus.PAID.name());
+		commonBlit.setPaymentError(ResourceUtil.getMessage(Response.PAYMENT_SUCCESS));
 		blitService.checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
 		blitType.setSoldCount(blitType.getSoldCount() + commonBlit.getCount());
 		log.info("****** NONE FREE BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}'",commonBlit.getCustomerEmail(),blitType.getSoldCount());
