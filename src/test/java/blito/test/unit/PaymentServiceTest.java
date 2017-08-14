@@ -1,5 +1,7 @@
 package blito.test.unit;
 
+import static org.junit.Assert.*;
+
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -12,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.Application;
 import com.blito.configs.Constants;
@@ -27,6 +28,7 @@ import com.blito.models.User;
 import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.CommonBlitRepository;
 import com.blito.repositories.EventHostRepository;
+import com.blito.repositories.EventRepository;
 import com.blito.repositories.ImageRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
@@ -58,6 +60,8 @@ public class PaymentServiceTest {
 	PaymentService paymentService;
 	@Autowired
 	AdminEventService adminEventService;
+	@Autowired
+	EventRepository eventRepository;
 	public EventViewModel eventViewModel = null;
 	public EventHost eventHost = null;
 	public User user = null;
@@ -171,6 +175,8 @@ public class PaymentServiceTest {
 		blit.setSeatType("COMMON");
 		blit = blitRepository.save(blit);
 		paymentService.persistZarinpalBoughtBlit(blit, blit.getToken(), "refNum", "pardakht shod");
+		
+		assertEquals("SOLD",eventRepository.findOne(1L).getEventState());
 		
 	}
 	

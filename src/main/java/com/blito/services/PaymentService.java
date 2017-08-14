@@ -105,6 +105,7 @@ public class PaymentService {
 			throw new InconsistentDataException(
 					ResourceUtil.getMessage(Response.REQUESTED_BLIT_COUNT_IS_MORE_THAN_CAPACITY));
 	}
+	@Transactional
 	public Blit persistZarinpalBoughtBlit(CommonBlit blit, String authority, String refNum, String paymentMessage) {
 		CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
 		BlitType blitType = blitTypeRepository.findOne(commonBlit.getBlitType().getBlitTypeId());
@@ -127,8 +128,9 @@ public class PaymentService {
 						Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 			}
 		}
-		blitTypeRepository.saveAndFlush(blitType);
-		return commonBlitRepository.saveAndFlush(commonBlit);
+//		blitTypeRepository.saveAndFlush(blitType);
+//		return commonBlitRepository.saveAndFlush(commonBlit);
+		return commonBlit;
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
