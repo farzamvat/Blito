@@ -990,13 +990,12 @@
                                             </div>
                                             <div class="col-xs-12 col-sm-6 floatRight marginTop30">
 
-                                                <label> عکس پروفایل (نسبت طول به عرض : ۰.۷) :</label>
+                                                <label class="marginRight10"> عکس برگزارکننده (نسبت طول به عرض برابر : مربع) :</label>
                                                 <button class="btn btn-default " ng-click='uploadPicEventPlanner()'>انتخاب <i class="fa fa-image"></i></button>
                                                 <div class="col-xs-12" ng-show="showThumbnailEventPlanner">
                                                     <img class="img-responsive eventPlannerPhotoUpload  marginTop30" id="eventPlannerPhotoUpload"  src="" alt="">
                                                     <div class="col-xs-12">
                                                         <button class="btn btn-success marginTop10" ng-click="photoUploadPlanner()">بارگذاری   <i ng-show="uploadPlannerPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></button>
-                                                        <!--<button ng-click="deletePicEventPlanner()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                                     </div>
                                                     <div id="plannerPhotoError" ng-show="plannerPhotoError" class="text-center alert alert-danger col-xs-12">
                                                         <strong></strong>
@@ -1009,13 +1008,12 @@
 
                                             </div>
                                             <div class="col-xs-12 col-sm-6 floatRight marginTop30">
-                                                <label>  عکس کاور :</label>
+                                                <label class="marginRight10">  عکس کاور (نسبت طول به عرض : ۰.۵) :</label>
                                                 <button class="btn btn-default " ng-click='uploadPicCover()'> انتخاب <i class="fa fa-image"></i></button>
                                                 <div class="col-xs-12" ng-show="showThumbnailCover">
                                                     <img class="img-responsive coverPhotoUpload marginTop30"  src="" alt="">
                                                     <div class="col-xs-12">
                                                         <button class="btn btn-success marginTop10" ng-click="photoUploadPlannerCover()">بارگذاری <i ng-show="uploadCoverPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></button>
-                                                        <!--<button class="btn btn-danger marginTop10" ng-click="deleteCoverPic()">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                                     </div>
                                                     <div id="coverPhotoError" ng-show="coverPhotoError" class="text-center alert alert-danger col-xs-12">
                                                         <strong></strong>
