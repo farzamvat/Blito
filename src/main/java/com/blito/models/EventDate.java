@@ -5,11 +5,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,8 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
-import com.blito.enums.State;
 
 @Entity(name="event_time")
 public class EventDate {
@@ -29,7 +24,7 @@ public class EventDate {
 	
 	String eventDateState;
 	
-	@OneToMany(mappedBy="eventDate", targetEntity=BlitType.class,fetch=FetchType.LAZY, cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="eventDate", targetEntity=BlitType.class,fetch=FetchType.EAGER, cascade=CascadeType.ALL,orphanRemoval=true)
 	Set<BlitType> blitTypes;
 	
 	@ManyToOne
