@@ -115,7 +115,7 @@
                             <h5>{{ ourOfferConcert[0].capacity - ourOfferConcert[0].soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
                         </div>
 
-                        <div ng-show="ourOfferConcert[0].eventState === 'SOLD'" class="soldout">
+                        <div ng-show="ourOfferConcert[0].eventState === 'SOLD'" class="soldout marginBottomOurOffer">
                             <img src="../../../assets/img/soldout.png"/>
                         </div>
 
@@ -170,7 +170,7 @@
                             <h5>{{ ourOfferTour[0].capacity - ourOfferTour[0].soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
                         </div>
 
-                        <div ng-show="ourOfferTour[0].eventState === 'SOLD'" class="soldout">
+                        <div ng-show="ourOfferTour[0].eventState === 'SOLD'" class="soldout marginBottomOurOffer">
                             <img src="../../../assets/img/soldout.png"/>
                         </div>
                         <h4 class="text-center slidingEventsTitle"><span ng-if="ourOfferTour[0].eventName.length > 20">...</span>{{ ourOfferTour[0].eventName  | limitTo:20}}</h4>
@@ -224,7 +224,7 @@
                             <h5>{{ ourOfferEvento[0].capacity - ourOfferEvento[0].soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
                         </div>
 
-                        <div ng-show="ourOfferEvento[0].eventState === 'SOLD'" class="soldout">
+                        <div ng-show="ourOfferEvento[0].eventState === 'SOLD'" class="soldout marginBottomOurOffer">
                             <img src="../../../assets/img/soldout.png"/>
                         </div>
                         <h4 class="text-center slidingEventsTitle"><span ng-if="ourOfferEvento[0].eventName.length > 20">...</span>{{ ourOfferEvento[0].eventName | limitTo:20}}</h4>
