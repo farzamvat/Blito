@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.enums.BankGateway;
 import com.blito.enums.PaymentStatus;
@@ -96,10 +97,12 @@ public class BlitService {
 		commonBlit.setBlitType(attachedBlitType);
 		commonBlit.setToken(token);
 		commonBlit.setTrackCode(trackCode);
+		commonBlit.setPaymentError(ResourceUtil.getMessage(Response.PAYMENT_PENDING));
 		commonBlit.setPaymentStatus(PaymentStatus.PENDING.name());
 		return commonBlitRepository.save(commonBlit);
 	}
 
+	@Transactional
 	public CommonBlit reserveFreeBlit(BlitType blitType, CommonBlit commonBlit, User user) {
 		User attachedUser = userRepository.findOne(user.getUserId());
 		BlitType attachedBlitType = increaseSoldCount(blitType.getBlitTypeId(), commonBlit);
@@ -111,7 +114,7 @@ public class BlitService {
 		commonBlit.setPaymentStatus(PaymentStatus.FREE.name());
 		commonBlit.setBankGateway(BankGateway.NONE.name());
 		attachedUser.addBlits(commonBlit);
-		return commonBlitRepository.saveAndFlush(commonBlit);
+		return commonBlit;
 	}
 
 	private BlitType increaseSoldCount(long blitTypeId, CommonBlit commonBlit) {
@@ -131,7 +134,7 @@ public class BlitService {
 						.setEventSoldDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 			}
 		}
-		return blitTypeRepository.saveAndFlush(blitType);
+		return blitType;
 	}
 
 	public void checkBlitTypeRestrictionsForBuy(BlitType blitType, CommonBlit commonBlit) {

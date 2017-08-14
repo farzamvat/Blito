@@ -152,9 +152,9 @@ public class PaymentServiceTest {
 		eventDateState.setEventDateState(State.OPEN);
 		adminEventService.changeEventDateState(eventDateState);
 		ChangeBlitTypeStateVm blitTypeState = new ChangeBlitTypeStateVm();
-		blitTypeState.setBlitTypeState(State.OPEN);
-		blitTypeState.setBlitTypeId(1L);
-		adminEventService.changeBlitTypeState(blitTypeState);
+//		blitTypeState.setBlitTypeState(State.OPEN);
+//		blitTypeState.setBlitTypeId(1L);
+//		adminEventService.changeBlitTypeState(blitTypeState);
 		
 		CommonBlit blit = new CommonBlit();
 		blit.setBankGateway("ZARINPAL");

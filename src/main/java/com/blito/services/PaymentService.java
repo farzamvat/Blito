@@ -92,7 +92,7 @@ public class PaymentService {
 		}
 		else {
 			log.error("Error in zarinpal callback, blit id '{}' , user email '{}'",blit.getBlitId(),blit.getCustomerEmail());
-			blit.setPaymentError(status);
+			blit.setPaymentError(ResourceUtil.getMessage(Response.PAYMENT_ERROR));
 			blit.setPaymentStatus(PaymentStatus.ERROR.name());
 			return blitRepository.save(blit);
 		}
@@ -128,8 +128,6 @@ public class PaymentService {
 						Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 			}
 		}
-//		blitTypeRepository.saveAndFlush(blitType);
-//		return commonBlitRepository.saveAndFlush(commonBlit);
 		return commonBlit;
 	}
 	
