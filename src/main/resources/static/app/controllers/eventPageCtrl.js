@@ -157,7 +157,9 @@ angular.module('eventsPageModule')
                 bankGateway : payment
             };
         };
+        $scope.buyTicketOnce = false;
         $scope.nextStep2 = function () {
+            $scope.buyTicketOnce = true;
             document.getElementsByClassName("payedBlitSpinner")[0].style.display = "inline";
             document.getElementById("buyBlitError").style.display = "none";
             ticketsService.buyTicket(buyPaymentTicket)
@@ -169,13 +171,16 @@ angular.module('eventsPageModule')
                     }
                 })
                 .catch(function (data) {
+                    $scope.buyTicketOnce = false;
                     $scope.paymentSelectedDone = '';
                     document.getElementsByClassName("payedBlitSpinner")[0].style.display = "none";
                     document.getElementById("buyBlitError").innerHTML= data.data.message;
                     document.getElementById("buyBlitError").style.display = "inline";
                 })
         };
+        $scope.buyTicketNotUserOnce = false;
         $scope.nextStep2NotUser = function () {
+            $scope.buyTicketNotUserOnce = true;
             document.getElementsByClassName("payedBlitSpinner")[0].style.display = "inline";
             document.getElementById("buyBlitError").style.display = "none";
             ticketsService.buyTicketNotUser(buyPaymentTicket)
@@ -187,6 +192,7 @@ angular.module('eventsPageModule')
                     }
                 })
                 .catch(function (data) {
+                    $scope.buyTicketNotUserOnce = false;
                     $scope.paymentSelectedDone = '';
                     document.getElementsByClassName("payedBlitSpinner")[0].style.display = "none";
                     document.getElementById("buyBlitError").innerHTML= data.data.message;
