@@ -173,6 +173,20 @@ angular.module('userProfileApi', [])
         planner.editPlannerForm = function (editData) {
             return $http.put(config.baseUrl+'/api/blito/v1.0/event-hosts', editData)
         };
+        planner.getPlannerByLink = function (plannerLink) {
+            return $http.get(config.baseUrl+'/api/blito/v1.0/public/event-hosts/link/'+plannerLink)
+        };
+        planner.getPlannerEvents = function (plannerLink, pageNumber) {
+            var queryParam = {
+                params : {page: pageNumber-1, size: 6, sort: "createdAt,desc"}
+            };
+            var bodyJson = {
+                restrictions : [
+                    {field : "eventHost-eventHostLink", type : "simple", operation : "eq", value: plannerLink}
+                ]
+            };
+            return $http.post(config.baseUrl+'/api/blito/v1.0/public/events/search',bodyJson,queryParam)
+        };
         planner.deletePlanner = function (plannerId) {
             var queryParam = {
                 params : {eventHostId : plannerId}
