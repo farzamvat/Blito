@@ -92,6 +92,7 @@ public class EventHostService {
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toSet()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 		eventHost.setImages(images);
+		vmodel.setEventHostLink(vmodel.getEventHostLink().replaceAll(" " , "-"));
 		if (!vmodel.getEventHostLink().equals(eventHost.getEventHostLink())) {
 			Optional<EventHost> eventHostResult = eventHostRepository
 					.findByEventHostLinkAndIsDeletedFalse(vmodel.getEventHostLink());
