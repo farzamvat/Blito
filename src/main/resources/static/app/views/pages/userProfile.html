@@ -1,17 +1,4 @@
 <div class="profilePage" ng-controller="userProfileCtrl as userProfile">
-    <!--<div class="userProfileInfo">-->
-
-    <!--</div>-->
-    <!--<div class="card hovercard userProfileInfo">-->
-
-        <!--<div class="useravatar">-->
-            <!--<img alt="" src="assets/img/profile.jpeg">-->
-        <!--</div>-->
-        <!--<div class="card-info"> <span class="card-title">{{userData.firstname}} {{userData.lastname}}</span>-->
-
-        <!--</div>-->
-    <!--</div>-->
-    <!-- tabs right -->
     <div ng-click="showMenuOnSm()" class="hidden-sm hidden-lg hidden-md profileToggleMenu"><i class="fa fa-plus fa-2x"></i></div>
     <div class="tabbable smallPageSize userProfileTab marginTop60"  >
         <div class="col-xs-3 col-sm-2  floatRight ">
@@ -28,7 +15,7 @@
                         <i class="fa fa-calendar" aria-hidden="true"></i>
                     </a>
                     <ul class="tabDropDown" id="toggleEvent">
-                        <li ng-click="scrollTo('eventList', 'eventListSection')"><a ><span class=""> لیست رویدادها </span><i class="fa fa-list"></i></a></li>
+                        <li ng-click="scrollTo('eventList', 'eventListSection')"><a ><span class=""> لیست رویدادها و برگزارکننده ها </span><i class="fa fa-list"></i></a></li>
                         <li ng-click="scrollTo('makeEvent', 'makeEventSection')"><a ><span class="">ایجاد رویداد</span><i class="fa fa-magic"></i></a></li>
                         <li ng-click="scrollTo('eventPlannerSection', 'PlannerSection')"><a ><span class="-xs">ایجاد برگزارکننده</span><i class="fa fa-user"></i></a></li>
                     </ul>
