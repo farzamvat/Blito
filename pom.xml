@@ -251,24 +251,28 @@
 	</dependencies>
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
 			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>native2ascii-maven-plugin</artifactId> 
 				<executions> <execution> <id>native2ascii-utf8</id> <goals> <goal>native2ascii</goal> 
 				</goals> </execution> </executions> <configuration> <src>src/main/resources/messages</src> 
 				<dest>target/classes/messages</dest> <encoding>UTF8</encoding> </configuration> 
 				</plugin> -->
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<executable>true</executable>
-					<archive>
-						<manifest>
-							<mainClass>com.blito.Application</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
+			<!--<plugin>-->
+				<!--<groupId>org.springframework.boot</groupId>-->
+				<!--<artifactId>spring-boot-maven-plugin</artifactId>-->
+				<!--<configuration>-->
+					<!--<executable>true</executable>-->
+					<!--&lt;!&ndash;<archive>&ndash;&gt;-->
+						<!--&lt;!&ndash;<manifest>&ndash;&gt;-->
+							<!--&lt;!&ndash;<mainClass>com.blito.Application</mainClass>&ndash;&gt;-->
+						<!--&lt;!&ndash;</manifest>&ndash;&gt;-->
+					<!--&lt;!&ndash;</archive>&ndash;&gt;-->
+				<!--</configuration>-->
 
-			</plugin>
+			<!--</plugin>-->
 
 			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>jaxb2-maven-plugin</artifactId> 
 				<version>1.6</version> <executions> <execution> <id>xjc</id> <goals> <goal>xjc</goal> 
