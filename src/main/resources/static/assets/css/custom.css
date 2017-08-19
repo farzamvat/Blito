@@ -2128,6 +2128,14 @@ a{
     box-shadow: 0px 0px 8px #222;
     z-index: 999;
 }
+.eventPageHostImage {
+    width: 150px;
+    display: block;
+    margin: 5px auto;
+}
+a>h5 {
+    color: black;
+}
 .section-white{
     /*background-color: #eee;*/
     padding:30px;
@@ -2978,6 +2986,12 @@ table td{
 
 
 @media (max-width: 768px) {
+    .marginTop30Mobile {
+        margin-top: 30px;
+    }
+    .textCenterMobile {
+        text-align: center;
+    }
     .footerleft {
         text-align: center;
     }
