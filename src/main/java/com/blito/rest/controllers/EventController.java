@@ -1,28 +1,5 @@
 package com.blito.rest.controllers;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.blito.annotations.Permission;
 import com.blito.enums.ApiBusinessName;
 import com.blito.enums.Response;
@@ -38,11 +15,23 @@ import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.services.EventService;
 import com.fasterxml.jackson.annotation.JsonView;
-
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import io.vavr.control.Try;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 
 @RestController
 @RequestMapping("${api.base.url}" + "/events")
@@ -107,7 +96,7 @@ public class EventController {
 	@ApiResponses({ @ApiResponse(code = 200, message = "get all user's events ok", response = EventViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
 	@Permission(value = ApiBusinessName.USER)
-	@JsonView(View.Event.class)
+	@JsonView(View.AdminEvent.class)
 	@GetMapping("/all-user-events")
 	public ResponseEntity<Page<EventViewModel>> getAllUserEvents(Pageable pageable) {
 		return ResponseEntity.ok(eventService.getUserEvents(pageable));
