@@ -176,6 +176,9 @@ angular.module('userProfileApi', [])
         planner.getPlannerByLink = function (plannerLink) {
             return $http.get(config.baseUrl+'/api/blito/v1.0/public/event-hosts/link/'+plannerLink)
         };
+        planner.getPlannerById = function (plannerId) {
+            return $http.get(config.baseUrl+'/api/blito/v1.0/public/event-hosts/'+plannerId)
+        };
         planner.getPlannerEvents = function (plannerLink, pageNumber) {
             var queryParam = {
                 params : {page: pageNumber-1, size: 6, sort: "createdAt,desc"}

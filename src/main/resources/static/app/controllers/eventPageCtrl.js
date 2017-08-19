@@ -13,7 +13,8 @@ angular.module('eventsPageModule')
                                            userInfo,
                                            ticketsService,
                                            $window,
-                                           dataService) {
+                                           dataService,
+                                           plannerService) {
         var promises = [];
         $scope.persianSans = [];
         $scope.eventInfo = {};
@@ -28,14 +29,16 @@ angular.module('eventsPageModule')
         $scope.eventData = {};
 
         eventService.getEvent($routeParams.eventLink)
-            .then(function (data, status) {
+            .then(function (data) {
                 $scope.eventDataDetails = angular.copy(data.data);
+                $scope.getPlannerData($scope.eventDataDetails.eventHostId);
                 $scope.eventType = $scope.eventDataDetails.eventType;
                 $scope.buyTicketFormatData(data.data.eventDates);
                 mapMarkerService.initMapOnlyShowMarker(document.getElementById('map'));
                 mapMarkerService.setMarker($scope.eventDataDetails.latitude, $scope.eventDataDetails.longitude);
                 $scope.flatEventDates($scope.eventDataDetails.eventDates);
                 $scope.getImages(data.data);
+                console.log($scope.eventDataDetails);
                 document.getElementById('members').insertAdjacentHTML('afterbegin',$scope.eventDataDetails.members);
                 document.getElementById('showStartTime').innerHTML = persianDate($scope.eventDataDetails.blitSaleStartDate).format("dddd,DD MMMM, ساعت HH:mm");
                 if($scope.eventDataDetails.aparatDisplayCode) {
@@ -230,6 +233,28 @@ angular.module('eventsPageModule')
                     document.getElementById("buyBlitError").style.display = "inline";
                 })
 
+        };
+        $scope.getPlannerData = function (plannerId) {
+            plannerService.getPlannerById(plannerId)
+                .then(function (data) {
+                    var plannerPhotos = data.data.images;
+                    $scope.plannerLink = '/bio/'+data.data.eventHostLink;
+                    plannerPhotos.forEach(function (image) {
+                        if(image.type === "HOST_PHOTO") {
+                            photoService.download(image.imageUUID)
+                                .then(function (data) {
+                                    $scope.plannerPhoto = data.data.encodedBase64;
+                                })
+                                .catch(function () {
+
+                                })
+                        }
+                    });
+                    console.log(data);
+                })
+                .catch(function (data) {
+                    console.log(data);
+                })
         };
         $scope.buyTicketFormatData = function (eventNestedData) {
             $scope.buyTicketPickData = eventNestedData.map(function (eventDate) {
