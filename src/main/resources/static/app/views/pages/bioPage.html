@@ -34,34 +34,38 @@
 
     <div class="row plannerdescrptionHolder">
         <div class="col-xs-12 col-sm-8 col-sm-offset-2 textAlignCenter marginTop30">
-            <h3 class="PlannerSocialMediaHeader">شبکه های اجتماعی {{plannerData.hostName}}</h3>
-            <div class="col-xs-4 col-xs-offset-4 plannerPagesocialmediaHolder noBorder textAlignCenter ">
-                <div class="marginAuto">
-                    <div class="col-xs-12 col-sm-4">
-                    <span>{{plannerData.instagramLink}}</span>
-                    <span ng-show="plannerData.instagramLink" class="plannerPageSocialmedia " >
+            <h3 class="PlannerSocialMediaHeader textAlignRight">شبکه های اجتماعی {{plannerData.hostName}}</h3>
+            <div class="col-xs-12  plannerPagesocialmediaHolder noBorder textAlignCenter ">
+                    <div ng-show="plannerData.instagramLink" class="col-xs-12 col-sm-2  floatRight">
+                    <div  class="plannerPageSocialmedia " >
                         <img class="displayInline"  src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/d0cf11b8-f7d3-4c59-8e62-91365dd175f9.png"/>
-                    </span>
                     </div>
-                    <div class="col-xs-12 col-sm-4">
-                    <span>{{plannerData.telegramLink}}</span>
-                    <span ng-show="plannerData.telegramLink" class="plannerPageSocialmedia">
+                        <div class="plannerPageSocialMediaUrl">{{plannerData.instagramLink}}</div>
+                    </div>
+                    <div ng-show="plannerData.telegramLink" class="col-xs-12 col-sm-2  floatRight">
+                    <div  class="plannerPageSocialmedia">
                         <img class="displayInline" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/11b8524d-0856-4844-9786-b5aab92c9ea5.png"/>
-                    </span>
                     </div>
-                    <div class="col-xs-12 col-sm-4">
-                    <span>{{plannerData.twitterLink}}</span>
-                    <span ng-show="plannerData.twitterLink" class="plannerPageSocialmedia" >
+                        <div class="plannerPageSocialMediaUrl">{{plannerData.telegramLink}}</div>
+                    </div>
+                    <div ng-show="plannerData.twitterLink" class="col-xs-12 col-sm-2 floatRight ">
+                    <div  class="plannerPageSocialmedia" >
                         <img class="displayInline" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/3a457013-f475-4d11-8c98-76f42a25d8e5.png"/>
-                    </span>
                     </div>
-                    <div class="col-xs-12 col-sm-4">
-                    <span>{{plannerData.linkedinLink}}</span>
-                    <span ng-show="plannerData.twitterLink" class="plannerPageSocialmedia" >
-                        <img class="displayInline" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/b8d9fb6a-abeb-40c6-a425-1a88eb44b7cb.png"/>
-                    </span>
+                        <div class="plannerPageSocialMediaUrl">{{plannerData.twitterLink}}</div>
                     </div>
-                </div>
+                    <div ng-show="plannerData.linkedinLink" class="col-xs-12 col-sm-2 floatRight">
+                    <div class="plannerPageSocialmedia" >
+                        <img class="displayInline" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/54e056ec-b4a7-4c08-8c6a-e4316eec13a9.png"/>
+                    </div>
+                        <div class="plannerPageSocialMediaUrl">{{plannerData.linkedinLink}}</div>
+                    </div>
+                    <div ng-show="plannerData.websiteLink" class="col-xs-12 col-sm-2 floatRight">
+                    <div class="plannerPageSocialmedia" >
+                        <img class="displayInline" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/6eea117b-e94f-4955-bc38-900236d91578.png"/>
+                    </div>
+                        <div class="plannerPageSocialMediaUrl">{{plannerData.websiteLink}}</div>
+                    </div>
             </div>
         </div>
     </div>
