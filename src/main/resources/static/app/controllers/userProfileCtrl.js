@@ -906,6 +906,7 @@ angular.module('User')
                 blitSaleStartDate : dateSetterService.persianToMs(eventFields.ticketStartTime),
                 description : eventFields.description,
                 members : eventFields.members,
+                isPrivate : eventFields.isPrivate,
                 eventDates : newShowTime,
                 images : [
                     {imageUUID : $scope.eventImageId, type : "EVENT_PHOTO"},
@@ -1085,7 +1086,8 @@ angular.module('User')
                 aparatDisplayCode : $scope.userEventsEdit[index].aparatDisplayCode,
                 eventHostId : $scope.userEventsEdit[index].eventHostId,
                 eventLink : $scope.userEventsEdit[index].eventLink,
-                members : $scope.userEventsEdit[index].members
+                members : $scope.userEventsEdit[index].members,
+                isPrivate : $scope.userEventsEdit[index].isPrivate
             };
             $scope.dateClass = function (classNumber) {
                 return "classDate"+classNumber;
