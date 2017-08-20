@@ -161,7 +161,7 @@ public class ExcelServiceTest {
 
 		Image hostCoverPhoto = new Image();
 		hostCoverPhoto.setImageType(ImageType.HOST_COVER_PHOTO.name());
-		hostCoverPhoto.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO);
+		hostCoverPhoto.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO_1);
 
 		Image eventPhoto = new Image();
 		eventPhoto.setImageType(ImageType.EVENT_PHOTO.name());

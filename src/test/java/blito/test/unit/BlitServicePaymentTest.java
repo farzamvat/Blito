@@ -13,11 +13,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.blito.Application;
 import com.blito.configs.Constants;
-import com.blito.enums.DayOfWeek;
 import com.blito.enums.EventType;
 import com.blito.enums.HostType;
 import com.blito.enums.ImageType;
@@ -42,7 +40,6 @@ import com.blito.security.SecurityContextHolder;
 import com.blito.services.BlitService;
 import com.blito.services.EventService;
 import com.blito.services.PaymentRequestServiceAsync;
-import com.blito.services.PaymentService;
 
 import mockit.Expectations;
 import mockit.Injectable;
@@ -138,7 +135,7 @@ public class BlitServicePaymentTest {
 
 		Image hostCoverPhoto = new Image();
 		image.setImageType(ImageType.HOST_COVER_PHOTO.name());
-		image.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO);
+		image.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO_1);
 
 		Image exchangeBlitPhoto = new Image();
 		image.setImageType(ImageType.EXCHANGEBLIT_PHOTO.name());
