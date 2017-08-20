@@ -1,52 +1,14 @@
 package com.blito.services;
 
-import java.sql.Timestamp;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.blito.configs.Constants;
 import com.blito.enums.ImageType;
 import com.blito.enums.OperatorState;
 import com.blito.enums.Response;
 import com.blito.enums.State;
-import com.blito.exceptions.AlreadyExistsException;
-import com.blito.exceptions.InconsistentDataException;
-import com.blito.exceptions.NotAllowedException;
-import com.blito.exceptions.NotFoundException;
-import com.blito.exceptions.ResourceNotFoundException;
-import com.blito.mappers.BlitTypeMapper;
-import com.blito.mappers.DiscountMapper;
-import com.blito.mappers.EventDateMapper;
-import com.blito.mappers.EventFlatMapper;
-import com.blito.mappers.EventMapper;
-import com.blito.mappers.GenericMapper;
-import com.blito.mappers.ImageMapper;
-import com.blito.models.BlitType;
-import com.blito.models.Discount;
-import com.blito.models.Event;
-import com.blito.models.EventHost;
-import com.blito.models.Image;
-import com.blito.models.User;
-import com.blito.repositories.BlitTypeRepository;
-import com.blito.repositories.DiscountRepository;
-import com.blito.repositories.EventDateRepository;
-import com.blito.repositories.EventHostRepository;
-import com.blito.repositories.EventRepository;
-import com.blito.repositories.ImageRepository;
-import com.blito.repositories.UserRepository;
+import com.blito.exceptions.*;
+import com.blito.mappers.*;
+import com.blito.models.*;
+import com.blito.repositories.*;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.event.ChangeEventStateVm;
@@ -58,8 +20,23 @@ import com.blito.search.Operation;
 import com.blito.search.SearchViewModel;
 import com.blito.search.Simple;
 import com.blito.security.SecurityContextHolder;
-
 import io.vavr.control.Either;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class EventService {
@@ -241,7 +218,7 @@ public class EventService {
 			GenericMapper<Event, V> mapper) {
 		Simple<Event> isDeletedRestriction = new Simple<>(Operation.eq, "isDeleted", "false");
 		Simple<Event> isPrivateRestriction = new Simple<>(Operation.eq, "isPrivate", "false");
-		Simple<Event> isApprovedRestriction = new Simple<>(Operation.eq, "operatorState", OperatorState.APPROVED.name()); 
+		Simple<Event> isApprovedRestriction = new Simple<>(Operation.eq, "operatorState", OperatorState.APPROVED.name());
 		searchViewModel.getRestrictions().addAll(Arrays.asList(isDeletedRestriction, isPrivateRestriction, isApprovedRestriction));
 		Page<Event> page = searchService.search(searchViewModel, pageable, eventRepository);
 		Timestamp now = Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant());

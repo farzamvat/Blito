@@ -1,11 +1,8 @@
 package com.blito.search;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.data.jpa.domain.Specification;
 
-import com.blito.enums.OfferTypeEnum;
+import java.util.List;
 
 public class Collection<T> extends AbstractSearchViewModel<T> {
 
@@ -23,8 +20,9 @@ public class Collection<T> extends AbstractSearchViewModel<T> {
 	}
 
 	public void setValues(List<Object> values) {
-		if (super.field.equals("offers")) {
-			vals = values;
-		}
+//		if (super.field.equals("offers")) {
+//			vals = values;
+//		}
+		vals = values;
 	}
 }
