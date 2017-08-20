@@ -98,11 +98,16 @@ angular.module('menuPagesModule', [])
             isOpen=!isOpen;
             if(isOpen) {
                 $(angular.element(document.getElementsByClassName('dropdown-menu'))).slideDown(300);
-                $(angular.element(document.getElementsByClassName('navbar-collapse'))).css("height","415px");
+                $(angular.element(document.getElementsByClassName('navbar-collapse'))).css("height","600px");
             }
             else {
                 $(angular.element(document.getElementsByClassName('dropdown-menu'))).slideUp(300);
-                $(angular.element(document.getElementsByClassName('navbar-collapse'))).css("height","187px");
+                if(!$scope.loggedIn) {
+                    $(angular.element(document.getElementsByClassName('navbar-collapse'))).css("height", "210px");
+                }
+                else{
+                    $(angular.element(document.getElementsByClassName('navbar-collapse'))).css("height", "260px");
+                }
             }
         };
 

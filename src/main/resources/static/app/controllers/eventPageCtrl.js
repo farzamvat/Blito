@@ -143,22 +143,25 @@ angular.module('eventsPageModule')
             $scope.setPaymentData(payment, buyerData)
         };
         $scope.setPaymentData = function (payment, buyerData) {
-            var eventPersianDate = $scope.eventFlatDates.filter(function (ticket) { return ticket.name === $scope.itemWithCapacity[0].name});
-            buyPaymentTicket = {
-                blitTypeId : $scope.itemWithCapacity[0].blitTypeId,
-                blitTypeName : $scope.itemWithCapacity[0].name,
-                count : $scope.totalNumber,
-                customerEmail : buyerData.email,
-                customerMobileNumber : dataService.persianToEnglishDigit(persianJs(buyerData.mobile).englishNumber().toString()),
-                customerName : buyerData.firstname+ " " + buyerData.lastname,
-                eventAddress : $scope.eventDataDetails.address,
-                eventDate : $scope.itemWithCapacity[0].date,
-                eventDateAndTime : eventPersianDate[0].persianDate,
-                eventName : $scope.eventDataDetails.eventName,
-                seatType : "COMMON",
-                totalAmount : $scope.totalPrice ,
-                bankGateway : payment
-            };
+                angular.element(document.getElementsByClassName("btnPaymentActive")).addClass("btnPaymentActivated");
+                var eventPersianDate = $scope.eventFlatDates.filter(function (ticket) {
+                    return ticket.name === $scope.itemWithCapacity[0].name
+                });
+                buyPaymentTicket = {
+                    blitTypeId: $scope.itemWithCapacity[0].blitTypeId,
+                    blitTypeName: $scope.itemWithCapacity[0].name,
+                    count: $scope.totalNumber,
+                    customerEmail: buyerData.email,
+                    customerMobileNumber: dataService.persianToEnglishDigit(persianJs(buyerData.mobile).englishNumber().toString()),
+                    customerName: buyerData.firstname + " " + buyerData.lastname,
+                    eventAddress: $scope.eventDataDetails.address,
+                    eventDate: $scope.itemWithCapacity[0].date,
+                    eventDateAndTime: eventPersianDate[0].persianDate,
+                    eventName: $scope.eventDataDetails.eventName,
+                    seatType: "COMMON",
+                    totalAmount: $scope.totalPrice,
+                    bankGateway: payment
+                };
         };
         $scope.nextStep2 = function () {
             document.getElementsByClassName("payedBlitSpinner")[0].style.display = "inline";

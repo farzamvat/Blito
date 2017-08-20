@@ -120,7 +120,7 @@ textarea:focus, input:focus {
     transition: 200ms;
 }
 .btn:hover {
-    box-shadow: 2px 2px  10px #303030;
+    box-shadow: 0px 0px  5px #222;
 }
 .btn:active {
 color: white !important;
@@ -190,7 +190,7 @@ button.slick-next {
 }
 .navbar-collapse{
     transition: .3s !important;
-    max-height:415px !important;
+    max-height:600px !important;
 }
 .marginTop20 {
     margin-top: 150px !important;
@@ -364,11 +364,9 @@ background-color: #303030;
     background: #222;
     border-radius: 50%;
     width:25px;
-    float:right;
     height:25px !important;
-    margin-right:5px;
-    margin-left:5px;
-    margin-bottom: 4px;
+    margin:auto;
+    margin-bottom: 10px;
 }
 .plannerPageSocialmedia img{
     width:60%;
@@ -442,12 +440,12 @@ background-color: #303030;
 .socialmediaHolder div{
     width:180px;
 }
-.plannerPagesocialmediaHolder div{
-    width:140px;
-}
+/*.plannerPagesocialmediaHolder div{*/
+    /*width:140px;*/
+/*}*/
 .socialmedia img{
     height: 70%;
-    margin-top: -56px;
+    margin-top: -54px;
     margin-right: 5px;
     transition: .5s;
 }
@@ -509,7 +507,7 @@ div.row.slidingEventsRow {
     /*background-size: 100% 600px;*/
 }
 div.hidden-xs.col-sm-3.floatRight.blitoOffer {
-    height: 460px;
+    height: 491px;
 }
 .editButton {
     padding: 2px 4px;
@@ -1156,19 +1154,22 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 }
 
 nav.navbar.navbar-inverse.navbar-fixed-top {
-    min-height: 30px !important;
+    min-height: 40px !important;
 }
 .navbar-nav > li > a {padding-top:5px ; padding-bottom:5px ;}
 
 .navbar-header {
-    height: 30px ;
+    height: 40px ;
 }
 .navbar-brand {
     height: 30px ;
 }
 .navbar-nav li a {
     color : white !important;
-    font-size: 13px;
+    font-size: 15px !important;
+    height:40px;
+    padding-top:10px;
+    vertical-align: middle;
 }
 .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
     background-color: rgb(252, 183, 49);
@@ -1189,8 +1190,8 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
     background-color: rgba(252, 183, 49, 0.5);
 }
 .navbar-header>img {
-    height: 30px;
-    padding: 5px 40px;
+    height: 40px;
+    padding: 5px 11px;
     width: auto;
     cursor: pointer;
     border: none;
@@ -1204,7 +1205,6 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
     /*background: radial-gradient(circle at center, #ddd 80%, rgba(30,30,30, 0) 100%);*/
 
 }
-
 .navbar-header>img:hover {
     cursor: pointer;
 
@@ -1925,7 +1925,7 @@ footer h6 {
     transition: .5s;
     -webkit-transition: .5s;
     opacity: 0;
-    width: 106px;
+    width: 120px;
     height: 70px;
     background: rgba(252, 183, 49, 0.9);
     zoom: 1;
@@ -2051,7 +2051,6 @@ a{
 .printTicketButtom{
     margin:20px;
 }
-
 .btnPaymentActive {
     padding: 10px 20px;
     border: 2px solid #303030;
@@ -2060,15 +2059,10 @@ a{
     transition: 500ms;
     filter: grayscale(100%);
 }
-.btnPaymentActive:active not:hover{
-    border:2px solid #39A939;
-    filter: grayscale(0%);
-}
-
-.btnPaymentActive:focus{
-    border:2px solid #39A939;
-    background-color: white;
-    filter: grayscale(0%);
+.btnPaymentActivated{
+    border:2px solid #39A939 !important;
+    filter: grayscale(0%) !important;
+    box-shadow: 0px 0px 5px #888;
 }
 .navbar-header-backcolor{
     background: rgb(252, 183, 49);
@@ -2355,9 +2349,9 @@ a>h5 {
     height: 150px;
     vertical-align: middle;
     position: relative;
-    width: 106px;
+    width: 120px;
     margin-right: auto;
-    top: -171px;
+    top: -185px;
     margin-bottom: -190px;
     margin-left: auto;
     text-align: center;
@@ -2880,8 +2874,8 @@ table td{
     padding-left: 50px !important;
 }
 .homePageImage {
-    width: 106px !important;
-    height: 150px !important;
+    width: 120px !important;
+    height: 182px !important;
 }
 .eventPageImage img {
     height: 250px !important;
@@ -2889,6 +2883,12 @@ table td{
 }
 .noPadding{
     padding: 0 !important;
+}
+.plannerPageSocialMediaUrl{
+    margin-bottom: 10px;
+}
+.eventPageHeader h3{
+    color:rgb(252, 183, 49);
 }
 @media (max-width: 770px) {
     .navbar-header-backcolor{
@@ -2935,8 +2935,37 @@ table td{
 
 
 @media (max-width: 992px) {
+    .moreInfo{
+        width:150px !important;
+    }
+    .soldout{
+        width:150px;
+        top:-225px;
+    }
+    .homePageImage {
+        width: 150px !important;
+        height: 228px !important;
+    }
     .eventPageSoldOut {
         width: 150px;
+    }
+    .slidingEventsTitle{
+        font-size: 16px;
+    }
+    .slidingEventsBtn{
+        font-size: 12px !important;
+    }
+    .exchangeTicketText h2{
+        font-size: 22px;
+    }
+    .slidingEvents h3{
+        font-size: 25px;
+    }
+    .slidingEvents a{
+        font-size: 15px;
+    }
+    .exchangeTicketText p{
+        font-size: 16px;
     }
     .ticketTitle h2, .ticketName h2{
         font-size: 12px;
@@ -2957,8 +2986,6 @@ table td{
         font-size: 12px;
     }
     .navbar-nav li a {
-        color : white !important;
-        font-size: 11px !important;
     }
     .bioPageContentHeader h1{
         text-align: center;
@@ -3009,11 +3036,13 @@ table td{
     .footerleft {
         text-align: center;
     }
+
     .customPanelEventPage {
         margin-right: auto;
         margin-left: auto;
         width: 95%;
     }
+
     .notFountLogoContainer{
         max-width: 60%;
         margin-right:20%;
@@ -3026,8 +3055,17 @@ table td{
         width:100%;
 
     }
-    .navbar-collapse li>a{
-        font-size: 20px !important;
+    .navbar-collapse li a{
+        font-size: 25px !important;
+    }
+    .navbar-nav  li  a{
+        height:50px;
+        padding-top: 20px;
+    }
+    .navbar-toggle{
+        margin-top:4px;
+        margin-bottom: 4px;
+        height:42px;
     }
     /*.navbar-collapse {*/
         /*height: 200px;*/
@@ -3186,6 +3224,7 @@ table td{
     }
     .navbar-header>img {
         height: 50px;
+        padding: 5px 40px;
     }
     .bioPageContentHeader h1{
         text-align: center;
@@ -3286,7 +3325,6 @@ table td{
     }
     .navbar-nav li a {
         color : white !important;
-        font-size: 14px;
     }
     .exchangeBlitHeader ,
     .eventPageHeaderMusic,
@@ -3377,14 +3415,24 @@ table td{
 }
 
 @media (max-width: 1200px) {
-
+.showTimeList td {
+    vertical-align: top !important;
+}
+    .exchangePageDate{
+        font-size: 15px !important;
+    }
     .eventContent p {
-        font-size: 16px;
+        font-size: 16px !important;
+    }
+    .eventInfoHolder >label{
+        font-size: 16px !important;
     }
     .carousel .item img {
         height: 300px;
     }
-
+    #home p{
+        font-size: 16px;
+    }
     .recipe {
         width: 300px;
         margin-bottom: 50px;
