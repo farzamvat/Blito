@@ -1208,16 +1208,16 @@ angular.module('User')
                 }
             });
             switch ($scope.coverImageIdEdit) {
-                case 1 :
+                case 'HOST-COVER-PHOTO-4' :
                     $(document.getElementById("coverPhotoOne")).addClass('photoBorder');
                     break;
-                case 2 :
+                case 'HOST-COVER-PHOTO-2' :
                     $(document.getElementById("coverPhotoTwo")).addClass('photoBorder');
                     break;
-                case 3 :
+                case 'HOST-COVER-PHOTO-3' :
                     $(document.getElementById("coverPhotoThree")).addClass('photoBorder');
                     break;
-                case 4 :
+                case 'HOST-COVER-PHOTO-1' :
                     $(document.getElementById("coverPhotoFour")).addClass('photoBorder');
                     break;
                 default :
@@ -1569,16 +1569,16 @@ angular.module('User')
             $('.plannerCoverDefault').removeClass('photoBorder');
             $(e.currentTarget).addClass('photoBorder');
             switch (photoNumber) {
-                case 'HOST-COVER-PHOTO-1' :
+                case 1 :
                     $scope.coverImageId = 'HOST-COVER-PHOTO-1';
                     break;
-                case 'HOST-COVER-PHOTO-2' :
+                case 2 :
                     $scope.coverImageId = 'HOST-COVER-PHOTO-2';
                     break;
-                case 'HOST-COVER-PHOTO-3' :
+                case 3 :
                     $scope.coverImageId = 'HOST-COVER-PHOTO-3';
                     break;
-                case 'HOST-COVER-PHOTO-4' :
+                case 4 :
                     $scope.coverImageId = 'HOST-COVER-PHOTO-4';
                     break;
                 default :
@@ -1591,16 +1591,16 @@ angular.module('User')
             $('.plannerCoverDefault').removeClass('photoBorder');
             $(e.currentTarget).addClass('photoBorder');
             switch (photoNumber) {
-                case 'HOST-COVER-PHOTO-1' :
+                case 1 :
                     $scope.coverImageId = 'HOST-COVER-PHOTO-1';
                     break;
-                case 'HOST-COVER-PHOTO-2' :
+                case 2 :
                     $scope.coverImageId = 'HOST-COVER-PHOTO-2';
                     break;
-                case 'HOST-COVER-PHOTO-3' :
+                case 3 :
                     $scope.coverImageId = 'HOST-COVER-PHOTO-3';
                     break;
-                case 'HOST-COVER-PHOTO-4' :
+                case 4 :
                     $scope.coverImageId = 'HOST-COVER-PHOTO-4';
                     break;
                 default :
