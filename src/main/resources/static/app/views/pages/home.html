@@ -128,7 +128,7 @@
             </div>
         </div>
     </div>
-    <div class="row slidingEventsRow" >
+    <div ng-show="secondSection.length > 0" class="row slidingEventsRow" >
         <div class="col-xs-12 col-md-9 slidingEvents floatRight">
             <img src="../../../assets/img/edu-logo.png" class="slidingEventsMiniLogo">
             <h3 class="textAlignRight">کارگاه</h3>
@@ -136,7 +136,7 @@
                 <a href="/tour" class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</a>
             </div>
             <div class="col-xs-12 slickSliders">
-                <slick ng-if="showSections[2]" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=4 touch-move="true" slides-to-scroll=1  >
+                <slick ng-if="showSections[2]" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
                     <div ng-repeat="event in secondSection" >
                         <a class="slidingEventsImg" href="{{url+event.eventLink}}">
                             <img ng-src="{{event.image}}" class=" center-block homePageImage">
