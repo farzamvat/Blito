@@ -102,7 +102,12 @@ angular.module('menuPagesModule', [])
             }
             else {
                 $(angular.element(document.getElementsByClassName('dropdown-menu'))).slideUp(300);
-                $(angular.element(document.getElementsByClassName('navbar-collapse'))).css("height","210px");
+                if(!$scope.loggedIn) {
+                    $(angular.element(document.getElementsByClassName('navbar-collapse'))).css("height", "210px");
+                }
+                else{
+                    $(angular.element(document.getElementsByClassName('navbar-collapse'))).css("height", "260px");
+                }
             }
         };
 
