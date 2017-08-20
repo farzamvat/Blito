@@ -1,15 +1,32 @@
 package blito.test.unit;
 
-import static org.junit.Assert.*;
-
-import java.sql.Timestamp;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
-
+import com.blito.Application;
+import com.blito.configs.Constants;
+import com.blito.enums.*;
+import com.blito.exceptions.InconsistentDataException;
+import com.blito.exceptions.NotFoundException;
+import com.blito.mappers.EventFlatMapper;
+import com.blito.models.Event;
+import com.blito.models.EventHost;
+import com.blito.models.Image;
+import com.blito.models.User;
+import com.blito.repositories.*;
+import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
+import com.blito.rest.viewmodels.discount.DiscountViewModel;
+import com.blito.rest.viewmodels.event.AdminChangeEventOperatorStateVm;
+import com.blito.rest.viewmodels.event.EventFlatViewModel;
+import com.blito.rest.viewmodels.event.EventViewModel;
+import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
+import com.blito.rest.viewmodels.exception.ExceptionViewModel;
+import com.blito.search.Collection;
+import com.blito.search.Operation;
+import com.blito.search.SearchViewModel;
+import com.blito.search.Simple;
+import com.blito.security.SecurityContextHolder;
+import com.blito.services.AdminEventService;
+import com.blito.services.EventService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.vavr.control.Either;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,43 +39,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.blito.Application;
-import com.blito.configs.Constants;
-import com.blito.enums.EventType;
-import com.blito.enums.HostType;
-import com.blito.enums.ImageType;
-import com.blito.enums.OfferTypeEnum;
-import com.blito.enums.OperatorState;
-import com.blito.enums.State;
-import com.blito.exceptions.InconsistentDataException;
-import com.blito.exceptions.NotFoundException;
-import com.blito.mappers.EventFlatMapper;
-import com.blito.models.Event;
-import com.blito.models.EventHost;
-import com.blito.models.Image;
-import com.blito.models.User;
-import com.blito.repositories.BlitTypeRepository;
-import com.blito.repositories.DiscountRepository;
-import com.blito.repositories.EventHostRepository;
-import com.blito.repositories.EventRepository;
-import com.blito.repositories.ImageRepository;
-import com.blito.repositories.UserRepository;
-import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
-import com.blito.rest.viewmodels.discount.DiscountViewModel;
-import com.blito.rest.viewmodels.event.EventFlatViewModel;
-import com.blito.rest.viewmodels.event.EventViewModel;
-import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
-import com.blito.rest.viewmodels.exception.ExceptionViewModel;
-import com.blito.search.Collection;
-import com.blito.search.Operation;
-import com.blito.search.SearchViewModel;
-import com.blito.search.Simple;
-import com.blito.security.SecurityContextHolder;
-import com.blito.services.EventService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.sql.Timestamp;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
-import io.vavr.control.Either;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class,webEnvironment=WebEnvironment.RANDOM_PORT)
@@ -84,6 +73,8 @@ public class EventServiceTest {
 	BlitTypeRepository blitTypeRepo;
 	@Autowired
 	ImageRepository imageRepository;
+	@Autowired
+	private AdminEventService adminEventService;
 	@Autowired
 	EventFlatMapper eventFlatMapper;
 	Event event;
@@ -137,7 +128,7 @@ public class EventServiceTest {
 		event = new Event();
 		event.setAddress("ABC");
 		event.setEventState(State.SOLD.name());
-		event.setOperatorState(OperatorState.PENDING.name());
+		event.setOperatorState(OperatorState.APPROVED.name());
 		event.setEventName("A");
 		event.setEventType(EventType.CINEMA.name());
 		event.setLatitude(2D);
@@ -158,7 +149,7 @@ public class EventServiceTest {
 		event2 = new Event();
 		event2.setAddress("ABCD");
 		event2.setEventState(State.CLOSED.name());
-		event2.setOperatorState(OperatorState.PENDING.name());
+		event2.setOperatorState(OperatorState.APPROVED.name());
 		event2.setEventName("C");
 		event2.setLatitude(4D);
 		event2.setEventType(EventType.CINEMA.name());
@@ -168,7 +159,7 @@ public class EventServiceTest {
 		event3 = new Event();
 		event3.setAddress("DFG");
 		event3.setEventState(State.OPEN.name());
-		event3.setOperatorState(OperatorState.REJECTED.name());
+		event3.setOperatorState(OperatorState.APPROVED.name());
 		event3.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER.name(), OfferTypeEnum.SPECIAL_OFFER.name()).stream().collect(Collectors.toSet()));
 		event3.setEventName("D");
 		event3.setLatitude(1D);
@@ -179,7 +170,7 @@ public class EventServiceTest {
 		event4 = new Event();
 		event4.setAddress("ABC");
 		event4.setEventState(State.OPEN.name());
-		event4.setOperatorState(OperatorState.REJECTED.name());
+		event4.setOperatorState(OperatorState.APPROVED.name());
 		event4.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER.name(), OfferTypeEnum.SPECIAL_OFFER.name()).stream().collect(Collectors.toSet()));
 		event4.setEventName("E");
 		event4.setLatitude(1D);
@@ -569,7 +560,11 @@ public class EventServiceTest {
 		SecurityContextHolder.setCurrentUser(user);
 		events = eventService.getUserEvents(pageable);
 		assertEquals(6, events.getNumberOfElements());
-		eventService.delete(event4.getEventId());
+		AdminChangeEventOperatorStateVm operatorStateVm = new AdminChangeEventOperatorStateVm();
+		operatorStateVm.setOperatorState(OperatorState.REJECTED);
+		operatorStateVm.setEventId(eventViewModel.getEventId());
+		adminEventService.changeOperatorState(operatorStateVm);
+		eventService.delete(eventViewModel.getEventId());
 		events = eventService.getUserEvents(pageable);
 		assertEquals(5, events.getNumberOfElements());
 	}
