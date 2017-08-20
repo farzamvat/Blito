@@ -1207,22 +1207,28 @@ angular.module('User')
                     $scope.coverImageIdEdit = item.imageUUID;
                 }
             });
+            console.log($scope.coverImageIdEdit);
             switch ($scope.coverImageIdEdit) {
-                case 'HOST-COVER-PHOTO-4' :
-                    $(document.getElementById("coverPhotoOne")).addClass('photoBorder');
+                case 'HOST-COVER-PHOTO-1' :
+                    $(document.getElementById("coverPhotoOneEdit")).addClass('photoBorder');
                     break;
                 case 'HOST-COVER-PHOTO-2' :
-                    $(document.getElementById("coverPhotoTwo")).addClass('photoBorder');
+                    $(document.getElementById("coverPhotoTwoEdit")).addClass('photoBorder');
                     break;
                 case 'HOST-COVER-PHOTO-3' :
-                    $(document.getElementById("coverPhotoThree")).addClass('photoBorder');
+                    $(document.getElementById("coverPhotoThreeEdit")).addClass('photoBorder');
                     break;
-                case 'HOST-COVER-PHOTO-1' :
-                    $(document.getElementById("coverPhotoFour")).addClass('photoBorder');
+                case 'HOST-COVER-PHOTO-4' :
+                    $(document.getElementById("coverPhotoFourEdit")).addClass('photoBorder');
                     break;
                 default :
                     break;
             }
+            imageServices.downloadPhotos('HOST-COVER-PHOTO-1', "coverPhotoOneEdit");
+            imageServices.downloadPhotos('HOST-COVER-PHOTO-2', "coverPhotoTwoEdit");
+            imageServices.downloadPhotos('HOST-COVER-PHOTO-3', "coverPhotoThreeEdit");
+            imageServices.downloadPhotos('HOST-COVER-PHOTO-4', "coverPhotoFourEdit");
+
             imageServices.downloadPhotos($scope.plannerImageIdEdit, "eventPlannerPhotoUploadEdit");
             imageServices.downloadPhotos($scope.coverImageIdEdit, "coverPhotoUploadEdit");
         };
@@ -1565,6 +1571,10 @@ angular.module('User')
         $scope.showUploadPhotoEdit = function () {
             $scope.uploadUserPhotoEdit = true;
         };
+        imageServices.downloadPhotos('HOST-COVER-PHOTO-1', "coverPhotoOne");
+        imageServices.downloadPhotos('HOST-COVER-PHOTO-2', "coverPhotoTwo");
+        imageServices.downloadPhotos('HOST-COVER-PHOTO-3', "coverPhotoThree");
+        imageServices.downloadPhotos('HOST-COVER-PHOTO-4', "coverPhotoFour");
         $scope.coverPickedDefault = function (e, photoNumber) {
             $('.plannerCoverDefault').removeClass('photoBorder');
             $(e.currentTarget).addClass('photoBorder');
