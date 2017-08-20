@@ -31,168 +31,183 @@ import com.blito.rest.viewmodels.image.ImageViewModel;
 @Service
 public class ImageService {
 
-	@Autowired
-	private ImageRepository imageRepository;
-	@Autowired
-	private ImageMapper imageMapper;
+    @Autowired
+    private ImageRepository imageRepository;
+    @Autowired
+    private ImageMapper imageMapper;
 
-	public CompletableFuture<String> save(String encodedBase64) {
-		return CompletableFuture.supplyAsync(() -> {
-			String uuid = UUID.randomUUID().toString();
-			try {
-				File file = new File("images/");
-				if (!file.exists()) {
-					file.mkdir();
-				}
-				PrintWriter writer = new PrintWriter("images/" + uuid + ".txt", "UTF-8");
-				writer.write(encodedBase64);
-				writer.close();
-				return uuid;
-			} catch (Exception e) {
-				throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
-			}
-		});
-	}
+    public CompletableFuture<String> save(String encodedBase64) {
+        return CompletableFuture.supplyAsync(() -> {
+            String uuid = UUID.randomUUID().toString();
+            try {
+                File file = new File("images/");
+                if (!file.exists()) {
+                    file.mkdir();
+                }
+                PrintWriter writer = new PrintWriter("images/" + uuid + ".txt", "UTF-8");
+                writer.write(encodedBase64);
+                writer.close();
+                return uuid;
+            } catch (Exception e) {
+                throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
+            }
+        });
+    }
 
-	public CompletableFuture<String> save(String encodedBase64, String defaultId) {
-		return CompletableFuture.supplyAsync(() -> {
-			try {
-				File file = new File("images/");
-				if (!file.exists())
-					file.mkdir();
-				PrintWriter writer = new PrintWriter("images/" + defaultId + ".txt", "UTF-8");
-				writer.write(encodedBase64);
-				writer.close();
-				return defaultId;
-			} catch (Exception e) {
-				throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
-			}
-		});
-	}
+    public CompletableFuture<String> save(String encodedBase64, String defaultId) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                File file = new File("images/");
+                if (!file.exists())
+                    file.mkdir();
+                PrintWriter writer = new PrintWriter("images/" + defaultId + ".txt", "UTF-8");
+                writer.write(encodedBase64);
+                writer.close();
+                return defaultId;
+            } catch (Exception e) {
+                throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
+            }
+        });
+    }
 
-	public CompletableFuture<String> getFileEncodedBase64(String id) {
-		return CompletableFuture.supplyAsync(() -> {
-			try {
-				return new String(Files.readAllBytes(Paths.get("images/" + id + ".txt")));
-			} catch (IOException e) {
-				throw new RuntimeException(e.getMessage());
-			}
-		});
-	}
+    public CompletableFuture<String> getFileEncodedBase64(String id) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return new String(Files.readAllBytes(Paths.get("images/" + id + ".txt")));
+            } catch (IOException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        });
+    }
 
-	public CompletableFuture<String> saveMultipartFile(MultipartFile file) {
-		return CompletableFuture.supplyAsync(() -> {
-			try {
-				return new String(file.getBytes());
-			} catch (IOException e) {
-				throw new InternalServerException(ResourceUtil.getMessage(Response.INTERNAL_SERVER_ERROR));
-			}
-		}).thenCompose(base64 -> this.save(base64));
-	}
+    public CompletableFuture<String> saveMultipartFile(MultipartFile file) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return new String(file.getBytes());
+            } catch (IOException e) {
+                throw new InternalServerException(ResourceUtil.getMessage(Response.INTERNAL_SERVER_ERROR));
+            }
+        }).thenCompose(base64 -> this.save(base64));
+    }
 
-	public CompletableFuture<Void> deleteAsync(String uuid) {
-		return CompletableFuture.runAsync(() -> {
-			Image image = imageRepository.findByImageUUID(uuid)
-					.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
-			try {
+    public CompletableFuture<Void> deleteAsync(String uuid) {
+        return CompletableFuture.runAsync(() -> {
+            Image image = imageRepository.findByImageUUID(uuid)
+                    .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
+            try {
 
-				if (Files.deleteIfExists(Paths.get("images/" + image.getImageUUID() + ".txt")))
-					imageRepository.delete(image);
-				else
-					throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
-			} catch (IOException e) {
-				throw new RuntimeException(e.getMessage());
-			}
-		});
-	}
+                if (Files.deleteIfExists(Paths.get("images/" + image.getImageUUID() + ".txt")))
+                    imageRepository.delete(image);
+                else
+                    throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
+            } catch (IOException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        });
+    }
 
-	@Transactional
-	public void delete(String uid) {
-		List<String> defaults = Arrays.asList(Constants.DEFAULT_EVENT_PHOTO,Constants.DEFAULT_EXCHANGEBLIT_PHOTO
-				,Constants.DEFAULT_HOST_COVER_PHOTO,Constants.DEFAULT_HOST_PHOTO);
-		if(defaults.contains(uid))
-			return;
-		Image image = imageRepository.findByImageUUID(uid)
-				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
-		try {
+    @Transactional
+    public void delete(String uid) {
+        List<String> defaults = Arrays.asList(Constants.DEFAULT_EVENT_PHOTO, Constants.DEFAULT_EXCHANGEBLIT_PHOTO,
+                Constants.DEFAULT_HOST_COVER_PHOTO_1, Constants.DEFAULT_HOST_COVER_PHOTO_2, Constants.DEFAULT_HOST_COVER_PHOTO_3,
+                Constants.DEFAULT_HOST_COVER_PHOTO_4, Constants.DEFAULT_HOST_PHOTO);
+        if (defaults.contains(uid))
+            return;
+        Image image = imageRepository.findByImageUUID(uid)
+                .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
+        try {
 
-			if (Files.deleteIfExists(Paths.get("images/" + image.getImageUUID() + ".txt")))
-				imageRepository.delete(image);
-			else
-				throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
-		} catch (IOException e) {
-			throw new RuntimeException(e.getMessage());
-		}
-	}
+            if (Files.deleteIfExists(Paths.get("images/" + image.getImageUUID() + ".txt")))
+                imageRepository.delete(image);
+            else
+                throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
-	public CompletableFuture<ImageViewModel> createOrUpdateDefaultImage(MultipartFile file, String defaultImageId) {
-		return CompletableFuture.supplyAsync(() -> {
-			if (defaultImageId.equals(Constants.DEFAULT_HOST_COVER_PHOTO)) {
-				return imageMapper
-						.createFromEntity(persistDefaultImage(file, defaultImageId, ImageType.HOST_COVER_PHOTO));
-			} else if (defaultImageId.equals(Constants.DEFAULT_EVENT_PHOTO)) {
-				return imageMapper.createFromEntity(persistDefaultImage(file, defaultImageId, ImageType.EVENT_PHOTO));
-			} else if (defaultImageId.equals(Constants.DEFAULT_EXCHANGEBLIT_PHOTO)) {
-				return imageMapper
-						.createFromEntity(persistDefaultImage(file, defaultImageId, ImageType.EXCHANGEBLIT_PHOTO));
-			} else if (defaultImageId.equals(Constants.DEFAULT_HOST_PHOTO)) {
-				return imageMapper.createFromEntity(persistDefaultImage(file, defaultImageId, ImageType.HOST_PHOTO));
-			} else {
-				throw new RuntimeException("default id is not valid");
-			}
-		});
-	}
+    public CompletableFuture<ImageViewModel> createOrUpdateDefaultImage(MultipartFile file, String defaultImageId) {
+        return CompletableFuture.supplyAsync(() -> {
+            if (defaultImageId.equals(Constants.DEFAULT_HOST_COVER_PHOTO_1)) {
+                return imageMapper.createFromEntity(persistDefaultImage(file, defaultImageId, ImageType.HOST_COVER_PHOTO));
+            } else if (defaultImageId.equals(Constants.DEFAULT_HOST_COVER_PHOTO_2)) {
+                return imageMapper.createFromEntity(persistDefaultImage(file, defaultImageId, ImageType.HOST_COVER_PHOTO));
+            } else if (defaultImageId.equals(Constants.DEFAULT_HOST_COVER_PHOTO_3)) {
+                return imageMapper.createFromEntity(persistDefaultImage(file, defaultImageId, ImageType.HOST_COVER_PHOTO));
+            } else if (defaultImageId.equals(Constants.DEFAULT_HOST_COVER_PHOTO_4)) {
+                return imageMapper.createFromEntity(persistDefaultImage(file, defaultImageId, ImageType.HOST_COVER_PHOTO));
+            } else if (defaultImageId.equals(Constants.DEFAULT_EVENT_PHOTO)) {
+                return imageMapper.createFromEntity(persistDefaultImage(file, defaultImageId, ImageType.EVENT_PHOTO));
+            } else if (defaultImageId.equals(Constants.DEFAULT_EXCHANGEBLIT_PHOTO)) {
+                return imageMapper
+                        .createFromEntity(persistDefaultImage(file, defaultImageId, ImageType.EXCHANGEBLIT_PHOTO));
+            } else if (defaultImageId.equals(Constants.DEFAULT_HOST_PHOTO)) {
+                return imageMapper.createFromEntity(persistDefaultImage(file, defaultImageId, ImageType.HOST_PHOTO));
+            } else {
+                throw new RuntimeException("default id is not valid");
+            }
+        });
+    }
 
-	@Transactional
-	public Image persistDefaultImage(MultipartFile file,String defaultId,ImageType imageType)
-	{
-		return imageRepository.findByImageUUID(defaultId)
-				.map(image -> {
-					delete(defaultId);
-					try {
-						return save(new String(file.getBytes()),defaultId).thenApply(id -> {
-							image.setImageUUID(id);
-							image.setImageType(imageType.name());
-							return imageRepository.save(image);
-						}).handle((result,throwable) -> {
-							if(throwable != null)
-								return image;
-							return result;
-						}).join();
-					} catch (IOException e) {
-						throw new InternalServerException(ResourceUtil.getMessage(Response.INTERNAL_SERVER_ERROR));
-					}
-				})
-				.orElseGet(() -> {
-					Image image = new Image();
-					try {
-						image.setImageUUID(save(new String(file.getBytes()), defaultId).join());
-					} catch (IOException e) {
-						throw new RuntimeException(e.getMessage());
-					}
-					image.setImageType(imageType.name());
-					return imageRepository.save(image);
-				});
+    @Transactional
+    public Image persistDefaultImage(MultipartFile file, String defaultId, ImageType imageType) {
+        return imageRepository.findByImageUUID(defaultId)
+                .map(image -> {
+                    delete(defaultId);
+                    try {
+                        return save(new String(file.getBytes()), defaultId).thenApply(id -> {
+                            image.setImageUUID(id);
+                            image.setImageType(imageType.name());
+                            return imageRepository.save(image);
+                        }).handle((result, throwable) -> {
+                            if (throwable != null)
+                                return image;
+                            return result;
+                        }).join();
+                    } catch (IOException e) {
+                        throw new InternalServerException(ResourceUtil.getMessage(Response.INTERNAL_SERVER_ERROR));
+                    }
+                })
+                .orElseGet(() -> {
+                    Image image = new Image();
+                    try {
+                        image.setImageUUID(save(new String(file.getBytes()), defaultId).join());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e.getMessage());
+                    }
+                    image.setImageType(imageType.name());
+                    return imageRepository.save(image);
+                });
 
-	}
+    }
 
-	public Page<ImageViewModel> getDefaultImages() {
-		List<ImageViewModel> images;
-		ImageViewModel defaultHostCoverPhoto = imageMapper
-				.createFromEntity(imageRepository.findByImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO)
-						.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))));
-		ImageViewModel defaultHostPhoto = imageMapper
-				.createFromEntity(imageRepository.findByImageUUID(Constants.DEFAULT_HOST_PHOTO)
-						.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))));
-		ImageViewModel defaultEventPhoto = imageMapper
-				.createFromEntity(imageRepository.findByImageUUID(Constants.DEFAULT_EVENT_PHOTO)
-						.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))));
-		ImageViewModel defaultExchangeBlitPhoto = imageMapper
-				.createFromEntity(imageRepository.findByImageUUID(Constants.DEFAULT_EXCHANGEBLIT_PHOTO)
-						.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))));
-		images = Arrays.asList(defaultHostCoverPhoto,defaultHostPhoto,defaultEventPhoto,defaultExchangeBlitPhoto);
-		Page<ImageViewModel> defaultImages = new PageImpl<>(images);
-		return defaultImages;
-	}
+    public Page<ImageViewModel> getDefaultImages() {
+        List<ImageViewModel> images;
+        ImageViewModel defaultHostCoverPhoto1 = imageMapper
+                .createFromEntity(imageRepository.findByImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO_1)
+                        .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))));
+        ImageViewModel defaultHostCoverPhoto2 = imageMapper
+                .createFromEntity(imageRepository.findByImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO_2)
+                        .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))));
+        ImageViewModel defaultHostCoverPhoto3 = imageMapper
+                .createFromEntity(imageRepository.findByImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO_3)
+                        .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))));
+        ImageViewModel defaultHostCoverPhoto4 = imageMapper
+                .createFromEntity(imageRepository.findByImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO_4)
+                        .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))));
+        ImageViewModel defaultHostPhoto = imageMapper
+                .createFromEntity(imageRepository.findByImageUUID(Constants.DEFAULT_HOST_PHOTO)
+                        .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))));
+        ImageViewModel defaultEventPhoto = imageMapper
+                .createFromEntity(imageRepository.findByImageUUID(Constants.DEFAULT_EVENT_PHOTO)
+                        .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))));
+        ImageViewModel defaultExchangeBlitPhoto = imageMapper
+                .createFromEntity(imageRepository.findByImageUUID(Constants.DEFAULT_EXCHANGEBLIT_PHOTO)
+                        .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND))));
+        images = Arrays.asList(defaultHostCoverPhoto1, defaultHostCoverPhoto2, defaultHostCoverPhoto3, defaultHostCoverPhoto4,
+                defaultHostPhoto, defaultEventPhoto, defaultExchangeBlitPhoto);
+        Page<ImageViewModel> defaultImages = new PageImpl<>(images);
+        return defaultImages;
+    }
 
 }

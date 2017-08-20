@@ -34,7 +34,10 @@ public final class Constants {
     public static final int MAX_INCORRECT_PASSWORD_BEFORE_BAN = 3;
     
     public static final String DEFAULT_HOST_PHOTO = "HOST-PHOTO";
-    public static final String DEFAULT_HOST_COVER_PHOTO = "HOST-COVER-PHOTO";
+    public static final String DEFAULT_HOST_COVER_PHOTO_1 = "HOST-COVER-PHOTO_1";
+    public static final String DEFAULT_HOST_COVER_PHOTO_2 = "HOST-COVER-PHOTO_2";
+    public static final String DEFAULT_HOST_COVER_PHOTO_3 = "HOST-COVER-PHOTO_3";
+    public static final String DEFAULT_HOST_COVER_PHOTO_4 = "HOST-COVER-PHOTO_4";
     public static final String DEFAULT_EVENT_PHOTO = "EVENT-PHOTO";
     public static final String DEFAULT_EXCHANGEBLIT_PHOTO = "EXCHANGEBLIT_PHOTO";
     
