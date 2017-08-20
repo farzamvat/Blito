@@ -2505,6 +2505,9 @@ a>h5 {
     margin-right:38%;
     float:right;
 }
+#myTab a {
+    background-color: transparent;
+}
 .blitoTeamContainer{
     height:auto;
     margin:auto;
