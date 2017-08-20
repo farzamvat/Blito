@@ -47,7 +47,7 @@ angular.module('User')
         $scope.editInfo = angular.copy(userInfo.getData());
         $scope.editUserInfo = function () {
             userInfoPromise.push(Auth.getUser()
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.logoutMenu = true;
                     userProfile.userData = data.data;
                     userInfo.setData(userProfile.userData);
@@ -60,7 +60,7 @@ angular.module('User')
             document.getElementsByClassName("deletePlannerSpinner")[0].style.display = "none";
             document.getElementsByClassName("changePasswordSpinner")[0].style.display = "inline";
             updateInfo.changePasswordSubmit(password)
-                .then(function (data) {
+                .then(function () {
                     document.getElementById("changePasswordSuccess").style.display = "block";
                     document.getElementsByClassName("changePasswordSpinner")[0].style.display = "none";
                 })
@@ -75,14 +75,14 @@ angular.module('User')
             $scope.updateInfoSpinner = true;
             delete editInfo["email"];
             updateInfo.updateData(editInfo)
-                .then(function (status, data) {
+                .then(function () {
                     $scope.updateInfoSpinner = false;
                     $scope.updateSuccessNotif = true;
                     $timeout(function () {
                         $scope.updateSuccessNotif = false;
                     }, 3000);
                 })
-                .catch(function (status, data) {
+                .catch(function () {
                     $scope.updateInfoSpinner = false;
                     $scope.updateFailNotif = true;
                     $timeout(function () {
@@ -206,12 +206,12 @@ angular.module('User')
             $scope.eventPhotoSixEditError = false;
             $scope.uploadEventSixEditPhoto = true;
             photoService.upload(imageData)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.uploadEventSixEditPhoto = false;
                     $scope.eventPhotoSixEditSuccess = true;
 
                     $scope.gallerySixEditUUID = data.data.imageUUID;
-                }, function (data, status) {
+                }, function (data) {
                     document.getElementById("eventPhotoSixEditError").innerHTML= data.data.message;
                     $scope.eventPhotoSixEditError = true;
                     $scope.uploadEventSixEditPhoto = false;
@@ -240,12 +240,12 @@ angular.module('User')
             $scope.eventPhotoFiveEditError = false;
             $scope.uploadEventFiveEditPhoto = true;
             photoService.upload(imageData)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.uploadEventFiveEditPhoto = false;
                     $scope.eventPhotoFiveEditSuccess = true;
 
                     $scope.galleryFiveEditUUID = data.data.imageUUID;
-                }, function (data, status) {
+                }, function (data) {
                     document.getElementById("eventPhotoFiveEditError").innerHTML= data.data.message;
                     $scope.eventPhotoFiveEditError = true;
                     $scope.uploadEventFiveEditPhoto = false;
@@ -274,11 +274,11 @@ angular.module('User')
             $scope.eventPhotoFourEditError = false;
             $scope.eventPhotoFourEditSuccess = false;
             photoService.upload(imageData)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.uploadEventFourEditPhoto = false;
                     $scope.eventPhotoFourEditSuccess = true;
                     $scope.galleryFourEditUUID = data.data.imageUUID;
-                }, function (data, status) {
+                }, function (data) {
                     $scope.uploadEventFourEditPhoto = false;
                     $scope.eventPhotoFourEditError = true;
                     document.getElementById("eventPhotoFourEditError").innerHTML= data.data.message;
@@ -307,12 +307,12 @@ angular.module('User')
             $scope.eventPhotoThreeEditError = false;
             $scope.uploadEventThreeEditPhoto = true;
             photoService.upload(imageData)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.uploadEventThreeEditPhoto = false;
                     $scope.eventPhotoThreeEditSuccess = true;
 
                     $scope.galleryThreeEditUUID = data.data.imageUUID;
-                }, function (data, status) {
+                }, function (data) {
                     document.getElementById("eventPhotoThreeEditError").innerHTML= data.data.message;
                     $scope.eventPhotoThreeEditError = true;
                     $scope.uploadEventThreeEditPhoto = false;
@@ -342,12 +342,12 @@ angular.module('User')
             $scope.eventPhotoTwoEditSuccess = false;
 
             photoService.upload(imageData)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.uploadEventTwoEditPhoto = false;
                     $scope.eventPhotoTwoEditSuccess = true;
 
                     $scope.galleryTwoEditUUID = data.data.imageUUID;
-                }, function (data, status) {
+                }, function (data) {
                     document.getElementById("eventPhotoTwoEditError").innerHTML= data.data.message;
                     $scope.uploadEventTwoEditPhoto = false;
                     $scope.eventPhotoTwoEditError = true;
@@ -376,12 +376,12 @@ angular.module('User')
             $scope.eventPhotoOneEditError = false;
             $scope.eventPhotoOneEditSuccess = false;
             photoService.upload(imageData)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.uploadEventOneEditPhoto = false;
                     $scope.eventPhotoOneEditSuccess = true;
 
                     $scope.galleryOneEditUUID = data.data.imageUUID;
-                }, function (data, status) {
+                }, function (data) {
                     document.getElementById("eventPhotoOneEditError").innerHTML= data.data.message;
                     $scope.eventPhotoOneEditError = true;
                     $scope.uploadEventOneEditPhoto = false;
@@ -410,11 +410,11 @@ angular.module('User')
             $scope.eventPhotoSixSuccess = false;
             $scope.eventPhotoSixError = false;
             photoService.upload(imageData)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.uploadEventSixPhoto = false;
                     $scope.eventPhotoSixSuccess = true;
                     $scope.gallerySixUUID = data.data.imageUUID;
-                }, function (data, status) {
+                }, function (data) {
                     document.getElementById("eventPhotoSixError").innerHTML= data.data.message;
                     $scope.uploadEventSixPhoto = false;
                     $scope.eventPhotoSixError = true;
@@ -428,11 +428,11 @@ angular.module('User')
             $scope.eventPhotoFiveError = false;
             $scope.eventPhotoFiveSuccess = false;
             photoService.upload(imageData)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.uploadEventFivePhoto = false;
                     $scope.eventPhotoFiveSuccess = true;
                     $scope.galleryFiveUUID = data.data.imageUUID;
-                }, function (data, status) {
+                }, function (data) {
                     document.getElementById("eventPhotoFiveError").innerHTML= data.data.message;
                     $scope.eventPhotoFiveError = true;
                     $scope.uploadEventFivePhoto = false;
@@ -447,11 +447,11 @@ angular.module('User')
             $scope.eventPhotoFourSuccess = false;
 
             photoService.upload(imageData)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.uploadEventFourPhoto = false;
                     $scope.eventPhotoFourSuccess = true;
                     $scope.galleryFourUUID = data.data.imageUUID;
-                }, function (data, status) {
+                }, function (data) {
                     document.getElementById("eventPhotoFourError").innerHTML= data.data.message;
                     $scope.uploadEventFourPhoto = false;
                     $scope.eventPhotoFourError = true;
@@ -465,11 +465,11 @@ angular.module('User')
             $scope.eventPhotoThreeError = false;
             $scope.eventPhotoThreeSuccess = false;
             photoService.upload(imageData)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.eventPhotoThreeSuccess = true;
                     $scope.uploadEventThreePhoto = false;
                     $scope.galleryThreeUUID = data.data.imageUUID;
-                }, function (data, status) {
+                }, function (data) {
                     document.getElementById("eventPhotoThreeError").innerHTML= data.data.message;
                     $scope.uploadEventThreePhoto = false;
                     $scope.eventPhotoThreeError = true;
@@ -483,11 +483,11 @@ angular.module('User')
             $scope.eventPhotoTwoSuccess = false;
             $scope.eventPhotoTwoError = false;
             photoService.upload(imageData)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.eventPhotoTwoSuccess = true;
                     $scope.uploadEventTwoPhoto = false;
                     $scope.galleryTwoUUID = data.data.imageUUID;
-                }, function (data, status) {
+                }, function (data) {
                     document.getElementById("eventPhotoTwoError").innerHTML= data.data.message;
                     $scope.uploadEventTwoPhoto = false;
                     $scope.eventPhotoTwoError = true;
@@ -504,11 +504,11 @@ angular.module('User')
             $scope.eventPhotoOneError = false;
 
             photoService.upload(imageData)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.eventPhotoOneSuccess = true;
                     $scope.uploadEventOnePhoto = false;
                     $scope.galleryOneUUID = data.data.imageUUID;
-                }, function (data, status) {
+                }, function (data) {
                     document.getElementById("eventPhotoOneError").innerHTML= data.data.message;
                     $scope.eventPhotoOneError = true;
                     $scope.uploadEventOnePhoto = false;
@@ -522,11 +522,11 @@ angular.module('User')
             $scope.eventEditPhotoError = false;
             $scope.eventEditPhotoSuccess = false;
             photoService.upload(imageData)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.eventEditPhotoSuccess = true;
                     $scope.uploadEditEventPhoto = false;
                     $scope.eventEditImageId = data.data.imageUUID;
-                }, function (data, status) {
+                }, function (data) {
                     document.getElementById("eventEditPhotoError").innerHTML= data.data.message;
                     $scope.uploadEditEventPhoto = false;
                     $scope.eventEditPhotoError = true;
@@ -541,11 +541,11 @@ angular.module('User')
             $scope.exchangeEditPhotoError = false;
 
             photoService.upload(imageData)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.uploadEditExchangePhoto = false;
                     $scope.exchangeEditPhotoSuccess = true;
                     $scope.exchangeEditImageId = data.data.imageUUID;
-                }, function (data, status) {
+                }, function (data) {
                     document.getElementById("exchangeEditPhotoError").innerHTML= data.data.message;
                     $scope.uploadEditExchangePhoto = false;
                     $scope.exchangeEditPhotoError = true;
@@ -560,11 +560,11 @@ angular.module('User')
             $scope.exchangePhotoError = false;
             $scope.exchangePhotoSuccess = false;
             photoService.upload(imageData)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.uploadExchangePhoto = false;
                     $scope.exchangePhotoSuccess = true;
                     $scope.exchangeImageId = data.data.imageUUID;
-                }, function (data, status) {
+                }, function (data) {
                     document.getElementById("exchangePhotoError").innerHTML= data.data.message;
                     $scope.uploadExchangePhoto = false;
                     $scope.exchangePhotoError = true;
@@ -578,11 +578,11 @@ angular.module('User')
             $scope.eventPhotoSuccess = false;
             $scope.eventPhotoError = false;
             photoService.upload(imageData)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.uploadEventPhoto = false;
                     $scope.eventPhotoSuccess = true;
                     $scope.eventImageId = data.data.imageUUID;
-                }, function (data, status) {
+                }, function (data) {
                     document.getElementById("eventPhotoError").innerHTML= data.data.message;
                     $scope.eventPhotoError = true;
                     $scope.uploadEventPhoto = false;
@@ -600,12 +600,12 @@ angular.module('User')
             $scope.plannerPhotoSuccess = false;
             $scope.plannerPhotoError = false;
             photoService.upload(imageData)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.uploadPlannerPhoto = false;
                     $scope.plannerPhotoSuccess = true;
                     $scope.plannerImageId = data.data.imageUUID;
 
-                }, function (data, status) {
+                }, function (data) {
                     document.getElementById("plannerPhotoError").innerHTML= data.data.message;
                     $scope.uploadPlannerPhoto = false;
                     $scope.plannerPhotoError = true;
@@ -620,12 +620,12 @@ angular.module('User')
             $scope.plannerEditPhotoError = false;
             $scope.plannerEditPhotoSuccess = false;
             photoService.upload(imageData)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.uploadPlannerEditPhoto = false;
                     $scope.plannerEditPhotoSuccess = true;
                     $scope.plannerImageIdEdit = data.data.imageUUID;
 
-                }, function (data, status) {
+                }, function (data) {
                     document.getElementById("plannerEditPhotoError").innerHTML= data.data.message;
                     $scope.uploadPlannerEditPhoto = false;
                     $scope.plannerEditPhotoError = true;
@@ -643,11 +643,11 @@ angular.module('User')
             $scope.coverPhotoError = false;
 
             photoService.upload(imageData)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.uploadCoverPhoto = false;
                     $scope.coverPhotoSuccess = true;
                     $scope.coverImageId = data.data.imageUUID;
-                }, function (data, status) {
+                }, function (data) {
                     $scope.uploadCoverPhoto = false;
                     document.getElementById("coverPhotoError").innerHTML= data.data.message;
                     $scope.coverPhotoError = true;
@@ -663,11 +663,11 @@ angular.module('User')
             $scope.coverEditPhotoError = false;
 
             photoService.upload(imageData)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.uploadCoverEditPhoto = false;
                     $scope.coverEditPhotoSuccess = true;
                     $scope.coverImageIdEdit = data.data.imageUUID;
-                }, function (data, status) {
+                }, function (data) {
                     $scope.uploadCoverEditPhoto = false;
                     document.getElementById("coverEditPhotoError").innerHTML= data.data.message;
                     $scope.coverEditPhotoError = true;
@@ -848,7 +848,7 @@ angular.module('User')
             }
             $scope.submitPlannerSpinner = true;
             plannerService.submitPlannerForm(eventPlannerData)
-                .then(function (data, status) {
+                .then(function () {
                     $scope.plannerSubmitOnce = false;
                     $scope.submitPlannerSpinner = false;
                     $scope.submitPlannerNotif = true;
@@ -861,7 +861,7 @@ angular.module('User')
                     $scope.plannerPhotoSuccess = false;
                     angular.element(document.getElementsByClassName("coverPhotoUpload"))[0].src = '';
                     angular.element(document.getElementsByClassName("eventPlannerPhotoUpload"))[0].src = '';
-                }, function (data, status) {
+                }, function (data) {
                     $scope.plannerSubmitOnce = false;
                     $scope.submitPlannerErrorNotif = true;
                     document.getElementById("submitPlannerErrorNotif").innerHTML= data.data.message;
@@ -928,7 +928,7 @@ angular.module('User')
             }
             $scope.createEventSpinner = true;
             eventService.submitEventForm(eventSubmitData)
-                .then(function (data, status) {
+                .then(function () {
                     $scope.eventSubmitOnce = false;
                     angular.element(document.getElementsByClassName("profilePhotoUpload"))[0].src = '';
                     angular.element(document.getElementsByClassName("galleryOne"))[0].src = '';
@@ -949,7 +949,7 @@ angular.module('User')
                     $scope.getUserEvents(1);
                     $scope.eventFields = [];
 
-                }, function (data, status) {
+                }, function (data) {
                     $scope.eventSubmitOnce = false;
                     $scope.createEventErrorNotif = true;
                     document.getElementById("createEventErrorNotif").innerHTML= data.data.message;
@@ -989,7 +989,7 @@ angular.module('User')
                 delete exchangeData.image;
             }
             exchangeService.submitExchangeForm(exchangeData)
-                .then(function (data, status) {
+                .then(function () {
                     $scope.exchangeSubmitOnce = false;
                     $scope.submitExchangeSpinner = false;
                     $scope.submitExchangeNotif = true;
@@ -1003,7 +1003,7 @@ angular.module('User')
                     $scope.mapMarkerClickCheckExchange = true;
                     angular.element(document.getElementsByClassName("exchangePhotoUpload"))[0].src = '';
 
-                }, function (data, status) {
+                }, function (data) {
                     $scope.exchangeSubmitOnce = false;
                     $scope.submitExchangeErrorNotif = true;
                     $scope.submitExchangeSpinner = false;
@@ -1177,12 +1177,12 @@ angular.module('User')
             });
             $scope.editEventSpinner = true;
             eventService.editEvent(sendingData)
-                .then(function (data, status) {
+                .then(function () {
                     $scope.editEventSpinner = false;
                     $scope.editEventNotif = true;
                     $scope.editEventErrorNotif = false;
                 })
-                .catch(function (data, status) {
+                .catch(function (data) {
                     $scope.editEventErrorNotif = true;
                     $scope.editEventSpinner = false;
                     document.getElementById("editEventErrorNotif").innerHTML= data.data.message;
@@ -1207,6 +1207,22 @@ angular.module('User')
                     $scope.coverImageIdEdit = item.imageUUID;
                 }
             });
+            switch ($scope.coverImageIdEdit) {
+                case 1 :
+                    $(document.getElementById("coverPhotoOne")).addClass('photoBorder');
+                    break;
+                case 2 :
+                    $(document.getElementById("coverPhotoTwo")).addClass('photoBorder');
+                    break;
+                case 3 :
+                    $(document.getElementById("coverPhotoThree")).addClass('photoBorder');
+                    break;
+                case 4 :
+                    $(document.getElementById("coverPhotoFour")).addClass('photoBorder');
+                    break;
+                default :
+                    break;
+            }
             imageServices.downloadPhotos($scope.plannerImageIdEdit, "eventPlannerPhotoUploadEdit");
             imageServices.downloadPhotos($scope.coverImageIdEdit, "coverPhotoUploadEdit");
         };
@@ -1224,12 +1240,12 @@ angular.module('User')
             }
             $scope.editPlannerSpinner = true;
             plannerService.editPlannerForm(editHostData)
-                .then(function (data, status) {
+                .then(function () {
                     $scope.submitPlannerEditNotif = true;
                     $scope.editPlannerSpinner = false;
                     $scope.submitPlannerEditErrorNotif = false;
                 })
-                .catch(function (data, status) {
+                .catch(function (data) {
                     $scope.submitPlannerEditErrorNotif = true;
                     $scope.editPlannerSpinner = false;
                     document.getElementById("submitPlannerEditErrorNotif").innerHTML= data.data.message;
@@ -1286,11 +1302,11 @@ angular.module('User')
                 delete editExchangeData.image;
             }
             exchangeService.editExchangeForm(editExchangeData)
-                .then(function (data, status) {
+                .then(function () {
                     $scope.editExchangeNotif = true;
                     $scope.editExchangeSpinner = false;
                     $scope.editExchangeErrorNotif = false;
-                }, function (data, status) {
+                }, function (data) {
                     $scope.editExchangeErrorNotif = true;
                     $scope.editExchangeSpinner = false;
                     document.getElementById("editExchangeErrorNotif").innerHTML= data.data.message;
@@ -1314,7 +1330,7 @@ angular.module('User')
         $scope.deleteEvent = function () {
             document.getElementsByClassName("deleteSpinner")[0].style.display = "inline";
             eventService.deleteEvent($scope.userEvents[settingIndex].eventId)
-                .then(function (data) {
+                .then(function () {
                     document.getElementsByClassName("deleteSpinner")[0].style.display = "none";
                     document.getElementsByClassName("approveSuccessSetting")[0].style.display = "block";
 
@@ -1343,7 +1359,7 @@ angular.module('User')
         $scope.deleteExchange= function () {
             document.getElementsByClassName("deleteExchangeSpinner")[0].style.display = "inline";
             exchangeService.deleteExchange($scope.exchangeEditTickets[settingExchangeIndex].exchangeBlitId)
-                .then(function (data) {
+                .then(function () {
                     document.getElementById("approveSuccessSettingExchange").style.display = "inline";
                     document.getElementsByClassName("deleteExchangeSpinner")[0].style.display = "none";
                 })
@@ -1461,7 +1477,7 @@ angular.module('User')
         };
         $scope.getExchangeData = function (page) {
             exchangeService.getExchangeTickets(page)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.totalExchangeNumber = data.data.totalElements;
                     $scope.exchangeTickets = data.data.content;
                     $scope.exchangeEditTickets = angular.copy(data.data.content);
@@ -1479,7 +1495,7 @@ angular.module('User')
         $scope.getDataUserEvents = [];
         $scope.getUserEvents = function (pageNumber) {
             eventService.getUserEvents(pageNumber)
-                .then(function (data, status) {
+                .then(function (data) {
                     $scope.totalEventsNumber = data.data.totalElements;
                     $scope.userEvents = data.data.content;
 
@@ -1540,6 +1556,57 @@ angular.module('User')
         $scope.showMenuOnSm = function () {
             $('.profileTabs').toggleClass("pullMenuLeft");
             $('.profileToggleMenu').toggleClass("rotateToggleMenu");
+        };
+        $scope.uploadUserPhoto = false;
+        $scope.showUploadPhoto = function () {
+            $scope.uploadUserPhoto = true;
+        };
+        $scope.uploadUserPhotoEdit = false;
+        $scope.showUploadPhotoEdit = function () {
+            $scope.uploadUserPhotoEdit = true;
+        };
+        $scope.coverPickedDefault = function (e, photoNumber) {
+            $('.plannerCoverDefault').removeClass('photoBorder');
+            $(e.currentTarget).addClass('photoBorder');
+            switch (photoNumber) {
+                case 'HOST-COVER-PHOTO-1' :
+                    $scope.coverImageId = 'HOST-COVER-PHOTO-1';
+                    break;
+                case 'HOST-COVER-PHOTO-2' :
+                    $scope.coverImageId = 'HOST-COVER-PHOTO-2';
+                    break;
+                case 'HOST-COVER-PHOTO-3' :
+                    $scope.coverImageId = 'HOST-COVER-PHOTO-3';
+                    break;
+                case 'HOST-COVER-PHOTO-4' :
+                    $scope.coverImageId = 'HOST-COVER-PHOTO-4';
+                    break;
+                default :
+                    $scope.coverImageId = '';
+                    break;
+            }
+
+        };
+        $scope.coverPickedDefaultEdit = function (e, photoNumber) {
+            $('.plannerCoverDefault').removeClass('photoBorder');
+            $(e.currentTarget).addClass('photoBorder');
+            switch (photoNumber) {
+                case 'HOST-COVER-PHOTO-1' :
+                    $scope.coverImageId = 'HOST-COVER-PHOTO-1';
+                    break;
+                case 'HOST-COVER-PHOTO-2' :
+                    $scope.coverImageId = 'HOST-COVER-PHOTO-2';
+                    break;
+                case 'HOST-COVER-PHOTO-3' :
+                    $scope.coverImageId = 'HOST-COVER-PHOTO-3';
+                    break;
+                case 'HOST-COVER-PHOTO-4' :
+                    $scope.coverImageId = 'HOST-COVER-PHOTO-4';
+                    break;
+                default :
+                    $scope.coverImageIdEdit = '';
+                    break;
+            }
         };
         $timeout(function () {
             var elements = document.querySelectorAll('input,select,textarea,checkbox');

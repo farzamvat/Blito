@@ -2466,12 +2466,23 @@ a>h5 {
     text-align: center;
     border-bottom: 2px solid #ddd;
 }
+.plannerCoverDefault {
+    width: 200px;
+    border: 4px solid #333;
+}
+.plannerCoverDefault:hover {
+    cursor: pointer;
+    transition: 300ms;
+}
 .aboutUsTextContainer{
      position: relative;
      text-align: right;
      float: right;
      pointer-events: none;
  }
+.photoBorder {
+    border: 4px solid #39A939;
+}
 .aboutUsTextContainer p{
     padding: 40px;
     direction: rtl;

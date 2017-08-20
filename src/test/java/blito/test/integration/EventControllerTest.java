@@ -31,7 +31,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.blito.Application;
 import com.blito.configs.Constants;
-import com.blito.enums.DayOfWeek;
 import com.blito.enums.EventType;
 import com.blito.enums.HostType;
 import com.blito.enums.ImageType;
@@ -247,7 +246,7 @@ public class EventControllerTest {
 
 			Image hostCoverPhoto = new Image();
 			image.setImageType(ImageType.HOST_COVER_PHOTO.name());
-			image.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO);
+			image.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO_1);
 
 			Image exchangeBlitPhoto = new Image();
 			image.setImageType(ImageType.EXCHANGEBLIT_PHOTO.name());

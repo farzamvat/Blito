@@ -24,7 +24,6 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.blito.Application;
 import com.blito.configs.Constants;
@@ -33,11 +32,9 @@ import com.blito.enums.HostType;
 import com.blito.enums.ImageType;
 import com.blito.models.EventHost;
 import com.blito.models.Image;
-import com.blito.models.Role;
 import com.blito.models.User;
 import com.blito.repositories.EventHostRepository;
 import com.blito.repositories.ImageRepository;
-import com.blito.repositories.RoleRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.rest.viewmodels.account.TokenModel;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
@@ -85,7 +82,7 @@ public class EventControllerAdditionalFieldsTest {
 
 		Image hostCoverPhoto = new Image();
 		image.setImageType(ImageType.HOST_COVER_PHOTO.name());
-		image.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO);
+		image.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO_1);
 
 		Image exchangeBlitPhoto = new Image();
 		image.setImageType(ImageType.EXCHANGEBLIT_PHOTO.name());
