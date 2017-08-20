@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -117,7 +116,7 @@ public class PaymentServiceTest {
 
 		Image hostCoverPhoto = new Image();
 		image.setImageType(ImageType.HOST_COVER_PHOTO.name());
-		image.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO);
+		image.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO_1);
 
 		Image exchangeBlitPhoto = new Image();
 		image.setImageType(ImageType.EXCHANGEBLIT_PHOTO.name());

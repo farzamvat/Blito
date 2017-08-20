@@ -234,7 +234,7 @@ public class EventServiceTest {
 
 		Image hostCoverPhoto = new Image();
 		image.setImageType(ImageType.HOST_COVER_PHOTO.name());
-		image.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO);
+		image.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO_1);
 
 		Image exchangeBlitPhoto = new Image();
 		image.setImageType(ImageType.EXCHANGEBLIT_PHOTO.name());
