@@ -120,7 +120,7 @@ textarea:focus, input:focus {
     transition: 200ms;
 }
 .btn:hover {
-    box-shadow: 2px 2px  10px #303030;
+    box-shadow: 0px 0px  5px #222;
 }
 .btn:active {
 color: white !important;
@@ -1154,19 +1154,22 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 }
 
 nav.navbar.navbar-inverse.navbar-fixed-top {
-    min-height: 30px !important;
+    min-height: 40px !important;
 }
 .navbar-nav > li > a {padding-top:5px ; padding-bottom:5px ;}
 
 .navbar-header {
-    height: 30px ;
+    height: 40px ;
 }
 .navbar-brand {
     height: 30px ;
 }
 .navbar-nav li a {
     color : white !important;
-    font-size: 13px;
+    font-size: 15px !important;
+    height:40px;
+    padding-top:10px;
+    vertical-align: middle;
 }
 .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
     background-color: rgb(252, 183, 49);
@@ -1187,8 +1190,8 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
     background-color: rgba(252, 183, 49, 0.5);
 }
 .navbar-header>img {
-    height: 30px;
-    padding: 5px 40px;
+    height: 40px;
+    padding: 5px 11px;
     width: auto;
     cursor: pointer;
     border: none;
@@ -1202,7 +1205,6 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
     /*background: radial-gradient(circle at center, #ddd 80%, rgba(30,30,30, 0) 100%);*/
 
 }
-
 .navbar-header>img:hover {
     cursor: pointer;
 
@@ -2049,7 +2051,6 @@ a{
 .printTicketButtom{
     margin:20px;
 }
-
 .btnPaymentActive {
     padding: 10px 20px;
     border: 2px solid #303030;
@@ -2058,15 +2059,10 @@ a{
     transition: 500ms;
     filter: grayscale(100%);
 }
-.btnPaymentActive:active not:hover{
-    border:2px solid #39A939;
-    filter: grayscale(0%);
-}
-
-.btnPaymentActive:focus{
-    border:2px solid #39A939;
-    background-color: white;
-    filter: grayscale(0%);
+.btnPaymentActivated{
+    border:2px solid #39A939 !important;
+    filter: grayscale(0%) !important;
+    box-shadow: 0px 0px 5px #888;
 }
 .navbar-header-backcolor{
     background: rgb(252, 183, 49);
@@ -2888,6 +2884,9 @@ table td{
 .plannerPageSocialMediaUrl{
     margin-bottom: 10px;
 }
+.eventPageHeader h3{
+    color:rgb(252, 183, 49);
+}
 @media (max-width: 770px) {
     .navbar-header-backcolor{
         width: 172px !important;
@@ -2933,9 +2932,6 @@ table td{
 
 
 @media (max-width: 992px) {
-    .eventContent h1{
-        color:rgb(252, 183, 49);
-    }
     .moreInfo{
         width:150px !important;
     }
@@ -2987,21 +2983,6 @@ table td{
         font-size: 12px;
     }
     .navbar-nav li a {
-        color : white !important;
-        font-size: 15px !important;
-        height:40px;
-        padding-top:10px;
-        vertical-align: middle;
-    }
-    nav.navbar.navbar-inverse.navbar-fixed-top{
-        min-height: 40px;
-    }
-    .navbar-header>img {
-        height: 40px;
-        padding: 5px 11px;
-    }
-    .navbar-header{
-        height: 40px;
     }
     .bioPageContentHeader h1{
         text-align: center;
