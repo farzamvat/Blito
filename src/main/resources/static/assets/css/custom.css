@@ -134,6 +134,9 @@ color: white !important;
     background-size: 100% 500px;
     height: 500px;
 }
+.fontSize16 {
+    font-size: 16px;
+}
 .marginRight10 {
     margin-right: 10px;
 }
@@ -221,7 +224,7 @@ button.slick-next {
 }
 .slidingEvents a {
     margin-top: 15px;
-    font-size: 12px ;
+    font-size: 16px ;
 }
 .slidingEvents h3 {
     float: right;
@@ -779,7 +782,7 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 .slidingEventsBtn {
     margin: 10px auto;
     width: 106px;
-    font-size: 10px !important;
+    font-size: 12px !important;
 }
 
 .exchangeTicketText {
@@ -1074,7 +1077,7 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     font-size: 18px;
 }
 .eventContent p {
-    font-size: 12px !important;
+    font-size: 14px !important;
 }
 .eventPageImage {
     padding-left: 0 ;

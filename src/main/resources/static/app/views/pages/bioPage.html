@@ -7,11 +7,11 @@
     </div>
     <div class="row plannerdescrptionHolder">
         <div class="col-xs-12 col-sm-8 col-sm-offset-2 section-white text-center">
-            <p>{{plannerData.description}}</p>
+            <p class="fontSize16">{{plannerData.description}}</p>
         </div>
     </div>
     <div class="row">
-        <h3 class="text-center plannerEventContent col-xs-12 col-sm-8 col-sm-offset-2">رویداد های {{plannerData.hostName}} </h3>
+        <h3 class="textAlignRight plannerEventContent col-xs-12 col-sm-8 col-sm-offset-2"> رویداد های <span>{{plannerData.hostName}}</span> </h3>
         <div class="col-xs-6 col-sm-4  floatRight marginTop10 marginBottom50" total-items="totalEventsNumber" pagination-id="eventPlannerPagination"  dir-paginate="item in eventList | itemsPerPage: 6"  current-page="currentPage">
             <a href="{{url+item.eventLink}}">
                 <div class="recipe"  >
@@ -34,33 +34,33 @@
 
     <div class="row plannerdescrptionHolder">
         <div ng-show="(plannerData.instagramLink)  || (plannerData.telegramLink ) || (plannerData.twitterLink) || (plannerData.linkedinLink ) " class="col-xs-12 col-sm-8 col-sm-offset-2 textAlignCenter marginTop30">
-            <h3 class="PlannerSocialMediaHeader textAlignRight">شبکه های اجتماعی {{plannerData.hostName}}</h3>
+            <h3 class="PlannerSocialMediaHeader textAlignRight">شبکه های اجتماعی <span>{{plannerData.hostName}}</span></h3>
             <div class="col-xs-12  plannerPagesocialmediaHolder noBorder textAlignCenter ">
-                    <div ng-show="plannerData.instagramLink" class="col-xs-12 col-sm-2  floatRight">
+                    <div ng-show="plannerData.instagramLink" class="col-xs-12 col-sm-6  floatRight">
                     <div  class="plannerPageSocialmedia " >
                         <img class="displayInline"  src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/d0cf11b8-f7d3-4c59-8e62-91365dd175f9.png"/>
                     </div>
                         <div class="plannerPageSocialMediaUrl">{{plannerData.instagramLink}}</div>
                     </div>
-                    <div ng-show="plannerData.telegramLink" class="col-xs-12 col-sm-2  floatRight">
+                    <div ng-show="plannerData.telegramLink" class="col-xs-12 col-sm-6  floatRight">
                     <div  class="plannerPageSocialmedia">
                         <img class="displayInline" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/11b8524d-0856-4844-9786-b5aab92c9ea5.png"/>
                     </div>
                         <div class="plannerPageSocialMediaUrl">{{plannerData.telegramLink}}</div>
                     </div>
-                    <div ng-show="plannerData.twitterLink" class="col-xs-12 col-sm-2 floatRight ">
+                    <div ng-show="plannerData.twitterLink" class="col-xs-12 col-sm-6 floatRight ">
                     <div  class="plannerPageSocialmedia" >
                         <img class="displayInline" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/3a457013-f475-4d11-8c98-76f42a25d8e5.png"/>
                     </div>
                         <div class="plannerPageSocialMediaUrl">{{plannerData.twitterLink}}</div>
                     </div>
-                    <div ng-show="plannerData.linkedinLink" class="col-xs-12 col-sm-2 floatRight">
+                    <div ng-show="plannerData.linkedinLink" class="col-xs-12 col-sm-6 floatRight">
                     <div class="plannerPageSocialmedia" >
                         <img class="displayInline" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/54e056ec-b4a7-4c08-8c6a-e4316eec13a9.png"/>
                     </div>
                         <div class="plannerPageSocialMediaUrl">{{plannerData.linkedinLink}}</div>
                     </div>
-                    <div ng-show="plannerData.websiteLink" class="col-xs-12 col-sm-2 floatRight">
+                    <div ng-show="plannerData.websiteLink" class="col-xs-12 col-sm-6 floatRight">
                     <div class="plannerPageSocialmedia" >
                         <img class="displayInline" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/6eea117b-e94f-4955-bc38-900236d91578.png"/>
                     </div>
