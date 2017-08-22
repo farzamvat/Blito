@@ -363,11 +363,21 @@ background-color: #303030;
     margin-left:5px;
     margin-bottom: 4px;
 }
+.socialmediaPlanner {
+    background: rgb(200,200, 200);
+    border-radius: 50%;
+    width:35px;
+    float:right;
+    height:35px !important;
+    margin-right:5px;
+    margin-left:5px;
+    margin-bottom: 4px;
+}
 .plannerPageSocialmedia{
     background: #222;
     border-radius: 50%;
-    width:25px;
-    height:25px !important;
+    width:45px;
+    height:45px !important;
     margin:auto;
     margin-bottom: 10px;
 }
@@ -415,6 +425,21 @@ background-color: #303030;
     opacity:0;
     transition: .5s;
 }
+.linkdinPlanner {
+    border-radius: 50%;
+    width:35px;
+    float:right;
+    height:35px !important;
+    opacity:0;
+    transition: .5s;
+    background: #0077b5 !important;
+}
+.marginTop-30 {
+    margin-top: -30px !important;
+}
+.marginTop-58 {
+    margin-top: -58px !important;
+}
 
 .socialmedia:hover span{
     opacity:1;
@@ -422,6 +447,7 @@ background-color: #303030;
 .socialmedia:hover img{
     filter:invert(100%);
 }
+
 /*@keyframes socialmediaanimation{*/
     /*0% {transform:scale(1);}*/
     /*50% {transform: scale(1.1);}*/
@@ -452,6 +478,20 @@ background-color: #303030;
     margin-right: 5px;
     transition: .5s;
 }
+.socialmediaPlanner img {
+    height: 70%;
+    transition: .5s;
+    margin-top: -54px;
+    margin-right: auto;
+    margin-left: auto;
+
+}
+.socialmediaPlanner:hover span{
+    opacity:1;
+}
+.socialmediaPlanner:hover img{
+    filter:invert(100%);
+}
 .noBorder{
     border:none;
 }
@@ -465,6 +505,10 @@ background-color: #303030;
     margin-right: 5px;
     transition: .5s;
 }
+.marginTop5 {
+    margin-top: 5px !important;
+}
+
 .searchBarHomePage {
     margin: 0 auto;
 }
