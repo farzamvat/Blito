@@ -1,6 +1,7 @@
 package com.blito.search;
 
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -16,11 +17,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 		@Type(value = Simple.class, name = "simple"),
 		@Type(value = Collection.class, name = "collection"),
 		@Type(value = Range.class, name = "range"),
-		@Type(value = Time.class , name = "time")
+		@Type(value = Time.class , name = "time"),
+		@Type(value = Complex.class, name = "complex")
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class AbstractSearchViewModel<T> {
-
+	@NotEmpty
 	protected String field;
 
 	public abstract Specification<T> action();
