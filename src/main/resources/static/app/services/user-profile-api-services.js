@@ -21,7 +21,8 @@ angular.module('userProfileApi', [])
         photo.download = function (imageData) {
             var queryParam = {
                 params : { id : imageData},
-                headers: {'Cache-Control': 'private, max-age=31536000', 'Pragma' : ''}
+                headers: {'Cache-Control': 'private, max-age=31536000', 'Pragma' : ''},
+                cache : true
             };
             return $http.get(config.baseUrl + '/api/blito/v1.0/download', queryParam);
         };
@@ -53,6 +54,7 @@ angular.module('userProfileApi', [])
         };
         event.getEventsByType = function (type, page) {
             var queryParam = {
+                cache : true,
                 params : {page: page-1, size: 12, sort: "createdAt,desc"}
             };
             var bodyJson = {
@@ -93,6 +95,7 @@ angular.module('userProfileApi', [])
         };
         exchange.getAllExchanges = function (pageNumber) {
             var queryParam = {
+                cache : true,
                 params : {page: pageNumber-1, size: 12, sort: "createdAt,desc"}
             };
             var bodyJson = {
