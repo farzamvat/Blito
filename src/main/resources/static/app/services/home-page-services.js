@@ -5,8 +5,16 @@
 angular.module('homePageApi', [])
     .service('miniSliderService', function ($http, config) {
         var miniSlider = this;
+        var timeoutFirstTime = 1000;
+        miniSlider.getTimeout = function () {
+            return timeoutFirstTime;
+        };
+        miniSlider.setTimeout = function (time) {
+            timeoutFirstTime = time;
+        };
         miniSlider.getSlidingDataEvents = function (eventType, size, evento) {
             var queryParam = {
+                cache : true,
                 params : {page: 0, size: size, sort: "orderNumber,desc"}
             };
             if(!evento) {
@@ -31,6 +39,7 @@ angular.module('homePageApi', [])
         };
         miniSlider.getSlidingDataExchange = function (size) {
             var queryParam = {
+                cache : true,
                 params : {page: 0, size: size, sort: "createdAt,desc"}
             };
                 var bodyJson = {
@@ -41,6 +50,7 @@ angular.module('homePageApi', [])
         };
         miniSlider.getEndedEvents = function (size) {
             var queryParam = {
+                cache : true,
                 params : {page: 0, size: size, sort: "createdAt,desc"}
             };
             var bodyJson = {
@@ -56,6 +66,7 @@ angular.module('homePageApi', [])
         var indexBanner = this;
         indexBanner.getIndexBanner = function () {
             var queryParam = {
+                cache : true,
                 params : {page: 0, size: 5}
             };
             return $http.get(config.baseUrl + '/api/blito/v1.0/public/index-banners', queryParam);
@@ -67,6 +78,7 @@ angular.module('homePageApi', [])
         var ourOffer = this;
         ourOffer.getOurOffer = function (type, evento) {
             var queryParam = {
+                cache : true,
                 params : {page: 0, size: 0, sort: "createdAt,desc"}
             };
             var bodyJson ;
