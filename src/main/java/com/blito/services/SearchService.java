@@ -4,14 +4,12 @@ import com.blito.enums.Response;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.GenericMapper;
 import com.blito.resourceUtil.ResourceUtil;
-import com.blito.search.Operator;
+import com.blito.search.SearchServiceUtil;
 import com.blito.search.SearchViewModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Service;
@@ -30,7 +28,7 @@ public class SearchService {
         if (searchViewModel.getRestrictions().isEmpty())
             return mapper.toPage(repository.findAll(pageable));
         Page<E> searchResult = searchViewModel.getRestrictions().stream().map(r -> r.action())
-                .reduce((s1, s2) -> combineSpecifications(s1, s2, Optional.ofNullable(searchViewModel.getOperator())))
+                .reduce((s1, s2) -> SearchServiceUtil.combineSpecifications(s1, s2, Optional.ofNullable(searchViewModel.getOperator())))
                 .map(specification -> repository.findAll(specification, pageable))
                 .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
         return new PageImpl<>(searchResult.getContent().stream().distinct().map(mapper::createFromEntity)
@@ -43,7 +41,7 @@ public class SearchService {
             return repository.findAll(pageable);
         Page<E> searchResult = searchViewModel.getRestrictions().stream().map(r -> r.action())
                 .reduce((s1, s2) ->
-                        combineSpecifications(s1, s2, Optional.ofNullable(searchViewModel.getOperator())))
+                        SearchServiceUtil.combineSpecifications(s1, s2, Optional.ofNullable(searchViewModel.getOperator())))
                 .map(specification -> repository.findAll(specification, pageable))
                 .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
         return new PageImpl<>(searchResult.getContent().stream().distinct()
@@ -55,23 +53,12 @@ public class SearchService {
         if (searchViewModel.getRestrictions().isEmpty())
             return mapper.createFromEntities(repository.findAll().stream().collect(Collectors.toSet()));
         List<E> searchResult = searchViewModel.getRestrictions().stream().map(r -> r.action())
-                .reduce((s1, s2) -> combineSpecifications(s1, s2, Optional.ofNullable(searchViewModel.getOperator())))
+                .reduce((s1, s2) -> SearchServiceUtil.combineSpecifications(s1, s2, Optional.ofNullable(searchViewModel.getOperator())))
                 .map(specification -> repository.findAll(specification))
                 .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
         return searchResult.stream().distinct().map(mapper::createFromEntity)
                 .collect(Collectors.toSet());
     }
 
-    private <E> Specifications<E> combineSpecifications(Specification<E> s1, Specification<E> s2, Optional<Operator> operator) {
-        return operator.map(op -> {
-            switch (op) {
-                case and:
-                    return Specifications.where(s1).and(s2);
-                case or:
-                    return Specifications.where(s1).or(s2);
-                default:
-                    return Specifications.where(s1).and(s2);
-            }
-        }).orElseGet(() -> Specifications.where(s1).and(s2));
-    }
+
 }

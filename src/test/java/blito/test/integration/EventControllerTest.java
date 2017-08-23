@@ -41,7 +41,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @ActiveProfiles("test")
-@SpringBootTest(classes=Application.class,webEnvironment=WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes=Application.class,webEnvironment=WebEnvironment.DEFINED_PORT)
 @RunWith(SpringRunner.class)
 public class EventControllerTest {
 	@Autowired
@@ -277,6 +277,53 @@ public class EventControllerTest {
 				.when()
 				.post( serverAddress +"/api/blito/v1.0/public/events/search/?page=0&size=20")
 				.then().assertThat().statusCode(200).body("numberOfElements",equalTo(5));
+	}
+
+	@Test
+	public void complexTypeSearch() throws JSONException {
+		JSONObject simple = new JSONObject();
+		simple.put("type", "time");
+		simple.put("field", "createdAt");
+		simple.put("operation", "gt");
+		simple.put("value", Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(12).toInstant()).getTime());
+
+		JSONObject simpleLessThan = new JSONObject();
+		simpleLessThan.put("type", "time");
+		simpleLessThan.put("field", "createdAt");
+		simpleLessThan.put("operation", "lt");
+		simpleLessThan.put("value", Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()).getTime());
+
+		JSONArray complexRestrcitions = new JSONArray();
+		JSONObject complex = new JSONObject();
+		complex.put("type","complex");
+		complex.put("operator","and");
+		complexRestrcitions.put(simple);
+		complexRestrcitions.put(simpleLessThan);
+		complex.put("restrictions",complexRestrcitions);
+
+		JSONObject eventTypeSimple = new JSONObject();
+		eventTypeSimple.put("type","simple");
+		eventTypeSimple.put("field","eventType");
+		eventTypeSimple.put("operation","eq");
+		eventTypeSimple.put("value", EventType.CONCERT.name());
+
+		JSONObject collection = new JSONObject();
+		collection.put("type", "collection");
+		collection.put("field", "offers");
+		collection.put("values", new JSONArray(Arrays.asList(OfferTypeEnum.OUR_OFFER.name(),OfferTypeEnum.SPECIAL_OFFER.name())));
+
+		JSONArray restrictions = new JSONArray();
+		restrictions.put(complex);
+		restrictions.put(eventTypeSimple);
+		restrictions.put(collection);
+		JSONObject requestBody = new JSONObject();
+		requestBody.put("restrictions",restrictions);
+
+		given().header("Content-Type",MediaType.APPLICATION_JSON_UTF8_VALUE)
+				.body(requestBody.toString())
+				.when()
+				.post(serverAddress +"/api/blito/v1.0/public/events/search?page=0&size=20")
+				.then().statusCode(200).body("numberOfElements",equalTo(1));
 	}
 
 	@Test
