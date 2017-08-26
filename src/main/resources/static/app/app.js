@@ -38,8 +38,9 @@ angular.module('Blito',
         $analyticsProvider.withBase(true);
     })
     .constant('config', {
-        baseUrl : 'http://89.163.225.84:8085',
+        baseUrl : 'https://bili.to',
         redirectToUrlAfterLogin : {url : '/'}
     })
 ;
 
+//http://89.163.225.84:8085

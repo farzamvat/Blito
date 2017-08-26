@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="row">
-        <h3 class="textAlignRight plannerEventContent col-xs-12 col-sm-8 col-sm-offset-2"> رویداد های <span>{{plannerData.hostName}}</span> </h3>
+        <h3 class="textAlignRight plannerEventContent col-xs-12 col-sm-8 col-sm-offset-2 "> رویداد های <span>{{plannerData.hostName}}</span> </h3>
         <div class="col-xs-6 col-sm-4  floatRight marginTop10 marginBottom50" total-items="totalEventsNumber" pagination-id="eventPlannerPagination"  dir-paginate="item in eventList | itemsPerPage: 6"  current-page="currentPage">
             <a href="{{url+item.eventLink}}">
                 <div class="recipe"  >
@@ -34,7 +34,7 @@
 
     <div class="row plannerdescrptionHolder">
         <div ng-show="(plannerData.instagramLink)  || (plannerData.telegramLink ) || (plannerData.twitterLink) || (plannerData.linkedinLink ) " class="col-xs-12 col-sm-8 col-sm-offset-2 textAlignCenter marginTop30">
-            <h3 class="PlannerSocialMediaHeader textAlignRight">شبکه های اجتماعی <span>{{plannerData.hostName}}</span></h3>
+            <h3 class="PlannerSocialMediaHeader textAlignRight padRight10">شبکه های اجتماعی <span>{{plannerData.hostName}}</span></h3>
             <div class="col-xs-12  plannerPagesocialmediaHolder noBorder textAlignCenter ">
                     <div ng-show="plannerData.instagramLink" >
                         <a class="socialmediaPlanner" href="{{plannerData.instagramLink}}" target="_blank">

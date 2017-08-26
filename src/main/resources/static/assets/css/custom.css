@@ -1109,6 +1109,7 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     padding-bottom: 20px;
     text-align: center;
     border-bottom: 2px solid #ddd;
+    padding-right:30px;
     /*background-color: rgba(50, 50, 50,1);*/
     border-radius: 0;
     color: #333;
@@ -2564,6 +2565,9 @@ a>h5 {
 }
 .padRight20per{
      padding-right: 20%;
+}
+.padRight10{
+    padding-right: 10px;
 }
 .aboutUsText2{
     padding: 40px;
