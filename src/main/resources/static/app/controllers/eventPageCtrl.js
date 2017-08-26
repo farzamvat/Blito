@@ -121,6 +121,7 @@ angular.module('eventsPageModule')
             angular.element(document.getElementById('payment')).addClass('active');
         };
         $scope.prevStep1 = function () {
+            angular.element(document.getElementsByClassName("btnPaymentActive")).removeClass("btnPaymentActivated");
             $scope.disableFreeButton = false;
             $scope.paymentSelectedDone = '';
             angular.element(document.getElementsByClassName('progress-bar')).css('width', '0');
