@@ -3,11 +3,12 @@
  */
 
 angular.module('homePageModule', [])
-    .controller('homeCtrl', function ($scope, miniSliderService, photoService, indexBannerService, ourOffersService, eventDetailService, $q,config) {
+    .controller('homeCtrl', function ($scope, miniSliderService, photoService, indexBannerService, ourOffersService, eventDetailService, $q,config, $timeout) {
         $scope.concertRow = [];
         $scope.showSections = [false,false,false,false,false,false,false];
         $scope.showSectionsExcahnge = [false,false];
         $scope.bannerData = [];
+        var timeoutTime = miniSliderService.getTimeout();
         var promises = [[],[],[],[],[],[],[]];
         var promisesExchange = [[], []];
         // $scope.url = "http://localhost:3000"+"/event-page/";
@@ -37,21 +38,25 @@ angular.module('homePageModule', [])
             })
             .catch(function (data) {
             });
-        miniSliderService.getSlidingDataEvents("WORKSHOP", 6, false)
-            .then(function (data) {
-                $scope.secondSection = $scope.catchImagesEvents(data.data.content, 2);
-                $scope.secondSection = $scope.secondSection.map(eventDetailService.calculateFreeBlits);
-                $scope.calculateCapacitySoldOut($scope.secondSection);
-            })
-            .catch(function (data) {
-            });
-        ourOffersService.getOurOffer("WORKSHOP", false)
-            .then(function (data) {
-                $scope.ourOfferTour = $scope.catchImagesEvents(data.data.content, 3);
-                $scope.calculateCapacitySoldOut($scope.ourOfferTour);
-            })
-            .catch(function (data) {
-            });
+        $timeout(function () {
+            miniSliderService.getSlidingDataEvents("WORKSHOP", 6, false)
+                .then(function (data) {
+                    $scope.secondSection = $scope.catchImagesEvents(data.data.content, 2);
+                    $scope.secondSection = $scope.secondSection.map(eventDetailService.calculateFreeBlits);
+                    $scope.calculateCapacitySoldOut($scope.secondSection);
+                })
+                .catch(function (data) {
+                });
+            ourOffersService.getOurOffer("WORKSHOP", false)
+                .then(function (data) {
+                    $scope.ourOfferTour = $scope.catchImagesEvents(data.data.content, 3);
+                    $scope.calculateCapacitySoldOut($scope.ourOfferTour);
+                })
+                .catch(function (data) {
+                });
+        },timeoutTime * 3);
+
+        $timeout(function () {
         miniSliderService.getSlidingDataEvents("evento", 6, true)
             .then(function (data) {
                 $scope.evento = $scope.catchImagesEvents(data.data.content, 4);
@@ -68,19 +73,26 @@ angular.module('homePageModule', [])
             })
             .catch(function (data) {
             });
+        },timeoutTime * 5);
+
+        $timeout(function () {
         miniSliderService.getSlidingDataExchange(6)
             .then(function (data) {
                 $scope.exchange = $scope.catchImagesExchange(data.data.content, 1);
             })
             .catch(function (data) {
             });
+        },timeoutTime * 8);
+        $timeout(function () {
+
         miniSliderService.getEndedEvents(6)
             .then(function (data) {
                 $scope.ended = $scope.catchImagesEvents(data.data.content, 6);
             })
             .catch(function (data) {
             });
-
+            miniSliderService.setTimeout(0);
+        },timeoutTime * 9);
 
         $scope.catchImagesEvents = function (events, i) {
             events =  events.map(function (item) {

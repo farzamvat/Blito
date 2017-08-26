@@ -72,6 +72,8 @@ public class EventFlatViewModel {
 	private boolean isEvento;
 	@JsonView(View.Event.class)
 	private Map<String,String> additionalFields;
+	@JsonView(View.AdminEvent.class)
+	private boolean isPrivate;
 	
 	
 	public Map<String, String> getAdditionalFields() {
@@ -289,6 +291,14 @@ public class EventFlatViewModel {
 
 	public void setEventHostName(String eventHostName) {
 		this.eventHostName = eventHostName;
+	}
+	@JsonProperty("isPrivate")
+	public boolean isPrivate() {
+		return isPrivate;
+	}
+
+	public void setPrivate(boolean isPrivate) {
+		this.isPrivate = isPrivate;
 	}
 	
 	

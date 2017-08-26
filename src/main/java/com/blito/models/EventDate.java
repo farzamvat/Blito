@@ -29,7 +29,7 @@ public class EventDate {
 	
 	String eventDateState;
 	
-	@OneToMany(mappedBy="eventDate", targetEntity=BlitType.class,fetch=FetchType.LAZY, cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="eventDate", targetEntity=BlitType.class,fetch=FetchType.EAGER, cascade=CascadeType.ALL,orphanRemoval=true)
 	Set<BlitType> blitTypes;
 	
 	@ManyToOne

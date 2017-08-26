@@ -18,6 +18,7 @@ import com.blito.enums.State;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 
 public class EventViewModel {
@@ -104,6 +105,9 @@ public class EventViewModel {
 	@AdditionalFields
 	@JsonView(View.Event.class)
 	private Map<String,String> additionalFields;
+	
+	@JsonView(View.AdminEvent.class)
+	private boolean isPrivate;
 
 	public EventViewModel() {
 		eventDates = new HashSet<>();
@@ -319,4 +323,16 @@ public class EventViewModel {
 	public void setImages(Set<ImageViewModel> images) {
 		this.images = images;
 	}
+
+	@JsonProperty("isPrivate")
+	public boolean isPrivate() {
+		return isPrivate;
+	}
+
+
+	public void setPrivate(boolean isPrivate) {
+		this.isPrivate = isPrivate;
+	}
+	
+	
 }

@@ -78,7 +78,7 @@ public class EventHostServiceTest {
 		imageRepo.save(image1);
 		Image image2 = new Image();
 		image2.setImageType(ImageType.HOST_COVER_PHOTO.name());
-		image2.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO);
+		image2.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO_1);
 		imageRepo.save(image2);
 
 		createVmodel.setHostName("Shenakht");

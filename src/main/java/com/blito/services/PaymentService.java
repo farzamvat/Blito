@@ -59,6 +59,7 @@ public class PaymentService {
 	private static Object paymentCompletionLock = new Object();
 	private final Logger log = LoggerFactory.getLogger(PaymentService.class);
 	
+	@Transactional
 	public Blit zarinpalPaymentFlow(String authority,String status)
 	{
 		Blit blit = blitRepository.findByToken(authority).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
@@ -92,7 +93,7 @@ public class PaymentService {
 		}
 		else {
 			log.error("Error in zarinpal callback, blit id '{}' , user email '{}'",blit.getBlitId(),blit.getCustomerEmail());
-			blit.setPaymentError(status);
+			blit.setPaymentError(ResourceUtil.getMessage(Response.PAYMENT_ERROR));
 			blit.setPaymentStatus(PaymentStatus.ERROR.name());
 			return blitRepository.save(blit);
 		}
@@ -105,13 +106,14 @@ public class PaymentService {
 			throw new InconsistentDataException(
 					ResourceUtil.getMessage(Response.REQUESTED_BLIT_COUNT_IS_MORE_THAN_CAPACITY));
 	}
-	
-	private Blit persistZarinpalBoughtBlit(CommonBlit blit, String authority, String refNum, String paymentMessage) {
+	@Transactional
+	public Blit persistZarinpalBoughtBlit(CommonBlit blit, String authority, String refNum, String paymentMessage) {
 		CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
-		BlitType blitType = blitTypeRepository.findOne(commonBlit.getBlitType().getBlitTypeId());
+		BlitType blitType = commonBlit.getBlitType();
 		commonBlit.setRefNum(refNum);
-		blit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+		commonBlit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 		commonBlit.setPaymentStatus(PaymentStatus.PAID.name());
+		commonBlit.setPaymentError(ResourceUtil.getMessage(Response.PAYMENT_SUCCESS));
 		blitService.checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
 		blitType.setSoldCount(blitType.getSoldCount() + commonBlit.getCount());
 		log.info("****** NONE FREE BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}'",commonBlit.getCustomerEmail(),blitType.getSoldCount());
@@ -128,8 +130,7 @@ public class PaymentService {
 						Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 			}
 		}
-		blitTypeRepository.saveAndFlush(blitType);
-		return commonBlitRepository.saveAndFlush(commonBlit);
+		return commonBlit;
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)

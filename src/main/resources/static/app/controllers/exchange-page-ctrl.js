@@ -5,11 +5,7 @@
 angular.module('eventsPageModule')
     .controller('exchangePageCtrl', function ($scope, $routeParams, exchangeService, mapMarkerService, dateSetterService, photoService, $timeout) {
         $scope.userEmail = 'email';
-        $scope.mapOptions = {
-            zoom: 14,
-            center: new google.maps.LatLng(35.7023, 51.3957),
-            mapTypeId: google.maps.MapTypeId.TERRAIN
-        };
+
         exchangeService.getExchange($routeParams.exchangeLink)
             .then(function (data) {
                 $scope.exchangeData = data.data;

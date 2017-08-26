@@ -1,5 +1,6 @@
 package com.blito.services;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.exceptions.ResourceNotFoundException;
 import com.blito.mappers.ExchangeBlitMapper;
+import com.blito.models.Event;
 import com.blito.models.ExchangeBlit;
 import com.blito.models.Image;
 import com.blito.models.User;
@@ -27,7 +29,9 @@ import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitChangeStateViewModel;
 import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
+import com.blito.search.Operation;
 import com.blito.search.SearchViewModel;
+import com.blito.search.Simple;
 import com.blito.security.SecurityContextHolder;
 
 @Service
@@ -122,6 +126,9 @@ public class ExchangeBlitService {
 
 	public Page<ExchangeBlitViewModel> searchExchangeBlits(SearchViewModel<ExchangeBlit> searchViewModel,
 			Pageable pageable) {
+		Simple<ExchangeBlit> isDeletedRestriction = new Simple<>(Operation.eq, "isDeleted", "false");
+		Simple<ExchangeBlit> isApprovedRestriction = new Simple<>(Operation.eq, "operatorState", OperatorState.APPROVED.name()); 
+		searchViewModel.getRestrictions().addAll(Arrays.asList(isDeletedRestriction, isApprovedRestriction));
 		return searchService.search(searchViewModel, pageable, exchangeBlitMapper, exchangeBlitRepository);
 	}
 

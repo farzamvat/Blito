@@ -1,17 +1,4 @@
 <div class="profilePage" ng-controller="userProfileCtrl as userProfile">
-    <!--<div class="userProfileInfo">-->
-
-    <!--</div>-->
-    <!--<div class="card hovercard userProfileInfo">-->
-
-        <!--<div class="useravatar">-->
-            <!--<img alt="" src="assets/img/profile.jpeg">-->
-        <!--</div>-->
-        <!--<div class="card-info"> <span class="card-title">{{userData.firstname}} {{userData.lastname}}</span>-->
-
-        <!--</div>-->
-    <!--</div>-->
-    <!-- tabs right -->
     <div ng-click="showMenuOnSm()" class="hidden-sm hidden-lg hidden-md profileToggleMenu"><i class="fa fa-plus fa-2x"></i></div>
     <div class="tabbable smallPageSize userProfileTab marginTop60"  >
         <div class="col-xs-3 col-sm-2  floatRight ">
@@ -28,7 +15,7 @@
                         <i class="fa fa-calendar" aria-hidden="true"></i>
                     </a>
                     <ul class="tabDropDown" id="toggleEvent">
-                        <li ng-click="scrollTo('eventList', 'eventListSection')"><a ><span class=""> لیست رویدادها </span><i class="fa fa-list"></i></a></li>
+                        <li ng-click="scrollTo('eventList', 'eventListSection')"><a ><span class=""> لیست رویدادها و برگزارکننده ها </span><i class="fa fa-list"></i></a></li>
                         <li ng-click="scrollTo('makeEvent', 'makeEventSection')"><a ><span class="">ایجاد رویداد</span><i class="fa fa-magic"></i></a></li>
                         <li ng-click="scrollTo('eventPlannerSection', 'PlannerSection')"><a ><span class="-xs">ایجاد برگزارکننده</span><i class="fa fa-user"></i></a></li>
                     </ul>
@@ -576,7 +563,9 @@
                                                     <textarea ng-model="eventFields.description" required name="eventDescription" maxlength="200" id="eventDescription"  type="text"  class="form-group textAreaForm" ></textarea>
                                                 </div>
                                             </div>
-
+                                            <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
+                                                <label  class="marginRight30"><input class="checkboxStyle" ng-model="eventFields.isPrivate"    type="checkbox" value="">رویداد خصوصی</label>
+                                            </div>
                                         </div>
                                         <div class="row marginTop30">
                                             <div class="form-group col-xs-11  formRegGroup  floatRight ">
@@ -588,8 +577,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
                                     </fieldset>
                                     <fieldset class="marginTop30 fieldsetStyle">
 
@@ -801,7 +788,7 @@
                                                     <label class="registerLabel" for="eventPlanner">انتخاب برگزارکننده   :</label>
                                                 </div>
                                                 <div class="col-xs-7 col-sm-6 floatRight ">
-                                                    <select id="eventPlanner" required name="eventPlannerSelect" ng-model="eventFields.eventPlanner" ng-options="obj.hostName for obj in eventHosts track by obj.eventHostId" class="form-control dropDownList">
+                                                    <select id="eventPlanner" required name="eventPlannerSelect" ng-model="eventFields.eventPlanner" ng-options="obj.hostName for obj in eventHostsList track by obj.eventHostId" class="form-control dropDownList">
 
                                                     </select>
                                                 </div>
@@ -831,13 +818,8 @@
                                                         </div>
                                                         <div class="col-xs-12 col-sm-6 floatRight inputXsSize">
                                                             <input type="text" required ng-model="showTime.date" class="datePickerFormat" ng-class="eventDateClass($index)" readonly/>
-
-                                                            <!--<input height="60"     type="text"  class="form-group registerInput floatRight eventShowTime" >-->
                                                         </div>
-
                                                     </div>
-
-
                                                     <div class="form-group col-xs-12  formRegGroup floatRight marginTop30" ng-repeat="ticketType in showTime.blitTypes">
                                                         <div class="col-xs-12 col-sm-6 floatRight marginTop10">
 
@@ -984,19 +966,19 @@
                                     </fieldset>
                                     <fieldset class="marginTop30 fieldsetStyle">
                                         <legend class="legendStyle"> بارگذاری عکس (حجم عکس کم تر از ۱ مگابایت) </legend>
+                                        <div class="col-xs-12">
+                                            <h3 class="textAlignRight marginRight30">عکس</h3>
+                                        </div>
                                         <div class="row marginTop30">
-                                            <div class="col-xs-12">
-                                                <h3 class="textAlignRight marginRight30">عکس</h3>
-                                            </div>
-                                            <div class="col-xs-12 col-sm-6 floatRight marginTop30">
 
-                                                <label> عکس پروفایل (نسبت طول به عرض : ۰.۷) :</label>
+                                            <div class="col-xs-12 floatRight marginTop30">
+
+                                                <label class="marginRight10"> عکس برگزارکننده (نسبت طول به عرض برابر : مربع) :</label>
                                                 <button class="btn btn-default " ng-click='uploadPicEventPlanner()'>انتخاب <i class="fa fa-image"></i></button>
                                                 <div class="col-xs-12" ng-show="showThumbnailEventPlanner">
                                                     <img class="img-responsive eventPlannerPhotoUpload  marginTop30" id="eventPlannerPhotoUpload"  src="" alt="">
                                                     <div class="col-xs-12">
                                                         <button class="btn btn-success marginTop10" ng-click="photoUploadPlanner()">بارگذاری   <i ng-show="uploadPlannerPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></button>
-                                                        <!--<button ng-click="deletePicEventPlanner()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                                     </div>
                                                     <div id="plannerPhotoError" ng-show="plannerPhotoError" class="text-center alert alert-danger col-xs-12">
                                                         <strong></strong>
@@ -1008,14 +990,35 @@
 
 
                                             </div>
+                                        </div>
+                                        <div class="row marginTop30">
+                                            <div class="col-xs-12 floatRight marginTop30">
+
+                                                <div class="col-xs-12  floatRight">
+                                                <label class="marginRight10">انتخاب عکس کاور:</label>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-6 col-md-3 floatRight marginTop30">
+                                                    <img ng-click="coverPickedDefault($event, 1)" id="coverPhotoOne" class="plannerCoverDefault coverPhotoOne" alt="">
+                                                </div>
+                                                <div class="col-xs-12 col-sm-6 col-md-3 floatRight marginTop30">
+                                                    <img ng-click="coverPickedDefault($event, 2)" id="coverPhotoTwo" class="plannerCoverDefault coverPhotoTwo"  alt="">
+                                                </div>
+                                                <div class="col-xs-12 col-sm-6 col-md-3 floatRight marginTop30">
+                                                    <img ng-click="coverPickedDefault($event, 3)" id="coverPhotoThree" class="plannerCoverDefault coverPhotoThree" alt="">
+                                                </div>
+                                                <div class="col-xs-12 col-sm-6 col-md-3 floatRight marginTop30">
+                                                    <img ng-click="coverPickedDefault($event, 4)" id="coverPhotoFour" class="plannerCoverDefault coverPhotoFour"  alt="">
+                                                </div>
+                                            </div>
                                             <div class="col-xs-12 col-sm-6 floatRight marginTop30">
-                                                <label>  عکس کاور :</label>
+                                                <label class="marginRight10">اگر عکس خودتان را میخواهید بارگذاری کنید <a ng-click="showUploadPhoto()">اینجا</a> را کلیک کنید</label>
+                                                <div ng-show="uploadUserPhoto">
+                                                <label class="marginRight30">  عکس کاور (نسبت طول به عرض : ۰.۵) :</label>
                                                 <button class="btn btn-default " ng-click='uploadPicCover()'> انتخاب <i class="fa fa-image"></i></button>
                                                 <div class="col-xs-12" ng-show="showThumbnailCover">
                                                     <img class="img-responsive coverPhotoUpload marginTop30"  src="" alt="">
                                                     <div class="col-xs-12">
                                                         <button class="btn btn-success marginTop10" ng-click="photoUploadPlannerCover()">بارگذاری <i ng-show="uploadCoverPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></button>
-                                                        <!--<button class="btn btn-danger marginTop10" ng-click="deleteCoverPic()">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                                     </div>
                                                     <div id="coverPhotoError" ng-show="coverPhotoError" class="text-center alert alert-danger col-xs-12">
                                                         <strong></strong>
@@ -1023,6 +1026,7 @@
                                                     <div ng-show="coverPhotoSuccess" class="text-center alert alert-success col-xs-12">
                                                         <strong>عکس با موفقیت بارگذاری شد!</strong>
                                                     </div>
+                                                </div>
                                                 </div>
 
                                             </div>
@@ -1035,7 +1039,7 @@
                                                 <label class="registerLabel floatRight" for="plannerTelegram" > تلگرام :</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
-                                                <input height="60" id="plannerTelegram"  ng-model="eventPlanner.telegram"   type="text"  class="form-group registerInput" >
+                                                <input height="60" id="plannerTelegram" placeholder="www.t.me"  ng-model="eventPlanner.telegram"   type="text"  class="form-group registerInput" >
                                             </div>
                                         </div>
                                         <div class="form-group col-sm-6 formRegGroup floatRight">
@@ -1043,7 +1047,7 @@
                                                 <label class="registerLabel floatRight"  for="plannerInstagram" > اینستاگرام :</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
-                                                <input height="60" id="plannerInstagram" ng-model="eventPlanner.instagram"    type="text"  class="form-group registerInput" >
+                                                <input height="60" id="plannerInstagram" placeholder="www.instagram.com" ng-model="eventPlanner.instagram"    type="text"  class="form-group registerInput" >
                                             </div>
                                         </div>
                                         <div class="form-group col-sm-6 formRegGroup floatRight">
@@ -1051,7 +1055,7 @@
                                                 <label class="registerLabel floatRight" for="plannerTwitter" > تویتر :</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
-                                                <input height="60" id="plannerTwitter" ng-model="eventPlanner.twitter"   type="text"  class="form-group registerInput" >
+                                                <input height="60" id="plannerTwitter" placeholder="www.twitter.com" ng-model="eventPlanner.twitter"   type="text"  class="form-group registerInput" >
                                             </div>
                                         </div>
                                         <div class="form-group col-sm-6 formRegGroup floatRight">
@@ -1059,7 +1063,7 @@
                                                 <label class="registerLabel floatRight" for="plannerLinkedIn" >لینکداین :</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
-                                                <input height="60" id="plannerLinkedIn" ng-model="eventPlanner.linkedin"    type="text"  class="form-group registerInput" >
+                                                <input height="60" id="plannerLinkedIn" placeholder="www.linkedin.com" ng-model="eventPlanner.linkedin"    type="text"  class="form-group registerInput" >
                                             </div>
                                         </div>
 
