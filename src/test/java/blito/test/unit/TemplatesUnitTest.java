@@ -49,6 +49,7 @@ public class TemplatesUnitTest {
 		try {
 			String content = htmlRenderer.renderHtml("accountVerification", map);
 			assertTrue(true);
+			System.out.println(content);
 		} catch(Exception exception)
 		{
 			assertTrue(false);

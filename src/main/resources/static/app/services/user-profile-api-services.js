@@ -20,7 +20,9 @@ angular.module('userProfileApi', [])
         };
         photo.download = function (imageData) {
             var queryParam = {
-                params : { id : imageData}
+                params : { id : imageData},
+                headers: {'Cache-Control': 'private, max-age=31536000', 'Pragma' : ''},
+                cache : true
             };
             return $http.get(config.baseUrl + '/api/blito/v1.0/download', queryParam);
         };
@@ -52,13 +54,12 @@ angular.module('userProfileApi', [])
         };
         event.getEventsByType = function (type, page) {
             var queryParam = {
+                cache : true,
                 params : {page: page-1, size: 12, sort: "createdAt,desc"}
             };
             var bodyJson = {
                 restrictions: [
-                    {field: "isDeleted", type: "simple", operation: "eq", value: "false"},
                     {field: "eventState", type: "simple", operation: "neq", value: "ENDED"},
-                    {field: "operatorState", type: "simple", operation: "eq", value: "APPROVED"},
                     {field: "eventType", type: "simple", operation: "eq", value: type}
                 ]
             };
@@ -94,13 +95,11 @@ angular.module('userProfileApi', [])
         };
         exchange.getAllExchanges = function (pageNumber) {
             var queryParam = {
+                cache : true,
                 params : {page: pageNumber-1, size: 12, sort: "createdAt,desc"}
             };
             var bodyJson = {
-                restrictions : [
-                    {field : "isDeleted", type : "simple", operation : "eq", value: "false"},
-                    {field: "operatorState", type: "simple", operation: "eq", value: "APPROVED"}
-                ]
+                restrictions : []
             };
             return $http.post(config.baseUrl+'/api/blito/v1.0/public/exchange-blits/search', bodyJson,queryParam);
         };
@@ -165,9 +164,9 @@ angular.module('userProfileApi', [])
     })
     .service('plannerService', function ($http, config) {
         var planner = this;
-        planner.getPlanners = function (page) {
+        planner.getPlanners = function (page, size) {
             var queryParam = {
-                params : {page: page-1, size: 4}
+                params : {page: page-1, size: size}
             };
             return $http.get(config.baseUrl+'/api/blito/v1.0/event-hosts/all', queryParam)
         };
@@ -176,6 +175,23 @@ angular.module('userProfileApi', [])
         };
         planner.editPlannerForm = function (editData) {
             return $http.put(config.baseUrl+'/api/blito/v1.0/event-hosts', editData)
+        };
+        planner.getPlannerByLink = function (plannerLink) {
+            return $http.get(config.baseUrl+'/api/blito/v1.0/public/event-hosts/link/'+plannerLink)
+        };
+        planner.getPlannerById = function (plannerId) {
+            return $http.get(config.baseUrl+'/api/blito/v1.0/public/event-hosts/'+plannerId)
+        };
+        planner.getPlannerEvents = function (plannerLink, pageNumber) {
+            var queryParam = {
+                params : {page: pageNumber-1, size: 6, sort: "createdAt,desc"}
+            };
+            var bodyJson = {
+                restrictions : [
+                    {field : "eventHost-eventHostLink", type : "simple", operation : "eq", value: plannerLink}
+                ]
+            };
+            return $http.post(config.baseUrl+'/api/blito/v1.0/public/events/search',bodyJson,queryParam)
         };
         planner.deletePlanner = function (plannerId) {
             var queryParam = {

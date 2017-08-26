@@ -36,6 +36,7 @@ public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit, ExchangeB
 		exchangeBlit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 		exchangeBlit.setState(State.CLOSED.name());
 		exchangeBlit.setOperatorState(OperatorState.PENDING.name());
+		exchangeBlit.setDeleted(vmodel.isDeleted());
 		return exchangeBlit;
 	}
 
@@ -60,6 +61,7 @@ public class ExchangeBlitMapper implements GenericMapper<ExchangeBlit, ExchangeB
 		vmodel.setLongitude(exchangeBlit.getLongitude());
 		vmodel.setCreatedAt(exchangeBlit.getCreatedAt());
 		vmodel.setExchangeLink(exchangeBlit.getExchangeLink());
+		vmodel.setDeleted(exchangeBlit.isDeleted());
 		return vmodel;
 	}
 

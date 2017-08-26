@@ -65,7 +65,7 @@ public class EventHostService {
 		if (vmodel.getImages().stream().filter(i -> i.getType().equals(ImageType.HOST_PHOTO)).count() == 0)
 			vmodel.getImages().add(new ImageViewModel(Constants.DEFAULT_HOST_PHOTO, ImageType.HOST_PHOTO));
 		if (vmodel.getImages().stream().filter(i -> i.getType().equals(ImageType.HOST_COVER_PHOTO)).count() == 0)
-			vmodel.getImages().add(new ImageViewModel(Constants.DEFAULT_HOST_COVER_PHOTO, ImageType.HOST_COVER_PHOTO));
+			vmodel.getImages().add(new ImageViewModel(Constants.DEFAULT_HOST_COVER_PHOTO_1, ImageType.HOST_COVER_PHOTO));
 		Set<Image> images = imageRepository.findByImageUUIDIn(
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toSet()));
 		if (images.size() != vmodel.getImages().size()) {
@@ -92,6 +92,7 @@ public class EventHostService {
 				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toSet()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 		eventHost.setImages(images);
+		vmodel.setEventHostLink(vmodel.getEventHostLink().replaceAll(" " , "-"));
 		if (!vmodel.getEventHostLink().equals(eventHost.getEventHostLink())) {
 			Optional<EventHost> eventHostResult = eventHostRepository
 					.findByEventHostLinkAndIsDeletedFalse(vmodel.getEventHostLink());

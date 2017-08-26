@@ -1,96 +1,73 @@
-<div ng-controller="bioPageCtrl">
-    <div class="row eventPageHeader marginTop50 bioPageCoverPhoto" >
-
-        <div class="col-xs-12 col-sm-4 col-md-3 floatRight eventPageImage">
-            <img ng-src="assets/img/a.jpeg"   class="img-responsive imgMobileSize ">
-        </div>
-        <div class="col-xs-12 col-sm-7 col-md-8 floatRight textAlignRight eventContent" >
-            <h1>نام رویداد</h1>
-            <p> توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد</p>
-            <p> توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد</p>
+<div ng-controller="bioPageCtrl" class="bioPageContainer">
+    <div class="row eventPageHeader bioPageHeaderCover plannerCover">
+    </div>
+    <img ng-src="{{plannerPhoto}}" class="circleImage bioPageLogoImage"/>
+    <div class="col-xs-12 col-sm-8 col-sm-offset-2 plannerBioContent" >
+        <h1>{{plannerData.hostName}}</h1>
+    </div>
+    <div class="row plannerdescrptionHolder">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 section-white text-center">
+            <p class="fontSize16">{{plannerData.description}}</p>
         </div>
     </div>
-    <div class="row marginTop30">
-        <div class="col-xs-10 col-xs-offset-1 textAlignRight">
-            <p>  توضیحات در مورد رویداد توضیحات توضیحات در مورد رویداد توضیحاتتوضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحاتاد</p>
-            <p> توضیحات در مورد رویداد توض توضیحات در مورد رویداد توضیحاتیحات در مورد رویدادتوضیحات در مورد رویداد</p>
-            <p> توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در توضیحات در مورد رویداد توضیحاتتوضیحات در مورد رویداد توضیحاتمورد رویداد</p>
-            <p> توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد</p>
-            <p> توضیحات در متوضیحات در مورد رویداد توضیحاتتوضیحات در مورد رویداد توضیحاتورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد</p>
-            <p>توضیحات در مورد رویداد توضیحاتتوضیحات در مورد رویداد توضیحات توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد</p>
-            <p>  توضیحات در مورد رویداد توضیحات توضیحات در مورد رویداد توضیحاتتوضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحاتاد</p>
-            <p> توضیحات در مورد رویداد توض توضیحات در مورد رویداد توضیحاتیحات در مورد رویدادتوضیحات در مورد رویداد</p>
-            <p> توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در توضیحات در مورد رویداد توضیحاتتوضیحات در مورد رویداد توضیحاتمورد رویداد</p>
-            <p> توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد</p>
-            <p>توضیحات در مورد رویداد توضیحاتتوضیحات در مورد رویداد توضیحات توضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحات در مورد رویداد</p>
-            <p>  توضیحات در مورد رویداد توضیحات توضیحات در مورد رویداد توضیحاتتوضیحات در مورد رویداد توضیحات در مورد رویدادتوضیحاتاد</p>
-            <p> توضیحات در مورد رویداد توض توضیحات در مورد رویداد توضیحاتیحات در مورد رویدادتوضیحات در مورد رویداد</p>
+    <div class="row">
+        <h3 class="textAlignRight plannerEventContent col-xs-12 col-sm-8 col-sm-offset-2 "> رویداد های <span>{{plannerData.hostName}}</span> </h3>
+        <div class="col-xs-6 col-sm-4  floatRight marginTop10 marginBottom50" total-items="totalEventsNumber" pagination-id="eventPlannerPagination"  dir-paginate="item in eventList | itemsPerPage: 6"  current-page="currentPage">
+            <a href="{{url+item.eventLink}}">
+                <div class="recipe"  >
+                    <div class="image center-block" >
+                        <img ng-src="{{item.image}}" class="center-block eventListImage"  >
+
+                        <h4 class="text-center slidingEventsTitle"><span ng-if="item.eventName.length > 20">...</span>{{item.eventName | limitTo : 20}}</h4>
+                    </div>
+                </div>
+            </a>
         </div>
-        <div class="col-xs-10 col-xs-offset-1 textAlignRight marginTop30">
-            <div class="form-group col-xs-12 formRegGroup floatRight">
-                <div class="col-xs-5 col-sm-3 floatRight ">
-                    <label class="registerLabel" for="socialMediaInstagram"><i class="fa fa-instagram" aria-hidden="true"></i> صفحه اینستاگرام   : </label>
-                </div>
-                <div class="col-xs-7 col-sm-6 floatRight ">
-                    <label id="socialMediaInstagram" class="floatRight"><a class="floatRight">instagram.com</a></label>
-                </div>
-
-            </div>
-            <div class="form-group col-xs-12 formRegGroup floatRight">
-                <div class="col-xs-5 col-sm-3 floatRight ">
-                    <label class="registerLabel" for="socialMediaTelegram"><i class="fa fa-telegram" aria-hidden="true"></i>  لینک تلگرام   : </label>
-                </div>
-                <div class="col-xs-7 col-sm-6 floatRight ">
-                    <label id="socialMediaTelegram" class="floatRight"><a class="floatRight">t.me/page</a></label>
-                </div>
-
+        <div class="col-xs-12">
+            <div class="col-md-4 col-md-offset-4">
+                <dir-pagination-controls  class="col-xs-12" pagination-id="eventPlannerPagination" on-page-change="pageChanged(newPageNumber)"
+                                          max-size="5">
+                </dir-pagination-controls>
             </div>
         </div>
     </div>
-    <div class="col-xs-12 slidingEvents marginTop30">
-        <h2 class="textAlignRigh">رویداد های این مکان</h2>
-        <button class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</button>
-        <div class="col-xs-12 slickSliders">
-            <slick dots="true" infinite="true"    autoplay="true" lazy-load="ondemand" speed=700 slides-to-show=4 touch-move="true" slides-to-scroll=1 >
-                <div>
-                    <a class="slidingEventsImg" href=""><img src="assets/img/e.jpeg" class="img-responsive center-block homePageImage"></a>
-                    <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                    <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  </button>
-                </div>
-                <div>
-                    <a class="slidingEventsImg" href=""><img src="assets/img/a.jpeg" class="img-responsive center-block homePageImage"></a>
-                    <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                    <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد </button>
-                </div>
-                <div>
-                    <a class="slidingEventsImg" href=""><img src="assets/img/d.jpeg" class="img-responsive center-block homePageImage"></a>
-                    <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                    <button class="btn btn-success slidingEventsBtn center-block"> مشاهده رویداد</button>
-                </div>
-                <div>
-                    <a class="slidingEventsImg" href=""><img src="assets/img/f.jpeg" class="img-responsive center-block homePageImage"></a>
-                    <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                    <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد</button>
-                </div>
-                <div>
-                    <a class="slidingEventsImg" href=""><img src="assets/img/c.jpeg" class="img-responsive center-block homePageImage"></a>
-                    <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                    <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد</button>
-                </div>
-                <div>
-                    <a class="slidingEventsImg" href=""><img src="assets/img/b.jpeg" class="img-responsive center-block homePageImage"></a>
-                    <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                    <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد</button>
-                </div>
-                <div>
-                    <a class="slidingEventsImg" href=""><img src="assets/img/e.jpeg" class="img-responsive center-block homePageImage"></a>
-                    <h4 class="text-center slidingEventsTitle">تیتر رویداد</h4>
-                    <button class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد</button>
-                </div>
-            </slick>
+
+    <div class="row plannerdescrptionHolder">
+        <div ng-show="(plannerData.instagramLink)  || (plannerData.telegramLink ) || (plannerData.twitterLink) || (plannerData.linkedinLink ) " class="col-xs-12 col-sm-8 col-sm-offset-2 textAlignCenter marginTop30">
+            <h3 class="PlannerSocialMediaHeader textAlignRight padRight10">شبکه های اجتماعی <span>{{plannerData.hostName}}</span></h3>
+            <div class="col-xs-12  plannerPagesocialmediaHolder noBorder textAlignCenter ">
+                    <div ng-show="plannerData.instagramLink" >
+                        <a class="socialmediaPlanner" href="{{plannerData.instagramLink}}" target="_blank">
+                            <span class="instagram"></span>
+                            <img class="displayInline" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/d0cf11b8-f7d3-4c59-8e62-91365dd175f9.png">
+                        </a>
+                    </div>
+                    <div ng-show="plannerData.telegramLink">
+                        <a class="socialmediaPlanner" href="{{plannerData.telegramLink}}" target="_blank">
+                            <span class="telegram"></span>
+                            <img class="displayInline" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/11b8524d-0856-4844-9786-b5aab92c9ea5.png">
+                        </a>
+                    </div>
+                    <div ng-show="plannerData.twitterLink" >
+
+                        <a class="socialmediaPlanner" href="{{plannerData.twitterLink}}" target="_blank">
+                            <span class="twitter"></span>
+                            <img class="displayInline" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/3a457013-f475-4d11-8c98-76f42a25d8e5.png">
+                        </a>
+                    </div>
+                    <div ng-show="plannerData.linkedinLink" >
+                        <a class="socialmediaPlanner" href="{{plannerData.linkedinLink}}" target="_blank">
+                            <span class="linkdinPlanner"></span>
+                            <img class="displayInline marginTop-58" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/54e056ec-b4a7-4c08-8c6a-e4316eec13a9.png">
+                        </a>
+                    </div>
+                    <div ng-show="plannerData.websiteLink" >
+                        <a class="socialmediaPlanner" href="{{plannerData.websiteLink}}" target="_blank">
+                            <img class="displayInline marginTop5" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/6eea117b-e94f-4955-bc38-900236d91578.png">
+                        </a>
+                    </div>
+            </div>
         </div>
-
-
-
     </div>
+
 </div>

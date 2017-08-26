@@ -1,10 +1,15 @@
 package com.blito.services;
 
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.blito.enums.OperatorState;
 import com.blito.enums.Response;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.ExchangeBlitMapper;
@@ -14,6 +19,9 @@ import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.exchangeblit.AdminChangeExchangeBlitOperatorStateViewModel;
 import com.blito.rest.viewmodels.exchangeblit.AdminChangeExchangeBlitStateViewModel;
 import com.blito.rest.viewmodels.exchangeblit.ExchangeBlitViewModel;
+import com.blito.search.Operation;
+import com.blito.search.SearchViewModel;
+import com.blito.search.Simple;
 
 @Service
 public class AdminExchangeBlitService {
@@ -23,6 +31,8 @@ public class AdminExchangeBlitService {
 	ExchangeBlitRepository exchangeBlitRepository;
 	@Autowired
 	ImageService imageService;
+	@Autowired 
+	SearchService searchService;
 
 	
 	@Transactional
@@ -50,5 +60,10 @@ public class AdminExchangeBlitService {
 		imageService.delete(exchangeBlit.getImage().getImageUUID());
 		exchangeBlit.setImage(null);
 		exchangeBlit.setDeleted(true);
+	}
+	
+	public Page<ExchangeBlitViewModel> searchExchangeBlits(SearchViewModel<ExchangeBlit> searchViewModel,
+			Pageable pageable) {
+		return searchService.search(searchViewModel, pageable, exchangeBlitMapper, exchangeBlitRepository);
 	}
 }

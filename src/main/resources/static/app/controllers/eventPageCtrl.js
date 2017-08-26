@@ -13,7 +13,8 @@ angular.module('eventsPageModule')
                                            userInfo,
                                            ticketsService,
                                            $window,
-                                           dataService) {
+                                           dataService,
+                                           plannerService) {
         var promises = [];
         $scope.persianSans = [];
         $scope.eventInfo = {};
@@ -28,8 +29,9 @@ angular.module('eventsPageModule')
         $scope.eventData = {};
 
         eventService.getEvent($routeParams.eventLink)
-            .then(function (data, status) {
+            .then(function (data) {
                 $scope.eventDataDetails = angular.copy(data.data);
+                $scope.getPlannerData($scope.eventDataDetails.eventHostId);
                 $scope.eventType = $scope.eventDataDetails.eventType;
                 $scope.buyTicketFormatData(data.data.eventDates);
                 mapMarkerService.initMapOnlyShowMarker(document.getElementById('map'));
@@ -119,6 +121,7 @@ angular.module('eventsPageModule')
             angular.element(document.getElementById('payment')).addClass('active');
         };
         $scope.prevStep1 = function () {
+            angular.element(document.getElementsByClassName("btnPaymentActive")).removeClass("btnPaymentActivated");
             $scope.disableFreeButton = false;
             $scope.paymentSelectedDone = '';
             angular.element(document.getElementsByClassName('progress-bar')).css('width', '0');
@@ -140,22 +143,25 @@ angular.module('eventsPageModule')
             $scope.setPaymentData(payment, buyerData)
         };
         $scope.setPaymentData = function (payment, buyerData) {
-            var eventPersianDate = $scope.eventFlatDates.filter(function (ticket) { return ticket.name === $scope.itemWithCapacity[0].name});
-            buyPaymentTicket = {
-                blitTypeId : $scope.itemWithCapacity[0].blitTypeId,
-                blitTypeName : $scope.itemWithCapacity[0].name,
-                count : $scope.totalNumber,
-                customerEmail : buyerData.email,
-                customerMobileNumber : dataService.persianToEnglishDigit(persianJs(buyerData.mobile).englishNumber().toString()),
-                customerName : buyerData.firstname+ " " + buyerData.lastname,
-                eventAddress : $scope.eventDataDetails.address,
-                eventDate : $scope.itemWithCapacity[0].date,
-                eventDateAndTime : eventPersianDate[0].persianDate,
-                eventName : $scope.eventDataDetails.eventName,
-                seatType : "COMMON",
-                totalAmount : $scope.totalPrice ,
-                bankGateway : payment
-            };
+                angular.element(document.getElementsByClassName("btnPaymentActive")).addClass("btnPaymentActivated");
+                var eventPersianDate = $scope.eventFlatDates.filter(function (ticket) {
+                    return ticket.name === $scope.itemWithCapacity[0].name
+                });
+                buyPaymentTicket = {
+                    blitTypeId: $scope.itemWithCapacity[0].blitTypeId,
+                    blitTypeName: $scope.itemWithCapacity[0].name,
+                    count: $scope.totalNumber,
+                    customerEmail: buyerData.email,
+                    customerMobileNumber: dataService.persianToEnglishDigit(persianJs(buyerData.mobile).englishNumber().toString()),
+                    customerName: buyerData.firstname + " " + buyerData.lastname,
+                    eventAddress: $scope.eventDataDetails.address,
+                    eventDate: $scope.itemWithCapacity[0].date,
+                    eventDateAndTime: eventPersianDate[0].persianDate,
+                    eventName: $scope.eventDataDetails.eventName,
+                    seatType: "COMMON",
+                    totalAmount: $scope.totalPrice,
+                    bankGateway: payment
+                };
         };
         $scope.buyTicketOnce = false;
         $scope.nextStep2 = function () {
@@ -236,6 +242,27 @@ angular.module('eventsPageModule')
                     document.getElementById("buyBlitError").style.display = "inline";
                 })
 
+        };
+        $scope.getPlannerData = function (plannerId) {
+            plannerService.getPlannerById(plannerId)
+                .then(function (data) {
+                    var plannerPhotos = data.data.images;
+                    $scope.plannerLink = '/bio/'+data.data.eventHostLink;
+                    plannerPhotos.forEach(function (image) {
+                        if(image.type === "HOST_PHOTO") {
+                            photoService.download(image.imageUUID)
+                                .then(function (data) {
+                                    $scope.plannerPhoto = data.data.encodedBase64;
+                                })
+                                .catch(function () {
+
+                                })
+                        }
+                    });
+                })
+                .catch(function (data) {
+                    console.log(data);
+                })
         };
         $scope.buyTicketFormatData = function (eventNestedData) {
             $scope.buyTicketPickData = eventNestedData.map(function (eventDate) {

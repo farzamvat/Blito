@@ -141,7 +141,7 @@ public class BlitServiceTest {
 
 		Image hostCoverPhoto = new Image();
 		hostCoverPhoto.setImageType(ImageType.HOST_COVER_PHOTO.name());
-		hostCoverPhoto.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO);
+		hostCoverPhoto.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO_1);
 
 		Image exchangeBlitPhoto = new Image();
 		exchangeBlitPhoto.setImageType(ImageType.EXCHANGEBLIT_PHOTO.name());

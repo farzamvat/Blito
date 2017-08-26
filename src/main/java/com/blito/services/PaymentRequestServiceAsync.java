@@ -1,17 +1,5 @@
 package com.blito.services;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.locks.ReentrantLock;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import com.blito.enums.BankGateway;
 import com.blito.enums.Response;
 import com.blito.enums.State;
@@ -33,6 +21,16 @@ import com.blito.rest.viewmodels.payments.SamanPaymentRequestResponseViewModel;
 import com.blito.rest.viewmodels.payments.ZarinpalPayRequetsResponseViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.util.HtmlRenderer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class PaymentRequestServiceAsync {
@@ -197,7 +195,7 @@ public class PaymentRequestServiceAsync {
 						return zarinpalResponse;
 					});
 		case SAMAN:
-			log.debug("Befor requesting token from saman gateway user email '{}' and blit track code '{}'",
+			log.debug("Before requesting token from saman gateway user email '{}' and blit track code '{}'",
 					commonBlit.getCustomerEmail(), trackCode);
 			return paymentRequestService.samanBankRequestToken(trackCode, commonBlit.getTotalAmount())
 					.thenApply(token -> {

@@ -134,7 +134,7 @@ public class BlitService {
 						.setEventSoldDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 			}
 		}
-		return blitTypeRepository.saveAndFlush(blitType);
+		return blitType;
 	}
 
 	public void checkBlitTypeRestrictionsForBuy(BlitType blitType, CommonBlit commonBlit) {

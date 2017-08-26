@@ -38,6 +38,9 @@ var app = angular.module('appRoutes', ['ngRoute'])
             .when('/exhibition', {
                 templateUrl : 'app/views/pages/eventList.html',
                 authenticated: false
+            }).when('/bio/:plannerLink', {
+                templateUrl : 'app/views/pages/bioPage.html',
+                authenticated: false
             })
             .when('/tour', {
                 templateUrl : 'app/views/pages/eventList.html',

@@ -93,6 +93,7 @@ public class EventFlatMapper implements GenericMapper<Event,EventFlatViewModel> 
 		if(!event.getImages().isEmpty())
 			vmodel.setImages(imageMapper.createFromEntities(event.getImages()));
 		vmodel.setAdditionalFields(event.getAdditionalFields());
+		vmodel.setPrivate(event.isPrivate());
 		return vmodel;
 	}
 
@@ -109,7 +110,7 @@ public class EventFlatMapper implements GenericMapper<Event,EventFlatViewModel> 
 		event.setLongitude(vmodel.getLongitude());
 		event.setOperatorState(OperatorState.PENDING.name());
 		event.setEventState(State.CLOSED.name());
-		
+		event.setPrivate(vmodel.isPrivate());
 		return event;
 	}
 

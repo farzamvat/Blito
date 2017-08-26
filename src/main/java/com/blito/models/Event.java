@@ -92,6 +92,16 @@ public class Event {
 	private boolean isOpenInit = false;
 	
 	private boolean isClosedInit = false;
+	
+	private boolean isPrivate = false;
+
+	public boolean isPrivate() {
+		return isPrivate;
+	}
+
+	public void setPrivate(boolean isPrivate) {
+		this.isPrivate = isPrivate;
+	}
 
 	@ElementCollection(fetch=FetchType.EAGER)
 	@Column(name="fields")

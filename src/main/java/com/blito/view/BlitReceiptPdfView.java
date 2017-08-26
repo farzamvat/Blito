@@ -1,28 +1,22 @@
 package com.blito.view;
 
-import java.awt.Color;
-import java.io.File;
-import java.util.Map;
-import java.util.Scanner;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.codec.binary.Base64;
-import org.springframework.web.servlet.view.document.AbstractPdfView;
-
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Document;
-import com.lowagie.text.Element;
+import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.Image;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import org.apache.commons.codec.binary.Base64;
+import org.springframework.web.servlet.view.document.AbstractPdfView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.io.File;
+import java.util.Map;
+import java.util.Scanner;
 
 public class BlitReceiptPdfView extends AbstractPdfView {
 
