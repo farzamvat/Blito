@@ -1602,16 +1602,16 @@ angular.module('User')
             $(e.currentTarget).addClass('photoBorder');
             switch (photoNumber) {
                 case 1 :
-                    $scope.coverImageId = 'HOST-COVER-PHOTO-1';
+                    $scope.coverImageIdEdit = 'HOST-COVER-PHOTO-1';
                     break;
                 case 2 :
-                    $scope.coverImageId = 'HOST-COVER-PHOTO-2';
+                    $scope.coverImageIdEdit = 'HOST-COVER-PHOTO-2';
                     break;
                 case 3 :
-                    $scope.coverImageId = 'HOST-COVER-PHOTO-3';
+                    $scope.coverImageIdEdit = 'HOST-COVER-PHOTO-3';
                     break;
                 case 4 :
-                    $scope.coverImageId = 'HOST-COVER-PHOTO-4';
+                    $scope.coverImageIdEdit = 'HOST-COVER-PHOTO-4';
                     break;
                 default :
                     $scope.coverImageIdEdit = '';
