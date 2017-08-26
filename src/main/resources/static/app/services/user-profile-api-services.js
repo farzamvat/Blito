@@ -164,9 +164,9 @@ angular.module('userProfileApi', [])
     })
     .service('plannerService', function ($http, config) {
         var planner = this;
-        planner.getPlanners = function (page) {
+        planner.getPlanners = function (page, size) {
             var queryParam = {
-                params : {page: page-1, size: 4}
+                params : {page: page-1, size: size}
             };
             return $http.get(config.baseUrl+'/api/blito/v1.0/event-hosts/all', queryParam)
         };

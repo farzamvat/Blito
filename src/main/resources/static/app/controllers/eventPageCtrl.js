@@ -38,7 +38,6 @@ angular.module('eventsPageModule')
                 mapMarkerService.setMarker($scope.eventDataDetails.latitude, $scope.eventDataDetails.longitude);
                 $scope.flatEventDates($scope.eventDataDetails.eventDates);
                 $scope.getImages(data.data);
-                console.log($scope.eventDataDetails);
                 document.getElementById('members').insertAdjacentHTML('afterbegin',$scope.eventDataDetails.members);
                 document.getElementById('showStartTime').innerHTML = persianDate($scope.eventDataDetails.blitSaleStartDate).format("dddd,DD MMMM, ساعت HH:mm");
                 if($scope.eventDataDetails.aparatDisplayCode) {
@@ -122,6 +121,7 @@ angular.module('eventsPageModule')
             angular.element(document.getElementById('payment')).addClass('active');
         };
         $scope.prevStep1 = function () {
+            angular.element(document.getElementsByClassName("btnPaymentActive")).removeClass("btnPaymentActivated");
             $scope.disableFreeButton = false;
             $scope.paymentSelectedDone = '';
             angular.element(document.getElementsByClassName('progress-bar')).css('width', '0');
@@ -253,7 +253,6 @@ angular.module('eventsPageModule')
                                 })
                         }
                     });
-                    console.log(data);
                 })
                 .catch(function (data) {
                     console.log(data);
