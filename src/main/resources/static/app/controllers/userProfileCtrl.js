@@ -854,6 +854,7 @@ angular.module('User')
                     $scope.submitPlannerNotif = true;
                     $scope.submitPlannerErrorNotif = false;
                     $scope.getPlannersData(1);
+                    $scope.getPlannersDataList();
                     $scope.eventPlanner = [];
                     $scope.plannerImageId = '';
                     $scope.coverImageId = '';
@@ -1016,6 +1017,7 @@ angular.module('User')
         $scope.showTime = [];
         $scope.dropDownTabToggleEvent = function (event) {
             $scope.getPlannersData(1);
+            $scope.getPlannersDataList();
             $scope.getUserEvents(1);
             $(angular.element(document.getElementById('toggleExchange'))).slideUp(300);
             $(angular.element(event.currentTarget).siblings()[0]).slideDown(300);
@@ -1523,10 +1525,17 @@ angular.module('User')
                 })
         };
         $scope.getPlannersData = function (page) {
-            plannerService.getPlanners(page)
+            plannerService.getPlanners(page, 4)
                 .then(function (data) {
                     $scope.totalPlannersNumber = data.data.totalElements;
                     $scope.eventHosts = data.data.content;
+                }, function (data) {
+                })
+        };
+        $scope.getPlannersDataList = function () {
+            plannerService.getPlanners(1, 1000)
+                .then(function (data) {
+                    $scope.eventHostsList = data.data.content;
                 }, function (data) {
                 })
         };
