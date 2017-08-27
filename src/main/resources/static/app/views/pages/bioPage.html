@@ -37,32 +37,32 @@
             <h3 class="PlannerSocialMediaHeader textAlignRight padRight10">شبکه های اجتماعی <span>{{plannerData.hostName}}</span></h3>
             <div class="col-xs-12  plannerPagesocialmediaHolder noBorder textAlignCenter ">
                     <div ng-show="plannerData.instagramLink" >
-                        <a class="socialmediaPlanner" href="{{plannerData.instagramLink}}" target="_blank">
+                        <a class="socialmediaPlanner" href="{{socialLinkCorrection(plannerData.instagramLink)}}" target="_blank">
                             <span class="instagram"></span>
                             <img class="displayInline" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/d0cf11b8-f7d3-4c59-8e62-91365dd175f9.png">
                         </a>
                     </div>
                     <div ng-show="plannerData.telegramLink">
-                        <a class="socialmediaPlanner" href="{{plannerData.telegramLink}}" target="_blank">
+                        <a class="socialmediaPlanner" href="{{socialLinkCorrection(plannerData.telegramLink)}}" target="_blank">
                             <span class="telegram"></span>
                             <img class="displayInline" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/11b8524d-0856-4844-9786-b5aab92c9ea5.png">
                         </a>
                     </div>
                     <div ng-show="plannerData.twitterLink" >
 
-                        <a class="socialmediaPlanner" href="{{plannerData.twitterLink}}" target="_blank">
+                        <a class="socialmediaPlanner" href="{{socialLinkCorrection(plannerData.twitterLink)}}" target="_blank">
                             <span class="twitter"></span>
                             <img class="displayInline" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/3a457013-f475-4d11-8c98-76f42a25d8e5.png">
                         </a>
                     </div>
                     <div ng-show="plannerData.linkedinLink" >
-                        <a class="socialmediaPlanner" href="{{plannerData.linkedinLink}}" target="_blank">
+                        <a class="socialmediaPlanner" href="{{socialLinkCorrection(plannerData.linkedinLink)}}" target="_blank">
                             <span class="linkdinPlanner"></span>
                             <img class="displayInline marginTop-58" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/54e056ec-b4a7-4c08-8c6a-e4316eec13a9.png">
                         </a>
                     </div>
                     <div ng-show="plannerData.websiteLink" >
-                        <a class="socialmediaPlanner" href="{{plannerData.websiteLink}}" target="_blank">
+                        <a class="socialmediaPlanner" href="{{socialLinkCorrection(plannerData.websiteLink)}}" target="_blank">
                             <img class="displayInline marginTop5" src="https://gallery.mailchimp.com/ce18d4419816e1d60ec5a84b5/images/6eea117b-e94f-4955-bc38-900236d91578.png">
                         </a>
                     </div>
