@@ -3,7 +3,7 @@
  */
 
 angular.module('bioPageModule', [])
-    .controller('bioPageCtrl', function ($scope, plannerService, $routeParams, photoService, config) {
+    .controller('bioPageCtrl', function ($scope, plannerService, $routeParams, photoService, config, $window) {
         $scope.url = config.baseUrl+"/event-page/";
         plannerService.getPlannerByLink($routeParams.plannerLink)
             .then(function (data) {
@@ -33,14 +33,14 @@ angular.module('bioPageModule', [])
             .catch(function () {
             });
         $scope.getEvents = function (pageNumber) {
-          plannerService.getPlannerEvents($scope.plannerData.eventHostLink, pageNumber)
-              .then(function (data) {
-                  $scope.totalEventsNumber = data.data.totalElements;
-                  $scope.eventList = data.data.content;
-                  $scope.eventList = $scope.catchImagesEvents(data.data.content);
-              })
-              .catch(function () {
-              })
+            plannerService.getPlannerEvents($scope.plannerData.eventHostLink, pageNumber)
+                .then(function (data) {
+                    $scope.totalEventsNumber = data.data.totalElements;
+                    $scope.eventList = data.data.content;
+                    $scope.eventList = $scope.catchImagesEvents(data.data.content);
+                })
+                .catch(function () {
+                })
         };
         $scope.catchImagesEvents = function (events) {
             return events.map(function (item) {
@@ -60,7 +60,14 @@ angular.module('bioPageModule', [])
         $scope.pageChanged = function (newPage) {
             $scope.getEvents(newPage);
         };
-
         $scope.currentPage = 1;
 
+        $scope.socialLinkCorrection = function (link) {
+            if(link){
+                if(link.indexOf('http') === -1) {
+                    link = '//'+link;
+                }
+            }
+            return link;
+        }
     });

@@ -247,7 +247,7 @@ angular.module('eventsPageModule')
             plannerService.getPlannerById(plannerId)
                 .then(function (data) {
                     var plannerPhotos = data.data.images;
-                    $scope.plannerLink = '/bio/'+data.data.eventHostLink;
+                    $scope.plannerLink = '/event-host-page/'+data.data.eventHostLink;
                     plannerPhotos.forEach(function (image) {
                         if(image.type === "HOST_PHOTO") {
                             photoService.download(image.imageUUID)
