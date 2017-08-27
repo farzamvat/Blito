@@ -43,4 +43,3 @@ angular.module('Blito',
     })
 ;
 
-//http://89.163.225.84:8085
