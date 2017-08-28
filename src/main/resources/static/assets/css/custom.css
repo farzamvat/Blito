@@ -201,6 +201,9 @@ button.slick-next {
 .marginTop30 {
     margin-top: 30px;
 }
+.marginTopMinus10{
+    margin-top: -10px;
+}
 .text-blito {
     color: rgb(252, 183, 49);
 }
@@ -1842,6 +1845,9 @@ dir-pagination-controls ul {
 
     background-color: rgb(40, 40, 40);
 }
+.panel{
+    border:none;
+}
 .panelMidSize>.panel {
     border-radius: 0 ;
 }
@@ -2172,6 +2178,7 @@ a{
 }
 .eventPageHostImage {
     width: 150px;
+    height: 150px;
     display: block;
     margin: 5px auto;
 }
@@ -2482,9 +2489,16 @@ a>h5 {
 .editInfoSection {
     background-color: #fff;
     border-radius: 3px;
-    margin: 10px 20px;
+    margin: 20px 20px;
     padding: 10px 20px;
     border: 1px solid #333;
+}
+.navigationMenuA{
+    margin-right:0px !important;
+    border:none !important;
+}
+.navigationMenuA :hover{
+    border: none;
 }
 .aboutUsHeader{
     padding-right:30px ;
