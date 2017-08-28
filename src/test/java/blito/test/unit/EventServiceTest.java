@@ -1,14 +1,12 @@
 package blito.test.unit;
 
 import com.blito.Application;
-import com.blito.configs.Constants;
 import com.blito.enums.*;
 import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.EventFlatMapper;
 import com.blito.models.Event;
 import com.blito.models.EventHost;
-import com.blito.models.Image;
 import com.blito.models.User;
 import com.blito.repositories.*;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
@@ -218,29 +216,6 @@ public class EventServiceTest {
 
 		eventDateViewModel.setBlitTypes(Arrays.asList(blitTypeViewModel1, blitTypeViewModel2).stream().collect(Collectors.toSet()));
 		eventViewModel.setEventDates(Arrays.asList(eventDateViewModel).stream().collect(Collectors.toSet()));
-
-		Image image = new Image();
-		image.setImageType(ImageType.EVENT_PHOTO.name());
-		image.setImageUUID(Constants.DEFAULT_HOST_PHOTO);
-
-		Image hostCoverPhoto = new Image();
-		image.setImageType(ImageType.HOST_COVER_PHOTO.name());
-		image.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO_1);
-
-		Image exchangeBlitPhoto = new Image();
-		image.setImageType(ImageType.EXCHANGEBLIT_PHOTO.name());
-		image.setImageUUID(Constants.DEFAULT_EXCHANGEBLIT_PHOTO);
-
-		Image eventPhoto = new Image();
-		image.setImageType(ImageType.EVENT_PHOTO.name());
-		image.setImageUUID(Constants.DEFAULT_EVENT_PHOTO);
-
-		imageRepository.save(image);
-		imageRepository.save(hostCoverPhoto);
-		imageRepository.save(exchangeBlitPhoto);
-		imageRepository.save(eventPhoto);
-
-		System.err.println(eventRepository.count() + "*************************");
 	}
 
 	@Test
@@ -445,10 +420,10 @@ public class EventServiceTest {
 		vmodel.setReusability(5);
 		vmodel.setEffectDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
 		vmodel.setExpirationDate(Timestamp.from(ZonedDateTime.now().plusDays(6).toInstant()));
+		vmodel.setPercentage(30);
 		vmodel.setPercent(true);
-		vmodel.setPercent(30);
 
-		vmodel = eventService.setDiscountCode(vmodel).get();
+		vmodel = eventService.setDiscountCode(vmodel,user).get();
 		assertEquals(2, vmodel.getBlitTypeIds().size());
 		assertEquals(1, blitTypeRepo.findOne(vmodel.getBlitTypeIds().stream().findFirst().get()).getDiscounts().size());
 	}
@@ -466,10 +441,10 @@ public class EventServiceTest {
 		vmodel.setReusability(5);
 		vmodel.setEffectDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
 		vmodel.setExpirationDate(Timestamp.from(ZonedDateTime.now().plusDays(6).toInstant()));
+		vmodel.setPercentage(0);
 		vmodel.setPercent(true);
-		vmodel.setPercent(0);
 
-		Either<ExceptionViewModel,DiscountViewModel> either = eventService.setDiscountCode(vmodel);
+		Either<ExceptionViewModel,DiscountViewModel> either = eventService.setDiscountCode(vmodel,user);
 		if(either.isLeft())
 			assertTrue(true);
 		else {
@@ -490,10 +465,10 @@ public class EventServiceTest {
 		vmodel.setReusability(5);
 		vmodel.setEffectDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
 		vmodel.setExpirationDate(Timestamp.from(ZonedDateTime.now().plusDays(6).toInstant()));
+		vmodel.setPercentage(30);
 		vmodel.setPercent(true);
-		vmodel.setPercent(30);
 		vmodel.setAmount(100);
-		Either<ExceptionViewModel,DiscountViewModel> either = eventService.setDiscountCode(vmodel);
+		Either<ExceptionViewModel,DiscountViewModel> either = eventService.setDiscountCode(vmodel,user);
 		if(either.isLeft())
 			assertTrue(true);
 		else {
@@ -517,7 +492,7 @@ public class EventServiceTest {
 		vmodel.setPercent(false);
 		vmodel.setAmount(-20);
 
-		Either<ExceptionViewModel,DiscountViewModel> either = eventService.setDiscountCode(vmodel);
+		Either<ExceptionViewModel,DiscountViewModel> either = eventService.setDiscountCode(vmodel,user);
 		if(either.isLeft())
 			assertTrue(true);
 		else {
@@ -538,11 +513,11 @@ public class EventServiceTest {
 		vmodel.setReusability(5);
 		vmodel.setEffectDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
 		vmodel.setExpirationDate(Timestamp.from(ZonedDateTime.now().plusDays(6).toInstant()));
+		vmodel.setPercentage(30);
 		vmodel.setPercent(false);
-		vmodel.setPercent(30);
 		vmodel.setAmount(1000);
 
-		Either<ExceptionViewModel,DiscountViewModel> either = eventService.setDiscountCode(vmodel);
+		Either<ExceptionViewModel,DiscountViewModel> either = eventService.setDiscountCode(vmodel,user);
 		if(either.isLeft())
 			assertTrue(true);
 		else {

@@ -1,11 +1,10 @@
 package com.blito.mappers;
 
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Component;
-
 import com.blito.models.Discount;
 import com.blito.rest.viewmodels.discount.DiscountViewModel;
+import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
 
 @Component
 public class DiscountMapper implements GenericMapper<Discount, DiscountViewModel> {
@@ -18,8 +17,8 @@ public class DiscountMapper implements GenericMapper<Discount, DiscountViewModel
 		discount.setEffectDate(vmodel.getEffectDate());
 		discount.setUsed(0);
 		discount.setExpirationDate(vmodel.getExpirationDate());
+		discount.setPercent(vmodel.getPercentage());
 		discount.setPercent(vmodel.isPercent());
-		discount.setPercent(vmodel.getPercent());
 		discount.setAmount(vmodel.getAmount());
 		return discount;
 	}
@@ -33,10 +32,9 @@ public class DiscountMapper implements GenericMapper<Discount, DiscountViewModel
 		vmodel.setUsed(discount.getUsed());
 		vmodel.setEffectDate(discount.getEffectDate());
 		vmodel.setExpirationDate(discount.getExpirationDate());
+		vmodel.setPercentage(discount.getPercent());
 		vmodel.setPercent(discount.isPercent());
-		vmodel.setPercent(discount.getPercent());
 		vmodel.setAmount(discount.getAmount());
-		vmodel.setUserId(discount.getUser().getUserId());
 		vmodel.setBlitTypeIds(
 				discount.getBlitTypes().stream().map(bt -> bt.getBlitTypeId()).collect(Collectors.toSet()));
 		return vmodel;

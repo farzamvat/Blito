@@ -1,13 +1,11 @@
 package com.blito.repositories;
 
-import java.util.Set;
-
-import javax.persistence.LockModeType;
-
+import com.blito.models.BlitType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 
-import com.blito.models.BlitType;
+import javax.persistence.LockModeType;
+import java.util.Set;
 
 public interface BlitTypeRepository extends JpaRepository<BlitType, Long>  {
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
