@@ -170,6 +170,7 @@ public class PaymentRequestServiceAsync {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_NOT_OPEN));
 		if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getTotalAmount())
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
+
 		return buyCommonBlit(blitType, commonBlit, Optional.empty());
 	}
 

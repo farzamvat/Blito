@@ -265,25 +265,25 @@ public class EventService {
 	}
 
 	@Transactional
-	public Either<ExceptionViewModel,DiscountViewModel> setDiscountCode(DiscountViewModel vmodel) {
+	public Either<ExceptionViewModel,DiscountViewModel> setDiscountCode(DiscountViewModel vmodel,User user) {
 		
 		if (vmodel.getEffectDate().after(vmodel.getExpirationDate()))
 			return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.INCONSISTENT_DATES),400));
 		if (vmodel.isPercent()) {
-			if (!(vmodel.getPercent() > 0 && vmodel.getPercent() < 100))
+			if (!(vmodel.getPercentage() > 0 && vmodel.getPercentage() < 100))
 				return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.INCONSISTENT_PERCENT),400));
 			if (vmodel.getAmount() != 0)
 				return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.INCONSISTENT_AMOUNT_WHEN_PERCENT_IS_TRUE),400));
 		} else {
 			if (vmodel.getAmount() <= 0)
 				return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.INCONSISTENT_AMOUNT),400));
-			if (vmodel.getPercent() > 0)
+			if (vmodel.getPercentage() > 0)
 				return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.INCONSISTENT_PERCENTAGE_WHEN_PERCENT_IS_FALSE),400));
 		}
 		if (discountRepository.findByCode(vmodel.getCode()).isPresent())
 			return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.DISCOUNT_CODE_ALREADY_EXISTS),400));
 		Discount discount = discountMapper.createFromViewModel(vmodel);
-		discount.setUser(userRepository.findOne(SecurityContextHolder.currentUser().getUserId()));
+		discount.setUser(userRepository.findOne(user.getUserId()));
 		discount.setBlitTypes(blitTypeRepository.findByBlitTypeIdIn(vmodel.getBlitTypeIds()));
 		if(discount.getBlitTypes().isEmpty())
 			return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND),400));

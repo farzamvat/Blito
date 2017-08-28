@@ -5,6 +5,7 @@ import com.blito.enums.ApiBusinessName;
 import com.blito.enums.Response;
 import com.blito.enums.validation.ControllerEnumValidation;
 import com.blito.exceptions.ExceptionUtil;
+import com.blito.models.User;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.ResultVm;
@@ -13,6 +14,7 @@ import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
+import com.blito.security.SecurityContextHolder;
 import com.blito.services.EventService;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiOperation;
@@ -87,7 +89,8 @@ public class EventController {
 		if (bindingResult.hasFieldErrors())
 			return CompletableFuture.completedFuture(ResponseEntity.badRequest().body(ExceptionUtil
 					.generate(HttpStatus.BAD_REQUEST, req, bindingResult, ControllerEnumValidation.class)));
-		return CompletableFuture.supplyAsync(() -> eventService.setDiscountCode(vmodel))
+		User user = SecurityContextHolder.currentUser();
+		return CompletableFuture.supplyAsync(() -> eventService.setDiscountCode(vmodel,user))
 				.handle((either, throwable) -> HandleUtility.generateEitherResponse(either, throwable, req, res));
 	}
 
