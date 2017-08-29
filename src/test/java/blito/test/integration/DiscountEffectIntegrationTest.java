@@ -243,4 +243,32 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
         assertFalse(discountValidationViewModelResponse.isValid());
     }
 
+    @Test
+    public void validateDiscountCode_argumentValidationFail(){
+        createDiscountCode_success();
+        DiscountValidationViewModel discountValidationViewModel = new DiscountValidationViewModel();
+        discountValidationViewModel.setCode("");
+        discountValidationViewModel.setCount(5);
+        discountValidationViewModel.setBlitTypeId(eventViewModel.getEventDates()
+                .stream().flatMap(ed->ed.getBlitTypes().stream()).filter(bt->bt.getName().equals("vaysade")).findFirst().get().getBlitTypeId());
+
+        Response response = givenRestIntegration()
+                .body(discountValidationViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
+        response.then().statusCode(400);
+
+        discountValidationViewModel.setCode("vaysade");
+        discountValidationViewModel.setCount(0);
+        discountValidationViewModel.setBlitTypeId(eventViewModel.getEventDates()
+                .stream().flatMap(ed->ed.getBlitTypes().stream()).filter(bt->bt.getName().equals("vaysade")).findFirst().get().getBlitTypeId());
+
+        Response response2 = givenRestIntegration()
+                .body(discountValidationViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
+        response2.then().statusCode(400);
+
+    }
+
 }

@@ -1,18 +1,20 @@
 package com.blito.rest.viewmodels.discount;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 public class DiscountValidationViewModel {
 
     private boolean isValid;
     private double totalAmount;
-    @NotNull
+    @NotEmpty
     private String code;
-    @NotNull
+    @Min(1)
     private int count;
-    @NotNull
+    @Min(1)
     private long blitTypeId;
 
     @JsonProperty("isValid")
