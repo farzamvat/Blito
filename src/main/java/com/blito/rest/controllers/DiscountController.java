@@ -44,5 +44,14 @@ public class DiscountController {
                 .handle((either, throwable) -> HandleUtility.generateEitherResponse(either, throwable, req, res));
     }
 
-
+    @Permission(value = ApiBusinessName.USER)
+    @PostMapping("/validate-discount-code")
+    public CompletionStage<ResponseEntity<?>> validateDiscountCode(@Valid @RequestBody DiscountValidationViewModel vmodel,
+                                                                   BindingResult bindingResult, HttpServletRequest req, HttpServletResponse res){
+        if (bindingResult.hasFieldErrors())
+            return CompletableFuture.completedFuture(ResponseEntity.badRequest().body(ExceptionUtil
+                .generate(HttpStatus.BAD_REQUEST, req, bindingResult, ControllerEnumValidation.class)));
+        return CompletableFuture.supplyAsync(() -> discountService.validateDiscountCode(vmodel))
+                .handle((response, throwable) -> HandleUtility.generateResponseResult(() -> response, throwable, req, res));
+    }
 }

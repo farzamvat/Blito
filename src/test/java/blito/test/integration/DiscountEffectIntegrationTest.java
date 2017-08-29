@@ -9,6 +9,7 @@ import com.blito.enums.OperatorState;
 import com.blito.enums.State;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
+import com.blito.rest.viewmodels.discount.DiscountValidationViewModel;
 import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.event.AdminChangeEventOperatorStateVm;
 import com.blito.rest.viewmodels.event.ChangeEventStateVm;
@@ -28,6 +29,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
     private static boolean isInit = false;
@@ -182,4 +187,60 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
         response.then().statusCode(200);
         DiscountViewModel discountViewModelResponse = response.thenReturn().body().as(DiscountViewModel.class);
     }
+
+    @Test
+    public void validateDiscountCode_valid(){
+        createDiscountCode_success();
+        DiscountValidationViewModel discountValidationViewModel = new DiscountValidationViewModel();
+        discountValidationViewModel.setCode("discount");
+        discountValidationViewModel.setCount(5);
+        discountValidationViewModel.setBlitTypeId(eventViewModel.getEventDates()
+                .stream().flatMap(ed->ed.getBlitTypes().stream()).filter(bt->bt.getName().equals("vaysade")).findFirst().get().getBlitTypeId());
+
+        Response response = givenRestIntegration()
+                .body(discountValidationViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
+        response.then().statusCode(200);
+        DiscountValidationViewModel discountValidationViewModelResponse = response.thenReturn().body().as(DiscountValidationViewModel.class);
+        assertTrue(discountValidationViewModelResponse.isValid());
+        assertEquals(70000, discountValidationViewModelResponse.getTotalAmount(), 0.001);
+    }
+
+    @Test
+    public void validateDiscountCode_invalidCode(){
+        createDiscountCode_success();
+        DiscountValidationViewModel discountValidationViewModel = new DiscountValidationViewModel();
+        discountValidationViewModel.setCode("non existing code");
+        discountValidationViewModel.setCount(5);
+        discountValidationViewModel.setBlitTypeId(eventViewModel.getEventDates()
+                .stream().flatMap(ed->ed.getBlitTypes().stream()).filter(bt->bt.getName().equals("vaysade")).findFirst().get().getBlitTypeId());
+
+        Response response = givenRestIntegration()
+                .body(discountValidationViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
+        response.then().statusCode(200);
+        DiscountValidationViewModel discountValidationViewModelResponse = response.thenReturn().body().as(DiscountValidationViewModel.class);
+        assertFalse(discountValidationViewModelResponse.isValid());
+    }
+
+    @Test
+    public void validateDiscountCode_invalidCount(){
+        createDiscountCode_success();
+        DiscountValidationViewModel discountValidationViewModel = new DiscountValidationViewModel();
+        discountValidationViewModel.setCode("vaysade");
+        discountValidationViewModel.setCount(11);
+        discountValidationViewModel.setBlitTypeId(eventViewModel.getEventDates()
+                .stream().flatMap(ed->ed.getBlitTypes().stream()).filter(bt->bt.getName().equals("vaysade")).findFirst().get().getBlitTypeId());
+
+        Response response = givenRestIntegration()
+                .body(discountValidationViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
+        response.then().statusCode(200);
+        DiscountValidationViewModel discountValidationViewModelResponse = response.thenReturn().body().as(DiscountValidationViewModel.class);
+        assertFalse(discountValidationViewModelResponse.isValid());
+    }
+
 }
