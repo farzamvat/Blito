@@ -16,6 +16,7 @@ import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
+import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
@@ -177,9 +178,8 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
         Response response = givenRestIntegration()
                 .body(discountViewModel)
                 .when()
-                .post(getServerAddress() + "/api/blito/v1.0/events/set-discount-code");
+                .post(getServerAddress() + "/api/blito/v1.0/discount/set-discount-code");
         response.then().statusCode(200);
         DiscountViewModel discountViewModelResponse = response.thenReturn().body().as(DiscountViewModel.class);
-
     }
 }
