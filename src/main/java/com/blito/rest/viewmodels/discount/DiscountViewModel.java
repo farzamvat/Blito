@@ -10,33 +10,35 @@ import java.util.Set;
 
 public class DiscountViewModel {
 	
-	private long discountId;
+	private Long discountId;
 	
 	@NotEmpty
 	private String code;
 	@Min(1)
-	private int reusability;
-	private int used;
+	private Integer reusability;
+	private Integer used;
 	@NotNull
 	private Timestamp effectDate;
 	@NotNull
 	private Timestamp expirationDate;
 	@NotNull
-	private boolean isPercent;
-	
-	private double percentage;
-	
-	private double amount;
+	private Boolean isPercent;
+	@NotNull
+	private Double percentage;
+	@NotNull
+	private Double amount;
+
+	private Boolean isEnabled;
 
 	@NotEmpty
 	private Set<Long> blitTypeIds;
 
-	public long getDiscountId() {
-		return discountId;
+	public Boolean getEnabled() {
+		return isEnabled;
 	}
 
-	public void setDiscountId(long discountId) {
-		this.discountId = discountId;
+	public void setEnabled(Boolean enabled) {
+		isEnabled = enabled;
 	}
 
 	public String getCode() {
@@ -47,19 +49,27 @@ public class DiscountViewModel {
 		this.code = code;
 	}
 
-	public int getReusability() {
+	public Long getDiscountId() {
+		return discountId;
+	}
+
+	public void setDiscountId(Long discountId) {
+		this.discountId = discountId;
+	}
+
+	public Integer getReusability() {
 		return reusability;
 	}
 
-	public void setReusability(int reusability) {
+	public void setReusability(Integer reusability) {
 		this.reusability = reusability;
 	}
 
-	public int getUsed() {
+	public Integer getUsed() {
 		return used;
 	}
 
-	public void setUsed(int used) {
+	public void setUsed(Integer used) {
 		this.used = used;
 	}
 
@@ -79,29 +89,31 @@ public class DiscountViewModel {
 		this.expirationDate = expirationDate;
 	}
 	@JsonProperty("isPercent")
-	public boolean isPercent() {
+	public Boolean getPercent() {
 		return isPercent;
 	}
 
-	public void setPercent(boolean percent) {
+	public void setPercent(Boolean percent) {
 		isPercent = percent;
 	}
 
-	public double getPercentage() {
+	public Double getPercentage() {
 		return percentage;
 	}
 
-	public void setPercentage(double percentage) {
+	public void setPercentage(Double percentage) {
 		this.percentage = percentage;
 	}
 
-	public double getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(double amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
+
+
 
 	public Set<Long> getBlitTypeIds() {
 		return blitTypeIds;

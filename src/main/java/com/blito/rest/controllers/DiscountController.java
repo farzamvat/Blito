@@ -34,13 +34,13 @@ public class DiscountController {
 
     @Permission(value = ApiBusinessName.USER)
     @PostMapping("/set-discount-code")
-    public CompletionStage<ResponseEntity<?>> setDiscountCode(@Valid @RequestBody DiscountViewModel vmodel,
-                                                              BindingResult bindingResult, HttpServletRequest req, HttpServletResponse res) {
+    public CompletionStage<ResponseEntity<?>> setDiscountCodeByUser(@Valid @RequestBody DiscountViewModel vmodel,
+                                                                    BindingResult bindingResult, HttpServletRequest req, HttpServletResponse res) {
         if (bindingResult.hasFieldErrors())
             return CompletableFuture.completedFuture(ResponseEntity.badRequest().body(ExceptionUtil
                     .generate(HttpStatus.BAD_REQUEST, req, bindingResult, ControllerEnumValidation.class)));
         User user = SecurityContextHolder.currentUser();
-        return CompletableFuture.supplyAsync(() -> discountService.setDiscountCode(vmodel,user))
+        return CompletableFuture.supplyAsync(() -> discountService.setDiscountCodeByUser(vmodel,user))
                 .handle((either, throwable) -> HandleUtility.generateEitherResponse(either, throwable, req, res));
     }
 
@@ -53,5 +53,17 @@ public class DiscountController {
                 .generate(HttpStatus.BAD_REQUEST, req, bindingResult, ControllerEnumValidation.class)));
         return CompletableFuture.supplyAsync(() -> discountService.validateDiscountCode(vmodel))
                 .handle((response, throwable) -> HandleUtility.generateResponseResult(() -> response, throwable, req, res));
+    }
+
+    @Permission(value = ApiBusinessName.ADMIN)
+    @PostMapping("/set-discount-code")
+    public CompletionStage<ResponseEntity<?>> setDiscountCodeByOperator(@Valid @RequestBody DiscountViewModel vmodel,
+                                                                        BindingResult bindingResult, HttpServletRequest req, HttpServletResponse res) {
+        if (bindingResult.hasFieldErrors())
+            return CompletableFuture.completedFuture(ResponseEntity.badRequest().body(ExceptionUtil
+                    .generate(HttpStatus.BAD_REQUEST, req, bindingResult, ControllerEnumValidation.class)));
+        User user = SecurityContextHolder.currentUser();
+        return CompletableFuture.supplyAsync(() -> discountService.setDiscountCodeByOperator(vmodel,user))
+                .handle((either, throwable) -> HandleUtility.generateEitherResponse(either, throwable, req, res));
     }
 }

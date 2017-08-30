@@ -1,9 +1,22 @@
 package com.blito.services;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
+import com.blito.enums.OperatorState;
+import com.blito.enums.Response;
+import com.blito.enums.State;
+import com.blito.exceptions.NotAllowedException;
+import com.blito.exceptions.NotFoundException;
+import com.blito.mappers.*;
+import com.blito.models.BlitType;
+import com.blito.models.CommonBlit;
+import com.blito.models.Event;
+import com.blito.models.EventDate;
+import com.blito.repositories.*;
+import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.viewmodels.adminreport.BlitBuyerViewModel;
+import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
+import com.blito.rest.viewmodels.event.*;
+import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
+import com.blito.search.SearchViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -11,40 +24,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.blito.enums.OperatorState;
-import com.blito.enums.Response;
-import com.blito.enums.State;
-import com.blito.exceptions.NotAllowedException;
-import com.blito.exceptions.NotFoundException;
-import com.blito.mappers.AdminReportsMapper;
-import com.blito.mappers.DiscountMapper;
-import com.blito.mappers.EventFlatMapper;
-import com.blito.mappers.EventMapper;
-import com.blito.mappers.GenericMapper;
-import com.blito.models.BlitType;
-import com.blito.models.CommonBlit;
-import com.blito.models.Event;
-import com.blito.models.EventDate;
-import com.blito.repositories.BlitTypeRepository;
-import com.blito.repositories.DiscountRepository;
-import com.blito.repositories.EventDateRepository;
-import com.blito.repositories.EventRepository;
-import com.blito.repositories.UserRepository;
-import com.blito.resourceUtil.ResourceUtil;
-import com.blito.rest.viewmodels.adminreport.BlitBuyerViewModel;
-import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
-import com.blito.rest.viewmodels.discount.DiscountViewModel;
-import com.blito.rest.viewmodels.event.AdminChangeEventOperatorStateVm;
-import com.blito.rest.viewmodels.event.AdminChangeOfferTypeViewModel;
-import com.blito.rest.viewmodels.event.AdminSetIsEventoViewModel;
-import com.blito.rest.viewmodels.event.ChangeEventStateVm;
-import com.blito.rest.viewmodels.event.EventFlatViewModel;
-import com.blito.rest.viewmodels.event.EventViewModel;
-import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
-import com.blito.rest.viewmodels.exception.ExceptionViewModel;
-import com.blito.search.SearchViewModel;
-
-import io.vavr.control.Either;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminEventService {
@@ -84,11 +66,12 @@ public class AdminEventService {
 	public void changeEventState(ChangeEventStateVm vmodel) {
 		Event event = getEventFromRepository(vmodel.getEventId());
 		checkEventRestricitons(event);
-		if(vmodel.getState() == State.CLOSED)
+		if(vmodel.getState() == State.CLOSED || vmodel.getState() == State.ENDED)
 			event.getEventDates().forEach(ed -> {
 				ed.setEventDateState(State.CLOSED.name());
 				ed.getBlitTypes().forEach(bt -> bt.setBlitTypeState(State.CLOSED.name()));
 			});
+
 		event.setEventState(vmodel.getState().name());
 		return;
 	}

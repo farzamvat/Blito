@@ -1,11 +1,5 @@
 package com.blito.mappers;
 
-import java.sql.Timestamp;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-
-import org.springframework.stereotype.Component;
-
 import com.blito.enums.BankGateway;
 import com.blito.enums.ImageType;
 import com.blito.enums.PaymentStatus;
@@ -13,6 +7,11 @@ import com.blito.models.CommonBlit;
 import com.blito.rest.viewmodels.LocationViewModel;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
+import org.springframework.stereotype.Component;
+
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Component
 public class CommonBlitMapper implements GenericMapper<CommonBlit, CommonBlitViewModel>{
@@ -32,6 +31,8 @@ public class CommonBlitMapper implements GenericMapper<CommonBlit, CommonBlitVie
 		blit.setCustomerEmail(vmodel.getCustomerEmail());
 		blit.setEventAddress(vmodel.getEventAddress());
 		blit.setBlitTypeName(vmodel.getBlitTypeName());
+		blit.setPrimaryAmount(vmodel.getPrimaryAmount());
+		blit.setDiscountCode(vmodel.getDiscountCode());
 		blit.setSeatType(vmodel.getSeatType().name());
 		blit.setBankGateway(vmodel.getBankGateway().name());
 		blit.setAdditionalFields(vmodel.getAdditionalFields());
@@ -41,6 +42,8 @@ public class CommonBlitMapper implements GenericMapper<CommonBlit, CommonBlitVie
 	@Override
 	public CommonBlitViewModel createFromEntity(CommonBlit blit) {
 		CommonBlitViewModel vmodel = new CommonBlitViewModel();
+		vmodel.setDiscountCode(blit.getDiscountCode());
+		vmodel.setPrimaryAmount(blit.getPrimaryAmount());
 		vmodel.setBlitId(blit.getBlitId());
 		vmodel.setBlitTypeId(blit.getBlitType().getBlitTypeId());
 		vmodel.setCount(blit.getCount());

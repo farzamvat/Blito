@@ -1,13 +1,5 @@
 package com.blito.rest.viewmodels.blit;
 
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotEmpty;
-
 import com.blito.annotations.Email;
 import com.blito.annotations.MobileNumber;
 import com.blito.enums.BankGateway;
@@ -21,71 +13,79 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonView;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
 @JsonInclude(Include.NON_EMPTY)
 public class CommonBlitViewModel extends AbstractViewModel {
 	@JsonView(View.SimpleBlit.class)
-	long blitId;
+	private Long blitId;
 	
-	Timestamp createdAt;
+	private Timestamp createdAt;
 	
 	@NotNull
 	@JsonView(View.SimpleBlit.class)
-	long blitTypeId;
+	private Long blitTypeId;
 	
 	@JsonView(View.SimpleBlit.class)
-	int count;
+	private Integer count;
 	
 	@JsonView(View.SimpleBlit.class)
-	long totalAmount;
+	private Long totalAmount;
 	@JsonView(View.SimpleBlit.class)
-	String trackCode;
+	private String trackCode;
 	@JsonView(View.SimpleBlit.class)
 	@NotEmpty
-	String eventName;
+	private String eventName;
 	@JsonView(View.Blit.class)
 	@NotEmpty
-	String eventDateAndTime;
+	private String eventDateAndTime;
 	@JsonIgnore
 	@JsonView(View.SimpleBlit.class)
-	long userId;
+	private Long userId;
 	@JsonView(View.Blit.class)
 	@NotEmpty
-	String customerName;
+	private String customerName;
 	@JsonView(View.Blit.class)
 	@NotNull
-	Timestamp eventDate;
+	private Timestamp eventDate;
 	@JsonView(View.Blit.class)
 	@MobileNumber
-	String customerMobileNumber;
+	private String customerMobileNumber;
 	@JsonView(View.Blit.class)
 	@Email
-	String customerEmail;
+	private String customerEmail;
 	@JsonView(View.Blit.class)
 	@NotEmpty
-	String eventAddress;
+	private String eventAddress;
 	@JsonView(View.Blit.class)
 	@NotEmpty
-	String blitTypeName;
+	private String blitTypeName;
 	@JsonView(View.Blit.class)
 	@NotNull
-	SeatType seatType;
+	private SeatType seatType;
 	@JsonView(View.Blit.class)
-	PaymentStatus paymentStatus;
+	private PaymentStatus paymentStatus;
 	@JsonView(View.AdminBlit.class)
-	String paymentError;
+	private String paymentError;
 	@JsonView(View.AdminBlit.class)
-	String samanBankToken;
+	private String samanBankToken;
 	@JsonView(View.AdminBlit.class)
-	String refNum;
+	private String refNum;
 	@JsonView(View.Blit.class)
-	BankGateway bankGateway;
+	private BankGateway bankGateway;
 	@JsonView(View.Blit.class)
 	private Map<String,String> additionalFields;
 	@JsonView(View.Blit.class)
 	private LocationViewModel location;
 	@JsonView(View.Blit.class)
 	private String eventPhotoId;
+	private String discountCode;
+	private Long primaryAmount;
 	
 	public CommonBlitViewModel(ResultVm result)
 	{
@@ -95,7 +95,199 @@ public class CommonBlitViewModel extends AbstractViewModel {
 	public CommonBlitViewModel() {
 		additionalFields = new HashMap<>();
 	}
-	
+
+	public Long getBlitId() {
+		return blitId;
+	}
+
+	public String getDiscountCode() {
+		return discountCode;
+	}
+
+	public void setDiscountCode(String discountCode) {
+		this.discountCode = discountCode;
+	}
+
+	public Long getPrimaryAmount() {
+		return primaryAmount;
+	}
+
+	public void setPrimaryAmount(Long primaryAmount) {
+		this.primaryAmount = primaryAmount;
+	}
+
+	public void setBlitId(Long blitId) {
+		this.blitId = blitId;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Long getBlitTypeId() {
+		return blitTypeId;
+	}
+
+	public void setBlitTypeId(Long blitTypeId) {
+		this.blitTypeId = blitTypeId;
+	}
+
+	public Integer getCount() {
+		return count;
+	}
+
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+
+	public Long getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(Long totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+
+	public String getTrackCode() {
+		return trackCode;
+	}
+
+	public void setTrackCode(String trackCode) {
+		this.trackCode = trackCode;
+	}
+
+	public String getEventName() {
+		return eventName;
+	}
+
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
+	}
+
+	public String getEventDateAndTime() {
+		return eventDateAndTime;
+	}
+
+	public void setEventDateAndTime(String eventDateAndTime) {
+		this.eventDateAndTime = eventDateAndTime;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public Timestamp getEventDate() {
+		return eventDate;
+	}
+
+	public void setEventDate(Timestamp eventDate) {
+		this.eventDate = eventDate;
+	}
+
+	public String getCustomerMobileNumber() {
+		return customerMobileNumber;
+	}
+
+	public void setCustomerMobileNumber(String customerMobileNumber) {
+		this.customerMobileNumber = customerMobileNumber;
+	}
+
+	public String getCustomerEmail() {
+		return customerEmail;
+	}
+
+	public void setCustomerEmail(String customerEmail) {
+		this.customerEmail = customerEmail;
+	}
+
+	public String getEventAddress() {
+		return eventAddress;
+	}
+
+	public void setEventAddress(String eventAddress) {
+		this.eventAddress = eventAddress;
+	}
+
+	public String getBlitTypeName() {
+		return blitTypeName;
+	}
+
+	public void setBlitTypeName(String blitTypeName) {
+		this.blitTypeName = blitTypeName;
+	}
+
+	public SeatType getSeatType() {
+		return seatType;
+	}
+
+	public void setSeatType(SeatType seatType) {
+		this.seatType = seatType;
+	}
+
+	public PaymentStatus getPaymentStatus() {
+		return paymentStatus;
+	}
+
+	public void setPaymentStatus(PaymentStatus paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
+
+	public String getPaymentError() {
+		return paymentError;
+	}
+
+	public void setPaymentError(String paymentError) {
+		this.paymentError = paymentError;
+	}
+
+	public String getSamanBankToken() {
+		return samanBankToken;
+	}
+
+	public void setSamanBankToken(String samanBankToken) {
+		this.samanBankToken = samanBankToken;
+	}
+
+	public String getRefNum() {
+		return refNum;
+	}
+
+	public void setRefNum(String refNum) {
+		this.refNum = refNum;
+	}
+
+	public BankGateway getBankGateway() {
+		return bankGateway;
+	}
+
+	public void setBankGateway(BankGateway bankGateway) {
+		this.bankGateway = bankGateway;
+	}
+
+	public Map<String, String> getAdditionalFields() {
+		return additionalFields;
+	}
+
+	public void setAdditionalFields(Map<String, String> additionalFields) {
+		this.additionalFields = additionalFields;
+	}
+
 	public LocationViewModel getLocation() {
 		return location;
 	}
@@ -110,143 +302,5 @@ public class CommonBlitViewModel extends AbstractViewModel {
 
 	public void setEventPhotoId(String eventPhotoId) {
 		this.eventPhotoId = eventPhotoId;
-	}
-
-	public Map<String, String> getAdditionalFields() {
-		return additionalFields;
-	}
-
-	public void setAdditionalFields(Map<String, String> additionalFields) {
-		this.additionalFields = additionalFields;
-	}
-
-	public BankGateway getBankGateway() {
-		return bankGateway;
-	}
-	public void setBankGateway(BankGateway bankGateway) {
-		this.bankGateway = bankGateway;
-	}
-	public Timestamp getEventDate() {
-		return eventDate;
-	}
-	public void setEventDate(Timestamp eventDate) {
-		this.eventDate = eventDate;
-	}
-	public long getBlitId() {
-		return blitId;
-	}
-	public void setBlitId(long blitId) {
-		this.blitId = blitId;
-	}
-	public long getBlitTypeId() {
-		return blitTypeId;
-	}
-	public void setBlitTypeId(long blitTypeId) {
-		this.blitTypeId = blitTypeId;
-	}
-	public int getCount() {
-		return count;
-	}
-	public void setCount(int count) {
-		this.count = count;
-	}
-	public long getTotalAmount() {
-		return totalAmount;
-	}
-	public void setTotalAmount(long totalAmount) {
-		this.totalAmount = totalAmount;
-	}
-	public String getTrackCode() {
-		return trackCode;
-	}
-	public void setTrackCode(String trackCode) {
-		this.trackCode = trackCode;
-	}
-	public String getEventName() {
-		return eventName;
-	}
-	public void setEventName(String eventName) {
-		this.eventName = eventName;
-	}
-	public String getEventDateAndTime() {
-		return eventDateAndTime;
-	}
-	public void setEventDateAndTime(String eventDateAndTime) {
-		this.eventDateAndTime = eventDateAndTime;
-	}
-	public String getCustomerName() {
-		return customerName;
-	}
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
-	public String getCustomerMobileNumber() {
-		return customerMobileNumber;
-	}
-	public void setCustomerMobileNumber(String customerMobileNumber) {
-		this.customerMobileNumber = customerMobileNumber;
-	}
-	public String getCustomerEmail() {
-		return customerEmail;
-	}
-	public void setCustomerEmail(String customerEmail) {
-		this.customerEmail = customerEmail.toLowerCase();
-	}
-	public String getEventAddress() {
-		return eventAddress;
-	}
-	public void setEventAddress(String eventAddress) {
-		this.eventAddress = eventAddress;
-	}
-	public String getBlitTypeName() {
-		return blitTypeName;
-	}
-	public void setBlitTypeName(String blitTypeName) {
-		this.blitTypeName = blitTypeName;
-	}
-	public SeatType getSeatType() {
-		return seatType;
-	}
-	public void setSeatType(SeatType seatType) {
-		this.seatType = seatType;
-	}
-	public PaymentStatus getPaymentStatus() {
-		return paymentStatus;
-	}
-	public void setPaymentStatus(PaymentStatus paymentStatus) {
-		this.paymentStatus = paymentStatus;
-	}
-	public String getPaymentError() {
-		return paymentError;
-	}
-	public void setPaymentError(String paymentError) {
-		this.paymentError = paymentError;
-	}
-	public String getSamanBankToken() {
-		return samanBankToken;
-	}
-	public void setSamanBankToken(String samanBankToken) {
-		this.samanBankToken = samanBankToken;
-	}
-
-	public String getRefNum() {
-		return refNum;
-	}
-
-	public void setRefNum(String refNum) {
-		this.refNum = refNum;
-	}
-
-	public Timestamp getCreatedAt() {
-		return createdAt;
-	}
-	public void setCreatedAt(Timestamp createdAt) {
-		this.createdAt = createdAt;
-	}
-	public long getUserId() {
-		return userId;
-	}
-	public void setUserId(long userId) {
-		this.userId = userId;
 	}
 }

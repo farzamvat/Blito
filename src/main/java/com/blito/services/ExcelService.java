@@ -1,16 +1,5 @@
 package com.blito.services;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.blito.configs.Constants;
 import com.blito.mappers.AdminReportsMapper;
 import com.blito.repositories.EventDateRepository;
@@ -18,6 +7,11 @@ import com.blito.repositories.UserRepository;
 import com.blito.rest.viewmodels.account.UserViewModel;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ExcelService {
@@ -57,7 +51,7 @@ public class ExcelService {
 				Arrays.asList("UserId", "CustomerName", "Mobile", "Email", "BlitId", "Tracking Code", "Blit Type",
 						"Created At", "Count", "Total Amount", "Event Name", "Event Date and Time", "Event Address",
 						"Seat Type", "Payment Status", "Payment Error", "Saman Bank Token", "Saman Bank Ref Number",
-						"Bank Gateway"));
+						"Bank Gateway","Discount Code", "Primary Amount"));
 		// Results
 		model.put("results", blits.stream().collect(Collectors.toMap(k -> k.getBlitId(),
 				v -> Arrays.asList(String.valueOf(v.getUserId()), v.getCustomerName(), v.getCustomerMobileNumber(),
@@ -67,7 +61,10 @@ public class ExcelService {
 						v.getSeatType() == null ? " " : v.getSeatType().toString(),
 						v.getPaymentStatus() == null ? " " : v.getPaymentStatus().toString(), v.getPaymentError(),
 						v.getSamanBankToken(), v.getRefNum(),
-						v.getBankGateway() == null ? " " : v.getBankGateway().toString()))));
+						v.getBankGateway() == null ? " " : v.getBankGateway().toString(),
+						v.getDiscountCode() == null ? " " : v.getDiscountCode(),
+						v.getPrimaryAmount() == null ? " " : v.getPrimaryAmount()
+						))));
 		// NumericsColumns
 		model.put("numericcolumns", Arrays.asList("UserId", "BlitId", "Count", "Total Amount"));
 		return model;
@@ -144,20 +141,20 @@ public class ExcelService {
 		return model;
 	}
 	
-	public Map<String, Object> testPdfData(){
-		Map<String, Object> model = new HashMap<String, Object>();
-
-		model.put("event name", "کنسرت نیلز");
-		model.put("customer name", "هستی سحابی");
-		model.put("customer mobile", "۰۹۱۲۷۹۷۶۸۳۷");
-		model.put("customer email", "hasti.sahabi@gmail.com");
-		model.put("event date", "شنبه ۱۱ اردیبهشت، ساعت ۲۱:۰۰");
-		model.put("track code", "92322178");
-		model.put("blit type", "VIP");
-		model.put("count", 5);
-		model.put("event address", "میدان الف، خیابان چهارم، موسسه‌ی ققنوس");
-		model.put("event photo", "17e9678e-168a-4dd1-840f-11111d900b94");
-		return model;
-	}
+//	public Map<String, Object> testPdfData(){
+//		Map<String, Object> model = new HashMap<String, Object>();
+//
+//		model.put("event name", "کنسرت نیلز");
+//		model.put("customer name", "هستی سحابی");
+//		model.put("customer mobile", "۰۹۱۲۷۹۷۶۸۳۷");
+//		model.put("customer email", "hasti.sahabi@gmail.com");
+//		model.put("event date", "شنبه ۱۱ اردیبهشت، ساعت ۲۱:۰۰");
+//		model.put("track code", "92322178");
+//		model.put("blit type", "VIP");
+//		model.put("count", 5);
+//		model.put("event address", "میدان الف، خیابان چهارم، موسسه‌ی ققنوس");
+//		model.put("event photo", "17e9678e-168a-4dd1-840f-11111d900b94");
+//		return model;
+//	}
 	
 }

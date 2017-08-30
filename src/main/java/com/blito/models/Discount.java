@@ -1,37 +1,30 @@
 package com.blito.models;
 
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-
 @Entity(name="discount")
 public class Discount {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private long discountId;
+	private Long discountId;
 	
 	private String code;
 	
-	private int reusability;
+	private Integer reusability;
 	
-	private int used;
+	private Integer used;
 	
 	private Timestamp effectDate;
 	
 	private Timestamp expirationDate;
 	
-	private boolean isPercent;
+	private Boolean isPercent;
 	
-	private double percent;
+	private Double percentage;
 	
-	private double amount;
+	private Double amount;
 	
 	@ManyToOne
 	@JoinColumn(name="userId")
@@ -39,25 +32,14 @@ public class Discount {
 	
 	@ManyToMany(mappedBy="discounts")
 	private Set<BlitType> blitTypes;
+
+	private Boolean isEnabled = true;
 	
 	public Discount()
 	{
 		blitTypes = new HashSet<>();
 	}
 
-	public long getDiscountId() {
-		return discountId;
-	}
-	public void setDiscountId(long discountId) {
-		this.discountId = discountId;
-	}
-	public int getUsed() {
-		return used;
-	}
-
-	public void setUsed(int used) {
-		this.used = used;
-	}
 
 	public String getCode() {
 		return code;
@@ -67,12 +49,28 @@ public class Discount {
 		this.code = code;
 	}
 
-	public int getReusability() {
+	public Long getDiscountId() {
+		return discountId;
+	}
+
+	public void setDiscountId(Long discountId) {
+		this.discountId = discountId;
+	}
+
+	public Integer getReusability() {
 		return reusability;
 	}
 
-	public void setReusability(int reusability) {
+	public void setReusability(Integer reusability) {
 		this.reusability = reusability;
+	}
+
+	public Integer getUsed() {
+		return used;
+	}
+
+	public void setUsed(Integer used) {
+		this.used = used;
 	}
 
 	public Timestamp getEffectDate() {
@@ -91,28 +89,36 @@ public class Discount {
 		this.expirationDate = expirationDate;
 	}
 
-	public boolean isPercent() {
+	public Boolean getPercent() {
 		return isPercent;
 	}
 
-	public void setPercent(boolean isPercent) {
-		this.isPercent = isPercent;
+	public void setPercent(Boolean percent) {
+		isPercent = percent;
 	}
 
-	public double getPercent() {
-		return percent;
+	public Double getPercentage() {
+		return percentage;
 	}
 
-	public void setPercent(double percent) {
-		this.percent = percent;
+	public void setPercentage(Double percentage) {
+		this.percentage = percentage;
 	}
 
-	public double getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(double amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
+	}
+
+	public Boolean getEnabled() {
+		return isEnabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		isEnabled = enabled;
 	}
 
 	public User getUser() {

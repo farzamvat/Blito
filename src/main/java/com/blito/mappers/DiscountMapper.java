@@ -17,8 +17,8 @@ public class DiscountMapper implements GenericMapper<Discount, DiscountViewModel
 		discount.setEffectDate(vmodel.getEffectDate());
 		discount.setUsed(0);
 		discount.setExpirationDate(vmodel.getExpirationDate());
-		discount.setPercent(vmodel.getPercentage());
-		discount.setPercent(vmodel.isPercent());
+		discount.setPercentage(vmodel.getPercentage());
+		discount.setPercent(vmodel.getPercent());
 		discount.setAmount(vmodel.getAmount());
 		return discount;
 	}
@@ -32,8 +32,9 @@ public class DiscountMapper implements GenericMapper<Discount, DiscountViewModel
 		vmodel.setUsed(discount.getUsed());
 		vmodel.setEffectDate(discount.getEffectDate());
 		vmodel.setExpirationDate(discount.getExpirationDate());
-		vmodel.setPercentage(discount.getPercent());
-		vmodel.setPercent(discount.isPercent());
+		vmodel.setPercentage(discount.getPercentage());
+		vmodel.setEnabled(discount.getEnabled());
+		vmodel.setPercent(discount.getPercent());
 		vmodel.setAmount(discount.getAmount());
 		vmodel.setBlitTypeIds(
 				discount.getBlitTypes().stream().map(bt -> bt.getBlitTypeId()).collect(Collectors.toSet()));
