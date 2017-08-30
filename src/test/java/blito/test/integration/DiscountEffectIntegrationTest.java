@@ -270,5 +270,4 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
         response2.then().statusCode(400);
 
     }
-
 }

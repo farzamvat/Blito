@@ -3,6 +3,7 @@ package com.blito.rest.viewmodels.discount;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Set;
@@ -13,7 +14,7 @@ public class DiscountViewModel {
 	
 	@NotEmpty
 	private String code;
-	@NotNull
+	@Min(1)
 	private int reusability;
 	private int used;
 	@NotNull
