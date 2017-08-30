@@ -15,6 +15,7 @@ import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.security.SecurityContextHolder;
+import com.blito.services.DiscountService;
 import com.blito.services.EventService;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiOperation;
@@ -41,6 +42,8 @@ public class EventController {
 
 	@Autowired
 	EventService eventService;
+	@Autowired
+	DiscountService discountService;
 
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "create event")
@@ -80,18 +83,6 @@ public class EventController {
 	public ResponseEntity<ResultVm> delete(@PathVariable long eventId) {
 		eventService.delete(eventId);
 		return ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
-	}
-
-	@Permission(value = ApiBusinessName.USER)
-	@PostMapping("/set-discount-code")
-	public CompletionStage<ResponseEntity<?>> setDiscountCode(@Valid @RequestBody DiscountViewModel vmodel,
-			BindingResult bindingResult, HttpServletRequest req, HttpServletResponse res) {
-		if (bindingResult.hasFieldErrors())
-			return CompletableFuture.completedFuture(ResponseEntity.badRequest().body(ExceptionUtil
-					.generate(HttpStatus.BAD_REQUEST, req, bindingResult, ControllerEnumValidation.class)));
-		User user = SecurityContextHolder.currentUser();
-		return CompletableFuture.supplyAsync(() -> eventService.setDiscountCode(vmodel,user))
-				.handle((either, throwable) -> HandleUtility.generateEitherResponse(either, throwable, req, res));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //

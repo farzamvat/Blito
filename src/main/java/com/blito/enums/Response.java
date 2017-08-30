@@ -80,7 +80,9 @@ public enum Response {
 	EVENT_HOST_LINK_ALREADY_EXIST("error.event.host.link.already.exists"),
 	CANNOT_EDIT_EVENT_WHEN_CLOSED("error.event.is.closed"),
 	BLIT_RECIEPT("blit.reciept"),
-	PAYMENT_SUCCESS("info.payment.success");
+	PAYMENT_SUCCESS("info.payment.success"),
+	DISCOUNT_CODE_NOT_FOUND("error.discount.code.not.found"),
+	DISCOUNT_CODE_NOT_VALID("error.discount.code.not.valid");
     
 
     private final String message;

@@ -36,6 +36,7 @@ public class SecurityConfig {
 					.addMatcher("/exchange-blits/*")
 					.addMatcher("/blits/*")
 					.addMatcher("/images/*")
+					.addMatcher("/discount/*")
 					.getUrlPatterns());
 		return filterRegistration;
 	}

@@ -9,6 +9,7 @@ import com.blito.enums.OperatorState;
 import com.blito.enums.State;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
+import com.blito.rest.viewmodels.discount.DiscountValidationViewModel;
 import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.event.AdminChangeEventOperatorStateVm;
 import com.blito.rest.viewmodels.event.ChangeEventStateVm;
@@ -16,6 +17,7 @@ import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
+import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +29,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
     private static boolean isInit = false;
@@ -177,9 +183,91 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
         Response response = givenRestIntegration()
                 .body(discountViewModel)
                 .when()
-                .post(getServerAddress() + "/api/blito/v1.0/events/set-discount-code");
+                .post(getServerAddress() + "/api/blito/v1.0/discount/set-discount-code");
         response.then().statusCode(200);
         DiscountViewModel discountViewModelResponse = response.thenReturn().body().as(DiscountViewModel.class);
+    }
+
+    @Test
+    public void validateDiscountCode_valid(){
+        createDiscountCode_success();
+        DiscountValidationViewModel discountValidationViewModel = new DiscountValidationViewModel();
+        discountValidationViewModel.setCode("discount");
+        discountValidationViewModel.setCount(5);
+        discountValidationViewModel.setBlitTypeId(eventViewModel.getEventDates()
+                .stream().flatMap(ed->ed.getBlitTypes().stream()).filter(bt->bt.getName().equals("vaysade")).findFirst().get().getBlitTypeId());
+
+        Response response = givenRestIntegration()
+                .body(discountValidationViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
+        response.then().statusCode(200);
+        DiscountValidationViewModel discountValidationViewModelResponse = response.thenReturn().body().as(DiscountValidationViewModel.class);
+        assertTrue(discountValidationViewModelResponse.isValid());
+        assertEquals(70000, discountValidationViewModelResponse.getTotalAmount(), 0.001);
+    }
+
+    @Test
+    public void validateDiscountCode_invalidCode(){
+        createDiscountCode_success();
+        DiscountValidationViewModel discountValidationViewModel = new DiscountValidationViewModel();
+        discountValidationViewModel.setCode("non existing code");
+        discountValidationViewModel.setCount(5);
+        discountValidationViewModel.setBlitTypeId(eventViewModel.getEventDates()
+                .stream().flatMap(ed->ed.getBlitTypes().stream()).filter(bt->bt.getName().equals("vaysade")).findFirst().get().getBlitTypeId());
+
+        Response response = givenRestIntegration()
+                .body(discountValidationViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
+        response.then().statusCode(200);
+        DiscountValidationViewModel discountValidationViewModelResponse = response.thenReturn().body().as(DiscountValidationViewModel.class);
+        assertFalse(discountValidationViewModelResponse.isValid());
+    }
+
+    @Test
+    public void validateDiscountCode_invalidCount(){
+        createDiscountCode_success();
+        DiscountValidationViewModel discountValidationViewModel = new DiscountValidationViewModel();
+        discountValidationViewModel.setCode("vaysade");
+        discountValidationViewModel.setCount(11);
+        discountValidationViewModel.setBlitTypeId(eventViewModel.getEventDates()
+                .stream().flatMap(ed->ed.getBlitTypes().stream()).filter(bt->bt.getName().equals("vaysade")).findFirst().get().getBlitTypeId());
+
+        Response response = givenRestIntegration()
+                .body(discountValidationViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
+        response.then().statusCode(200);
+        DiscountValidationViewModel discountValidationViewModelResponse = response.thenReturn().body().as(DiscountValidationViewModel.class);
+        assertFalse(discountValidationViewModelResponse.isValid());
+    }
+
+    @Test
+    public void validateDiscountCode_argumentValidationFail(){
+        createDiscountCode_success();
+        DiscountValidationViewModel discountValidationViewModel = new DiscountValidationViewModel();
+        discountValidationViewModel.setCode("");
+        discountValidationViewModel.setCount(5);
+        discountValidationViewModel.setBlitTypeId(eventViewModel.getEventDates()
+                .stream().flatMap(ed->ed.getBlitTypes().stream()).filter(bt->bt.getName().equals("vaysade")).findFirst().get().getBlitTypeId());
+
+        Response response = givenRestIntegration()
+                .body(discountValidationViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
+        response.then().statusCode(400);
+
+        discountValidationViewModel.setCode("vaysade");
+        discountValidationViewModel.setCount(0);
+        discountValidationViewModel.setBlitTypeId(eventViewModel.getEventDates()
+                .stream().flatMap(ed->ed.getBlitTypes().stream()).filter(bt->bt.getName().equals("vaysade")).findFirst().get().getBlitTypeId());
+
+        Response response2 = givenRestIntegration()
+                .body(discountValidationViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
+        response2.then().statusCode(400);
 
     }
 }
