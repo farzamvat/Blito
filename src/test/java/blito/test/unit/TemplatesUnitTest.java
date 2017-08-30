@@ -1,10 +1,10 @@
 package blito.test.unit;
 
-import static org.junit.Assert.assertTrue;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import com.blito.Application;
+import com.blito.models.User;
+import com.blito.repositories.UserRepository;
+import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
+import com.blito.services.util.HtmlRenderer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.blito.Application;
-import com.blito.models.User;
-import com.blito.repositories.UserRepository;
-import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
-import com.blito.services.util.HtmlRenderer;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertTrue;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
@@ -90,19 +89,33 @@ public class TemplatesUnitTest {
 		map.put("blit", blit);
 		try {
 			String content = htmlRenderer.renderHtml("ticket", map);
+			System.out.println(content);
 			assertTrue(true);
 		} catch(Exception e) {
 			assertTrue(false);
 		}
 	}
 	
-//	@Test
-//	public void forgetPasswordTemplateTest()
-//	{
-////		Map<String, Object> map = new HashMap<String, Object>();
-////        map.put("user", user);
-////        map.put("baseUrl", baseUrl);
-////        map.put("serverAddress",serverAddress);
-////        String content = htmlRenderer.renderHtml("forgetPassword", map);
-//	}
+	@Test
+	public void forgetPasswordTemplateTest()
+	{
+		User user = new User();
+		user.setFirstname("hasti");
+		user.setLastname("sahabi");
+		user.setEmail("hasti.sahabi@gmail.com");
+		user.setMobile("09127976837");
+		user.setResetKey("8723678234782347");
+		user = userRepository.save(user);
+		Map<String, Object> map = new HashMap<String, Object>();
+        map.put("user", user);
+        map.put("baseUrl", baseUrl);
+        map.put("serverAddress",serverAddress);
+        try {
+			String content = htmlRenderer.renderHtml("forgetPassword", map);
+			System.out.println(content);
+			assertTrue(true);
+		} catch (Exception exception) {
+        	assertTrue(false);
+		}
+	}
 }
