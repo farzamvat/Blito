@@ -8,13 +8,13 @@ import com.blito.models.Event;
 import com.blito.models.EventHost;
 import com.blito.models.User;
 import com.blito.repositories.*;
+import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.security.SecurityContextHolder;
-import com.blito.services.AdminEventService;
 import com.blito.services.DiscountService;
 import com.blito.services.EventService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -222,12 +222,11 @@ public class DiscountServiceTest {
         vmodel.setReusability(5);
         vmodel.setEffectDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
         vmodel.setExpirationDate(Timestamp.from(ZonedDateTime.now().plusDays(6).toInstant()));
-        vmodel.setPercentage(30);
+        vmodel.setPercentage(30D);
         vmodel.setPercent(true);
 
-        vmodel = discountService.setDiscountCode(vmodel,user).get();
-        assertEquals(2, vmodel.getBlitTypeIds().size());
-        assertEquals(1, blitTypeRepo.findOne(vmodel.getBlitTypeIds().stream().findFirst().get()).getDiscounts().size());
+        ExceptionViewModel exceptionViewModel = discountService.setDiscountCodeByUser(vmodel,user).getLeft();
+        assertEquals(ResourceUtil.getMessage(Response.EVENT_NOT_OPEN),exceptionViewModel.getMessage());
     }
 
     @Test
@@ -243,10 +242,10 @@ public class DiscountServiceTest {
         vmodel.setReusability(5);
         vmodel.setEffectDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
         vmodel.setExpirationDate(Timestamp.from(ZonedDateTime.now().plusDays(6).toInstant()));
-        vmodel.setPercentage(0);
+        vmodel.setPercentage(0D);
         vmodel.setPercent(true);
 
-        Either<ExceptionViewModel,DiscountViewModel> either = discountService.setDiscountCode(vmodel,user);
+        Either<ExceptionViewModel,DiscountViewModel> either = discountService.setDiscountCodeByUser(vmodel,user);
         if(either.isLeft())
             assertTrue(true);
         else {
@@ -267,10 +266,10 @@ public class DiscountServiceTest {
         vmodel.setReusability(5);
         vmodel.setEffectDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
         vmodel.setExpirationDate(Timestamp.from(ZonedDateTime.now().plusDays(6).toInstant()));
-        vmodel.setPercentage(30);
+        vmodel.setPercentage(30D);
         vmodel.setPercent(true);
-        vmodel.setAmount(100);
-        Either<ExceptionViewModel,DiscountViewModel> either = discountService.setDiscountCode(vmodel,user);
+        vmodel.setAmount(100D);
+        Either<ExceptionViewModel,DiscountViewModel> either = discountService.setDiscountCodeByUser(vmodel,user);
         if(either.isLeft())
             assertTrue(true);
         else {
@@ -292,9 +291,9 @@ public class DiscountServiceTest {
         vmodel.setEffectDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
         vmodel.setExpirationDate(Timestamp.from(ZonedDateTime.now().plusDays(6).toInstant()));
         vmodel.setPercent(false);
-        vmodel.setAmount(-20);
+        vmodel.setAmount(-20D);
 
-        Either<ExceptionViewModel,DiscountViewModel> either = discountService.setDiscountCode(vmodel,user);
+        Either<ExceptionViewModel,DiscountViewModel> either = discountService.setDiscountCodeByUser(vmodel,user);
         if(either.isLeft())
             assertTrue(true);
         else {
@@ -315,11 +314,11 @@ public class DiscountServiceTest {
         vmodel.setReusability(5);
         vmodel.setEffectDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
         vmodel.setExpirationDate(Timestamp.from(ZonedDateTime.now().plusDays(6).toInstant()));
-        vmodel.setPercentage(30);
+        vmodel.setPercentage(30D);
         vmodel.setPercent(false);
-        vmodel.setAmount(1000);
+        vmodel.setAmount(1000D);
 
-        Either<ExceptionViewModel,DiscountViewModel> either = discountService.setDiscountCode(vmodel,user);
+        Either<ExceptionViewModel,DiscountViewModel> either = discountService.setDiscountCodeByUser(vmodel,user);
         if(either.isLeft())
             assertTrue(true);
         else {

@@ -33,6 +33,7 @@ public class DiscountViewModel {
 	@NotEmpty
 	private Set<Long> blitTypeIds;
 
+	@JsonProperty("isEnabled")
 	public Boolean getEnabled() {
 		return isEnabled;
 	}

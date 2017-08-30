@@ -1,19 +1,5 @@
 package blito.test.unit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.sql.Timestamp;
-import java.time.ZonedDateTime;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-
 import com.blito.Application;
 import com.blito.configs.Constants;
 import com.blito.enums.EventType;
@@ -24,13 +10,7 @@ import com.blito.models.Blit;
 import com.blito.models.EventHost;
 import com.blito.models.Image;
 import com.blito.models.User;
-import com.blito.repositories.BlitRepository;
-import com.blito.repositories.BlitTypeRepository;
-import com.blito.repositories.DiscountRepository;
-import com.blito.repositories.EventHostRepository;
-import com.blito.repositories.EventRepository;
-import com.blito.repositories.ImageRepository;
-import com.blito.repositories.UserRepository;
+import com.blito.repositories.*;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
@@ -40,11 +20,23 @@ import com.blito.security.SecurityContextHolder;
 import com.blito.services.BlitService;
 import com.blito.services.EventService;
 import com.blito.services.PaymentRequestServiceAsync;
-
 import mockit.Expectations;
 import mockit.Injectable;
 import mockit.Tested;
 import mockit.integration.junit4.JMockit;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+
+import java.sql.Timestamp;
+import java.time.ZonedDateTime;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @ActiveProfiles("test")
 @RunWith(JMockit.class)
@@ -177,7 +169,7 @@ public class BlitServicePaymentTest {
 		vmodel.setCustomerEmail(user.getEmail());
 		vmodel.setCustomerMobileNumber(user.getMobile());
 		vmodel.setCustomerName(user.getFirstname() + " " + user.getLastname());
-		vmodel.setTotalAmount(0);
+		vmodel.setTotalAmount(0L);
 		vmodel.setEventAddress(eventViewModel.getAddress());
 		vmodel.setEventDate(eventViewModel.getEventDates().stream().findFirst().get().getDate());
 		vmodel.setEventName(eventViewModel.getEventName());

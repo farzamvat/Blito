@@ -56,7 +56,7 @@ public class DiscountController {
     }
 
     @Permission(value = ApiBusinessName.ADMIN)
-    @PostMapping("/set-discount-code")
+    @PostMapping("/admin-set-discount-code")
     public CompletionStage<ResponseEntity<?>> setDiscountCodeByOperator(@Valid @RequestBody DiscountViewModel vmodel,
                                                                         BindingResult bindingResult, HttpServletRequest req, HttpServletResponse res) {
         if (bindingResult.hasFieldErrors())

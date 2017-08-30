@@ -17,7 +17,6 @@ import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
-import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,9 +31,6 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.number.IsCloseTo.closeTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
     private static boolean isInit = false;
@@ -174,7 +170,8 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
         discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(1).toInstant()));
         discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
         discountViewModel.setReusability(10);
-        discountViewModel.setPercentage(30);
+        discountViewModel.setPercentage(30D);
+        discountViewModel.setAmount(0D);
         discountViewModel.setBlitTypeIds(new HashSet<>(
                 Arrays.asList(eventViewModel.getEventDates()
                         .stream()
@@ -199,7 +196,8 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
         discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(1).toInstant()));
         discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
         discountViewModel.setReusability(10);
-        discountViewModel.setPercentage(30);
+        discountViewModel.setPercentage(30D);
+        discountViewModel.setAmount(0D);
         discountViewModel.setBlitTypeIds(new HashSet<>(
                 Arrays.asList(eventViewModel.getEventDates()
                         .stream()
@@ -236,7 +234,8 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
         discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(1).toInstant()));
         discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
         discountViewModel.setReusability(10);
-        discountViewModel.setPercentage(30);
+        discountViewModel.setPercentage(30D);
+        discountViewModel.setAmount(0D);
         discountViewModel.setBlitTypeIds(new HashSet<>(
                 Arrays.asList(eventViewModel.getEventDates()
                         .stream()
@@ -273,7 +272,8 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
         discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(1).toInstant()));
         discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
         discountViewModel.setReusability(10);
-        discountViewModel.setPercentage(30);
+        discountViewModel.setPercentage(30D);
+        discountViewModel.setAmount(0D);
         discountViewModel.setBlitTypeIds(new HashSet<>(
                 Arrays.asList(eventViewModel.getEventDates()
                         .stream()
@@ -309,7 +309,8 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
         discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(1).toInstant()));
         discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
         discountViewModel.setReusability(10);
-        discountViewModel.setPercentage(30);
+        discountViewModel.setPercentage(30D);
+        discountViewModel.setAmount(0D);
         discountViewModel.setBlitTypeIds(new HashSet<>(
                 Arrays.asList(eventViewModel.getEventDates()
                         .stream()

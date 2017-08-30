@@ -183,7 +183,7 @@ public class PaymentRequestServiceAsync {
 			log.debug("Befor requesting token from zarinpal gateway user email '{}' and blit track code '{}'",
 					commonBlit.getCustomerEmail(), trackCode);
 			return paymentRequestService
-					.zarinpalRequestToken((int) commonBlit.getTotalAmount(), commonBlit.getCustomerEmail(),
+					.zarinpalRequestToken(commonBlit.getTotalAmount().intValue(), commonBlit.getCustomerEmail(),
 							commonBlit.getCustomerMobileNumber(), blitType.getEventDate().getEvent().getDescription())
 					.thenApply(token -> {
 						log.debug("Successfully get token from zarinpal gateway user email '{}' and token '{}'",

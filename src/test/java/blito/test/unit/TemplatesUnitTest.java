@@ -1,10 +1,10 @@
 package blito.test.unit;
 
-import static org.junit.Assert.assertTrue;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import com.blito.Application;
+import com.blito.models.User;
+import com.blito.repositories.UserRepository;
+import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
+import com.blito.services.util.HtmlRenderer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.blito.Application;
-import com.blito.models.User;
-import com.blito.repositories.UserRepository;
-import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
-import com.blito.services.util.HtmlRenderer;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertTrue;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
@@ -85,7 +84,7 @@ public class TemplatesUnitTest {
 		blit.setBlitTypeName("نوع ۲");
 		blit.setCount(10);
 		blit.setEventAddress("امیراباد خ ۱۲ بن بست ۷");
-		blit.setTotalAmount(20000);
+		blit.setTotalAmount(20000L);
 		Map<String,Object> map = new HashMap<>();
 		map.put("blit", blit);
 		try {

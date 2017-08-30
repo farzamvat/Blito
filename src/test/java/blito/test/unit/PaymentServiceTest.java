@@ -1,20 +1,5 @@
 package blito.test.unit;
 
-import static org.junit.Assert.*;
-
-import java.sql.Timestamp;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import com.blito.Application;
 import com.blito.configs.Constants;
 import com.blito.enums.EventType;
@@ -25,12 +10,7 @@ import com.blito.models.CommonBlit;
 import com.blito.models.EventHost;
 import com.blito.models.Image;
 import com.blito.models.User;
-import com.blito.repositories.BlitTypeRepository;
-import com.blito.repositories.CommonBlitRepository;
-import com.blito.repositories.EventHostRepository;
-import com.blito.repositories.EventRepository;
-import com.blito.repositories.ImageRepository;
-import com.blito.repositories.UserRepository;
+import com.blito.repositories.*;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
 import com.blito.rest.viewmodels.event.ChangeEventStateVm;
@@ -41,6 +21,20 @@ import com.blito.security.SecurityContextHolder;
 import com.blito.services.AdminEventService;
 import com.blito.services.EventService;
 import com.blito.services.PaymentService;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+import static org.junit.Assert.assertEquals;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
@@ -170,7 +164,7 @@ public class PaymentServiceTest {
 		blit.setEventDateAndTime("Event Date and Time");
 		blit.setPaymentStatus("PENDING");
 		blit.setTrackCode("12345678");
-		blit.setTotalAmount(40000);
+		blit.setTotalAmount(40000L);
 		blit.setToken("000000000123");
 		blit.setSeatType("COMMON");
 		blit = blitRepository.save(blit);
