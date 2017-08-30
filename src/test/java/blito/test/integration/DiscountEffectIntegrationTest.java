@@ -30,6 +30,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.number.IsCloseTo.closeTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -190,9 +192,30 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
 
     @Test
     public void validateDiscountCode_valid(){
-        createDiscountCode_success();
+        //create discount
+        DiscountViewModel discountViewModel = new DiscountViewModel();
+        discountViewModel.setPercent(true);
+        discountViewModel.setCode("discount2");
+        discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(1).toInstant()));
+        discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
+        discountViewModel.setReusability(10);
+        discountViewModel.setPercentage(30);
+        discountViewModel.setBlitTypeIds(new HashSet<>(
+                Arrays.asList(eventViewModel.getEventDates()
+                        .stream()
+                        .flatMap(ed -> ed.getBlitTypes().stream())
+                        .filter(bt -> bt.getName().equals("vaysade"))
+                        .findFirst().get().getBlitTypeId())));
+
+        Response response1 = givenRestIntegration()
+                .body(discountViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/discount/set-discount-code");
+        response1.then().statusCode(200);
+        ////////
+
         DiscountValidationViewModel discountValidationViewModel = new DiscountValidationViewModel();
-        discountValidationViewModel.setCode("discount");
+        discountValidationViewModel.setCode("discount2");
         discountValidationViewModel.setCount(5);
         discountValidationViewModel.setBlitTypeId(eventViewModel.getEventDates()
                 .stream().flatMap(ed->ed.getBlitTypes().stream()).filter(bt->bt.getName().equals("vaysade")).findFirst().get().getBlitTypeId());
@@ -201,15 +224,32 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
                 .body(discountValidationViewModel)
                 .when()
                 .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
-        response.then().statusCode(200);
-        DiscountValidationViewModel discountValidationViewModelResponse = response.thenReturn().body().as(DiscountValidationViewModel.class);
-        assertTrue(discountValidationViewModelResponse.isValid());
-        assertEquals(70000, discountValidationViewModelResponse.getTotalAmount(), 0.001);
+        response.then().statusCode(200).body("isValid",equalTo(true)).body("totalAmount", closeTo(70000,0.001));
     }
 
     @Test
     public void validateDiscountCode_invalidCode(){
-        createDiscountCode_success();
+        //create discount
+        DiscountViewModel discountViewModel = new DiscountViewModel();
+        discountViewModel.setPercent(true);
+        discountViewModel.setCode("discount3");
+        discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(1).toInstant()));
+        discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
+        discountViewModel.setReusability(10);
+        discountViewModel.setPercentage(30);
+        discountViewModel.setBlitTypeIds(new HashSet<>(
+                Arrays.asList(eventViewModel.getEventDates()
+                        .stream()
+                        .flatMap(ed -> ed.getBlitTypes().stream())
+                        .filter(bt -> bt.getName().equals("vaysade"))
+                        .findFirst().get().getBlitTypeId())));
+
+        Response response1 = givenRestIntegration()
+                .body(discountViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/discount/set-discount-code");
+        response1.then().statusCode(200);
+        ///////
         DiscountValidationViewModel discountValidationViewModel = new DiscountValidationViewModel();
         discountValidationViewModel.setCode("non existing code");
         discountValidationViewModel.setCount(5);
@@ -220,14 +260,33 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
                 .body(discountValidationViewModel)
                 .when()
                 .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
-        response.then().statusCode(200);
-        DiscountValidationViewModel discountValidationViewModelResponse = response.thenReturn().body().as(DiscountValidationViewModel.class);
-        assertFalse(discountValidationViewModelResponse.isValid());
+        response.then().statusCode(200).body("isValid", equalTo(false));
+
     }
 
     @Test
     public void validateDiscountCode_invalidCount(){
-        createDiscountCode_success();
+        //create discount
+        DiscountViewModel discountViewModel = new DiscountViewModel();
+        discountViewModel.setPercent(true);
+        discountViewModel.setCode("discount4");
+        discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(1).toInstant()));
+        discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
+        discountViewModel.setReusability(10);
+        discountViewModel.setPercentage(30);
+        discountViewModel.setBlitTypeIds(new HashSet<>(
+                Arrays.asList(eventViewModel.getEventDates()
+                        .stream()
+                        .flatMap(ed -> ed.getBlitTypes().stream())
+                        .filter(bt -> bt.getName().equals("vaysade"))
+                        .findFirst().get().getBlitTypeId())));
+
+        Response response1 = givenRestIntegration()
+                .body(discountViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/discount/set-discount-code");
+        response1.then().statusCode(200);
+        ///////
         DiscountValidationViewModel discountValidationViewModel = new DiscountValidationViewModel();
         discountValidationViewModel.setCode("vaysade");
         discountValidationViewModel.setCount(11);
@@ -238,14 +297,32 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
                 .body(discountValidationViewModel)
                 .when()
                 .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
-        response.then().statusCode(200);
-        DiscountValidationViewModel discountValidationViewModelResponse = response.thenReturn().body().as(DiscountValidationViewModel.class);
-        assertFalse(discountValidationViewModelResponse.isValid());
+        response.then().statusCode(200).body("isValid", equalTo(false));
     }
 
     @Test
     public void validateDiscountCode_argumentValidationFail(){
-        createDiscountCode_success();
+        //create discount
+        DiscountViewModel discountViewModel = new DiscountViewModel();
+        discountViewModel.setPercent(true);
+        discountViewModel.setCode("discount5");
+        discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(1).toInstant()));
+        discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
+        discountViewModel.setReusability(10);
+        discountViewModel.setPercentage(30);
+        discountViewModel.setBlitTypeIds(new HashSet<>(
+                Arrays.asList(eventViewModel.getEventDates()
+                        .stream()
+                        .flatMap(ed -> ed.getBlitTypes().stream())
+                        .filter(bt -> bt.getName().equals("vaysade"))
+                        .findFirst().get().getBlitTypeId())));
+
+        Response response1 = givenRestIntegration()
+                .body(discountViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/discount/set-discount-code");
+        response1.then().statusCode(200);
+        ///////
         DiscountValidationViewModel discountValidationViewModel = new DiscountValidationViewModel();
         discountValidationViewModel.setCode("");
         discountValidationViewModel.setCount(5);
