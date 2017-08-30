@@ -26,7 +26,7 @@ public class DiscountViewModel {
 	@NotNull
 	private Double percentage;
 	@NotNull
-	private Double amount;
+	private Long amount;
 
 	private Boolean isEnabled;
 
@@ -106,11 +106,11 @@ public class DiscountViewModel {
 		this.percentage = percentage;
 	}
 
-	public Double getAmount() {
+	public Long getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Double amount) {
+	public void setAmount(Long amount) {
 		this.amount = amount;
 	}
 

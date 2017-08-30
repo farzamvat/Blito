@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertEquals;
 
 public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
     private static boolean isInit = false;
@@ -171,7 +170,7 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
         discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
         discountViewModel.setReusability(10);
         discountViewModel.setPercentage(30D);
-        discountViewModel.setAmount(0D);
+        discountViewModel.setAmount(0L);
         discountViewModel.setBlitTypeIds(new HashSet<>(
                 Arrays.asList(eventViewModel.getEventDates()
                         .stream()
@@ -196,7 +195,7 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
         discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
         discountViewModel.setReusability(10);
         discountViewModel.setPercentage(30D);
-        discountViewModel.setAmount(0D);
+        discountViewModel.setAmount(0L);
         discountViewModel.setBlitTypeIds(new HashSet<>(
                 Arrays.asList(eventViewModel.getEventDates()
                         .stream()
@@ -229,9 +228,7 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
                 .body(discountValidationViewModel)
                 .when()
                 .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
-        response.then().statusCode(200).body("isValid",equalTo(true));
-        DiscountValidationViewModel discountValidationViewModelResponse = response.thenReturn().body().as(DiscountValidationViewModel.class);
-        assertEquals(70000, discountValidationViewModelResponse.getTotalAmount(), 0.001);
+        response.then().statusCode(200).body("isValid",equalTo(true)).body("totalAmount",equalTo(70000));
     }
 
     @Test

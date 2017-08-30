@@ -4,12 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 public class DiscountValidationViewModel {
 
     private boolean isValid;
-    private double totalAmount;
+    private Long totalAmount;
     @NotEmpty
     private String code;
     @Min(1)
@@ -26,11 +25,11 @@ public class DiscountValidationViewModel {
         isValid = valid;
     }
 
-    public double getTotalAmount() {
+    public Long getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(double totalAmount) {
+    public void setTotalAmount(Long totalAmount) {
         this.totalAmount = totalAmount;
     }
 

@@ -114,7 +114,7 @@ public class DiscountService {
                             .findFirst()
                             .get()
                             .getPrice()*vmodel.getCount()*(100-discount.getPercentage())/100;
-                    vmodel.setTotalAmount(totalAmount);
+                    vmodel.setTotalAmount(Double.valueOf(totalAmount).longValue());
                 }
                 return vmodel;
             })

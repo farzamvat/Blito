@@ -268,7 +268,7 @@ public class DiscountServiceTest {
         vmodel.setExpirationDate(Timestamp.from(ZonedDateTime.now().plusDays(6).toInstant()));
         vmodel.setPercentage(30D);
         vmodel.setPercent(true);
-        vmodel.setAmount(100D);
+        vmodel.setAmount(100L);
         Either<ExceptionViewModel,DiscountViewModel> either = discountService.setDiscountCodeByUser(vmodel,user);
         if(either.isLeft())
             assertTrue(true);
@@ -291,7 +291,7 @@ public class DiscountServiceTest {
         vmodel.setEffectDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
         vmodel.setExpirationDate(Timestamp.from(ZonedDateTime.now().plusDays(6).toInstant()));
         vmodel.setPercent(false);
-        vmodel.setAmount(-20D);
+        vmodel.setAmount(-20L);
 
         Either<ExceptionViewModel,DiscountViewModel> either = discountService.setDiscountCodeByUser(vmodel,user);
         if(either.isLeft())
@@ -316,7 +316,7 @@ public class DiscountServiceTest {
         vmodel.setExpirationDate(Timestamp.from(ZonedDateTime.now().plusDays(6).toInstant()));
         vmodel.setPercentage(30D);
         vmodel.setPercent(false);
-        vmodel.setAmount(1000D);
+        vmodel.setAmount(1000L);
 
         Either<ExceptionViewModel,DiscountViewModel> either = discountService.setDiscountCodeByUser(vmodel,user);
         if(either.isLeft())

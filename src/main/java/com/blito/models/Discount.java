@@ -24,7 +24,7 @@ public class Discount {
 	
 	private Double percentage;
 	
-	private Double amount;
+	private Long amount;
 	
 	@ManyToOne
 	@JoinColumn(name="userId")
@@ -105,11 +105,11 @@ public class Discount {
 		this.percentage = percentage;
 	}
 
-	public Double getAmount() {
+	public Long getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Double amount) {
+	public void setAmount(Long amount) {
 		this.amount = amount;
 	}
 
