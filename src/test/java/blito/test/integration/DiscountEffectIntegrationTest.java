@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.number.IsCloseTo.closeTo;
 import static org.junit.Assert.assertEquals;
@@ -224,7 +225,9 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
                 .body(discountValidationViewModel)
                 .when()
                 .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
-        response.then().statusCode(200).body("isValid",equalTo(true)).body("totalAmount", closeTo(70000,0.001));
+        response.then().statusCode(200).body("isValid",equalTo(true));
+        DiscountValidationViewModel discountValidationViewModelResponse = response.thenReturn().body().as(DiscountValidationViewModel.class);
+        assertEquals(70000, discountValidationViewModelResponse.getTotalAmount(), 0.001);
     }
 
     @Test
