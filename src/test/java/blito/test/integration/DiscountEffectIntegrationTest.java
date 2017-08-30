@@ -7,6 +7,7 @@ import com.blito.enums.EventType;
 import com.blito.enums.HostType;
 import com.blito.enums.OperatorState;
 import com.blito.enums.State;
+import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
 import com.blito.rest.viewmodels.discount.DiscountValidationViewModel;
@@ -163,27 +164,27 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
     @Test
     public void createDiscountCode_success()
     {
+        createDiscountCode_success("discount");
+    }
+
+    @Test
+    public void createDiscountCode_BlitType_notFound()
+    {
         DiscountViewModel discountViewModel = new DiscountViewModel();
         discountViewModel.setPercent(true);
-        discountViewModel.setCode("discount");
+        discountViewModel.setCode("notFound");
         discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(1).toInstant()));
         discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
         discountViewModel.setReusability(10);
         discountViewModel.setPercentage(30D);
         discountViewModel.setAmount(0L);
-        discountViewModel.setBlitTypeIds(new HashSet<>(
-                Arrays.asList(eventViewModel.getEventDates()
-                        .stream()
-                        .flatMap(ed -> ed.getBlitTypes().stream())
-                        .filter(bt -> bt.getName().equals("vaysade"))
-                        .findFirst().get().getBlitTypeId())));
+        discountViewModel.setBlitTypeIds(new HashSet<Long>(Arrays.asList(100L,200L,300L)));
 
         Response response = givenRestIntegration()
                 .body(discountViewModel)
                 .when()
                 .post(getServerAddress() + "/api/blito/v1.0/discount/set-discount-code");
-        response.then().statusCode(200);
-        DiscountViewModel discountViewModelResponse = response.thenReturn().body().as(DiscountViewModel.class);
+        response.then().statusCode(400).body("message",equalTo(ResourceUtil.getMessage(com.blito.enums.Response.BLIT_TYPE_NOT_FOUND)));
     }
 
     public DiscountViewModel createDiscountCode_success(String code)
@@ -295,6 +296,5 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
                 .when()
                 .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
         response2.then().statusCode(400);
-
     }
 }
