@@ -10,17 +10,14 @@ import com.blito.mappers.*;
 import com.blito.models.*;
 import com.blito.repositories.*;
 import com.blito.resourceUtil.ResourceUtil;
-import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
-import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
 import com.blito.search.Operation;
 import com.blito.search.SearchViewModel;
 import com.blito.search.Simple;
 import com.blito.security.SecurityContextHolder;
-import io.vavr.control.Either;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,7 +97,6 @@ public class EventService {
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 
 		EventHost eventHost = eventHostRepository.findByEventHostIdAndIsDeletedFalse(vmodel.getEventHostId())
-				.map(eh -> eh)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
 
 		Event event = eventMapper.createFromViewModel(vmodel);

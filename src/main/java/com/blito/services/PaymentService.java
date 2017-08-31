@@ -18,6 +18,7 @@ import com.blito.repositories.BlitRepository;
 import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.CommonBlitRepository;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.services.util.AsyncUtil;
 import com.blito.services.util.HtmlRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,8 +78,10 @@ public class PaymentService {
 				}
 				Map<String,Object> map = new HashMap<>();
 				map.put("blit", persistedBlit);
-				mailService.sendEmail(blit.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map), ResourceUtil.getMessage(Response.BLIT_RECIEPT));
-				smsService.sendBlitRecieptSms(blit.getCustomerMobileNumber(), blit.getTrackCode());
+				AsyncUtil.run(() -> mailService.sendEmail(blit.getCustomerEmail(),
+						htmlRenderer.renderHtml("ticket", map),
+						ResourceUtil.getMessage(Response.BLIT_RECIEPT)));
+				AsyncUtil.run(() -> smsService.sendBlitRecieptSms(blit.getCustomerMobileNumber(), blit.getTrackCode()));
 				return persistedBlit;
 			}
 			else {

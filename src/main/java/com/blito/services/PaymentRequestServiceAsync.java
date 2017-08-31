@@ -20,6 +20,7 @@ import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.rest.viewmodels.payments.SamanPaymentRequestResponseViewModel;
 import com.blito.rest.viewmodels.payments.ZarinpalPayRequetsResponseViewModel;
 import com.blito.security.SecurityContextHolder;
+import com.blito.services.util.AsyncUtil;
 import com.blito.services.util.HtmlRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -135,7 +136,7 @@ public class PaymentRequestServiceAsync {
 			if (commonBlit.getCount() + commonBlitRepository.countByCustomerEmailAndBlitTypeBlitTypeId(user.getEmail(),
 					blitType.getBlitTypeId()) > 10)
 				throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_COUNT_EXCEEDS_LIMIT_TOTAL));
-			CommonBlitViewModel responseBlit = null;
+			final CommonBlitViewModel responseBlit;
 			// LOCK
 			synchronized (reserveFreeBlitLock) {
 				log.info("User with email '{}' holding the lock",user.getEmail());
@@ -146,9 +147,10 @@ public class PaymentRequestServiceAsync {
 			// UNLOCK
 			Map<String, Object> map = new HashMap<>();
 			map.put("blit", responseBlit);
-			mailService.sendEmail(responseBlit.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map),
-					ResourceUtil.getMessage(Response.BLIT_RECIEPT));
-			smsService.sendBlitRecieptSms(responseBlit.getCustomerMobileNumber(), responseBlit.getTrackCode());
+
+			AsyncUtil.run(() -> mailService.sendEmail(responseBlit.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map),
+					ResourceUtil.getMessage(Response.BLIT_RECIEPT)));
+			AsyncUtil.run(() -> smsService.sendBlitRecieptSms(responseBlit.getCustomerMobileNumber(), responseBlit.getTrackCode()));
 			return CompletableFuture.completedFuture(responseBlit);
 		} else {
 			if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getTotalAmount())

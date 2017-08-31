@@ -1,14 +1,11 @@
 package com.blito.validators;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import com.blito.annotations.AdditionalFields;
+import com.blito.configs.Constants;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-
-import com.blito.annotations.AdditionalFields;
-import com.blito.configs.Constants;
+import java.util.Map;
 
 public class AdditionalFieldsValidation implements ConstraintValidator<AdditionalFields, Map<String,String>> {
 
@@ -20,16 +17,17 @@ public class AdditionalFieldsValidation implements ConstraintValidator<Additiona
 
 	@Override
 	public boolean isValid(Map<String, String> value, ConstraintValidatorContext context) {
-		if(value.isEmpty() || value == null)
+		if(value == null || value.isEmpty())
 			return true;
-		if(value.keySet().stream().distinct().count() != value.keySet().stream().count())
+		if(value.keySet().stream().distinct().count() != value.keySet().size())
 			return false;
-		List<String> schemaTypes = Arrays.asList(Constants.FIELD_DOUBLE_TYPE,Constants.FIELD_IMAGE_TYPE,Constants.FIELD_INT_TYPE,Constants.FIELD_STRING_TYPE);
-		if(value.values().stream().filter(type -> type.equals(Constants.FIELD_IMAGE_TYPE)).count() > 1)
+		else if(!value.values().stream().allMatch(field -> field.equals(Constants.FIELD_STRING_TYPE)))
 			return false;
-		if(value.values().stream().allMatch(field -> schemaTypes.contains(field)))
-			return true;
-		return false;
+		return true;
+//		List<String> schemaTypes = Arrays.asList(Constants.FIELD_DOUBLE_TYPE,Constants.FIELD_IMAGE_TYPE,Constants.FIELD_INT_TYPE,Constants.FIELD_STRING_TYPE);
+
+//		if(value.values().stream().filter(type -> type.equals(Constants.FIELD_IMAGE_TYPE)).count() > 1)
+//			return false;
 	}
 
 }

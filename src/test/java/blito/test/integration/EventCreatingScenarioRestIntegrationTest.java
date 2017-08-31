@@ -3,10 +3,12 @@ package blito.test.integration;
     @author Farzam Vatanzadeh
 */
 
+import com.blito.configs.Constants;
 import com.blito.enums.EventType;
 import com.blito.enums.HostType;
 import com.blito.enums.OperatorState;
 import com.blito.enums.State;
+import com.blito.repositories.EventRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
@@ -21,20 +23,23 @@ import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertEquals;
 
-public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
+public class EventCreatingScenarioRestIntegrationTest extends AbstractRestControllerTest {
     private static boolean isInit = false;
     private static EventViewModel eventViewModel;
+
+    @Autowired
+    private EventRepository eventRepository;
 
     @Before
     public void init()
@@ -47,10 +52,10 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
 
     }
 
-    public Response createEventHost_success()
+    public Response createEventHost_success(String eventHostName)
     {
         EventHostViewModel eventHostViewModel = new EventHostViewModel();
-        eventHostViewModel.setHostName("Farzam");
+        eventHostViewModel.setHostName(eventHostName);
         eventHostViewModel.setDescription("description");
         eventHostViewModel.setHostType(HostType.INDIVIDUAL);
         eventHostViewModel.setTelephone("88002116");
@@ -62,10 +67,8 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
         return response;
     }
 
-    public Response createEvent_success()
+    public EventViewModel createSampleEventViewModel(EventHostViewModel eventHostViewModel)
     {
-        EventHostViewModel eventHostViewModel = createEventHost_success().thenReturn().body().as(EventHostViewModel.class);
-
         EventViewModel eventViewModel = new EventViewModel();
         eventViewModel.setAddress("Amirabad");
         eventViewModel.setBlitSaleEndDate(Timestamp.from(ZonedDateTime.now().plusDays(9).toInstant()));
@@ -92,8 +95,16 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
         blitTypeViewModel2.setName("neshaste");
         blitTypeViewModel2.setPrice(40000);
 
-        eventDateViewModel.setBlitTypes(Arrays.asList(blitTypeViewModel1, blitTypeViewModel2).stream().collect(Collectors.toSet()));
-        eventViewModel.setEventDates(Arrays.asList(eventDateViewModel).stream().collect(Collectors.toSet()));
+        eventDateViewModel.setBlitTypes(new HashSet<>(Arrays.asList(blitTypeViewModel1, blitTypeViewModel2)));
+        eventViewModel.setEventDates(new HashSet<>(Arrays.asList(eventDateViewModel)));
+        return eventViewModel;
+    }
+
+    public Response createEvent_success()
+    {
+        EventHostViewModel eventHostViewModel = createEventHost_success("eventHostName1").thenReturn().body().as(EventHostViewModel.class);
+
+        EventViewModel eventViewModel = createSampleEventViewModel(eventHostViewModel);
 
         Response response = givenRestIntegration()
                 .body(eventViewModel)
@@ -159,6 +170,68 @@ public class DiscountEffectIntegrationTest extends AbstractRestControllerTest {
         openEventDateState_success(eventViewModel.getEventDates().stream().findFirst().get().getEventDateId());
         openBlitTypeState_success(eventViewModel.getEventDates().stream().flatMap(eventDate -> eventDate.getBlitTypes().stream()).map(blitType -> blitType.getBlitTypeId()).collect(Collectors.toList()));
         return eventViewModel;
+    }
+
+    @Test
+    public void createEvent_additionalFields_validation_fail()
+    {
+        EventHostViewModel eventHostViewModel =
+                createEventHost_success("eventHostName2").thenReturn().body().as(EventHostViewModel.class);
+        EventViewModel eventViewModel = createSampleEventViewModel(eventHostViewModel);
+        Map<String,String> map = new HashMap<>();
+        // type int validation error
+        map.put("student number", Constants.FIELD_INT_TYPE);
+        eventViewModel.setAdditionalFields(map);
+
+        Response response =
+                givenRestIntegration()
+                .body(eventViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/events");
+        response.then().statusCode(400);
+    }
+
+    @Test
+    public void createEvent_additionalFields_validation_fail_in_case_of_invalid_schema_type() {
+        EventHostViewModel eventHostViewModel =
+                createEventHost_success("eventHostName3")
+                        .thenReturn()
+                        .body()
+                        .as(EventHostViewModel.class);
+        EventViewModel eventViewModel =
+                createSampleEventViewModel(eventHostViewModel);
+        Map<String,String> map = new HashMap<>();
+        map.put("student number", "testInvalidField");
+        eventViewModel.setAdditionalFields(map);
+        Response eventResponse =
+                givenRestIntegration()
+                .body(eventViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/events");
+        eventResponse.then().statusCode(400);
+    }
+
+    @Test
+    public void createEvent_additionalFields_success()
+    {
+        EventHostViewModel eventHostViewModel =
+                createEventHost_success("eventHostName4").thenReturn().body().as(EventHostViewModel.class);
+        EventViewModel eventViewModel =
+                createSampleEventViewModel(eventHostViewModel);
+        Map<String,String> map = new HashMap<>();
+
+        map.put("student number", Constants.FIELD_STRING_TYPE);
+        map.put("age",Constants.FIELD_STRING_TYPE);
+        eventViewModel.setAdditionalFields(map);
+        Response response =
+                givenRestIntegration()
+                .body(eventViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/events");
+        response.then().statusCode(201);
+        eventViewModel =
+                response.thenReturn().body().as(EventViewModel.class);
+        assertEquals(2,eventRepository.findOne(eventViewModel.getEventId()).getAdditionalFields().size());
     }
 
     @Test

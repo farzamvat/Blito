@@ -3,13 +3,16 @@ package com.blito.configs;
 import com.blito.enums.ImageType;
 import com.blito.models.Image;
 import com.blito.repositories.ImageRepository;
+import com.blito.services.MailService;
 import com.blito.services.PaymentRequestServiceAsync;
+import com.blito.services.SmsService;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
+import org.springframework.mail.MailSendException;
 
 import javax.annotation.PostConstruct;
 import java.util.concurrent.CompletableFuture;
@@ -59,5 +62,23 @@ public class TestConfigurations {
         PaymentRequestServiceAsync paymentRequestServiceAsync = Mockito.spy(PaymentRequestServiceAsync.class);
         Mockito.when(paymentRequestServiceAsync.zarinpalRequestToken(anyInt(),anyString(),anyString(),anyString())).thenReturn(CompletableFuture.completedFuture("testToken"));
         return  paymentRequestServiceAsync;
+    }
+
+    @Bean
+    @Primary
+    public MailService mailService()
+    {
+        MailService mailService = Mockito.mock(MailService.class);
+        Mockito.doThrow(new MailSendException("failed")).when(mailService).sendEmail(anyString(),anyString(),anyString());
+        return mailService;
+    }
+
+    @Bean
+    @Primary
+    public SmsService smsService()
+    {
+        SmsService smsService = Mockito.mock(SmsService.class);
+        Mockito.doNothing().when(smsService).sendBlitRecieptSms(anyString(),anyString());
+        return smsService;
     }
 }
