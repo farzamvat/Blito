@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class EventCreatingScenarioRestIntegrationTest extends AbstractRestControllerTest {
     private static boolean isInit = false;
@@ -233,6 +234,38 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
                 response.thenReturn().body().as(EventViewModel.class);
         assertEquals(2,eventRepository.findOne(eventViewModel.getEventId()).getAdditionalFields().size());
     }
+
+    @Test
+    public void updateEvent_additionalFields_success() {
+        EventHostViewModel eventHostViewModel =
+                createEventHost_success("eventHostName5").thenReturn().body().as(EventHostViewModel.class);
+        EventViewModel eventViewModel = createSampleEventViewModel(eventHostViewModel);
+        Map<String,String> map = new HashMap<>();
+        map.put("student number",Constants.FIELD_STRING_TYPE);
+        eventViewModel.setAdditionalFields(map);
+
+        Response eventCreationResponse =
+                givenRestIntegration()
+                .body(eventViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/events");
+        eventCreationResponse.then().statusCode(201);
+        eventViewModel = eventCreationResponse.body().as(EventViewModel.class);
+
+        map.clear();
+        map.put("age",Constants.FIELD_STRING_TYPE);
+        eventViewModel.setAdditionalFields(map);
+
+        Response eventUpdateResponse =
+                givenRestIntegration()
+                .body(eventViewModel)
+                .when()
+                .put(getServerAddress() + "/api/blito/v1.0/events");
+        eventUpdateResponse.then().statusCode(202);
+        assertTrue(eventRepository.findOne(eventViewModel.getEventId()).getAdditionalFields().containsKey("age"));
+    }
+
+
 
     @Test
     public void createDiscountCode_success()

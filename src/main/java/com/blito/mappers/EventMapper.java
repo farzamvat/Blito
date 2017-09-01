@@ -1,16 +1,5 @@
 package com.blito.mappers;
 
-import java.sql.Timestamp;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.blito.enums.EventType;
 import com.blito.enums.OfferTypeEnum;
 import com.blito.enums.OperatorState;
@@ -18,6 +7,16 @@ import com.blito.enums.State;
 import com.blito.models.Event;
 import com.blito.models.EventDate;
 import com.blito.rest.viewmodels.event.EventViewModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class EventMapper implements GenericMapper<Event, EventViewModel> {
@@ -101,6 +100,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
 		event.setEventLink(vmodel.getEventLink());
 		event.setEventType(vmodel.getEventType().name());
 		event.setMembers(vmodel.getMembers());
+		event.setAdditionalFields(vmodel.getAdditionalFields());
 		
 		List<Long> oldOnes = vmodel.getEventDates().stream().map(b -> b.getEventDateId()).filter(id -> id > 0).collect(Collectors.toList());
 		List<Long> shouldDelete = new ArrayList<>();
@@ -110,9 +110,9 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
 				shouldDelete.add(bt.getEventDateId());
 			}
 		});
-		shouldDelete.forEach(id -> {
-			event.removeEventDateById(id);
-		});
+		shouldDelete.forEach(id ->
+			event.removeEventDateById(id)
+		);
 		
 
 		vmodel.getEventDates().stream().forEach(edvm -> {
