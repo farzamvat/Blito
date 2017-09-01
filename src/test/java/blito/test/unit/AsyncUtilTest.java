@@ -16,9 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
@@ -39,6 +37,25 @@ public class AsyncUtilTest {
 
     @Test
     public void sendSmsMock_success() {
-        assertFalse(AsyncUtil.run(() -> smsService.sendBlitRecieptSms("123","123")).join().isPresent());
+        assertFalse(AsyncUtil.run(() ->
+                smsService.sendBlitRecieptSms("123","123")
+        ).join().isPresent());
+    }
+
+    @Test
+    public void supplierCase_fail() {
+        assertTrue(AsyncUtil.run(() -> {
+            throw new RuntimeException("failed");
+        }).join().isPresent());
+    }
+
+    @Test
+    public void supplier_success_string_return() {
+        assertFalse(AsyncUtil.run(() -> "SUPPLIED").join().isPresent());
+    }
+
+    @Test
+    public void supplier_success_int_return() {
+        assertFalse(AsyncUtil.run(() -> 1L).join().isPresent());
     }
 }
