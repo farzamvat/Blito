@@ -145,8 +145,9 @@ angular.module('eventsPageModule')
         $scope.setPaymentData = function (payment, buyerData) {
                 angular.element(document.getElementsByClassName("btnPaymentActive")).addClass("btnPaymentActivated");
                 var eventPersianDate = $scope.eventFlatDates.filter(function (ticket) {
-                    return ticket.name === $scope.itemWithCapacity[0].name
+                    return ticket.blitTypeId === $scope.itemWithCapacity[0].blitTypeId
                 });
+                console.log(eventPersianDate[0].persianDate);
                 buyPaymentTicket = {
                     blitTypeId: $scope.itemWithCapacity[0].blitTypeId,
                     blitTypeName: $scope.itemWithCapacity[0].name,
@@ -209,7 +210,7 @@ angular.module('eventsPageModule')
         $scope.nextStep2Free = function () {
             var userData = userInfo.getData();
             $scope.disableFreeButton = true;
-            var eventPersianDate = $scope.eventFlatDates.filter(function (ticket) { return ticket.name === $scope.itemWithCapacity[0].name});
+            var eventPersianDate = $scope.eventFlatDates.filter(function (ticket) { return ticket.blitTypeId === $scope.itemWithCapacity[0].blitTypeId});
             var buyFreeTicket = {
                 blitTypeId : $scope.itemWithCapacity[0].blitTypeId,
                 blitTypeName : $scope.itemWithCapacity[0].name,
