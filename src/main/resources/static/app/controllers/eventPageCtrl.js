@@ -147,7 +147,6 @@ angular.module('eventsPageModule')
                 var eventPersianDate = $scope.eventFlatDates.filter(function (ticket) {
                     return ticket.blitTypeId === $scope.itemWithCapacity[0].blitTypeId
                 });
-                console.log(eventPersianDate[0].persianDate);
                 buyPaymentTicket = {
                     blitTypeId: $scope.itemWithCapacity[0].blitTypeId,
                     blitTypeName: $scope.itemWithCapacity[0].name,
