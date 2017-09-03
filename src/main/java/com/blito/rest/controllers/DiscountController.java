@@ -75,4 +75,16 @@ public class DiscountController {
         return CompletableFuture.supplyAsync(()->discountService.updateDiscountCodeByUser(vmodel, user))
                 .handle((either, throwable) -> HandleUtility.generateEitherResponse(either, throwable, req, res));
     }
+
+    @Permission(value = ApiBusinessName.ADMIN)
+    @PutMapping("/admin-update-discount-code")
+    public CompletionStage<ResponseEntity<?>> updateDiscountCodeByOperator(@Valid @RequestBody DiscountViewModel vmodel,
+                                                                           BindingResult bindingResult, HttpServletRequest req, HttpServletResponse res){
+        if (bindingResult.hasFieldErrors())
+            return CompletableFuture.completedFuture(ResponseEntity.badRequest().body(ExceptionUtil
+            .generate(HttpStatus.BAD_REQUEST, req, bindingResult, ControllerEnumValidation.class)));
+        User user = SecurityContextHolder.currentUser();
+        return CompletableFuture.supplyAsync(()->discountService.updateDiscountCodeByOperator(vmodel, user))
+                .handle((either, throwable) -> HandleUtility.generateEitherResponse(either, throwable, req, res));
+    }
 }

@@ -214,6 +214,9 @@ public class DiscountServiceTest {
         assertEquals(0, discountRepo.count());
         eventViewModel = eventService.create(eventViewModel);
 
+        Event event = eventRepository.findOne(eventViewModel.getEventId());
+        event.setEventState(State.OPEN.name());
+        event.setOperatorState(OperatorState.APPROVED.name());
         DiscountViewModel vmodel = new DiscountViewModel();
 
         vmodel.setBlitTypeIds(eventViewModel.getEventDates().stream()
@@ -224,9 +227,11 @@ public class DiscountServiceTest {
         vmodel.setExpirationDate(Timestamp.from(ZonedDateTime.now().plusDays(6).toInstant()));
         vmodel.setPercentage(30D);
         vmodel.setPercent(true);
+        vmodel.setAmount(0L);
 
-        ExceptionViewModel exceptionViewModel = discountService.setDiscountCodeByUser(vmodel,user).getLeft();
-        assertEquals(ResourceUtil.getMessage(Response.EVENT_NOT_OPEN),exceptionViewModel.getMessage());
+        DiscountViewModel discountViewModel = discountService.setDiscountCodeByUser(vmodel,user).get();
+        assertEquals(1, discountRepo.count());
+        assertEquals("TAKHFIF!@#$", discountRepo.findAll().stream().findFirst().get().getCode());
     }
 
     @Test
@@ -234,6 +239,9 @@ public class DiscountServiceTest {
         assertEquals(0, discountRepo.count());
         eventViewModel = eventService.create(eventViewModel);
 
+        Event event = eventRepository.findOne(eventViewModel.getEventId());
+        event.setEventState(State.OPEN.name());
+        event.setOperatorState(OperatorState.APPROVED.name());
         DiscountViewModel vmodel = new DiscountViewModel();
 
         vmodel.setBlitTypeIds(eventViewModel.getEventDates().stream()
@@ -244,10 +252,15 @@ public class DiscountServiceTest {
         vmodel.setExpirationDate(Timestamp.from(ZonedDateTime.now().plusDays(6).toInstant()));
         vmodel.setPercentage(0D);
         vmodel.setPercent(true);
+        vmodel.setAmount(0L);
 
         Either<ExceptionViewModel,DiscountViewModel> either = discountService.setDiscountCodeByUser(vmodel,user);
-        if(either.isLeft())
+        if(either.isLeft()){
             assertTrue(true);
+            System.out.println("****");
+            System.out.println(either.getLeft().getMessage());
+            System.out.println(either.getLeft().getError());
+        }
         else {
             assertTrue(false);
         }
@@ -258,6 +271,9 @@ public class DiscountServiceTest {
         assertEquals(0, discountRepo.count());
         eventViewModel = eventService.create(eventViewModel);
 
+        Event event = eventRepository.findOne(eventViewModel.getEventId());
+        event.setEventState(State.OPEN.name());
+        event.setOperatorState(OperatorState.APPROVED.name());
         DiscountViewModel vmodel = new DiscountViewModel();
 
         vmodel.setBlitTypeIds(eventViewModel.getEventDates().stream()
@@ -270,8 +286,12 @@ public class DiscountServiceTest {
         vmodel.setPercent(true);
         vmodel.setAmount(100L);
         Either<ExceptionViewModel,DiscountViewModel> either = discountService.setDiscountCodeByUser(vmodel,user);
-        if(either.isLeft())
+        if(either.isLeft()){
             assertTrue(true);
+            System.out.println("****");
+            System.out.println(either.getLeft().getMessage());
+            System.out.println(either.getLeft().getError());
+        }
         else {
             assertTrue(false);
         }
@@ -282,6 +302,9 @@ public class DiscountServiceTest {
         assertEquals(0, discountRepo.count());
         eventViewModel = eventService.create(eventViewModel);
 
+        Event event = eventRepository.findOne(eventViewModel.getEventId());
+        event.setEventState(State.OPEN.name());
+        event.setOperatorState(OperatorState.APPROVED.name());
         DiscountViewModel vmodel = new DiscountViewModel();
 
         vmodel.setBlitTypeIds(eventViewModel.getEventDates().stream()
@@ -294,8 +317,12 @@ public class DiscountServiceTest {
         vmodel.setAmount(-20L);
 
         Either<ExceptionViewModel,DiscountViewModel> either = discountService.setDiscountCodeByUser(vmodel,user);
-        if(either.isLeft())
+        if(either.isLeft()){
             assertTrue(true);
+            System.out.println("****");
+            System.out.println(either.getLeft().getMessage());
+            System.out.println(either.getLeft().getError());
+        }
         else {
             assertTrue(false);
         }
@@ -305,6 +332,10 @@ public class DiscountServiceTest {
     public void setDiscountCodeTestInvalidPercentageWhenIsPercentIsFalse() {
         assertEquals(0, discountRepo.count());
         eventViewModel = eventService.create(eventViewModel);
+
+        Event event = eventRepository.findOne(eventViewModel.getEventId());
+        event.setEventState(State.OPEN.name());
+        event.setOperatorState(OperatorState.APPROVED.name());
 
         DiscountViewModel vmodel = new DiscountViewModel();
 
@@ -319,8 +350,12 @@ public class DiscountServiceTest {
         vmodel.setAmount(1000L);
 
         Either<ExceptionViewModel,DiscountViewModel> either = discountService.setDiscountCodeByUser(vmodel,user);
-        if(either.isLeft())
+        if(either.isLeft()){
             assertTrue(true);
+            System.out.println("****");
+            System.out.println(either.getLeft().getMessage());
+            System.out.println(either.getLeft().getError());
+        }
         else {
             assertTrue(false);
         }
