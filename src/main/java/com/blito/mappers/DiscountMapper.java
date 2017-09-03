@@ -20,6 +20,7 @@ public class DiscountMapper implements GenericMapper<Discount, DiscountViewModel
 		discount.setPercentage(vmodel.getPercentage());
 		discount.setPercent(vmodel.getPercent());
 		discount.setAmount(vmodel.getAmount());
+		discount.setEnabled(true);
 		return discount;
 	}
 
@@ -42,9 +43,17 @@ public class DiscountMapper implements GenericMapper<Discount, DiscountViewModel
 	}
 
 	@Override
-	public Discount updateEntity(DiscountViewModel viewModel, Discount entity) {
-		// TODO Auto-generated method stub
-		return null;
+	public Discount updateEntity(DiscountViewModel vmodel, Discount discount) {
+        discount.setCode(vmodel.getCode());
+        discount.setReusability(vmodel.getReusability());
+        discount.setEffectDate(vmodel.getEffectDate());
+        discount.setUsed(vmodel.getUsed());
+        discount.setExpirationDate(vmodel.getExpirationDate());
+        discount.setPercentage(vmodel.getPercentage());
+        discount.setPercent(vmodel.getPercent());
+        discount.setAmount(vmodel.getAmount());
+        discount.setEnabled(vmodel.getEnabled());
+        return discount;
 	}
 
 }

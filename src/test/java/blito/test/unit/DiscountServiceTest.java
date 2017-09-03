@@ -326,4 +326,40 @@ public class DiscountServiceTest {
         }
     }
 
+    @Test
+    public void updateDiscountCodeTest(){
+        assertEquals(0, discountRepo.count());
+        eventViewModel = eventService.create(eventViewModel);
+
+        Event event = eventRepository.findOne(eventViewModel.getEventId());
+        event.setEventState(State.OPEN.name());
+        event.setOperatorState(OperatorState.APPROVED.name());
+        DiscountViewModel vmodel = new DiscountViewModel();
+
+        vmodel.setBlitTypeIds(eventViewModel.getEventDates().stream()
+                .flatMap(ed -> ed.getBlitTypes().stream().map(bt -> bt.getBlitTypeId())).collect(Collectors.toSet()));
+        vmodel.setCode("TAKHFIF!@#$");
+        vmodel.setReusability(5);
+        vmodel.setEffectDate(Timestamp.from(ZonedDateTime.now().plusDays(3).toInstant()));
+        vmodel.setExpirationDate(Timestamp.from(ZonedDateTime.now().plusDays(6).toInstant()));
+        vmodel.setPercentage(30D);
+        vmodel.setAmount(0L);
+        vmodel.setPercent(true);
+
+        vmodel = discountService.setDiscountCodeByUser(vmodel,user).get();
+        assertEquals(1, discountRepo.count());
+
+        vmodel.setCode("changed code");
+        vmodel = discountService.updateDiscountCodeByUser(vmodel, user).get();
+//        System.out.println("********");
+//        System.out.println(exceptionViewModel.getErrors());
+//        System.out.println(exceptionViewModel.getMessage());
+        assertEquals("changed code", vmodel.getCode());
+        assertEquals(1, discountRepo.count());
+        assertEquals("changed code", discountRepo.findAll().stream().findFirst().get().getCode());
+
+    }
+
+
+
 }

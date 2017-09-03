@@ -20,6 +20,7 @@ import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
+import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
@@ -402,5 +403,55 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
                 .when()
                 .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
         response2.then().statusCode(400);
+    }
+
+    @Test
+    public void adminSetDiscountCode_success(){
+        DiscountViewModel discountViewModel = new DiscountViewModel();
+        discountViewModel.setAmount(0L);
+        discountViewModel.setCode("code");
+        discountViewModel.setEffectDate(new Timestamp(1504341720000L));
+        discountViewModel.setExpirationDate(new Timestamp(1504341720000L));
+        discountViewModel.setPercent(true);
+        discountViewModel.setPercentage(25.0);
+        discountViewModel.setReusability(2);
+
+        discountViewModel.setBlitTypeIds(new HashSet<>(
+                Arrays.asList(eventViewModel.getEventDates()
+                        .stream()
+                        .flatMap(ed -> ed.getBlitTypes().stream())
+                        .filter(bt -> bt.getName().equals("vaysade"))
+                        .findFirst().get().getBlitTypeId())));
+
+
+        Response response = givenRestIntegration()
+                .body(discountViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/discount/admin-set-discount-code");
+        response.then().statusCode(200).body("amount", equalTo(0));
+    }
+
+    @Test
+    public void updateDiscountCodeByOperator_success(){
+        DiscountViewModel discountViewModel = createDiscountCode_success("test update");
+        discountViewModel.setPercent(true);
+        discountViewModel.setCode("after update test");
+        discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(2).toInstant()));
+        discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
+        discountViewModel.setReusability(10);
+        discountViewModel.setPercentage(30D);
+        discountViewModel.setAmount(0L);
+        discountViewModel.setBlitTypeIds(new HashSet<>(
+                Arrays.asList(eventViewModel.getEventDates()
+                        .stream()
+                        .flatMap(ed -> ed.getBlitTypes().stream())
+                        .filter(bt -> bt.getName().equals("vaysade"))
+                        .findFirst().get().getBlitTypeId())));
+
+        Response response = givenRestIntegration()
+                .body(discountViewModel)
+                .when()
+                .put(getServerAddress() + "/api/blito/v1.0/discount/update-discount-code");
+        response.then().statusCode(200).body("code", equalTo("after update test"));
     }
 }
