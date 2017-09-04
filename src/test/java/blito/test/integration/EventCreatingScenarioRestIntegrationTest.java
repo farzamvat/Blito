@@ -451,7 +451,99 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         Response response = givenRestIntegration()
                 .body(discountViewModel)
                 .when()
-                .put(getServerAddress() + "/api/blito/v1.0/discount/update-discount-code");
+                .put(getServerAddress() + "/api/blito/v1.0/discount/admin-update-discount-code");
         response.then().statusCode(200).body("code", equalTo("after update test"));
+    }
+
+    @Test
+    public void updateDiscountCode_failNotFound(){
+        DiscountViewModel discountViewModel = createDiscountCode_success("test update not found");
+        discountViewModel.setDiscountId(230L);
+        discountViewModel.setPercent(true);
+        discountViewModel.setCode("after update test");
+        discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(2).toInstant()));
+        discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
+        discountViewModel.setReusability(10);
+        discountViewModel.setPercentage(30D);
+        discountViewModel.setAmount(0L);
+        discountViewModel.setBlitTypeIds(new HashSet<>(
+                Arrays.asList(eventViewModel.getEventDates()
+                        .stream()
+                        .flatMap(ed -> ed.getBlitTypes().stream())
+                        .filter(bt -> bt.getName().equals("vaysade"))
+                        .findFirst().get().getBlitTypeId())));
+
+        Response response = givenRestIntegration()
+                .body(discountViewModel)
+                .when()
+                .put(getServerAddress() + "/api/blito/v1.0/discount/admin-update-discount-code");
+        response.then().statusCode(400).body("message", equalTo(ResourceUtil.getMessage(com.blito.enums.Response.DISCOUNT_CODE_NOT_FOUND)));
+    }
+
+    @Test
+    public void updateDiscountCode_failInvalidPercentage(){
+        DiscountViewModel discountViewModel = createDiscountCode_success("test update invalid percentage");
+        discountViewModel.setPercent(true);
+        discountViewModel.setCode("after update test");
+        discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(2).toInstant()));
+        discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
+        discountViewModel.setReusability(10);
+        discountViewModel.setPercentage(120D);
+        discountViewModel.setAmount(0L);
+        discountViewModel.setBlitTypeIds(new HashSet<>(
+                Arrays.asList(eventViewModel.getEventDates()
+                        .stream()
+                        .flatMap(ed -> ed.getBlitTypes().stream())
+                        .filter(bt -> bt.getName().equals("vaysade"))
+                        .findFirst().get().getBlitTypeId())));
+
+        Response response = givenRestIntegration()
+                .body(discountViewModel)
+                .when()
+                .put(getServerAddress() + "/api/blito/v1.0/discount/admin-update-discount-code");
+        response.then().statusCode(400).body("message", equalTo(ResourceUtil.getMessage(com.blito.enums.Response.INCONSISTENT_PERCENT)));
+    }
+
+    @Test
+    public void updateDiscountCode_failBlitTypesNotFound(){
+        DiscountViewModel discountViewModel = createDiscountCode_success("test update blitType not found");
+        discountViewModel.setPercent(true);
+        discountViewModel.setCode("after update test");
+        discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(2).toInstant()));
+        discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
+        discountViewModel.setReusability(10);
+        discountViewModel.setPercentage(20D);
+        discountViewModel.setAmount(0L);
+        discountViewModel.setBlitTypeIds(new HashSet<>(Arrays.asList(100L,120L,130L)));
+
+        Response response = givenRestIntegration()
+                .body(discountViewModel)
+                .when()
+                .put(getServerAddress() + "/api/blito/v1.0/discount/admin-update-discount-code");
+        response.then().statusCode(400).body("message", equalTo(ResourceUtil.getMessage(com.blito.enums.Response.BLIT_TYPE_NOT_FOUND)));
+    }
+
+    @Test
+    public void setDiscountCode_failInavalidBlitATypes(){
+        DiscountViewModel discountViewModel = new DiscountViewModel();
+        discountViewModel.setPercent(true);
+        discountViewModel.setCode("User Discount code");
+        discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(1).toInstant()));
+        discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
+        discountViewModel.setReusability(10);
+        discountViewModel.setPercentage(30D);
+        discountViewModel.setAmount(0L);
+        discountViewModel.setBlitTypeIds(new HashSet<>(
+                Arrays.asList(eventViewModel.getEventDates()
+                        .stream()
+                        .flatMap(ed -> ed.getBlitTypes().stream())
+                        .filter(bt -> bt.getName().equals("vaysade"))
+                        .findFirst().get().getBlitTypeId())));
+
+        Response response = givenRestIntegrationUser()
+                .body(discountViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/discount/set-discount-code");
+        response.then().statusCode(400).body("message", equalTo(ResourceUtil.getMessage(com.blito.enums.Response.NOT_ALLOWED)));
     }
 }
