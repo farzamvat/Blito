@@ -20,7 +20,6 @@ import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
-import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
@@ -433,9 +432,9 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
 
     @Test
     public void updateDiscountCodeByOperator_success(){
-        DiscountViewModel discountViewModel = createDiscountCode_success("test update");
+        DiscountViewModel discountViewModel = createDiscountCode_success("testUpdate");
         discountViewModel.setPercent(true);
-        discountViewModel.setCode("after update test");
+        discountViewModel.setCode("afterUpdateTest");
         discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(2).toInstant()));
         discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
         discountViewModel.setReusability(10);
@@ -452,15 +451,15 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
                 .body(discountViewModel)
                 .when()
                 .put(getServerAddress() + "/api/blito/v1.0/discount/admin-update-discount-code");
-        response.then().statusCode(200).body("code", equalTo("after update test"));
+        response.then().statusCode(200).body("code", equalTo("afterUpdateTest"));
     }
 
     @Test
     public void updateDiscountCode_failNotFound(){
-        DiscountViewModel discountViewModel = createDiscountCode_success("test update not found");
+        DiscountViewModel discountViewModel = createDiscountCode_success("testUpdateNotFound");
         discountViewModel.setDiscountId(230L);
         discountViewModel.setPercent(true);
-        discountViewModel.setCode("after update test");
+        discountViewModel.setCode("afterUpdateTest");
         discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(2).toInstant()));
         discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
         discountViewModel.setReusability(10);
@@ -482,9 +481,9 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
 
     @Test
     public void updateDiscountCode_failInvalidPercentage(){
-        DiscountViewModel discountViewModel = createDiscountCode_success("test update invalid percentage");
+        DiscountViewModel discountViewModel = createDiscountCode_success("testUpdateInvalidPercentage");
         discountViewModel.setPercent(true);
-        discountViewModel.setCode("after update test");
+        discountViewModel.setCode("afterUpdateTest");
         discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(2).toInstant()));
         discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
         discountViewModel.setReusability(10);
@@ -506,9 +505,9 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
 
     @Test
     public void updateDiscountCode_failBlitTypesNotFound(){
-        DiscountViewModel discountViewModel = createDiscountCode_success("test update blitType not found");
+        DiscountViewModel discountViewModel = createDiscountCode_success("testUpdateBlitTypeNotFound");
         discountViewModel.setPercent(true);
-        discountViewModel.setCode("after update test");
+        discountViewModel.setCode("afterUpdateTest");
         discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(2).toInstant()));
         discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
         discountViewModel.setReusability(10);
@@ -524,10 +523,10 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
     }
 
     @Test
-    public void setDiscountCode_failInavalidBlitATypes(){
+    public void setDiscountCode_failInavalidBlitTypes(){
         DiscountViewModel discountViewModel = new DiscountViewModel();
         discountViewModel.setPercent(true);
-        discountViewModel.setCode("User Discount code");
+        discountViewModel.setCode("UserDiscountCode");
         discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(1).toInstant()));
         discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
         discountViewModel.setReusability(10);

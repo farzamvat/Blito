@@ -4,13 +4,10 @@ package blito.test.integration;
 */
 
 import com.blito.Application;
-import com.blito.models.Role;
-import com.blito.models.User;
 import com.blito.repositories.RoleRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.rest.viewmodels.account.RegisterVm;
 import com.blito.rest.viewmodels.account.TokenModel;
-import com.blito.rest.viewmodels.account.UserViewModel;
 import com.blito.services.JwtService;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -23,9 +20,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Arrays;
-import java.util.HashSet;
 
 import static io.restassured.RestAssured.given;
 
@@ -46,7 +40,7 @@ public class AbstractRestControllerTest {
     @Autowired
     private JwtService jwtService;
 
-    public static boolean initialized = false;
+    private static boolean initialized = false;
     private static String token;
     private static String userToken;
 
@@ -65,14 +59,14 @@ public class AbstractRestControllerTest {
         }
     }
 
-    protected RequestSpecification givenRestIntegration()
+    RequestSpecification givenRestIntegration()
     {
         return given()
                 .header("X-AUTH-TOKEN","Bearer " + token)
                 .header("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
     }
 
-    protected RequestSpecification givenRestIntegrationUser()
+    RequestSpecification givenRestIntegrationUser()
     {
         return given()
                 .header("X-AUTH-TOKEN","Bearer " + userToken)
@@ -84,12 +78,12 @@ public class AbstractRestControllerTest {
         return admin_username;
     }
 
-    protected String getServerAddress()
+    String getServerAddress()
     {
         return serverAddress;
     }
 
-    protected String createUser(){
+    private String createUser(){
         RegisterVm registerVm = new RegisterVm();
         registerVm.setFirstname("Hasti");
         registerVm.setLastname("Sahabi");

@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.sql.Timestamp;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ public class DiscountViewModel {
 	private Long discountId;
 	
 	@NotEmpty
+	@Pattern(regexp ="(?=\\S+$).+" , message="{discount.code.pattern.validation}")
 	private String code;
 	@Min(1)
 	private Integer reusability;
