@@ -61,7 +61,7 @@ public class PaymentRequestServiceAsync {
 	@Value("${zarinpal.web.gateway}")
 	private String zarinpalGatewayURL;
 	
-	private static Object reserveFreeBlitLock = new Object();
+	private static final Object reserveFreeBlitLock = new Object();
 
 	private final Logger log = LoggerFactory.getLogger(PaymentRequestServiceAsync.class);
 	
@@ -70,9 +70,8 @@ public class PaymentRequestServiceAsync {
 	}
 
 	public CompletableFuture<String> zarinpalRequestToken(int amount, String email, String mobile, String description) {
-		return CompletableFuture.supplyAsync(() -> {
-			return zarinpalClient.getPaymentRequest(amount, email, mobile, description);
-		});
+		return CompletableFuture.supplyAsync(() ->
+			zarinpalClient.getPaymentRequest(amount, email, mobile, description));
 	}
 	
 	public CompletableFuture<Object> createCommonBlitAuthorized(CommonBlitViewModel vmodel) {
@@ -86,6 +85,7 @@ public class PaymentRequestServiceAsync {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_NOT_OPEN));
 
 		// ADDITIONAL FIELDS VALIDATION
+
 		// if condition && instead of || ??
 		// if(blitType.getEventDate().getEvent().getAdditionalFields() != null)
 		// {
