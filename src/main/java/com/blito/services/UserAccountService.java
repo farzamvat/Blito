@@ -1,26 +1,7 @@
 package com.blito.services;
 
-import java.sql.Timestamp;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.blito.enums.Response;
-import com.blito.exceptions.AlreadyExistsException;
-import com.blito.exceptions.InternalServerException;
-import com.blito.exceptions.NotAllowedException;
-import com.blito.exceptions.NotFoundException;
-import com.blito.exceptions.UnauthorizedException;
-import com.blito.exceptions.UserNotActivatedException;
-import com.blito.exceptions.WrongPasswordException;
+import com.blito.exceptions.*;
 import com.blito.mappers.UserMapper;
 import com.blito.models.Blit;
 import com.blito.models.Role;
@@ -29,12 +10,20 @@ import com.blito.repositories.BlitRepository;
 import com.blito.repositories.RoleRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
-import com.blito.rest.viewmodels.account.ChangePasswordViewModel;
-import com.blito.rest.viewmodels.account.LoginViewModel;
-import com.blito.rest.viewmodels.account.RegisterVm;
-import com.blito.rest.viewmodels.account.TokenModel;
-import com.blito.rest.viewmodels.account.UserViewModel;
+import com.blito.rest.viewmodels.account.*;
 import com.blito.security.SecurityContextHolder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 
 @Service
@@ -58,7 +47,6 @@ public class UserAccountService {
 			throw new AlreadyExistsException(ResourceUtil.getMessage(Response.EMAIL_ALREADY_IN_USE));
 		}
 		Role userRole = roleRepository.findByName("USER")
-				.map(r -> r)
 				.orElseThrow(() -> new InternalServerException(ResourceUtil.getMessage(Response.INTERNAL_SERVER_ERROR)));
 		User user = registerVmToUser.registerViewModeltoUser(vmodel);
 		user.setActivationKey(UUID.randomUUID().toString());
@@ -73,9 +61,8 @@ public class UserAccountService {
 		return CompletableFuture.completedFuture(user)
 				.thenAccept(savedUser -> 
 					mailService.sendActivationEmail(savedUser)
-				).thenApply((res) -> {
-					return userRepository.save(user);
-				});
+				).thenApply((res) ->
+					userRepository.save(user));
 	}
 	
 	@Transactional

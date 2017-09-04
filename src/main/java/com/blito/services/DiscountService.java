@@ -57,9 +57,10 @@ public class DiscountService {
 
     @Transactional
     public Either<ExceptionViewModel,DiscountViewModel> createDiscountCode(DiscountViewModel vmodel,User user,Set<BlitType> blitTypes) {
-        if(verifyDiscountViewModel(vmodel, blitTypes).isLeft())
-            return verifyDiscountViewModel(vmodel, blitTypes);
-
+        Either<ExceptionViewModel,DiscountViewModel> discountViewModelValidation = verifyDiscountViewModel(vmodel, blitTypes);
+        if(discountViewModelValidation.isLeft()) {
+            return discountViewModelValidation;
+        }
         if (discountRepository.findByCode(vmodel.getCode()).isPresent())
             return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.DISCOUNT_CODE_ALREADY_EXISTS),400));
         Discount discount = discountMapper.createFromViewModel(vmodel);
@@ -74,10 +75,12 @@ public class DiscountService {
     public DiscountValidationViewModel validateDiscountCode(DiscountValidationViewModel vmodel){
         return discountRepository.findByCode(vmodel.getCode())
             .map(discount -> {
-                if(discount.getUsed() + vmodel.getCount() > discount.getReusability()){
+                if(discount.getCode().contains(" "))
+                    vmodel.setValid(false);
+                else if(discount.getUsed() + vmodel.getCount() > discount.getReusability()){
                     vmodel.setValid(false);
                 }
-                else if(!discount.getBlitTypes().stream().map(bt -> bt.getBlitTypeId()).collect(Collectors.toList()).contains(vmodel.getBlitTypeId())){
+                else if(!discount.getBlitTypes().stream().map(BlitType::getBlitTypeId).collect(Collectors.toList()).contains(vmodel.getBlitTypeId())){
                     vmodel.setValid(false);
                 }
                 else if(discount.getExpirationDate().before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()))){
@@ -105,7 +108,7 @@ public class DiscountService {
     }
 
     @Transactional
-    public Either<ExceptionViewModel, DiscountViewModel> updateDiscountCodeByUser(DiscountViewModel vmodel, User user){
+    public Either<ExceptionViewModel, DiscountViewModel> updateDiscountCodeByUser(DiscountViewModel vmodel, User user) {
         Set<BlitType> blitTypes = blitTypeRepository.findByBlitTypeIdIn(vmodel.getBlitTypeIds());
         if(!blitTypes.stream().allMatch(blitType -> blitType.getEventDate().getEvent().getEventHost().getUser().getUserId() == user.getUserId()))
         {
@@ -122,14 +125,16 @@ public class DiscountService {
 
     @Transactional
     public Either<ExceptionViewModel, DiscountViewModel> updateDiscountCode(DiscountViewModel vmodel, User user, Set<BlitType> blitTypes) {
+        Either<ExceptionViewModel,DiscountViewModel> discountViewModelValidation = verifyDiscountViewModel(vmodel, blitTypes);
+        if(discountViewModelValidation.isLeft()) {
+            return discountViewModelValidation;
+        }
         Optional<Discount> optionalDiscount = discountRepository.findByDiscountId(vmodel.getDiscountId());
         if (!optionalDiscount.isPresent())
             return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.DISCOUNT_CODE_NOT_FOUND), 400));
         Discount discount = optionalDiscount.get();
         if (discount.getUser().getUserId() != user.getUserId())
             return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.NOT_ALLOWED), 400));
-        if (verifyDiscountViewModel(vmodel, blitTypes).isLeft())
-            return verifyDiscountViewModel(vmodel, blitTypes);
         discount = discountMapper.updateEntity(vmodel, discount);
         discount.setUser(userRepository.findOne(user.getUserId()));
         discount.setBlitTypes(blitTypes);

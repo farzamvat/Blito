@@ -18,6 +18,7 @@ import javax.annotation.PostConstruct;
 import java.util.concurrent.CompletableFuture;
 
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 
 /*
@@ -66,10 +67,11 @@ public class TestConfigurations {
 
     @Bean
     @Primary
-    public MailService mailService()
+    public MailService mailServiceSpy()
     {
-        MailService mailService = Mockito.mock(MailService.class);
+        MailService mailService = Mockito.spy(MailService.class);
         Mockito.doThrow(new MailSendException("failed")).when(mailService).sendEmail(anyString(),anyString(),anyString());
+        Mockito.doNothing().when(mailService).sendActivationEmail(anyObject());
         return mailService;
     }
 
