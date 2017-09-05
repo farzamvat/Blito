@@ -1483,6 +1483,7 @@ angular.module('User')
             $scope.getEventTickets(1);
             $('#eventTickets').modal('show');
         };
+
         $scope.getExchangeData = function (page) {
             exchangeService.getExchangeTickets(page)
                 .then(function (data) {
@@ -1559,6 +1560,132 @@ angular.module('User')
             .catch(function () {
 
             });
+        //==================================================== ********* =================================
+        //==================================================== DISCOUNT SECTION =======================
+        $scope.discountCodeShow = function (index) {
+            document.getElementById("successDiscount").style.display = "none";
+            document.getElementById("errorDiscount").style.display = "none";
+            $scope.eventDatesDiscount = [];
+            $scope.eventChosen = false;
+            $scope.sansChosen = false;
+            $scope.blitChosen = false;
+            $scope.blitIsPicked = false;
+            $scope.sansisPicked = false;
+            $scope.eventDiscount = angular.copy($scope.userEvents[index]);
+            $scope.flatEventDates($scope.eventDiscount.eventDates);
+            $timeout(function () {
+                dateSetterService.initDate("discountStartTime");
+                dateSetterService.initDate("discountEndTime");
+            }, 1000);
+            $('#discount-codes').modal('show');
+        };
+        $scope.sansDates = function (index) {
+            return "discountTime"+index;
+        };
+        $scope.eventChosen = false;
+        $scope.discountEvent = function () {
+            angular.element(document.getElementsByClassName('discount-progress')).css('width', '100%');
+            setBlitTypeIds($scope.eventDiscount.eventDates);
+            $scope.eventChosen = true;
+            $scope.blitChosen = false;
+            $scope.sansChosen = false;
+            $scope.sansisPicked = false;
+            $scope.blitIsPicked = false;
+        };
+        $scope.sansChosen = false;
+        $scope.discountSans = function () {
+            angular.element(document.getElementsByClassName('discount-progress')).css('width', '50%');
+            $scope.sansChosen = true;
+            $scope.blitChosen = false;
+            $scope.eventChosen = false;
+            $scope.blitIsPicked = false;
+            $scope.eventDatesDiscount = $scope.eventDiscount.eventDates;
+            $timeout(function () {
+                for(var i = 0 ; i < $scope.eventDatesDiscount.length; i++) {
+                    $(".discountTime"+i).html(persianDate($scope.eventDatesDiscount[i].date).format("dddd,DD MMMM, ساعت HH:mm"));
+                }
+            }, 500);
+        };
+        $scope.blitChosen = false;
+        $scope.discountBlit = function () {
+            angular.element(document.getElementsByClassName('discount-progress')).css('width', '50%');
+            $scope.blitChosen = true;
+            $scope.sansChosen = false;
+            $scope.eventChosen = false;
+            $scope.sansisPicked = false;
+        };
+        $scope.sansPicked = function (index) {
+            angular.element(document.getElementsByClassName('discount-progress')).css('width', '100%');
+            setBlitTypeIds([$scope.eventDatesDiscount[index]]);
+            $scope.sansisPicked = true;
+        };
+        $scope.blitPicked = function (index) {
+            angular.element(document.getElementsByClassName('discount-progress')).css('width', '100%');
+            $scope.blitTypeIds = [];
+            $scope.blitTypeIds[0] = $scope.eventFlatDates[index].blitTypeId;
+            $scope.blitIsPicked = true;
+        };
+        var setBlitTypeIds = function (eventDates) {
+            var blitTypeIds = eventDates.map(function (sans) {
+                return sans.blitTypes.map(function (blitType) {
+                    return blitType.blitTypeId;
+                });
+            });
+            $scope.blitTypeIds = [];
+            for(var i = 0; i < blitTypeIds.length; i++)
+            {
+                $scope.blitTypeIds = $scope.blitTypeIds.concat(blitTypeIds[i]);
+            }
+        };
+        $scope.eventFlatDates = [];
+        $scope.flatEventDates = function (dates) {
+            var index = 0;
+            for(var i = 0; i < dates.length; i++) {
+                for(var j = 0; j < dates[i].blitTypes.length; j++) {
+                    $scope.eventFlatDates[index] = {
+                        name : dates[i].blitTypes[j].name,
+                        capacity : dates[i].blitTypes[j].capacity,
+                        blitTypeState : dates[i].blitTypes[j].blitTypeState,
+                        price : dates[i].blitTypes[j].price,
+                        date : dates[i].date,
+                        soldCount : dates[i].blitTypes[j].soldCount,
+                        isFree : dates[i].blitTypes[j].isFree,
+                        blitTypeId : dates[i].blitTypes[j].blitTypeId
+
+                    } ;
+                    index++;
+                }
+            }
+        };
+        $scope.discountSubmitOnce = true;
+        $scope.submitDiscountCode = function (discountData) {
+            document.getElementById("successDiscount").style.display = "none";
+            document.getElementById("errorDiscount").style.display = "none";
+            var discountSubmit = {};
+            $scope.discountSubmitOnce = false;
+            discountSubmit.code = discountData.code;
+            discountSubmit.reusability = discountData.reusability;
+            discountSubmit.effectDate = dateSetterService.persianToMs(discountData.effectDatePersian);
+            discountSubmit.expirationDate = dateSetterService.persianToMs(discountData.expirationDatePersian);
+            discountSubmit.isPercent = true;
+            discountSubmit.amount = 0;
+            discountSubmit.percentage = parseInt(discountData.percentage);
+            discountSubmit.blitTypeIds = $scope.blitTypeIds;
+            document.getElementsByClassName("discountSpinner")[0].style.display = "inline";
+            eventService.submitDiscount(discountSubmit)
+                .then(function () {
+                    document.getElementById("successDiscount").style.display = "block";
+                    document.getElementsByClassName("discountSpinner")[0].style.display = "none";
+                    $scope.discountSubmitOnce = true;
+                })
+                .catch(function (data) {
+                    $scope.discountSubmitOnce = true;
+                    document.getElementById("errorDiscount").innerHTML= data.data.message;
+                    document.getElementById("errorDiscount").style.display = "block";
+                    document.getElementsByClassName("discountSpinner")[0].style.display = "none";
+                })
+
+        };
         //==================================================== ********* =================================
         //==================================================== PERSIAN DATE PICKER =======================
         $timeout(function () {

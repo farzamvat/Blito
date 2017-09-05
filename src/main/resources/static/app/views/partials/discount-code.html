@@ -1,0 +1,150 @@
+<div id="discount-codes"  class="modal fade" role="dialog" >
+    <div class="modal-dialog editForm">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body registerBody">
+                <div class="col-xs-12 marginBottom20 ">
+                    <h3 class="text-center"> ایجاد کد تخفیف </h3>
+
+                    <div class="col-xs-12 floatRight marginTop30">
+                        <div class="col-xs-12 col-sm-4 floatRight discountParts">
+                            <h4 class="text-center">مرحله اول</h4>
+                            <h5 class="textAlignRight">اعمال کد تخفیف برای :</h5>
+                            <div class="col-xs-12"><button ng-click="discountEvent()" class="btn btn-default discountCodeButton btnSelected"> کل رویداد</button></div>
+                            <div class="col-xs-12"><button ng-click="discountSans()" class="btn btn-default discountCodeButton btnSelected"> یک سانس</button></div>
+                            <div class="col-xs-12"><button ng-click="discountBlit()" class="btn btn-default discountCodeButton btnSelected"> یک نوع بلیت</button></div>
+                        </div>
+                        <div ng-show="blitChosen" class="col-xs-12 col-sm-4 floatRight discountParts">
+                            <h4 class="text-center">مرحله دوم</h4>
+                            <h5 class="textAlignRight">انتخاب بلیت  :</h5>
+                            <div class="form-group col-xs-12  formRegGroup">
+
+                                <div ng-repeat="blit in eventFlatDates" class="col-xs-12"><button type="button" ng-click="blitPicked($index)"  class="btn btn-default discountCodeButton btnSelected" >{{blit.name}}</button></div>
+
+                            </div>
+                        </div>
+                        <div ng-show="sansChosen"  class="col-xs-12 col-sm-4 floatRight discountParts">
+                            <h4 class="text-center">مرحله دوم</h4>
+                            <h5 class="textAlignRight">انتخاب سانس  :</h5>
+                            <div class="form-group col-xs-12  formRegGroup">
+                                <div ng-repeat="sans in eventDatesDiscount" class="col-xs-12"><button type="button" ng-click="sansPicked($index)" ng-class="sansDates($index)"  class="btn btn-default discountCodeButton btnSelected" ></button></div>
+                            </div>
+                        </div>
+                        <div  ng-show="eventChosen || sansisPicked || blitIsPicked" class="col-xs-12 col-sm-4 floatRight discountParts">
+                            <h4 class="text-center">مرحله آخر</h4>
+                            <form class="form-inline textAlignRight" name="discountForm">
+                                <fieldset>
+
+                                    <div class="form-group col-xs-12 formRegGroup">
+                                        <div class="col-xs-5 col-sm-4 floatRight text-center">
+                                            <label class="registerLabel" for="userIdSingIn" >نام کد تخفیف :</label>
+                                        </div>
+                                        <div class="col-xs-7 col-sm-8 floatRight ">
+                                            <input height="60" id="userIdSingIn" name="discountName" ng-model="discountProperties.code" type="text"  class="form-group registerInput" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 marginTop10 formRegGroup">
+                                        <div class="col-xs-5 col-sm-4 floatRight text-center">
+                                            <label class="registerLabel" >درصد تخفیف :</label>
+                                        </div>
+                                        <div class="col-xs-7 col-sm-8 floatRight ">
+                                            <input height="60" required   name="discountPercentage" ng-model="discountProperties.percentage" class="form-group  registerInput" type="text" pattern="\d*"  maxlength="2"  >
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group col-xs-12 marginTop10 formRegGroup">
+                                        <div class="col-xs-5 col-sm-4 floatRight text-center">
+                                            <label class="registerLabel" >تعداد استفاده :</label>
+                                        </div>
+                                        <div class="col-xs-7 col-sm-8 floatRight ">
+                                            <input height="60" required  name="discountUse" ng-model="discountProperties.reusability" class="form-group  registerInput" type="number"  >
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group col-xs-12 marginTop10 formRegGroup">
+                                        <div class="col-xs-5 col-sm-4 floatRight text-center">
+                                            <label class="registerLabel" > شروع اعتبار :</label>
+                                        </div>
+                                        <div class="col-xs-7 col-sm-8 floatRight ">
+                                            <input height="60" required  name="discountStart" ng-model="discountProperties.effectDatePersian" class="form-group datePickerFormat  discountStartTime" type="text"  >
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group col-xs-12 marginTop10 formRegGroup">
+                                        <div class="col-xs-5 col-sm-4 floatRight text-center">
+                                            <label class="registerLabel" > پایان اعتبار :</label>
+                                        </div>
+                                        <div class="col-xs-7 col-sm-8 floatRight ">
+                                            <input height="60" required  name="discountEnd" ng-model="discountProperties.expirationDatePersian" class="form-group  datePickerFormat  discountEndTime" type="text"  >
+                                        </div>
+
+                                    </div>
+                                    <div class="control-group marginTop60">
+                                        <div id="successDiscount" class="text-center alert alert-success col-xs-12 dispNone" >
+                                            <strong>عملیات با موفقیت انجام شد !</strong>
+                                        </div>
+                                        <div id="errorDiscount" class="text-center alert alert-danger col-xs-12 dispNone" >
+                                            <strong></strong>
+                                        </div>
+                                        <label class="control-label" for="signInButton"></label>
+                                        <div class="controls ">
+                                            <button id="signInButton" ng-disabled="(discountForm.$invalid) || (!discountSubmitOnce)" ng-click="submitDiscountCode(discountProperties)" name="signin" class="btn btn-success center-block btnLogin">اعمال کد تخفیف <i  class="fa fa-spinner fa-spin discountSpinner dispNone"></i></button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary customPanel customPanelUser">
+
+                    <div class="panel-heading">
+                        <span class="glyphicon glyphicon-list"></span> کدتخفیف های صادر شده
+                    </div>
+                    <div class="panel-body textAlignRight">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th class="text-center">کد تخفیف</th>
+                                <th class="text-center">درصد</th>
+                                <th class="text-center" >تاریخ شروع</th>
+                                <th class="text-center">تاریخ پایان</th>
+                                <th class="text-center">تعداد استفاده</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr  pagination-id="eventDiscounts" total-items="totalTicketNumber" dir-paginate="item in eventsTickets | itemsPerPage: 4"  current-page="currentPage">
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="col-md-4 col-md-offset-4">
+                            <dir-pagination-controls pagination-id="eventDiscounts" on-page-change="eventDiscountPageChanged(newPageNumber)" class="col-xs-12"
+                                                     max-size="5"
+                            >
+                            </dir-pagination-controls>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer ">
+                    <button type="button" class="btn btn-default center-block" data-dismiss="modal">بستن</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>

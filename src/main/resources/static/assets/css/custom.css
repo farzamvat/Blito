@@ -123,7 +123,7 @@ textarea:focus, input:focus {
     box-shadow: 0px 0px  5px #222;
 }
 .btn:active {
-color: white !important;
+    color: white !important;
 }
 
 
@@ -239,7 +239,7 @@ button.slick-next {
     background: url('../img/back.jpg') fixed;
 }
 .nav-dropdown-menu>li>a:focus, .nav-dropdown-menu>li>a:hover{
-background-color: #303030;
+    background-color: #303030;
 }
 .notification{
     background: #eee;
@@ -307,11 +307,18 @@ background-color: #303030;
     background: url('../img/tour-thumbnail.png') ;
 }
 .categoryTitle {
-  text-align: center;
+    text-align: center;
     padding-top: 20px;
     color: white;
 }
-
+.discountCodeButton {
+    width: 100%;
+    margin-top: 10px;
+}
+.btnSelected:focus {
+    background-color: rgb(252, 183, 49);
+    color: white;
+}
 .btn {
     border-radius: 2px !important;
 }
@@ -390,17 +397,17 @@ background-color: #303030;
     margin:20%;
 }
 /*.socialmedia:hover{*/
-    /*animation:socialmediaanimation 2s infinite ease-in-out both;*/
+/*animation:socialmediaanimation 2s infinite ease-in-out both;*/
 /*}*/
 .instagram{
-     background: radial-gradient(circle farthest-corner at 32% 106%, rgb(255, 225, 125) 0%, rgb(255, 205, 105) 10%, rgb(250, 145, 55) 28%, rgb(235, 65, 65) 42%, transparent 82%), linear-gradient(135deg, rgb(35, 75, 215) 12%, rgb(195, 60, 190) 58%);
-     border-radius: 50%;
-     width:35px;
-     float:right;
-     height:35px !important;
-     opacity:0;
-     transition: .5s;
- }
+    background: radial-gradient(circle farthest-corner at 32% 106%, rgb(255, 225, 125) 0%, rgb(255, 205, 105) 10%, rgb(250, 145, 55) 28%, rgb(235, 65, 65) 42%, transparent 82%), linear-gradient(135deg, rgb(35, 75, 215) 12%, rgb(195, 60, 190) 58%);
+    border-radius: 50%;
+    width:35px;
+    float:right;
+    height:35px !important;
+    opacity:0;
+    transition: .5s;
+}
 .telegram{
     background:#2ca5e0 ;
     border-radius: 50%;
@@ -452,9 +459,9 @@ background-color: #303030;
 }
 
 /*@keyframes socialmediaanimation{*/
-    /*0% {transform:scale(1);}*/
-    /*50% {transform: scale(1.1);}*/
-    /*100% {transform: scale(1);}*/
+/*0% {transform:scale(1);}*/
+/*50% {transform: scale(1.1);}*/
+/*100% {transform: scale(1);}*/
 /*}*/
 .socialmediaHolder{
     margin-bottom:30px;
@@ -462,18 +469,18 @@ background-color: #303030;
     padding-top:30px;
     padding-bottom: 0px;
 }.plannerPagesocialmediaHolder{
-    margin-bottom:30px;
-    border-top: 1px solid #444;
-    padding-top:30px;
-    padding-bottom: 0px;
-}.textAlignCenter{
-    text-align: center;
- }
+     margin-bottom:30px;
+     border-top: 1px solid #444;
+     padding-top:30px;
+     padding-bottom: 0px;
+ }.textAlignCenter{
+      text-align: center;
+  }
 .socialmediaHolder div{
     width:180px;
 }
 /*.plannerPagesocialmediaHolder div{*/
-    /*width:140px;*/
+/*width:140px;*/
 /*}*/
 .socialmedia img{
     height: 70%;
@@ -891,6 +898,18 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 .registerBody {
     background-color: #eee;
 }
+.discountParts {
+    background-color: #fff;
+    padding: 10px ;
+    margin: 5px 10px;
+    width: 30%;
+
+}
+
+.discountProgress {
+
+}
+
 .registerInput {
     width: 100%;
     border: 1px solid rgba(100, 100, 100, 0.4);
@@ -1321,11 +1340,11 @@ nav.navbar.navbar-inverse.navbar-fixed-top {
     margin-bottom: 20px;
 }
 /*.eventsPageRows h1 {*/
-    /*position: absolute;*/
-    /*width:100%;*/
-    /*height: 60px;*/
-    /*padding-bottom: 10px;*/
-    /*margin-bottom: 0px;*/
+/*position: absolute;*/
+/*width:100%;*/
+/*height: 60px;*/
+/*padding-bottom: 10px;*/
+/*margin-bottom: 0px;*/
 
 /*}*/
 .colorRed {
@@ -1555,7 +1574,7 @@ dir-pagination-controls ul {
     background-color: #666;
     cursor: pointer;
 }
-    /*--------------------*/
+/*--------------------*/
 .notificationStyle {
     width: 80%;
     margin: 10px auto;
@@ -1876,10 +1895,10 @@ dir-pagination-controls ul {
 
 /*----------------------------------wizard------------------------------------------*/
 /*.steps-indicator li.done a:before {*/
-    /*background-color: #08f !important;*/
+/*background-color: #08f !important;*/
 /*}*/
 /*.steps-indicator li.current a:before {*/
-    /*background-color: #08f !important;*/
+/*background-color: #08f !important;*/
 /*}*/
 /*----------------------------------------------------------------------------*/
 /*--------------------------------------*/
@@ -2049,8 +2068,8 @@ a{
 /*#eventListSport:not(:active),*/
 /*#eventListWorkshop:not(:active),*/
 /*#eventListTour:not(:active){*/
-    /*animation-name: eventListAnimation1;*/
-    /*animation-duration: 1s;*/
+/*animation-name: eventListAnimation1;*/
+/*animation-duration: 1s;*/
 
 /*}*/
 /*#eventListOther:active,*/
@@ -2060,25 +2079,25 @@ a{
 /*#eventListSport:active,*/
 /*#eventListWorkshop:active,*/
 /*#eventListTour:active{*/
-    /*animation-name: eventListAnimation2;*/
-    /*animation-duration: 1s;*/
+/*animation-name: eventListAnimation2;*/
+/*animation-duration: 1s;*/
 
 /*}*/
 /*!*.pageHeaderLinksDiv:not(:active){*!*/
-     /*!*animation-name: eventListAnimation;*!*/
-     /*!*animation-duration: 1s;*!*/
- /*!*}*!*/
+/*!*animation-name: eventListAnimation;*!*/
+/*!*animation-duration: 1s;*!*/
+/*!*}*!*/
 /*@keyframes eventListAnimation2 {*/
-    /*0%   {transform: rotateX(calc());*/
-    /*margin-top: 30px;}*/
-    /*50%  {transform: rotateX(90deg);*/
-    /*margin-top: 12px;}*/
+/*0%   {transform: rotateX(calc());*/
+/*margin-top: 30px;}*/
+/*50%  {transform: rotateX(90deg);*/
+/*margin-top: 12px;}*/
 /*}*/
 /*@keyframes eventListAnimation1 {*/
-    /*0%   {transform: rotateX(90deg);*/
-    /*margin-top: 12px;}*/
-    /*50%  {transform: rotateX(0deg);*/
-    /*margin-top: 30px;}*/
+/*0%   {transform: rotateX(90deg);*/
+/*margin-top: 12px;}*/
+/*50%  {transform: rotateX(0deg);*/
+/*margin-top: 30px;}*/
 /*}*/
 .paymentImages {
     width: 100px;
@@ -2536,11 +2555,11 @@ a>h5 {
     transition: 300ms;
 }
 .aboutUsTextContainer{
-     position: relative;
-     text-align: right;
-     float: right;
-     pointer-events: none;
- }
+    position: relative;
+    text-align: right;
+    float: right;
+    pointer-events: none;
+}
 .photoBorder {
     border: 4px solid #39A939;
 }
@@ -2581,7 +2600,7 @@ a>h5 {
 
 }
 .padRight20per{
-     padding-right: 20%;
+    padding-right: 20%;
 }
 .padRight10{
     padding-right: 10px;
@@ -2981,8 +3000,8 @@ table td{
         font-size: 18px;
     }
     /*.navbar-collapse li{*/
-        /*width: 100%;*/
-        /*display: block;*/
+    /*width: 100%;*/
+    /*display: block;*/
     /*}*/
 
 
@@ -3135,17 +3154,17 @@ table td{
         height:42px;
     }
     /*.navbar-collapse {*/
-        /*height: 200px;*/
+    /*height: 200px;*/
     /*}*/
 
     /*.ticketTitleMobile {*/
-        /*text-align: center;*/
+    /*text-align: center;*/
     /*}*/
     /*.ticketTitle h2, .ticketName h2{*/
-        /*text-align: center;*/
+    /*text-align: center;*/
     /*}*/
     /*.ticketTitle h4, .ticketName h4{*/
-        /*text-align: center;*/
+    /*text-align: center;*/
 
     /*}*/
     .ticketAddress h2,
@@ -3160,7 +3179,7 @@ table td{
     }
 
     /*.ticketAddress h4{*/
-        /*text-align: center;*/
+    /*text-align: center;*/
     /*}*/
     .cardLeft {
         border-top-left-radius: 0;
@@ -3321,17 +3340,17 @@ table td{
         background-size: 3000px auto;
     }
     /*.imgMobileSize {*/
-        /*display: block;*/
-        /*margin: 10px auto;*/
+    /*display: block;*/
+    /*margin: 10px auto;*/
     /*}*/
     .eventContent {
         text-align: center;
     }
     /*#map {*/
-        /*display: block;*/
-        /*margin: 10px auto;*/
-        /*width: 500px !important;*/
-        /*height: 300px;*/
+    /*display: block;*/
+    /*margin: 10px auto;*/
+    /*width: 500px !important;*/
+    /*height: 300px;*/
     /*}*/
     .eventPageHeader h3{
         margin-top: 40px;
@@ -3482,9 +3501,12 @@ table td{
 }
 
 @media (max-width: 1200px) {
-.showTimeList td {
-    vertical-align: top !important;
-}
+    .discountParts {
+        width: 100%;
+    }
+    .showTimeList td {
+        vertical-align: top !important;
+    }
     .exchangePageDate{
         font-size: 15px !important;
     }
@@ -3509,9 +3531,9 @@ table td{
         padding-right: 80px;
     }
     /*#map {*/
-        /*width: 350px;*/
-        /*height: 300px;*/
-        /*margin: 10px auto;*/
+    /*width: 350px;*/
+    /*height: 300px;*/
+    /*margin: 10px auto;*/
     /*}*/
 
 }

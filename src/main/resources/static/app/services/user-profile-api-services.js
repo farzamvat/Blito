@@ -64,7 +64,10 @@ angular.module('userProfileApi', [])
                 ]
             };
             return $http.post(config.baseUrl+'/api/blito/v1.0/public/events/search', bodyJson, queryParam)
-        }
+        };
+        event.submitDiscount = function (discountData) {
+            return $http.post(config.baseUrl+'/api/blito/v1.0/discount/set-discount-code', discountData);
+        };
     })
     .service('exchangeService', function ($http, config) {
         var exchange = this;
