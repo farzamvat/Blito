@@ -70,15 +70,8 @@ public class ImageController {
 	@PostMapping("/images/multipart/upload")
 	public CompletionStage<ResponseEntity<?>> uploadMultipartFile(@RequestParam("file") MultipartFile file,HttpServletRequest req,HttpServletResponse res)
 	{
-		return imageService.saveMultipartFile(file).handle((result,throwable) -> HandleUtility.generateResponseResult(() -> {
-
-			Image image = new Image();
-			image.setImageUUID(result);
-			imageRepository.save(image);
-			ImageViewModel responseVmodel = new ImageViewModel();
-			responseVmodel.setImageUUID(image.getImageUUID());
-			return responseVmodel;
-		}, throwable, req, res));
+		return CompletableFuture.supplyAsync(() -> imageService.saveMultipartFile(file))
+				.handle((imageViewModels, throwable) -> HandleUtility.generateEitherResponse(imageViewModels,throwable,req,res));
 	}
 	
 	@Permission(value = ApiBusinessName.USER)
@@ -92,24 +85,11 @@ public class ImageController {
 	
 	@JsonView(View.DefaultView.class)
 	@GetMapping("/download")
-	public DeferredResult<ResponseEntity<ImageBase64ViewModel>> download(@RequestParam String id)
+	public CompletionStage<ResponseEntity<?>> download(@RequestParam String id,
+													   HttpServletRequest request,
+													   HttpServletResponse response)
 	{
-		DeferredResult<ResponseEntity<ImageBase64ViewModel>> deferred = new DeferredResult<>();
-		Image image = imageRepository.findByImageUUID(id)
-			.map(i -> i)
-			.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
-		
-		return imageService.getFileEncodedBase64(image.getImageUUID())
-				.thenApply(imageEncodedBase64 -> {
-					ImageBase64ViewModel responseViewModel = new ImageBase64ViewModel();
-					responseViewModel.setEncodedBase64(imageEncodedBase64);
-					deferred.setResult(ResponseEntity.ok(responseViewModel));
-					return deferred;
-				})
-				.exceptionally(throwable -> {
-					deferred.setErrorResult(throwable.getCause());
-					return deferred;
-				}).join();
+		return CompletableFuture.supplyAsync(() -> imageService.downloadImage(id))
+				.handle((imageBase64ViewModels, throwable) -> HandleUtility.generateEitherResponse(imageBase64ViewModels,throwable,request,response));
 	}
-	
 }

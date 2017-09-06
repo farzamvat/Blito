@@ -18,6 +18,12 @@ public class Image {
 	
 	String imageType;
 
+	public Image() {}
+
+	public Image(String imageUUID) {
+		this.imageUUID = imageUUID;
+	}
+
 	public long getImageId() {
 		return imageId;
 	}

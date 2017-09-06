@@ -3,9 +3,11 @@ package com.blito.configs;
 import com.blito.enums.ImageType;
 import com.blito.models.Image;
 import com.blito.repositories.ImageRepository;
+import com.blito.services.ImageService;
 import com.blito.services.MailService;
 import com.blito.services.PaymentRequestServiceAsync;
 import com.blito.services.SmsService;
+import io.vavr.control.Try;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -54,6 +56,15 @@ public class TestConfigurations {
         imageRepository.save(hostCoverPhoto);
         imageRepository.save(eventHostDefaultPhoto);
         imageRepository.save(exchangeBlit);
+    }
+
+    @Bean
+    @Primary
+    public ImageService imageServiceSpy() {
+        ImageService imageService = Mockito.spy(ImageService.class);
+        Mockito.when(imageService.getFileEncodedBase64(Constants.DEFAULT_HOST_PHOTO)).thenReturn(Try.success("sampleHostPhoto"));
+        Mockito.when(imageService.getFileEncodedBase64(Constants.DEFAULT_EXCHANGEBLIT_PHOTO)).thenReturn(Try.failure(new RuntimeException("")));
+        return imageService;
     }
 
     @Bean

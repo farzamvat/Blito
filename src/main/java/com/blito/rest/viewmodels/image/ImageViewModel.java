@@ -16,8 +16,12 @@ public class ImageViewModel {
 	ImageType type;
 	
 	public ImageViewModel() {}
-	
-	public ImageViewModel(String id,ImageType type)
+
+	public ImageViewModel(String imageUUID) {
+		this.imageUUID = imageUUID;
+	}
+
+	public ImageViewModel(String id, ImageType type)
 	{
 		this.type = type;
 		this.imageUUID = id;
