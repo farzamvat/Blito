@@ -1,6 +1,6 @@
 package com.blito.rest.viewmodels.payments;
 
-public class ZarinpalPayRequetsResponseViewModel extends PaymentRequestViewModel {
+public class ZarinpalPayRequestResponseViewModel extends PaymentRequestViewModel {
 	private String zarinpalWebGatewayURL;
 
 	public String getZarinpalWebGatewayURL() {

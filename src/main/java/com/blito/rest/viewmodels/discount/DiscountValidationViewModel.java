@@ -16,6 +16,14 @@ public class DiscountValidationViewModel {
     @Min(1)
     private long blitTypeId;
 
+    public DiscountValidationViewModel() {}
+
+    public DiscountValidationViewModel(String code, int count, long blitTypeId) {
+        this.code = code;
+        this.count = count;
+        this.blitTypeId = blitTypeId;
+    }
+
     @JsonProperty("isValid")
     public boolean isValid() {
         return isValid;

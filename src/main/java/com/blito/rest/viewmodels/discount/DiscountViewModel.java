@@ -1,5 +1,6 @@
 package com.blito.rest.viewmodels.discount;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -9,6 +10,7 @@ import javax.validation.constraints.Pattern;
 import java.sql.Timestamp;
 import java.util.Set;
 
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class DiscountViewModel {
 	
 	private Long discountId;

@@ -12,6 +12,7 @@ import com.blito.repositories.EventRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
+import com.blito.rest.viewmodels.discount.DiscountEnableViewModel;
 import com.blito.rest.viewmodels.discount.DiscountValidationViewModel;
 import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.event.AdminChangeEventOperatorStateVm;
@@ -271,6 +272,31 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
     public void createDiscountCode_success()
     {
         createDiscountCode_success("discount");
+    }
+
+    @Test
+    public void disableDiscountCode_success() {
+        DiscountViewModel discountViewModel = createDiscountCode_success("discountDisableName");
+        DiscountEnableViewModel discountEnableViewModel = new DiscountEnableViewModel(discountViewModel.getDiscountId(),false);
+        givenRestIntegration()
+                .when()
+                .body(discountEnableViewModel)
+                .put(getServerAddress() + "/api/blito/v1.0/discount/set-enable")
+                .then()
+                .statusCode(200).body("message",equalTo(ResourceUtil.getMessage(com.blito.enums.Response.SUCCESS)));
+    }
+
+    @Test
+    public void disableDiscountCodeL_validation_fail() {
+        DiscountViewModel discountViewModel = createDiscountCode_success("discountCodeValidationFailed");
+        DiscountEnableViewModel discountEnableViewModel = new DiscountEnableViewModel(discountViewModel.getDiscountId(),null);
+        givenRestIntegration()
+                .when()
+                .body(discountEnableViewModel)
+                .put(getServerAddress() + "/api/blito/v1.0/discount/set-enable")
+                .then()
+                .statusCode(400)
+                .body("message",equalTo(ResourceUtil.getMessage(com.blito.enums.Response.VALIDATION)));
     }
 
     @Test

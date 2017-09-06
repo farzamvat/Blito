@@ -17,8 +17,9 @@ import com.blito.repositories.CommonBlitRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
+import com.blito.rest.viewmodels.discount.DiscountValidationViewModel;
 import com.blito.rest.viewmodels.payments.SamanPaymentRequestResponseViewModel;
-import com.blito.rest.viewmodels.payments.ZarinpalPayRequetsResponseViewModel;
+import com.blito.rest.viewmodels.payments.ZarinpalPayRequestResponseViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.util.AsyncUtil;
 import com.blito.services.util.HtmlRenderer;
@@ -57,6 +58,8 @@ public class PaymentRequestServiceAsync {
 	private CommonBlitRepository commonBlitRepository;
 	@Autowired
 	private PaymentRequestServiceAsync paymentRequestService;
+	@Autowired
+	private DiscountService discountService;
 	
 	@Value("${zarinpal.web.gateway}")
 	private String zarinpalGatewayURL;
@@ -153,9 +156,27 @@ public class PaymentRequestServiceAsync {
 			AsyncUtil.run(() -> smsService.sendBlitRecieptSms(responseBlit.getCustomerMobileNumber(), responseBlit.getTrackCode()));
 			return CompletableFuture.completedFuture(responseBlit);
 		} else {
-			if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getTotalAmount())
-				throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
-			return buyCommonBlit(blitType, commonBlit, Optional.of(user));
+			return Optional.ofNullable(vmodel.getDiscountCode())
+					.filter(code -> !code.isEmpty())
+					.map(code -> {
+						DiscountValidationViewModel discountValidationViewModel = discountService.validateDiscountCodeBeforePurchaseRequest(vmodel.getBlitTypeId(),code,vmodel.getCount());
+						if(discountValidationViewModel.isValid()) {
+							if(!discountValidationViewModel.getTotalAmount().equals(commonBlit.getTotalAmount())) {
+								throw new NotAllowedException(ResourceUtil.getMessage(Response.DISCOUNT_CODE_NOT_VALID));
+							} else if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getPrimaryAmount()) {
+								throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
+							} else {
+								return createPurchaseRequest(blitType, commonBlit, Optional.of(user));
+							}
+						}
+						else {
+							throw new NotAllowedException(ResourceUtil.getMessage(Response.DISCOUNT_CODE_NOT_VALID));
+						}
+					}).orElseGet(() -> {
+						if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getTotalAmount())
+							throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
+						return createPurchaseRequest(blitType, commonBlit, Optional.of(user));
+					});
 		}
 	}
 
@@ -173,16 +194,16 @@ public class PaymentRequestServiceAsync {
 		if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getTotalAmount())
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
 
-		return buyCommonBlit(blitType, commonBlit, Optional.empty());
+		return createPurchaseRequest(blitType, commonBlit, Optional.empty());
 	}
 
-	private CompletableFuture<Object> buyCommonBlit(BlitType blitType, CommonBlit commonBlit,
-			Optional<User> optionalUser) {
+	private CompletableFuture<Object> createPurchaseRequest(BlitType blitType, CommonBlit commonBlit,
+															Optional<User> optionalUser) {
 		blitService.checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
 		String trackCode = blitService.generateTrackCode();
 		switch (Enum.valueOf(BankGateway.class, commonBlit.getBankGateway())) {
 		case ZARINPAL:
-			log.debug("Befor requesting token from zarinpal gateway user email '{}' and blit track code '{}'",
+			log.debug("Before requesting token from zarinpal gateway user email '{}' and blit track code '{}'",
 					commonBlit.getCustomerEmail(), trackCode);
 			return paymentRequestService
 					.zarinpalRequestToken(commonBlit.getTotalAmount().intValue(), commonBlit.getCustomerEmail(),
@@ -192,7 +213,7 @@ public class PaymentRequestServiceAsync {
 								commonBlit.getCustomerEmail(), token);
 						CommonBlit persisted = blitService.persistNoneFreeCommonBlit(blitType, commonBlit, optionalUser, token,
 								trackCode);
-						ZarinpalPayRequetsResponseViewModel zarinpalResponse = new ZarinpalPayRequetsResponseViewModel();
+						ZarinpalPayRequestResponseViewModel zarinpalResponse = new ZarinpalPayRequestResponseViewModel();
 						zarinpalResponse.setGateway(BankGateway.ZARINPAL);
 						zarinpalResponse.setZarinpalWebGatewayURL(zarinpalGatewayURL + persisted.getToken());
 						return zarinpalResponse;

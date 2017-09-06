@@ -1,12 +1,20 @@
 package com.blito.services;
 
-import java.sql.Timestamp;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
+import com.blito.enums.*;
+import com.blito.exceptions.InconsistentDataException;
+import com.blito.exceptions.NotAllowedException;
+import com.blito.exceptions.NotFoundException;
+import com.blito.exceptions.ResourceNotFoundException;
+import com.blito.mappers.CommonBlitMapper;
+import com.blito.models.BlitType;
+import com.blito.models.CommonBlit;
+import com.blito.models.Event;
+import com.blito.models.User;
+import com.blito.repositories.*;
+import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.viewmodels.ResultVm;
+import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
+import com.blito.search.SearchViewModel;
 import org.apache.poi.ss.formula.eval.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,29 +25,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.blito.enums.BankGateway;
-import com.blito.enums.PaymentStatus;
-import com.blito.enums.Response;
-import com.blito.enums.SeatType;
-import com.blito.enums.State;
-import com.blito.exceptions.InconsistentDataException;
-import com.blito.exceptions.NotAllowedException;
-import com.blito.exceptions.NotFoundException;
-import com.blito.exceptions.ResourceNotFoundException;
-import com.blito.mappers.CommonBlitMapper;
-import com.blito.models.BlitType;
-import com.blito.models.CommonBlit;
-import com.blito.models.Event;
-import com.blito.models.User;
-import com.blito.repositories.BlitRepository;
-import com.blito.repositories.BlitTypeRepository;
-import com.blito.repositories.CommonBlitRepository;
-import com.blito.repositories.EventRepository;
-import com.blito.repositories.UserRepository;
-import com.blito.resourceUtil.ResourceUtil;
-import com.blito.rest.viewmodels.ResultVm;
-import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
-import com.blito.search.SearchViewModel;
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class BlitService {
@@ -86,6 +77,8 @@ public class BlitService {
 		}).orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
 	}
 
+	// TODO: 9/6/17 Test payment scenario
+	@Transactional
 	public CommonBlit persistNoneFreeCommonBlit(BlitType blitType, CommonBlit commonBlit, Optional<User> optionalUser,
 			String token, String trackCode) {
 		checkBlitTypeRestrictionsForBuy(blitType, commonBlit);

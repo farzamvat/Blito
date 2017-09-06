@@ -4,6 +4,7 @@ import com.blito.enums.Response;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.GenericMapper;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.search.AbstractSearchViewModel;
 import com.blito.search.SearchServiceUtil;
 import com.blito.search.SearchViewModel;
 import org.springframework.context.annotation.Scope;
@@ -14,6 +15,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -27,7 +29,7 @@ public class SearchService {
             SearchViewModel<E> searchViewModel, Pageable pageable, GenericMapper<E, V> mapper, R repository) {
         if (searchViewModel.getRestrictions().isEmpty())
             return mapper.toPage(repository.findAll(pageable));
-        Page<E> searchResult = searchViewModel.getRestrictions().stream().map(r -> r.action())
+        Page<E> searchResult = searchViewModel.getRestrictions().stream().map(AbstractSearchViewModel::action)
                 .reduce((s1, s2) -> SearchServiceUtil.combineSpecifications(s1, s2, Optional.ofNullable(searchViewModel.getOperator())))
                 .map(specification -> repository.findAll(specification, pageable))
                 .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
@@ -39,7 +41,7 @@ public class SearchService {
             SearchViewModel<E> searchViewModel, Pageable pageable, R repository) {
         if (searchViewModel.getRestrictions().isEmpty())
             return repository.findAll(pageable);
-        Page<E> searchResult = searchViewModel.getRestrictions().stream().map(r -> r.action())
+        Page<E> searchResult = searchViewModel.getRestrictions().stream().map(AbstractSearchViewModel::action)
                 .reduce((s1, s2) ->
                         SearchServiceUtil.combineSpecifications(s1, s2, Optional.ofNullable(searchViewModel.getOperator())))
                 .map(specification -> repository.findAll(specification, pageable))
@@ -51,10 +53,10 @@ public class SearchService {
     public <E, V, R extends JpaSpecificationExecutor<E> & JpaRepository<E, Long>> Set<V> search(
             SearchViewModel<E> searchViewModel, GenericMapper<E, V> mapper, R repository) {
         if (searchViewModel.getRestrictions().isEmpty())
-            return mapper.createFromEntities(repository.findAll().stream().collect(Collectors.toSet()));
-        List<E> searchResult = searchViewModel.getRestrictions().stream().map(r -> r.action())
+            return mapper.createFromEntities(new HashSet<>(repository.findAll()));
+        List<E> searchResult = searchViewModel.getRestrictions().stream().map(AbstractSearchViewModel::action)
                 .reduce((s1, s2) -> SearchServiceUtil.combineSpecifications(s1, s2, Optional.ofNullable(searchViewModel.getOperator())))
-                .map(specification -> repository.findAll(specification))
+                .map(repository::findAll)
                 .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
         return searchResult.stream().distinct().map(mapper::createFromEntity)
                 .collect(Collectors.toSet());

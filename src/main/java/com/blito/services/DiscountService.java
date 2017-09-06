@@ -11,11 +11,17 @@ import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.DiscountRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.viewmodels.ResultVm;
+import com.blito.rest.viewmodels.discount.DiscountEnableViewModel;
 import com.blito.rest.viewmodels.discount.DiscountValidationViewModel;
 import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
+import com.blito.search.SearchViewModel;
 import io.vavr.control.Either;
+import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +43,8 @@ public class DiscountService {
     private UserRepository userRepository;
     @Autowired
     private BlitTypeRepository blitTypeRepository;
+    @Autowired
+    private SearchService searchService;
 
 
     @Transactional
@@ -69,6 +77,28 @@ public class DiscountService {
 
         discount = discountRepository.save(discount);
         return Either.right(discountMapper.createFromEntity(discount));
+    }
+
+    @Transactional
+    public Either<ExceptionViewModel,?> enableDiscountCode(DiscountEnableViewModel viewModel, User user) {
+        return Option.of(discountRepository.findOne(viewModel.getDiscountId()))
+                .map(discount -> {
+                    if(discount.getUser().getUserId() != user.getUserId()) {
+                        return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.NOT_ALLOWED),400));
+                    } else {
+                        discount.setEnabled(viewModel.getEnable());
+                        return new ResultVm(ResourceUtil.getMessage(Response.SUCCESS),true);
+                    }
+                }).toRight(new ExceptionViewModel(ResourceUtil.getMessage(Response.DISCOUNT_CODE_NOT_FOUND),400));
+    }
+
+    public Page<DiscountViewModel> searchDiscountCodes(SearchViewModel<Discount> searchViewModel, Pageable pageable) {
+        return searchService.search(searchViewModel,pageable,discountMapper,discountRepository);
+    }
+
+    DiscountValidationViewModel validateDiscountCodeBeforePurchaseRequest(Long blitTypeId,String code,int count) {
+        DiscountValidationViewModel discountValidationViewModel = new DiscountValidationViewModel(code,count,blitTypeId);
+        return validateDiscountCode(discountValidationViewModel);
     }
 
     @Transactional
@@ -148,7 +178,7 @@ public class DiscountService {
         if(blitTypes.stream().anyMatch(blitType -> blitType.getEventDate().getEvent().getEventState().equals(State.ENDED.name()) ||
                 blitType.getEventDate().getEvent().getEventState().equals(State.CLOSED.name())))
         {
-            return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.EVENT_NOT_OPEN),400));
+            return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.EVENT_NOT_OPEN_DISCOUNT_CODE),400));
         }
         if(!blitTypes.stream().allMatch(blitType -> blitType.getEventDate().getEvent().getOperatorState().equals(OperatorState.APPROVED.name())))
         {

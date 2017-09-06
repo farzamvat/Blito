@@ -2,15 +2,21 @@ package com.blito.rest.controllers;
 
 import com.blito.annotations.Permission;
 import com.blito.enums.ApiBusinessName;
+import com.blito.enums.Response;
 import com.blito.enums.validation.ControllerEnumValidation;
 import com.blito.exceptions.ExceptionUtil;
+import com.blito.models.Discount;
 import com.blito.models.User;
+import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.utility.HandleUtility;
+import com.blito.rest.viewmodels.discount.DiscountEnableViewModel;
 import com.blito.rest.viewmodels.discount.DiscountValidationViewModel;
 import com.blito.rest.viewmodels.discount.DiscountViewModel;
+import com.blito.search.SearchViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.DiscountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -23,14 +29,14 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 @RestController
-@RequestMapping("${api.base.url}" + "/discount")
+@RequestMapping("${api.base.url}")
 public class DiscountController {
 
     @Autowired
     private DiscountService discountService;
 
     @Permission(value = ApiBusinessName.USER)
-    @PostMapping("/set-discount-code")
+    @PostMapping("/discount/set-discount-code")
     public CompletionStage<ResponseEntity<?>> setDiscountCodeByUser(@Valid @RequestBody DiscountViewModel vmodel,
                                                                     BindingResult bindingResult, HttpServletRequest req, HttpServletResponse res) {
         if (bindingResult.hasFieldErrors())
@@ -41,7 +47,6 @@ public class DiscountController {
                 .handle((either, throwable) -> HandleUtility.generateEitherResponse(either, throwable, req, res));
     }
 
-    @Permission(value = ApiBusinessName.USER)
     @PostMapping("/validate-discount-code")
     public CompletionStage<ResponseEntity<?>> validateDiscountCode(@Valid @RequestBody DiscountValidationViewModel vmodel,
                                                                    BindingResult bindingResult, HttpServletRequest req, HttpServletResponse res){
@@ -53,7 +58,7 @@ public class DiscountController {
     }
 
     @Permission(value = ApiBusinessName.ADMIN)
-    @PostMapping("/admin-set-discount-code")
+    @PostMapping("/discount/admin-set-discount-code")
     public CompletionStage<ResponseEntity<?>> setDiscountCodeByOperator(@Valid @RequestBody DiscountViewModel vmodel,
                                                                         BindingResult bindingResult, HttpServletRequest req, HttpServletResponse res) {
         if (bindingResult.hasFieldErrors())
@@ -65,7 +70,7 @@ public class DiscountController {
     }
 
     @Permission(value = ApiBusinessName.USER)
-    @PutMapping("/update-discount-code")
+    @PutMapping("/discount/update-discount-code")
     public CompletionStage<ResponseEntity<?>> updateDiscountCodeByUser(@Valid @RequestBody DiscountViewModel vmodel,
                                                                        BindingResult bindingResult, HttpServletRequest req, HttpServletResponse res){
         if (bindingResult.hasFieldErrors())
@@ -77,7 +82,7 @@ public class DiscountController {
     }
 
     @Permission(value = ApiBusinessName.ADMIN)
-    @PutMapping("/admin-update-discount-code")
+    @PutMapping("/discount/admin-update-discount-code")
     public CompletionStage<ResponseEntity<?>> updateDiscountCodeByOperator(@Valid @RequestBody DiscountViewModel vmodel,
                                                                            BindingResult bindingResult, HttpServletRequest req, HttpServletResponse res){
         if (bindingResult.hasFieldErrors())
@@ -86,5 +91,29 @@ public class DiscountController {
         User user = SecurityContextHolder.currentUser();
         return CompletableFuture.supplyAsync(()->discountService.updateDiscountCodeByOperator(vmodel, user))
                 .handle((either, throwable) -> HandleUtility.generateEitherResponse(either, throwable, req, res));
+    }
+
+    @Permission(ApiBusinessName.USER)
+    @PutMapping("/discount/set-enable")
+    public CompletionStage<ResponseEntity<?>> enableDiscountCode(@Valid @RequestBody DiscountEnableViewModel viewModel,
+                                                                 BindingResult bindingResult,
+                                                                 HttpServletRequest request,
+                                                                 HttpServletResponse response) {
+        if(bindingResult.hasFieldErrors())
+            return CompletableFuture.completedFuture(ResponseEntity.badRequest().body(ExceptionUtil.generate(HttpStatus.BAD_REQUEST, ResourceUtil.getMessage(Response.VALIDATION),bindingResult,request)));
+        User user = SecurityContextHolder.currentUser();
+        return CompletableFuture.supplyAsync(() -> discountService.enableDiscountCode(viewModel,user))
+                .handle((either, throwable) ->
+                        HandleUtility.generateEitherResponse(either,throwable,request,response));
+    }
+
+    @Permission(ApiBusinessName.USER)
+    @PostMapping("/discount/search")
+    public CompletionStage<ResponseEntity<?>> searchDiscountCodes(@RequestBody SearchViewModel<Discount> searchViewModel,
+                                                                  Pageable pageable,
+                                                                  HttpServletRequest request,
+                                                                  HttpServletResponse response) {
+        return CompletableFuture.supplyAsync(() -> discountService.searchDiscountCodes(searchViewModel,pageable))
+                .handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,request,response));
     }
 }

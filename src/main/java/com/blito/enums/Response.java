@@ -82,7 +82,8 @@ public enum Response {
 	BLIT_RECIEPT("blit.reciept"),
 	PAYMENT_SUCCESS("info.payment.success"),
 	DISCOUNT_CODE_NOT_FOUND("error.discount.code.not.found"),
-	DISCOUNT_CODE_NOT_VALID("error.discount.code.not.valid");
+	DISCOUNT_CODE_NOT_VALID("error.discount.code.not.valid"),
+	EVENT_NOT_OPEN_DISCOUNT_CODE("error.event.not.open.discount.code");
     
 
     private final String message;

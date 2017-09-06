@@ -1,37 +1,35 @@
 package com.blito.rest.utility;
 
-import java.util.function.Supplier;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.blito.exceptions.*;
+import com.blito.rest.viewmodels.exception.ExceptionViewModel;
+import io.vavr.control.Either;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.blito.exceptions.AlreadyExistsException;
-import com.blito.exceptions.ExceptionUtil;
-import com.blito.exceptions.InconsistentDataException;
-import com.blito.exceptions.NotAllowedException;
-import com.blito.exceptions.NotFoundException;
-import com.blito.exceptions.UnauthorizedException;
-import com.blito.exceptions.UserNotActivatedException;
-import com.blito.exceptions.WrongPasswordException;
-import com.blito.rest.viewmodels.exception.ExceptionViewModel;
-
-import io.vavr.control.Either;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.function.Supplier;
 
 public class HandleUtility {
+
+	private static final Logger logger = LoggerFactory.getLogger(HandleUtility.class);
+
 	public static <T> ResponseEntity<?> generateResponseResult(Supplier<T> supplier, Throwable throwable,
 			HttpServletRequest req, HttpServletResponse res) {
 		if (throwable != null) {
+			logger.error("Exception e '{}'",throwable.getCause());
 			return generateErrorResult(throwable.getCause(), req, res);
 		}
 		return ResponseEntity.ok(supplier.get());
 	}
 	public static <T> ResponseEntity<?> generateEitherResponse(Either<ExceptionViewModel,?> either,Throwable throwable,HttpServletRequest req,HttpServletResponse res)
 	{
-		if(throwable != null)
+		if(throwable != null) {
+			logger.error("Exception e '{}'",throwable.getCause());
 			return generateErrorResult(throwable.getCause(), req, res);
+		}
 		if(either.isLeft())
 		{
 			either.getLeft().setPath(req.getServletPath());
@@ -43,15 +41,15 @@ public class HandleUtility {
 
 	private static ResponseEntity<?> generateErrorResult(Throwable throwable, HttpServletRequest req,
 			HttpServletResponse res) {
-		if (throwable.equals(NotFoundException.class))
+		if (throwable instanceof NotFoundException)
 			return ResponseEntity.status(400).body(ExceptionUtil.generate(HttpStatus.NOT_FOUND, req, throwable));
-		else if (throwable.equals(UnauthorizedException.class))
+		else if (throwable instanceof UnauthorizedException)
 			return ResponseEntity.status(401).body(ExceptionUtil.generate(HttpStatus.UNAUTHORIZED, req, throwable));
-		else if (throwable.equals(AlreadyExistsException.class) 
-				|| throwable.equals(WrongPasswordException.class)
-				|| throwable.equals(UserNotActivatedException.class) 
-				|| throwable.equals(NotAllowedException.class)
-				|| throwable.equals(InconsistentDataException.class))
+		else if (throwable instanceof AlreadyExistsException
+				|| throwable instanceof WrongPasswordException
+				|| throwable instanceof UserNotActivatedException
+				|| throwable instanceof NotAllowedException
+				|| throwable instanceof InconsistentDataException)
 			return ResponseEntity.status(400).body(ExceptionUtil.generate(HttpStatus.BAD_REQUEST, req, throwable));
 
 		else

@@ -1,21 +1,19 @@
 package com.blito.exceptions;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ValidationException;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-
 import com.blito.enums.Response;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.rest.viewmodels.exception.FieldErrorViewModel;
 import com.blito.validators.ValidationInterface;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ValidationException;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 
@@ -91,6 +89,20 @@ public class ExceptionUtil {
 				});
 		return exvm;
 		
+	}
+
+	public static ExceptionViewModel generate(HttpStatus status,String message,BindingResult bindingResult,HttpServletRequest request) {
+		ExceptionViewModel exceptionViewModell = new ExceptionViewModel(message,status.value());
+		exceptionViewModell.setPath(request.getServletPath());
+		bindingResult.getFieldErrors().forEach(fieldError -> {
+			FieldErrorViewModel field = new FieldErrorViewModel();
+			field.setBindingFailure(fieldError.isBindingFailure());
+			field.setRejectedValue(fieldError.getRejectedValue());
+			field.setField(fieldError.getField());
+			field.setDefaultMessage(fieldError.getDefaultMessage());
+			exceptionViewModell.getErrors().add(field);
+		});
+		return exceptionViewModell;
 	}
 	
 	public static <T extends Enum<T> & ValidationInterface> ExceptionViewModel generate(HttpStatus status,

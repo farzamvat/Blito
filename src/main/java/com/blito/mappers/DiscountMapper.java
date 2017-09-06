@@ -52,7 +52,6 @@ public class DiscountMapper implements GenericMapper<Discount, DiscountViewModel
         discount.setPercentage(vmodel.getPercentage());
         discount.setPercent(vmodel.getPercent());
         discount.setAmount(vmodel.getAmount());
-        discount.setEnabled(vmodel.getEnabled());
         return discount;
 	}
 
