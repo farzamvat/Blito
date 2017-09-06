@@ -156,28 +156,32 @@ public class PaymentRequestServiceAsync {
 			AsyncUtil.run(() -> smsService.sendBlitRecieptSms(responseBlit.getCustomerMobileNumber(), responseBlit.getTrackCode()));
 			return CompletableFuture.completedFuture(responseBlit);
 		} else {
-			return Optional.ofNullable(vmodel.getDiscountCode())
-					.filter(code -> !code.isEmpty())
-					.map(code -> {
-						DiscountValidationViewModel discountValidationViewModel = discountService.validateDiscountCodeBeforePurchaseRequest(vmodel.getBlitTypeId(),code,vmodel.getCount());
-						if(discountValidationViewModel.isValid()) {
-							if(!discountValidationViewModel.getTotalAmount().equals(commonBlit.getTotalAmount())) {
-								throw new NotAllowedException(ResourceUtil.getMessage(Response.DISCOUNT_CODE_NOT_VALID));
-							} else if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getPrimaryAmount()) {
-								throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
-							} else {
-								return createPurchaseRequest(blitType, commonBlit, Optional.of(user));
-							}
-						}
-						else {
-							throw new NotAllowedException(ResourceUtil.getMessage(Response.DISCOUNT_CODE_NOT_VALID));
-						}
-					}).orElseGet(() -> {
-						if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getTotalAmount())
-							throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
-						return createPurchaseRequest(blitType, commonBlit, Optional.of(user));
-					});
+			return validateDiscountCodeIfPresentAndCalculateTotalAmount(vmodel,commonBlit,Optional.of(user),blitType);
 		}
+	}
+
+	private CompletableFuture<Object> validateDiscountCodeIfPresentAndCalculateTotalAmount(CommonBlitViewModel vmodel, CommonBlit commonBlit, Optional<User> optionalUser, BlitType blitType) {
+		return Optional.ofNullable(vmodel.getDiscountCode())
+				.filter(code -> !code.isEmpty())
+				.map(code -> {
+					DiscountValidationViewModel discountValidationViewModel = discountService.validateDiscountCodeBeforePurchaseRequest(vmodel.getBlitTypeId(),code,vmodel.getCount());
+					if(discountValidationViewModel.isValid()) {
+						if(!discountValidationViewModel.getTotalAmount().equals(commonBlit.getTotalAmount())) {
+							throw new NotAllowedException(ResourceUtil.getMessage(Response.DISCOUNT_CODE_NOT_VALID));
+						} else if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getPrimaryAmount()) {
+							throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
+						} else {
+							return createPurchaseRequest(blitType, commonBlit, optionalUser);
+						}
+					}
+					else {
+						throw new NotAllowedException(ResourceUtil.getMessage(Response.DISCOUNT_CODE_NOT_VALID));
+					}
+				}).orElseGet(() -> {
+					if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getTotalAmount())
+						throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
+					return createPurchaseRequest(blitType, commonBlit, optionalUser);
+				});
 	}
 
 
@@ -194,7 +198,7 @@ public class PaymentRequestServiceAsync {
 		if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getTotalAmount())
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
 
-		return createPurchaseRequest(blitType, commonBlit, Optional.empty());
+		return validateDiscountCodeIfPresentAndCalculateTotalAmount(vmodel,commonBlit,Optional.empty(),blitType);
 	}
 
 	private CompletableFuture<Object> createPurchaseRequest(BlitType blitType, CommonBlit commonBlit,
