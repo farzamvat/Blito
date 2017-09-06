@@ -195,9 +195,6 @@ public class PaymentRequestServiceAsync {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_OPEN));
 		if (!blitType.getEventDate().getEvent().getEventState().equals(State.OPEN.name()))
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_NOT_OPEN));
-		if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getTotalAmount())
-			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
-
 		return validateDiscountCodeIfPresentAndCalculateTotalAmount(vmodel,commonBlit,Optional.empty(),blitType);
 	}
 
