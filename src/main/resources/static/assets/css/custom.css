@@ -909,7 +909,26 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 .discountProgress {
 
 }
-
+.discountValidate {
+    width: 60%;
+    margin-left: 0 !important;
+    float: right;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border: 1px solid rgba(100, 100, 100, 0.4);
+    direction: rtl;
+    text-align: right;
+    height: 40px !important;
+    font-size: 16px;
+    padding-right: 5px;
+    color: black;
+}
+.validateDiscountButton {
+    width: 30%;
+    border-bottom-right-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    height: 40px;
+}
 .registerInput {
     width: 100%;
     border: 1px solid rgba(100, 100, 100, 0.4);

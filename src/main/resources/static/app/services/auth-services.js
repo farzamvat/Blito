@@ -167,13 +167,13 @@ angular.module('authServices', [])
                                     defer.resolve(resp);
                                 })
                                 .catch(function () {
-                                    defer.reject();
+                                    defer.reject(rejection);
                                 });
                         })
                         .catch(function (data, status) {
                             inFlightAuthRequest = null;
                             AuthToken.setToken();
-                            defer.reject();
+                            defer.reject(rejection);
                         });
                     break;
                 case 404 :

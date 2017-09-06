@@ -68,6 +68,9 @@ angular.module('userProfileApi', [])
         event.submitDiscount = function (discountData) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/discount/set-discount-code', discountData);
         };
+        event.validateDiscount = function (validateData) {
+            return $http.post(config.baseUrl+'/api/blito/v1.0/validate-discount-code', validateData);
+        };
     })
     .service('exchangeService', function ($http, config) {
         var exchange = this;

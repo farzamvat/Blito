@@ -206,7 +206,7 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="ticketPay2">
-                                    <form name="paymentStatus" class="form-inline textAlignRight marginTop0">
+                                    <form novalidate name="paymentStatus" class="form-inline textAlignRight marginTop0">
                                         <fieldset class="fieldsetStyle">
                                             <div class="form-group col-xs-12 formRegGroup floatRight">
                                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
@@ -231,11 +231,40 @@
                                                     <label class="registerLabel" >قیمت پرداختی  : (تومان)</label>
                                                 </div>
                                                 <div class="col-xs-7 col-sm-6 floatRight ">
-                                                    <label>{{totalPrice  | number | pNumber}}</label>
-                                                    <input height="60" id="registerLabel" ng-model="paymentSelectedDone" name="userid"  type="text"  class="form-group registerInput " ng-show="" required>
+                                                    <label>{{primaryTotalPrice  | number | pNumber}}</label>
+                                                    <input height="60" id="registerLabel" ng-model="paymentSelectedDone" name="paymentPick"  type="text"  class="form-group registerInput " ng-show="" required>
                                                 </div>
 
                                             </div>
+                                            <div class="form-group col-xs-12 formRegGroup floatRight marginTop50">
+                                                <p class="text-center block">در صورت داشتن کد تخفیف وارد و اعمال نمایید</p>
+                                            </div>
+                                            <div id="discountSuccess" class="alert alert-success text-center dispNone col-xs-12">
+                                               کد تخفیف با موفقیت اعمال شد !
+                                            </div>
+                                            <div id="discountError"  class="text-center dispNone alert alert-danger col-xs-12">
+                                                <strong>کد تخفیف معتبر نمی باشد !</strong>
+                                            </div>
+                                            <div class="form-group col-xs-12 formRegGroup floatRight">
+                                                <div class="col-xs-5 col-sm-6 floatRight text-center">
+                                                    <label class="registerLabel" >کد تخفیف   :</label>
+                                                </div>
+                                                <div class="col-xs-7 col-sm-6 floatRight ">
+                                                    <input height="60"  name="discountCodeInput" ng-model="discountInput.code" required   type="text"  class="form-group discountValidate " >
+                                                    <button class="btn btn-success validateDiscountButton" ng-disabled="paymentStatus.discountCodeInput.$invalid" ng-click="validateDiscountInput(discountInput.code)">        اعمال <i class="fa fa-spin fa-spinner discountSpinner dispNone "></i></button>
+                                                </div>
+
+                                            </div>
+                                            <div ng-if="!itemWithCapacity[0].isFree && discountTotalAmount" class="form-group col-xs-12 formRegGroup floatRight marginTop50">
+                                                <div class="col-xs-5 col-sm-6 floatRight text-center">
+                                                    <label class="registerLabel" >قیمت پرداختی با اعمال کد تخفیف : (تومان)</label>
+                                                </div>
+                                                <div class="col-xs-7 col-sm-6 floatRight ">
+                                                    <label>{{discountTotalAmount  | number | pNumber}}</label>
+                                                </div>
+
+                                            </div>
+
                                             <div id="buyBlitError"  class="text-center dispNone alert alert-danger col-xs-12">
                                                 <strong></strong>
                                             </div>
@@ -252,7 +281,7 @@
                                                 </div>
                                                 <div class="control-group text-center marginBottom20">
                                                     <div class="controls col-xs-12 col-sm-6 marginBottom20">
-                                                        <button  ng-disabled="paymentStatus.$invalid || buyTicketOnce" id="nextStep2"  ng-click="nextStep2()" type="submit"  class="btn btn-success btn-lg btnLogin">  پرداخت <i class="fa fa-spin fa-spinner dispNone payedBlitSpinner"></i><i class="fa fa-money"></i></button>
+                                                        <button  ng-disabled="paymentStatus.paymentPick.$invalid || buyTicketOnce"  id="nextStep2"  ng-click="nextStep2()" type="submit"  class="btn btn-success btn-lg btnLogin">  پرداخت <i class="fa fa-spin fa-spinner dispNone payedBlitSpinner"></i><i class="fa fa-money"></i></button>
                                                     </div>
                                                     <div class="controls col-xs-12 col-sm-6 marginBottom20">
                                                         <button id="prevStep1" ng-click="prevStep1()"  class="btn btn-danger btn-lg btnLogin"><i class="fa fa-arrow-right"></i>   مرحله قبل </button>
@@ -272,7 +301,7 @@
                                                 </div>
                                                 <div class="control-group text-center marginBottom20">
                                                     <div class="controls col-xs-12 col-sm-6 marginBottom20">
-                                                        <button  ng-disabled="paymentStatus.$invalid || buyTicketNotUserOnce" id="nextStep2NotUser" ng-click="nextStep2NotUser()" type="submit"  class="btn btn-success btn-lg btnLogin">  پرداخت <i class="fa fa-spin fa-spinner dispNone payedBlitSpinner"></i><i class="fa fa-money"></i></button>
+                                                        <button  ng-disabled="paymentStatus.paymentPick.$invalid || buyTicketNotUserOnce"  id="nextStep2NotUser" ng-click="nextStep2NotUser()" type="submit"  class="btn btn-success btn-lg btnLogin">  پرداخت <i class="fa fa-spin fa-spinner dispNone payedBlitSpinner"></i><i class="fa fa-money"></i></button>
                                                     </div>
                                                     <div class="controls col-xs-12 col-sm-6 marginBottom20">
                                                         <button id="prevStep1NotUser" ng-click="prevStep1()"  class="btn btn-danger btn-lg btnLogin"><i class="fa fa-arrow-right"></i>   مرحله قبل </button>
