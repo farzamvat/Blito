@@ -75,8 +75,9 @@ public class DiscountService {
     public DiscountValidationViewModel validateDiscountCode(DiscountValidationViewModel vmodel){
         return discountRepository.findByCode(vmodel.getCode())
             .map(discount -> {
-                if(discount.getCode().contains(" "))
+                if(!discount.getEnabled()) {
                     vmodel.setValid(false);
+                }
                 else if(discount.getUsed() + vmodel.getCount() > discount.getReusability()){
                     vmodel.setValid(false);
                 }
