@@ -4,9 +4,7 @@ package blito.test.unit;
 import com.blito.Application;
 import com.blito.enums.*;
 import com.blito.mappers.EventFlatMapper;
-import com.blito.models.Event;
-import com.blito.models.EventHost;
-import com.blito.models.User;
+import com.blito.models.*;
 import com.blito.repositories.*;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
@@ -32,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
@@ -74,6 +73,7 @@ public class DiscountServiceTest {
     EventHost eventHost1;
     EventHost eventHost2;
     private EventViewModel eventViewModel = null;
+    private EventViewModel eventViewModel2 = null;
     private User user2 = new User();
     private User user = new User();
 
@@ -123,6 +123,7 @@ public class DiscountServiceTest {
         event.setLatitude(2D);
         event.setBlitSaleStartDate(Timestamp.from(ZonedDateTime.now().minusHours(24).toInstant()));
         event.setBlitSaleEndDate(Timestamp.from(ZonedDateTime.now().plusDays(2).toInstant()));
+
 
 
         event1 = new Event();
@@ -207,6 +208,7 @@ public class DiscountServiceTest {
 
         eventDateViewModel.setBlitTypes(Arrays.asList(blitTypeViewModel1, blitTypeViewModel2).stream().collect(Collectors.toSet()));
         eventViewModel.setEventDates(Arrays.asList(eventDateViewModel).stream().collect(Collectors.toSet()));
+
     }
 
     @Test

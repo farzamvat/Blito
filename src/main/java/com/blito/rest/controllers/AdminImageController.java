@@ -1,5 +1,6 @@
 package com.blito.rest.controllers;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,15 +31,12 @@ public class AdminImageController {
 	
 	@Permission(value = ApiBusinessName.ADMIN)
 	@PostMapping
-	public CompletionStage<ResponseEntity<?>> uploadDefaultImages(@RequestParam("file") MultipartFile file,@RequestParam("defaultId") String defaultId, HttpServletRequest req,HttpServletResponse res)
+	public CompletionStage<ResponseEntity<?>> uploadDefaultImages(@RequestParam("file") MultipartFile file,
+																  @RequestParam("defaultId") String defaultId,
+																  HttpServletRequest req,
+																  HttpServletResponse res)
 	{
-		return imageService.createOrUpdateDefaultImage(file, defaultId)
-				.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result, throwable, req, res));
-	}
-	
-	@Permission(value = ApiBusinessName.ADMIN)
-	@GetMapping
-	public ResponseEntity<Page<ImageViewModel>> getDeafaultImages(){
-		return ResponseEntity.accepted().body(imageService.getDefaultImages());
+		return CompletableFuture.supplyAsync(() -> imageService.createOrUpdateDefaultImage(file, defaultId))
+				.handle((either, throwable) -> HandleUtility.generateEitherResponse(either,throwable,req,res));
 	}
 }

@@ -1,5 +1,8 @@
 package blito.test.integration;
 
+import com.blito.configs.Constants;
+import com.blito.enums.Response;
+import com.blito.resourceUtil.ResourceUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,28 +21,25 @@ import com.blito.enums.ImageType;
 import com.blito.models.Image;
 import com.blito.repositories.ImageRepository;
 
-@ActiveProfiles("test")
-@SpringBootTest(classes=Application.class,webEnvironment=WebEnvironment.RANDOM_PORT)
-@RunWith(SpringRunner.class)
-public class ImageControllerTest {
-	
-	@Autowired
-	ImageRepository imageRepository;
-	
-	private TestRestTemplate rest = new TestRestTemplate();
-	
-	@Before
-	public void init() {
-		Image image = new Image();
-		image.setImageUUID("EVENT_PHOTO");
-		image.setImageType(ImageType.EVENT_PHOTO.name());
-		
-		imageRepository.save(image);
-	}
-	
+import static org.hamcrest.core.IsEqual.equalTo;
+
+public class ImageControllerTest extends AbstractRestControllerTest {
+
 	@Test
-	public void downloadImageTest() {
-		
+	public void downloadImage_success() {
+		givenRestIntegration()
+				.when()
+				.get(getServerAddress() + "/api/blito/v1.0/download?id="+ Constants.DEFAULT_HOST_PHOTO)
+				.then()
+				.statusCode(200);
 	}
 
+	@Test
+	public void downloadDefaulExchangeBlitPhoto_notfound() {
+		givenRestIntegration()
+				.when()
+				.get(getServerAddress() + "/api/blito/v1.0/download?id="+ Constants.DEFAULT_EXCHANGEBLIT_PHOTO)
+				.then()
+				.statusCode(400).body("message",equalTo(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
+	}
 }
