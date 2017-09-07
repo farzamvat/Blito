@@ -19,9 +19,7 @@ import org.springframework.mail.MailSendException;
 import javax.annotation.PostConstruct;
 import java.util.concurrent.CompletableFuture;
 
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.*;
 
 /*
     @author Farzam Vatanzadeh

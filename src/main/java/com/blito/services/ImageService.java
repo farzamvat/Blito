@@ -1,29 +1,5 @@
 package com.blito.services;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-
-import com.blito.mappers.GenericMapper;
-import com.blito.rest.viewmodels.exception.ExceptionViewModel;
-import com.blito.rest.viewmodels.image.ImageBase64ViewModel;
-import io.vavr.Function2;
-import io.vavr.control.Either;
-import io.vavr.control.Option;
-import io.vavr.control.Try;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.blito.configs.Constants;
 import com.blito.enums.ImageType;
 import com.blito.enums.Response;
@@ -33,9 +9,29 @@ import com.blito.mappers.ImageMapper;
 import com.blito.models.Image;
 import com.blito.repositories.ImageRepository;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.viewmodels.exception.ExceptionViewModel;
+import com.blito.rest.viewmodels.image.ImageBase64ViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
+import io.vavr.control.Either;
+import io.vavr.control.Option;
+import io.vavr.control.Try;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.text.html.ImageView;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 @Service
 public class ImageService {
@@ -181,18 +177,35 @@ public class ImageService {
                     newImage.setImageType(imageType.name());
                     return Option.of(imageRepository.save(newImage));
                 }).get();
-        return Option.ofOptional(imageRepository.findByImageUUID(defaultId))
+        Optional<Try<Image>> imageRes = imageRepository.findByImageUUID(defaultId)
                 .map(image ->
-                        Try.ofSupplier(() -> trySaveImage(defaultId, file))
-                                .map(uid -> saveImageLambda.apply(uid, Option.of(image)))
-                )
-                .orElse(() ->
-                        Option.of(Try.ofSupplier(() -> trySaveImage(defaultId, file))
-                                .map(uid -> saveImageLambda.apply(uid, Option.none())))
-                )
-                .filter(Try::isSuccess)
-                .map(Try::get)
-                .toRight(new ExceptionViewModel(ResourceUtil.getMessage(Response.INTERNAL_SERVER_ERROR), 500));
+                    Optional.ofNullable(Try.ofSupplier(() -> trySaveImage(defaultId, file))
+                            .map(uid -> saveImageLambda.apply(uid, Option.of(image))))
+                ).orElse(Optional.of(Try.ofSupplier(() -> trySaveImage(defaultId, file))
+                    .map(uid -> saveImageLambda.apply(uid, Option.none()))));
+        if (imageRes.isPresent()) {
+            if(imageRes.get().isSuccess()) {
+                return Either.right(imageRes.get().get());
+            } else {
+                return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.INTERNAL_SERVER_ERROR), 500));
+            }
+        } else {
+            return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.INTERNAL_SERVER_ERROR), 500));
+        }
+
+
+//        return Option.ofOptional(imageRepository.findByImageUUID(defaultId))
+//                .map(image ->
+//                        Try.ofSupplier(() -> trySaveImage(defaultId, file))
+//                                .map(uid -> saveImageLambda.apply(uid, Option.of(image)))
+//                )
+//                .orElse(() ->
+//                        Option.of(Try.ofSupplier(() -> trySaveImage(defaultId, file))
+//                                .map(uid -> saveImageLambda.apply(uid, Option.none())))
+//                )
+//                .filter(Try::isSuccess)
+//                .map(Try::get)
+//                .toRight(new ExceptionViewModel(ResourceUtil.getMessage(Response.INTERNAL_SERVER_ERROR), 500));
 
     }
 
