@@ -92,6 +92,7 @@ public class DiscountService {
                 }).toRight(new ExceptionViewModel(ResourceUtil.getMessage(Response.DISCOUNT_CODE_NOT_FOUND),400));
     }
 
+    @Transactional
     public Page<DiscountViewModel> searchDiscountCodes(SearchViewModel<Discount> searchViewModel, Pageable pageable) {
         return searchService.search(searchViewModel,pageable,discountMapper,discountRepository);
     }
