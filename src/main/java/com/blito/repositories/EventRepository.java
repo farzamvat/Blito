@@ -26,4 +26,7 @@ public interface EventRepository
 	Set<Event> findByIsDeletedFalse();	
 	Page<Event> 
 	findByIsDeletedFalseAndEventTypeIsAndEventStateNotAndOperatorStateIsOrderByOrderNumberDesc(String eventType,String eventState,String operatorState, Pageable pageable);
+
+	Set<Event> findByIsDeletedFalseAndOperatorStateIsAndEventStateNot(String operatorState, String eventState);
+
 }
