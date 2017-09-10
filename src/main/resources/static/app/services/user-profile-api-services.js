@@ -71,6 +71,18 @@ angular.module('userProfileApi', [])
         event.validateDiscount = function (validateData) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/validate-discount-code', validateData);
         };
+        event.searchDiscount = function (page, eventId) {
+            var queryParam = {
+                cache : true,
+                params : {page: page-1, size: 4, sort: "effectDate,desc"}
+            };
+            var bodyJson = {
+                restrictions: [
+                    {field: "blitTypes-eventDate-event-eventId", type: "simple", operation: "eq", value: eventId}
+                    ]
+            };
+            return $http.post(config.baseUrl+'/api/blito/v1.0/discount/search', bodyJson, queryParam)
+        };
     })
     .service('exchangeService', function ($http, config) {
         var exchange = this;

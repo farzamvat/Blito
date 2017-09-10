@@ -7,23 +7,16 @@
                                                                      'eventPageHeaderMusic2': eventType === 'CONCERT',
                                                                      'eventPageHeaderGallery': eventType === 'EXHIBITION',
                                                                      'eventPageHeaderOther': eventType === 'OTHER'}">
-        <!--<div class="circle"></div>-->
-        <!--<img ng-show="eventType === 'CONCERT'" class="logoEventPage" src="assets/img/music-logo.png" alt="">-->
-        <!--<img ng-show="eventType === 'CINEMA'" class="logoEventPage" src="assets/img/cinema-logo.png" alt="">-->
-        <!--<img ng-show="eventType === 'THEATER'" class="logoEventPage" src="assets/img/theater-logo.png" alt="">-->
-        <!--<img ng-show="eventType === 'WORKSHOP'" class="logoEventPage" src="assets/img/edu-logo.png" alt="">-->
-        <!--<img ng-show="eventType === 'ENTERTAINMENT'" class="logoEventPage" src="assets/img/joy.png" alt="">-->
-        <!--<img ng-show="eventType === 'TOURISM'" class="logoEventPage" src="assets/img/tour-logo.png" alt="">-->
-        <!--<img ng-show="eventType === 'OTHER'" class="logoEventPage" src="assets/img/other-logo.png" alt="">-->
+
 
         <div class="col-xs-12 col-sm-4 col-md-2 col-lg-2 floatRight eventPageImage">
             <img ng-src="{{eventDataPhoto.eventPhoto[0].imageUUID}}"   class="img-responsive imgMobileSize ">
+            <i ng-click="showEventPic()" class="fa fa-search-plus fa-2x maximizeImage hidden-xs"></i>
+            <i ng-click="showEventPic()" class="fa fa-search-plus fa-2x maximizeImageXs hidden-sm hidden-md hidden-lg"></i>
         </div>
         <div class="col-xs-12 col-sm-7 col-md-4 col-lg-4 floatRight textAlignRight eventContent" >
             <h1>{{eventDataDetails.eventName}}</h1>
             <p>{{eventDataDetails.description}}</p>
-
-
             <button ng-show="eventDataDetails.eventState === 'OPEN' && eventType !== 'EXHIBITION'" ng-click="showBuyTicketModal()" class="btn btn-success buyTicket  marginTop10"><i class="fa fa-ticket" aria-hidden="true"></i>  خرید بلیت
             </button>
             <div  ng-show="eventDataDetails.eventState === 'CLOSED' && eventType !== 'EXHIBITION'"  class="text-blito  marginTop10 ">
@@ -152,6 +145,8 @@
 
     </div>
     <div ng-include="'app/views/partials/buyTicket.html'"></div>
+    <div ng-include="'app/views/partials/show-event-pic.html'"></div>
+
 </div>
 
 

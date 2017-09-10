@@ -905,9 +905,23 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     width: 30%;
 
 }
+.eventPhotoZoom {
+    width: 95%;
+}
 
 .discountProgress {
 
+}
+.maximizeImage {
+    position: absolute;
+    top: 215px;
+    left: 5px;
+    color: white;
+    transition: 200ms;
+    cursor: pointer;
+}
+.maximizeImage:hover {
+    color: rgb(252, 183, 49);
 }
 .discountValidate {
     width: 60%;
@@ -3120,7 +3134,7 @@ table td{
     }
     .blitoTeamContainer{
         margin: auto;
-        padding-right: 0%;
+        padding-right: 0;
     }
     .marginRight8percentEventPage{
         margin-right:-13px;
@@ -3132,6 +3146,15 @@ table td{
 
 
 @media (max-width: 768px) {
+    .maximizeImageXs {
+        display: block;
+        margin: -55px auto;
+        text-align: center;
+        color: white;
+        transition: 200ms;
+        cursor: pointer;
+    }
+
     .marginTop30Mobile {
         margin-top: 30px;
     }
@@ -3172,20 +3195,7 @@ table td{
         margin-bottom: 4px;
         height:42px;
     }
-    /*.navbar-collapse {*/
-    /*height: 200px;*/
-    /*}*/
 
-    /*.ticketTitleMobile {*/
-    /*text-align: center;*/
-    /*}*/
-    /*.ticketTitle h2, .ticketName h2{*/
-    /*text-align: center;*/
-    /*}*/
-    /*.ticketTitle h4, .ticketName h4{*/
-    /*text-align: center;*/
-
-    /*}*/
     .ticketAddress h2,
     .ticketAddress h4,
     .ticketTitle h4,
@@ -3197,9 +3207,6 @@ table td{
 
     }
 
-    /*.ticketAddress h4{*/
-    /*text-align: center;*/
-    /*}*/
     .cardLeft {
         border-top-left-radius: 0;
     }
@@ -3358,19 +3365,11 @@ table td{
     .eventPageHeader {
         background-size: 3000px auto;
     }
-    /*.imgMobileSize {*/
-    /*display: block;*/
-    /*margin: 10px auto;*/
-    /*}*/
+
     .eventContent {
         text-align: center;
     }
-    /*#map {*/
-    /*display: block;*/
-    /*margin: 10px auto;*/
-    /*width: 500px !important;*/
-    /*height: 300px;*/
-    /*}*/
+
     .eventPageHeader h3{
         margin-top: 40px;
         text-align: center;

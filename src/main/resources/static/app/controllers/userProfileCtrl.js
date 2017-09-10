@@ -1577,6 +1577,7 @@ angular.module('User')
                 dateSetterService.initDate("discountStartTime");
                 dateSetterService.initDate("discountEndTime");
             }, 1000);
+            $scope.discountList(1);
             $('#discount-codes').modal('show');
         };
         $scope.sansDates = function (index) {
@@ -1657,6 +1658,21 @@ angular.module('User')
                 }
             }
         };
+        $scope.discountList = function (page) {
+            eventService.searchDiscount(page, $scope.eventDiscount.eventId)
+                .then(function (data) {
+                    console.log(data);
+                    $scope.totalDiscounts = data.data.totalElements;
+                    $scope.discountsList = data.data.content;
+                })
+                .catch(function (data) {
+                    console.log(data);
+                })
+        };
+        $scope.eventDiscountPageChanged = function (newPage) {
+            $scope.discountList(newPage);
+        };
+
         $scope.discountSubmitOnce = true;
         $scope.submitDiscountCode = function (discountData) {
             document.getElementById("successDiscount").style.display = "none";
@@ -1684,7 +1700,6 @@ angular.module('User')
                     document.getElementById("errorDiscount").style.display = "block";
                     document.getElementsByClassName("discountSpinner")[0].style.display = "none";
                 })
-
         };
         //==================================================== ********* =================================
         //==================================================== PERSIAN DATE PICKER =======================

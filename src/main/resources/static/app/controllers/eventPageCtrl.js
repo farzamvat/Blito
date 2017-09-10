@@ -337,5 +337,8 @@ angular.module('eventsPageModule')
                 ratings.push(i)
             }
             return ratings;
+        };
+        $scope.showEventPic = function () {
+            $("#event-photo").modal("show");
         }
     });
