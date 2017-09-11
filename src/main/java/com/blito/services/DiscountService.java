@@ -6,9 +6,11 @@ import com.blito.enums.State;
 import com.blito.mappers.DiscountMapper;
 import com.blito.models.BlitType;
 import com.blito.models.Discount;
+import com.blito.models.Event;
 import com.blito.models.User;
 import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.DiscountRepository;
+import com.blito.repositories.EventRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
@@ -45,6 +47,8 @@ public class DiscountService {
     private BlitTypeRepository blitTypeRepository;
     @Autowired
     private SearchService searchService;
+    @Autowired
+    private EventRepository eventRepository;
 
 
     @Transactional
@@ -177,8 +181,7 @@ public class DiscountService {
     private Either<ExceptionViewModel, DiscountViewModel> verifyDiscountViewModel(DiscountViewModel vmodel, Set<BlitType> blitTypes){
         if(blitTypes.isEmpty())
             return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND),400));
-        if(blitTypes.stream().anyMatch(blitType -> blitType.getEventDate().getEvent().getEventState().equals(State.ENDED.name()) ||
-                blitType.getEventDate().getEvent().getEventState().equals(State.CLOSED.name())))
+        if(blitTypes.stream().anyMatch(blitType -> blitType.getEventDate().getEvent().getEventState().equals(State.ENDED.name())))
         {
             return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.EVENT_NOT_OPEN_DISCOUNT_CODE),400));
         }
@@ -200,5 +203,12 @@ public class DiscountService {
                 return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.INCONSISTENT_PERCENTAGE_WHEN_PERCENT_IS_FALSE),400));
         }
         return Either.right(vmodel);
+    }
+
+    @Transactional
+    public Either<ExceptionViewModel, DiscountViewModel> setDiscountForAllEvents(DiscountViewModel vmodel, User user) {
+        Set<Event> allEvents = eventRepository.findByOperatorStateIsAndEventStateNotAndIsDeletedFalse(OperatorState.APPROVED.name(), State.ENDED.name());
+        Set<BlitType> blitTypes = allEvents.stream().flatMap(e -> e.getEventDates().stream()).flatMap(ed -> ed.getBlitTypes().stream()).collect(Collectors.toSet());
+        return createDiscountCode(vmodel,user,blitTypes);
     }
 }

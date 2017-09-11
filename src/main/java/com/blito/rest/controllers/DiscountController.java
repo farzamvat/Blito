@@ -116,4 +116,17 @@ public class DiscountController {
         return CompletableFuture.supplyAsync(() -> discountService.searchDiscountCodes(searchViewModel,pageable))
                 .handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,request,response));
     }
+
+    @Permission(ApiBusinessName.ADMIN)
+    @PostMapping("discount/set-discount-all-events")
+    public CompletionStage<ResponseEntity<?>> setDiscountForAllEvents(@Valid @RequestBody DiscountViewModel vmodel,
+                                                                      BindingResult bindingResult, HttpServletRequest req, HttpServletResponse res) {
+        if (bindingResult.hasFieldErrors())
+            return CompletableFuture.completedFuture(ResponseEntity.badRequest().body(ExceptionUtil
+                    .generate(HttpStatus.BAD_REQUEST, req, bindingResult, ControllerEnumValidation.class)));
+        User user = SecurityContextHolder.currentUser();
+        return CompletableFuture.supplyAsync(() -> discountService.setDiscountForAllEvents(vmodel,user))
+                .handle((either, throwable) -> HandleUtility.generateEitherResponse(either, throwable, req, res));
+    }
+
 }
