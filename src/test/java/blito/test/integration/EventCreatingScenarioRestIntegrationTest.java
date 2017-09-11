@@ -333,6 +333,19 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
     }
 
     @Test
+    public void disableDiscountCodeL_notAllowed_fail() {
+        DiscountViewModel discountViewModel = createDiscountCode_success("discountCodeNotAllowed");
+        DiscountEnableViewModel discountEnableViewModel = new DiscountEnableViewModel(discountViewModel.getDiscountId(),false);
+        givenRestIntegrationUser()
+                .when()
+                .body(discountEnableViewModel)
+                .put(getServerAddress() + "/api/blito/v1.0/discount/set-enable")
+                .then()
+                .statusCode(400)
+                .body("message",equalTo(ResourceUtil.getMessage(com.blito.enums.Response.NOT_ALLOWED)));
+    }
+
+    @Test
     public void createDiscountCode_BlitType_notFound()
     {
         DiscountViewModel discountViewModel = new DiscountViewModel();
@@ -493,10 +506,10 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
     public void updateDiscountCodeByOperator_success(){
         DiscountViewModel discountViewModel = createDiscountCode_success("testUpdate");
         discountViewModel.setPercent(true);
-        discountViewModel.setCode("afterUpdateTest");
+        discountViewModel.setCode("testUpdate");
         discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(2).toInstant()));
         discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
-        discountViewModel.setReusability(10);
+        discountViewModel.setReusability(50);
         discountViewModel.setPercentage(30D);
         discountViewModel.setAmount(0L);
         discountViewModel.setBlitTypeIds(new HashSet<>(
@@ -510,7 +523,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
                 .body(discountViewModel)
                 .when()
                 .put(getServerAddress() + "/api/blito/v1.0/discount/admin-update-discount-code");
-        response.then().statusCode(200).body("code", equalTo("afterUpdateTest"));
+        response.then().statusCode(200).body("reusability", equalTo(50));
     }
 
     @Test

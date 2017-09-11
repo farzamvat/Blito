@@ -83,7 +83,9 @@ public enum Response {
 	PAYMENT_SUCCESS("info.payment.success"),
 	DISCOUNT_CODE_NOT_FOUND("error.discount.code.not.found"),
 	DISCOUNT_CODE_NOT_VALID("error.discount.code.not.valid"),
-	EVENT_NOT_OPEN_DISCOUNT_CODE("error.event.not.open.discount.code");
+	EVENT_NOT_OPEN_DISCOUNT_CODE("error.event.not.open.discount.code"),
+	DISCOUNT_PERCENTAGE_IS_FINAL("error.discount.percentage.is.final"),
+	DISCOUNT_CODE_IS_FINAL("error.discount.code.is.final");
     
 
     private final String message;

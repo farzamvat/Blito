@@ -100,9 +100,24 @@ public class DiscountController {
                                                                  HttpServletRequest request,
                                                                  HttpServletResponse response) {
         if(bindingResult.hasFieldErrors())
-            return CompletableFuture.completedFuture(ResponseEntity.badRequest().body(ExceptionUtil.generate(HttpStatus.BAD_REQUEST, ResourceUtil.getMessage(Response.VALIDATION),bindingResult,request)));
+            return CompletableFuture.completedFuture(ResponseEntity.badRequest().body(ExceptionUtil
+                    .generate(HttpStatus.BAD_REQUEST, ResourceUtil.getMessage(Response.VALIDATION),bindingResult,request)));
         User user = SecurityContextHolder.currentUser();
         return CompletableFuture.supplyAsync(() -> discountService.enableDiscountCode(viewModel,user))
+                .handle((either, throwable) ->
+                        HandleUtility.generateEitherResponse(either,throwable,request,response));
+    }
+
+    @Permission(ApiBusinessName.ADMIN)
+    @PutMapping("/discount/admin-set-enable")
+    public CompletionStage<ResponseEntity<?>> adminEnableDiscountCode(@Valid @RequestBody DiscountEnableViewModel viewModel,
+                                                                 BindingResult bindingResult,
+                                                                 HttpServletRequest request,
+                                                                 HttpServletResponse response) {
+        if(bindingResult.hasFieldErrors())
+            return CompletableFuture.completedFuture(ResponseEntity.badRequest().body(ExceptionUtil.generate(HttpStatus.BAD_REQUEST, ResourceUtil.getMessage(Response.VALIDATION),bindingResult,request)));
+        User user = SecurityContextHolder.currentUser();
+        return CompletableFuture.supplyAsync(() -> discountService.adminEnableDiscountCode(viewModel,user))
                 .handle((either, throwable) ->
                         HandleUtility.generateEitherResponse(either,throwable,request,response));
     }
