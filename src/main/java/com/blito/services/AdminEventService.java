@@ -73,7 +73,6 @@ public class AdminEventService {
 			});
 
 		event.setEventState(vmodel.getState().name());
-		return;
 	}
 
 	@Transactional
@@ -86,7 +85,6 @@ public class AdminEventService {
 		}
 		checkEventRestricitons(eventDate.getEvent());
 		eventDate.setEventDateState(vmodel.getEventDateState().name());
-		return;
 	}
 	
 	@Transactional
@@ -103,7 +101,6 @@ public class AdminEventService {
 		Event event = getEventFromRepository(vmodel.getEventId());
 		checkEventRestricitons(event);
 		event.setOperatorState(vmodel.getOperatorState().name());
-		return;
 	}
 
 	@Transactional
@@ -111,7 +108,6 @@ public class AdminEventService {
 		Event event = getEventFromRepository(vmodel.getEventId());
 		checkEventRestricitons(event);
 		event.setEvento(vmodel.isEvento());
-		return;
 	}
 
 	@Transactional

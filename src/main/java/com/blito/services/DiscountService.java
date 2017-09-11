@@ -181,8 +181,7 @@ public class DiscountService {
     private Either<ExceptionViewModel, DiscountViewModel> verifyDiscountViewModel(DiscountViewModel vmodel, Set<BlitType> blitTypes){
         if(blitTypes.isEmpty())
             return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND),400));
-        if(blitTypes.stream().anyMatch(blitType -> blitType.getEventDate().getEvent().getEventState().equals(State.ENDED.name()) ||
-                blitType.getEventDate().getEvent().getEventState().equals(State.CLOSED.name())))
+        if(blitTypes.stream().anyMatch(blitType -> blitType.getEventDate().getEvent().getEventState().equals(State.ENDED.name())))
         {
             return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.EVENT_NOT_OPEN_DISCOUNT_CODE),400));
         }
@@ -206,8 +205,9 @@ public class DiscountService {
         return Either.right(vmodel);
     }
 
+    @Transactional
     public Either<ExceptionViewModel, DiscountViewModel> setDiscountForAllEvents(DiscountViewModel vmodel, User user) {
-        Set<Event> allEvents = eventRepository.findByIsDeletedFalseAndOperatorStateIsAndEventStateNot(OperatorState.APPROVED.name(), State.ENDED.name());
+        Set<Event> allEvents = eventRepository.findByOperatorStateIsAndEventStateNotAndIsDeletedFalse(OperatorState.APPROVED.name(), State.ENDED.name());
         Set<BlitType> blitTypes = allEvents.stream().flatMap(e -> e.getEventDates().stream()).flatMap(ed -> ed.getBlitTypes().stream()).collect(Collectors.toSet());
         return createDiscountCode(vmodel,user,blitTypes);
     }

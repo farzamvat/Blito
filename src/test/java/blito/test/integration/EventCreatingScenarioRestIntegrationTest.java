@@ -8,6 +8,8 @@ import com.blito.enums.EventType;
 import com.blito.enums.HostType;
 import com.blito.enums.OperatorState;
 import com.blito.enums.State;
+import com.blito.models.BlitType;
+import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.EventRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
@@ -21,6 +23,7 @@ import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
+import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,6 +45,8 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
 
     @Autowired
     private EventRepository eventRepository;
+    @Autowired
+    private BlitTypeRepository blitTypeRepository;
 
     @Before
     public void init()
@@ -69,7 +74,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         return response;
     }
 
-    public EventViewModel createSampleEventViewModel(EventHostViewModel eventHostViewModel)
+    public EventViewModel createSampleEventViewModel(EventHostViewModel eventHostViewModel, String eventname)
     {
         EventViewModel eventViewModel = new EventViewModel();
         eventViewModel.setAddress("Amirabad");
@@ -78,7 +83,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         eventViewModel.setDescription("Description");
         eventViewModel.setEventHostId(eventHostViewModel.getEventHostId());
         eventViewModel.setEventHostName(eventHostViewModel.getHostName());
-        eventViewModel.setEventName("My Event");
+        eventViewModel.setEventName(eventname);
         eventViewModel.setEventType(EventType.CONCERT);
 
         EventDateViewModel eventDateViewModel = new EventDateViewModel();
@@ -102,11 +107,11 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         return eventViewModel;
     }
 
-    public Response createEvent_success()
+    public Response createEvent_success(String eventName, String eventHostName)
     {
-        EventHostViewModel eventHostViewModel = createEventHost_success("eventHostName1").thenReturn().body().as(EventHostViewModel.class);
+        EventHostViewModel eventHostViewModel = createEventHost_success(eventHostName).thenReturn().body().as(EventHostViewModel.class);
 
-        EventViewModel eventViewModel = createSampleEventViewModel(eventHostViewModel);
+        EventViewModel eventViewModel = createSampleEventViewModel(eventHostViewModel, eventName);
 
         Response response = givenRestIntegration()
                 .body(eventViewModel)
@@ -116,9 +121,9 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         return response;
     }
 
-    public void openEventState_success(long eventId) {
+    public void openEventState_success(long eventId, State state) {
         ChangeEventStateVm changeEventStateVm = new ChangeEventStateVm();
-        changeEventStateVm.setState(State.OPEN);
+        changeEventStateVm.setState(state);
         changeEventStateVm.setEventId(eventId);
 
         givenRestIntegration()
@@ -128,10 +133,10 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
                 .then().statusCode(200);
     }
 
-    public void openEventDateState_success(long eventDateId) {
+    public void openEventDateState_success(long eventDateId, State state) {
         ChangeEventDateStateVm changeEventDateStateVm = new ChangeEventDateStateVm();
         changeEventDateStateVm.setEventDateId(eventDateId);
-        changeEventDateStateVm.setEventDateState(State.OPEN);
+        changeEventDateStateVm.setEventDateState(state);
 
         givenRestIntegration()
                 .body(changeEventDateStateVm)
@@ -140,11 +145,11 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
                 .then().statusCode(200);
     }
 
-    public void openBlitTypeState_success(List<Long> blitTypeIds) {
+    public void openBlitTypeState_success(List<Long> blitTypeIds, State state) {
         blitTypeIds.forEach(blitTypeId -> {
             ChangeBlitTypeStateVm changeBlitTypeStateVm = new ChangeBlitTypeStateVm();
             changeBlitTypeStateVm.setBlitTypeId(blitTypeId);
-            changeBlitTypeStateVm.setBlitTypeState(State.OPEN);
+            changeBlitTypeStateVm.setBlitTypeState(state);
 
             givenRestIntegration()
                     .body(changeBlitTypeStateVm)
@@ -154,10 +159,10 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         });
     }
 
-    public void approveEvent_success(long eventId) {
+    public void approveEvent_success(long eventId, OperatorState operatorState) {
         AdminChangeEventOperatorStateVm operatorStateVm = new AdminChangeEventOperatorStateVm();
         operatorStateVm.setEventId(eventId);
-        operatorStateVm.setOperatorState(OperatorState.APPROVED);
+        operatorStateVm.setOperatorState(operatorState);
         givenRestIntegration()
                 .body(operatorStateVm)
                 .when()
@@ -165,13 +170,41 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
                 .then().statusCode(200);
     }
 
+    public void deleteEvent_success(long eventId) {
+        givenRestIntegration()
+                .when()
+                .delete(getServerAddress() + "/api/blito/v1.0/admin/events/"+eventId)
+                .then().statusCode(200);
+    }
+
     public EventViewModel createEvent_approve_open_event_eventDate_blitType_success() {
-        EventViewModel eventViewModel = createEvent_success().thenReturn().body().as(EventViewModel.class);
-        approveEvent_success(eventViewModel.getEventId());
-        openEventState_success(eventViewModel.getEventId());
-        openEventDateState_success(eventViewModel.getEventDates().stream().findFirst().get().getEventDateId());
-        openBlitTypeState_success(eventViewModel.getEventDates().stream().flatMap(eventDate -> eventDate.getBlitTypes().stream()).map(blitType -> blitType.getBlitTypeId()).collect(Collectors.toList()));
+        EventViewModel eventViewModel = createEvent_success("My Event", "Event Host").thenReturn().body().as(EventViewModel.class);
+        approveEvent_success(eventViewModel.getEventId(), OperatorState.APPROVED);
+        openEventState_success(eventViewModel.getEventId(), State.OPEN);
+        openEventDateState_success(eventViewModel.getEventDates().stream().findFirst().get().getEventDateId(), State.OPEN);
+        openBlitTypeState_success(eventViewModel.getEventDates().stream().flatMap(eventDate -> eventDate.getBlitTypes().stream()).map(blitType -> blitType.getBlitTypeId()).collect(Collectors.toList()), State.OPEN);
         return eventViewModel;
+    }
+
+    public void createAdditionalEventsForTest() {
+        Long id1 = createEvent_success("TestEvent1", "eventHost1").thenReturn().as(EventViewModel.class).getEventId();
+        Long id2 = createEvent_success("TestEvent2", "eventHost2").thenReturn().as(EventViewModel.class).getEventId();
+        Long id3 = createEvent_success("TestEvent3", "eventHost3").thenReturn().as(EventViewModel.class).getEventId();
+        Long id4 = createEvent_success("TestEvent4", "eventHost4").thenReturn().as(EventViewModel.class).getEventId();
+
+        approveEvent_success(id1, OperatorState.REJECTED);
+        approveEvent_success(id2, OperatorState.APPROVED);
+        approveEvent_success(id3, OperatorState.APPROVED);
+        approveEvent_success(id4, OperatorState.APPROVED);
+
+        openEventState_success(id1, State.OPEN);
+        openEventState_success(id2, State.ENDED);
+        openEventState_success(id3, State.CLOSED);
+        openEventState_success(id4, State.SOLD);
+
+        assertEquals(State.ENDED.name(), eventRepository.findOne(id2).getEventState());
+
+        deleteEvent_success(id4);
     }
 
     @Test
@@ -179,7 +212,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
     {
         EventHostViewModel eventHostViewModel =
                 createEventHost_success("eventHostName2").thenReturn().body().as(EventHostViewModel.class);
-        EventViewModel eventViewModel = createSampleEventViewModel(eventHostViewModel);
+        EventViewModel eventViewModel = createSampleEventViewModel(eventHostViewModel, "Event2");
         Map<String,String> map = new HashMap<>();
         // type int validation error
         map.put("student number", Constants.FIELD_INT_TYPE);
@@ -201,7 +234,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
                         .body()
                         .as(EventHostViewModel.class);
         EventViewModel eventViewModel =
-                createSampleEventViewModel(eventHostViewModel);
+                createSampleEventViewModel(eventHostViewModel, "Event3");
         Map<String,String> map = new HashMap<>();
         map.put("student number", "testInvalidField");
         eventViewModel.setAdditionalFields(map);
@@ -219,7 +252,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         EventHostViewModel eventHostViewModel =
                 createEventHost_success("eventHostName4").thenReturn().body().as(EventHostViewModel.class);
         EventViewModel eventViewModel =
-                createSampleEventViewModel(eventHostViewModel);
+                createSampleEventViewModel(eventHostViewModel, "Event4");
         Map<String,String> map = new HashMap<>();
 
         map.put("student number", Constants.FIELD_STRING_TYPE);
@@ -240,7 +273,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
     public void updateEvent_additionalFields_success() {
         EventHostViewModel eventHostViewModel =
                 createEventHost_success("eventHostName5").thenReturn().body().as(EventHostViewModel.class);
-        EventViewModel eventViewModel = createSampleEventViewModel(eventHostViewModel);
+        EventViewModel eventViewModel = createSampleEventViewModel(eventHostViewModel, "Event5");
         Map<String,String> map = new HashMap<>();
         map.put("student number",Constants.FIELD_STRING_TYPE);
         eventViewModel.setAdditionalFields(map);
@@ -360,7 +393,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         Response response = givenRestIntegration()
                 .body(discountValidationViewModel)
                 .when()
-                .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
+                .post(getServerAddress() + "/api/blito/v1.0/validate-discount-code");
         response.then().statusCode(200).body("isValid",equalTo(true)).body("totalAmount",equalTo(70000));
     }
 
@@ -378,7 +411,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         Response response = givenRestIntegration()
                 .body(discountValidationViewModel)
                 .when()
-                .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
+                .post(getServerAddress() + "/api/blito/v1.0/validate-discount-code");
         response.then().statusCode(200).body("isValid", equalTo(false));
 
     }
@@ -397,7 +430,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         Response response = givenRestIntegration()
                 .body(discountValidationViewModel)
                 .when()
-                .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
+                .post(getServerAddress() + "/api/blito/v1.0/validate-discount-code");
         response.then().statusCode(200).body("isValid", equalTo(false));
     }
 
@@ -415,7 +448,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         Response response = givenRestIntegration()
                 .body(discountValidationViewModel)
                 .when()
-                .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
+                .post(getServerAddress() + "/api/blito/v1.0/validate-discount-code");
         response.then().statusCode(400);
 
         discountValidationViewModel.setCode("vaysade");
@@ -426,7 +459,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         Response response2 = givenRestIntegration()
                 .body(discountValidationViewModel)
                 .when()
-                .post(getServerAddress() + "/api/blito/v1.0/discount/validate-discount-code");
+                .post(getServerAddress() + "/api/blito/v1.0/validate-discount-code");
         response2.then().statusCode(400);
     }
 
@@ -549,7 +582,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
     }
 
     @Test
-    public void setDiscountCode_failInavalidBlitTypes(){
+    public void setDiscountCode_failInavalidBlitTypes() {
         DiscountViewModel discountViewModel = new DiscountViewModel();
         discountViewModel.setPercent(true);
         discountViewModel.setCode("UserDiscountCode");
@@ -570,5 +603,32 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
                 .when()
                 .post(getServerAddress() + "/api/blito/v1.0/discount/set-discount-code");
         response.then().statusCode(400).body("message", equalTo(ResourceUtil.getMessage(com.blito.enums.Response.NOT_ALLOWED)));
+    }
+
+    @Test
+    public void setDiscountAllEvents_sucess() {
+        createAdditionalEventsForTest();
+        DiscountViewModel discountViewModel = new DiscountViewModel();
+        discountViewModel.setPercent(true);
+        discountViewModel.setCode("DiscountAllEvents");
+        discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(1).toInstant()));
+        discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(1).toInstant()));
+        discountViewModel.setReusability(10);
+        discountViewModel.setPercentage(30D);
+        discountViewModel.setAmount(0L);
+        discountViewModel.setBlitTypeIds(new HashSet<Long>(Arrays.asList(0L)));
+
+        Response response = givenRestIntegration()
+                .body(discountViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/discount/set-discount-all-events");
+        response.then().statusCode(200);
+
+        DiscountViewModel discountViewModel1 = response.thenReturn().as(DiscountViewModel.class);
+        System.out.println("************");
+        discountViewModel1.getBlitTypeIds().forEach(bt -> {
+            BlitType blitType= blitTypeRepository.findOne(bt);
+            System.out.println(blitType.getEventDate().getEvent().getEventName());
+        });
     }
 }
