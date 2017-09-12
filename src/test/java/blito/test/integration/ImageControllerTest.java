@@ -3,23 +3,11 @@ package blito.test.integration;
 import com.blito.configs.Constants;
 import com.blito.enums.Response;
 import com.blito.resourceUtil.ResourceUtil;
-import org.junit.Before;
+import com.blito.rest.viewmodels.image.ImageViewModel;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.http.MediaType;
 
-import com.blito.Application;
-import com.blito.enums.ImageType;
-import com.blito.models.Image;
-import com.blito.repositories.ImageRepository;
+import java.io.File;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 
@@ -41,5 +29,50 @@ public class ImageControllerTest extends AbstractRestControllerTest {
 				.get(getServerAddress() + "/api/blito/v1.0/download?id="+ Constants.DEFAULT_EXCHANGEBLIT_PHOTO)
 				.then()
 				.statusCode(400).body("message",equalTo(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
+	}
+
+
+	public ImageViewModel uploadMultipartFile_success() {
+		io.restassured.response.Response response =
+			givenRestIntegration()
+			.contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+			.when()
+			.multiPart(new File("blito.iml"))
+			.post(getServerAddress() + "/api/blito/v1.0/images/multipart/upload");
+		response.then().statusCode(200);
+		return response.then().extract().body().as(ImageViewModel.class);
+	}
+
+	@Test
+	public void download_success() {
+		ImageViewModel imageViewModel =
+				uploadMultipartFile_success();
+		givenRestIntegration()
+				.when()
+				.get(getServerAddress() + "/api/blito/v1.0/download/?id=" + imageViewModel.getImageUUID())
+				.then()
+				.statusCode(200);
+	}
+
+	@Test
+	public void download_fail() {
+		givenRestIntegration()
+				.when()
+				.get(getServerAddress() + "/api/blito/v1.0/download/?id=" +"hjhj")
+				.then()
+				.statusCode(400)
+				.body("message",equalTo(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND)));
+	}
+
+	@Test
+	public void uploadDefaultAdmin() {
+		io.restassured.response.Response response =
+				givenRestIntegration()
+						.contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+						.when()
+						.multiPart(new File("blito.iml"))
+						.formParam("defaultId", Constants.DEFAULT_EXCHANGEBLIT_PHOTO)
+						.post(getServerAddress() + "/api/blito/v1.0/images/multipart/upload");
+		response.then().statusCode(200);
 	}
 }
