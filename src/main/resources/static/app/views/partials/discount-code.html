@@ -71,7 +71,7 @@
                                             <label class="registerLabel" > شروع اعتبار :</label>
                                         </div>
                                         <div class="col-xs-7 col-sm-8 floatRight ">
-                                            <input height="60" required  name="discountStart" ng-model="discountProperties.effectDatePersian" class="form-group datePickerFormat  discountStartTime" type="text"  >
+                                            <input height="60" required  name="discountStart" ng-model="discountProperties.effectDatePersian" class="form-group datePickerFormat  discountStartTime" type="text"  readonly>
                                         </div>
 
                                     </div>
@@ -80,7 +80,7 @@
                                             <label class="registerLabel" > پایان اعتبار :</label>
                                         </div>
                                         <div class="col-xs-7 col-sm-8 floatRight ">
-                                            <input height="60" required  name="discountEnd" ng-model="discountProperties.expirationDatePersian" class="form-group  datePickerFormat  discountEndTime" type="text"  >
+                                            <input height="60" required  name="discountEnd" ng-model="discountProperties.expirationDatePersian" class="form-group  datePickerFormat  discountEndTime" type="text" readonly >
                                         </div>
 
                                     </div>
@@ -101,6 +101,12 @@
                         </div>
                     </div>
                 </div>
+                <div id="activationDiscountSuccess" class="text-center alert alert-success col-xs-12 dispNone" >
+                    <strong>عملیات با موفقیت انجام شد !</strong>
+                </div>
+                <div id="activationDiscountError" class="text-center alert alert-danger col-xs-12 dispNone" >
+                    <strong></strong>
+                </div>
                 <div class="panel panel-primary customPanel customPanelUser">
 
                     <div class="panel-heading">
@@ -114,29 +120,34 @@
                                 <th class="text-center">درصد</th>
                                 <th class="text-center" >تاریخ شروع</th>
                                 <th class="text-center">تاریخ پایان</th>
-                                <th class="text-center">تعداد استفاده</th>
+                                <th class="text-center">تعداد باقی مانده</th>
+                                <th class="text-center">وضعیت کد تخفیف</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr  pagination-id="eventDiscounts" total-items="totalDiscounts" dir-paginate="item in discountsList | itemsPerPage: 4"  current-page="currentPage">
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
+                            <tr  pagination-id="eventDiscounts" total-items="totalDiscounts" dir-paginate="item in discountsList | itemsPerPage: 3"  current-page="currentPageDiscount">
+                                <td class="text-center">{{item.code}}</td>
+                                <td class="text-center">{{item.percentage | pNumber}}</td>
+                                <td class="text-center"><label ng-class="discountStartDateClass($index)"></label></td>
+                                <td class="text-center"><label ng-class="discountEndDateClass($index)"></label></td>
+                                <td class="text-center">{{item.reusability | pNumber}}</td>
+                                <td class="text-center text-success" ng-show="item.isEnabled">فعال</td>
+                                <td class="text-center text-danger" ng-show="!item.isEnabled">غیر فعال</td>
+                                <td ng-show="!item.isEnabled" class="text-center"><button class="btn btn-success" ng-click="discountStateChange(true, item.discountId, $index)">فعال سازی <i class="fa fa-spinner fa-spin dispNone" ng-class="activateDiscount($index)"></i></button></td>
+                                <td ng-show="item.isEnabled" class="text-center"><button class="btn btn-danger" ng-click="discountStateChange(false, item.discountId, $index)"> غیر فعال کردن <i class="fa fa-spinner fa-spin dispNone" ng-class="deActivateDiscount($index)"></i></button></td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-xs-12">
-                        <div class="col-md-4 col-md-offset-4">
-                            <dir-pagination-controls pagination-id="eventDiscounts" on-page-change="eventDiscountPageChanged(newPageNumber)" class="col-xs-12"
-                                                     max-size="5"
-                            >
-                            </dir-pagination-controls>
-                        </div>
-                    </div>
 
+
+                </div>
+                <div class="col-xs-12">
+                    <div class="col-md-4 col-md-offset-4">
+                        <dir-pagination-controls pagination-id="eventDiscounts" on-page-change="eventDiscountPageChanged(newPageNumber)" class="col-xs-12"
+                                                 max-size="5">
+                        </dir-pagination-controls>
+                    </div>
                 </div>
                 <div class="modal-footer ">
                     <button type="button" class="btn btn-default center-block" data-dismiss="modal">بستن</button>

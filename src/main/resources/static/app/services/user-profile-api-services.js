@@ -71,10 +71,13 @@ angular.module('userProfileApi', [])
         event.validateDiscount = function (validateData) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/validate-discount-code', validateData);
         };
+        event.discountState = function (discountData) {
+            return $http.put(config.baseUrl+'/api/blito/v1.0/discount/set-enable', discountData);
+        };
         event.searchDiscount = function (page, eventId) {
             var queryParam = {
                 cache : true,
-                params : {page: page-1, size: 4, sort: "effectDate,desc"}
+                params : {page: page-1, size: 3, sort: "effectDate,desc"}
             };
             var bodyJson = {
                 restrictions: [

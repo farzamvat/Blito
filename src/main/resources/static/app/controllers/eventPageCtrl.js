@@ -175,7 +175,6 @@ angular.module('eventsPageModule')
                 if($scope.discountIsValid) {
                     buyPaymentTicket.discountCode = $scope.discountCodeName;
                 }
-                console.log(buyPaymentTicket);
         };
         $scope.buyTicketOnce = false;
         $scope.nextStep2 = function () {
@@ -258,7 +257,6 @@ angular.module('eventsPageModule')
 
         };
         $scope.validateDiscountInput = function (discountCode) {
-            console.log(discountCode);
             var discountData = {};
             $scope.discountCodeName = discountCode;
             document.getElementsByClassName("discountSpinner")[0].style.display = "inline";
@@ -278,12 +276,10 @@ angular.module('eventsPageModule')
                         $scope.totalPrice = data.data.totalAmount;
                         buyPaymentTicket.totalAmount = data.data.totalAmount;
                         buyPaymentTicket.discountCode = $scope.discountCodeName;
-                        console.log(buyPaymentTicket);
                     } else {
                         document.getElementById("discountError").style.display = "block";
 
                     }
-                    console.log(data);
                 })
                 .catch(function (data) {
                     document.getElementsByClassName("discountSpinner")[0].style.display = "none";
@@ -310,7 +306,6 @@ angular.module('eventsPageModule')
                     });
                 })
                 .catch(function (data) {
-                    console.log(data);
                 })
         };
         $scope.buyTicketFormatData = function (eventNestedData) {

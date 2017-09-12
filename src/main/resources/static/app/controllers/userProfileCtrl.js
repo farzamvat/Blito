@@ -1209,7 +1209,6 @@ angular.module('User')
                     $scope.coverImageIdEdit = item.imageUUID;
                 }
             });
-            console.log($scope.coverImageIdEdit);
             switch ($scope.coverImageIdEdit) {
                 case 'HOST-COVER-PHOTO-1' :
                     $(document.getElementById("coverPhotoOneEdit")).addClass('photoBorder');
@@ -1419,6 +1418,7 @@ angular.module('User')
         //==================================================== GET DATA =================================
         $scope.currentPageEvent = 1;
         $scope.currentPage = 1;
+        $scope.currentPageDiscount = 1;
         $scope.pageChangedEvents = function(newPage) {
             $scope.getUserEvents(newPage);
         };
@@ -1565,6 +1565,8 @@ angular.module('User')
         $scope.discountCodeShow = function (index) {
             document.getElementById("successDiscount").style.display = "none";
             document.getElementById("errorDiscount").style.display = "none";
+            document.getElementById("activationDiscountSuccess").style.display = "none";
+            document.getElementById("activationDiscountError").style.display = "none";
             $scope.eventDatesDiscount = [];
             $scope.eventChosen = false;
             $scope.sansChosen = false;
@@ -1578,6 +1580,7 @@ angular.module('User')
                 dateSetterService.initDate("discountEndTime");
             }, 1000);
             $scope.discountList(1);
+            $scope.currentPageDiscount = 1;
             $('#discount-codes').modal('show');
         };
         $scope.sansDates = function (index) {
@@ -1585,7 +1588,6 @@ angular.module('User')
         };
         $scope.eventChosen = false;
         $scope.discountEvent = function () {
-            angular.element(document.getElementsByClassName('discount-progress')).css('width', '100%');
             setBlitTypeIds($scope.eventDiscount.eventDates);
             $scope.eventChosen = true;
             $scope.blitChosen = false;
@@ -1595,7 +1597,6 @@ angular.module('User')
         };
         $scope.sansChosen = false;
         $scope.discountSans = function () {
-            angular.element(document.getElementsByClassName('discount-progress')).css('width', '50%');
             $scope.sansChosen = true;
             $scope.blitChosen = false;
             $scope.eventChosen = false;
@@ -1609,19 +1610,16 @@ angular.module('User')
         };
         $scope.blitChosen = false;
         $scope.discountBlit = function () {
-            angular.element(document.getElementsByClassName('discount-progress')).css('width', '50%');
             $scope.blitChosen = true;
             $scope.sansChosen = false;
             $scope.eventChosen = false;
             $scope.sansisPicked = false;
         };
         $scope.sansPicked = function (index) {
-            angular.element(document.getElementsByClassName('discount-progress')).css('width', '100%');
             setBlitTypeIds([$scope.eventDatesDiscount[index]]);
             $scope.sansisPicked = true;
         };
         $scope.blitPicked = function (index) {
-            angular.element(document.getElementsByClassName('discount-progress')).css('width', '100%');
             $scope.blitTypeIds = [];
             $scope.blitTypeIds[0] = $scope.eventFlatDates[index].blitTypeId;
             $scope.blitIsPicked = true;
@@ -1664,10 +1662,58 @@ angular.module('User')
                     console.log(data);
                     $scope.totalDiscounts = data.data.totalElements;
                     $scope.discountsList = data.data.content;
+                    $timeout(function () {
+                        for(var i = 0 ; i < $scope.discountsList.length; i++) {
+                            $(".discountStartClass"+i).html(persianDate($scope.discountsList[i].effectDate).format("YYYY/MM/DD , HH:mm"));
+                            $(".discountEndClass"+i).html(persianDate($scope.discountsList[i].expirationDate).format("YYYY/MM/DD , HH:mm"));
+                        }
+                    }, 300);
                 })
                 .catch(function (data) {
-                    console.log(data);
                 })
+        };
+        $scope.discountStateChange = function (state, id, i) {
+            document.getElementById("activationDiscountSuccess").style.display = "none";
+            document.getElementById("activationDiscountError").style.display = "none";
+            var discountChangeState = {
+                discountId : id,
+                enable : state
+            };
+            if(state) {
+                document.getElementsByClassName("activateDiscount" + i)[0].style.display = "inline";
+            } else {
+                document.getElementsByClassName("deActivateDiscount" + i)[0].style.display = "inline";
+            }
+            eventService.discountState(discountChangeState)
+                .then(function () {
+                    document.getElementById("activationDiscountSuccess").style.display = "block";
+                    if(state) {
+                        document.getElementsByClassName("activateDiscount" + i)[0].style.display = "none";
+                    } else {
+                        document.getElementsByClassName("deActivateDiscount" + i)[0].style.display = "none";
+                    }
+                })
+                .catch(function (data) {
+                    document.getElementById("activationDiscountError").innerHTML= data.data.message;
+                    document.getElementById("activationDiscountError").style.display = "block";
+                    if(state) {
+                        document.getElementsByClassName("activateDiscount" + i)[0].style.display = "none";
+                    } else {
+                        document.getElementsByClassName("deActivateDiscount" + i)[0].style.display = "none";
+                    }
+                })
+        };
+        $scope.activateDiscount = function (i) {
+            return "activateDiscount"+i;
+        };
+        $scope.deActivateDiscount = function (i) {
+            return "deActivateDiscount"+i;
+        };
+        $scope.discountStartDateClass = function (i) {
+            return "discountStartClass"+i;
+        };
+        $scope.discountEndDateClass = function (i) {
+            return "discountEndClass"+i;
         };
         $scope.eventDiscountPageChanged = function (newPage) {
             $scope.discountList(newPage);
@@ -1771,11 +1817,11 @@ angular.module('User')
         };
         $timeout(function () {
             var elements = document.querySelectorAll('input,select,textarea,checkbox');
-        var invalidListener = function(e){ e.preventDefault(); };
+            var invalidListener = function(e){ e.preventDefault(); };
 
-        for(var i = elements.length; i--;) {
-            elements[i].addEventListener('invalid', invalidListener);
-        }
+            for(var i = elements.length; i--;) {
+                elements[i].addEventListener('invalid', invalidListener);
+            }
         }, 1000);
 
     });
