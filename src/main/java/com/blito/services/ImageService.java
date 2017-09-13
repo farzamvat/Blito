@@ -192,21 +192,6 @@ public class ImageService {
         } else {
             return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.INTERNAL_SERVER_ERROR), 500));
         }
-
-
-//        return Option.ofOptional(imageRepository.findByImageUUID(defaultId))
-//                .map(image ->
-//                        Try.ofSupplier(() -> trySaveImage(defaultId, file))
-//                                .map(uid -> saveImageLambda.apply(uid, Option.of(image)))
-//                )
-//                .orElse(() ->
-//                        Option.of(Try.ofSupplier(() -> trySaveImage(defaultId, file))
-//                                .map(uid -> saveImageLambda.apply(uid, Option.none())))
-//                )
-//                .filter(Try::isSuccess)
-//                .map(Try::get)
-//                .toRight(new ExceptionViewModel(ResourceUtil.getMessage(Response.INTERNAL_SERVER_ERROR), 500));
-
     }
 
     private String trySaveImage(String defaultId, MultipartFile file) {

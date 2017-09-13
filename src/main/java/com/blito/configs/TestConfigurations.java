@@ -5,7 +5,7 @@ import com.blito.models.Image;
 import com.blito.repositories.ImageRepository;
 import com.blito.services.ImageService;
 import com.blito.services.MailService;
-import com.blito.services.PaymentRequestServiceAsync;
+import com.blito.services.PaymentRequestService;
 import com.blito.services.SmsService;
 import io.vavr.control.Try;
 import org.mockito.Mockito;
@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.mail.MailSendException;
 
 import javax.annotation.PostConstruct;
-import java.util.concurrent.CompletableFuture;
 
 import static org.mockito.Matchers.*;
 
@@ -67,11 +66,11 @@ public class TestConfigurations {
 
     @Bean
     @Primary
-    public PaymentRequestServiceAsync paymentRequestServiceAsyncSpy()
+    public PaymentRequestService paymentRequestServiceAsyncSpy()
     {
-        PaymentRequestServiceAsync paymentRequestServiceAsync = Mockito.spy(PaymentRequestServiceAsync.class);
-        Mockito.when(paymentRequestServiceAsync.zarinpalRequestToken(anyInt(),anyString(),anyString(),anyString())).thenReturn(CompletableFuture.completedFuture("testToken"));
-        return  paymentRequestServiceAsync;
+        PaymentRequestService paymentRequestService = Mockito.spy(PaymentRequestService.class);
+        Mockito.when(paymentRequestService.zarinpalRequestToken(anyInt(),anyString(),anyString(),anyString())).thenReturn("testToken");
+        return paymentRequestService;
     }
 
     @Bean

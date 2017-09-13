@@ -81,7 +81,6 @@ public class BlitService {
 	@Transactional
 	public CommonBlit persistNoneFreeCommonBlit(BlitType blitType, CommonBlit commonBlit, Optional<User> optionalUser,
 			String token, String trackCode) {
-		checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
 		BlitType attachedBlitType = blitTypeRepository.findOne(blitType.getBlitTypeId());
 		optionalUser.ifPresent(user -> {
 			User attachedUser = userRepository.findOne(user.getUserId());
@@ -130,7 +129,7 @@ public class BlitService {
 		return blitType;
 	}
 
-	public void checkBlitTypeRestrictionsForBuy(BlitType blitType, CommonBlit commonBlit) {
+	void checkBlitTypeRestrictionsForBuy(BlitType blitType, CommonBlit commonBlit) {
 
 		if (blitType.getBlitTypeState().equals(State.SOLD.name()))
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_TYPE_SOLD));
@@ -139,6 +138,9 @@ public class BlitService {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_TYPE_CLOSED));
 		if (!blitType.getEventDate().getEvent().getEventState().equals(State.OPEN.name())) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_NOT_OPEN));
+		}
+		if(!blitType.getEventDate().getEventDateState().equals(State.OPEN.name())) {
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_OPEN));
 		}
 		if (commonBlit.getCount() + blitType.getSoldCount() > blitType.getCapacity())
 			throw new InconsistentDataException(

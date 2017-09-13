@@ -1,41 +1,13 @@
 package blito.test.unit;
 
-import static org.junit.Assert.assertEquals;
-
-import java.sql.Timestamp;
-import java.time.ZonedDateTime;
-import java.util.stream.IntStream;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.blito.Application;
 import com.blito.configs.Constants;
-import com.blito.enums.BankGateway;
-import com.blito.enums.EventType;
-import com.blito.enums.HostType;
-import com.blito.enums.ImageType;
-import com.blito.enums.SeatType;
-import com.blito.enums.State;
+import com.blito.enums.*;
 import com.blito.models.BlitType;
 import com.blito.models.EventHost;
 import com.blito.models.Image;
 import com.blito.models.User;
-import com.blito.repositories.BlitTypeRepository;
-import com.blito.repositories.CommonBlitRepository;
-import com.blito.repositories.DiscountRepository;
-import com.blito.repositories.EventHostRepository;
-import com.blito.repositories.EventRepository;
-import com.blito.repositories.ImageRepository;
-import com.blito.repositories.UserRepository;
+import com.blito.repositories.*;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
@@ -47,7 +19,23 @@ import com.blito.security.SecurityContextHolder;
 import com.blito.services.AdminEventService;
 import com.blito.services.BlitService;
 import com.blito.services.EventService;
-import com.blito.services.PaymentRequestServiceAsync;
+import com.blito.services.PaymentRequestService;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Timestamp;
+import java.time.ZonedDateTime;
+import java.util.stream.IntStream;
+
+import static org.junit.Assert.assertEquals;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
@@ -75,7 +63,7 @@ public class BlitServiceTest {
 	@Autowired
 	CommonBlitRepository commonBlitRepo;
 	@Autowired
-	PaymentRequestServiceAsync paymentRequestService;
+	PaymentRequestService paymentRequestService;
 	
 
 	private EventHost eventHost = new EventHost();
@@ -190,7 +178,7 @@ public class BlitServiceTest {
 		commonBlitViewModel.setBankGateway(BankGateway.NONE);
 		IntStream.range(1, 3).parallel().forEach(i -> {
 			SecurityContextHolder.setCurrentUser(user);
-			paymentRequestService.createCommonBlitAuthorized(commonBlitViewModel);
+			paymentRequestService.createCommonBlitAuthorized(commonBlitViewModel,SecurityContextHolder.currentUser());
 		});
 
 		BlitType blitType = blitTypeRepo.findOne(blitTypeId);

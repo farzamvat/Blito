@@ -52,7 +52,7 @@ public class PaymentService {
 	private SmsService smsService;
 	@Autowired
 	private BlitService blitService;
-	private static Object paymentCompletionLock = new Object();
+	private static final Object paymentCompletionLock = new Object();
 	private final Logger log = LoggerFactory.getLogger(PaymentService.class);
 	
 	@Transactional
