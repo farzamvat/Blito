@@ -3,7 +3,6 @@ package com.blito.services;
 import com.blito.enums.OperatorState;
 import com.blito.enums.Response;
 import com.blito.enums.State;
-import com.blito.exceptions.NotAllowedException;
 import com.blito.mappers.DiscountMapper;
 import com.blito.models.BlitType;
 import com.blito.models.Discount;
@@ -19,7 +18,9 @@ import com.blito.rest.viewmodels.discount.DiscountEnableViewModel;
 import com.blito.rest.viewmodels.discount.DiscountValidationViewModel;
 import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
+import com.blito.search.Operation;
 import com.blito.search.SearchViewModel;
+import com.blito.search.Simple;
 import io.vavr.control.Either;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -117,17 +118,14 @@ public class DiscountService {
 
     @Transactional
     public Page<DiscountViewModel> searchDiscountCodes(SearchViewModel<Discount> searchViewModel, Pageable pageable, User user) {
+        Simple<Discount> selectDiscountCreator = new Simple<>(Operation.eq,"user-email",user.getEmail());
+        searchViewModel.getRestrictions().add(selectDiscountCreator);
         Page<Discount> discounts = searchService.search(searchViewModel, pageable, discountRepository);
         discounts.forEach(discount -> {
             if(discount.getExpirationDate().before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()))) {
                 discount.setEnabled(false);
             }
         });
-        if(discounts.getContent().stream().flatMap(discount -> discount.getBlitTypes().stream())
-                .anyMatch(blitType -> blitType.getEventDate().getEvent().getEventHost().getUser().getUserId() != user.getUserId()))
-        {
-            throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
-        }
         return discountMapper.toPage(discounts);
     }
     @Transactional
