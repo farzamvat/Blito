@@ -5,13 +5,7 @@
 angular.module('homePageApi', [])
     .service('miniSliderService', function ($http, config) {
         var miniSlider = this;
-        var timeoutFirstTime = 1000;
-        miniSlider.getTimeout = function () {
-            return timeoutFirstTime;
-        };
-        miniSlider.setTimeout = function (time) {
-            timeoutFirstTime = time;
-        };
+
         miniSlider.getSlidingDataEvents = function (eventType, size, evento) {
             var queryParam = {
                 cache : true,

@@ -220,7 +220,7 @@
                     <a class="slidingEventsImg" href="{{url+ourOfferEvento[0].eventLink}}"><img ng-src="{{ourOfferEvento[0].image}}" class=" center-block homePageImage">
                         <div class="moreInfo">
                             <h4>{{ ourOfferEvento[0].eventName }}</h4>
-                            <h5 ng-show="event.eventType !== 'EXHIBITION'">{{ ourOfferEvento[0].capacity - ourOfferEvento[0].soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
+                            <h5 ng-show="ourOfferEvento[0].eventType !== 'EXHIBITION'">{{ ourOfferEvento[0].capacity - ourOfferEvento[0].soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
                         </div>
 
                         <div ng-show="ourOfferEvento[0].eventState === 'SOLD'" class="soldout marginBottomOurOffer">
