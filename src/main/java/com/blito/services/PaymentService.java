@@ -8,6 +8,7 @@ import com.blito.exceptions.BlitNotAvailableException;
 import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.exceptions.ZarinpalException;
+import com.blito.mappers.CommonBlitMapper;
 import com.blito.models.Blit;
 import com.blito.models.BlitType;
 import com.blito.models.CommonBlit;
@@ -18,7 +19,6 @@ import com.blito.repositories.BlitRepository;
 import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.CommonBlitRepository;
 import com.blito.resourceUtil.ResourceUtil;
-import com.blito.services.util.AsyncUtil;
 import com.blito.services.util.HtmlRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,11 +29,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class PaymentService {
+	private static final Object paymentCompletionLock = new Object();
+	private static final Logger log = LoggerFactory.getLogger(PaymentService.class);
 	@Autowired
 	private SamanBankService samanBankService;
 	@Autowired
@@ -52,9 +52,9 @@ public class PaymentService {
 	private SmsService smsService;
 	@Autowired
 	private BlitService blitService;
-	private static final Object paymentCompletionLock = new Object();
-	private final Logger log = LoggerFactory.getLogger(PaymentService.class);
-	
+	@Autowired
+	private CommonBlitMapper commonBlitMapper;
+
 	@Transactional
 	public Blit zarinpalPaymentFlow(String authority,String status)
 	{
@@ -70,18 +70,13 @@ public class PaymentService {
 				checkBlitCapacity(commonBlit);
 				PaymentVerificationResponse verificationResponse = zarinpalClient.getPaymentVerificationResponse(commonBlit.getTotalAmount().intValue(), authority);
 				log.info("success in zarinpal verification response trackCode '{}' user email '{}' ref number '{}'",blit.getTrackCode(),blit.getCustomerEmail(), verificationResponse.getRefID());
-				Blit persistedBlit = null;
+				CommonBlit persistedBlit = null;
 				synchronized (paymentCompletionLock) {
 					log.info("User with email '{}' holding the lock after payment",commonBlit.getCustomerEmail());
 					persistedBlit = persistZarinpalBoughtBlit(commonBlit, authority, String.valueOf(verificationResponse.getRefID()), ZarinpalException.generateMessage(verificationResponse.getStatus()));
 					log.info("User with email '{}' released the lock after payment",commonBlit.getCustomerEmail());
 				}
-				Map<String,Object> map = new HashMap<>();
-				map.put("blit", persistedBlit);
-				AsyncUtil.run(() -> mailService.sendEmail(blit.getCustomerEmail(),
-						htmlRenderer.renderHtml("ticket", map),
-						ResourceUtil.getMessage(Response.BLIT_RECIEPT)));
-				AsyncUtil.run(() -> smsService.sendBlitRecieptSms(blit.getCustomerMobileNumber(), blit.getTrackCode()));
+				blitService.sendEmailAndSmsForPurchasedBlit(commonBlitMapper.createFromEntity(persistedBlit));
 				return persistedBlit;
 			}
 			else {
@@ -105,7 +100,7 @@ public class PaymentService {
 					ResourceUtil.getMessage(Response.REQUESTED_BLIT_COUNT_IS_MORE_THAN_CAPACITY));
 	}
 	@Transactional
-	public Blit persistZarinpalBoughtBlit(CommonBlit blit, String authority, String refNum, String paymentMessage) {
+	public CommonBlit persistZarinpalBoughtBlit(CommonBlit blit, String authority, String refNum, String paymentMessage) {
 		CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
 		BlitType blitType = commonBlit.getBlitType();
 		commonBlit.setRefNum(refNum);
@@ -115,94 +110,7 @@ public class PaymentService {
 		blitService.checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
 		blitType.setSoldCount(blitType.getSoldCount() + commonBlit.getCount());
 		log.info("****** NONE FREE BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}'",commonBlit.getCustomerEmail(),blitType.getSoldCount());
-		if (blitType.getSoldCount() == blitType.getCapacity()) {
-			blitType.setBlitTypeState(State.SOLD.name());
-			if (blitType.getEventDate().getBlitTypes().stream()
-					.allMatch(b -> b.getBlitTypeState().equals(State.SOLD.name()))) {
-				blitType.getEventDate().setEventDateState(State.SOLD.name());
-			}
-			if (blitType.getEventDate().getEvent().getEventDates().stream()
-					.allMatch(ed -> ed.getEventDateState().equals(State.SOLD.name()))) {
-				blitType.getEventDate().getEvent().setEventState(State.SOLD.name());
-				blitType.getEventDate().getEvent().setEventSoldDate(
-						Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
-			}
-		}
+		blitService.checkBlitTypeSoldConditionAndSetEventDateEventStateSold(blitType);
 		return commonBlit;
 	}
-	
-//	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
-//	private void completePaymentOperation(FinalizePaymentRequest paymentRequestArgs) {
-//		blitRepository.findByTrackCode(paymentRequestArgs.getRequest().getResNum()).ifPresent(blit -> {
-//			if (blit.getSeatType().equals(SeatType.COMMON)) {
-//				samanBankService.verifyTransaction(paymentRequestArgs.getRequest().getRefNum()).thenAccept(res -> {
-//					blit.setRefNum(paymentRequestArgs.getRequest().getRefNum());
-//					blit.setSamanTraceNo(paymentRequestArgs.getRequest().getTraceNo());
-//					blit.setPaymentStatus(PaymentStatus.PAID.name());
-//					// TODO ERROR
-//					BlitType blitType = blitTypeRepository.findByBlitTypeId(blit.getBlitId());
-//					blitType.setSoldCount(blitType.getSoldCount() + blit.getCount());
-//					if (blitType.getSoldCount() == blitType.getCapacity()) {
-//						blitType.setBlitTypeState(State.SOLD.name());
-//						if (blitType.getEventDate().getBlitTypes().stream()
-//								.allMatch(b -> b.getBlitTypeState().equals(State.SOLD.name()))) {
-//							blitType.getEventDate().setEventDateState(State.SOLD.name());
-//						}
-//						if (blitType.getEventDate().getEvent().getEventDates().stream()
-//								.allMatch(ed -> ed.getEventDateState().equals(State.SOLD.name()))) {
-//							blitType.getEventDate().getEvent().setEventState(State.SOLD.name());
-//							blitType.getEventDate().getEvent().setEventSoldDate(
-//									Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
-//						}
-//					}
-//
-//					blitTypeRepository.save(blitType);
-//					blitRepository.save(blit);
-//
-//					// send email asynchronously
-//
-//				}).exceptionally(t -> {
-//					samanBankService.revereseTransaction(paymentRequestArgs.getRequest().getRefNum()).join();
-//					return null;
-//				});
-//			}
-//			// seat blit
-//		});
-//	}
-//
-//
-//
-//	@Transactional
-//	public void samanPaymentCallback(FinalizePaymentRequest paymentRequestCallbackArguments) {
-//		if (paymentRequestCallbackArguments.getRequest().getState().equals("OK")) {
-//			Optional<Blit> blitOptional = blitRepository
-//					.findByRefNum(paymentRequestCallbackArguments.getRequest().getRefNum());
-//			if (blitOptional.isPresent()) {
-//				if (blitOptional.get().getPaymentStatus().equals(PaymentStatus.ERROR)) {
-//					completePaymentOperation(paymentRequestCallbackArguments);
-//				}
-//			} else {
-//				completePaymentOperation(paymentRequestCallbackArguments);
-//			}
-//
-//		} else if (paymentRequestCallbackArguments.getRequest().getState().replaceAll(" ", "")
-//				.equals("CanceledByUser")) {
-//			//
-//			//
-//			//
-//			//
-//		} else {
-//			Optional<Blit> blitOptional = blitRepository
-//					.findByTrackCode(paymentRequestCallbackArguments.getRequest().getResNum());
-//			blitOptional.ifPresent(blit -> {
-//				blit.setPaymentError(paymentRequestCallbackArguments.getRequest().getState());
-//				blit.setSamanTraceNo(paymentRequestCallbackArguments.getRequest().getTraceNo());
-//				blit.setRefNum(paymentRequestCallbackArguments.getRequest().getRefNum());
-//				blit.setPaymentStatus(PaymentStatus.ERROR.name());
-//				blitRepository.save(blit);
-//			});
-//
-//		}
-//	}
-
 }

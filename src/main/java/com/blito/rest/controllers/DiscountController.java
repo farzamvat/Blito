@@ -58,7 +58,7 @@ public class DiscountController {
     }
 
     @Permission(value = ApiBusinessName.ADMIN)
-    @PostMapping("/discount/admin-set-discount-code")
+    @PostMapping("/admin/discount/set-discount-code")
     public CompletionStage<ResponseEntity<?>> setDiscountCodeByOperator(@Valid @RequestBody DiscountViewModel vmodel,
                                                                         BindingResult bindingResult, HttpServletRequest req, HttpServletResponse res) {
         if (bindingResult.hasFieldErrors())
@@ -82,7 +82,7 @@ public class DiscountController {
     }
 
     @Permission(value = ApiBusinessName.ADMIN)
-    @PutMapping("/discount/admin-update-discount-code")
+    @PutMapping("/admin/discount/update-discount-code")
     public CompletionStage<ResponseEntity<?>> updateDiscountCodeByOperator(@Valid @RequestBody DiscountViewModel vmodel,
                                                                            BindingResult bindingResult, HttpServletRequest req, HttpServletResponse res){
         if (bindingResult.hasFieldErrors())
@@ -109,7 +109,7 @@ public class DiscountController {
     }
 
     @Permission(ApiBusinessName.ADMIN)
-    @PutMapping("/discount/admin-set-enable")
+    @PutMapping("/admin/discount/set-enable")
     public CompletionStage<ResponseEntity<?>> adminEnableDiscountCode(@Valid @RequestBody DiscountEnableViewModel viewModel,
                                                                  BindingResult bindingResult,
                                                                  HttpServletRequest request,
@@ -128,12 +128,24 @@ public class DiscountController {
                                                                   Pageable pageable,
                                                                   HttpServletRequest request,
                                                                   HttpServletResponse response) {
-        return CompletableFuture.supplyAsync(() -> discountService.searchDiscountCodes(searchViewModel,pageable))
+        User user = SecurityContextHolder.currentUser();
+        return CompletableFuture.supplyAsync(() -> discountService.searchDiscountCodes(searchViewModel,pageable,user))
                 .handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,request,response));
     }
 
     @Permission(ApiBusinessName.ADMIN)
-    @PostMapping("discount/set-discount-all-events")
+    @PostMapping("/admin/discount/search")
+    public CompletionStage<ResponseEntity<?>> searchDiscountCodesByAdmin(@RequestBody SearchViewModel<Discount> searchViewModel,
+                                                                         Pageable pageable,
+                                                                         HttpServletRequest request,
+                                                                         HttpServletResponse response) {
+        return CompletableFuture.supplyAsync(() -> discountService.searchDiscountCodesByAdmin(searchViewModel, pageable))
+                .handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,request,response));
+    }
+
+
+    @Permission(ApiBusinessName.ADMIN)
+    @PostMapping("/admin/discount/set-discount-all-events")
     public CompletionStage<ResponseEntity<?>> setDiscountForAllEvents(@Valid @RequestBody DiscountViewModel vmodel,
                                                                       BindingResult bindingResult, HttpServletRequest req, HttpServletResponse res) {
         if (bindingResult.hasFieldErrors())

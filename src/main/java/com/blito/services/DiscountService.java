@@ -3,6 +3,7 @@ package com.blito.services;
 import com.blito.enums.OperatorState;
 import com.blito.enums.Response;
 import com.blito.enums.State;
+import com.blito.exceptions.NotAllowedException;
 import com.blito.mappers.DiscountMapper;
 import com.blito.models.BlitType;
 import com.blito.models.Discount;
@@ -20,7 +21,6 @@ import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.search.SearchViewModel;
 import io.vavr.control.Either;
-import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -84,12 +84,15 @@ public class DiscountService {
 
     @Transactional
     public Either<ExceptionViewModel, ?> enableDiscountCode(DiscountEnableViewModel viewModel, User user) {
-        Optional<Discount> discount = Optional.ofNullable(discountRepository.findOne(viewModel.getDiscountId()));
-        if (discount.isPresent()) {
-            if (discount.get().getUser().getUserId() != user.getUserId()) {
+        Optional<Discount> optionalDiscount = Optional.ofNullable(discountRepository.findOne(viewModel.getDiscountId()));
+        if (optionalDiscount.isPresent()) {
+            Discount discount = optionalDiscount.get();
+            if (discount.getUser().getUserId() != user.getUserId()) {
                 return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.NOT_ALLOWED), 400));
+            } else if(discount.getExpirationDate().before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()))) {
+                return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.DISCOUNT_CODE_EXPIRED),400));
             } else {
-                discount.get().setEnabled(viewModel.getEnable());
+                discount.setEnabled(viewModel.getEnable());
                 return Either.right(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS), true));
             }
         } else
@@ -98,16 +101,44 @@ public class DiscountService {
 
     @Transactional
     public Either<ExceptionViewModel, ?> adminEnableDiscountCode(DiscountEnableViewModel viewModel, User user) {
-        return Option.of(discountRepository.findOne(viewModel.getDiscountId()))
-                .map(discount -> {
-                    discount.setEnabled(viewModel.getEnable());
-                    return new ResultVm(ResourceUtil.getMessage(Response.SUCCESS), true);
-                }).toRight(new ExceptionViewModel(ResourceUtil.getMessage(Response.DISCOUNT_CODE_NOT_FOUND), 400));
+        Optional<Discount> optionalDiscount = Optional.ofNullable(discountRepository.findOne(viewModel.getDiscountId()));
+        if(optionalDiscount.isPresent()) {
+            Discount discount = optionalDiscount.get();
+            if(discount.getExpirationDate().before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()))) {
+                return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.DISCOUNT_CODE_EXPIRED),400));
+            } else {
+                discount.setEnabled(viewModel.getEnable());
+                return Either.right(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS), true));
+            }
+        } else {
+            return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.DISCOUNT_CODE_NOT_FOUND), 400));
+        }
     }
 
     @Transactional
-    public Page<DiscountViewModel> searchDiscountCodes(SearchViewModel<Discount> searchViewModel, Pageable pageable) {
-        return searchService.search(searchViewModel, pageable, discountMapper, discountRepository);
+    public Page<DiscountViewModel> searchDiscountCodes(SearchViewModel<Discount> searchViewModel, Pageable pageable, User user) {
+        Page<Discount> discounts = searchService.search(searchViewModel, pageable, discountRepository);
+        discounts.forEach(discount -> {
+            if(discount.getExpirationDate().before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()))) {
+                discount.setEnabled(false);
+            }
+        });
+        if(discounts.getContent().stream().flatMap(discount -> discount.getBlitTypes().stream())
+                .anyMatch(blitType -> blitType.getEventDate().getEvent().getEventHost().getUser().getUserId() != user.getUserId()))
+        {
+            throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
+        }
+        return discountMapper.toPage(discounts);
+    }
+    @Transactional
+    public Page<DiscountViewModel> searchDiscountCodesByAdmin(SearchViewModel<Discount> searchViewModel,Pageable pageable) {
+        return discountMapper.toPage(searchService.search(searchViewModel,pageable,discountRepository)
+        .map(discount -> {
+            if(discount.getExpirationDate().before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()))) {
+                discount.setEnabled(false);
+            }
+            return discount;
+        }));
     }
 
     DiscountValidationViewModel validateDiscountCodeBeforePurchaseRequest(Long blitTypeId, String code, int count) {
@@ -126,6 +157,7 @@ public class DiscountService {
                     } else if (!discount.getBlitTypes().stream().map(BlitType::getBlitTypeId).collect(Collectors.toList()).contains(vmodel.getBlitTypeId())) {
                         vmodel.setValid(false);
                     } else if (discount.getExpirationDate().before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()))) {
+
                         vmodel.setValid(false);
                     } else if (discount.getEffectDate().after(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()))) {
                         vmodel.setValid(false);
@@ -172,8 +204,6 @@ public class DiscountService {
         if (!optionalDiscount.isPresent())
             return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.DISCOUNT_CODE_NOT_FOUND), 400));
         Discount discount = optionalDiscount.get();
-        if (discount.getUser().getUserId() != user.getUserId())
-            return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.NOT_ALLOWED), 400));
         if (!discount.getCode().equals(vmodel.getCode()))
             return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.DISCOUNT_CODE_IS_FINAL), 400));
         if (!discount.getPercentage().equals(vmodel.getPercentage()))

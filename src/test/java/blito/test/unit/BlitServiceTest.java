@@ -178,7 +178,7 @@ public class BlitServiceTest {
 		commonBlitViewModel.setBankGateway(BankGateway.NONE);
 		IntStream.range(1, 3).parallel().forEach(i -> {
 			SecurityContextHolder.setCurrentUser(user);
-			paymentRequestService.createCommonBlitAuthorized(commonBlitViewModel,SecurityContextHolder.currentUser());
+			blitService.createCommonBlitAuthorized(commonBlitViewModel,SecurityContextHolder.currentUser());
 		});
 
 		BlitType blitType = blitTypeRepo.findOne(blitTypeId);

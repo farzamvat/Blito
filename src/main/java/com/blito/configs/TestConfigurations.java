@@ -5,7 +5,6 @@ import com.blito.models.Image;
 import com.blito.repositories.ImageRepository;
 import com.blito.services.ImageService;
 import com.blito.services.MailService;
-import com.blito.services.PaymentRequestService;
 import com.blito.services.SmsService;
 import io.vavr.control.Try;
 import org.mockito.Mockito;
@@ -18,7 +17,8 @@ import org.springframework.mail.MailSendException;
 
 import javax.annotation.PostConstruct;
 
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
 
 /*
     @author Farzam Vatanzadeh
@@ -62,15 +62,6 @@ public class TestConfigurations {
         Mockito.when(imageService.getFileEncodedBase64(Constants.DEFAULT_HOST_PHOTO)).thenReturn(Try.success("sampleHostPhoto"));
         Mockito.when(imageService.getFileEncodedBase64(Constants.DEFAULT_EXCHANGEBLIT_PHOTO)).thenReturn(Try.failure(new RuntimeException("")));
         return imageService;
-    }
-
-    @Bean
-    @Primary
-    public PaymentRequestService paymentRequestServiceAsyncSpy()
-    {
-        PaymentRequestService paymentRequestService = Mockito.spy(PaymentRequestService.class);
-        Mockito.when(paymentRequestService.zarinpalRequestToken(anyInt(),anyString(),anyString(),anyString())).thenReturn("testToken");
-        return paymentRequestService;
     }
 
     @Bean

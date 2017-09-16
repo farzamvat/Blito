@@ -210,8 +210,8 @@ public class ExcelServiceTest {
 		additionalFields2.put("Weight", "40.7");
 		commonBlitViewModel2.setAdditionalFields(additionalFields2);
 
-		paymentRequestService.createCommonBlitAuthorized(commonBlitViewModel1,SecurityContextHolder.currentUser());
-		paymentRequestService.createCommonBlitAuthorized(commonBlitViewModel2,SecurityContextHolder.currentUser());
+		blitService.createCommonBlitAuthorized(commonBlitViewModel1,SecurityContextHolder.currentUser());
+		blitService.createCommonBlitAuthorized(commonBlitViewModel2,SecurityContextHolder.currentUser());
 		
 		SearchViewModel<CommonBlit> searchViewModel = new SearchViewModel<>();
 		Simple<CommonBlit> simple = new Simple<>();

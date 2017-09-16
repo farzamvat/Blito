@@ -9,7 +9,6 @@ import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.BlitService;
-import com.blito.services.PaymentRequestService;
 import com.blito.view.ExcelView;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -35,16 +34,14 @@ import java.util.concurrent.CompletionStage;
 public class BlitController {
 
 	@Autowired
-	BlitService blitService;
-	@Autowired
-	PaymentRequestService paymentRequestService;
+	private BlitService blitService;
 
 	@Permission(value = ApiBusinessName.USER)
 	@PostMapping("/buy-request")
 	public CompletionStage<ResponseEntity<?>> buyBlit(@Validated @RequestBody CommonBlitViewModel vmodel,
 			HttpServletRequest req, HttpServletResponse res) {
 		User user = SecurityContextHolder.currentUser();
-		return CompletableFuture.supplyAsync(() -> paymentRequestService.createCommonBlitAuthorized(vmodel,user))
+		return CompletableFuture.supplyAsync(() -> blitService.createCommonBlitAuthorized(vmodel,user))
 				.handle((result, throwable) -> HandleUtility.generateResponseResult(() -> result, throwable, req, res));
 	}
 
