@@ -18,6 +18,7 @@ public class Simple<T> extends AbstractSearchViewModel<T> {
         super.field = field;
         this.operation = operation;
         setValue(value);
+        this.value = value;
     }
 
 

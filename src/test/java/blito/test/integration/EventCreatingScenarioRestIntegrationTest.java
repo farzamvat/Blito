@@ -9,6 +9,7 @@ import com.blito.enums.HostType;
 import com.blito.enums.OperatorState;
 import com.blito.enums.State;
 import com.blito.models.BlitType;
+import com.blito.models.Discount;
 import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.EventRepository;
 import com.blito.resourceUtil.ResourceUtil;
@@ -23,7 +24,9 @@ import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
-import com.blito.rest.viewmodels.exception.ExceptionViewModel;
+import com.blito.search.Operation;
+import com.blito.search.SearchViewModel;
+import com.blito.search.Simple;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
@@ -305,6 +308,25 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
     public void createDiscountCode_success()
     {
         createDiscountCode_success("discount");
+    }
+
+    @Test
+    public void searchDiscount_success() {
+        createDiscountCode_success("searchDiscount1");
+        createDiscountCode_success("searchDiscount2");
+        createDiscountCode_success("searchDiscount3");
+        createDiscountCode_success("searchDiscount4");
+        createDiscountCode_success("searchDiscount5");
+
+        SearchViewModel<Discount> searchViewModel = new SearchViewModel<>();
+        Simple<Discount> eventId = new Simple<>(Operation.eq,"blitTypes-eventDate-event-eventId",eventViewModel.getEventId());
+        searchViewModel.setRestrictions(Collections.singletonList(eventId));
+        givenRestIntegration()
+                .body(searchViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/discount/search")
+                .then()
+                .statusCode(200).body("numberOfElements",equalTo(5));
     }
 
     @Test
