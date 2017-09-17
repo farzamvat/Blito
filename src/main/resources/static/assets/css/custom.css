@@ -363,6 +363,11 @@ button.slick-next {
 .btn-blito:hover {
     box-shadow: none;
 }
+.btn-make-exchange {
+    display: block;
+    padding: 15px 50px;
+    margin: 15px auto 20px auto;
+}
 .socialmedia{
     background: rgb(252, 183, 49);
     border-radius: 50%;
@@ -596,7 +601,7 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 .exchangeBlitHeader{
     background: url('../img/exchange.jpg') fixed ;
     background-size: 100% 380px;
-    padding-top: 120px;
+    padding-top: 100px;
 }
 .noshadow{
     box-shadow: none !important;
