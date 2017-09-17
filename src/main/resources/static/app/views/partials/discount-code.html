@@ -58,7 +58,7 @@
                                     </div>
                                     <div class="form-group col-xs-12 marginTop10 formRegGroup">
                                         <div class="col-xs-5 col-sm-4 floatRight text-center">
-                                            <label class="registerLabel" >تعداد استفاده :</label>
+                                            <label class="registerLabel" >تعداد اعتبار :</label>
                                         </div>
                                         <div class="col-xs-7 col-sm-8 floatRight ">
                                             <input height="60" required  name="discountUse" ng-model="discountProperties.reusability" class="form-group  registerInput" type="number"  >
@@ -120,7 +120,8 @@
                                 <th class="text-center">درصد</th>
                                 <th class="text-center" >تاریخ شروع</th>
                                 <th class="text-center">تاریخ پایان</th>
-                                <th class="text-center">تعداد باقی مانده</th>
+                                <th class="text-center">تعداد اعتبار</th>
+                                <th class="text-center">تعداد استفاده شده</th>
                                 <th class="text-center">وضعیت کد تخفیف</th>
                             </tr>
                             </thead>
@@ -131,10 +132,12 @@
                                 <td class="text-center"><label ng-class="discountStartDateClass($index)"></label></td>
                                 <td class="text-center"><label ng-class="discountEndDateClass($index)"></label></td>
                                 <td class="text-center">{{item.reusability | pNumber}}</td>
+                                <td class="text-center">{{item.used | pNumber}}</td>
                                 <td class="text-center text-success" ng-show="item.isEnabled">فعال</td>
                                 <td class="text-center text-danger" ng-show="!item.isEnabled">غیر فعال</td>
                                 <td ng-show="!item.isEnabled" class="text-center"><button class="btn btn-success" ng-click="discountStateChange(true, item.discountId, $index)">فعال سازی <i class="fa fa-spinner fa-spin dispNone" ng-class="activateDiscount($index)"></i></button></td>
                                 <td ng-show="item.isEnabled" class="text-center"><button class="btn btn-danger" ng-click="discountStateChange(false, item.discountId, $index)"> غیر فعال کردن <i class="fa fa-spinner fa-spin dispNone" ng-class="deActivateDiscount($index)"></i></button></td>
+                                <td  class="text-center"><button class="btn btn-warning" ng-click="editDiscount($index)">ویرایش</button></td>
                             </tr>
                             </tbody>
                         </table>
@@ -149,6 +152,7 @@
                         </dir-pagination-controls>
                     </div>
                 </div>
+
                 <div class="modal-footer ">
                     <button type="button" class="btn btn-default center-block" data-dismiss="modal">بستن</button>
                 </div>

@@ -74,9 +74,11 @@ angular.module('userProfileApi', [])
         event.discountState = function (discountData) {
             return $http.put(config.baseUrl+'/api/blito/v1.0/discount/set-enable', discountData);
         };
+        event.discountEdit = function (discountEditData) {
+            return $http.put(config.baseUrl+'/api/blito/v1.0/discount/update-discount-code', discountEditData);
+        };
         event.searchDiscount = function (page, eventId) {
             var queryParam = {
-                cache : true,
                 params : {page: page-1, size: 3, sort: "effectDate,desc"}
             };
             var bodyJson = {

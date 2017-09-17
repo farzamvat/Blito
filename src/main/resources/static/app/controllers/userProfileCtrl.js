@@ -1579,8 +1579,8 @@ angular.module('User')
                 dateSetterService.initDate("discountStartTime");
                 dateSetterService.initDate("discountEndTime");
             }, 1000);
-            $scope.discountList(1);
             $scope.currentPageDiscount = 1;
+            $scope.discountList(1);
             $('#discount-codes').modal('show');
         };
         $scope.sansDates = function (index) {
@@ -1745,6 +1745,49 @@ angular.module('User')
                     document.getElementById("errorDiscount").innerHTML= data.data.message;
                     document.getElementById("errorDiscount").style.display = "block";
                     document.getElementsByClassName("discountSpinner")[0].style.display = "none";
+                })
+        };
+        var discountIndex = 0;
+        $scope.discountEditProperties= { reusability : 0 };
+        $scope.editDiscount = function (index) {
+            document.getElementById("successEditDiscount").style.display = "none";
+            document.getElementById("errorEditDiscount").style.display = "none";
+            discountIndex = index;
+            $scope.discountEditProperties.reusability = $scope.discountsList[index].reusability;
+            dateSetterService.initDate("discountEditStartTime");
+            $(".discountEditStartTime").pDatepicker("setDate",dateSetterService.persianToArray(persianDate($scope.discountsList[index].effectDate).pDate));
+            dateSetterService.initDate("discountEditEndTime");
+            $(".discountEditEndTime").pDatepicker("setDate",dateSetterService.persianToArray(persianDate($scope.discountsList[index].expirationDate).pDate));
+            $('#discount-codes').modal('hide');
+            $('#discount-code-edit').modal('show');
+        };
+        $scope.editDiscountSubmit = function (discountEditData) {
+            var discountEditSubmit = {
+                amount : 0,
+                blitTypeIds : $scope.discountsList[discountIndex].blitTypeIds,
+                code : $scope.discountsList[discountIndex].code,
+                discountId : $scope.discountsList[discountIndex].discountId,
+                effectDate : dateSetterService.persianToMs(discountEditData.effectDatePersian),
+                expirationDate : dateSetterService.persianToMs(discountEditData.expirationDatePersian),
+                isEnabled : $scope.discountsList[discountIndex].isEnabled,
+                isPercent : true,
+                percentage : $scope.discountsList[discountIndex].percentage,
+                reusability : discountEditData.reusability,
+                used : $scope.discountsList[discountIndex].used
+            };
+            document.getElementsByClassName("discountEditSpinner")[0].style.display = "inline";
+            eventService.discountEdit(discountEditSubmit)
+                .then(function () {
+                    document.getElementsByClassName("discountEditSpinner")[0].style.display = "none";
+                    document.getElementById("errorEditDiscount").style.display = "none";
+                    document.getElementById("successEditDiscount").style.display = "block";
+
+                })
+                .catch(function (data) {
+                    document.getElementById("successEditDiscount").style.display = "none";
+                    document.getElementsByClassName("discountEditSpinner")[0].style.display = "none";
+                    document.getElementById("errorEditDiscount").innerHTML= data.data.message;
+                    document.getElementById("errorEditDiscount").style.display = "block";
                 })
         };
         //==================================================== ********* =================================
