@@ -111,10 +111,6 @@ angular.module('menuPagesModule', [])
             }
         };
 
-        // $(angular.element(document.getElementsByClassName("navbar-toggle"))).onclick = function () {
-        //     $(angular.element(document.getElementsByClassName('dropdown-menu'))).slideUp(300);
-        // };
-
         $rootScope.$on("$locationChangeStart", function(event, next, current) {
             $window.scroll(0,0);
             $("#navbar").removeClass("in");
@@ -210,8 +206,8 @@ angular.module('menuPagesModule', [])
                         $scope.pageDescription = 'آگهی بلیت، فروش بلیت، بلیت فوری، تعویض بلیت';
                         $scope.robotValue = 'index';
                     }
-                    if($location.path().indexOf('bio') > -1) {
-                        $scope.title = $location.path().replace('/bio/','').replace( /\d+/,'').replace( /-/,'');
+                    if($location.path().indexOf('event-host-page') > -1) {
+                        $scope.title = $location.path().replace('/event-host-page/','').replace( /\d+/,'').replace( /-/,'');
                         $scope.pageDescription = 'برگزارکننده، کافه، اجرای کافه ای، موسیقی کافه ای';
                         $scope.robotValue = 'index';
                     }

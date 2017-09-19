@@ -89,19 +89,33 @@ public class TemplatesUnitTest {
 		map.put("blit", blit);
 		try {
 			String content = htmlRenderer.renderHtml("ticket", map);
+			System.out.println(content);
 			assertTrue(true);
 		} catch(Exception e) {
 			assertTrue(false);
 		}
 	}
 	
-//	@Test
-//	public void forgetPasswordTemplateTest()
-//	{
-////		Map<String, Object> map = new HashMap<String, Object>();
-////        map.put("user", user);
-////        map.put("baseUrl", baseUrl);
-////        map.put("serverAddress",serverAddress);
-////        String content = htmlRenderer.renderHtml("forgetPassword", map);
-//	}
+	@Test
+	public void forgetPasswordTemplateTest()
+	{
+		User user = new User();
+		user.setFirstname("hasti");
+		user.setLastname("sahabi");
+		user.setEmail("hasti.sahabi@gmail.com");
+		user.setMobile("09127976837");
+		user.setResetKey("8723678234782347");
+		user = userRepository.save(user);
+		Map<String, Object> map = new HashMap<String, Object>();
+        map.put("user", user);
+        map.put("baseUrl", baseUrl);
+        map.put("serverAddress",serverAddress);
+        try {
+			String content = htmlRenderer.renderHtml("forgetPassword", map);
+			System.out.println(content);
+			assertTrue(true);
+		} catch (Exception exception) {
+        	assertTrue(false);
+		}
+	}
 }

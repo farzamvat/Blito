@@ -1,8 +1,7 @@
 package com.blito;
 
 
-import javax.annotation.PostConstruct;
-
+import com.blito.services.Initiallizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.blito.services.Initiallizer;
+import javax.annotation.PostConstruct;
 
 
 @SpringBootApplication
@@ -32,7 +31,7 @@ public class Application {
 		initializer.importPermissionsToDataBase();
 		initializer.insertAdminUserAndRoleAndOldBlitoUsers();
 	}
-	@GetMapping("/")
+	@GetMapping("/*")
 	public ModelAndView index() {
 		return new ModelAndView("index");
 	}
