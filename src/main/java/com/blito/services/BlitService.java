@@ -132,10 +132,10 @@ public class BlitService {
 			map.put("blit", commonBlitViewModel);
 			Future.runRunnable(() -> mailService.sendEmail(commonBlitViewModel.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map),
 					ResourceUtil.getMessage(Response.BLIT_RECIEPT)))
-					.onFailure((throwable) -> log.error("exception in sending email '{}'",throwable));
+					.onFailure((throwable) -> log.debug("exception in sending email '{}'",throwable));
 			Future.runRunnable(() -> smsService.sendBlitRecieptSms(commonBlitViewModel.getCustomerMobileNumber(), commonBlitViewModel.getTrackCode()))
-					.onFailure(throwable -> log.error("exception in sending sms '{}'",throwable));
-		}).onFailure(throwable -> log.error("exception in sendMailAndSmsForPurchasedBlit '{0}'",throwable));
+					.onFailure(throwable -> log.debug("exception in sending sms '{}'",throwable));
+		}).onFailure(throwable -> log.debug("exception in sendMailAndSmsForPurchasedBlit '{0}'",throwable));
 	}
 
 	@Transactional
