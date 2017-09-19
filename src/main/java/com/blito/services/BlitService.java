@@ -19,7 +19,6 @@ import com.blito.rest.viewmodels.payments.PaymentRequestViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.services.util.HtmlRenderer;
 import io.vavr.concurrent.Future;
-import io.vavr.control.Try;
 import org.apache.poi.ss.formula.eval.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,7 +91,7 @@ public class BlitService {
 
 		}).orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
 	}
-	@Transactional
+
 	public Object createCommonBlitAuthorized(CommonBlitViewModel vmodel,User user) {
 
 		CommonBlit commonBlit = commonBlitMapper.createFromViewModel(vmodel);
@@ -106,8 +105,7 @@ public class BlitService {
 		}
 	}
 
-	@Transactional
-	CommonBlitViewModel reserveFreeCommonBlitForAuthorizedUser(BlitType blitType,CommonBlit commonBlit,User user) {
+	private CommonBlitViewModel reserveFreeCommonBlitForAuthorizedUser(BlitType blitType,CommonBlit commonBlit,User user) {
 		if (commonBlit.getCount() > 10)
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_COUNT_EXCEEDS_LIMIT));
 		if (commonBlit.getCount() + commonBlitRepository.countByCustomerEmailAndBlitTypeBlitTypeId(user.getEmail(),
@@ -127,15 +125,13 @@ public class BlitService {
 	}
 
 	public void sendEmailAndSmsForPurchasedBlit(CommonBlitViewModel commonBlitViewModel) {
-		Try.run(() -> {
-			Map<String, Object> map = new HashMap<>();
-			map.put("blit", commonBlitViewModel);
-			Future.runRunnable(() -> mailService.sendEmail(commonBlitViewModel.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map),
-					ResourceUtil.getMessage(Response.BLIT_RECIEPT)))
-					.onFailure((throwable) -> log.debug("exception in sending email '{}'",throwable));
-			Future.runRunnable(() -> smsService.sendBlitRecieptSms(commonBlitViewModel.getCustomerMobileNumber(), commonBlitViewModel.getTrackCode()))
-					.onFailure(throwable -> log.debug("exception in sending sms '{}'",throwable));
-		}).onFailure(throwable -> log.debug("exception in sendMailAndSmsForPurchasedBlit '{0}'",throwable));
+		Map<String, Object> map = new HashMap<>();
+		map.put("blit", commonBlitViewModel);
+		Future.runRunnable(() -> mailService.sendEmail(commonBlitViewModel.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map),
+				ResourceUtil.getMessage(Response.BLIT_RECIEPT)))
+				.onFailure((throwable) -> log.debug("exception in sending email '{}'",throwable));
+		Future.runRunnable(() -> smsService.sendBlitRecieptSms(commonBlitViewModel.getCustomerMobileNumber(), commonBlitViewModel.getTrackCode()))
+				.onFailure(throwable -> log.debug("exception in sending sms '{}'",throwable));
 	}
 
 	@Transactional
