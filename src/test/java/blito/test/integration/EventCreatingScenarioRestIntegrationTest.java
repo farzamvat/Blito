@@ -324,9 +324,9 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         givenRestIntegration()
                 .body(searchViewModel)
                 .when()
-                .post(getServerAddress() + "/api/blito/v1.0/discount/search")
+                .post(getServerAddress() + "/api/blito/v1.0/discount/search?page=0&size=2")
                 .then()
-                .statusCode(200).body("numberOfElements",equalTo(5));
+                .statusCode(200).body("numberOfElements",equalTo(2));
     }
 
     @Test
