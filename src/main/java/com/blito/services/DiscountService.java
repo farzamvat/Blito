@@ -207,7 +207,6 @@ public class DiscountService {
         if (!discount.getPercentage().equals(vmodel.getPercentage()))
             return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.DISCOUNT_PERCENTAGE_IS_FINAL), 400));
         discount = discountMapper.updateEntity(vmodel, discount);
-        discount.setUser(userRepository.findOne(user.getUserId()));
         discount.setBlitTypes(blitTypes);
 
         return Either.right(discountMapper.createFromEntity(discount));
