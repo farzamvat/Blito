@@ -1,0 +1,66 @@
+<div id="discount-code-edit" class="modal fade" role="dialog">
+    <div class="modal-dialog biggerWidth">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close left" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title textAlignRight">
+                    ویرایش کد تخفیف
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div  class="col-xs-12 floatRight">
+                        <form class="form-inline textAlignRight" name="discountFormEdit">
+                            <fieldset>
+
+                                <div class="form-group col-xs-12 marginTop10 formRegGroup">
+                                    <div class="col-xs-5 col-sm-4 floatRight text-center">
+                                        <label class="registerLabel" >  تعداد اعتبار :</label>
+                                    </div>
+                                    <div class="col-xs-7 col-sm-8 floatRight ">
+                                        <input height="60" required  name="discountUseEdit" ng-model="discountEditProperties.reusability" class="form-group  registerInput" type="text"  >
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group col-xs-12 marginTop10 formRegGroup">
+                                    <div class="col-xs-5 col-sm-4 floatRight text-center">
+                                        <label class="registerLabel" >  زمان شروع اعتبار :</label>
+                                    </div>
+                                    <div class="col-xs-7 col-sm-8 floatRight ">
+                                        <input height="60" required  name="discountStartEdit" ng-model="discountEditProperties.effectDatePersian" class="form-group datePickerFormat  discountEditStartTime" type="text"  readonly>
+                                    </div>
+
+                                </div>
+                                <div class="form-group col-xs-12 marginTop10 formRegGroup">
+                                    <div class="col-xs-5 col-sm-4 floatRight text-center">
+                                        <label class="registerLabel" >  زمان پایان اعتبار :</label>
+                                    </div>
+                                    <div class="col-xs-7 col-sm-8 floatRight ">
+                                        <input height="60" required  name="discountEndEdit" ng-model="discountEditProperties.expirationDatePersian" class="form-group  datePickerFormat  discountEditEndTime" type="text"  readonly>
+                                    </div>
+
+                                </div>
+                                <div class="control-group marginTop60">
+                                    <div id="successEditDiscount" class="text-center alert alert-success col-xs-12 dispNone" >
+                                        <strong>عملیات با موفقیت انجام شد !</strong>
+                                    </div>
+                                    <div id="errorEditDiscount" class="text-center alert alert-danger col-xs-12 dispNone" >
+                                        <strong></strong>
+                                    </div>
+                                    <label class="control-label" for="signInButton"></label>
+                                    <div class="controls ">
+                                        <button id="signInButton" ng-disabled="discountFormEdit.$invalid" ng-click="editDiscountSubmit(discountEditProperties)" name="signin" class="btn btn-success center-block btnLogin">ویرایش کد تخفیف <i  class="fa fa-spinner fa-spin discountEditSpinner dispNone"></i></button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer ">
+                    <button type="button" class="btn btn-default center-block" data-dismiss="modal">بستن</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

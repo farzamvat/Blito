@@ -64,7 +64,30 @@ angular.module('userProfileApi', [])
                 ]
             };
             return $http.post(config.baseUrl+'/api/blito/v1.0/public/events/search', bodyJson, queryParam)
-        }
+        };
+        event.submitDiscount = function (discountData) {
+            return $http.post(config.baseUrl+'/api/blito/v1.0/discount/set-discount-code', discountData);
+        };
+        event.validateDiscount = function (validateData) {
+            return $http.post(config.baseUrl+'/api/blito/v1.0/validate-discount-code', validateData);
+        };
+        event.discountState = function (discountData) {
+            return $http.put(config.baseUrl+'/api/blito/v1.0/discount/set-enable', discountData);
+        };
+        event.discountEdit = function (discountEditData) {
+            return $http.put(config.baseUrl+'/api/blito/v1.0/discount/update-discount-code', discountEditData);
+        };
+        event.searchDiscount = function (page, eventId) {
+            var queryParam = {
+                params : {page: page-1, size: 3, sort: "effectDate,desc"}
+            };
+            var bodyJson = {
+                restrictions: [
+                    {field: "blitTypes-eventDate-event-eventId", type: "simple", operation: "eq", value: eventId}
+                    ]
+            };
+            return $http.post(config.baseUrl+'/api/blito/v1.0/discount/search', bodyJson, queryParam)
+        };
     })
     .service('exchangeService', function ($http, config) {
         var exchange = this;

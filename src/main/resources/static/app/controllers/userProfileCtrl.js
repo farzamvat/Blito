@@ -1209,7 +1209,6 @@ angular.module('User')
                     $scope.coverImageIdEdit = item.imageUUID;
                 }
             });
-            console.log($scope.coverImageIdEdit);
             switch ($scope.coverImageIdEdit) {
                 case 'HOST-COVER-PHOTO-1' :
                     $(document.getElementById("coverPhotoOneEdit")).addClass('photoBorder');
@@ -1419,6 +1418,7 @@ angular.module('User')
         //==================================================== GET DATA =================================
         $scope.currentPageEvent = 1;
         $scope.currentPage = 1;
+        $scope.currentPageDiscount = 1;
         $scope.pageChangedEvents = function(newPage) {
             $scope.getUserEvents(newPage);
         };
@@ -1483,6 +1483,7 @@ angular.module('User')
             $scope.getEventTickets(1);
             $('#eventTickets').modal('show');
         };
+
         $scope.getExchangeData = function (page) {
             exchangeService.getExchangeTickets(page)
                 .then(function (data) {
@@ -1560,6 +1561,236 @@ angular.module('User')
 
             });
         //==================================================== ********* =================================
+        //==================================================== DISCOUNT SECTION =======================
+        $scope.discountCodeShow = function (index) {
+            document.getElementById("successDiscount").style.display = "none";
+            document.getElementById("errorDiscount").style.display = "none";
+            document.getElementById("activationDiscountSuccess").style.display = "none";
+            document.getElementById("activationDiscountError").style.display = "none";
+            $scope.eventDatesDiscount = [];
+            $scope.eventChosen = false;
+            $scope.sansChosen = false;
+            $scope.blitChosen = false;
+            $scope.blitIsPicked = false;
+            $scope.sansisPicked = false;
+            $scope.eventDiscount = angular.copy($scope.userEvents[index]);
+            $scope.flatEventDates($scope.eventDiscount.eventDates);
+            $timeout(function () {
+                dateSetterService.initDate("discountStartTime");
+                dateSetterService.initDate("discountEndTime");
+            }, 1000);
+            $scope.currentPageDiscount = 1;
+            $scope.discountList(1);
+            $('#discount-codes').modal('show');
+        };
+        $scope.sansDates = function (index) {
+            return "discountTime"+index;
+        };
+        $scope.eventChosen = false;
+        $scope.discountEvent = function () {
+            setBlitTypeIds($scope.eventDiscount.eventDates);
+            $scope.eventChosen = true;
+            $scope.blitChosen = false;
+            $scope.sansChosen = false;
+            $scope.sansisPicked = false;
+            $scope.blitIsPicked = false;
+        };
+        $scope.sansChosen = false;
+        $scope.discountSans = function () {
+            $scope.sansChosen = true;
+            $scope.blitChosen = false;
+            $scope.eventChosen = false;
+            $scope.blitIsPicked = false;
+            $scope.eventDatesDiscount = $scope.eventDiscount.eventDates;
+            $timeout(function () {
+                for(var i = 0 ; i < $scope.eventDatesDiscount.length; i++) {
+                    $(".discountTime"+i).html(persianDate($scope.eventDatesDiscount[i].date).format("dddd,DD MMMM, ساعت HH:mm"));
+                }
+            }, 500);
+        };
+        $scope.blitChosen = false;
+        $scope.discountBlit = function () {
+            $scope.blitChosen = true;
+            $scope.sansChosen = false;
+            $scope.eventChosen = false;
+            $scope.sansisPicked = false;
+        };
+        $scope.sansPicked = function (index) {
+            setBlitTypeIds([$scope.eventDatesDiscount[index]]);
+            $scope.sansisPicked = true;
+        };
+        $scope.blitPicked = function (index) {
+            $scope.blitTypeIds = [];
+            $scope.blitTypeIds[0] = $scope.eventFlatDates[index].blitTypeId;
+            $scope.blitIsPicked = true;
+        };
+        var setBlitTypeIds = function (eventDates) {
+            var blitTypeIds = eventDates.map(function (sans) {
+                return sans.blitTypes.map(function (blitType) {
+                    return blitType.blitTypeId;
+                });
+            });
+            $scope.blitTypeIds = [];
+            for(var i = 0; i < blitTypeIds.length; i++)
+            {
+                $scope.blitTypeIds = $scope.blitTypeIds.concat(blitTypeIds[i]);
+            }
+        };
+        $scope.eventFlatDates = [];
+        $scope.flatEventDates = function (dates) {
+            var index = 0;
+            for(var i = 0; i < dates.length; i++) {
+                for(var j = 0; j < dates[i].blitTypes.length; j++) {
+                    $scope.eventFlatDates[index] = {
+                        name : dates[i].blitTypes[j].name,
+                        capacity : dates[i].blitTypes[j].capacity,
+                        blitTypeState : dates[i].blitTypes[j].blitTypeState,
+                        price : dates[i].blitTypes[j].price,
+                        date : dates[i].date,
+                        soldCount : dates[i].blitTypes[j].soldCount,
+                        isFree : dates[i].blitTypes[j].isFree,
+                        blitTypeId : dates[i].blitTypes[j].blitTypeId
+
+                    } ;
+                    index++;
+                }
+            }
+        };
+        $scope.discountList = function (page) {
+            eventService.searchDiscount(page, $scope.eventDiscount.eventId)
+                .then(function (data) {
+                    console.log(data);
+                    $scope.totalDiscounts = data.data.totalElements;
+                    $scope.discountsList = data.data.content;
+                    $timeout(function () {
+                        for(var i = 0 ; i < $scope.discountsList.length; i++) {
+                            $(".discountStartClass"+i).html(persianDate($scope.discountsList[i].effectDate).format("YYYY/MM/DD , HH:mm"));
+                            $(".discountEndClass"+i).html(persianDate($scope.discountsList[i].expirationDate).format("YYYY/MM/DD , HH:mm"));
+                        }
+                    }, 300);
+                })
+                .catch(function (data) {
+                })
+        };
+        $scope.discountStateChange = function (state, id, i) {
+            document.getElementById("activationDiscountSuccess").style.display = "none";
+            document.getElementById("activationDiscountError").style.display = "none";
+            var discountChangeState = {
+                discountId : id,
+                enable : state
+            };
+            if(state) {
+                document.getElementsByClassName("activateDiscount" + i)[0].style.display = "inline";
+            } else {
+                document.getElementsByClassName("deActivateDiscount" + i)[0].style.display = "inline";
+            }
+            eventService.discountState(discountChangeState)
+                .then(function () {
+                    document.getElementById("activationDiscountSuccess").style.display = "block";
+                    if(state) {
+                        document.getElementsByClassName("activateDiscount" + i)[0].style.display = "none";
+                    } else {
+                        document.getElementsByClassName("deActivateDiscount" + i)[0].style.display = "none";
+                    }
+                })
+                .catch(function (data) {
+                    document.getElementById("activationDiscountError").innerHTML= data.data.message;
+                    document.getElementById("activationDiscountError").style.display = "block";
+                    if(state) {
+                        document.getElementsByClassName("activateDiscount" + i)[0].style.display = "none";
+                    } else {
+                        document.getElementsByClassName("deActivateDiscount" + i)[0].style.display = "none";
+                    }
+                })
+        };
+        $scope.activateDiscount = function (i) {
+            return "activateDiscount"+i;
+        };
+        $scope.deActivateDiscount = function (i) {
+            return "deActivateDiscount"+i;
+        };
+        $scope.discountStartDateClass = function (i) {
+            return "discountStartClass"+i;
+        };
+        $scope.discountEndDateClass = function (i) {
+            return "discountEndClass"+i;
+        };
+        $scope.eventDiscountPageChanged = function (newPage) {
+            $scope.discountList(newPage);
+        };
+
+        $scope.discountSubmitOnce = true;
+        $scope.submitDiscountCode = function (discountData) {
+            document.getElementById("successDiscount").style.display = "none";
+            document.getElementById("errorDiscount").style.display = "none";
+            var discountSubmit = {};
+            $scope.discountSubmitOnce = false;
+            discountSubmit.code = discountData.code;
+            discountSubmit.reusability = discountData.reusability;
+            discountSubmit.effectDate = dateSetterService.persianToMs(discountData.effectDatePersian);
+            discountSubmit.expirationDate = dateSetterService.persianToMs(discountData.expirationDatePersian);
+            discountSubmit.isPercent = true;
+            discountSubmit.amount = 0;
+            discountSubmit.percentage = parseInt(discountData.percentage);
+            discountSubmit.blitTypeIds = $scope.blitTypeIds;
+            document.getElementsByClassName("discountSpinner")[0].style.display = "inline";
+            eventService.submitDiscount(discountSubmit)
+                .then(function () {
+                    document.getElementById("successDiscount").style.display = "block";
+                    document.getElementsByClassName("discountSpinner")[0].style.display = "none";
+                    $scope.discountSubmitOnce = true;
+                })
+                .catch(function (data) {
+                    $scope.discountSubmitOnce = true;
+                    document.getElementById("errorDiscount").innerHTML= data.data.message;
+                    document.getElementById("errorDiscount").style.display = "block";
+                    document.getElementsByClassName("discountSpinner")[0].style.display = "none";
+                })
+        };
+        var discountIndex = 0;
+        $scope.discountEditProperties= { reusability : 0 };
+        $scope.editDiscount = function (index) {
+            document.getElementById("successEditDiscount").style.display = "none";
+            document.getElementById("errorEditDiscount").style.display = "none";
+            discountIndex = index;
+            $scope.discountEditProperties.reusability = $scope.discountsList[index].reusability;
+            dateSetterService.initDate("discountEditStartTime");
+            $(".discountEditStartTime").pDatepicker("setDate",dateSetterService.persianToArray(persianDate($scope.discountsList[index].effectDate).pDate));
+            dateSetterService.initDate("discountEditEndTime");
+            $(".discountEditEndTime").pDatepicker("setDate",dateSetterService.persianToArray(persianDate($scope.discountsList[index].expirationDate).pDate));
+            $('#discount-codes').modal('hide');
+            $('#discount-code-edit').modal('show');
+        };
+        $scope.editDiscountSubmit = function (discountEditData) {
+            var discountEditSubmit = {
+                amount : 0,
+                blitTypeIds : $scope.discountsList[discountIndex].blitTypeIds,
+                code : $scope.discountsList[discountIndex].code,
+                discountId : $scope.discountsList[discountIndex].discountId,
+                effectDate : dateSetterService.persianToMs(discountEditData.effectDatePersian),
+                expirationDate : dateSetterService.persianToMs(discountEditData.expirationDatePersian),
+                isEnabled : $scope.discountsList[discountIndex].isEnabled,
+                isPercent : true,
+                percentage : $scope.discountsList[discountIndex].percentage,
+                reusability : discountEditData.reusability,
+                used : $scope.discountsList[discountIndex].used
+            };
+            document.getElementsByClassName("discountEditSpinner")[0].style.display = "inline";
+            eventService.discountEdit(discountEditSubmit)
+                .then(function () {
+                    document.getElementsByClassName("discountEditSpinner")[0].style.display = "none";
+                    document.getElementById("errorEditDiscount").style.display = "none";
+                    document.getElementById("successEditDiscount").style.display = "block";
+
+                })
+                .catch(function (data) {
+                    document.getElementById("successEditDiscount").style.display = "none";
+                    document.getElementsByClassName("discountEditSpinner")[0].style.display = "none";
+                    document.getElementById("errorEditDiscount").innerHTML= data.data.message;
+                    document.getElementById("errorEditDiscount").style.display = "block";
+                })
+        };
+        //==================================================== ********* =================================
         //==================================================== PERSIAN DATE PICKER =======================
         $timeout(function () {
             dateSetterService.initDate("persianTimeEventStart");
@@ -1629,11 +1860,11 @@ angular.module('User')
         };
         $timeout(function () {
             var elements = document.querySelectorAll('input,select,textarea,checkbox');
-        var invalidListener = function(e){ e.preventDefault(); };
+            var invalidListener = function(e){ e.preventDefault(); };
 
-        for(var i = elements.length; i--;) {
-            elements[i].addEventListener('invalid', invalidListener);
-        }
+            for(var i = elements.length; i--;) {
+                elements[i].addEventListener('invalid', invalidListener);
+            }
         }, 1000);
 
     });

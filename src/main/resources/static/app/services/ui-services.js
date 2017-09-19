@@ -290,6 +290,9 @@ angular.module('UiServices', [])
                 case "CLOSED" :
                     persianState = 'بسته';
                     break;
+                case "ENDED" :
+                    persianState = 'تمام شده';
+                    break;
                 default :
                     persianState = 'گونه';
                     break;

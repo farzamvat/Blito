@@ -223,6 +223,14 @@ angular.module('menuPagesModule', [])
                     break;
             }
         });
+        $scope.makeNewExchange = function () {
+            if($scope.loggedIn) {
+                $location.path('/user-profile');
+            } else {
+                $("#registrationModal").modal("show");
+            }
+
+        };
         $scope.registerOnce = false;
         $scope.regUser = function (regData) {
             $scope.registerOnce = true;

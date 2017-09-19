@@ -4,37 +4,38 @@
             <div class="row exchangeBlitHeader">
                 <div class="eventListBeautifer noshadow"><h4 class="text-center">{{pageTitle}}</h4></div>
                 <div class="eventListHeaderBorderBottom"></div>
-        </div>
-        <div pagination-id="exchangePagination" total-items="totalElements" class="col-xs-6 col-sm-4 col-md-3 floatRight marginTop10" dir-paginate="item in exchangeList | itemsPerPage: 12" current-page="currentPage">
-            <a href="{{urlExchange+item.exchangeLink}}">
-            <div class="recipe"  >
-                <div class="image center-block" >
-                    <img ng-src="{{item.newImage}}" class="center-block eventListImage">
-                    <div class="name">
-                        <h5>    نوع رویداد : {{ item.type }}<i class="fa fa-star"></i></h5>
-
-                    </div>
-                    <h4 class="text-center slidingEventsTitle"><span ng-if="item.title.length > 20">...</span>{{item.title | limitTo : 20}}</h4>
-
-                    <div class="eventDescription center-block">
-                        {{item.desc}}
-                    </div>
-
-                    <div ng-show="item.state === 'SOLD'" class="soldout">
-                        <img src="../../../assets/img/soldout.png"/>
-                    </div>
-                </div>
             </div>
-            </a>
-        </div>
-    </div>
-    <div class="col-xs-12">
-        <div class="col-md-4 col-md-offset-4">
-            <dir-pagination-controls pagination-id="exchangePagination" on-page-change="pageChanged(newPageNumber)"
-                    max-size="5">
-            </dir-pagination-controls>
-        </div>
-    </div>
+            <button class="btn btn-make-exchange btn-success" ng-click="makeNewExchange()"> ایجاد آگهی جدید</button>
+            <div pagination-id="exchangePagination" total-items="totalElements" class="col-xs-6 col-sm-4 col-md-3 floatRight marginTop10" dir-paginate="item in exchangeList | itemsPerPage: 12" current-page="currentPage">
+                <a href="{{urlExchange+item.exchangeLink}}">
+                    <div class="recipe"  >
+                        <div class="image center-block" >
+                            <img ng-src="{{item.newImage}}" class="center-block eventListImage">
+                            <div class="name">
+                                <h5>    نوع رویداد : {{ item.type }}<i class="fa fa-star"></i></h5>
 
-</div>
+                            </div>
+                            <h4 class="text-center slidingEventsTitle"><span ng-if="item.title.length > 20">...</span>{{item.title | limitTo : 20}}</h4>
+
+                            <div class="eventDescription center-block">
+                                {{item.desc}}
+                            </div>
+
+                            <div ng-show="item.state === 'SOLD'" class="soldout">
+                                <img src="../../../assets/img/soldout.png"/>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <div class="col-md-4 col-md-offset-4">
+                <dir-pagination-controls pagination-id="exchangePagination" on-page-change="pageChanged(newPageNumber)"
+                                         max-size="5">
+                </dir-pagination-controls>
+            </div>
+        </div>
+
+    </div>
 </div>

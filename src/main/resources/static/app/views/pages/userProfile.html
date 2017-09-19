@@ -455,7 +455,8 @@
                                                             <td class="dataCenter">{{ item.operatorState}}</td>
                                                             <td class="dataCenter">{{ item.eventState}}</td>
                                                             <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editEvent($index)">ویرایش</button></td>
-                                                            <td ng-show="item.operatorState === 'تأیید شده'" class="dataCenter"><button class="btn editButton btn-default" ng-click="showTickets($index)">بلیت های فروش رفته</button></td>
+                                                            <td ng-show="item.operatorState === 'تأیید شده'" class="dataCenter"><button class="btn editButton btn-default" ng-click="showTickets($index)">بلیت ها</button></td>
+                                                            <td ng-show="item.operatorState === 'تأیید شده'" class="dataCenter"><button class="btn editButton btn-success" ng-click="discountCodeShow($index)">کد تخفیف</button></td>
                                                             <td ng-if="item.operatorState === 'رد شده'" class="dataCenter"><button type="button" ng-click="showSetting($index)"  class="btn editButton btn-info" >تنظیمات رویداد </button></td>
                                                         </tr>
                                                         </tbody>
@@ -1101,6 +1102,7 @@
     <div ng-include="'app/views/partials/planner-setting.html'"></div>
     <div ng-include="'app/views/partials/exchange-setting.html'"></div>
     <div ng-include="'app/views/partials/edit-exchange.html'"></div>
+    <div ng-include="'app/views/partials/discount-code.html'"></div>
+    <div ng-include="'app/views/partials/edit-discount.html'"></div>
 </div>
 
-<!-- Modal -->
