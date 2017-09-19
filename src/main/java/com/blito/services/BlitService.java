@@ -19,6 +19,7 @@ import com.blito.rest.viewmodels.payments.PaymentRequestViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.services.util.HtmlRenderer;
 import io.vavr.concurrent.Future;
+import io.vavr.control.Try;
 import org.apache.poi.ss.formula.eval.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,13 +127,15 @@ public class BlitService {
 	}
 
 	public void sendEmailAndSmsForPurchasedBlit(CommonBlitViewModel commonBlitViewModel) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("blit", commonBlitViewModel);
-		Future.runRunnable(() -> mailService.sendEmail(commonBlitViewModel.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map),
-				ResourceUtil.getMessage(Response.BLIT_RECIEPT)))
-				.onFailure((throwable) -> log.error("exception in sending email '{}'",throwable));
-		Future.runRunnable(() -> smsService.sendBlitRecieptSms(commonBlitViewModel.getCustomerMobileNumber(), commonBlitViewModel.getTrackCode()))
-				.onFailure(throwable -> log.error("exception in sending sms '{}'",throwable));
+		Try.run(() -> {
+			Map<String, Object> map = new HashMap<>();
+			map.put("blit", commonBlitViewModel);
+			Future.runRunnable(() -> mailService.sendEmail(commonBlitViewModel.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map),
+					ResourceUtil.getMessage(Response.BLIT_RECIEPT)))
+					.onFailure((throwable) -> log.error("exception in sending email '{}'",throwable));
+			Future.runRunnable(() -> smsService.sendBlitRecieptSms(commonBlitViewModel.getCustomerMobileNumber(), commonBlitViewModel.getTrackCode()))
+					.onFailure(throwable -> log.error("exception in sending sms '{}'",throwable));
+		}).onFailure(throwable -> log.error("exception in sendMailAndSmsForPurchasedBlit '{0}'",throwable));
 	}
 
 	@Transactional
