@@ -236,7 +236,7 @@
                                                 </div>
 
                                             </div>
-                                            <div class="form-group col-xs-12 formRegGroup floatRight marginTop50">
+                                            <div ng-if="!itemWithCapacity[0].isFree" class="form-group col-xs-12 formRegGroup floatRight marginTop50">
                                                 <p class="text-center block">در صورت داشتن کد تخفیف وارد و اعمال نمایید</p>
                                             </div>
                                             <div id="discountSuccess" class="alert alert-success text-center dispNone col-xs-12">
@@ -245,7 +245,7 @@
                                             <div id="discountError"  class="text-center dispNone alert alert-danger col-xs-12">
                                                 <strong>کد تخفیف معتبر نمی باشد !</strong>
                                             </div>
-                                            <div class="form-group col-xs-12 formRegGroup floatRight">
+                                            <div ng-if="!itemWithCapacity[0].isFree" class="form-group col-xs-12 formRegGroup floatRight">
                                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
                                                     <label class="registerLabel" >کد تخفیف   :</label>
                                                 </div>
