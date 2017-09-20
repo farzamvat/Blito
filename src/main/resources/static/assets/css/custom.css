@@ -1220,7 +1220,7 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     width: 100%;
 }
 .bioPageHeaderCover{
-    height:280px;
+    height:330px;
 }
 .btnExchangeTicket {
     font-size: 14px;
@@ -2229,7 +2229,7 @@ a{
     right:calc(50% - 75px);
     height: 150px;
     width:150px;
-    top:180px;
+    top:220px;
     box-shadow: 0px 0px 8px #222;
     z-index: 999;
 }
