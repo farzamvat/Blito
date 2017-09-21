@@ -92,6 +92,7 @@ public class BlitService {
 		}).orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
 	}
 
+	@Transactional
 	public Object createCommonBlitAuthorized(CommonBlitViewModel vmodel,User user) {
 
 		CommonBlit commonBlit = commonBlitMapper.createFromViewModel(vmodel);
@@ -105,7 +106,8 @@ public class BlitService {
 		}
 	}
 
-	private CommonBlitViewModel reserveFreeCommonBlitForAuthorizedUser(BlitType blitType,CommonBlit commonBlit,User user) {
+	@Transactional
+	CommonBlitViewModel reserveFreeCommonBlitForAuthorizedUser(BlitType blitType,CommonBlit commonBlit,User user) {
 		if (commonBlit.getCount() > 10)
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_COUNT_EXCEEDS_LIMIT));
 		if (commonBlit.getCount() + commonBlitRepository.countByCustomerEmailAndBlitTypeBlitTypeId(user.getEmail(),
