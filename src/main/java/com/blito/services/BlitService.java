@@ -198,6 +198,8 @@ public class BlitService {
 		commonBlit.setTrackCode(generateTrackCode());
 		commonBlit.setUser(attachedUser);
 		commonBlit.setBlitType(attachedBlitType);
+		commonBlit.setTotalAmount(0L);
+		commonBlit.setPrimaryAmount(0L);
 		commonBlit.setPaymentStatus(PaymentStatus.FREE.name());
 		commonBlit.setBankGateway(BankGateway.NONE.name());
 		attachedUser.addBlits(commonBlit);
