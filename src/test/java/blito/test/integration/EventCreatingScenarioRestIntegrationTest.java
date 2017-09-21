@@ -4,15 +4,13 @@ package blito.test.integration;
 */
 
 import com.blito.configs.Constants;
-import com.blito.enums.EventType;
-import com.blito.enums.HostType;
-import com.blito.enums.OperatorState;
-import com.blito.enums.State;
+import com.blito.enums.*;
 import com.blito.models.BlitType;
 import com.blito.models.Discount;
 import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.EventRepository;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
 import com.blito.rest.viewmodels.discount.DiscountEnableViewModel;
@@ -92,6 +90,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         EventDateViewModel eventDateViewModel = new EventDateViewModel();
         BlitTypeViewModel blitTypeViewModel1 = new BlitTypeViewModel();
         BlitTypeViewModel blitTypeViewModel2 = new BlitTypeViewModel();
+        BlitTypeViewModel blitTypeViewModel3 = new BlitTypeViewModel();
         eventDateViewModel.setDate(Timestamp.from(ZonedDateTime.now().plusDays(10).toInstant()));
 
 
@@ -105,7 +104,11 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         blitTypeViewModel2.setName("neshaste");
         blitTypeViewModel2.setPrice(40000);
 
-        eventDateViewModel.setBlitTypes(new HashSet<>(Arrays.asList(blitTypeViewModel1, blitTypeViewModel2)));
+        blitTypeViewModel3.setCapacity(20);
+        blitTypeViewModel3.setFree(true);
+        blitTypeViewModel3.setName("FREE");
+
+        eventDateViewModel.setBlitTypes(new HashSet<>(Arrays.asList(blitTypeViewModel1, blitTypeViewModel2,blitTypeViewModel3)));
         eventViewModel.setEventDates(new HashSet<>(Arrays.asList(eventDateViewModel)));
         return eventViewModel;
     }
@@ -208,6 +211,40 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         assertEquals(State.ENDED.name(), eventRepository.findOne(id2).getEventState());
 
         deleteEvent_success(id4);
+    }
+
+    @Test
+    public void buyRequest_freeBlit_success() {
+        EventViewModel eventViewModel = createEvent_success("TestEvent1", "eventHost1").thenReturn().as(EventViewModel.class);
+        approveEvent_success(eventViewModel.getEventId(),OperatorState.APPROVED);
+        openEventState_success(eventViewModel.getEventId(),State.OPEN);
+        openEventDateState_success(eventViewModel.getEventId(),State.OPEN);
+        Long freeBlitId = eventViewModel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream()).filter(bt -> bt.getName().equals("FREE")).findFirst().get().getBlitTypeId();
+        openBlitTypeState_success(eventViewModel.getEventDates()
+                .stream()
+                .flatMap(ed -> ed.getBlitTypes().stream())
+                .map(blitTypeViewModel -> blitTypeViewModel.getBlitTypeId())
+                .collect(Collectors.toList()),State.OPEN);
+        CommonBlitViewModel commonBlitViewModel = new CommonBlitViewModel();
+        commonBlitViewModel.setBankGateway(BankGateway.NONE);
+        commonBlitViewModel.setBlitTypeId(freeBlitId);
+        commonBlitViewModel.setBlitTypeName("FREE");
+        commonBlitViewModel.setCount(2);
+        commonBlitViewModel.setCustomerEmail("farzam.vat@gmail.com");
+        commonBlitViewModel.setCustomerMobileNumber("09124337522");
+        commonBlitViewModel.setSeatType(SeatType.COMMON);
+        commonBlitViewModel.setCustomerName("Farzam");
+        commonBlitViewModel.setEventName("event name");
+        commonBlitViewModel.setEventDateAndTime("date and time 14:00");
+        commonBlitViewModel.setEventAddress("address");
+        commonBlitViewModel.setEventDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(2).toInstant()));
+        Response response =
+                givenRestIntegration()
+                .body(commonBlitViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/blits/buy-request");
+        response.then().statusCode(200);
+
     }
 
     @Test
@@ -355,7 +392,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
     }
 
     @Test
-    public void disableDiscountCodeL_notAllowed_fail() {
+    public void disableDiscountCode_notAllowed_fail() {
         DiscountViewModel discountViewModel = createDiscountCode_success("discountCodeNotAllowed");
         DiscountEnableViewModel discountEnableViewModel = new DiscountEnableViewModel(discountViewModel.getDiscountId(),false);
         givenRestIntegrationUser()
@@ -520,7 +557,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         Response response = givenRestIntegration()
                 .body(discountViewModel)
                 .when()
-                .post(getServerAddress() + "/api/blito/v1.0/discount/admin-set-discount-code");
+                .post(getServerAddress() + "/api/blito/v1.0/admin/discount/set-discount-code");
         response.then().statusCode(200).body("amount", equalTo(0));
     }
 
@@ -544,7 +581,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         Response response = givenRestIntegration()
                 .body(discountViewModel)
                 .when()
-                .put(getServerAddress() + "/api/blito/v1.0/discount/admin-update-discount-code");
+                .put(getServerAddress() + "/api/blito/v1.0/admin/discount/update-discount-code");
         response.then().statusCode(200).body("reusability", equalTo(50));
     }
 
@@ -569,7 +606,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         Response response = givenRestIntegration()
                 .body(discountViewModel)
                 .when()
-                .put(getServerAddress() + "/api/blito/v1.0/discount/admin-update-discount-code");
+                .put(getServerAddress() + "/api/blito/v1.0/admin/discount/update-discount-code");
         response.then().statusCode(400).body("message", equalTo(ResourceUtil.getMessage(com.blito.enums.Response.DISCOUNT_CODE_NOT_FOUND)));
     }
 
@@ -593,7 +630,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         Response response = givenRestIntegration()
                 .body(discountViewModel)
                 .when()
-                .put(getServerAddress() + "/api/blito/v1.0/discount/admin-update-discount-code");
+                .put(getServerAddress() + "/api/blito/v1.0/admin/discount/update-discount-code");
         response.then().statusCode(400).body("message", equalTo(ResourceUtil.getMessage(com.blito.enums.Response.INCONSISTENT_PERCENT)));
     }
 
@@ -612,7 +649,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         Response response = givenRestIntegration()
                 .body(discountViewModel)
                 .when()
-                .put(getServerAddress() + "/api/blito/v1.0/discount/admin-update-discount-code");
+                .put(getServerAddress() + "/api/blito/v1.0/admin/discount/update-discount-code");
         response.then().statusCode(400).body("message", equalTo(ResourceUtil.getMessage(com.blito.enums.Response.BLIT_TYPE_NOT_FOUND)));
     }
 
@@ -656,7 +693,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         Response response = givenRestIntegration()
                 .body(discountViewModel)
                 .when()
-                .post(getServerAddress() + "/api/blito/v1.0/discount/set-discount-all-events");
+                .post(getServerAddress() + "/api/blito/v1.0/admin/discount/set-discount-all-events");
         response.then().statusCode(200);
 
         DiscountViewModel discountViewModel1 = response.thenReturn().as(DiscountViewModel.class);
