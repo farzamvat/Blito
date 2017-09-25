@@ -1,12 +1,10 @@
 package blito.test.unit;
 
 import com.blito.Application;
-import com.blito.configs.Constants;
 import com.blito.enums.*;
 import com.blito.mappers.CommonBlitMapper;
 import com.blito.models.CommonBlit;
 import com.blito.models.EventHost;
-import com.blito.models.Image;
 import com.blito.models.User;
 import com.blito.repositories.*;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
@@ -140,21 +138,6 @@ public class ExcelServiceTest {
 		eventDateViewModel.getBlitTypes().add(blitTypeViewModel2);
 		eventViewModel.getEventDates().add(eventDateViewModel);
 
-		Image hostPhoto = new Image();
-		hostPhoto.setImageType(ImageType.HOST_PHOTO.name());
-		hostPhoto.setImageUUID(Constants.DEFAULT_HOST_PHOTO);
-
-		Image hostCoverPhoto = new Image();
-		hostCoverPhoto.setImageType(ImageType.HOST_COVER_PHOTO.name());
-		hostCoverPhoto.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO_1);
-
-		Image eventPhoto = new Image();
-		eventPhoto.setImageType(ImageType.EVENT_PHOTO.name());
-		eventPhoto.setImageUUID(Constants.DEFAULT_EVENT_PHOTO);
-
-		imageRepository.save(hostPhoto);
-		imageRepository.save(hostCoverPhoto);
-		imageRepository.save(eventPhoto);
 	}
 	
 	@Test
