@@ -13,6 +13,7 @@ import org.springframework.web.filter.CommonsRequestLoggingFilter;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletResponse;
 
 
 @SpringBootApplication
@@ -31,6 +32,12 @@ public class Application {
 		initializer.importPermissionsToDataBase();
 		initializer.insertAdminUserAndRoleAndOldBlitoUsers();
 	}
+	@GetMapping("/929168.txt")
+	public String e_namad(HttpServletResponse response) {
+//		response.setHeader("Content-Disposition", "attachment; filename=" + "929168.txt");
+		return "";
+	}
+
 	@GetMapping("/*")
 	public ModelAndView index() {
 		return new ModelAndView("index");
