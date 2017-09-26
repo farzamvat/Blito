@@ -86,7 +86,8 @@ public enum Response {
 	EVENT_NOT_OPEN_DISCOUNT_CODE("error.event.not.open.discount.code"),
 	DISCOUNT_PERCENTAGE_IS_FINAL("error.discount.percentage.is.final"),
 	DISCOUNT_CODE_IS_FINAL("error.discount.code.is.final"),
-	DISCOUNT_CODE_EXPIRED("error.discount.code.expired");
+	DISCOUNT_CODE_EXPIRED("error.discount.code.expired"),
+	ADDITIONAL_FIELDS_VALIDATION_ERROR("error.additional.fields.validation");
     
 
     private final String message;

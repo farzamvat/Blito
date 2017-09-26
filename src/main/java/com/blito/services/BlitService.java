@@ -1,10 +1,7 @@
 package com.blito.services;
 
 import com.blito.enums.*;
-import com.blito.exceptions.InconsistentDataException;
-import com.blito.exceptions.NotAllowedException;
-import com.blito.exceptions.NotFoundException;
-import com.blito.exceptions.ResourceNotFoundException;
+import com.blito.exceptions.*;
 import com.blito.mappers.CommonBlitMapper;
 import com.blito.models.BlitType;
 import com.blito.models.CommonBlit;
@@ -109,6 +106,16 @@ public class BlitService {
 
 	@Transactional
 	void validateAdditionalFields(Event event,CommonBlit commonBlit) {
+		if(event.getAdditionalFields() != null || !event.getAdditionalFields().isEmpty()) {
+			if(commonBlit.getAdditionalFields().isEmpty())
+				throw new AdditionalFieldsValidationException(ResourceUtil.getMessage(Response.ADDITIONAL_FIELDS_CANT_BE_EMPTY));
+			else if(commonBlit.getAdditionalFields().size() != event.getAdditionalFields().size())
+				throw new AdditionalFieldsValidationException(ResourceUtil.getMessage(Response.ADDITIONAL_FIELDS_VALIDATION_ERROR));
+			else if(commonBlit.getAdditionalFields().entrySet().stream().anyMatch(entry ->  entry.getValue() == null || entry.getValue().isEmpty()))
+				throw new AdditionalFieldsValidationException(ResourceUtil.getMessage(Response.ADDITIONAL_FIELDS_VALIDATION_ERROR));
+			else if (!commonBlit.getAdditionalFields().keySet().stream().allMatch(key -> event.getAdditionalFields().keySet().contains(key)))
+				throw new AdditionalFieldsValidationException(ResourceUtil.getMessage(Response.ADDITIONAL_FIELDS_VALIDATION_ERROR));
+		}
 
 	}
 
