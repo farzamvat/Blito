@@ -7,11 +7,13 @@ import com.blito.models.CommonBlit;
 import com.blito.rest.viewmodels.LocationViewModel;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
+import com.blito.rest.viewmodels.event.AdditionalField;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.stream.Collectors;
 
 @Component
 public class CommonBlitMapper implements GenericMapper<CommonBlit, CommonBlitViewModel>{
@@ -35,7 +37,7 @@ public class CommonBlitMapper implements GenericMapper<CommonBlit, CommonBlitVie
 		blit.setDiscountCode(vmodel.getDiscountCode());
 		blit.setSeatType(vmodel.getSeatType().name());
 		blit.setBankGateway(vmodel.getBankGateway().name());
-		blit.setAdditionalFields(vmodel.getAdditionalFields());
+		blit.setAdditionalFields(vmodel.getAdditionalFields().stream().collect(Collectors.toMap(AdditionalField::getKey,AdditionalField::getValue)));
 		return blit;
 	}
 
@@ -64,7 +66,7 @@ public class CommonBlitMapper implements GenericMapper<CommonBlit, CommonBlitVie
 		vmodel.setBankGateway(Enum.valueOf(BankGateway.class, blit.getBankGateway()));
 		vmodel.setCreatedAt(blit.getCreatedAt());
 		vmodel.setUserId(blit.getUser() == null ? 0 : blit.getUser().getUserId());
-		vmodel.setAdditionalFields(blit.getAdditionalFields());
+		vmodel.setAdditionalFields(blit.getAdditionalFields().entrySet().stream().map(AdditionalField::new).collect(Collectors.toList()));
 		if(blit.getBlitType().getEventDate().getEvent().getLongitude() != null && blit.getBlitType().getEventDate().getEvent().getLatitude() != null)
 			vmodel.setLocation(new LocationViewModel(blit.getBlitType().getEventDate().getEvent().getLatitude(),blit.getBlitType().getEventDate().getEvent().getLongitude()));
 		vmodel.setEventPhotoId(blit.getBlitType().getEventDate().getEvent().getImages().stream().filter(i -> i.getImageType().equals(ImageType.EVENT_PHOTO.name())).findFirst().get().getImageUUID());

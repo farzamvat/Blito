@@ -6,12 +6,12 @@ import com.blito.enums.*;
 import com.blito.mappers.CommonBlitMapper;
 import com.blito.models.CommonBlit;
 import com.blito.models.EventHost;
-import com.blito.models.Image;
 import com.blito.models.User;
 import com.blito.repositories.*;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
+import com.blito.rest.viewmodels.event.AdditionalField;
 import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
@@ -33,7 +33,7 @@ import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -116,14 +116,11 @@ public class ExcelServiceTest {
 		eventViewModel.setEventHostName(eventHost.getHostName());
 		eventViewModel.setEventName("My Event");
 		eventViewModel.setEventType(EventType.CONCERT);
-		
-		Map<String, String> additionalFields = new HashMap<String, String>();
-		additionalFields.put("Student Number", "int");
-		additionalFields.put("Gender", "string");
-		additionalFields.put("Father's Name", "string");
-		additionalFields.put("Weight", "double");
-		
-		eventViewModel.setAdditionalFields(additionalFields);
+
+		eventViewModel.setAdditionalFields(Arrays.asList(new AdditionalField("Student Number", Constants.FIELD_INT_TYPE),
+				new AdditionalField("Gender",Constants.FIELD_STRING_TYPE),
+				new AdditionalField("Father's Name",Constants.FIELD_STRING_TYPE),
+				new AdditionalField("Weight",Constants.FIELD_DOUBLE_TYPE)));
 
 		eventDateViewModel.setDate(Timestamp.from(ZonedDateTime.now().plusDays(10).toInstant()));
 
@@ -140,21 +137,6 @@ public class ExcelServiceTest {
 		eventDateViewModel.getBlitTypes().add(blitTypeViewModel2);
 		eventViewModel.getEventDates().add(eventDateViewModel);
 
-		Image hostPhoto = new Image();
-		hostPhoto.setImageType(ImageType.HOST_PHOTO.name());
-		hostPhoto.setImageUUID(Constants.DEFAULT_HOST_PHOTO);
-
-		Image hostCoverPhoto = new Image();
-		hostCoverPhoto.setImageType(ImageType.HOST_COVER_PHOTO.name());
-		hostCoverPhoto.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO_1);
-
-		Image eventPhoto = new Image();
-		eventPhoto.setImageType(ImageType.EVENT_PHOTO.name());
-		eventPhoto.setImageUUID(Constants.DEFAULT_EVENT_PHOTO);
-
-		imageRepository.save(hostPhoto);
-		imageRepository.save(hostCoverPhoto);
-		imageRepository.save(eventPhoto);
 	}
 	
 	@Test
@@ -187,13 +169,12 @@ public class ExcelServiceTest {
 		commonBlitViewModel1.setCustomerName(user1.getFirstname()+ " " + user1.getLastname());
 		commonBlitViewModel1.setEventDate(eventDateViewModel.getDate());
 		commonBlitViewModel1.setBankGateway(BankGateway.NONE);
-		Map<String, String> additionalFields1 = new HashMap<String, String>();
-		additionalFields1.put("Student Number", "90213164");
-		additionalFields1.put("Gender", "male");
-		additionalFields1.put("Father's Name", "Mostafa");
-		additionalFields1.put("Weight", "90.5");
-		commonBlitViewModel1.setAdditionalFields(additionalFields1);
-		
+
+		commonBlitViewModel1.setAdditionalFields(Arrays.asList(new AdditionalField("Student Number", "90213164"),
+				new AdditionalField("Gender", "male"),
+				new AdditionalField("Father's Name", "Mostafa"),
+				new AdditionalField("Weight", "94")));
+
 		commonBlitViewModel2.setBlitTypeId(blitTypeId);
 		commonBlitViewModel2.setCount(5);
 		commonBlitViewModel2.setSeatType(SeatType.COMMON);
@@ -203,16 +184,15 @@ public class ExcelServiceTest {
 		commonBlitViewModel2.setCustomerEmail(user2.getEmail());
 		commonBlitViewModel2.setEventDate(eventDateViewModel.getDate());
 		commonBlitViewModel2.setBankGateway(BankGateway.NONE);
-		Map<String, String> additionalFields2 = new HashMap<String, String>();
-		additionalFields2.put("Student Number", "90213086");
-		additionalFields2.put("Gender", "female");
-		additionalFields2.put("Father's Name", "Hamed");
-		additionalFields2.put("Weight", "40.7");
-		commonBlitViewModel2.setAdditionalFields(additionalFields2);
+
+		commonBlitViewModel2.setAdditionalFields(Arrays.asList(new AdditionalField("Student Number", "90213086"),
+				new AdditionalField("Gender", "female"),
+				new AdditionalField("Father's Name", "Hamed"),
+				new AdditionalField("Weight", "40.7")));
 
 		blitService.createCommonBlitAuthorized(commonBlitViewModel1,SecurityContextHolder.currentUser());
 		blitService.createCommonBlitAuthorized(commonBlitViewModel2,SecurityContextHolder.currentUser());
-		
+
 		SearchViewModel<CommonBlit> searchViewModel = new SearchViewModel<>();
 		Simple<CommonBlit> simple = new Simple<>();
 		simple.setField("blitType-blitTypeId");

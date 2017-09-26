@@ -16,6 +16,7 @@ import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
 import com.blito.rest.viewmodels.discount.DiscountEnableViewModel;
 import com.blito.rest.viewmodels.discount.DiscountValidationViewModel;
 import com.blito.rest.viewmodels.discount.DiscountViewModel;
+import com.blito.rest.viewmodels.event.AdditionalField;
 import com.blito.rest.viewmodels.event.AdminChangeEventOperatorStateVm;
 import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventViewModel;
@@ -113,12 +114,12 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         return eventViewModel;
     }
 
-    public Response createEvent_success(String eventName, String eventHostName)
+    public Response createEvent_success(String eventName, String eventHostName,Optional<List<AdditionalField>> optionalAdditionalFields)
     {
         EventHostViewModel eventHostViewModel = createEventHost_success(eventHostName).thenReturn().body().as(EventHostViewModel.class);
 
         EventViewModel eventViewModel = createSampleEventViewModel(eventHostViewModel, eventName);
-
+        optionalAdditionalFields.ifPresent(eventViewModel::setAdditionalFields);
         Response response = givenRestIntegration()
                 .body(eventViewModel)
                 .when()
@@ -184,7 +185,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
     }
 
     public EventViewModel createEvent_approve_open_event_eventDate_blitType_success() {
-        EventViewModel eventViewModel = createEvent_success("My Event", "Event Host").thenReturn().body().as(EventViewModel.class);
+        EventViewModel eventViewModel = createEvent_success("My Event", "Event Host",Optional.empty()).thenReturn().body().as(EventViewModel.class);
         approveEvent_success(eventViewModel.getEventId(), OperatorState.APPROVED);
         openEventState_success(eventViewModel.getEventId(), State.OPEN);
         openEventDateState_success(eventViewModel.getEventDates().stream().findFirst().get().getEventDateId(), State.OPEN);
@@ -193,10 +194,10 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
     }
 
     public void createAdditionalEventsForTest() {
-        Long id1 = createEvent_success("TestEvent1", "eventHost1").thenReturn().as(EventViewModel.class).getEventId();
-        Long id2 = createEvent_success("TestEvent2", "eventHost2").thenReturn().as(EventViewModel.class).getEventId();
-        Long id3 = createEvent_success("TestEvent3", "eventHost3").thenReturn().as(EventViewModel.class).getEventId();
-        Long id4 = createEvent_success("TestEvent4", "eventHost4").thenReturn().as(EventViewModel.class).getEventId();
+        Long id1 = createEvent_success("TestEvent1", "eventHost_1",Optional.empty()).thenReturn().as(EventViewModel.class).getEventId();
+        Long id2 = createEvent_success("TestEvent2", "eventHost_2",Optional.empty()).thenReturn().as(EventViewModel.class).getEventId();
+        Long id3 = createEvent_success("TestEvent3", "eventHost_3",Optional.empty()).thenReturn().as(EventViewModel.class).getEventId();
+        Long id4 = createEvent_success("TestEvent4", "eventHost_4",Optional.empty()).thenReturn().as(EventViewModel.class).getEventId();
 
         approveEvent_success(id1, OperatorState.REJECTED);
         approveEvent_success(id2, OperatorState.APPROVED);
@@ -215,7 +216,12 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
 
     @Test
     public void buyRequest_freeBlit_success() {
-        EventViewModel eventViewModel = createEvent_success("TestEvent1", "eventHost1").thenReturn().as(EventViewModel.class);
+
+        EventViewModel eventViewModel =
+                createEvent_success("TestEvent1",
+                        "eventHost1",
+                        Optional.of(Arrays.asList(new AdditionalField("age","string"),new AdditionalField("gender","string"))))
+                        .thenReturn().as(EventViewModel.class);
         approveEvent_success(eventViewModel.getEventId(),OperatorState.APPROVED);
         openEventState_success(eventViewModel.getEventId(),State.OPEN);
         openEventDateState_success(eventViewModel.getEventId(),State.OPEN);
@@ -223,9 +229,11 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         openBlitTypeState_success(eventViewModel.getEventDates()
                 .stream()
                 .flatMap(ed -> ed.getBlitTypes().stream())
-                .map(blitTypeViewModel -> blitTypeViewModel.getBlitTypeId())
+                .map(BlitTypeViewModel::getBlitTypeId)
                 .collect(Collectors.toList()),State.OPEN);
         CommonBlitViewModel commonBlitViewModel = new CommonBlitViewModel();
+        commonBlitViewModel.setAdditionalFields(Arrays.asList(new AdditionalField("age","12"),
+                new AdditionalField("gender","male")));
         commonBlitViewModel.setBankGateway(BankGateway.NONE);
         commonBlitViewModel.setBlitTypeId(freeBlitId);
         commonBlitViewModel.setBlitTypeName("FREE");
@@ -253,10 +261,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         EventHostViewModel eventHostViewModel =
                 createEventHost_success("eventHostName2").thenReturn().body().as(EventHostViewModel.class);
         EventViewModel eventViewModel = createSampleEventViewModel(eventHostViewModel, "Event2");
-        Map<String,String> map = new HashMap<>();
-        // type int validation error
-        map.put("student number", Constants.FIELD_INT_TYPE);
-        eventViewModel.setAdditionalFields(map);
+        eventViewModel.setAdditionalFields(Collections.singletonList(new AdditionalField("student number",Constants.FIELD_INT_TYPE)));
 
         Response response =
                 givenRestIntegration()
@@ -275,9 +280,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
                         .as(EventHostViewModel.class);
         EventViewModel eventViewModel =
                 createSampleEventViewModel(eventHostViewModel, "Event3");
-        Map<String,String> map = new HashMap<>();
-        map.put("student number", "testInvalidField");
-        eventViewModel.setAdditionalFields(map);
+        eventViewModel.setAdditionalFields(Collections.singletonList(new AdditionalField("student number","testInvalidField")));
         Response eventResponse =
                 givenRestIntegration()
                 .body(eventViewModel)
@@ -293,11 +296,8 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
                 createEventHost_success("eventHostName4").thenReturn().body().as(EventHostViewModel.class);
         EventViewModel eventViewModel =
                 createSampleEventViewModel(eventHostViewModel, "Event4");
-        Map<String,String> map = new HashMap<>();
-
-        map.put("student number", Constants.FIELD_STRING_TYPE);
-        map.put("age",Constants.FIELD_STRING_TYPE);
-        eventViewModel.setAdditionalFields(map);
+        eventViewModel.setAdditionalFields(Arrays.asList(new AdditionalField("student number",Constants.FIELD_STRING_TYPE),
+                new AdditionalField("age",Constants.FIELD_STRING_TYPE)));
         Response response =
                 givenRestIntegration()
                 .body(eventViewModel)
@@ -314,9 +314,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         EventHostViewModel eventHostViewModel =
                 createEventHost_success("eventHostName5").thenReturn().body().as(EventHostViewModel.class);
         EventViewModel eventViewModel = createSampleEventViewModel(eventHostViewModel, "Event5");
-        Map<String,String> map = new HashMap<>();
-        map.put("student number",Constants.FIELD_STRING_TYPE);
-        eventViewModel.setAdditionalFields(map);
+        eventViewModel.setAdditionalFields(Collections.singletonList(new AdditionalField("student number",Constants.FIELD_STRING_TYPE)));
 
         Response eventCreationResponse =
                 givenRestIntegration()
@@ -326,9 +324,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         eventCreationResponse.then().statusCode(201);
         eventViewModel = eventCreationResponse.body().as(EventViewModel.class);
 
-        map.clear();
-        map.put("age",Constants.FIELD_STRING_TYPE);
-        eventViewModel.setAdditionalFields(map);
+        eventViewModel.setAdditionalFields(Collections.singletonList(new AdditionalField("age",Constants.FIELD_STRING_TYPE)));
 
         Response eventUpdateResponse =
                 givenRestIntegration()

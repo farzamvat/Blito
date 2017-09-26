@@ -10,7 +10,6 @@ import org.springframework.web.servlet.view.RedirectView;
 public class BlitoErrorController implements ErrorController {
 
 	private static final String ERROR_MAPPING = "/error";
-
 	@Override
 	public String getErrorPath() {
 		return ERROR_MAPPING;
@@ -21,5 +20,4 @@ public class BlitoErrorController implements ErrorController {
 	{
 		return new RedirectView("/not-found");
 	}
-
 }

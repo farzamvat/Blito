@@ -1,10 +1,7 @@
 package com.blito.services;
 
 import com.blito.enums.*;
-import com.blito.exceptions.InconsistentDataException;
-import com.blito.exceptions.NotAllowedException;
-import com.blito.exceptions.NotFoundException;
-import com.blito.exceptions.ResourceNotFoundException;
+import com.blito.exceptions.*;
 import com.blito.mappers.CommonBlitMapper;
 import com.blito.models.BlitType;
 import com.blito.models.CommonBlit;
@@ -99,11 +96,25 @@ public class BlitService {
 		BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(vmodel.getBlitTypeId()))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
 		checkBlitTypeRestrictionsForBuy(blitType,commonBlit);
+		validateAdditionalFields(blitType.getEventDate().getEvent(),commonBlit);
 		if (blitType.isFree()) {
 			return reserveFreeCommonBlitForAuthorizedUser(blitType,commonBlit,user);
 		} else {
 			return validateDiscountCodeIfPresentAndCalculateTotalAmount(vmodel,commonBlit,Optional.of(user),blitType);
 		}
+	}
+
+	@Transactional
+	void validateAdditionalFields(Event event,CommonBlit commonBlit) {
+		if(event.getAdditionalFields() != null && !event.getAdditionalFields().isEmpty()) {
+			if(commonBlit.getAdditionalFields().isEmpty())
+				throw new AdditionalFieldsValidationException(ResourceUtil.getMessage(Response.ADDITIONAL_FIELDS_CANT_BE_EMPTY));
+			else if(commonBlit.getAdditionalFields().size() != event.getAdditionalFields().size())
+				throw new AdditionalFieldsValidationException(ResourceUtil.getMessage(Response.ADDITIONAL_FIELDS_VALIDATION_ERROR));
+			else if (!commonBlit.getAdditionalFields().keySet().stream().allMatch(key -> event.getAdditionalFields().keySet().contains(key)))
+				throw new AdditionalFieldsValidationException(ResourceUtil.getMessage(Response.ADDITIONAL_FIELDS_VALIDATION_ERROR));
+		}
+
 	}
 
 	@Transactional
@@ -169,6 +180,7 @@ public class BlitService {
 		if (blitType.isFree())
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		checkBlitTypeRestrictionsForBuy(blitType,commonBlit);
+		validateAdditionalFields(blitType.getEventDate().getEvent(),commonBlit);
 		return validateDiscountCodeIfPresentAndCalculateTotalAmount(vmodel,commonBlit,Optional.empty(),blitType);
 	}
 
@@ -260,17 +272,16 @@ public class BlitService {
 		return searchService.search(searchViewModel, pageable, commonBlitMapper, commonBlitRepository);
 	}
 
+	@Transactional
 	public Map<String, Object> searchCommonBlitsForExcel(SearchViewModel<CommonBlit> searchViewModel) {
-		Set<CommonBlitViewModel> blits = searchService.search(searchViewModel, commonBlitMapper, commonBlitRepository);
-		if (blits.stream().findFirst().isPresent()) {
-			CommonBlitViewModel blit = blits.stream().findFirst().get();
-			if (blit.getAdditionalFields() != null && !blit.getAdditionalFields().isEmpty()) {
-				CommonBlit cBlit = commonBlitRepository.findOne(blit.getBlitId());
-				Event event = eventRepository.findOne(cBlit.getBlitType().getEventDate().getEvent().getEventId());
-				return excelService.getBlitsExcelMap(blits, event.getAdditionalFields());
-			}
+		Set<CommonBlit> blits = searchService.search(searchViewModel, commonBlitRepository);
+		if(blits.isEmpty())
+			throw new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL));
+		CommonBlit blit = blits.stream().findAny().get();
+		if (blit.getAdditionalFields() != null && !blit.getAdditionalFields().isEmpty()) {
+			return excelService.getBlitsExcelMap(commonBlitMapper.createFromEntities(blits), blit.getBlitType().getEventDate().getEvent().getAdditionalFields());
 		}
-		return excelService.getBlitsExcelMap(blits);
+		return excelService.getBlitsExcelMap(commonBlitMapper.createFromEntities(blits));
 	}
 
 	public Map<String, Object> getBlitPdf(String trackCode) {

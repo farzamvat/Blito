@@ -62,5 +62,13 @@ public class SearchService {
                 .collect(Collectors.toSet());
     }
 
-
+    public <E, R extends JpaSpecificationExecutor<E> & JpaRepository<E, Long>> Set<E> search(
+            SearchViewModel<E> searchViewModel, R repository) {
+        if (searchViewModel.getRestrictions().isEmpty())
+            return new HashSet<>(repository.findAll());
+        return searchViewModel.getRestrictions().stream().map(AbstractSearchViewModel::action)
+                .reduce((s1, s2) -> SearchServiceUtil.combineSpecifications(s1, s2, Optional.ofNullable(searchViewModel.getOperator())))
+                .map(repository::findAll).map(HashSet::new)
+                .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
+    }
 }

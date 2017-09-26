@@ -1,28 +1,22 @@
 package com.blito.view;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.view.document.AbstractXlsView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.springframework.web.servlet.view.document.AbstractXlsView;
-
 public class ExcelView extends AbstractXlsView {
-	
-	
 
+    private static final Logger logger = LoggerFactory.getLogger(ExcelView.class);
 	@Override
     @SuppressWarnings("unchecked")
 	protected void buildExcelDocument(Map<String, Object> model, Workbook workbook, HttpServletRequest request,
@@ -31,6 +25,7 @@ public class ExcelView extends AbstractXlsView {
         String sheetName = (String)model.get("sheetname");
         List<String> headers = (List<String>)model.get("headers");
         Map<Long,List<String>> results = (Map<Long,List<String>>)model.get("results");
+        logger.info("map value *************** '{0}'" , new ObjectMapper().writeValueAsString(results));
         List<String> numericColumns = new ArrayList<String>();
         if (model.containsKey("numericcolumns"))
             numericColumns = (List<String>)model.get("numericcolumns");
