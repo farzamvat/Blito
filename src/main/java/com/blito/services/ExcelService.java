@@ -85,6 +85,9 @@ public class ExcelService {
 				"Event Date and Time", "Event Address", "Seat Type", "Payment Status", "Payment Error",
 				"Saman Bank Token", "Saman Bank Ref Number", "Bank Gateway","Discount Code", "Primary Amount"));
 		additionalFields.keySet().stream().sorted().forEachOrdered(headers::add);
+		blits.stream().filter(blit ->  blit.getAdditionalFields().size() != additionalFields.size()).forEach(blit ->
+			additionalFields.keySet().stream().filter(key -> !blit.getAdditionalFields().stream().map(AdditionalField::getKey).collect(Collectors.toList()).contains(key))
+					.forEach(key -> blit.getAdditionalFields().add(new AdditionalField(key,"no value"))));
 		model.put("headers", headers);
 		// Results
 		Map<Object, Object> results = blits.stream().collect(Collectors.toMap(CommonBlitViewModel::getBlitId, this::getValues));
