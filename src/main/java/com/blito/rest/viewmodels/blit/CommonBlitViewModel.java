@@ -9,6 +9,7 @@ import com.blito.rest.viewmodels.AbstractViewModel;
 import com.blito.rest.viewmodels.LocationViewModel;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
+import com.blito.rest.viewmodels.event.AdditionalField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -17,8 +18,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @JsonInclude(Include.NON_EMPTY)
 public class CommonBlitViewModel extends AbstractViewModel {
@@ -79,7 +80,7 @@ public class CommonBlitViewModel extends AbstractViewModel {
 	@JsonView(View.Blit.class)
 	private BankGateway bankGateway;
 	@JsonView(View.Blit.class)
-	private Map<String,String> additionalFields;
+	private List<AdditionalField> additionalFields;
 	@JsonView(View.Blit.class)
 	private LocationViewModel location;
 	@JsonView(View.Blit.class)
@@ -93,7 +94,15 @@ public class CommonBlitViewModel extends AbstractViewModel {
 	}
 	
 	public CommonBlitViewModel() {
-		additionalFields = new HashMap<>();
+		additionalFields = new ArrayList<>();
+	}
+
+	public List<AdditionalField> getAdditionalFields() {
+		return additionalFields;
+	}
+
+	public void setAdditionalFields(List<AdditionalField> additionalFields) {
+		this.additionalFields = additionalFields;
 	}
 
 	public Long getBlitId() {
@@ -278,14 +287,6 @@ public class CommonBlitViewModel extends AbstractViewModel {
 
 	public void setBankGateway(BankGateway bankGateway) {
 		this.bankGateway = bankGateway;
-	}
-
-	public Map<String, String> getAdditionalFields() {
-		return additionalFields;
-	}
-
-	public void setAdditionalFields(Map<String, String> additionalFields) {
-		this.additionalFields = additionalFields;
 	}
 
 	public LocationViewModel getLocation() {

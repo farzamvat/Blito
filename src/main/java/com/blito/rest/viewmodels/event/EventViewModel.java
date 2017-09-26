@@ -1,15 +1,5 @@
 package com.blito.rest.viewmodels.event;
 
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotEmpty;
-
 import com.blito.annotations.AdditionalFields;
 import com.blito.enums.EventType;
 import com.blito.enums.OfferTypeEnum;
@@ -20,6 +10,11 @@ import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
+import java.util.*;
 
 public class EventViewModel {
 	@JsonView(View.SimpleEvent.class)
@@ -101,10 +96,10 @@ public class EventViewModel {
 	private String members;
 	@JsonView(View.AdminEvent.class)
 	private boolean isDeleted;
-	
+
 	@AdditionalFields
 	@JsonView(View.Event.class)
-	private Map<String,String> additionalFields;
+	private List<AdditionalField> additionalFields;
 	
 	@JsonView(View.AdminEvent.class)
 	private boolean isPrivate;
@@ -113,16 +108,14 @@ public class EventViewModel {
 		eventDates = new HashSet<>();
 		images = new HashSet<>();
 		offers = new HashSet<>();
-		additionalFields = new HashMap<>();
+		additionalFields = new ArrayList<>();
 	}
 
-	
-	public Map<String, String> getAdditionalFields() {
+	public List<AdditionalField> getAdditionalFields() {
 		return additionalFields;
 	}
 
-
-	public void setAdditionalFields(Map<String, String> additionalFields) {
+	public void setAdditionalFields(List<AdditionalField> additionalFields) {
 		this.additionalFields = additionalFields;
 	}
 

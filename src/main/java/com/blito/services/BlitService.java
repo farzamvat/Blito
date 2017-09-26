@@ -99,11 +99,17 @@ public class BlitService {
 		BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(vmodel.getBlitTypeId()))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
 		checkBlitTypeRestrictionsForBuy(blitType,commonBlit);
+		validateAdditionalFields(blitType.getEventDate().getEvent(),commonBlit);
 		if (blitType.isFree()) {
 			return reserveFreeCommonBlitForAuthorizedUser(blitType,commonBlit,user);
 		} else {
 			return validateDiscountCodeIfPresentAndCalculateTotalAmount(vmodel,commonBlit,Optional.of(user),blitType);
 		}
+	}
+
+	@Transactional
+	void validateAdditionalFields(Event event,CommonBlit commonBlit) {
+
 	}
 
 	@Transactional

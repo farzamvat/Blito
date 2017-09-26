@@ -6,6 +6,7 @@ import com.blito.repositories.EventDateRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.rest.viewmodels.account.UserViewModel;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
+import com.blito.rest.viewmodels.event.AdditionalField;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -80,17 +81,17 @@ public class ExcelService {
 				"BlitId", "Tracking Code", "Blit Type", "Created At", "Count", "Total Amount", "Event Name",
 				"Event Date and Time", "Event Address", "Seat Type", "Payment Status", "Payment Error",
 				"Saman Bank Token", "Saman Bank Ref Number", "Bank Gateway"));
-		headers.addAll(additionalFields.entrySet().stream().map(entry -> entry.getKey()).collect(Collectors.toList()));
+		headers.addAll(additionalFields.entrySet().stream().map(Map.Entry::getKey).collect(Collectors.toList()));
 		model.put("headers", headers);
 		// Results
-		Map<Object, Object> results = blits.stream().collect(Collectors.toMap(k -> k.getBlitId(), v -> getValues(v)));
+		Map<Object, Object> results = blits.stream().collect(Collectors.toMap(CommonBlitViewModel::getBlitId, this::getValues));
 		model.put("results", results);
 		// NumericsColumns
 		List<String> numericColumns = new ArrayList<String>(Arrays.asList("UserId", "BlitId", "Count", "Total Amount"));
 		numericColumns.addAll(additionalFields.entrySet().stream()
 				.filter(entry -> entry.getValue().equals(Constants.FIELD_INT_TYPE)
 						|| entry.getValue().equals(Constants.FIELD_DOUBLE_TYPE))
-				.map(entry -> entry.getKey()).collect(Collectors.toList()));
+				.map(Map.Entry::getKey).collect(Collectors.toList()));
 		model.put("numericcolumns", numericColumns);
 		return model;
 	}
@@ -104,7 +105,7 @@ public class ExcelService {
 				v.getPaymentStatus() == null ? " " : v.getPaymentStatus().toString(), v.getPaymentError(),
 				v.getSamanBankToken(), v.getRefNum(),
 				v.getBankGateway() == null ? " " : v.getBankGateway().toString()));
-		values.addAll(v.getAdditionalFields().entrySet().stream().map(entry -> entry.getValue())
+		values.addAll(v.getAdditionalFields().stream().collect(Collectors.toMap(AdditionalField::getKey,AdditionalField::getValue)).entrySet().stream().map(Map.Entry::getValue)
 				.collect(Collectors.toList()));
 		return values;
 	}
