@@ -272,17 +272,16 @@ public class BlitService {
 		return searchService.search(searchViewModel, pageable, commonBlitMapper, commonBlitRepository);
 	}
 
+	@Transactional
 	public Map<String, Object> searchCommonBlitsForExcel(SearchViewModel<CommonBlit> searchViewModel) {
-		Set<CommonBlitViewModel> blits = searchService.search(searchViewModel, commonBlitMapper, commonBlitRepository);
-		if (blits.stream().findFirst().isPresent()) {
-			CommonBlitViewModel blit = blits.stream().findFirst().get();
-			if (blit.getAdditionalFields() != null && !blit.getAdditionalFields().isEmpty()) {
-				CommonBlit cBlit = commonBlitRepository.findOne(blit.getBlitId());
-				Event event = eventRepository.findOne(cBlit.getBlitType().getEventDate().getEvent().getEventId());
-				return excelService.getBlitsExcelMap(blits, event.getAdditionalFields());
-			}
+		Set<CommonBlit> blits = searchService.search(searchViewModel, commonBlitRepository);
+		if(blits.isEmpty())
+			throw new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL));
+		CommonBlit blit = blits.stream().findAny().get();
+		if (blit.getAdditionalFields() != null && !blit.getAdditionalFields().isEmpty()) {
+			return excelService.getBlitsExcelMap(commonBlitMapper.createFromEntities(blits), blit.getBlitType().getEventDate().getEvent().getAdditionalFields());
 		}
-		return excelService.getBlitsExcelMap(blits);
+		return excelService.getBlitsExcelMap(commonBlitMapper.createFromEntities(blits));
 	}
 
 	public Map<String, Object> getBlitPdf(String trackCode) {

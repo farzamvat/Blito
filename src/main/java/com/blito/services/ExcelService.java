@@ -8,6 +8,8 @@ import com.blito.rest.viewmodels.account.UserViewModel;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.rest.viewmodels.event.AdditionalField;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 @Service
 public class ExcelService {
 
+	private final Logger logger = LoggerFactory.getLogger(ExcelService.class);
 	@Autowired
 	UserRepository userRepository;
 	@Autowired
@@ -37,14 +40,14 @@ public class ExcelService {
 						.collect(Collectors.toMap(k -> k.getUserId(), v -> Arrays.asList(Long.toString(v.getUserId()),
 								v.getFirstname(), v.getLastname(), v.getMobile(), v.getEmail()))));
 		// NumericsColumns
-		model.put("numericcolumns", Arrays.asList("Id"));
+		model.put("numericcolumns", Collections.singletonList("Id"));
 
 		return model;
 	}
 
 	public Map<String, Object> getBlitsExcelMap(Set<CommonBlitViewModel> blits) {
 
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new HashMap<>();
 		// Sheet Name
 		model.put("sheetname", "Blits");
 		// Headers
@@ -64,7 +67,7 @@ public class ExcelService {
 						v.getSamanBankToken(), v.getRefNum(),
 						v.getBankGateway() == null ? " " : v.getBankGateway().toString(),
 						v.getDiscountCode() == null ? " " : v.getDiscountCode(),
-						v.getPrimaryAmount() == null ? " " : v.getPrimaryAmount()
+						v.getPrimaryAmount() == null ? " " : String.valueOf(v.getPrimaryAmount())
 						))));
 		// NumericsColumns
 		model.put("numericcolumns", Arrays.asList("UserId", "BlitId", "Count", "Total Amount"));
@@ -73,15 +76,15 @@ public class ExcelService {
 
 	public Map<String, Object> getBlitsExcelMap(Set<CommonBlitViewModel> blits, Map<String, String> additionalFields) {
 
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new HashMap<>();
 		// Sheet Name
 		model.put("sheetname", "Blits");
 		// Headers
-		List<String> headers = new ArrayList<String>(Arrays.asList("UserId", "CustomerName", "Mobile", "Email",
+		List<String> headers = new ArrayList<>(Arrays.asList("UserId", "CustomerName", "Mobile", "Email",
 				"BlitId", "Tracking Code", "Blit Type", "Created At", "Count", "Total Amount", "Event Name",
 				"Event Date and Time", "Event Address", "Seat Type", "Payment Status", "Payment Error",
-				"Saman Bank Token", "Saman Bank Ref Number", "Bank Gateway"));
-		headers.addAll(additionalFields.entrySet().stream().map(Map.Entry::getKey).collect(Collectors.toList()));
+				"Saman Bank Token", "Saman Bank Ref Number", "Bank Gateway","Discount Code", "Primary Amount"));
+		additionalFields.keySet().stream().sorted().forEachOrdered(headers::add);
 		model.put("headers", headers);
 		// Results
 		Map<Object, Object> results = blits.stream().collect(Collectors.toMap(CommonBlitViewModel::getBlitId, this::getValues));
@@ -96,17 +99,22 @@ public class ExcelService {
 		return model;
 	}
 
-	public List<Object> getValues(CommonBlitViewModel v) {
-		List<Object> values = new ArrayList<Object>(Arrays.asList(String.valueOf(v.getUserId()), v.getCustomerName(),
+	public List<String> getValues(CommonBlitViewModel v) {
+		List<String> values = new ArrayList<>(Arrays.asList(String.valueOf(v.getUserId()), v.getCustomerName(),
 				v.getCustomerMobileNumber(), v.getCustomerEmail(), String.valueOf(v.getBlitId()), v.getTrackCode(),
 				v.getBlitTypeName(), v.getCreatedAt().toString(), String.valueOf(v.getCount()),
 				String.valueOf(v.getTotalAmount()), v.getEventName(), v.getEventDateAndTime(), v.getEventAddress(),
 				v.getSeatType() == null ? " " : v.getSeatType().toString(),
 				v.getPaymentStatus() == null ? " " : v.getPaymentStatus().toString(), v.getPaymentError(),
 				v.getSamanBankToken(), v.getRefNum(),
-				v.getBankGateway() == null ? " " : v.getBankGateway().toString()));
-		values.addAll(v.getAdditionalFields().stream().collect(Collectors.toMap(AdditionalField::getKey,AdditionalField::getValue)).entrySet().stream().map(Map.Entry::getValue)
-				.collect(Collectors.toList()));
+				v.getBankGateway() == null ? " " : v.getBankGateway().toString(),
+				v.getDiscountCode() == null ? " " : v.getDiscountCode(),
+				v.getPrimaryAmount() == null ? " " : String.valueOf(v.getPrimaryAmount())
+				));
+		v.getAdditionalFields().stream().map(AdditionalField::getKey).sorted().forEachOrdered(key -> {
+			v.getAdditionalFields().stream().filter(additionalField -> additionalField.getKey().equals(key))
+					.findFirst().ifPresent(additionalField -> values.add(additionalField.getValue()));
+		});
 		return values;
 	}
 

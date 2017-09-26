@@ -174,7 +174,7 @@ public class ExcelServiceTest {
 				new AdditionalField("Gender", "male"),
 				new AdditionalField("Father's Name", "Mostafa"),
 				new AdditionalField("Weight", "94")));
-		
+
 		commonBlitViewModel2.setBlitTypeId(blitTypeId);
 		commonBlitViewModel2.setCount(5);
 		commonBlitViewModel2.setSeatType(SeatType.COMMON);
@@ -192,7 +192,7 @@ public class ExcelServiceTest {
 
 		blitService.createCommonBlitAuthorized(commonBlitViewModel1,SecurityContextHolder.currentUser());
 		blitService.createCommonBlitAuthorized(commonBlitViewModel2,SecurityContextHolder.currentUser());
-		
+
 		SearchViewModel<CommonBlit> searchViewModel = new SearchViewModel<>();
 		Simple<CommonBlit> simple = new Simple<>();
 		simple.setField("blitType-blitTypeId");
