@@ -182,6 +182,7 @@ public class BlitService {
 		if (blitType.isFree())
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
 		checkBlitTypeRestrictionsForBuy(blitType,commonBlit);
+		validateAdditionalFields(blitType.getEventDate().getEvent(),commonBlit);
 		return validateDiscountCodeIfPresentAndCalculateTotalAmount(vmodel,commonBlit,Optional.empty(),blitType);
 	}
 
