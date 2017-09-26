@@ -529,8 +529,6 @@
                             <div class="panel-body makeEventForm EmakeEventPlannerForm">
                                 <form class="form-inline textAlignRight" name="submitEventForm" id="submitEventForm">
                                     <fieldset class="fieldsetStyle">
-                                        <!-- Sign In Form -->
-                                        <!-- Text input-->
                                         <legend class="legendStyle">مشخصات رویداد</legend>
                                         <div class="row">
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
@@ -643,7 +641,6 @@
                                                     <img class="img-responsive profilePhotoUpload marginTop30"  src="" alt="">
                                                     <div class="col-xs-12">
                                                         <div class="btn btn-success marginTop10" ng-click="photoUploadEvent()">بارگذاری   <i ng-show="uploadEventPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
-                                                        <!--<button ng-click="deleteProfilePic()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                                     </div>
                                                     <div id="eventPhotoError" ng-show="eventPhotoError" class="text-center alert alert-danger col-xs-12">
                                                         <strong></strong>
@@ -664,7 +661,6 @@
                                                     <img class="img-responsive gallery galleryOne marginTop30"  src="" alt="">
                                                     <div class="col-xs-12">
                                                         <div class="btn btn-success marginTop10" ng-click="photoGalleryOne()">بارگذاری   <i ng-show="uploadEventOnePhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
-                                                        <!--<button ng-click="deleteProfilePic()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                                     </div>
                                                     <div id="eventPhotoOneError" ng-show="eventPhotoOneError" class="text-center alert alert-danger col-xs-12">
                                                         <strong></strong>
@@ -681,7 +677,6 @@
                                                     <img class="img-responsive gallery galleryTwo marginTop30"  src="" alt="">
                                                     <div class="col-xs-12">
                                                         <div class="btn btn-success marginTop10" ng-click="photoGalleryTwo()">بارگذاری   <i ng-show="uploadEventTwoPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
-                                                        <!--<button ng-click="deleteProfilePic()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                                     </div>
                                                     <div id="eventPhotoTwoError" ng-show="eventPhotoTwoError" class="text-center alert alert-danger col-xs-12">
                                                         <strong></strong>
@@ -698,7 +693,6 @@
                                                     <img class="img-responsive gallery galleryThree marginTop30"  src="" alt="">
                                                     <div class="col-xs-12">
                                                         <div class="btn btn-success marginTop10" ng-click="photoGalleryThree()">بارگذاری   <i ng-show="uploadEventThreePhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
-                                                        <!--<button ng-click="deleteProfilePic()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                                     </div>
                                                     <div id="eventPhotoThreeError" ng-show="eventPhotoThreeError" class="text-center alert alert-danger col-xs-12">
                                                         <strong></strong>
@@ -717,7 +711,6 @@
                                                     <img class="img-responsive gallery galleryFour marginTop30"  src="" alt="">
                                                     <div class="col-xs-12">
                                                         <div class="btn btn-success marginTop10" ng-click="photoGalleryFour()">بارگذاری   <i ng-show="uploadEventFourPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
-                                                        <!--<button ng-click="deleteProfilePic()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                                     </div>
                                                     <div id="eventPhotoFourError" ng-show="eventPhotoFourError" class="text-center alert alert-danger col-xs-12">
                                                         <strong></strong>
@@ -734,7 +727,6 @@
                                                     <img class="img-responsive gallery galleryFive marginTop30"  src="" alt="">
                                                     <div class="col-xs-12">
                                                         <div class="btn btn-success marginTop10" ng-click="photoGalleryFive()">بارگذاری   <i ng-show="uploadEventFivePhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
-                                                        <!--<button ng-click="deleteProfilePic()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                                     </div>
                                                     <div id="eventPhotoFiveError" ng-show="eventPhotoFiveError" class="text-center alert alert-danger col-xs-12">
                                                         <strong></strong>
@@ -751,7 +743,6 @@
                                                     <img class="img-responsive gallery gallerySix marginTop30"  src="" alt="">
                                                     <div class="col-xs-12">
                                                         <div class="btn btn-success marginTop10" ng-click="photoGallerySix()">بارگذاری   <i ng-show="uploadEventSixPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
-                                                        <!--<button ng-click="deleteProfilePic()" class="btn btn-danger marginTop10">پاک کردن عکس   <i class="fa fa-times"></i></button>-->
                                                     </div>
                                                     <div id="eventPhotoSixError" ng-show="eventPhotoSixError" class="text-center alert alert-danger col-xs-12">
                                                         <strong></strong>
@@ -873,7 +864,33 @@
                                         </div>
 
                                     </fieldset>
+                                    <fieldset class="marginTop30 fieldsetStyle">
 
+                                        <legend class="legendStyle">اطلاعات مورد نیاز (اختیاری)</legend>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <p class="marginRight30">در صورتی که از مشتریان خود اطلاعات بیشتری به غیر از نام و نام خانوادگی، پست الکترونیکی و شماره تماس نیاز دارید
+                                                    <a class="fontSize18 cursorPointer" ng-click="openAdditionalFields()">اینجا</a> را کلیک کنید</p>
+                                            </div>
+                                            <div id="additionalFieldsSection" class="col-xs-12 dispNone">
+                                                <div class="col-xs-12 text-center marginTop10" > اضافه و کم کردن فیلد
+                                                    <i class="fa fa-plus btn-success addDeleteBtn" ng-click="addAdditionalFields()" aria-hidden="true"></i>
+                                                    <i class="fa fa-minus btn-danger addDeleteBtn" ng-click="deleteAdditionalFields()" aria-hidden="true"></i>
+                                                </div>
+                                                <div class="col-xs-12 marginTop30">
+                                                    <div ng-repeat="inputs in additionalFields" class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
+                                                        <div class="col-xs-10 floatRight text-center">
+                                                            <label class="registerLabel floatRight" for="eventName" >نام فیلد :</label>
+                                                        </div>
+                                                        <div class="col-xs-11 floatRight ">
+                                                            <input height="60" ng-model="inputs.key" name="extraField"  required   type="text"  class="form-group registerInput" >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </fieldset>
                                     <div class="control-group ">
                                         <label class="control-label" for="signInButton"></label>
                                         <div ng-show="createEventNotif" class="text-center alert alert-success col-xs-12">

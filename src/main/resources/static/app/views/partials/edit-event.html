@@ -372,7 +372,33 @@
                         </div>
 
                     </fieldset>
+                    <fieldset class="marginTop30 fieldsetStyle">
 
+                        <legend class="legendStyle">اطلاعات مورد نیاز (اختیاری)</legend>
+                        <div class="row">
+                            <div ng-if="additionalFieldsEdit.length === 0" class="col-xs-12">
+                                <p class="marginRight30">در صورتی که از مشتریان خود اطلاعات بیشتری به غیر از نام و نام خانوادگی، پست الکترونیکی و شماره تماس نیاز دارید
+                                    <a class="fontSize18 cursorPointer" ng-click="openAdditionalFieldsEdit()">اینجا</a> را کلیک کنید</p>
+                            </div>
+                            <div ng-show="additionalFieldsSection" class="col-xs-12">
+                                <div class="col-xs-12 text-center marginTop10" > اضافه و کم کردن فیلد
+                                    <i class="fa fa-plus btn-success addDeleteBtn" ng-click="addAdditionalFieldsEdit()" aria-hidden="true"></i>
+                                    <i class="fa fa-minus btn-danger addDeleteBtn" ng-click="deleteAdditionalFieldsEdit()" aria-hidden="true"></i>
+                                </div>
+                                <div class="col-xs-12 marginTop30">
+                                    <div ng-repeat="inputs in additionalFieldsEdit" class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
+                                        <div class="col-xs-10 floatRight text-center">
+                                            <label class="registerLabel floatRight" for="eventName" >نام فیلد :</label>
+                                        </div>
+                                        <div class="col-xs-11 floatRight ">
+                                            <input height="60" ng-model="inputs.key" name="extraField"  required   type="text"  class="form-group registerInput" >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </fieldset>
                     <div class="control-group ">
                         <label class="control-label" for="signInButton"></label>
                         <div ng-show="editEventNotif" class="text-center alert alert-success col-xs-12">

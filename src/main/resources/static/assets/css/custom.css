@@ -137,6 +137,9 @@ textarea:focus, input:focus {
 .fontSize16 {
     font-size: 16px;
 }
+.fontSize18 {
+    font-size: 18px;
+}
 .marginRight10 {
     margin-right: 10px;
 }
@@ -2222,6 +2225,9 @@ a{
 .circleImage{
     border-radius: 50%;
     border:3px solid rgb(252, 183, 49);
+}
+.cursorPointer {
+    cursor: pointer;
 }
 .bioPageLogoImage{
     position: absolute;

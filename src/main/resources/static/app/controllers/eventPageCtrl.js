@@ -33,6 +33,10 @@ angular.module('eventsPageModule')
         eventService.getEvent($routeParams.eventLink)
             .then(function (data) {
                 $scope.eventDataDetails = angular.copy(data.data);
+                $scope.additionalFields = $scope.eventDataDetails.additionalFields;
+                $scope.additionalFields.forEach(function (field) {
+                   field.value = "";
+                });
                 $scope.getPlannerData($scope.eventDataDetails.eventHostId);
                 $scope.eventType = $scope.eventDataDetails.eventType;
                 $scope.buyTicketFormatData(data.data.eventDates);
@@ -149,7 +153,7 @@ angular.module('eventsPageModule')
         $scope.paymentSelectedNotUser = function (payment) {
             $scope.paymentSelectedDone = "selected";
             var buyerData = $scope.buyerInfo;
-            $scope.setPaymentData(payment, buyerData)
+            $scope.setPaymentData(payment, buyerData);
         };
         $scope.setPaymentData = function (payment, buyerData) {
                 angular.element(document.getElementsByClassName("btnPaymentActive")).addClass("btnPaymentActivated");
@@ -169,6 +173,7 @@ angular.module('eventsPageModule')
                     eventName: $scope.eventDataDetails.eventName,
                     seatType: "COMMON",
                     totalAmount: $scope.totalPrice,
+                    additionalFields : $scope.additionalFields,
                     primaryAmount: $scope.primaryTotalPrice,
                     bankGateway: payment
                 };
@@ -234,6 +239,7 @@ angular.module('eventsPageModule')
                 eventDate : $scope.itemWithCapacity[0].date,
                 eventDateAndTime : eventPersianDate[0].persianDate,
                 eventName : $scope.eventDataDetails.eventName,
+                additionalFields : $scope.additionalFields,
                 seatType : "COMMON",
                 bankGateway : "NONE"
             };
