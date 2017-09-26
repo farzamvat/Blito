@@ -1823,11 +1823,6 @@ angular.module('User')
                 $scope.additionalFieldsEdit.push({ key : "", value : "string"});
             }
         };
-        $scope.deleteAdditionalFieldsEdit = function () {
-            if($scope.additionalFieldsEdit.length > 0) {
-                $scope.additionalFieldsEdit.splice(-1, 1);
-            }
-        };
         //==================================================== ********* =================================
         //==================================================== PERSIAN DATE PICKER =======================
         $timeout(function () {
