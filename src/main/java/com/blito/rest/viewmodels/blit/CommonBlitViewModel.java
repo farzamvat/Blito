@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -79,6 +80,7 @@ public class CommonBlitViewModel extends AbstractViewModel {
 	private String refNum;
 	@JsonView(View.Blit.class)
 	private BankGateway bankGateway;
+	@Valid
 	@JsonView(View.Blit.class)
 	private List<AdditionalField> additionalFields;
 	@JsonView(View.Blit.class)

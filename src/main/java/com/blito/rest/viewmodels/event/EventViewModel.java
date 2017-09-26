@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.*;
@@ -97,6 +98,7 @@ public class EventViewModel {
 	@JsonView(View.AdminEvent.class)
 	private boolean isDeleted;
 
+	@Valid
 	@AdditionalFields
 	@JsonView(View.Event.class)
 	private List<AdditionalField> additionalFields;

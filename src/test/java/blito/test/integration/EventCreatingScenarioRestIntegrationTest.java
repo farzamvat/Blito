@@ -114,12 +114,12 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         return eventViewModel;
     }
 
-    public Response createEvent_success(String eventName, String eventHostName)
+    public Response createEvent_success(String eventName, String eventHostName,Optional<List<AdditionalField>> optionalAdditionalFields)
     {
         EventHostViewModel eventHostViewModel = createEventHost_success(eventHostName).thenReturn().body().as(EventHostViewModel.class);
 
         EventViewModel eventViewModel = createSampleEventViewModel(eventHostViewModel, eventName);
-
+        optionalAdditionalFields.ifPresent(eventViewModel::setAdditionalFields);
         Response response = givenRestIntegration()
                 .body(eventViewModel)
                 .when()
@@ -185,7 +185,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
     }
 
     public EventViewModel createEvent_approve_open_event_eventDate_blitType_success() {
-        EventViewModel eventViewModel = createEvent_success("My Event", "Event Host").thenReturn().body().as(EventViewModel.class);
+        EventViewModel eventViewModel = createEvent_success("My Event", "Event Host",Optional.empty()).thenReturn().body().as(EventViewModel.class);
         approveEvent_success(eventViewModel.getEventId(), OperatorState.APPROVED);
         openEventState_success(eventViewModel.getEventId(), State.OPEN);
         openEventDateState_success(eventViewModel.getEventDates().stream().findFirst().get().getEventDateId(), State.OPEN);
@@ -194,10 +194,10 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
     }
 
     public void createAdditionalEventsForTest() {
-        Long id1 = createEvent_success("TestEvent1", "eventHost_1").thenReturn().as(EventViewModel.class).getEventId();
-        Long id2 = createEvent_success("TestEvent2", "eventHost_2").thenReturn().as(EventViewModel.class).getEventId();
-        Long id3 = createEvent_success("TestEvent3", "eventHost_3").thenReturn().as(EventViewModel.class).getEventId();
-        Long id4 = createEvent_success("TestEvent4", "eventHost_4").thenReturn().as(EventViewModel.class).getEventId();
+        Long id1 = createEvent_success("TestEvent1", "eventHost_1",Optional.empty()).thenReturn().as(EventViewModel.class).getEventId();
+        Long id2 = createEvent_success("TestEvent2", "eventHost_2",Optional.empty()).thenReturn().as(EventViewModel.class).getEventId();
+        Long id3 = createEvent_success("TestEvent3", "eventHost_3",Optional.empty()).thenReturn().as(EventViewModel.class).getEventId();
+        Long id4 = createEvent_success("TestEvent4", "eventHost_4",Optional.empty()).thenReturn().as(EventViewModel.class).getEventId();
 
         approveEvent_success(id1, OperatorState.REJECTED);
         approveEvent_success(id2, OperatorState.APPROVED);
@@ -216,7 +216,12 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
 
     @Test
     public void buyRequest_freeBlit_success() {
-        EventViewModel eventViewModel = createEvent_success("TestEvent1", "eventHost1").thenReturn().as(EventViewModel.class);
+
+        EventViewModel eventViewModel =
+                createEvent_success("TestEvent1",
+                        "eventHost1",
+                        Optional.of(Arrays.asList(new AdditionalField("age","string"),new AdditionalField("gender","string"))))
+                        .thenReturn().as(EventViewModel.class);
         approveEvent_success(eventViewModel.getEventId(),OperatorState.APPROVED);
         openEventState_success(eventViewModel.getEventId(),State.OPEN);
         openEventDateState_success(eventViewModel.getEventId(),State.OPEN);
@@ -224,9 +229,11 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractRestContro
         openBlitTypeState_success(eventViewModel.getEventDates()
                 .stream()
                 .flatMap(ed -> ed.getBlitTypes().stream())
-                .map(blitTypeViewModel -> blitTypeViewModel.getBlitTypeId())
+                .map(BlitTypeViewModel::getBlitTypeId)
                 .collect(Collectors.toList()),State.OPEN);
         CommonBlitViewModel commonBlitViewModel = new CommonBlitViewModel();
+        commonBlitViewModel.setAdditionalFields(Arrays.asList(new AdditionalField("age","12"),
+                new AdditionalField("gender","male")));
         commonBlitViewModel.setBankGateway(BankGateway.NONE);
         commonBlitViewModel.setBlitTypeId(freeBlitId);
         commonBlitViewModel.setBlitTypeName("FREE");

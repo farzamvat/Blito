@@ -4,15 +4,15 @@ package com.blito.rest.viewmodels.event;
 */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;
 import java.util.Map;
 
 public class AdditionalField implements Serializable {
-    @NotEmpty
+    @NotBlank
     private String key;
-    @NotEmpty
+    @NotBlank
     private String value;
 
     public AdditionalField(@JsonProperty("key") String key,@JsonProperty("value") String value) {
