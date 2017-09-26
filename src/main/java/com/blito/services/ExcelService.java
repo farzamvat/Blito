@@ -70,7 +70,7 @@ public class ExcelService {
 						v.getPrimaryAmount() == null ? " " : String.valueOf(v.getPrimaryAmount())
 						))));
 		// NumericsColumns
-		model.put("numericcolumns", Arrays.asList("UserId", "BlitId", "Count", "Total Amount"));
+		model.put("numericcolumns", Arrays.asList("UserId", "BlitId", "Count", "Total Amount","Primary Amount"));
 		return model;
 	}
 
@@ -90,7 +90,7 @@ public class ExcelService {
 		Map<Object, Object> results = blits.stream().collect(Collectors.toMap(CommonBlitViewModel::getBlitId, this::getValues));
 		model.put("results", results);
 		// NumericsColumns
-		List<String> numericColumns = new ArrayList<String>(Arrays.asList("UserId", "BlitId", "Count", "Total Amount"));
+		List<String> numericColumns = new ArrayList<>(Arrays.asList("UserId", "BlitId", "Count", "Total Amount","Primary Amount"));
 		numericColumns.addAll(additionalFields.entrySet().stream()
 				.filter(entry -> entry.getValue().equals(Constants.FIELD_INT_TYPE)
 						|| entry.getValue().equals(Constants.FIELD_DOUBLE_TYPE))
