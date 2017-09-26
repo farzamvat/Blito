@@ -1081,7 +1081,7 @@ angular.module('User')
             $scope.eventEditPhotoSuccess = false;
 
             $scope.showTimeEditForms = angular.copy($scope.userEventsEdit[index].eventDates);
-            $scope.additionalFieldsEdit = $scope.userEventsEdit[index].additionalFields;
+            $scope.additionalFieldsEdit = angular.copy($scope.userEventsEdit[index].additionalFields);
             if($scope.additionalFieldsEdit.length > 0) {
                 $scope.additionalFieldsSection = true;
             }
