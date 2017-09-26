@@ -919,7 +919,8 @@ angular.module('User')
                     {imageUUID : $scope.gallerySixUUID, type : "GALLERY"}
                 ],
                 latitude : latLng.lat,
-                longitude : latLng.lng
+                longitude : latLng.lng,
+                additionalFields : $scope.additionalFields
             };
             eventSubmitData.images = eventSubmitData.images.filter(function (item) {
                 return !(item.imageUUID === null || item.imageUUID === undefined);
@@ -1067,6 +1068,7 @@ angular.module('User')
             $scope.galleryFourEditUUID = null;
             $scope.galleryFiveEditUUID = null;
             $scope.gallerySixEditUUID = null;
+            $scope.additionalFieldsSection = false;
 
             angular.element(document.getElementsByClassName("profilePhotoUploadEditEvent"))[0].src = "";
             angular.element(document.getElementsByClassName("galleryOneEdit"))[0].src = "";
@@ -1078,7 +1080,10 @@ angular.module('User')
             $scope.eventEditPhotoSuccess = false;
 
             $scope.showTimeEditForms = angular.copy($scope.userEventsEdit[index].eventDates);
-
+            $scope.additionalFieldsEdit = $scope.userEventsEdit[index].additionalFields;
+            if($scope.additionalFieldsEdit.length > 0) {
+                $scope.additionalFieldsSection = true;
+            }
             $scope.editEventFields = {
                 eventId : $scope.userEventsEdit[index].eventId,
                 eventName : $scope.userEventsEdit[index].eventName,
@@ -1161,6 +1166,7 @@ angular.module('User')
             sendingData.eventDates = $scope.newShowTimeEditForms;
             sendingData.latitude = latLong.lat;
             sendingData.longitude = latLong.lng;
+            sendingData.additionalFields = $scope.additionalFieldsEdit;
 
             sendingData.images = [
                 {imageUUID : $scope.eventEditImageId, type : "EVENT_PHOTO"},
@@ -1659,7 +1665,6 @@ angular.module('User')
         $scope.discountList = function (page) {
             eventService.searchDiscount(page, $scope.eventDiscount.eventId)
                 .then(function (data) {
-                    console.log(data);
                     $scope.totalDiscounts = data.data.totalElements;
                     $scope.discountsList = data.data.content;
                     $timeout(function () {
@@ -1789,6 +1794,38 @@ angular.module('User')
                     document.getElementById("errorEditDiscount").innerHTML= data.data.message;
                     document.getElementById("errorEditDiscount").style.display = "block";
                 })
+        };
+        //==================================================== ********* =================================
+
+        //==================================================== ADDITIONAL FIELDS =======================
+        $scope.additionalFields = [];
+        $scope.additionalFieldsEdit = [];
+        $scope.additionalFieldsSection = false;
+        $scope.openAdditionalFields = function () {
+            document.getElementById("additionalFieldsSection").style.display = "block";
+        };
+        $scope.openAdditionalFieldsEdit = function () {
+            $scope.additionalFieldsSection = true;
+        };
+        $scope.addAdditionalFields = function () {
+            if($scope.additionalFields.length < 6) {
+                $scope.additionalFields.push({ key : "", value : "string"});
+            }
+        };
+        $scope.deleteAdditionalFields = function () {
+            if($scope.additionalFields.length > 0) {
+                $scope.additionalFields.splice(-1, 1);
+            }
+        };
+        $scope.addAdditionalFieldsEdit = function () {
+            if($scope.additionalFieldsEdit.length < 6) {
+                $scope.additionalFieldsEdit.push({ key : "", value : "string"});
+            }
+        };
+        $scope.deleteAdditionalFieldsEdit = function () {
+            if($scope.additionalFieldsEdit.length > 0) {
+                $scope.additionalFieldsEdit.splice(-1, 1);
+            }
         };
         //==================================================== ********* =================================
         //==================================================== PERSIAN DATE PICKER =======================
