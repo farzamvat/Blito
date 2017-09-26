@@ -932,6 +932,7 @@ angular.module('User')
             eventService.submitEventForm(eventSubmitData)
                 .then(function () {
                     $scope.eventSubmitOnce = false;
+                    $scope.additionalFields = [];
                     angular.element(document.getElementsByClassName("profilePhotoUpload"))[0].src = '';
                     angular.element(document.getElementsByClassName("galleryOne"))[0].src = '';
                     angular.element(document.getElementsByClassName("galleryTwo"))[0].src = '';
