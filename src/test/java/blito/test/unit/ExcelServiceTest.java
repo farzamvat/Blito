@@ -1,6 +1,7 @@
 package blito.test.unit;
 
 import com.blito.Application;
+import com.blito.configs.Constants;
 import com.blito.enums.*;
 import com.blito.mappers.CommonBlitMapper;
 import com.blito.models.CommonBlit;
@@ -116,7 +117,7 @@ public class ExcelServiceTest {
 		eventViewModel.setEventName("My Event");
 		eventViewModel.setEventType(EventType.CONCERT);
 
-		eventViewModel.setAdditionalFields(Arrays.asList(new AdditionalField("Student Number",Constants.FIELD_INT_TYPE),
+		eventViewModel.setAdditionalFields(Arrays.asList(new AdditionalField("Student Number", Constants.FIELD_INT_TYPE),
 				new AdditionalField("Gender",Constants.FIELD_STRING_TYPE),
 				new AdditionalField("Father's Name",Constants.FIELD_STRING_TYPE),
 				new AdditionalField("Weight",Constants.FIELD_DOUBLE_TYPE)));
