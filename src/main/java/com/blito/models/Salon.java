@@ -14,14 +14,19 @@ public class Salon {
 	private Double longitude;
 	private String address;
 	private String planPath;
-	@OneToMany(mappedBy="salon",targetEntity=Seat.class)
+	@OneToMany(mappedBy="salon",targetEntity=Seat.class,cascade = CascadeType.ALL)
 	Set<Seat> seats;
-	@OneToMany(mappedBy="salon",targetEntity=EventDate.class)
+	@OneToMany(mappedBy="salon",targetEntity=EventDate.class,cascade = CascadeType.ALL)
 	Set<EventDate> eventDates;
 
 	public Salon() {
 		seats = new HashSet<>();
 		eventDates = new HashSet<>();
+	}
+
+	public void addSeat(Seat seat) {
+		this.seats.add(seat);
+		seat.setSalon(this);
 	}
 
 	public String getSalonUid() {

@@ -46,6 +46,8 @@ public final class Constants {
     public static final String FIELD_DOUBLE_TYPE = "double";
     public static final String FIELD_IMAGE_TYPE = "image";
 
+    public static final String BASE_SALON_SCHEMAS = "/salon/schemas";
+
     private Constants()
     {}
 }

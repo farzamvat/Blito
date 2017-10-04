@@ -3,8 +3,8 @@ package com.blito.common;
     @author Farzam Vatanzadeh
 */
 
-import com.blito.salon.common.base.AbstractBaseSalonEntity;
-import com.blito.salon.common.base.SalonComponent;
+import com.blito.common.base.AbstractBaseSalonEntity;
+import com.blito.common.base.SalonComponent;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,6 +18,9 @@ public class Seat extends AbstractBaseSalonEntity implements SalonComponent<Seat
     public Seat(String uid, String name, SalonComponent<Row> rowSalonComponent) {
         super(uid, name);
         this.rowSalonComponent = rowSalonComponent;
+    }
+
+    public Seat() {
     }
 
     public String getNextUid() {

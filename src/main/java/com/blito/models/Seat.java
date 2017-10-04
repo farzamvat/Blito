@@ -21,6 +21,18 @@ public class Seat {
 	@JoinColumn(name="salonId")
 	private Salon salon;
 
+	public Seat(String seatName, String seatUid, String rowName, String rowUid, String sectionName, String sectionUid) {
+		this.seatName = seatName;
+		this.seatUid = seatUid;
+		this.rowName = rowName;
+		this.rowUid = rowUid;
+		this.sectionName = sectionName;
+		this.sectionUid = sectionUid;
+	}
+
+	public Seat() {
+	}
+
 	public long getSeatId() {
 		return seatId;
 	}
@@ -83,5 +95,6 @@ public class Seat {
 
 	public void setSalon(Salon salon) {
 		this.salon = salon;
+		salon.getSeats().add(this);
 	}
 }
