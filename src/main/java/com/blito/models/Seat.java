@@ -10,42 +10,78 @@ import javax.persistence.ManyToOne;
 @Entity(name="seat")
 public class Seat {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	long seatId;
-	String seatNumber;
-	String rowNumber;
-	String section;
+	private long seatId;
+	private String seatName;
+	private String seatUid;
+	private String rowName;
+	private String rowUid;
+	private String sectionName;
+	private String sectionUid;
 	@ManyToOne(optional=false)
 	@JoinColumn(name="salonId")
-	Salon salon;
+	private Salon salon;
+
 	public long getSeatId() {
 		return seatId;
 	}
+
 	public void setSeatId(long seatId) {
 		this.seatId = seatId;
 	}
-	public String getSeatNumber() {
-		return seatNumber;
+
+	public String getSeatName() {
+		return seatName;
 	}
-	public void setSeatNumber(String seatNumber) {
-		this.seatNumber = seatNumber;
+
+	public void setSeatName(String seatName) {
+		this.seatName = seatName;
 	}
-	public String getRowNumber() {
-		return rowNumber;
+
+	public String getSeatUid() {
+		return seatUid;
 	}
-	public void setRowNumber(String rowNumber) {
-		this.rowNumber = rowNumber;
+
+	public void setSeatUid(String seatUid) {
+		this.seatUid = seatUid;
 	}
-	public String getSection() {
-		return section;
+
+	public String getRowName() {
+		return rowName;
 	}
-	public void setSection(String section) {
-		this.section = section;
+
+	public void setRowName(String rowName) {
+		this.rowName = rowName;
 	}
+
+	public String getRowUid() {
+		return rowUid;
+	}
+
+	public void setRowUid(String rowUid) {
+		this.rowUid = rowUid;
+	}
+
+	public String getSectionName() {
+		return sectionName;
+	}
+
+	public void setSectionName(String sectionName) {
+		this.sectionName = sectionName;
+	}
+
+	public String getSectionUid() {
+		return sectionUid;
+	}
+
+	public void setSectionUid(String sectionUid) {
+		this.sectionUid = sectionUid;
+	}
+
 	public Salon getSalon() {
 		return salon;
 	}
+
 	public void setSalon(Salon salon) {
 		this.salon = salon;
-		salon.getSeats().add(this);
 	}
 }

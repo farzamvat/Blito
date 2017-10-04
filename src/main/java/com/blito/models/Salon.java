@@ -1,17 +1,14 @@
 package com.blito.models;
 
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 @Entity(name="salon")
 public class Salon {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private long salonId;
+	private String salonUid;
 	private String name;
 	private Double latitude;
 	private Double longitude;
@@ -21,7 +18,18 @@ public class Salon {
 	Set<Seat> seats;
 	@OneToMany(mappedBy="salon",targetEntity=EventDate.class)
 	Set<EventDate> eventDates;
-	
+
+	public Salon() {
+		seats = new HashSet<>();
+		eventDates = new HashSet<>();
+	}
+
+	public String getSalonUid() {
+		return salonUid;
+	}
+	public void setSalonUid(String salonUid) {
+		this.salonUid = salonUid;
+	}
 	public Set<EventDate> getEventDates() {
 		return eventDates;
 	}
