@@ -18,10 +18,20 @@ public class Salon {
 	Set<Seat> seats;
 	@OneToMany(mappedBy="salon",targetEntity=EventDate.class,cascade = CascadeType.ALL)
 	Set<EventDate> eventDates;
+	@Column(columnDefinition="TEXT")
+	private String salonSvg;
 
 	public Salon() {
 		seats = new HashSet<>();
 		eventDates = new HashSet<>();
+	}
+
+	public String getSalonSvg() {
+		return salonSvg;
+	}
+
+	public void setSalonSvg(String salonSvg) {
+		this.salonSvg = salonSvg;
 	}
 
 	public void addSeat(Seat seat) {
