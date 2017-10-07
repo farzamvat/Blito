@@ -3,18 +3,13 @@ package com.blito.rest.controllers;
 import com.blito.annotations.Permission;
 import com.blito.enums.ApiBusinessName;
 import com.blito.enums.Response;
-import com.blito.enums.validation.ControllerEnumValidation;
-import com.blito.exceptions.ExceptionUtil;
-import com.blito.models.User;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
-import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
-import com.blito.security.SecurityContextHolder;
 import com.blito.services.DiscountService;
 import com.blito.services.EventService;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -26,13 +21,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
@@ -109,6 +102,7 @@ public class EventController {
 		return ResponseEntity.ok(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)));
 	}
 
+	// TODO: 10/7/17 ERROR 
 	@Permission(value = ApiBusinessName.USER)
 	@DeleteMapping("/{eventId}/{uuid}")
 	public CompletionStage<ResponseEntity<?>> deleteGalleryPhoto(@PathVariable long eventId, @PathVariable String uuid,

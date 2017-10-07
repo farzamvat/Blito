@@ -1,22 +1,30 @@
 package com.blito.rest.viewmodels.eventdate;
 
+import com.blito.enums.State;
+import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
-import com.blito.enums.State;
-import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
-
 public class EventDateViewModel {
 	long eventDateId;
 	@NotEmpty
-	Timestamp date;
+	private Timestamp date;
 	@NotEmpty
-	Set<BlitTypeViewModel> blitTypes;
-	State state;
-	
+	private Set<BlitTypeViewModel> blitTypes;
+	private State state;
+	private Long salonId;
+
+	public Long getSalonId() {
+		return salonId;
+	}
+
+	public void setSalonId(Long salonId) {
+		this.salonId = salonId;
+	}
+
 	public long getEventDateId() {
 		return eventDateId;
 	}

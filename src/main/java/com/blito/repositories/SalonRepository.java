@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface SalonRepository extends JpaRepository<Salon,Long> {
     Optional<Salon> findByName(String name);
     Optional<Salon> findByPlanPath(String planPathName);
+    Optional<Salon> findBySalonUid(String salonUid);
 }

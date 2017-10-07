@@ -30,4 +30,8 @@ public class View {
 	public interface SeatBlit extends SimpleBlit {}
 	public interface Blit extends SeatBlit,CommonBlit {}
 	public interface AdminBlit extends Blit {}
+
+	public interface SimpleSalon extends DefaultView {}
+	public interface SalonSchema extends SimpleSalon {}
+
 }

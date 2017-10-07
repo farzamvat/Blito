@@ -7,7 +7,7 @@ import java.util.Set;
 @Entity(name="salon")
 public class Salon {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private long salonId;
+	private Long salonId;
 	private String salonUid;
 	private String name;
 	private Double latitude;
@@ -51,10 +51,10 @@ public class Salon {
 	public void setEventDates(Set<EventDate> eventDates) {
 		this.eventDates = eventDates;
 	}
-	public long getSalonId() {
+	public Long getSalonId() {
 		return salonId;
 	}
-	public void setSalonId(long salonId) {
+	public void setSalonId(Long salonId) {
 		this.salonId = salonId;
 	}
 	public String getName() {
