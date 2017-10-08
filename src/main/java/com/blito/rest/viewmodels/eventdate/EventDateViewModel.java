@@ -15,15 +15,6 @@ public class EventDateViewModel {
 	@NotEmpty
 	private Set<BlitTypeViewModel> blitTypes;
 	private State state;
-	private Long salonId;
-
-	public Long getSalonId() {
-		return salonId;
-	}
-
-	public void setSalonId(Long salonId) {
-		this.salonId = salonId;
-	}
 
 	public long getEventDateId() {
 		return eventDateId;

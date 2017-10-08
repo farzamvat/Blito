@@ -22,6 +22,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class AbstractBlitViewModel extends AbstractViewModel {
+
     @JsonView(View.SimpleBlit.class)
     private Long blitId;
 

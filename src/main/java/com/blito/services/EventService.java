@@ -29,45 +29,44 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class EventService {
 	@Autowired
-	EventFlatMapper eventFlatMapper;
+	private EventFlatMapper eventFlatMapper;
 	@Autowired
-	EventMapper eventMapper;
+	private EventMapper eventMapper;
 	@Autowired
-	EventDateMapper eventDateCreateMapper;
+	private EventDateMapper eventDateCreateMapper;
 	@Autowired
-	EventHostRepository eventHostRepository;
+	private EventHostRepository eventHostRepository;
 	@Autowired
-	BlitTypeMapper blitTypeMapper;
+	private BlitTypeMapper blitTypeMapper;
 	@Autowired
-	ImageRepository imageRepository;
+	private ImageRepository imageRepository;
 	@Autowired
-	EventRepository eventRepository;
+	private EventRepository eventRepository;
 	@Autowired
-	ImageMapper imageMapper;
+	private ImageMapper imageMapper;
 	@Autowired
-	DiscountMapper discountMapper;
+	private DiscountMapper discountMapper;
 	@Autowired
-	BlitTypeRepository blitTypeRepository;
+	private BlitTypeRepository blitTypeRepository;
 	@Autowired
-	DiscountRepository discountRepository;
+	private DiscountRepository discountRepository;
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 	@Autowired
-	EventDateRepository eventDateRepository;
+	private EventDateRepository eventDateRepository;
 	@Autowired
-	SearchService searchService;
+	private SearchService searchService;
 	@Autowired
-	ImageService imageService;
-	
+	private ImageService imageService;
+	@Autowired
+	private SalonRepository salonRepository;
+
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	@Transactional
@@ -103,6 +102,10 @@ public class EventService {
 		event.setImages(images);
 		event.setEventHost(eventHost);
 		event.setEventLink(generateEventLink(event));
+		Optional.ofNullable(vmodel.getSalonUid()).filter(salonUid -> !salonUid.isEmpty())
+				.ifPresent(salonUid -> {
+
+				});
 		return eventMapper.createFromEntity(eventRepository.save(event));
 	}
 

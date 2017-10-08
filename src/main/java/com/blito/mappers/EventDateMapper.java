@@ -1,23 +1,22 @@
 package com.blito.mappers;
 
+import com.blito.enums.State;
+import com.blito.models.BlitType;
+import com.blito.models.EventDate;
+import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.blito.enums.State;
-import com.blito.models.BlitType;
-import com.blito.models.EventDate;
-import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
-
 @Component
 public class EventDateMapper implements GenericMapper<EventDate,EventDateViewModel> {
 
 	@Autowired
-	BlitTypeMapper blitTypeMapper;
+	private BlitTypeMapper blitTypeMapper;
 	
 	@Override
 	public EventDate createFromViewModel(EventDateViewModel vmodel) {

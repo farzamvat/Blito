@@ -1,14 +1,23 @@
 package com.blito.rest.viewmodels.blit;
 
+import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.validation.constraints.NotNull;
 
 public class CommonBlitViewModel extends AbstractBlitViewModel {
+
 	@NotNull
 	@JsonView(View.SimpleBlit.class)
 	private Long blitTypeId;
+
+	public CommonBlitViewModel(ResultVm resultVm) {
+		super.result = resultVm;
+	}
+
+	public CommonBlitViewModel() {
+	}
 
 	public Long getBlitTypeId() {
 		return blitTypeId;

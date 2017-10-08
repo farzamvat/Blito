@@ -12,6 +12,9 @@ import java.io.Serializable;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class SalonViewModel implements Serializable {
+    public SalonViewModel() {
+    }
+
     @JsonView(View.SimpleSalon.class)
     private String salonUid;
     @JsonView(View.SimpleSalon.class)

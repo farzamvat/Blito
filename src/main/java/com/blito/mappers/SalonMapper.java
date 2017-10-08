@@ -36,7 +36,7 @@ public class SalonMapper implements GenericMapper<Salon,SalonViewModel> {
 
     public SalonViewModel createFromEntityWithSchemaAndSvg(Salon entity) {
         SalonViewModel salonViewModel = createFromEntity(entity);
-        salonViewModel.setSchema(Try.of(() -> new File(SalonMapper.class.getResource(Constants.BASE_SALON_SCHEMAS + entity.getPlanPath()).toURI()))
+        salonViewModel.setSchema(Try.of(() -> new File(SalonMapper.class.getResource(Constants.BASE_SALON_SCHEMAS + "/" + entity.getPlanPath()).toURI()))
                 .flatMap(file -> Try.of(() -> objectMapper.readValue(file,com.blito.common.Salon.class)))
                 .getOrElseThrow(throwable -> new FileNotFoundException("schema file not found")));
         salonViewModel.setSalonSvg(entity.getSalonSvg());

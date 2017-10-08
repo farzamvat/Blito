@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AbstractViewModel {
-	
-	private ResultVm result;
+
+	protected ResultVm result;
 
 	public ResultVm getResult() {
 		return result;

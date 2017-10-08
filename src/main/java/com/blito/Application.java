@@ -30,6 +30,7 @@ public class Application {
 	public void init() {
 		initializer.importPermissionsToDataBase();
 		initializer.insertAdminUserAndRoleAndOldBlitoUsers();
+		initializer.insertSalonSchemasAndDataIntoDB();
 	}
 	@GetMapping("/*")
 	public ModelAndView index() {

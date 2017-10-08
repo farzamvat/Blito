@@ -8,6 +8,8 @@ import com.blito.enums.State;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -16,7 +18,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.*;
-
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class EventViewModel {
 	@JsonView(View.SimpleEvent.class)
 	private long eventId;
@@ -105,6 +108,8 @@ public class EventViewModel {
 	
 	@JsonView(View.AdminEvent.class)
 	private boolean isPrivate;
+	@JsonView(View.Event.class)
+	private String salonUid;
 
 	public EventViewModel() {
 		eventDates = new HashSet<>();
@@ -113,6 +118,13 @@ public class EventViewModel {
 		additionalFields = new ArrayList<>();
 	}
 
+	public String getSalonUid() {
+		return salonUid;
+	}
+
+	public void setSalonUid(String salonUid) {
+		this.salonUid = salonUid;
+	}
 	public List<AdditionalField> getAdditionalFields() {
 		return additionalFields;
 	}

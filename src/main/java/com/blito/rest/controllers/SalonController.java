@@ -38,7 +38,7 @@ public class SalonController {
                 .handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,request,response));
     }
 
-    @JsonView(View.SimpleSalon.class)
+    @JsonView(View.SalonSchema.class)
     @Permission(value = ApiBusinessName.USER)
     @GetMapping("/{uid}")
     public CompletionStage<ResponseEntity<?>> getSalonsByUid(@PathVariable String uid,

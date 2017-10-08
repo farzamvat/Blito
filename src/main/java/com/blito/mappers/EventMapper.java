@@ -1,11 +1,11 @@
 package com.blito.mappers;
 
-import com.blito.enums.EventType;
-import com.blito.enums.OfferTypeEnum;
-import com.blito.enums.OperatorState;
-import com.blito.enums.State;
+import com.blito.enums.*;
+import com.blito.exceptions.FileNotFoundException;
 import com.blito.models.Event;
 import com.blito.models.EventDate;
+import com.blito.repositories.SalonRepository;
+import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.event.AdditionalField;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +23,11 @@ import java.util.stream.Collectors;
 public class EventMapper implements GenericMapper<Event, EventViewModel> {
 
     @Autowired
-    EventDateMapper eventDateMapper;
+    private EventDateMapper eventDateMapper;
     @Autowired
-    ImageMapper imageMapper;
+    private ImageMapper imageMapper;
+    @Autowired
+    private SalonRepository salonRepository;
 
     @Override
     public Event createFromViewModel(EventViewModel vmodel) {
@@ -40,15 +42,19 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         event.setLatitude(vmodel.getLatitude());
         event.setLongitude(vmodel.getLongitude());
         event.setOperatorState(OperatorState.PENDING.name());
-        vmodel.getEventDates().forEach(ed -> {
-            event.addEventDate(eventDateMapper.createFromViewModel(ed));
-        });
+        vmodel.getEventDates().forEach(ed -> event.addEventDate(eventDateMapper.createFromViewModel(ed)));
         event.setAdditionalFields(vmodel.getAdditionalFields().stream().collect(Collectors.toMap(AdditionalField::getKey, AdditionalField::getValue)));
         event.setMembers(vmodel.getMembers());
         event.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
         event.setEventState(State.CLOSED.name());
         event.setEvento(false);
         event.setPrivate(vmodel.isPrivate());
+        Optional.ofNullable(vmodel.getSalonUid()).filter(salonUid -> !salonUid.isEmpty())
+                .ifPresent(salonUid ->
+                        event.getEventDates().forEach(eventDate -> eventDate.setSalon(salonRepository.findBySalonUid(salonUid)
+                                .orElseThrow(() -> new FileNotFoundException(ResourceUtil.getMessage(Response.SALON_NOT_FOUND)))
+                        ))
+                );
         return event;
     }
 

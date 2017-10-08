@@ -3,6 +3,7 @@ package com.blito.rest.viewmodels.blit;
     @author Farzam Vatanzadeh
 */
 
+import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -14,6 +15,13 @@ public class SeatBlitViewModel extends AbstractBlitViewModel {
     private Set<Long> blitTypeSeatIds;
     @JsonView(View.SimpleBlit.class)
     private String seats;
+
+    SeatBlitViewModel(ResultVm result) {
+        super.result = result;
+    }
+
+    public SeatBlitViewModel() {
+    }
 
     public Set<Long> getBlitTypeSeatIds() {
         return blitTypeSeatIds;
