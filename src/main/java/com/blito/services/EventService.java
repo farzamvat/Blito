@@ -170,7 +170,7 @@ public class EventService {
 		}
 
 		Set<Image> images = imageRepository.findByImageUUIDIn(
-				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toSet()));
+				vmodel.getImages().stream().map(ImageViewModel::getImageUUID).collect(Collectors.toSet()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 
 		event = eventMapper.updateEntity(vmodel, event);

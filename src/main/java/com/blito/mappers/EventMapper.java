@@ -8,6 +8,7 @@ import com.blito.repositories.SalonRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.event.AdditionalField;
 import com.blito.rest.viewmodels.event.EventViewModel;
+import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -113,7 +114,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         event.setMembers(vmodel.getMembers());
         event.setAdditionalFields(vmodel.getAdditionalFields().stream().collect(Collectors.toMap(AdditionalField::getKey, AdditionalField::getValue)));
 
-        List<Long> oldOnes = vmodel.getEventDates().stream().map(b -> b.getEventDateId()).filter(id -> id > 0).collect(Collectors.toList());
+        List<Long> oldOnes = vmodel.getEventDates().stream().map(EventDateViewModel::getEventDateId).filter(id -> id > 0).collect(Collectors.toList());
         List<Long> shouldDelete = new ArrayList<>();
         event.getEventDates().forEach(bt -> {
             if (!oldOnes.contains(bt.getEventDateId())) {
