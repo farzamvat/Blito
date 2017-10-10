@@ -120,19 +120,16 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
                 shouldDelete.add(bt.getEventDateId());
             }
         });
-        shouldDelete.forEach(id ->
-                event.removeEventDateById(id)
-        );
+        shouldDelete.forEach(event::removeEventDateById);
 
 
-        vmodel.getEventDates().stream().forEach(edvm -> {
+        vmodel.getEventDates().forEach(edvm -> {
             Optional<EventDate> optionalEventDate = event.getEventDates().stream().filter(ed -> ed.getEventDateId() == edvm.getEventDateId()).findFirst();
             if (optionalEventDate.isPresent()) {
                 eventDateMapper.updateEntity(edvm, optionalEventDate.get());
             } else {
                 event.addEventDate(eventDateMapper.createFromViewModel(edvm));
             }
-
         });
         event.setPrivate(vmodel.isPrivate());
         return event;

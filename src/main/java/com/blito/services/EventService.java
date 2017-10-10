@@ -66,6 +66,8 @@ public class EventService {
 	private ImageService imageService;
 	@Autowired
 	private SalonRepository salonRepository;
+	@Autowired
+	private SeatPickerService seatPickerService;
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -102,10 +104,6 @@ public class EventService {
 		event.setImages(images);
 		event.setEventHost(eventHost);
 		event.setEventLink(generateEventLink(event));
-		Optional.ofNullable(vmodel.getSalonUid()).filter(salonUid -> !salonUid.isEmpty())
-				.ifPresent(salonUid -> {
-
-				});
 		return eventMapper.createFromEntity(eventRepository.save(event));
 	}
 

@@ -18,7 +18,13 @@ public class BlitTypeSeat {
 	@ManyToOne(optional=true)
 	@JoinColumn(name="blitId")
 	private SeatBlit seatBlit;
-	
+
+	public BlitTypeSeat(String state, Seat seat, BlitType blitType) {
+		setState(state);
+		setSeat(seat);
+		setBlitType(blitType);
+	}
+
 	public long getBlitTypeSeatId() {
 		return blitTypeSeatId;
 	}

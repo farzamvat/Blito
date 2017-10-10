@@ -3,6 +3,7 @@ package com.blito.mappers;
 import com.blito.enums.State;
 import com.blito.models.BlitType;
 import com.blito.models.EventDate;
+import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -43,7 +44,7 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 	public EventDate updateEntity(EventDateViewModel vmodel, EventDate eventDate) {
 		eventDate.setDate(vmodel.getDate());
 		
-		List<Long> oldOnes = vmodel.getBlitTypes().stream().map(b -> b.getBlitTypeId()).filter(id -> id > 0).collect(Collectors.toList());
+		List<Long> oldOnes = vmodel.getBlitTypes().stream().map(BlitTypeViewModel::getBlitTypeId).filter(id -> id > 0).collect(Collectors.toList());
 		List<Long> shouldDelete = new ArrayList<>();
 		eventDate.getBlitTypes().forEach(bt -> {
 			if(!oldOnes.contains(bt.getBlitTypeId()))
@@ -51,11 +52,9 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 				shouldDelete.add(bt.getBlitTypeId());
 			}
 		});
-		shouldDelete.forEach(id -> {
-			eventDate.removeBlitTypeById(id);
-		});
+		shouldDelete.forEach(eventDate::removeBlitTypeById);
 		
-		vmodel.getBlitTypes().stream().forEach(bvm -> {
+		vmodel.getBlitTypes().forEach(bvm -> {
 			Optional<BlitType> optionalBlitType =
 					eventDate.getBlitTypes().stream().filter(b -> b.getBlitTypeId() == bvm.getBlitTypeId()).findFirst();
 			if(optionalBlitType.isPresent())

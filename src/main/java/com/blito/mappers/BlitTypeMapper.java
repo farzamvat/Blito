@@ -1,14 +1,25 @@
 package com.blito.mappers;
 
+import com.blito.services.SeatPickerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.blito.enums.State;
 import com.blito.models.BlitType;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 
+import java.util.Optional;
+
 @Component
 public class BlitTypeMapper implements GenericMapper<BlitType,BlitTypeViewModel> {
-	
+
+	private SeatPickerService seatPickerService;
+
+	@Autowired
+	public void setSeatPickerService(SeatPickerService seatPickerService) {
+		this.seatPickerService = seatPickerService;
+	}
+
 	@Override
 	public BlitType createFromViewModel(BlitTypeViewModel vmodel) {
 		BlitType blitType = new BlitType();
@@ -17,6 +28,8 @@ public class BlitTypeMapper implements GenericMapper<BlitType,BlitTypeViewModel>
 		blitType.setFree(vmodel.isFree());
 		blitType.setPrice(vmodel.getPrice());
 		blitType.setBlitTypeState(State.CLOSED.name());
+		Optional.ofNullable(vmodel.getSeatUids()).filter(seatUids -> !seatUids.isEmpty())
+				.ifPresent(seatUids -> blitType.setBlitTypeSeats(seatPickerService.createBlitTypeSeats(vmodel,blitType)));
 		return blitType;
 	}
 
@@ -42,6 +55,8 @@ public class BlitTypeMapper implements GenericMapper<BlitType,BlitTypeViewModel>
 		blitType.setFree(vmodel.isFree());
 		blitType.setPrice(vmodel.getPrice());
 		blitType.setBlitTypeState(State.CLOSED.name());
+		Optional.ofNullable(vmodel.getSeatUids()).filter(seatUids -> !seatUids.isEmpty())
+				.ifPresent(seatUids -> blitType.setBlitTypeSeats(seatPickerService.updateBlitTypeSeats(vmodel,blitType)));
 		return blitType;
 	}
 
