@@ -29,7 +29,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -81,9 +84,8 @@ public class EventService {
 				|| vmodel.getBlitSaleEndDate().before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant())))
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INVALID_START_END_DATE));
 		
-		if (vmodel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream()).anyMatch(bt -> {
-			return bt.isFree() ? bt.getPrice() != 0 : bt.getPrice() <= 0;
-		})) {
+		if (vmodel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream()).anyMatch(bt ->
+			 bt.isFree() ? bt.getPrice() != 0 : bt.getPrice() <= 0)) {
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.ISFREE_AND_PRICE_NOT_MATCHED));
 		}
 		if (vmodel.getImages().stream().filter(i -> i.getType().equals(ImageType.EVENT_PHOTO)).count() == 0) {
@@ -91,7 +93,7 @@ public class EventService {
 		}
 
 		Set<Image> images = imageRepository.findByImageUUIDIn(
-				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toSet()));
+				vmodel.getImages().stream().map(ImageViewModel::getImageUUID).collect(Collectors.toSet()));
 		if (images.size() != vmodel.getImages().size()) {
 			throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
 		}
