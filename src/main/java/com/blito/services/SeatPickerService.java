@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -48,22 +49,23 @@ public class SeatPickerService {
 
     @Transactional
     public Set<BlitTypeSeat> updateBlitTypeSeats(BlitTypeViewModel viewModel,BlitType blitType) {
-        List<BlitTypeSeat> shouldUpdate = blitTypeSeatRepository.findBySeatSeatUidIn(new ArrayList<>(viewModel.getSeatUids()));
-        List<String> shouldUpdateUids = shouldUpdate.stream().map(blitTypeSeat -> blitTypeSeat.getSeat().getSeatUid()).collect(Collectors.toList());
-        // Update existing blit type seats
-        shouldUpdate.forEach(blitTypeSeat -> {
-            if(!blitTypeSeat.getState().equals(BlitTypeSeatState.AVAILABLE.name())) {
-                throw new RuntimeException("this seat is not available");
-            }
-            blitTypeSeat.setBlitType(blitType);
-        });
-        // Remove non existing blit type seats
-        blitType.getBlitTypeSeats().stream()
-                .filter(blitTypeSeat -> !viewModel.getSeatUids().contains(blitTypeSeat.getSeat().getSeatUid()))
-                .forEach(blitTypeSeat -> blitType.getBlitTypeSeats().removeIf(b -> b.getSeat().getSeatUid().equals(blitTypeSeat.getSeat().getSeatUid())));
 
-        // Add new blit type seats
-        seatRepository.findBySeatUidIn(viewModel.getSeatUids().stream().filter(uid -> !shouldUpdateUids.contains(uid)).collect(Collectors.toList())).forEach(seat -> new BlitTypeSeat(BlitTypeSeatState.AVAILABLE.name(),seat,blitType));
+        Set<BlitTypeSeat> availableBlitTypeSeats =
+                blitTypeSeatRepository.findByBlitTypeBlitTypeIdAndStateNotIn(blitType.getBlitTypeId(),
+                Arrays.asList(BlitTypeSeatState.RESERVED.name(),BlitTypeSeatState.SOLD.name()));
+        Set<Long> shouldDeleteBlitTypeSeats =
+                availableBlitTypeSeats.stream().filter(blitTypeSeat -> !viewModel.getSeatUids().contains(blitTypeSeat.getSeat().getSeatUid()))
+                        .map(BlitTypeSeat::getBlitTypeSeatId)
+                        .collect(Collectors.toSet());
+        blitType.getBlitTypeSeats().removeIf(blitTypeSeat -> shouldDeleteBlitTypeSeats.contains(blitTypeSeat.getBlitTypeSeatId()));
+
+        seatRepository.findBySeatUidIn(
+                viewModel.getSeatUids().stream()
+                        .filter(uid ->
+                                !availableBlitTypeSeats.stream().map(blitTypeSeat -> blitTypeSeat.getSeat().getSeatUid()).collect(Collectors.toSet()).contains(uid))
+                        .collect(Collectors.toList())
+        ).stream().map(seat -> new BlitTypeSeat(BlitTypeSeatState.AVAILABLE.name(),seat,blitType))
+                .forEach(blitTypeSeat -> blitType.getBlitTypeSeats().add(blitTypeSeat));
         return blitType.getBlitTypeSeats();
     }
 }

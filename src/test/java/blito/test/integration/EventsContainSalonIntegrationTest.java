@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
-import java.util.stream.Collectors;
 
 /**
  * @author Farzam Vatanzadeh
@@ -32,7 +32,7 @@ public class EventsContainSalonIntegrationTest extends AbstractRestControllerTes
     }
 
     @Test
-    public void createEventWithSalon() {
+    public void createAndUpdateEventWithSalon() {
         EventHostViewModel eventHostViewModel = new EventHostViewModel();
         eventHostViewModel.setHostName("salonHostName");
         eventHostViewModel.setDescription("description");
@@ -46,23 +46,61 @@ public class EventsContainSalonIntegrationTest extends AbstractRestControllerTes
                 .then().statusCode(201).extract().body().as(EventHostViewModel.class);
 
         EventViewModel eventViewModel = createEventUtil.createSampleEventViewModel(eventHostViewModel,"salonEvent");
+        Salon salon = getTestSalonSchema();
         eventViewModel.getEventDates().stream().findAny().ifPresent(eventDateViewModel -> {
             BlitTypeViewModel blitTypeViewModel = eventDateViewModel.getBlitTypes().stream()
                     .filter(btvm -> btvm.getName().equals("neshaste")).findFirst().get();
-            Salon salon = Try.of(() -> new File(EventsContainSalonIntegrationTest.class.getResource(Constants.BASE_SALON_SCHEMAS + "/TestSalon" ).toURI()))
-                    .flatMapTry(file -> Try.of(() -> objectMapper.readValue(file,Salon.class))).get();
             eventViewModel.setSalonUid(salon.getUid());
-            blitTypeViewModel.setSeatUids(
-                    salon.getSections().stream().flatMap(section -> section.getRows().stream())
-                    .filter(row -> row.getName().equals("2")).flatMap(row -> row.getSeats().stream()).map(Seat::getUid).collect(Collectors.toSet())
-            );
+            blitTypeViewModel.setSeatUids(new HashSet<>());
+            blitTypeViewModel.setCapacity(5);
+            salon.getSections()
+                    .stream()
+                    .flatMap(section -> section.getRows().stream())
+                    .filter(row -> row.getName().equals("2"))
+                    .flatMap(row -> row.getSeats().stream())
+                    .sorted(Comparator.comparing(Seat::getName))
+                    .skip(3)
+                    .limit(5)
+                    .forEachOrdered(seat -> blitTypeViewModel.getSeatUids().add(seat.getUid()));
+
+
             eventDateViewModel.setBlitTypes(new HashSet<>(Collections.singletonList(blitTypeViewModel)));
         });
-
-        givenRestIntegration()
+        EventViewModel responseViewModel = givenRestIntegration()
                 .body(eventViewModel)
                 .when()
                 .post(getServerAddress() + "/api/blito/v1.0/events")
-                .then().statusCode(201);
+                .then().statusCode(201).extract().body().as(EventViewModel.class);
+
+        responseViewModel.setSalonUid(salon.getUid());
+        responseViewModel.getEventDates().forEach(eventDateViewModel -> {
+            BlitTypeViewModel blitTypeViewModel = new BlitTypeViewModel();
+            blitTypeViewModel.setName("update");
+            blitTypeViewModel.setFree(false);
+            blitTypeViewModel.setCapacity(7);
+            blitTypeViewModel.setPrice(1000);
+            blitTypeViewModel.setSeatUids(new HashSet<>());
+            eventDateViewModel.getBlitTypes().add(blitTypeViewModel);
+            salon.getSections()
+                    .stream()
+                    .flatMap(section -> section.getRows().stream())
+                    .filter(row -> row.getName().equals("2"))
+                    .flatMap(row -> row.getSeats().stream())
+                    .sorted(Comparator.comparing(Seat::getName))
+                    .limit(7)
+                    .forEachOrdered(seat -> blitTypeViewModel.getSeatUids().add(seat.getUid()));
+        });
+
+        givenRestIntegration()
+                .body(responseViewModel)
+                .when()
+                .put(getServerAddress() + "/api/blito/v1.0/events")
+                .then().statusCode(202);
+
+    }
+
+    public Salon getTestSalonSchema() {
+        return Try.of(() -> new File(EventsContainSalonIntegrationTest.class.getResource(Constants.BASE_SALON_SCHEMAS + "/TestSalon" ).toURI()))
+                .flatMapTry(file -> Try.of(() -> objectMapper.readValue(file,Salon.class))).get();
     }
 }

@@ -25,6 +25,9 @@ public class BlitTypeSeat {
 		setBlitType(blitType);
 	}
 
+	public BlitTypeSeat() {
+	}
+
 	public long getBlitTypeSeatId() {
 		return blitTypeSeatId;
 	}

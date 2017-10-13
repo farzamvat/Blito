@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 public class BlitTypeViewModel {
@@ -31,6 +32,10 @@ public class BlitTypeViewModel {
 	private boolean isFree;
 	@JsonView(View.BlitType.class)
 	private Set<String> seatUids;
+
+	public BlitTypeViewModel() {
+		this.setSeatUids(new HashSet<>());
+	}
 
 	public Set<String> getSeatUids() {
 		return seatUids;

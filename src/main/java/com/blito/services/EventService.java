@@ -10,6 +10,7 @@ import com.blito.mappers.*;
 import com.blito.models.*;
 import com.blito.repositories.*;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
@@ -74,20 +75,35 @@ public class EventService {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
-	@Transactional
-	public EventViewModel create(EventViewModel vmodel) {
+
+
+	private boolean validateDisjointSeatsInBlitTypeViewModel(Set<BlitTypeViewModel> blitTypes) {
+		return (blitTypes.stream().flatMap(blitType -> blitType.getSeatUids().stream()).distinct().count()
+				== blitTypes.stream().flatMap(blitType -> blitType.getSeatUids().stream()).count())
+				&& blitTypes.stream().filter(blitType -> !blitType.getSeatUids().isEmpty()).allMatch(blitType -> blitType.getSeatUids().size() == blitType.getCapacity());
+	}
+
+	private void validateEventViewModel(EventViewModel vmodel) {
+		if(vmodel.getEventDates().stream().anyMatch(eventDateViewModel -> !validateDisjointSeatsInBlitTypeViewModel(eventDateViewModel.getBlitTypes())))
+		{
+			throw new InconsistentDataException(ResourceUtil.getMessage(Response.VALIDATION));
+		}
 		if (vmodel.getBlitSaleStartDate().after(vmodel.getBlitSaleEndDate())) {
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_DATES));
 		}
-		
+		if (vmodel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream()).anyMatch(bt ->
+				bt.isFree() ? bt.getPrice() != 0 : bt.getPrice() <= 0)) {
+			throw new InconsistentDataException(ResourceUtil.getMessage(Response.ISFREE_AND_PRICE_NOT_MATCHED));
+		}
+	}
+
+	@Transactional
+	public EventViewModel create(EventViewModel vmodel) {
+		validateEventViewModel(vmodel);
 		if(vmodel.getBlitSaleStartDate().before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()))
 				|| vmodel.getBlitSaleEndDate().before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant())))
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INVALID_START_END_DATE));
-		
-		if (vmodel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream()).anyMatch(bt ->
-			 bt.isFree() ? bt.getPrice() != 0 : bt.getPrice() <= 0)) {
-			throw new InconsistentDataException(ResourceUtil.getMessage(Response.ISFREE_AND_PRICE_NOT_MATCHED));
-		}
+
 		if (vmodel.getImages().stream().filter(i -> i.getType().equals(ImageType.EVENT_PHOTO)).count() == 0) {
 			vmodel.getImages().add(new ImageViewModel(Constants.DEFAULT_EVENT_PHOTO, ImageType.EVENT_PHOTO));
 		}
@@ -140,14 +156,7 @@ public class EventService {
 
 	@Transactional
 	public EventViewModel update(EventViewModel vmodel) {
-		if (vmodel.getBlitSaleStartDate().after(vmodel.getBlitSaleEndDate())) {
-			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_DATES));
-		}
-
-		if (vmodel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream()).anyMatch(bt -> bt.isFree() ? bt.getPrice() != 0 : bt.getPrice() <= 0)) {
-			throw new InconsistentDataException(ResourceUtil.getMessage(Response.ISFREE_AND_PRICE_NOT_MATCHED));
-		}
-
+		validateEventViewModel(vmodel);
 		Event event = eventRepository.findByEventIdAndIsDeletedFalse(vmodel.getEventId())
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 		if(event.getAdditionalFields().size() > vmodel.getAdditionalFields().size())

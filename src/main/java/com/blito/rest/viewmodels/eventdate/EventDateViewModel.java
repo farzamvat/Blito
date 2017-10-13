@@ -51,5 +51,4 @@ public class EventDateViewModel {
 	public void setDate(Timestamp date) {
 		this.date = date;
 	}
-	
 }
