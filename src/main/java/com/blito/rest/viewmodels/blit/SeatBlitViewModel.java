@@ -12,9 +12,10 @@ import java.util.Set;
 
 public class SeatBlitViewModel extends AbstractBlitViewModel {
     @NotEmpty
-    private Set<Long> blitTypeSeatIds;
+    private Set<String> seatUids;
     @JsonView(View.SimpleBlit.class)
     private String seats;
+    private Long eventDateId;
 
     SeatBlitViewModel(ResultVm result) {
         super.result = result;
@@ -23,12 +24,12 @@ public class SeatBlitViewModel extends AbstractBlitViewModel {
     public SeatBlitViewModel() {
     }
 
-    public Set<Long> getBlitTypeSeatIds() {
-        return blitTypeSeatIds;
+    public Set<String> getSeatUids() {
+        return seatUids;
     }
 
-    public void setBlitTypeSeatIds(Set<Long> blitTypeSeatIds) {
-        this.blitTypeSeatIds = blitTypeSeatIds;
+    public void setSeatUids(Set<String> seatUids) {
+        this.seatUids = seatUids;
     }
 
     public String getSeats() {
@@ -37,5 +38,13 @@ public class SeatBlitViewModel extends AbstractBlitViewModel {
 
     public void setSeats(String seats) {
         this.seats = seats;
+    }
+
+    public Long getEventDateId() {
+        return eventDateId;
+    }
+
+    public void setEventDateId(Long eventDateId) {
+        this.eventDateId = eventDateId;
     }
 }

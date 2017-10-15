@@ -3,14 +3,15 @@ package com.blito.services;
 import com.blito.enums.*;
 import com.blito.exceptions.*;
 import com.blito.mappers.CommonBlitMapper;
-import com.blito.models.BlitType;
-import com.blito.models.CommonBlit;
-import com.blito.models.Event;
-import com.blito.models.User;
+import com.blito.mappers.SeatBlitMapper;
+import com.blito.models.*;
 import com.blito.repositories.*;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
+import com.blito.rest.viewmodels.blit.AbstractBlitViewModel;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
+import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
+import com.blito.rest.viewmodels.blit.SeatErrorViewModel;
 import com.blito.rest.viewmodels.discount.DiscountValidationViewModel;
 import com.blito.rest.viewmodels.payments.PaymentRequestViewModel;
 import com.blito.search.SearchViewModel;
@@ -33,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class BlitService {
@@ -63,6 +65,10 @@ public class BlitService {
 	private HtmlRenderer htmlRenderer;
 	@Autowired
 	private PaymentRequestService paymentRequestService;
+	@Autowired
+	private SeatBlitMapper seatBlitMapper;
+	@Autowired
+	private BlitTypeSeatRepository blitTypeSeatRepository;
 
 	@Value("${zarinpal.web.gateway}")
 	private String zarinpalGatewayURL;
@@ -90,28 +96,57 @@ public class BlitService {
 	}
 
 	@Transactional
-	public Object createCommonBlitAuthorized(CommonBlitViewModel vmodel,User user) {
-
-		CommonBlit commonBlit = commonBlitMapper.createFromViewModel(vmodel);
+	public Object createCommonBlitAuthorized(AbstractBlitViewModel vmodel,User user) {
+		Blit blit = vmodel.getSeatType().equals(SeatType.COMMON) ?
+				commonBlitMapper.createFromViewModel((CommonBlitViewModel) vmodel) :
+				seatBlitMapper.createFromViewModel((SeatBlitViewModel) vmodel);
 		BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(vmodel.getBlitTypeId()))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
-		checkBlitTypeRestrictionsForBuy(blitType,commonBlit);
-		validateAdditionalFields(blitType.getEventDate().getEvent(),commonBlit);
+		checkBlitTypeRestrictionsForBuy(blitType,blit);
+		validateAdditionalFields(blitType.getEventDate().getEvent(),blit);
+		if(vmodel.getSeatType().equals(SeatType.SEAT_BLIT)) {
+			validateSeatBlitForBuy((SeatBlitViewModel) vmodel);
+		}
 		if (blitType.isFree()) {
-			return reserveFreeCommonBlitForAuthorizedUser(blitType,commonBlit,user);
+			// TODO: 10/15/17 common blit and seat blit
+			return reserveFreeCommonBlitForAuthorizedUser(blitType,(CommonBlit) blit,user);
 		} else {
-			return validateDiscountCodeIfPresentAndCalculateTotalAmount(vmodel,commonBlit,Optional.of(user),blitType);
+			return validateDiscountCodeIfPresentAndCalculateTotalAmount(vmodel,blit,Optional.of(user),blitType);
 		}
 	}
 
+	private void validateSeatBlitForBuy(SeatBlitViewModel seatBlitViewModel) {
+		Set<BlitTypeSeat> blitTypeSeats =
+				blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(seatBlitViewModel.getSeatUids(),seatBlitViewModel.getEventDateId());
+
+		blitTypeSeats.stream()
+				.filter(blitTypeSeat -> blitTypeSeat.getState().equals(BlitTypeSeatState.RESERVED.name()))
+				.forEach(blitTypeSeat ->
+					Optional.ofNullable(blitTypeSeat.getReserveDate())
+							.filter(reservedDate -> reservedDate.before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusMinutes(10L).toInstant())))
+							.ifPresent(dump -> {
+								blitTypeSeat.setState(BlitTypeSeatState.AVAILABLE.name());
+								blitTypeSeat.setReserveDate(null);
+							}));
+		Optional.ofNullable(blitTypeSeats
+				.stream()
+				.filter(blitTypeSeat -> !blitTypeSeat.getState().equals(BlitTypeSeatState.AVAILABLE.name()))
+				.map(blitTypeSeat -> new SeatErrorViewModel(blitTypeSeat.getSeat().getSeatUid(),blitTypeSeat.getState()))
+				.collect(Collectors.toSet()))
+				.filter(set -> !set.isEmpty())
+				.ifPresent(seatErrorViewModels -> {
+					throw new SeatException("seat error",seatErrorViewModels);
+				});
+	}
+
 	@Transactional
-	void validateAdditionalFields(Event event,CommonBlit commonBlit) {
+	void validateAdditionalFields(Event event,Blit blit) {
 		if(event.getAdditionalFields() != null && !event.getAdditionalFields().isEmpty()) {
-			if(commonBlit.getAdditionalFields().isEmpty())
+			if(blit.getAdditionalFields().isEmpty())
 				throw new AdditionalFieldsValidationException(ResourceUtil.getMessage(Response.ADDITIONAL_FIELDS_CANT_BE_EMPTY));
-			else if(commonBlit.getAdditionalFields().size() != event.getAdditionalFields().size())
+			else if(blit.getAdditionalFields().size() != event.getAdditionalFields().size())
 				throw new AdditionalFieldsValidationException(ResourceUtil.getMessage(Response.ADDITIONAL_FIELDS_VALIDATION_ERROR));
-			else if (!commonBlit.getAdditionalFields().keySet().stream().allMatch(key -> event.getAdditionalFields().keySet().contains(key)))
+			else if (!blit.getAdditionalFields().keySet().stream().allMatch(key -> event.getAdditionalFields().keySet().contains(key)))
 				throw new AdditionalFieldsValidationException(ResourceUtil.getMessage(Response.ADDITIONAL_FIELDS_VALIDATION_ERROR));
 		}
 
@@ -148,27 +183,27 @@ public class BlitService {
 	}
 
 	@Transactional
-	PaymentRequestViewModel validateDiscountCodeIfPresentAndCalculateTotalAmount(CommonBlitViewModel vmodel, CommonBlit commonBlit, Optional<User> optionalUser, BlitType blitType) {
+	PaymentRequestViewModel validateDiscountCodeIfPresentAndCalculateTotalAmount(AbstractBlitViewModel vmodel, Blit blit, Optional<User> optionalUser, BlitType blitType) {
 		return Optional.ofNullable(vmodel.getDiscountCode())
 				.filter(code -> !code.isEmpty())
 				.map(code -> {
 					DiscountValidationViewModel discountValidationViewModel = discountService.validateDiscountCodeBeforePurchaseRequest(vmodel.getBlitTypeId(),code,vmodel.getCount());
 					if(discountValidationViewModel.isValid()) {
-						if(!discountValidationViewModel.getTotalAmount().equals(commonBlit.getTotalAmount())) {
+						if(!discountValidationViewModel.getTotalAmount().equals(blit.getTotalAmount())) {
 							throw new NotAllowedException(ResourceUtil.getMessage(Response.DISCOUNT_CODE_NOT_VALID));
-						} else if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getPrimaryAmount()) {
+						} else if (blit.getCount() * blitType.getPrice() != blit.getPrimaryAmount()) {
 							throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
 						} else {
-							return paymentRequestService.createPurchaseRequest(blitType, commonBlit, optionalUser);
+							return paymentRequestService.createPurchaseRequest(blitType, blit, optionalUser);
 						}
 					}
 					else {
 						throw new NotAllowedException(ResourceUtil.getMessage(Response.DISCOUNT_CODE_NOT_VALID));
 					}
 				}).orElseGet(() -> {
-					if (commonBlit.getCount() * blitType.getPrice() != commonBlit.getTotalAmount())
+					if (blit.getCount() * blitType.getPrice() != blit.getTotalAmount())
 						throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
-					return paymentRequestService.createPurchaseRequest(blitType, commonBlit, optionalUser);
+					return paymentRequestService.createPurchaseRequest(blitType, blit, optionalUser);
 				});
 	}
 
@@ -199,6 +234,11 @@ public class BlitService {
 		commonBlit.setPaymentError(ResourceUtil.getMessage(Response.PAYMENT_PENDING));
 		commonBlit.setPaymentStatus(PaymentStatus.PENDING.name());
 		return commonBlitRepository.save(commonBlit);
+	}
+
+	@Transactional
+	public SeatBlit persistNoneFreeSeatBlit(BlitType blitType, SeatBlit seatBlit, Optional<User> optionalUser,String token,String trackCode) {
+		return null;
 	}
 
 	@Transactional
@@ -242,7 +282,7 @@ public class BlitService {
 		}
 	}
 
-	void checkBlitTypeRestrictionsForBuy(BlitType blitType, CommonBlit commonBlit) {
+	void checkBlitTypeRestrictionsForBuy(BlitType blitType, Blit blit) {
 
 		if (blitType.getBlitTypeState().equals(State.SOLD.name()))
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_TYPE_SOLD));
@@ -255,7 +295,7 @@ public class BlitService {
 		if(!blitType.getEventDate().getEventDateState().equals(State.OPEN.name())) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_OPEN));
 		}
-		if (commonBlit.getCount() + blitType.getSoldCount() > blitType.getCapacity())
+		if (blit.getCount() + blitType.getSoldCount() > blitType.getCapacity())
 			throw new InconsistentDataException(
 					ResourceUtil.getMessage(Response.REQUESTED_BLIT_COUNT_IS_MORE_THAN_CAPACITY));
 	}

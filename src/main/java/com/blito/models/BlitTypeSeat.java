@@ -8,6 +8,7 @@ public class BlitTypeSeat {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private long blitTypeSeatId;
 	private Timestamp soldDate;
+	private Timestamp reserveDate;
 	private String state;
 	@ManyToOne
 	@JoinColumn(name="seatId")
@@ -66,5 +67,12 @@ public class BlitTypeSeat {
 		this.seatBlit = seatBlit;
 		seatBlit.getBlitTypeSeats().add(this);
 	}
-	
+
+	public Timestamp getReserveDate() {
+		return reserveDate;
+	}
+
+	public void setReserveDate(Timestamp reserveDate) {
+		this.reserveDate = reserveDate;
+	}
 }

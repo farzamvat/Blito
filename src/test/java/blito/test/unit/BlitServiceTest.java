@@ -1,11 +1,9 @@
 package blito.test.unit;
 
 import com.blito.Application;
-import com.blito.configs.Constants;
 import com.blito.enums.*;
 import com.blito.models.BlitType;
 import com.blito.models.EventHost;
-import com.blito.models.Image;
 import com.blito.models.User;
 import com.blito.repositories.*;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
@@ -123,26 +121,6 @@ public class BlitServiceTest {
 		eventDateViewModel.getBlitTypes().add(blitTypeViewModel2);
 		eventViewModel.getEventDates().add(eventDateViewModel);
 
-		Image image = new Image();
-		image.setImageType(ImageType.EVENT_PHOTO.name());
-		image.setImageUUID(Constants.DEFAULT_HOST_PHOTO);
-
-		Image hostCoverPhoto = new Image();
-		hostCoverPhoto.setImageType(ImageType.HOST_COVER_PHOTO.name());
-		hostCoverPhoto.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO_1);
-
-		Image exchangeBlitPhoto = new Image();
-		exchangeBlitPhoto.setImageType(ImageType.EXCHANGEBLIT_PHOTO.name());
-		exchangeBlitPhoto.setImageUUID(Constants.DEFAULT_EXCHANGEBLIT_PHOTO);
-
-		Image eventPhoto = new Image();
-		eventPhoto.setImageType(ImageType.EVENT_PHOTO.name());
-		eventPhoto.setImageUUID(Constants.DEFAULT_EVENT_PHOTO);
-
-		imageRepository.save(image);
-		imageRepository.save(hostCoverPhoto);
-		imageRepository.save(exchangeBlitPhoto);
-		imageRepository.save(eventPhoto);
 
 	}
 

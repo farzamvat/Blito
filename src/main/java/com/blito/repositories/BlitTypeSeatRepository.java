@@ -14,7 +14,7 @@ import java.util.Set;
  **/
 
 public interface BlitTypeSeatRepository extends JpaRepository<BlitTypeSeat,Long> {
-    List<BlitTypeSeat> findBySeatSeatUidIn(List<String> seatUids);
+    Set<BlitTypeSeat> findBySeatSeatUidInAndBlitTypeEventDateEventDateId(Set<String> uids,Long eventDateId);
     @Transactional
     void deleteByBlitTypeBlitTypeIdAndStateNotIn(Long blitTypeId,List<String> states);
     Set<BlitTypeSeat> findByBlitTypeBlitTypeIdAndStateNotIn(Long blitTypeId, List<String> states);

@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ValidationException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,14 +38,14 @@ public class ExceptionUtil {
 			HttpServletRequest request,
 			T throwable)
 	{
-		ExceptionViewModel exvm = new ExceptionViewModel();
-		exvm.setError(status.name());
-		exvm.setStatus(status.value());
-		exvm.setPath(request.getServletPath());
-		exvm.setMessage(throwable.getMessage());
-		exvm.setException(throwable.getClass().getName());
-		exvm.setTimestamp(System.currentTimeMillis());
-		return exvm;
+		// TODO: 10/15/17 must test
+		return generate(status,request,(Exception)throwable);
+	}
+
+	public static ExceptionViewModel generate(HttpStatus status, HttpServletRequest request,SeatException exception) {
+		ExceptionViewModel exceptionViewModel = generate(status,request,exception);
+		exceptionViewModel.setErrors(new ArrayList<>(exception.getSeatErrors()));
+		return exceptionViewModel;
 	}
 	
 	public static <T extends Enum<T> & ValidationInterface> ExceptionViewModel generate(HttpStatus status,

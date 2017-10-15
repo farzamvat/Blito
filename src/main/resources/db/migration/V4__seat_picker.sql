@@ -15,3 +15,6 @@ ALTER TABLE `blito`.`seat`
   AFTER `section_uid`,
   ADD COLUMN `row_uid` VARCHAR(255) NULL
   AFTER `seat_uid`;
+
+ALTER TABLE `blito`.`blit_type_seat`
+  ADD COLUMN `reserve_date` DATETIME NULL AFTER `blit_id`;

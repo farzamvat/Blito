@@ -22,6 +22,9 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class AbstractBlitViewModel extends AbstractViewModel {
+    @NotNull
+    @JsonView(View.SimpleBlit.class)
+    private Long blitTypeId;
 
     @JsonView(View.SimpleBlit.class)
     private Long blitId;
@@ -284,5 +287,13 @@ public class AbstractBlitViewModel extends AbstractViewModel {
 
     public void setPrimaryAmount(Long primaryAmount) {
         this.primaryAmount = primaryAmount;
+    }
+
+    public Long getBlitTypeId() {
+        return blitTypeId;
+    }
+
+    public void setBlitTypeId(Long blitTypeId) {
+        this.blitTypeId = blitTypeId;
     }
 }

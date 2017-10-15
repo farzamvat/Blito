@@ -2,11 +2,10 @@ package com.blito.services;
 
 import com.blito.enums.BankGateway;
 import com.blito.enums.Response;
+import com.blito.enums.SeatType;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.CommonBlitMapper;
-import com.blito.models.BlitType;
-import com.blito.models.CommonBlit;
-import com.blito.models.User;
+import com.blito.models.*;
 import com.blito.payments.saman.SamanBankService;
 import com.blito.payments.zarinpal.client.ZarinpalClient;
 import com.blito.repositories.BlitTypeRepository;
@@ -66,18 +65,22 @@ public class PaymentRequestService {
 	}
 
 	@Transactional
-	PaymentRequestViewModel createPurchaseRequest(BlitType blitType, CommonBlit commonBlit,
+	PaymentRequestViewModel createPurchaseRequest(BlitType blitType, Blit blit,
 														  Optional<User> optionalUser) {
-		blitService.checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
 		String trackCode = blitService.generateTrackCode();
-		switch (Enum.valueOf(BankGateway.class, commonBlit.getBankGateway())) {
+		switch (Enum.valueOf(BankGateway.class, blit.getBankGateway())) {
 		case ZARINPAL:
 			log.debug("Before requesting token from zarinpal gateway user email '{}' and blit track code '{}'",
-					commonBlit.getCustomerEmail(), trackCode);
-			String zarinpalAuthorityToken = zarinpalRequestToken(commonBlit.getTotalAmount().intValue(), commonBlit.getCustomerEmail(),
-					commonBlit.getCustomerMobileNumber(), blitType.getEventDate().getEvent().getDescription());
-			CommonBlit persisted = blitService.persistNoneFreeCommonBlit(blitType, commonBlit, optionalUser, zarinpalAuthorityToken,
-					trackCode);
+					blit.getCustomerEmail(), trackCode);
+			String zarinpalAuthorityToken = zarinpalRequestToken(blit.getTotalAmount().intValue(), blit.getCustomerEmail(),
+					blit.getCustomerMobileNumber(), blitType.getEventDate().getEvent().getDescription());
+			final Blit persisted;
+			if(blit.getSeatType().equals(SeatType.COMMON.name())) {
+				persisted = blitService.persistNoneFreeCommonBlit(blitType, (CommonBlit) blit, optionalUser, zarinpalAuthorityToken,
+						trackCode);
+			} else {
+				persisted = blitService.persistNoneFreeSeatBlit(blitType,(SeatBlit) blit,optionalUser, zarinpalAuthorityToken, trackCode);
+			}
 			ZarinpalPayRequestResponseViewModel zarinpalResponse = new ZarinpalPayRequestResponseViewModel();
 			zarinpalResponse.setGateway(BankGateway.ZARINPAL);
 			zarinpalResponse.setZarinpalWebGatewayURL(zarinpalGatewayURL + persisted.getToken());
@@ -86,4 +89,5 @@ public class PaymentRequestService {
 			throw new NotFoundException(ResourceUtil.getMessage(Response.BANK_GATEWAY_NOT_FOUND));
 		}
 	}
+
 }

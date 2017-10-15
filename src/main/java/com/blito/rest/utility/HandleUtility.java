@@ -51,6 +51,9 @@ public class HandleUtility {
 				|| throwable instanceof NotAllowedException
 				|| throwable instanceof InconsistentDataException)
 			return ResponseEntity.status(400).body(ExceptionUtil.generate(HttpStatus.BAD_REQUEST, req, throwable));
+		else if (throwable instanceof SeatException) {
+			return ResponseEntity.status(400).body(ExceptionUtil.generate(HttpStatus.BAD_REQUEST,req,(SeatException)throwable));
+		}
 		else if(throwable instanceof FileNotFoundException)
 			return ResponseEntity.status(500).body(ExceptionUtil.generate(HttpStatus.INTERNAL_SERVER_ERROR,req,throwable));
 		else

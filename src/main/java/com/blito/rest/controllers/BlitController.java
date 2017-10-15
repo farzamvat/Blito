@@ -6,6 +6,7 @@ import com.blito.models.CommonBlit;
 import com.blito.models.User;
 import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
+import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.BlitService;
@@ -43,6 +44,14 @@ public class BlitController {
 		User user = SecurityContextHolder.currentUser();
 		return CompletableFuture.supplyAsync(() -> blitService.createCommonBlitAuthorized(vmodel,user))
 				.handle((result, throwable) -> HandleUtility.generateResponseResult(() -> result, throwable, req, res));
+	}
+
+	@Permission(value = ApiBusinessName.USER)
+	@PostMapping("/buy-request-with-seat")
+	public CompletionStage<ResponseEntity<?>> buyBlitWithSeat(@Validated @RequestBody SeatBlitViewModel viewModel,
+															  HttpServletRequest request,HttpServletResponse response) {
+		User user = SecurityContextHolder.currentUser();
+		return null;
 	}
 
 	@Permission(value = ApiBusinessName.USER)
