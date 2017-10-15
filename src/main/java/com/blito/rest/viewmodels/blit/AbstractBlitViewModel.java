@@ -19,6 +19,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AbstractBlitViewModel extends AbstractViewModel {
@@ -87,6 +88,10 @@ public class AbstractBlitViewModel extends AbstractViewModel {
     private String eventPhotoId;
     private String discountCode;
     private Long primaryAmount;
+
+    public AbstractBlitViewModel() {
+        additionalFields = new ArrayList<>();
+    }
 
     public Long getBlitId() {
         return blitId;

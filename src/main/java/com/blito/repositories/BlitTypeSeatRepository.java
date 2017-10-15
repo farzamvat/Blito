@@ -18,4 +18,5 @@ public interface BlitTypeSeatRepository extends JpaRepository<BlitTypeSeat,Long>
     @Transactional
     void deleteByBlitTypeBlitTypeIdAndStateNotIn(Long blitTypeId,List<String> states);
     Set<BlitTypeSeat> findByBlitTypeBlitTypeIdAndStateNotIn(Long blitTypeId, List<String> states);
+    int countByBlitTypeBlitTypeIdAndSeatBlitCustomerEmail(Long blitTypeId,String customerEmail);
 }

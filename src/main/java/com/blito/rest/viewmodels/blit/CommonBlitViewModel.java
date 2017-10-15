@@ -9,5 +9,6 @@ public class CommonBlitViewModel extends AbstractBlitViewModel {
 	}
 
 	public CommonBlitViewModel() {
+		super();
 	}
 }

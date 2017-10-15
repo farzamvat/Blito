@@ -22,6 +22,7 @@ public class SeatBlitViewModel extends AbstractBlitViewModel {
     }
 
     public SeatBlitViewModel() {
+        super();
     }
 
     public Set<String> getSeatUids() {

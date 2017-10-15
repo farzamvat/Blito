@@ -65,7 +65,7 @@ public class PaymentService {
 			{
 				log.info("success in zarinpal payment callback blit trackCode '{}' user email '{}'",blit.getTrackCode(),blit.getCustomerEmail());
 				CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
-				if(!commonBlit.getBlitType().getBlitTypeState().equals(State.OPEN.name()))
+				if(commonBlit.getBlitType().getBlitTypeState().equals(State.SOLD.name()))
 					throw new BlitNotAvailableException(ResourceUtil.getMessage(Response.BLIT_NOT_AVAILABLE));
 				checkBlitCapacity(commonBlit);
 				PaymentVerificationResponse verificationResponse = zarinpalClient.getPaymentVerificationResponse(commonBlit.getTotalAmount().intValue(), authority);
@@ -94,10 +94,11 @@ public class PaymentService {
 	
 	private void checkBlitCapacity(CommonBlit blit)
 	{
-		BlitType fethedBlitType = blitTypeRepository.findOne(blit.getBlitType().getBlitTypeId());
-		if(blit.getCount() + fethedBlitType.getSoldCount() > fethedBlitType.getCapacity())
+		// TODO: 10/15/17 test 
+//		BlitType fethedBlitType = blitTypeRepository.findOne(blit.getBlitType().getBlitTypeId());
+		if(blit.getCount() + blit.getBlitType().getSoldCount() > blit.getBlitType().getCapacity())
 			throw new InconsistentDataException(
-					ResourceUtil.getMessage(Response.REQUESTED_BLIT_COUNT_IS_MORE_THAN_CAPACITY));
+					ResourceUtil.getMessage(Response.BLIT_NOT_AVAILABLE));
 	}
 	@Transactional
 	public CommonBlit persistZarinpalBoughtBlit(CommonBlit blit, String authority, String refNum, String paymentMessage) {
@@ -107,7 +108,7 @@ public class PaymentService {
 		commonBlit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 		commonBlit.setPaymentStatus(PaymentStatus.PAID.name());
 		commonBlit.setPaymentError(ResourceUtil.getMessage(Response.PAYMENT_SUCCESS));
-		blitService.checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
+//		blitService.checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
 		blitType.setSoldCount(blitType.getSoldCount() + commonBlit.getCount());
 		log.info("****** NONE FREE BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}'",commonBlit.getCustomerEmail(),blitType.getSoldCount());
 		blitService.checkBlitTypeSoldConditionAndSetEventDateEventStateSold(blitType);

@@ -51,7 +51,8 @@ public class BlitController {
 	public CompletionStage<ResponseEntity<?>> buyBlitWithSeat(@Validated @RequestBody SeatBlitViewModel viewModel,
 															  HttpServletRequest request,HttpServletResponse response) {
 		User user = SecurityContextHolder.currentUser();
-		return null;
+		return CompletableFuture.supplyAsync(() -> blitService.createSeatBlitAuthorized(viewModel,user))
+				.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,request,response));
 	}
 
 	@Permission(value = ApiBusinessName.USER)
