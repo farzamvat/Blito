@@ -1,23 +1,20 @@
 package com.blito.services;
 
-import com.blito.enums.PaymentStatus;
-import com.blito.enums.Response;
-import com.blito.enums.SeatType;
-import com.blito.enums.State;
+import com.blito.enums.*;
 import com.blito.exceptions.BlitNotAvailableException;
 import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.exceptions.ZarinpalException;
 import com.blito.mappers.CommonBlitMapper;
-import com.blito.models.Blit;
-import com.blito.models.BlitType;
-import com.blito.models.CommonBlit;
+import com.blito.mappers.SeatBlitMapper;
+import com.blito.models.*;
 import com.blito.payments.saman.SamanBankService;
 import com.blito.payments.zarinpal.PaymentVerificationResponse;
 import com.blito.payments.zarinpal.client.ZarinpalClient;
 import com.blito.repositories.BlitRepository;
 import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.CommonBlitRepository;
+import com.blito.repositories.SeatBlitRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.services.util.HtmlRenderer;
 import org.slf4j.Logger;
@@ -29,10 +26,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Optional;
 
 @Service
 public class PaymentService {
-	private static final Object paymentCompletionLock = new Object();
+	private static final Object commonBlitPaymentCompletionLock = new Object();
+	private static final Object seatBlitPaymentCompletionLock = new Object();
 	private static final Logger log = LoggerFactory.getLogger(PaymentService.class);
 	@Autowired
 	private SamanBankService samanBankService;
@@ -54,6 +53,10 @@ public class PaymentService {
 	private BlitService blitService;
 	@Autowired
 	private CommonBlitMapper commonBlitMapper;
+	@Autowired
+	private SeatBlitRepository seatBlitRepository;
+	@Autowired
+	private SeatBlitMapper seatBlitMapper;
 
 	@Transactional
 	public Blit zarinpalPaymentFlow(String authority,String status)
@@ -70,17 +73,31 @@ public class PaymentService {
 				checkBlitCapacity(commonBlit);
 				PaymentVerificationResponse verificationResponse = zarinpalClient.getPaymentVerificationResponse(commonBlit.getTotalAmount().intValue(), authority);
 				log.info("success in zarinpal verification response trackCode '{}' user email '{}' ref number '{}'",blit.getTrackCode(),blit.getCustomerEmail(), verificationResponse.getRefID());
-				CommonBlit persistedBlit = null;
-				synchronized (paymentCompletionLock) {
+				CommonBlit persistedBlit;
+				synchronized (commonBlitPaymentCompletionLock) {
 					log.info("User with email '{}' holding the lock after payment",commonBlit.getCustomerEmail());
-					persistedBlit = persistZarinpalBoughtBlit(commonBlit, authority, String.valueOf(verificationResponse.getRefID()), ZarinpalException.generateMessage(verificationResponse.getStatus()));
+					log.info("Zarinpal message '{}'", ZarinpalException.generateMessage(verificationResponse.getStatus()));
+					persistedBlit = finalizeCommonBlitPayment(commonBlit, String.valueOf(verificationResponse.getRefID()));
 					log.info("User with email '{}' released the lock after payment",commonBlit.getCustomerEmail());
 				}
 				blitService.sendEmailAndSmsForPurchasedBlit(commonBlitMapper.createFromEntity(persistedBlit));
 				return persistedBlit;
 			}
 			else {
-				// TODO
+				log.info("success in zarinpal payment callback blit trackCode '{}' user email '{}'",blit.getTrackCode(),blit.getCustomerEmail());
+				SeatBlit seatBlit = seatBlitRepository.findOne(blit.getBlitId());
+				if(seatBlit.getBlitTypeSeats().stream().anyMatch(blitTypeSeat -> Optional.ofNullable(blitTypeSeat.getReserveDate()).isPresent() && blitTypeSeat.getReserveDate().before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusMinutes(10L).toInstant())))) {
+					throw new BlitNotAvailableException(ResourceUtil.getMessage(Response.SEAT_BLIT_RESERVED_TIME_OUT_OF_DATE));
+				}
+				PaymentVerificationResponse verificationResponse = zarinpalClient.getPaymentVerificationResponse(seatBlit.getTotalAmount().intValue(),authority);
+				log.info("success in zarinpal verification response trackCode '{}' user email '{}' ref number '{}'",blit.getTrackCode(),blit.getCustomerEmail(), verificationResponse.getRefID());
+				SeatBlit persistedSeatBlit;
+				synchronized (seatBlitPaymentCompletionLock) {
+					log.info("User with email '{}' holding the lock after payment",seatBlit.getCustomerEmail());
+					log.info("Zarinpal message '{}'", ZarinpalException.generateMessage(verificationResponse.getStatus()));
+
+					log.info("User with email '{}' released the lock after payment",seatBlit.getCustomerEmail());
+				}
 				return null;
 			}
 		}
@@ -101,17 +118,34 @@ public class PaymentService {
 					ResourceUtil.getMessage(Response.BLIT_NOT_AVAILABLE));
 	}
 	@Transactional
-	public CommonBlit persistZarinpalBoughtBlit(CommonBlit blit, String authority, String refNum, String paymentMessage) {
-		CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
+	public CommonBlit finalizeCommonBlitPayment(CommonBlit commonBlit, String refNum) {
 		BlitType blitType = commonBlit.getBlitType();
 		commonBlit.setRefNum(refNum);
 		commonBlit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 		commonBlit.setPaymentStatus(PaymentStatus.PAID.name());
 		commonBlit.setPaymentError(ResourceUtil.getMessage(Response.PAYMENT_SUCCESS));
-//		blitService.checkBlitTypeRestrictionsForBuy(blitType, commonBlit);
 		blitType.setSoldCount(blitType.getSoldCount() + commonBlit.getCount());
-		log.info("****** NONE FREE BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}'",commonBlit.getCustomerEmail(),blitType.getSoldCount());
+		log.info("****** NONE FREE COMMON BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}' AND BLIT TYPE CAPACITY IS '{}'",
+				commonBlit.getCustomerEmail(),blitType.getSoldCount(),blitType.getCapacity());
 		blitService.checkBlitTypeSoldConditionAndSetEventDateEventStateSold(blitType);
 		return commonBlit;
+	}
+	@Transactional
+	public SeatBlit finalizeSeatBlitPayment(SeatBlit seatBlit,String refNum) {
+		seatBlit.setRefNum(refNum);
+		seatBlit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+		seatBlit.setPaymentStatus(PaymentStatus.PAID.name());
+		seatBlit.setPaymentError(ResourceUtil.getMessage(Response.PAYMENT_SUCCESS));
+		BlitType blitType = seatBlit.getBlitTypeSeats().stream().findAny().map(BlitTypeSeat::getBlitType).get();
+		blitType.setSoldCount(blitType.getSoldCount() + seatBlit.getCount());
+		log.info("****** NONE FREE SEAT BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}' AND BLIT TYPE CAPACITY IS '{}'",
+				seatBlit.getCustomerEmail(),blitType.getSoldCount(),blitType.getCapacity());
+		blitService.checkBlitTypeSoldConditionAndSetEventDateEventStateSold(blitType);
+		seatBlit.getBlitTypeSeats().forEach(blitTypeSeat -> {
+			blitTypeSeat.setState(BlitTypeSeatState.SOLD.name());
+			blitTypeSeat.setSoldDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+			blitTypeSeat.setReserveDate(null);
+		});
+		return seatBlit;
 	}
 }

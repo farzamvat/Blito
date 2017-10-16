@@ -168,7 +168,7 @@ public class PaymentServiceTest {
 		blit.setToken("000000000123");
 		blit.setSeatType("COMMON");
 		blit = blitRepository.save(blit);
-		paymentService.persistZarinpalBoughtBlit(blit, blit.getToken(), "refNum", "pardakht shod");
+		paymentService.finalizeCommonBlitPayment(blit, "refNum");
 		
 		assertEquals("SOLD",eventRepository.findOne(1L).getEventState());
 		

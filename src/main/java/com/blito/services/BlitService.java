@@ -101,8 +101,7 @@ public class BlitService {
 
 	@Transactional
 	public Object createCommonBlitAuthorized(CommonBlitViewModel vmodel,User user) {
-		CommonBlit blit = commonBlitMapper.createFromViewModel((CommonBlitViewModel) vmodel);
-
+		CommonBlit blit = commonBlitMapper.createFromViewModel(vmodel);
 		BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(vmodel.getBlitTypeId()))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
 		checkBlitTypeRestrictionsForBuy(blitType,blit);
@@ -127,6 +126,7 @@ public class BlitService {
 		checkBlitTypeRestrictionsForBuy(blitType,seatBlit);
 		Set<BlitTypeSeat> blitTypeSeats =
 				blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
+		// TODO: 10/16/17 error
 		validateSeatBlitForBuy(blitTypeSeats);
 		seatBlit.setBlitTypeSeats(blitTypeSeats);
 		if(blitType.isFree()) {
@@ -181,7 +181,8 @@ public class BlitService {
 	CommonBlitViewModel reserveFreeCommonBlitForAuthorizedUser(BlitType blitType,CommonBlit commonBlit,User user) {
 		if (commonBlit.getCount() > 10)
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_COUNT_EXCEEDS_LIMIT));
-		if (commonBlit.getCount() + commonBlitRepository.countByCustomerEmailAndBlitTypeBlitTypeId(user.getEmail(),
+		// TODO: 10/16/17 bug needs test
+		if (commonBlit.getCount() + commonBlitRepository.sumCountBlitByEmailAndBlitTypeId(user.getEmail(),
 				blitType.getBlitTypeId()) > 10)
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_COUNT_EXCEEDS_LIMIT_TOTAL));
 		final CommonBlitViewModel responseBlit;
@@ -216,6 +217,7 @@ public class BlitService {
 			log.info("User with email '{}' released the lock",user.getEmail());
 		}
 		// UNLOCK
+		// TODO: 10/16/17 email and sms 
 //		sendEmailAndSmsForPurchasedBlit(responseBlit);
 		return responseBlit;
 	}
@@ -286,7 +288,6 @@ public class BlitService {
 
 	@Transactional
 	public SeatBlit persistNoneFreeSeatBlit(BlitType blitType, SeatBlit seatBlit, Optional<User> optionalUser,String token) {
-		BlitType attachedBlitType = blitTypeRepository.findOne(blitType.getBlitTypeId());
 		optionalUser.ifPresent(user -> {
 			User attachedUser = userRepository.findOne(user.getUserId());
 			seatBlit.setUser(attachedUser);
