@@ -9,7 +9,8 @@ import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.security.SecurityContextHolder;
-import com.blito.services.BlitService;
+import com.blito.services.blit.CommonBlitService;
+import com.blito.services.blit.SeatBlitService;
 import com.blito.view.ExcelView;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -35,14 +36,16 @@ import java.util.concurrent.CompletionStage;
 public class BlitController {
 
 	@Autowired
-	private BlitService blitService;
+	private CommonBlitService commonBlitService;
+	@Autowired
+	private SeatBlitService seatBlitService;
 
 	@Permission(value = ApiBusinessName.USER)
 	@PostMapping("/buy-request")
 	public CompletionStage<ResponseEntity<?>> buyBlit(@Validated @RequestBody CommonBlitViewModel vmodel,
 			HttpServletRequest req, HttpServletResponse res) {
 		User user = SecurityContextHolder.currentUser();
-		return CompletableFuture.supplyAsync(() -> blitService.createCommonBlitAuthorized(vmodel,user))
+		return CompletableFuture.supplyAsync(() -> commonBlitService.createBlitAuthorized(vmodel,user))
 				.handle((result, throwable) -> HandleUtility.generateResponseResult(() -> result, throwable, req, res));
 	}
 
@@ -51,7 +54,7 @@ public class BlitController {
 	public CompletionStage<ResponseEntity<?>> buyBlitWithSeat(@Validated @RequestBody SeatBlitViewModel viewModel,
 															  HttpServletRequest request,HttpServletResponse response) {
 		User user = SecurityContextHolder.currentUser();
-		return CompletableFuture.supplyAsync(() -> blitService.createSeatBlitAuthorized(viewModel,user))
+		return CompletableFuture.supplyAsync(() -> seatBlitService.createBlitAuthorized(viewModel,user))
 				.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,request,response));
 	}
 
@@ -59,7 +62,7 @@ public class BlitController {
 	@PostMapping("/search")
 	public ResponseEntity<Page<CommonBlitViewModel>> search(@RequestBody SearchViewModel<CommonBlit> searchViewModel,
 			Pageable pageable) {
-		return ResponseEntity.ok(blitService.searchCommonBlits(searchViewModel, pageable));
+		return ResponseEntity.ok(commonBlitService.searchCommonBlits(searchViewModel, pageable));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //
@@ -70,7 +73,7 @@ public class BlitController {
 	@Permission(value = ApiBusinessName.USER)
 	@PostMapping("/blits.xlsx")
 	public ModelAndView searchBlitsForExcel(@RequestBody SearchViewModel<CommonBlit> search) {
-		return new ModelAndView(new ExcelView(), blitService.searchCommonBlitsForExcel(search));
+		return new ModelAndView(new ExcelView(), commonBlitService.searchCommonBlitsForExcel(search));
 		
 	}
 }

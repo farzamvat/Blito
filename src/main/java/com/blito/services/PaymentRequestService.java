@@ -39,8 +39,6 @@ public class PaymentRequestService {
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
-	private BlitService blitService;
-	@Autowired
 	private HtmlRenderer htmlRenderer;
 	@Autowired
 	private CommonBlitRepository commonBlitRepository;
@@ -62,7 +60,7 @@ public class PaymentRequestService {
 	}
 
 	@Transactional
-	String createPurchaseRequest(Blit blit) {
+	public String createPurchaseRequest(Blit blit) {
 		switch (Enum.valueOf(BankGateway.class, blit.getBankGateway())) {
 		case ZARINPAL:
 			log.debug("Before requesting token from zarinpal gateway user email '{}' and blit track code '{}'",
@@ -75,7 +73,7 @@ public class PaymentRequestService {
 		}
 	}
 
-	ZarinpalPayRequestResponseViewModel createZarinpalResponse(String token) {
+	public ZarinpalPayRequestResponseViewModel createZarinpalResponse(String token) {
 		ZarinpalPayRequestResponseViewModel zarinpalResponse = new ZarinpalPayRequestResponseViewModel();
 		zarinpalResponse.setGateway(BankGateway.ZARINPAL);
 		zarinpalResponse.setZarinpalWebGatewayURL(zarinpalGatewayURL + token);

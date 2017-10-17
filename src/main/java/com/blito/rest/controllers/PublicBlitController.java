@@ -2,7 +2,7 @@ package com.blito.rest.controllers;
 
 import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
-import com.blito.services.BlitService;
+import com.blito.services.blit.CommonBlitService;
 import com.blito.view.BlitReceiptPdfView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,23 +20,23 @@ import java.util.concurrent.CompletionStage;
 public class PublicBlitController {
 	
 	@Autowired
-	private BlitService blitService;
+	private CommonBlitService commonBlitService;
 	
 	@GetMapping("/{trackCode}")
 	public ResponseEntity<?> getBlit(@PathVariable String trackCode)
 	{
-		return ResponseEntity.ok(blitService.getBlitByTrackCode(trackCode));
+		return ResponseEntity.ok(commonBlitService.getBlitByTrackCode(trackCode));
 	}
 	
 	@PostMapping("/buy-request")
 	public CompletionStage<ResponseEntity<?>> buyRequestForFreeBlit(@Validated @RequestBody CommonBlitViewModel vmodel,HttpServletRequest req,HttpServletResponse res)
 	{
-		return CompletableFuture.supplyAsync(() -> blitService.createCommonBlitUnauthorizedAndNoneFreeBlits(vmodel))
+		return CompletableFuture.supplyAsync(() -> commonBlitService.createUnauthorizedAndNoneFreeBlits(vmodel))
 				.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result, throwable, req, res));
 	}
 	
 	@GetMapping("/{trackCode}/blit.pdf")
 	public ModelAndView getBlitPdfReciept(@PathVariable String trackCode) {
-		return new ModelAndView(new BlitReceiptPdfView(), blitService.getBlitPdf(trackCode));
+		return new ModelAndView(new BlitReceiptPdfView(), commonBlitService.getBlitPdf(trackCode));
 	}
 }

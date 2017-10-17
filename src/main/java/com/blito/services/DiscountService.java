@@ -139,7 +139,7 @@ public class DiscountService {
         }));
     }
 
-    DiscountValidationViewModel validateDiscountCodeBeforePurchaseRequest(Long blitTypeId, String code, int count) {
+    public DiscountValidationViewModel validateDiscountCodeBeforePurchaseRequest(Long blitTypeId, String code, int count) {
         DiscountValidationViewModel discountValidationViewModel = new DiscountValidationViewModel(code, count, blitTypeId);
         return validateDiscountCode(discountValidationViewModel);
     }
