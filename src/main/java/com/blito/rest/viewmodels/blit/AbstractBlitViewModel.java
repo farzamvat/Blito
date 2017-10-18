@@ -7,9 +7,13 @@ import com.blito.annotations.Email;
 import com.blito.annotations.MobileNumber;
 import com.blito.enums.BankGateway;
 import com.blito.enums.PaymentStatus;
+import com.blito.enums.Response;
 import com.blito.enums.SeatType;
+import com.blito.models.Blit;
+import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.AbstractViewModel;
 import com.blito.rest.viewmodels.LocationViewModel;
+import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.event.AdditionalField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -88,6 +92,17 @@ public class AbstractBlitViewModel extends AbstractViewModel {
     private String eventPhotoId;
     private String discountCode;
     private Long primaryAmount;
+
+    public static <E extends Blit> ResultVm createResultVmInCaseOfPaymentStatusError(E blit) {
+        return new ResultVm(blit.getPaymentError(), false);
+    }
+
+    public static <E extends Blit> ResultVm createResultVmInCaseOfPaymentStatusPending(E blit) {
+        return new ResultVm((blit.getPaymentError() == null || blit.getPaymentError().isEmpty())
+                ? ResourceUtil.getMessage(Response.PAYMENT_ERROR)
+                : blit.getPaymentError(), false);
+    }
+
 
     public AbstractBlitViewModel() {
         additionalFields = new ArrayList<>();

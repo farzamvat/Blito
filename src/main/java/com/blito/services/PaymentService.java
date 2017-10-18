@@ -16,6 +16,8 @@ import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.CommonBlitRepository;
 import com.blito.repositories.SeatBlitRepository;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.services.blit.CommonBlitService;
+import com.blito.services.blit.SeatBlitService;
 import com.blito.services.util.HtmlRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +52,9 @@ public class PaymentService {
 	@Autowired
 	private SmsService smsService;
 	@Autowired
-	private BlitService blitService;
+	private CommonBlitService commonBlitService;
+	@Autowired
+	private SeatBlitService seatBlitService;
 	@Autowired
 	private CommonBlitMapper commonBlitMapper;
 	@Autowired
@@ -80,7 +84,7 @@ public class PaymentService {
 					persistedBlit = finalizeCommonBlitPayment(commonBlit, String.valueOf(verificationResponse.getRefID()));
 					log.info("User with email '{}' released the lock after payment",commonBlit.getCustomerEmail());
 				}
-				blitService.sendEmailAndSmsForPurchasedBlit(commonBlitMapper.createFromEntity(persistedBlit));
+				this.commonBlitService.sendEmailAndSmsForPurchasedBlit(commonBlitMapper.createFromEntity(persistedBlit));
 				return persistedBlit;
 			}
 			else {
@@ -95,10 +99,11 @@ public class PaymentService {
 				synchronized (seatBlitPaymentCompletionLock) {
 					log.info("User with email '{}' holding the lock after payment",seatBlit.getCustomerEmail());
 					log.info("Zarinpal message '{}'", ZarinpalException.generateMessage(verificationResponse.getStatus()));
-
+					persistedSeatBlit = finalizeSeatBlitPayment(seatBlit,String.valueOf(verificationResponse.getRefID()));
 					log.info("User with email '{}' released the lock after payment",seatBlit.getCustomerEmail());
 				}
-				return null;
+				this.seatBlitService.sendEmailAndSmsForPurchasedBlit(seatBlitMapper.createFromEntity(persistedSeatBlit));
+				return persistedSeatBlit;
 			}
 		}
 		else {
@@ -127,7 +132,7 @@ public class PaymentService {
 		blitType.setSoldCount(blitType.getSoldCount() + commonBlit.getCount());
 		log.info("****** NONE FREE COMMON BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}' AND BLIT TYPE CAPACITY IS '{}'",
 				commonBlit.getCustomerEmail(),blitType.getSoldCount(),blitType.getCapacity());
-		blitService.checkBlitTypeSoldConditionAndSetEventDateEventStateSold(blitType);
+		this.seatBlitService.checkBlitTypeSoldConditionAndSetEventDateEventStateSold(blitType);
 		return commonBlit;
 	}
 	@Transactional
@@ -140,7 +145,7 @@ public class PaymentService {
 		blitType.setSoldCount(blitType.getSoldCount() + seatBlit.getCount());
 		log.info("****** NONE FREE SEAT BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}' AND BLIT TYPE CAPACITY IS '{}'",
 				seatBlit.getCustomerEmail(),blitType.getSoldCount(),blitType.getCapacity());
-		blitService.checkBlitTypeSoldConditionAndSetEventDateEventStateSold(blitType);
+		seatBlitService.checkBlitTypeSoldConditionAndSetEventDateEventStateSold(blitType);
 		seatBlit.getBlitTypeSeats().forEach(blitTypeSeat -> {
 			blitTypeSeat.setState(BlitTypeSeatState.SOLD.name());
 			blitTypeSeat.setSoldDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));

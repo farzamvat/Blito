@@ -17,7 +17,7 @@ public class SeatBlitViewModel extends AbstractBlitViewModel {
     private String seats;
     private Long eventDateId;
 
-    SeatBlitViewModel(ResultVm result) {
+    public SeatBlitViewModel(ResultVm result) {
         super.result = result;
     }
 

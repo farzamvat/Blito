@@ -1,10 +1,10 @@
 package com.blito.services;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.mail.internet.MimeMessage;
-
+import com.blito.enums.Response;
+import com.blito.exceptions.SendingEmailException;
+import com.blito.models.User;
+import com.blito.resourceUtil.ResourceUtil;
+import com.blito.services.util.HtmlRenderer;
 import org.apache.commons.lang3.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +14,9 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import com.blito.enums.Response;
-import com.blito.exceptions.SendingEmailException;
-import com.blito.models.User;
-import com.blito.resourceUtil.ResourceUtil;
-import com.blito.services.util.HtmlRenderer;
+import javax.mail.internet.MimeMessage;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class MailService {
@@ -59,7 +57,7 @@ public class MailService {
         map.put("baseUrl", baseUrl);
         map.put("serverAddress",serverAddress);
         String content = htmlRenderer.renderHtml("forgetPassword", map);
-        sendEmail(user.getEmail(), content,ResourceUtil.getMessage(Response.ACTIVATE_ACCOUNT_EMAIL));
+        sendEmail(user.getEmail(), content,ResourceUtil.getMessage(Response.FORGETING_PASSWORD_USER_EMAIL));
 	}
 
 	public void sendEmail(String to,  String content,String subject) {

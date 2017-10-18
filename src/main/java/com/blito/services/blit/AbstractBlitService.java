@@ -1,26 +1,30 @@
 package com.blito.services.blit;
 
-import com.blito.enums.*;
-import com.blito.exceptions.*;
+import com.blito.enums.PaymentStatus;
+import com.blito.enums.Response;
+import com.blito.enums.SeatType;
+import com.blito.enums.State;
+import com.blito.exceptions.AdditionalFieldsValidationException;
+import com.blito.exceptions.InconsistentDataException;
+import com.blito.exceptions.NotAllowedException;
+import com.blito.exceptions.ResourceNotFoundException;
 import com.blito.mappers.CommonBlitMapper;
 import com.blito.mappers.SeatBlitMapper;
-import com.blito.models.*;
-import com.blito.repositories.BlitRepository;
-import com.blito.repositories.BlitTypeRepository;
-import com.blito.repositories.CommonBlitRepository;
-import com.blito.repositories.UserRepository;
+import com.blito.models.Blit;
+import com.blito.models.BlitType;
+import com.blito.models.Event;
+import com.blito.models.User;
+import com.blito.repositories.*;
 import com.blito.resourceUtil.ResourceUtil;
-import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.blit.AbstractBlitViewModel;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
-import com.blito.rest.viewmodels.blit.SeatErrorViewModel;
+import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
 import com.blito.rest.viewmodels.discount.DiscountValidationViewModel;
 import com.blito.rest.viewmodels.payments.PaymentRequestViewModel;
 import com.blito.services.*;
 import com.blito.services.util.HtmlRenderer;
 import io.vavr.concurrent.Future;
 import io.vavr.control.Option;
-import org.apache.poi.ss.formula.eval.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +36,6 @@ import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author Farzam Vatanzadeh
@@ -55,6 +57,12 @@ public abstract class AbstractBlitService <E extends Blit,V extends AbstractBlit
     protected BlitTypeRepository blitTypeRepository;
     PaymentRequestService paymentRequestService;
     CommonBlitRepository commonBlitRepository;
+    SeatBlitRepository seatBlitRepository;
+
+    @Autowired
+    public void setSeatBlitRepository(SeatBlitRepository seatBlitRepository) {
+        this.seatBlitRepository = seatBlitRepository;
+    }
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -107,7 +115,7 @@ public abstract class AbstractBlitService <E extends Blit,V extends AbstractBlit
     protected abstract E persistBlit(BlitType blitType,E blit,Optional<User> userOptional,String token);
     protected abstract E reserveFreeBlit(BlitType blitType, E blit, User user);
 
-    Object blitPurchase(BlitType blitType, V viewModel, User user, E blit) {
+    Object blitPurchaseAuthorized(BlitType blitType, V viewModel, User user, E blit) {
         if (blitType.isFree()) {
             return reserveFreeBlitForAuthorizedUser(blitType,blit,user);
         } else {
@@ -115,7 +123,7 @@ public abstract class AbstractBlitService <E extends Blit,V extends AbstractBlit
             blit.setTrackCode(generateTrackCode());
             return Option.of(paymentRequestService.createPurchaseRequest(blit))
                     .map(token -> persistBlit(blitType,blit,Optional.of(user),token))
-                    .map(commonBlit -> paymentRequestService.createZarinpalResponse(commonBlit.getToken()))
+                    .map(b -> paymentRequestService.createZarinpalResponse(b.getToken()))
                     .getOrElseThrow(() -> new RuntimeException("Never Happens"));
         }
     }
@@ -135,7 +143,7 @@ public abstract class AbstractBlitService <E extends Blit,V extends AbstractBlit
         return trackCode;
     }
 
-    private void checkBlitTypeSoldConditionAndSetEventDateEventStateSold(BlitType blitType) {
+    public void checkBlitTypeSoldConditionAndSetEventDateEventStateSold(BlitType blitType) {
         if (blitType.getSoldCount() == blitType.getCapacity()) {
             blitType.setBlitTypeState(State.SOLD.name());
             if (blitType.getEventDate().getBlitTypes().stream()
@@ -168,7 +176,7 @@ public abstract class AbstractBlitService <E extends Blit,V extends AbstractBlit
                     ResourceUtil.getMessage(Response.REQUESTED_BLIT_COUNT_IS_MORE_THAN_CAPACITY));
     }
 
-    void validateDiscountCodeIfPresentAndCalculateTotalAmount(V vmodel, Blit blit, BlitType blitType) {
+    void validateDiscountCodeIfPresentAndCalculateTotalAmount(V vmodel, E blit, BlitType blitType) {
         Option.of(vmodel.getDiscountCode())
                 .filter(code -> !code.isEmpty())
                 .peek(code -> {
@@ -194,45 +202,27 @@ public abstract class AbstractBlitService <E extends Blit,V extends AbstractBlit
             if (blit.getSeatType().equals(SeatType.COMMON.name())) {
                 if (blit.getPaymentStatus().equals(PaymentStatus.PENDING.name()))
                     return new CommonBlitViewModel(
-                            new ResultVm(blit.getPaymentError(), false));
+                            CommonBlitViewModel.createResultVmInCaseOfPaymentStatusPending(blit));
                 else if (blit.getPaymentStatus().equals(PaymentStatus.ERROR.name()))
                     return new CommonBlitViewModel(
-                            new ResultVm((blit.getPaymentError() == null || blit.getPaymentError().isEmpty())
-                                    ? ResourceUtil.getMessage(Response.PAYMENT_ERROR)
-                                    : blit.getPaymentError(), false));
+                            CommonBlitViewModel.createResultVmInCaseOfPaymentStatusError(blit));
                 else
                     return commonBlitMapper.createFromEntity(commonBlitRepository.findOne(blit.getBlitId()));
-            } else
-                // TODO
-                throw new NotImplementedException("Seat Type blit not implemented yet");
-
+            } else {
+                if (blit.getPaymentStatus().equals(PaymentStatus.PENDING.name()))
+                    return new SeatBlitViewModel(
+                            SeatBlitViewModel.createResultVmInCaseOfPaymentStatusPending(blit));
+                else if (blit.getPaymentStatus().equals(PaymentStatus.ERROR.name()))
+                    return new SeatBlitViewModel(
+                            SeatBlitViewModel.createResultVmInCaseOfPaymentStatusError(blit));
+                else
+                    return seatBlitMapper.createFromEntity(seatBlitRepository.findOne(blit.getBlitId()));
+            }
         }).orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
     }
 
-    void validateSeatBlitForBuy(Set<BlitTypeSeat> blitTypeSeats) {
-
-        blitTypeSeats.stream()
-                .filter(blitTypeSeat -> blitTypeSeat.getState().equals(BlitTypeSeatState.RESERVED.name()))
-                .forEach(blitTypeSeat ->
-                        Optional.ofNullable(blitTypeSeat.getReserveDate())
-                                .filter(reservedDate -> reservedDate.before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusMinutes(10L).toInstant())))
-                                .ifPresent(dump -> {
-                                    blitTypeSeat.setState(BlitTypeSeatState.AVAILABLE.name());
-                                    blitTypeSeat.setReserveDate(null);
-                                }));
-        Optional.ofNullable(blitTypeSeats
-                .stream()
-                .filter(blitTypeSeat -> !blitTypeSeat.getState().equals(BlitTypeSeatState.AVAILABLE.name()))
-                .map(blitTypeSeat -> new SeatErrorViewModel(blitTypeSeat.getSeat().getSeatUid(),blitTypeSeat.getState()))
-                .collect(Collectors.toSet()))
-                .filter(set -> !set.isEmpty())
-                .ifPresent(seatErrorViewModels -> {
-                    throw new SeatException("seat error",seatErrorViewModels);
-                });
-    }
-
     @Transactional
-    protected void validateAdditionalFields(Event event, Blit blit) {
+    protected void validateAdditionalFields(Event event, E blit) {
         if(event.getAdditionalFields() != null && !event.getAdditionalFields().isEmpty()) {
             if(blit.getAdditionalFields().isEmpty())
                 throw new AdditionalFieldsValidationException(ResourceUtil.getMessage(Response.ADDITIONAL_FIELDS_CANT_BE_EMPTY));
@@ -242,13 +232,14 @@ public abstract class AbstractBlitService <E extends Blit,V extends AbstractBlit
                 throw new AdditionalFieldsValidationException(ResourceUtil.getMessage(Response.ADDITIONAL_FIELDS_VALIDATION_ERROR));
         }
     }
-    protected void sendEmailAndSmsForPurchasedBlit(CommonBlitViewModel commonBlitViewModel) {
+    public void sendEmailAndSmsForPurchasedBlit(V viewModel) {
         Map<String, Object> map = new HashMap<>();
-        map.put("blit", commonBlitViewModel);
-        Future.runRunnable(() -> mailService.sendEmail(commonBlitViewModel.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map),
+        map.put("blit", viewModel);
+        Future.runRunnable(() -> mailService.sendEmail(viewModel.getCustomerEmail(),
+                htmlRenderer.renderHtml((viewModel instanceof CommonBlitViewModel) ? "ticket" : "ticket_seat", map),
                 ResourceUtil.getMessage(Response.BLIT_RECIEPT)))
                 .onFailure((throwable) -> log.debug("exception in sending email '{}'",throwable));
-        Future.runRunnable(() -> smsService.sendBlitRecieptSms(commonBlitViewModel.getCustomerMobileNumber(), commonBlitViewModel.getTrackCode()))
+        Future.runRunnable(() -> smsService.sendBlitRecieptSms(viewModel.getCustomerMobileNumber(), viewModel.getTrackCode()))
                 .onFailure(throwable -> log.debug("exception in sending sms '{}'",throwable));
     }
 }

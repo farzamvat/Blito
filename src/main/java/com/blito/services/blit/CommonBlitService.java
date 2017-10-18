@@ -14,7 +14,6 @@ import com.blito.rest.viewmodels.payments.PaymentRequestViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.services.ExcelService;
 import com.blito.services.SearchService;
-import io.vavr.concurrent.Future;
 import io.vavr.control.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +23,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -43,15 +41,6 @@ public class CommonBlitService extends AbstractBlitService<CommonBlit,CommonBlit
     @Autowired
     private ExcelService excelService;
 
-    public void sendEmailAndSmsForPurchasedBlit(CommonBlitViewModel commonBlitViewModel) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("blit", commonBlitViewModel);
-        Future.runRunnable(() -> mailService.sendEmail(commonBlitViewModel.getCustomerEmail(), htmlRenderer.renderHtml("ticket", map),
-                ResourceUtil.getMessage(Response.BLIT_RECIEPT)))
-                .onFailure((throwable) -> log.debug("exception in sending email '{}'",throwable));
-        Future.runRunnable(() -> smsService.sendBlitRecieptSms(commonBlitViewModel.getCustomerMobileNumber(), commonBlitViewModel.getTrackCode()))
-                .onFailure(throwable -> log.debug("exception in sending sms '{}'",throwable));
-    }
 
     @Transactional
     @Override
@@ -61,7 +50,7 @@ public class CommonBlitService extends AbstractBlitService<CommonBlit,CommonBlit
                 .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
         checkBlitTypeRestrictionsForBuy(blitType,blit);
         validateAdditionalFields(blitType.getEventDate().getEvent(),blit);
-        return blitPurchase(blitType,viewModel,user,blit);
+        return blitPurchaseAuthorized(blitType,viewModel,user,blit);
     }
 
     @Transactional
@@ -137,6 +126,7 @@ public class CommonBlitService extends AbstractBlitService<CommonBlit,CommonBlit
         return commonBlit;
     }
 
+    // TODO: 10/18/17 security
     public Page<CommonBlitViewModel> searchCommonBlits(SearchViewModel<CommonBlit> searchViewModel, Pageable pageable) {
         return searchService.search(searchViewModel, pageable, commonBlitMapper, commonBlitRepository);
     }

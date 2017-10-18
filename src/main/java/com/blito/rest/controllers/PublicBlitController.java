@@ -2,7 +2,9 @@ package com.blito.rest.controllers;
 
 import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
+import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
 import com.blito.services.blit.CommonBlitService;
+import com.blito.services.blit.SeatBlitService;
 import com.blito.view.BlitReceiptPdfView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,8 @@ public class PublicBlitController {
 	
 	@Autowired
 	private CommonBlitService commonBlitService;
+	@Autowired
+	private SeatBlitService seatBlitService;
 	
 	@GetMapping("/{trackCode}")
 	public ResponseEntity<?> getBlit(@PathVariable String trackCode)
@@ -33,6 +37,13 @@ public class PublicBlitController {
 	{
 		return CompletableFuture.supplyAsync(() -> commonBlitService.createUnauthorizedAndNoneFreeBlits(vmodel))
 				.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result, throwable, req, res));
+	}
+
+	@PostMapping("/buy-request-with-seat")
+	public CompletionStage<ResponseEntity<?>> buyBlitWithSeat(@Validated @RequestBody SeatBlitViewModel viewModel,
+															  HttpServletRequest request,HttpServletResponse response) {
+		return CompletableFuture.supplyAsync(() -> seatBlitService.createUnauthorizedAndNoneFreeBlits(viewModel))
+				.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,request,response));
 	}
 	
 	@GetMapping("/{trackCode}/blit.pdf")
