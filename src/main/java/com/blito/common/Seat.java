@@ -37,9 +37,13 @@ public class Seat extends AbstractBaseSalonEntity implements SalonComponent<Seat
     public Seat() {
     }
     public Seat getNextSeat(Row row) {
+        if(this.getNextUid() == null)
+            return null;
         return row.getSeats().stream().filter(seat -> this.getNextUid().equals(seat.getUid())).findAny().orElseGet(() -> null);
     }
     public Seat getPreviousSeat(Row row) {
+        if(this.getPrevUid() == null)
+            return null;
         return row.getSeats().stream().filter(seat -> this.getPrevUid().equals(seat.getUid())).findAny().orElseGet(() -> null);
     }
 

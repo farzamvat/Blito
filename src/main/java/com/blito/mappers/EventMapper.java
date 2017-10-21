@@ -4,6 +4,7 @@ import com.blito.enums.*;
 import com.blito.exceptions.FileNotFoundException;
 import com.blito.models.Event;
 import com.blito.models.EventDate;
+import com.blito.models.Salon;
 import com.blito.repositories.SalonRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.event.AdditionalField;
@@ -51,11 +52,10 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         event.setEvento(false);
         event.setPrivate(vmodel.isPrivate());
         Optional.ofNullable(vmodel.getSalonUid()).filter(salonUid -> !salonUid.isEmpty())
-                .ifPresent(salonUid ->
-                        event.getEventDates().forEach(eventDate -> eventDate.setSalon(salonRepository.findBySalonUid(salonUid)
-                                .orElseThrow(() -> new FileNotFoundException(ResourceUtil.getMessage(Response.SALON_NOT_FOUND)))
-                        ))
-                );
+                .ifPresent(salonUid -> {
+                    Salon salon = salonRepository.findBySalonUid(salonUid).orElseThrow(() -> new FileNotFoundException(ResourceUtil.getMessage(Response.SALON_NOT_FOUND)));
+                    event.getEventDates().forEach(eventDate -> eventDate.setSalon(salon));
+                });
         return event;
     }
 

@@ -1,19 +1,17 @@
 package com.blito.services;
 
-import java.util.Date;
-import java.util.concurrent.CompletableFuture;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import com.blito.enums.Response;
 import com.blito.exceptions.UnauthorizedException;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.account.TokenModel;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class JwtService {

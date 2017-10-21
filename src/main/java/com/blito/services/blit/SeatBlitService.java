@@ -65,11 +65,9 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
 
     private void validateSeatBlitForBuy(Set<BlitTypeSeat> blitTypeSeats) {
 
-//        Option.ofOptional(blitTypeSeats.stream().findAny())
-//                .peek(blitTypeSeat -> {
-//                    validateNoIndividualSeat(blitTypeSeat.getSeat().getSalon());
-//                })
-//                .getOrElseThrow(() -> new SeatException("seat not found"));
+        if(blitTypeSeats.isEmpty()) {
+            throw new RuntimeException("no seats");
+        }
 
         blitTypeSeats.stream()
                 .filter(blitTypeSeat -> blitTypeSeat.getState().equals(BlitTypeSeatState.RESERVED.name()))

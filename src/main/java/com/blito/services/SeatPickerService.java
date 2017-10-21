@@ -40,6 +40,7 @@ public class SeatPickerService {
     @Transactional
     public Set<BlitTypeSeat> createBlitTypeSeats(BlitTypeViewModel viewModel, BlitType blitType) {
         List<Seat> seats = seatRepository.findBySeatUidIn(new ArrayList<>(viewModel.getSeatUids()));
+        blitType.setCapacity(seats.size());
         if(seats.size() == 0 || seats.size() != viewModel.getSeatUids().size()) {
             throw new NotFoundException("seats not found");
         }
@@ -66,6 +67,7 @@ public class SeatPickerService {
                         .collect(Collectors.toList())
         ).stream().map(seat -> new BlitTypeSeat(BlitTypeSeatState.AVAILABLE.name(),seat,blitType))
                 .forEach(blitTypeSeat -> blitType.getBlitTypeSeats().add(blitTypeSeat));
+        blitType.setCapacity(blitType.getBlitTypeSeats().size());
         return blitType.getBlitTypeSeats();
     }
 }

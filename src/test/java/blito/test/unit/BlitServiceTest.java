@@ -15,9 +15,9 @@ import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.AdminEventService;
-import com.blito.services.BlitService;
 import com.blito.services.EventService;
 import com.blito.services.PaymentRequestService;
+import com.blito.services.blit.CommonBlitService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,7 +41,7 @@ import static org.junit.Assert.assertEquals;
 @Transactional
 public class BlitServiceTest {
 	@Autowired
-	BlitService blitService;
+	CommonBlitService blitService;
 	@Autowired
 	EventRepository eventRepository;
 	@Autowired
@@ -156,7 +156,7 @@ public class BlitServiceTest {
 		commonBlitViewModel.setBankGateway(BankGateway.NONE);
 		IntStream.range(1, 3).parallel().forEach(i -> {
 			SecurityContextHolder.setCurrentUser(user);
-			blitService.createCommonBlitAuthorized(commonBlitViewModel,SecurityContextHolder.currentUser());
+			blitService.createBlitAuthorized(commonBlitViewModel,SecurityContextHolder.currentUser());
 		});
 
 		BlitType blitType = blitTypeRepo.findOne(blitTypeId);

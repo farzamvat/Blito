@@ -21,6 +21,7 @@ import com.blito.search.SearchViewModel;
 import com.blito.search.Simple;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.*;
+import com.blito.services.blit.CommonBlitService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,7 +56,7 @@ public class ExcelServiceTest {
 	@Autowired
 	AdminEventService adminEventService;
 	@Autowired
-	BlitService blitService;
+	CommonBlitService blitService;
 	@Autowired
 	SearchService searchService;
 	@Autowired
@@ -190,8 +191,8 @@ public class ExcelServiceTest {
 				new AdditionalField("Father's Name", "Hamed"),
 				new AdditionalField("Weight", "40.7")));
 
-		blitService.createCommonBlitAuthorized(commonBlitViewModel1,SecurityContextHolder.currentUser());
-		blitService.createCommonBlitAuthorized(commonBlitViewModel2,SecurityContextHolder.currentUser());
+		blitService.createBlitAuthorized(commonBlitViewModel1,SecurityContextHolder.currentUser());
+		blitService.createBlitAuthorized(commonBlitViewModel2,SecurityContextHolder.currentUser());
 
 		SearchViewModel<CommonBlit> searchViewModel = new SearchViewModel<>();
 		Simple<CommonBlit> simple = new Simple<>();

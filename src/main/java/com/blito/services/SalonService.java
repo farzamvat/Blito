@@ -22,11 +22,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -87,7 +90,7 @@ public class SalonService {
                 .getOrElseThrow(() -> new RuntimeException(ResourceUtil.getMessage(Response.INTERNAL_SERVER_ERROR)));
     }
 
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    @Transactional
     public com.blito.common.Salon populateSeatInformationsInSalonSchemaByEventDateId(Long eventDateId) {
         return Option.of(eventDateRepository.findOne(eventDateId))
                 .map(eventDate -> {
@@ -97,6 +100,15 @@ public class SalonService {
                                 .filter(blitType -> blitType.getBlitTypeSeats() != null &&
                                         !blitType.getBlitTypeSeats().isEmpty())
                                 .flatMap(blitType -> blitType.getBlitTypeSeats().stream()).collect(Collectors.toSet());
+                    blitTypeSeats.stream()
+                            .filter(blitTypeSeat -> blitTypeSeat.getState().equals(BlitTypeSeatState.RESERVED.name()))
+                            .forEach(blitTypeSeat ->
+                                    Optional.ofNullable(blitTypeSeat.getReserveDate())
+                                            .filter(reservedDate -> reservedDate.before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusMinutes(10L).toInstant())))
+                                            .ifPresent(dump -> {
+                                                blitTypeSeat.setState(BlitTypeSeatState.AVAILABLE.name());
+                                                blitTypeSeat.setReserveDate(null);
+                                            }));
                     return Option.of(eventDate.getSalon())
                             .map(salon -> {
                                 com.blito.common.Salon schema = getSalonSchema(salon);
