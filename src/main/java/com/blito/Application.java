@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,8 +50,8 @@ public class Application {
 	}
 
 	@GetMapping("/534250.txt")
-	public ResponseEntity<String> samandehi() {
-		return ResponseEntity.ok("");
+	public String samandehi() {
+		return "";
 	}
 
 	@GetMapping("/event-page/{eventLink}")
