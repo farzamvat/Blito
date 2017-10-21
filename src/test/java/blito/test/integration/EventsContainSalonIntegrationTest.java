@@ -161,7 +161,7 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
                 .filter(row -> row.getName().equals("2"))
                 .flatMap(row -> row.getSeats().stream())
                 .sorted(Comparator.comparing(Seat::getName))
-                .skip(1)
+//                .skip(1)
                 .limit(3)
                 .forEachOrdered(seat -> seatBlitViewModel.getSeatUids().add(seat.getUid()));
         Response response =
@@ -175,6 +175,10 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
         givenRestIntegration()
                 .when()
                 .get(getServerAddress() + "/api/blito/v1.0/zarinpal?Authority=testToken&Status=OK");
+
+        givenRestIntegration()
+                .when()
+                .get(getServerAddress() + "/api/blito/v1.0/salons/populated-schema/"+ eventViewModel.getEventDates().stream().findAny().get().getEventDateId());
 
     }
 

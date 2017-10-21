@@ -11,9 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ValidationException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -44,7 +42,9 @@ public class ExceptionUtil {
 
 	public static ExceptionViewModel generateSeatError(HttpStatus status, HttpServletRequest request, SeatException exception) {
 		ExceptionViewModel exceptionViewModel = generate(status,request,exception);
-		exceptionViewModel.setErrors(new ArrayList<>(exception.getSeatErrors()));
+		Optional.of(exception.getSeatErrors())
+				.filter(seatErrorViewModels -> !seatErrorViewModels.isEmpty())
+				.ifPresent(seatErrorViewModels -> exceptionViewModel.setErrors(new ArrayList<>(exception.getSeatErrors())));
 		return exceptionViewModel;
 	}
 	

@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
@@ -66,17 +67,17 @@ public class SalonService {
                        Seat next = currentSeat.getNextSeat(row);
                        Seat prev = currentSeat.getPreviousSeat(row);
                        if(prev == null && next != null) {
-                           if(currentSeat.getState().equals(BlitTypeSeatState.AVAILABLE.name()) && next.getState().equals(BlitTypeSeatState.RESERVED.name())) {
+                           if(currentSeat.getState().equals(BlitTypeSeatState.AVAILABLE) && !next.getState().equals(BlitTypeSeatState.AVAILABLE)) {
                                throw new RuntimeException("error");
                            }
                        } else if(prev != null && next == null) {
-                           if(currentSeat.getState().equals(BlitTypeSeatState.AVAILABLE.name()) && prev.getState().equals(BlitTypeSeatState.RESERVED.name())) {
+                           if(currentSeat.getState().equals(BlitTypeSeatState.AVAILABLE) && !prev.getState().equals(BlitTypeSeatState.AVAILABLE)) {
                                throw new RuntimeException("error");
                            }
                        } else if(prev != null && next != null) {
-                           if(currentSeat.getState().equals(BlitTypeSeatState.AVAILABLE.name()) &&
-                                   next.getState().equals(BlitTypeSeatState.RESERVED.name()) &&
-                                   prev.getState().equals(BlitTypeSeatState.RESERVED.name())) {
+                           if(currentSeat.getState().equals(BlitTypeSeatState.AVAILABLE) &&
+                                   !next.getState().equals(BlitTypeSeatState.AVAILABLE) &&
+                                   !prev.getState().equals(BlitTypeSeatState.AVAILABLE)) {
                                throw new RuntimeException("error");
                            }
                        }
@@ -90,7 +91,7 @@ public class SalonService {
                 .getOrElseThrow(() -> new RuntimeException(ResourceUtil.getMessage(Response.INTERNAL_SERVER_ERROR)));
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public com.blito.common.Salon populateSeatInformationsInSalonSchemaByEventDateId(Long eventDateId) {
         return Option.of(eventDateRepository.findOne(eventDateId))
                 .map(eventDate -> {

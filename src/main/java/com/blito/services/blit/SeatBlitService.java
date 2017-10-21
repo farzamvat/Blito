@@ -101,6 +101,10 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
                 blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
         validateAdditionalFields(blitType.getEventDate().getEvent(),seatBlit);
         validateSeatBlitForBuy(blitTypeSeats);
+        blitTypeSeats.forEach(blitTypeSeat -> {
+            blitTypeSeat.setState(BlitTypeSeatState.RESERVED.name());
+            blitTypeSeat.setReserveDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+        });
         salonService.validateNoIndividualSeat(salonService.populateSeatInformationsInSalonSchemaByEventDateId(blitType.getEventDate().getEventDateId()));
         seatBlit.setBlitTypeSeats(blitTypeSeats);
         return blitPurchaseAuthorized(blitType,viewModel,user,seatBlit);
@@ -146,6 +150,10 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         Set<BlitTypeSeat> blitTypeSeats =
                 blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
         validateSeatBlitForBuy(blitTypeSeats);
+        blitTypeSeats.forEach(blitTypeSeat -> {
+            blitTypeSeat.setState(BlitTypeSeatState.RESERVED.name());
+            blitTypeSeat.setReserveDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+        });
         salonService.validateNoIndividualSeat(salonService.populateSeatInformationsInSalonSchemaByEventDateId(blitType.getEventDate().getEventDateId()));
         seatBlit.setTrackCode(generateTrackCode());
         return Option.of(paymentRequestService.createPurchaseRequest(seatBlit))
@@ -188,6 +196,8 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         seatBlit.getBlitTypeSeats().forEach(blitTypeSeat -> {
             blitTypeSeat.setState(BlitTypeSeatState.SOLD.name());
             blitTypeSeat.setSoldDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+            blitTypeSeat.setSeatBlit(seatBlit);
+            blitTypeSeat.setReserveDate(null);
         });
         attachedUser.addBlits(seatBlit);
         return seatBlit;

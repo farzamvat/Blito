@@ -192,6 +192,7 @@ public abstract class AbstractBlitService <E extends Blit,V extends AbstractBlit
                         throw new NotAllowedException(ResourceUtil.getMessage(Response.DISCOUNT_CODE_NOT_VALID));
                     }
                 }).onEmpty(() -> {
+            blit.setPrimaryAmount(blit.getTotalAmount());
             if (blit.getCount() * blitType.getPrice() != blit.getTotalAmount())
                 throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
         });

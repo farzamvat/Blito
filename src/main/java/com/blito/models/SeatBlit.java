@@ -4,6 +4,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name="seat_blit")
@@ -12,6 +13,11 @@ public class SeatBlit extends Blit {
 	@OneToMany(mappedBy="seatBlit",targetEntity=BlitTypeSeat.class,cascade = CascadeType.ALL)
 	Set<BlitTypeSeat> blitTypeSeats;
 	String seats;
+
+	public SeatBlit() {
+		blitTypeSeats = new HashSet<>();
+	}
+
 	public Set<BlitTypeSeat> getBlitTypeSeats() {
 		return blitTypeSeats;
 	}
