@@ -1,4 +1,4 @@
-package com.blito.rest.controllers;
+package com.blito.rest.controllers.banner;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;

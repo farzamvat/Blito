@@ -1,4 +1,4 @@
-package com.blito.rest.controllers;
+package com.blito.rest.controllers.blit;
 
 import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;

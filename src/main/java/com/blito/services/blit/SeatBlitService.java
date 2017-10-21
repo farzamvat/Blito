@@ -16,6 +16,8 @@ import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
 import com.blito.rest.viewmodels.blit.SeatErrorViewModel;
 import com.blito.rest.viewmodels.payments.PaymentRequestViewModel;
+import com.blito.services.SalonService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.control.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,13 +44,32 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
     private static final Object reserveFreeSeatBlitLock = new Object();
 
     private BlitTypeSeatRepository blitTypeSeatRepository;
+    private ObjectMapper objectMapper;
+    private SalonService salonService;
+
+    @Autowired
+    public void setSalonService(SalonService salonService) {
+        this.salonService = salonService;
+    }
 
     @Autowired
     public void setBlitTypeSeatRepository(BlitTypeSeatRepository blitTypeSeatRepository) {
         this.blitTypeSeatRepository = blitTypeSeatRepository;
     }
 
+    @Autowired
+    public void setObjectMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
+
     private void validateSeatBlitForBuy(Set<BlitTypeSeat> blitTypeSeats) {
+
+//        Option.ofOptional(blitTypeSeats.stream().findAny())
+//                .peek(blitTypeSeat -> {
+//                    validateNoIndividualSeat(blitTypeSeat.getSeat().getSalon());
+//                })
+//                .getOrElseThrow(() -> new SeatException("seat not found"));
 
         blitTypeSeats.stream()
                 .filter(blitTypeSeat -> blitTypeSeat.getState().equals(BlitTypeSeatState.RESERVED.name()))
@@ -80,11 +101,14 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         checkBlitTypeRestrictionsForBuy(blitType,seatBlit);
         Set<BlitTypeSeat> blitTypeSeats =
                 blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
-        validateSeatBlitForBuy(blitTypeSeats);
         validateAdditionalFields(blitType.getEventDate().getEvent(),seatBlit);
+        validateSeatBlitForBuy(blitTypeSeats);
+        salonService.validateNoIndividualSeat(salonService.populateSeatInformationsInSalonSchemaByEventDateId(blitType.getEventDate().getEventDateId()));
         seatBlit.setBlitTypeSeats(blitTypeSeats);
         return blitPurchaseAuthorized(blitType,viewModel,user,seatBlit);
     }
+
+
 
     @Transactional
     @Override
@@ -124,6 +148,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         Set<BlitTypeSeat> blitTypeSeats =
                 blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
         validateSeatBlitForBuy(blitTypeSeats);
+        salonService.validateNoIndividualSeat(salonService.populateSeatInformationsInSalonSchemaByEventDateId(blitType.getEventDate().getEventDateId()));
         seatBlit.setTrackCode(generateTrackCode());
         return Option.of(paymentRequestService.createPurchaseRequest(seatBlit))
                 .map(token -> persistBlit(blitType,seatBlit,Optional.empty(),token))

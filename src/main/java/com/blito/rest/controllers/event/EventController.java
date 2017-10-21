@@ -1,4 +1,4 @@
-package com.blito.rest.controllers;
+package com.blito.rest.controllers.event;
 
 import com.blito.annotations.Permission;
 import com.blito.enums.ApiBusinessName;

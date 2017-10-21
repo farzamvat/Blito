@@ -5,6 +5,8 @@ package com.blito.common;
 
 import com.blito.common.base.AbstractBaseSalonEntity;
 import com.blito.common.base.SalonComponent;
+import com.blito.rest.viewmodels.View;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -12,10 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Salon extends AbstractBaseSalonEntity implements SalonComponent<Salon> {
+    @JsonView(View.SalonSchema.class)
     private String address;
+    @JsonView(View.SalonSchema.class)
     private Double longitude;
+    @JsonView(View.SalonSchema.class)
     private Double latitude;
+    @JsonView(View.SalonSchema.class)
     private Integer numberOfSections;
+    @JsonView(View.IncludingCustomerNameSalonSchema.class)
     private List<Section> sections;
 
     public String getAddress() {

@@ -1,4 +1,4 @@
-package com.blito.rest.controllers;
+package com.blito.rest.controllers.account;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;

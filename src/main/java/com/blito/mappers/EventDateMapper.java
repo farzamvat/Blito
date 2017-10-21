@@ -5,6 +5,7 @@ import com.blito.models.BlitType;
 import com.blito.models.EventDate;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
+import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +38,7 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 		vmodel.setBlitTypes(eventDate.getBlitTypes().stream().map(blitTypeMapper::createFromEntity).collect(Collectors.toSet()));
 		vmodel.setEventDateId(eventDate.getEventDateId());
 		vmodel.setState(Enum.valueOf(State.class, eventDate.getEventDateState()));
+		Option.of(eventDate.getSalon()).peek(salon -> vmodel.setHasSalon(true)).onEmpty(() -> vmodel.setHasSalon(false));
 		return vmodel;
 	}
 

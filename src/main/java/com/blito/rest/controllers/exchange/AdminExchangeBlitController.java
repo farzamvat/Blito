@@ -1,4 +1,4 @@
-package com.blito.rest.controllers;
+package com.blito.rest.controllers.exchange;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

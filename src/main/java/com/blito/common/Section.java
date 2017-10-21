@@ -5,7 +5,9 @@ package com.blito.common;
 
 import com.blito.common.base.AbstractBaseSalonEntity;
 import com.blito.common.base.SalonComponent;
+import com.blito.rest.viewmodels.View;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -15,7 +17,9 @@ import java.util.List;
 public class Section extends AbstractBaseSalonEntity implements SalonComponent<Section> {
     @JsonIgnore
     private SalonComponent<Salon> salonComponent;
+    @JsonView(View.SalonSchema.class)
     private Integer numberOfRows;
+    @JsonView(View.IncludingCustomerNameSalonSchema.class)
     private List<Row> rows;
 
 

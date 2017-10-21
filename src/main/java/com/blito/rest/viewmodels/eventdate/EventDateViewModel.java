@@ -15,6 +15,15 @@ public class EventDateViewModel {
 	@NotEmpty
 	private Set<BlitTypeViewModel> blitTypes;
 	private State state;
+	private boolean hasSalon;
+
+	public boolean isHasSalon() {
+		return hasSalon;
+	}
+
+	public void setHasSalon(boolean hasSalon) {
+		this.hasSalon = hasSalon;
+	}
 
 	public long getEventDateId() {
 		return eventDateId;

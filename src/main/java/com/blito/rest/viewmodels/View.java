@@ -33,5 +33,6 @@ public class View {
 
 	public interface SimpleSalon extends DefaultView {}
 	public interface SalonSchema extends SimpleSalon {}
+	public interface IncludingCustomerNameSalonSchema extends SalonSchema {}
 
 }

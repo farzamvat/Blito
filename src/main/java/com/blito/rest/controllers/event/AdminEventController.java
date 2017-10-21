@@ -1,50 +1,31 @@
-package com.blito.rest.controllers;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
+package com.blito.rest.controllers.event;
 
 import com.blito.annotations.Permission;
 import com.blito.enums.ApiBusinessName;
 import com.blito.enums.Response;
 import com.blito.mappers.EventMapper;
 import com.blito.models.Event;
-import com.blito.models.EventHost;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.adminreport.BlitBuyerViewModel;
 import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
-import com.blito.rest.viewmodels.event.AdminChangeEventOperatorStateVm;
-import com.blito.rest.viewmodels.event.AdminChangeOfferTypeViewModel;
-import com.blito.rest.viewmodels.event.AdminSetEventOrderViewModel;
-import com.blito.rest.viewmodels.event.AdminSetIsEventoViewModel;
-import com.blito.rest.viewmodels.event.ChangeEventStateVm;
-import com.blito.rest.viewmodels.event.EventFlatViewModel;
-import com.blito.rest.viewmodels.event.EventViewModel;
+import com.blito.rest.viewmodels.event.*;
 import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.services.AdminEventService;
 import com.blito.services.ExcelService;
-import com.blito.view.ExcelView;
 import com.fasterxml.jackson.annotation.JsonView;
-
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("${api.base.url}" + "/admin/events")

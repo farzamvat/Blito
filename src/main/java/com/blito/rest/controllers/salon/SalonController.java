@@ -1,4 +1,4 @@
-package com.blito.rest.controllers;
+package com.blito.rest.controllers.salon;
 
 import com.blito.annotations.Permission;
 import com.blito.enums.ApiBusinessName;
@@ -46,5 +46,15 @@ public class SalonController {
                                                         HttpServletResponse response) {
         return CompletableFuture.supplyAsync(() -> salonService.getSalonByUid(uid))
                 .handle((either,throwable) -> HandleUtility.generateEitherResponse(either,throwable,request,response));
+    }
+
+    @JsonView(View.IncludingCustomerNameSalonSchema.class)
+    @Permission(value = ApiBusinessName.USER)
+    @GetMapping("/populated-schema/{eventDateId}")
+    public CompletionStage<ResponseEntity<?>> getPopulatedSalonSchemaByEventDateId(@PathVariable Long eventDateId,
+                                                                                   HttpServletRequest request,
+                                                                                   HttpServletResponse response) {
+        return CompletableFuture.supplyAsync(() -> salonService.populateSeatInformationsInSalonSchemaByEventDateId(eventDateId))
+                .handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,request,response));
     }
 }
