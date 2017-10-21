@@ -4,6 +4,8 @@ import com.blito.common.Salon;
 import com.blito.common.Seat;
 import com.blito.configs.Constants;
 import com.blito.enums.*;
+import com.blito.payments.zarinpal.PaymentVerificationResponse;
+import com.blito.payments.zarinpal.client.ZarinpalClient;
 import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
@@ -40,6 +42,8 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
     private String zarinpalGatewayURL;
     @MockBean
     private PaymentRequestService paymentRequestService;
+    @MockBean
+    private ZarinpalClient zarinpalClient;
 
     @Autowired
     public void setObjectMapper(ObjectMapper objectMapper) {
@@ -122,6 +126,11 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
         Mockito.when(paymentRequestService.createPurchaseRequest(Mockito.any())).thenReturn("testToken");
         Mockito.when(paymentRequestService.createZarinpalResponse("testToken")).thenReturn(zarinpalResponse);
 
+        PaymentVerificationResponse paymentVerificationResponse = new PaymentVerificationResponse();
+        paymentVerificationResponse.setRefID(123123L);
+        paymentVerificationResponse.setStatus(100);
+        Mockito.when(zarinpalClient.getPaymentVerificationResponse(Mockito.anyInt(),Mockito.anyString())).thenReturn(paymentVerificationResponse);
+
         EventViewModel eventViewModel = createAndUpdateEventWithSalon();
         approveEvent_success(eventViewModel.getEventId(), OperatorState.APPROVED);
         openEventState_success(eventViewModel.getEventId(), State.OPEN);
@@ -162,6 +171,10 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
                 .post(getServerAddress() + "/api/blito/v1.0/blits/buy-request-with-seat");
         response.then().statusCode(200).body("zarinpalWebGatewayURL",equalTo(zarinpalGatewayURL + "testToken"))
         .body("gateway",equalTo(BankGateway.ZARINPAL.name()));
+
+        givenRestIntegration()
+                .when()
+                .get(getServerAddress() + "/api/blito/v1.0/zarinpal?Authority=testToken&Status=OK");
 
     }
 

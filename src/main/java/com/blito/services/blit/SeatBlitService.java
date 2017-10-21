@@ -167,6 +167,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         seatBlit.getBlitTypeSeats().forEach(blitTypeSeat -> {
             blitTypeSeat.setState(BlitTypeSeatState.RESERVED.name());
             blitTypeSeat.setReserveDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+            blitTypeSeat.setSeatBlit(seatBlit);
         });
         return seatBlitRepository.save(seatBlit);
     }
