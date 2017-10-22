@@ -5,6 +5,7 @@ import com.blito.configs.Constants;
 import com.blito.enums.BlitTypeSeatState;
 import com.blito.enums.Response;
 import com.blito.exceptions.NotFoundException;
+import com.blito.exceptions.SeatException;
 import com.blito.mappers.SalonMapper;
 import com.blito.models.BlitTypeSeat;
 import com.blito.models.Salon;
@@ -68,17 +69,17 @@ public class SalonService {
                        Seat prev = currentSeat.getPreviousSeat(row);
                        if(prev == null && next != null) {
                            if(currentSeat.getState().equals(BlitTypeSeatState.AVAILABLE) && !next.getState().equals(BlitTypeSeatState.AVAILABLE)) {
-                               throw new RuntimeException("error");
+                               throw new SeatException(ResourceUtil.getMessage(Response.INDIVIDUAL_SEAT_ERROR));
                            }
                        } else if(prev != null && next == null) {
                            if(currentSeat.getState().equals(BlitTypeSeatState.AVAILABLE) && !prev.getState().equals(BlitTypeSeatState.AVAILABLE)) {
-                               throw new RuntimeException("error");
+                               throw new SeatException(ResourceUtil.getMessage(Response.INDIVIDUAL_SEAT_ERROR));
                            }
                        } else if(prev != null && next != null) {
                            if(currentSeat.getState().equals(BlitTypeSeatState.AVAILABLE) &&
                                    !next.getState().equals(BlitTypeSeatState.AVAILABLE) &&
                                    !prev.getState().equals(BlitTypeSeatState.AVAILABLE)) {
-                               throw new RuntimeException("error");
+                               throw new SeatException(ResourceUtil.getMessage(Response.INDIVIDUAL_SEAT_ERROR));
                            }
                        }
                     });
@@ -131,5 +132,4 @@ public class SalonService {
                             }).getOrElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SALON_NOT_FOUND)));
                 }).getOrElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
     }
-
 }

@@ -66,9 +66,8 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
     private void validateSeatBlitForBuy(Set<BlitTypeSeat> blitTypeSeats) {
 
         if(blitTypeSeats.isEmpty()) {
-            throw new RuntimeException("no seats");
+            throw new SeatException(ResourceUtil.getMessage(Response.NO_SEATS_PICKED_ERROR));
         }
-
         blitTypeSeats.stream()
                 .filter(blitTypeSeat -> blitTypeSeat.getState().equals(BlitTypeSeatState.RESERVED.name()))
                 .forEach(blitTypeSeat ->
@@ -85,7 +84,8 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
                 .collect(Collectors.toSet()))
                 .filter(set -> !set.isEmpty())
                 .ifPresent(seatErrorViewModels -> {
-                    throw new SeatException("seat error",seatErrorViewModels);
+                    throw new SeatException(ResourceUtil.getMessage(Response.SELECTED_SEAT_IS_SOLD_OR_RESERVED)
+                            ,seatErrorViewModels);
                 });
     }
 
@@ -172,11 +172,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         seatBlit.setToken(token);
         seatBlit.setPaymentError(ResourceUtil.getMessage(Response.PAYMENT_PENDING));
         seatBlit.setPaymentStatus(PaymentStatus.PENDING.name());
-        seatBlit.getBlitTypeSeats().forEach(blitTypeSeat -> {
-            blitTypeSeat.setState(BlitTypeSeatState.RESERVED.name());
-            blitTypeSeat.setReserveDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
-            blitTypeSeat.setSeatBlit(seatBlit);
-        });
+        seatBlit.getBlitTypeSeats().forEach(blitTypeSeat -> blitTypeSeat.setSeatBlit(seatBlit));
         return seatBlitRepository.save(seatBlit);
     }
 

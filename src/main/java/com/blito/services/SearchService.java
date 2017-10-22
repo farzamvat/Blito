@@ -46,8 +46,6 @@ public class SearchService {
                         SearchServiceUtil.combineSpecifications(s1, s2, Optional.ofNullable(searchViewModel.getOperator())))
                 .map(specification -> repository.findAll(specification, pageable))
                 .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
-//        return new PageImpl<>(searchResult.getContent().stream().distinct()
-//                .collect(Collectors.toList()), pageable, searchResult.getTotalElements());
     }
 
     public <E, V, R extends JpaSpecificationExecutor<E> & JpaRepository<E, Long>> Set<V> search(

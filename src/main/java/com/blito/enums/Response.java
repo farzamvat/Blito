@@ -89,6 +89,9 @@ public enum Response {
 	DISCOUNT_CODE_EXPIRED("error.discount.code.expired"),
 	ADDITIONAL_FIELDS_VALIDATION_ERROR("error.additional.fields.validation"),
 	SEAT_BLIT_RESERVED_TIME_OUT_OF_DATE("error.seat.blit.reserved.time.out.of.date"),
+	INDIVIDUAL_SEAT_ERROR("error.individual.seat"),
+	NO_SEATS_PICKED_ERROR("error.not.seat.picked"),
+	SELECTED_SEAT_IS_SOLD_OR_RESERVED("error.sold.reserved.selected.seats"),
 	SALON_NOT_FOUND("error.salon.not.found");
     
 
