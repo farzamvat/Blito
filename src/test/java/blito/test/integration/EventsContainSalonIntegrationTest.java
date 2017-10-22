@@ -161,7 +161,6 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
                 .filter(row -> row.getName().equals("2"))
                 .flatMap(row -> row.getSeats().stream())
                 .sorted(Comparator.comparing(Seat::getName))
-//                .skip(1)
                 .limit(3)
                 .forEachOrdered(seat -> seatBlitViewModel.getSeatUids().add(seat.getUid()));
         Response response =
