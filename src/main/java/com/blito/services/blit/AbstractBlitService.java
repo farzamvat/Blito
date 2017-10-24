@@ -21,6 +21,7 @@ import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
 import com.blito.rest.viewmodels.discount.DiscountValidationViewModel;
 import com.blito.rest.viewmodels.payments.PaymentRequestViewModel;
+import com.blito.search.SearchViewModel;
 import com.blito.services.*;
 import com.blito.services.util.HtmlRenderer;
 import io.vavr.concurrent.Future;
@@ -28,6 +29,8 @@ import io.vavr.control.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
@@ -109,6 +112,8 @@ public abstract class AbstractBlitService <E extends Blit,V extends AbstractBlit
         this.commonBlitRepository = commonBlitRepository;
     }
 
+    public abstract Map<String,Object> searchBlitsForExcel(SearchViewModel<E> searchViewModel);
+    public abstract Page<V> searchBlits(SearchViewModel<E> searchViewModel, Pageable pageable);
     public abstract Object createBlitAuthorized(V viewModel, User user);
     public abstract V reserveFreeBlitForAuthorizedUser(BlitType blitType, E blit, User user);
     public abstract PaymentRequestViewModel createUnauthorizedAndNoneFreeBlits(V viewModel);

@@ -124,7 +124,6 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         });
         shouldDelete.forEach(event::removeEventDateById);
 
-
         vmodel.getEventDates().forEach(edvm -> {
             Optional<EventDate> optionalEventDate = event.getEventDates().stream().filter(ed -> ed.getEventDateId() == edvm.getEventDateId()).findFirst();
             if (optionalEventDate.isPresent()) {
@@ -134,6 +133,11 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
             }
         });
         event.setPrivate(vmodel.isPrivate());
+        Optional.ofNullable(vmodel.getSalonUid()).filter(salonUid -> !salonUid.isEmpty())
+                .ifPresent(salonUid -> {
+                    Salon salon = salonRepository.findBySalonUid(salonUid).orElseThrow(() -> new FileNotFoundException(ResourceUtil.getMessage(Response.SALON_NOT_FOUND)));
+                    event.getEventDates().forEach(eventDate -> eventDate.setSalon(salon));
+                });
         return event;
     }
 }

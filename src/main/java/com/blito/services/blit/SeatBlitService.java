@@ -7,21 +7,22 @@ import com.blito.enums.Response;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.exceptions.SeatException;
-import com.blito.models.BlitType;
-import com.blito.models.BlitTypeSeat;
-import com.blito.models.SeatBlit;
-import com.blito.models.User;
+import com.blito.models.*;
 import com.blito.repositories.BlitTypeSeatRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
 import com.blito.rest.viewmodels.blit.SeatErrorViewModel;
 import com.blito.rest.viewmodels.payments.PaymentRequestViewModel;
+import com.blito.search.SearchViewModel;
+import com.blito.services.ExcelService;
 import com.blito.services.SalonService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.blito.services.SearchService;
 import io.vavr.control.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,8 +48,9 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
 
 
     private BlitTypeSeatRepository blitTypeSeatRepository;
-    private ObjectMapper objectMapper;
     private SalonService salonService;
+    private SearchService searchService;
+    private ExcelService excelService;
 
     @Autowired
     public void setSalonService(SalonService salonService) {
@@ -58,12 +61,14 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
     public void setBlitTypeSeatRepository(BlitTypeSeatRepository blitTypeSeatRepository) {
         this.blitTypeSeatRepository = blitTypeSeatRepository;
     }
-
     @Autowired
-    public void setObjectMapper(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+    public void setSearchService(SearchService searchService) {
+        this.searchService = searchService;
     }
-
+    @Autowired
+    public void setExcelService(ExcelService excelService) {
+        this.excelService = excelService;
+    }
 
     private void validateSeatBlitForBuy(Set<BlitTypeSeat> blitTypeSeats) {
 
@@ -91,6 +96,26 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
                 });
     }
 
+    @Transactional
+    @Override
+    public Map<String, Object> searchBlitsForExcel(SearchViewModel<SeatBlit> searchViewModel) {
+        Set<SeatBlit> blits = searchService.search(searchViewModel, seatBlitRepository);
+        if(blits.isEmpty())
+            throw new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL));
+        SeatBlit blit = blits.stream().findAny().get();
+        if (blit.getAdditionalFields() != null && !blit.getAdditionalFields().isEmpty()) {
+            return blit.getBlitTypeSeats().stream().findAny().map(BlitTypeSeat::getBlitType).map(BlitType::getEventDate).map(EventDate::getEvent).map(Event::getAdditionalFields)
+                    .map(additionalFields -> excelService.getBlitsExcelMap(seatBlitMapper.createFromEntities(blits),additionalFields))
+                    .orElseThrow(() -> new RuntimeException("Never happens"));
+        }
+        return excelService.getBlitsExcelMap(seatBlitMapper.createFromEntities(blits));
+    }
+
+    @Transactional
+    @Override
+    public Page<SeatBlitViewModel> searchBlits(SearchViewModel<SeatBlit> searchViewModel, Pageable pageable) {
+        return searchService.search(searchViewModel,pageable,seatBlitMapper,seatBlitRepository);
+    }
 
     @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @Override

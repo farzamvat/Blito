@@ -3,11 +3,13 @@ package com.blito.services.blit;
 import com.blito.enums.BankGateway;
 import com.blito.enums.PaymentStatus;
 import com.blito.enums.Response;
+import com.blito.enums.SeatType;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.models.BlitType;
 import com.blito.models.CommonBlit;
 import com.blito.models.User;
+import com.blito.repositories.BlitRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.rest.viewmodels.payments.PaymentRequestViewModel;
@@ -40,7 +42,27 @@ public class CommonBlitService extends AbstractBlitService<CommonBlit,CommonBlit
     private SearchService searchService;
     @Autowired
     private ExcelService excelService;
+    @Autowired
+    private BlitRepository blitRepository;
 
+    @Transactional
+    @Override
+    public Map<String, Object> searchBlitsForExcel(SearchViewModel<CommonBlit> searchViewModel) {
+        Set<CommonBlit> blits = searchService.search(searchViewModel, commonBlitRepository);
+        if(blits.isEmpty())
+            throw new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL));
+        CommonBlit blit = blits.stream().findAny().get();
+        if (blit.getAdditionalFields() != null && !blit.getAdditionalFields().isEmpty()) {
+            return excelService.getBlitsExcelMap(commonBlitMapper.createFromEntities(blits), blit.getBlitType().getEventDate().getEvent().getAdditionalFields());
+        }
+        return excelService.getBlitsExcelMap(commonBlitMapper.createFromEntities(blits));
+    }
+
+    @Transactional
+    @Override
+    public Page<CommonBlitViewModel> searchBlits(SearchViewModel<CommonBlit> searchViewModel, Pageable pageable) {
+        return searchService.search(searchViewModel, pageable, commonBlitMapper, commonBlitRepository);
+    }
 
     @Transactional
     @Override
@@ -58,7 +80,6 @@ public class CommonBlitService extends AbstractBlitService<CommonBlit,CommonBlit
     public CommonBlitViewModel reserveFreeBlitForAuthorizedUser(BlitType blitType, CommonBlit commonBlit, User user) {
         if (commonBlit.getCount() > 10)
             throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_COUNT_EXCEEDS_LIMIT));
-        // TODO: 10/16/17 bug needs test
         commonBlitRepository.sumCountBlitByEmailAndBlitTypeId(commonBlit.getCustomerEmail(),
                 blitType.getBlitTypeId()).ifPresent(sumCountBlit -> {
                     if(commonBlit.getCount() + sumCountBlit.intValue() > 10 ) {
@@ -129,27 +150,17 @@ public class CommonBlitService extends AbstractBlitService<CommonBlit,CommonBlit
         return commonBlit;
     }
 
-    // TODO: 10/18/17 security
-    public Page<CommonBlitViewModel> searchCommonBlits(SearchViewModel<CommonBlit> searchViewModel, Pageable pageable) {
-        return searchService.search(searchViewModel, pageable, commonBlitMapper, commonBlitRepository);
-    }
-
     @Transactional
-    public Map<String, Object> searchCommonBlitsForExcel(SearchViewModel<CommonBlit> searchViewModel) {
-        Set<CommonBlit> blits = searchService.search(searchViewModel, commonBlitRepository);
-        if(blits.isEmpty())
-            throw new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL));
-        CommonBlit blit = blits.stream().findAny().get();
-        if (blit.getAdditionalFields() != null && !blit.getAdditionalFields().isEmpty()) {
-            return excelService.getBlitsExcelMap(commonBlitMapper.createFromEntities(blits), blit.getBlitType().getEventDate().getEvent().getAdditionalFields());
-        }
-        return excelService.getBlitsExcelMap(commonBlitMapper.createFromEntities(blits));
-    }
-
     public Map<String, Object> getBlitPdf(String trackCode) {
-        CommonBlitViewModel blit = commonBlitMapper.createFromEntity(commonBlitRepository.findByTrackCode(trackCode)
-                .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND))));
-        return excelService.blitMapForPdf(blit);
+        return blitRepository.findByTrackCode(trackCode)
+                .map(blit -> {
+                    if(blit.getSeatType().equals(SeatType.COMMON.name())) {
+                        return commonBlitMapper.createFromEntity(commonBlitRepository.findOne(blit.getBlitId()));
+                    } else {
+                        return seatBlitMapper.createFromEntity(seatBlitRepository.findOne(blit.getBlitId()));
+                    }
+                }).map(excelService::blitMapForPdf)
+                .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
     }
 
 }

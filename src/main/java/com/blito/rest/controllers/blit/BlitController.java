@@ -3,8 +3,10 @@ package com.blito.rest.controllers.blit;
 import com.blito.annotations.Permission;
 import com.blito.enums.ApiBusinessName;
 import com.blito.models.CommonBlit;
+import com.blito.models.SeatBlit;
 import com.blito.models.User;
 import com.blito.rest.utility.HandleUtility;
+import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
 import com.blito.search.SearchViewModel;
@@ -12,6 +14,7 @@ import com.blito.security.SecurityContextHolder;
 import com.blito.services.blit.CommonBlitService;
 import com.blito.services.blit.SeatBlitService;
 import com.blito.view.ExcelView;
+import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -58,11 +61,20 @@ public class BlitController {
 				.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,request,response));
 	}
 
+	@JsonView(View.Blit.class)
 	@Permission(value = ApiBusinessName.USER)
 	@PostMapping("/search")
-	public ResponseEntity<Page<CommonBlitViewModel>> search(@RequestBody SearchViewModel<CommonBlit> searchViewModel,
+	public ResponseEntity<Page<CommonBlitViewModel>> commonBlitSearch(@RequestBody SearchViewModel<CommonBlit> searchViewModel,
 			Pageable pageable) {
-		return ResponseEntity.ok(commonBlitService.searchCommonBlits(searchViewModel, pageable));
+		return ResponseEntity.ok(commonBlitService.searchBlits(searchViewModel, pageable));
+	}
+
+	@JsonView(View.Blit.class)
+	@Permission(value = ApiBusinessName.USER)
+	@PostMapping("/seats/search")
+	public ResponseEntity<Page<SeatBlitViewModel>> seatBlitSearch(@RequestBody SearchViewModel<SeatBlit> searchViewModel,
+															Pageable pageable) {
+		return ResponseEntity.ok(seatBlitService.searchBlits(searchViewModel, pageable));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //
@@ -73,7 +85,12 @@ public class BlitController {
 	@Permission(value = ApiBusinessName.USER)
 	@PostMapping("/blits.xlsx")
 	public ModelAndView searchBlitsForExcel(@RequestBody SearchViewModel<CommonBlit> search) {
-		return new ModelAndView(new ExcelView(), commonBlitService.searchCommonBlitsForExcel(search));
-		
+		return new ModelAndView(new ExcelView(), commonBlitService.searchBlitsForExcel(search));
+	}
+
+	@Permission(value = ApiBusinessName.USER)
+	@PostMapping("/seats/blits.xlsx")
+	public ModelAndView searchSeatBlitsForExcel(@RequestBody SearchViewModel<SeatBlit> search) {
+		return new ModelAndView(new ExcelView(), seatBlitService.searchBlitsForExcel(search));
 	}
 }

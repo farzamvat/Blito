@@ -28,10 +28,10 @@ public class BlitType {
 	private String name;
 	
 	@OneToMany(mappedBy="blitType",targetEntity=BlitTypeSeat.class,orphanRemoval = true,cascade = CascadeType.ALL)
-	Set<BlitTypeSeat> blitTypeSeats;
+	private Set<BlitTypeSeat> blitTypeSeats;
 	
 	@OneToMany(mappedBy="blitType",targetEntity=CommonBlit.class)
-	Set<CommonBlit> commonBlits;
+	private Set<CommonBlit> commonBlits;
 	
 	@ManyToMany
 	private Set<Discount> discounts;

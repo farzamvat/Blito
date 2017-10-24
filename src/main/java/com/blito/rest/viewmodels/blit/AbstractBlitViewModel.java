@@ -46,7 +46,7 @@ public class AbstractBlitViewModel extends AbstractViewModel {
     @JsonView(View.SimpleBlit.class)
     @NotEmpty
     private String eventName;
-    @JsonView(View.Blit.class)
+    @JsonView(View.SimpleBlit.class)
     @NotEmpty
     private String eventDateAndTime;
     @JsonIgnore
@@ -70,10 +70,10 @@ public class AbstractBlitViewModel extends AbstractViewModel {
     @JsonView(View.Blit.class)
     @NotEmpty
     private String blitTypeName;
-    @JsonView(View.Blit.class)
+    @JsonView(View.SimpleBlit.class)
     @NotNull
     private SeatType seatType;
-    @JsonView(View.Blit.class)
+    @JsonView(View.SimpleBlit.class)
     private PaymentStatus paymentStatus;
     @JsonView(View.AdminBlit.class)
     private String paymentError;
@@ -90,7 +90,9 @@ public class AbstractBlitViewModel extends AbstractViewModel {
     private LocationViewModel location;
     @JsonView(View.Blit.class)
     private String eventPhotoId;
+    @JsonView(View.SimpleBlit.class)
     private String discountCode;
+    @JsonView(View.SimpleBlit.class)
     private Long primaryAmount;
 
     public static <E extends Blit> ResultVm createResultVmInCaseOfPaymentStatusError(E blit) {
