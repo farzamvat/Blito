@@ -187,7 +187,7 @@ public class EventService {
 		event = eventMapper.updateEntity(vmodel, event);
 		event.setImages(images);
 		event.setEventHost(eventHost);
-		return eventMapper.createFromEntity(event);
+		return eventMapper.createFromEntity(eventRepository.save(event));
 	}
 
 	@Transactional

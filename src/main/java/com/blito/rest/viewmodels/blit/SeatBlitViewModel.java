@@ -8,6 +8,7 @@ import com.blito.rest.viewmodels.View;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 public class SeatBlitViewModel extends AbstractBlitViewModel {
@@ -15,6 +16,7 @@ public class SeatBlitViewModel extends AbstractBlitViewModel {
     private Set<String> seatUids;
     @JsonView(View.SimpleBlit.class)
     private String seats;
+    @NotNull
     private Long eventDateId;
 
     public SeatBlitViewModel(ResultVm result) {

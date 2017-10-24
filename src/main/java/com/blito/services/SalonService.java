@@ -60,10 +60,9 @@ public class SalonService {
                 .toRight(new ExceptionViewModel(ResourceUtil.getMessage(Response.SALON_NOT_FOUND), 400));
     }
 
-    // TODO: 10/18/17 needs thinking 
     public void validateNoIndividualSeat(com.blito.common.Salon salon) {
         salon.getSections().stream().flatMap(section -> section.getRows().stream())
-                .forEach(row -> {
+                .forEach(row ->
                     row.getSeats().stream().sorted(Comparator.comparing(Seat::getName)).forEachOrdered(currentSeat -> {
                        Seat next = currentSeat.getNextSeat(row);
                        Seat prev = currentSeat.getPreviousSeat(row);
@@ -75,15 +74,15 @@ public class SalonService {
                            if(currentSeat.getState().equals(BlitTypeSeatState.AVAILABLE) && !prev.getState().equals(BlitTypeSeatState.AVAILABLE)) {
                                throw new SeatException(ResourceUtil.getMessage(Response.INDIVIDUAL_SEAT_ERROR));
                            }
-                       } else if(prev != null && next != null) {
+                       } else if(prev != null) {
                            if(currentSeat.getState().equals(BlitTypeSeatState.AVAILABLE) &&
                                    !next.getState().equals(BlitTypeSeatState.AVAILABLE) &&
                                    !prev.getState().equals(BlitTypeSeatState.AVAILABLE)) {
                                throw new SeatException(ResourceUtil.getMessage(Response.INDIVIDUAL_SEAT_ERROR));
                            }
                        }
-                    });
-                });
+                    })
+                );
     }
 
     public com.blito.common.Salon getSalonSchema(Salon salon) {
@@ -93,7 +92,7 @@ public class SalonService {
     }
 
     @Transactional(isolation = Isolation.READ_UNCOMMITTED)
-    public com.blito.common.Salon populateSeatInformationsInSalonSchemaByEventDateId(Long eventDateId) {
+    public com.blito.common.Salon populateSeatInformationInSalonSchemaByEventDateId(Long eventDateId) {
         return Option.of(eventDateRepository.findOne(eventDateId))
                 .map(eventDate -> {
                     Set<BlitTypeSeat> blitTypeSeats =
@@ -122,6 +121,7 @@ public class SalonService {
                                                         seat.setBlitTypeSeatId(blitTypeSeat.getBlitTypeSeatId());
                                                         seat.setReserveDate(blitTypeSeat.getReserveDate());
                                                         seat.setSoldDate(blitTypeSeat.getSoldDate());
+                                                        seat.setPrice(blitTypeSeat.getBlitType().getPrice());
                                                         seat.setState(Enum.valueOf(BlitTypeSeatState.class,blitTypeSeat.getState()));
                                                         Option.of(blitTypeSeat.getSeatBlit())
                                                                 .peek(seatBlit -> seat.setCustomerName(seatBlit.getCustomerName()));

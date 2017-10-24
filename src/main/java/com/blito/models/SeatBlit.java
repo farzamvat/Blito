@@ -1,9 +1,6 @@
 package com.blito.models;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,8 +8,9 @@ import java.util.Set;
 @PrimaryKeyJoinColumn(referencedColumnName="blitId")
 public class SeatBlit extends Blit {
 	@OneToMany(mappedBy="seatBlit",targetEntity=BlitTypeSeat.class,cascade = CascadeType.ALL)
-	Set<BlitTypeSeat> blitTypeSeats;
-	String seats;
+	private Set<BlitTypeSeat> blitTypeSeats;
+	@Column(columnDefinition="TEXT")
+	private String seats;
 
 	public SeatBlit() {
 		blitTypeSeats = new HashSet<>();

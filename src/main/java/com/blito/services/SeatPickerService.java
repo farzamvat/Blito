@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -52,8 +51,8 @@ public class SeatPickerService {
     public Set<BlitTypeSeat> updateBlitTypeSeats(BlitTypeViewModel viewModel,BlitType blitType) {
 
         Set<BlitTypeSeat> availableBlitTypeSeats =
-                blitTypeSeatRepository.findByBlitTypeBlitTypeIdAndStateNotIn(blitType.getBlitTypeId(),
-                Arrays.asList(BlitTypeSeatState.RESERVED.name(),BlitTypeSeatState.SOLD.name()));
+                blitTypeSeatRepository.findByBlitTypeBlitTypeIdAndStateIs(blitType.getBlitTypeId(),
+                BlitTypeSeatState.AVAILABLE.name());
         Set<Long> shouldDeleteBlitTypeSeats =
                 availableBlitTypeSeats.stream().filter(blitTypeSeat -> !viewModel.getSeatUids().contains(blitTypeSeat.getSeat().getSeatUid()))
                         .map(BlitTypeSeat::getBlitTypeSeatId)

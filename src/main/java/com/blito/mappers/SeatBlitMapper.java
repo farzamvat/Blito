@@ -43,7 +43,6 @@ public class SeatBlitMapper implements GenericMapper<SeatBlit,SeatBlitViewModel>
         blit.setSeatType(vmodel.getSeatType().name());
         blit.setBankGateway(vmodel.getBankGateway().name());
         blit.setAdditionalFields(vmodel.getAdditionalFields().stream().collect(Collectors.toMap(AdditionalField::getKey,AdditionalField::getValue)));
-        blit.setSeats(vmodel.getSeats());
         return blit;
     }
 

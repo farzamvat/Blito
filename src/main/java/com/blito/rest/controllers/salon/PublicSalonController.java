@@ -37,7 +37,7 @@ public class PublicSalonController {
     public CompletionStage<ResponseEntity<?>> getPopulatedSalonSchemaByEventDateId(@PathVariable Long eventDateId,
                                                                                    HttpServletRequest request,
                                                                                    HttpServletResponse response) {
-        return CompletableFuture.supplyAsync(() -> salonService.populateSeatInformationsInSalonSchemaByEventDateId(eventDateId))
+        return CompletableFuture.supplyAsync(() -> salonService.populateSeatInformationInSalonSchemaByEventDateId(eventDateId))
                 .handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,request,response));
     }
 }

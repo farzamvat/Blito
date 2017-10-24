@@ -61,7 +61,7 @@ public class CommonBlitService extends AbstractBlitService<CommonBlit,CommonBlit
         // TODO: 10/16/17 bug needs test
         commonBlitRepository.sumCountBlitByEmailAndBlitTypeId(commonBlit.getCustomerEmail(),
                 blitType.getBlitTypeId()).ifPresent(sumCountBlit -> {
-                    if(commonBlit.getCount().intValue() + sumCountBlit.intValue() > 10 ) {
+                    if(commonBlit.getCount() + sumCountBlit.intValue() > 10 ) {
                         throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_COUNT_EXCEEDS_LIMIT_TOTAL));
                     }
         });

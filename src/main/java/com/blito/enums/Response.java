@@ -92,7 +92,8 @@ public enum Response {
 	INDIVIDUAL_SEAT_ERROR("error.individual.seat"),
 	NO_SEATS_PICKED_ERROR("error.not.seat.picked"),
 	SELECTED_SEAT_IS_SOLD_OR_RESERVED("error.sold.reserved.selected.seats"),
-	SALON_NOT_FOUND("error.salon.not.found");
+	SALON_NOT_FOUND("error.salon.not.found"),
+	SEAT_INFORMATION("seat.info");
     
 
     private final String message;
