@@ -47,6 +47,7 @@ public final class Constants {
     public static final String FIELD_IMAGE_TYPE = "image";
 
     public static final String BASE_SALON_SCHEMAS = "/salon/schemas";
+    public static final String HOST_RESERVED_SEATS = "HOST_RESERVED_SEATS";
 
     private Constants()
     {}

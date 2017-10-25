@@ -1,5 +1,6 @@
 package com.blito.mappers;
 
+import com.blito.configs.Constants;
 import com.blito.enums.BlitTypeSeatState;
 import com.blito.enums.State;
 import com.blito.models.BlitType;
@@ -37,7 +38,13 @@ public class BlitTypeMapper implements GenericMapper<BlitType,BlitTypeViewModel>
 		blitType.setPrice(vmodel.getPrice());
 		blitType.setBlitTypeState(State.CLOSED.name());
 		Optional.ofNullable(vmodel.getSeatUids()).filter(seatUids -> !seatUids.isEmpty())
-				.ifPresent(seatUids -> blitType.setBlitTypeSeats(seatPickerService.createBlitTypeSeats(vmodel,blitType)));
+				.ifPresent(seatUids -> {
+					if(blitType.getName().equals(Constants.HOST_RESERVED_SEATS)) {
+						blitType.setBlitTypeSeats(seatPickerService.createBlitTypeSeats(vmodel,blitType,BlitTypeSeatState.NOT_AVAILABLE));
+					} else {
+						blitType.setBlitTypeSeats(seatPickerService.createBlitTypeSeats(vmodel,blitType,BlitTypeSeatState.AVAILABLE));
+					}
+				});
 		return blitType;
 	}
 
@@ -65,9 +72,16 @@ public class BlitTypeMapper implements GenericMapper<BlitType,BlitTypeViewModel>
 		blitType.setBlitTypeState(State.CLOSED.name());
 		Optional<Set<String>> seatUids = Optional.ofNullable(vmodel.getSeatUids()).filter(uids -> !uids.isEmpty());
 		if(seatUids.isPresent()) {
-			blitType.setBlitTypeSeats(seatPickerService.updateBlitTypeSeats(vmodel,blitType));
+			if(blitType.getName().equals(Constants.HOST_RESERVED_SEATS)) {
+				blitType.setBlitTypeSeats(seatPickerService.updateBlitTypeSeats(vmodel,blitType,BlitTypeSeatState.NOT_AVAILABLE));
+			} else {
+				blitType.setBlitTypeSeats(seatPickerService.updateBlitTypeSeats(vmodel,blitType,BlitTypeSeatState.AVAILABLE));
+			}
 		} else {
-			blitTypeSeatRepository.deleteByBlitTypeBlitTypeIdAndStateNotIn(blitType.getBlitTypeId(),Arrays.asList(BlitTypeSeatState.SOLD.name(),BlitTypeSeatState.RESERVED.name()));
+			blitTypeSeatRepository.deleteByBlitTypeBlitTypeIdAndStateNotIn(blitType.getBlitTypeId(),
+					Arrays.asList(BlitTypeSeatState.SOLD.name(),
+					BlitTypeSeatState.RESERVED.name(),
+					BlitTypeSeatState.GUEST_NOT_AVAILABLE.name()));
 		}
 		return blitType;
 	}
