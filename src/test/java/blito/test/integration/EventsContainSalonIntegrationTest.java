@@ -4,6 +4,7 @@ import com.blito.common.Salon;
 import com.blito.common.Seat;
 import com.blito.configs.Constants;
 import com.blito.enums.*;
+import com.blito.models.SeatBlit;
 import com.blito.payments.zarinpal.PaymentVerificationResponse;
 import com.blito.payments.zarinpal.client.ZarinpalClient;
 import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
@@ -11,7 +12,11 @@ import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 import com.blito.rest.viewmodels.payments.ZarinpalPayRequestResponseViewModel;
+import com.blito.search.Operation;
+import com.blito.search.SearchViewModel;
+import com.blito.search.Simple;
 import com.blito.services.PaymentRequestService;
+import com.blito.services.blit.CommonBlitService;
 import com.blito.services.blit.SeatBlitService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
@@ -24,10 +29,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -48,6 +50,8 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
     private ZarinpalClient zarinpalClient;
     @SpyBean
     private SeatBlitService seatBlitService;
+    @Autowired
+    private CommonBlitService commonBlitService;
 
     @Autowired
     public void setObjectMapper(ObjectMapper objectMapper) {
@@ -187,6 +191,22 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
                 .extract().body().as(SeatBlitViewModel.class);
         System.out.println(blitResponseViewModel.toString());
 
+        Map<String,Object> pdfMap = commonBlitService.getBlitPdf("123456");
+        System.out.println(pdfMap);
+
+        SearchViewModel<SeatBlit> seatBlitSearchViewModel = new SearchViewModel<>();
+        seatBlitSearchViewModel.setRestrictions(new ArrayList<>());
+        seatBlitSearchViewModel.getRestrictions().add(new Simple<>(Operation.eq,"blitTypeSeats-blitType-eventDate-eventDateId",eventViewModel.getEventDates().stream().findAny().get().getEventDateId()));
+        seatBlitSearchViewModel.getRestrictions().add(new Simple<>(Operation.neq,"paymentStatus","PENDING"));
+        seatBlitSearchViewModel.getRestrictions().add(new Simple<>(Operation.neq,"paymentStatus","ERROR"));
+        System.out.println(seatBlitService.searchBlitsForExcel(seatBlitSearchViewModel));
+
+//        SearchViewModel<CommonBlit> commonBlitSearchViewModel = new SearchViewModel<>();
+//        commonBlitSearchViewModel.setRestrictions(new ArrayList<>());
+//        commonBlitSearchViewModel.getRestrictions().add(new Simple<>(Operation.eq,"blitType-eventDate-eventDateId",eventViewModel.getEventDates().stream().findAny().get().getEventDateId()));
+//        commonBlitSearchViewModel.getRestrictions().add(new Simple<>(Operation.neq,"paymentStatus","PENDING"));
+//        commonBlitSearchViewModel.getRestrictions().add(new Simple<>(Operation.neq,"paymentStatus","ERROR"));
+//        System.out.println(commonBlitService.searchBlitsForExcel(commonBlitSearchViewModel));
     }
 
     public Salon getTestSalonSchema() {
