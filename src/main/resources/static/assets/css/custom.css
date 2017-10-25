@@ -3020,6 +3020,9 @@ table td{
 .eventPageHeader h3{
     color:rgb(252, 183, 49);
 }
+tspan{
+    pointer-events: none !important;
+}
 @media (max-width: 770px) {
     .navbar-header-backcolor{
         width: 172px !important;

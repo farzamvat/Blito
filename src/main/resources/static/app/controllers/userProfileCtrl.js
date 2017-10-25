@@ -20,7 +20,8 @@ angular.module('User')
                                              dateSetterService,
                                              imageServices,
                                              $window,
-                                             FileSaver) {
+                                             FileSaver,
+                                             seatmapService) {
         var userProfile = this;
 
         $scope.userData = userInfo.getData();
@@ -1899,5 +1900,13 @@ angular.module('User')
                 elements[i].addEventListener('invalid', invalidListener);
             }
         }, 1000);
+         $scope.salonSchema = seatmapService.getSvgSchema();
+        seatmapService.getSvgImage()
+            .then(function (data) {
+                $scope.salonImage = data.data;
+                console.log(data);
+            })
+
+
 
     });
