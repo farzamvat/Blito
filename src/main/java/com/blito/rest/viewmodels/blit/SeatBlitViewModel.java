@@ -50,4 +50,14 @@ public class SeatBlitViewModel extends AbstractBlitViewModel {
     public void setEventDateId(Long eventDateId) {
         this.eventDateId = eventDateId;
     }
+
+    @Override
+    public String toString() {
+        return "SeatBlitViewModel{" + super.toString() +
+                "seatUids=" + seatUids +
+                ", seats='" + seats + '\'' +
+                ", eventDateId=" + eventDateId +
+                ", result=" + result +
+                '}';
+    }
 }

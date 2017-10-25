@@ -203,7 +203,7 @@ public class ExcelServiceTest {
 		searchViewModel.setRestrictions(new ArrayList<>());
 		searchViewModel.getRestrictions().add(simple);
 
-		Map<String, Object> map = blitService.searchCommonBlitsForExcel(searchViewModel);
+		Map<String, Object> map = blitService.searchBlitsForExcel(searchViewModel);
 		
 		map.values();
 	}

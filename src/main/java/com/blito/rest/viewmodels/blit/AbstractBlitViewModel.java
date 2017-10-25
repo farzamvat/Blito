@@ -318,4 +318,36 @@ public class AbstractBlitViewModel extends AbstractViewModel {
     public void setBlitTypeId(Long blitTypeId) {
         this.blitTypeId = blitTypeId;
     }
+
+    @Override
+    public String toString() {
+        return "AbstractBlitViewModel{" +
+                "blitTypeId=" + blitTypeId +
+                ", blitId=" + blitId +
+                ", createdAt=" + createdAt +
+                ", count=" + count +
+                ", totalAmount=" + totalAmount +
+                ", trackCode='" + trackCode + '\'' +
+                ", eventName='" + eventName + '\'' +
+                ", eventDateAndTime='" + eventDateAndTime + '\'' +
+                ", userId=" + userId +
+                ", customerName='" + customerName + '\'' +
+                ", eventDate=" + eventDate +
+                ", customerMobileNumber='" + customerMobileNumber + '\'' +
+                ", customerEmail='" + customerEmail + '\'' +
+                ", eventAddress='" + eventAddress + '\'' +
+                ", blitTypeName='" + blitTypeName + '\'' +
+                ", seatType=" + seatType +
+                ", paymentStatus=" + paymentStatus +
+                ", paymentError='" + paymentError + '\'' +
+                ", samanBankToken='" + samanBankToken + '\'' +
+                ", refNum='" + refNum + '\'' +
+                ", bankGateway=" + bankGateway +
+                ", additionalFields=" + additionalFields +
+                ", location=" + location +
+                ", eventPhotoId='" + eventPhotoId + '\'' +
+                ", discountCode='" + discountCode + '\'' +
+                ", primaryAmount=" + primaryAmount +
+                '}';
+    }
 }

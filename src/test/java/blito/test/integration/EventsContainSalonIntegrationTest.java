@@ -12,6 +12,7 @@ import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 import com.blito.rest.viewmodels.payments.ZarinpalPayRequestResponseViewModel;
 import com.blito.services.PaymentRequestService;
+import com.blito.services.blit.SeatBlitService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
 import io.vavr.control.Try;
@@ -20,6 +21,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -44,6 +46,8 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
     private PaymentRequestService paymentRequestService;
     @MockBean
     private ZarinpalClient zarinpalClient;
+    @SpyBean
+    private SeatBlitService seatBlitService;
 
     @Autowired
     public void setObjectMapper(ObjectMapper objectMapper) {
@@ -125,6 +129,7 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
         zarinpalResponse.setZarinpalWebGatewayURL(zarinpalGatewayURL + "testToken");
         Mockito.when(paymentRequestService.createPurchaseRequest(Mockito.any())).thenReturn("testToken");
         Mockito.when(paymentRequestService.createZarinpalResponse("testToken")).thenReturn(zarinpalResponse);
+        Mockito.when(seatBlitService.generateTrackCode()).thenReturn("123456");
 
         PaymentVerificationResponse paymentVerificationResponse = new PaymentVerificationResponse();
         paymentVerificationResponse.setRefID(123123L);
@@ -175,9 +180,12 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
                 .when()
                 .get(getServerAddress() + "/api/blito/v1.0/zarinpal?Authority=testToken&Status=OK");
 
-        givenRestIntegration()
+        SeatBlitViewModel blitResponseViewModel = givenRestIntegration()
                 .when()
-                .get(getServerAddress() + "/api/blito/v1.0/salons/populated-schema/"+ eventViewModel.getEventDates().stream().findAny().get().getEventDateId());
+                .get(getServerAddress() + "/api/blito/v1.0/public/blits/123456")
+                .then().statusCode(200)
+                .extract().body().as(SeatBlitViewModel.class);
+        System.out.println(blitResponseViewModel.toString());
 
     }
 

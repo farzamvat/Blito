@@ -140,7 +140,7 @@ public abstract class AbstractBlitService <E extends Blit,V extends AbstractBlit
         return blitType;
     }
 
-    String generateTrackCode() {
+    public String generateTrackCode() {
         String trackCode = RandomUtil.generateTrackCode();
         while (blitRepository.findByTrackCode(trackCode).isPresent()) {
             return generateTrackCode();
