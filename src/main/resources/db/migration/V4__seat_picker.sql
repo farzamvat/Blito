@@ -19,5 +19,5 @@ ALTER TABLE `blito`.`seat`
 ALTER TABLE `blito`.`blit_type_seat`
   ADD COLUMN `reserve_date` DATETIME NULL AFTER `blit_id`;
 
-ALTER TABLE `BlitoTest`.`seat_blit` 
+ALTER TABLE `blito`.`seat_blit`
 CHANGE COLUMN `seats` `seats` TEXT NULL DEFAULT NULL ;
