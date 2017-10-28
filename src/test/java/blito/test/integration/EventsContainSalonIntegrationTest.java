@@ -187,6 +187,30 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
     }
 
     @Test
+    public void createEventWithoutSeats() {
+        EventHostViewModel eventHostViewModel = new EventHostViewModel();
+        eventHostViewModel.setHostName("NoSeatEventHost");
+        eventHostViewModel.setDescription("description");
+        eventHostViewModel.setHostType(HostType.INDIVIDUAL);
+        eventHostViewModel.setTelephone("88002116");
+
+        eventHostViewModel = givenRestIntegration()
+                .body(eventHostViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/event-hosts")
+                .then().statusCode(201).extract().body().as(EventHostViewModel.class);
+
+        EventViewModel eventViewModel = createSampleEventViewModel(eventHostViewModel,"NoSeatEvent");
+
+        EventViewModel responseViewModel = givenRestIntegration()
+                .body(eventViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/events")
+                .then().statusCode(201).extract().body().as(EventViewModel.class);
+
+    }
+
+    @Test
     public void createAndUpdateEventWithUnavailableSeats() {
         EventHostViewModel eventHostViewModel = new EventHostViewModel();
         eventHostViewModel.setHostName("salonWithUnvailableSeatsHostName");

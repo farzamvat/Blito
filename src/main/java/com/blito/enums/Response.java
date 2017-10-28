@@ -93,6 +93,7 @@ public enum Response {
 	NO_SEATS_PICKED_ERROR("error.not.seat.picked"),
 	SELECTED_SEAT_IS_SOLD_OR_RESERVED("error.sold.reserved.selected.seats"),
 	SALON_NOT_FOUND("error.salon.not.found"),
+	INCONSISTENT_SEAT_COUNTS("error.seat.count.not.conforming"),
 	SEAT_INFORMATION("seat.info");
     
 
