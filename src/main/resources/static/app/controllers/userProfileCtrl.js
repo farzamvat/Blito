@@ -20,7 +20,8 @@ angular.module('User')
                                              dateSetterService,
                                              imageServices,
                                              $window,
-                                             FileSaver) {
+                                             FileSaver,
+                                             seatmapService) {
         var userProfile = this;
 
         $scope.userData = userInfo.getData();
@@ -28,7 +29,7 @@ angular.module('User')
 
         $scope.updateSuccessNotif = false;
         $scope.updateFailNotif = false;
-        $scope.showTimeForms = [{blitTypes : [{}]}];
+        $scope.showTimeForms = [{blitTypes : []}];
         $scope.showTimeEditForms = [{blitTypes : [{}]}];
 
         $scope.showThumbnailProfile = false;
@@ -777,9 +778,9 @@ angular.module('User')
                 $scope.showTimeEditForms[i].blitTypes.splice(-1,1);
             }
         };
-        $scope.deleteFieldTicketType=function(i){
-            if( 1 < $scope.showTimeForms[i].blitTypes.length) {
-                $scope.showTimeForms[i].blitTypes.splice(-1,1);
+        $scope.deleteFieldTicketType=function(parentIndex,i){
+            if( 0 < $scope.showTimeForms[parentIndex].blitTypes.length) {
+                $scope.showTimeForms[parentIndex].blitTypes.splice(i,1);
             }
         };
         $scope.addFieldShowTime=function(){
@@ -942,7 +943,7 @@ angular.module('User')
                     angular.element(document.getElementsByClassName("gallerySix"))[0].src = '';
                     $scope.mapMarkerClickCheckEvent = true;
                     setInitMaps('makeEventSection');
-                    $scope.showTimeForms = [{blitTypes : [{}]}];
+                    $scope.showTimeForms = [{blitTypes : []}];
                     $timeout(function () {
                         dateSetterService.initDate("eventDateClass0");
                     }, 1000);
@@ -1021,6 +1022,7 @@ angular.module('User')
             $scope.getPlannersData(1);
             $scope.getPlannersDataList();
             $scope.getUserEvents(1);
+            $scope.getSalonList();
             $(angular.element(document.getElementById('toggleExchange'))).slideUp(300);
             $(angular.element(event.currentTarget).siblings()[0]).slideDown(300);
         };
@@ -1899,5 +1901,43 @@ angular.module('User')
                 elements[i].addEventListener('invalid', invalidListener);
             }
         }, 1000);
+        //==================================================== seatmap =======================
+
+        // $scope.salonSchema = seatmapService.getSvgSchema();
+        $scope.getSalonImage = function () {
+            seatmapService.getSvgImage()
+                .then(function (data) {
+                    $scope.salonImage = data.data;
+                    console.log(data);
+                });
+        };
+        $scope.getSalonList = function () {
+            seatmapService.getSeatmapList()
+                .then(function (data) {
+                    $scope.seatMapList = data.data.content;
+                    console.log($scope.seatMapList);
+                })
+                .catch(function (data) {
+                    console.log(data);
+                })
+        };
+        $scope.salonSchema = {sections : []};
+        $scope.salonSeatPicker = function (salonUID) {
+            document.getElementsByClassName("seatMapSpinner")[0].style.display = "inline";
+            seatmapService.getSalonData(salonUID)
+                .then(function (data) {
+                    document.getElementsByClassName("seatMapSpinner")[0].style.display = "none";
+                    console.log(data.data.schema);
+                    $scope.salonSchema = data.data.schema;
+                    $scope.getSalonImage();
+                    console.log(data);
+                })
+                .catch(function (data) {
+                    document.getElementsByClassName("seatMapSpinner")[0].style.display = "none";
+                    console.log(data);
+                })
+        }
+
+
 
     });

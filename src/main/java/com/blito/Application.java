@@ -32,7 +32,7 @@ public class Application {
 		initializer.insertAdminUserAndRoleAndOldBlitoUsers();
 		initializer.insertSalonSchemasAndDataIntoDB();
 	}
-	@GetMapping("/")
+	@GetMapping("/*")
 	public ModelAndView index() {
 		return new ModelAndView("index");
 	}
@@ -41,6 +41,11 @@ public class Application {
 	public ModelAndView notFound()
 	{
 		return new ModelAndView("index");
+	}
+
+	@GetMapping("/534250.txt")
+	public String samandehi() {
+		return "";
 	}
 
 	@GetMapping("/event-page/{eventLink}")
