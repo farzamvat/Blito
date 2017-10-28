@@ -12,6 +12,7 @@ import com.blito.rest.viewmodels.blit.ReservedBlitViewModel;
 import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.security.SecurityContextHolder;
+import com.blito.services.ExcelService;
 import com.blito.services.blit.CommonBlitService;
 import com.blito.services.blit.SeatBlitService;
 import com.blito.view.BlitReceiptPdfView;
@@ -41,6 +42,8 @@ public class BlitController {
 	private CommonBlitService commonBlitService;
 	@Autowired
 	private SeatBlitService seatBlitService;
+	@Autowired
+    private ExcelService excelService;
 
 	@Permission(value = ApiBusinessName.USER)
 	@PostMapping("/buy-request")
@@ -100,4 +103,6 @@ public class BlitController {
 	    return new ModelAndView(new BlitReceiptPdfView(), seatBlitService.generateReservedBlit(reservedBlitViewModel, user));
 
     }
+
+
 }
