@@ -9,6 +9,17 @@ angular.module('UiServices')
             return $http.get('../../assets/img/cropped.svg');
 
         };
+        seatMap.getSeatmapList = function () {
+            var queryParam = {
+                params : {page: 0, size: 100}
+            };
+            return $http.get(config.baseUrl+'/api/blito/v1.0/salons', queryParam);
+
+        };
+        seatMap.getSalonData = function (uid) {
+            return $http.get(config.baseUrl+'/api/blito/v1.0/salons/'+uid);
+
+        };
         seatMap.getSvgSchema = function (salonUid) {
             // return $http.get(config.baseUrl+'/api/blito/v1.0/login');
             return {

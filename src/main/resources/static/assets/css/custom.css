@@ -2658,6 +2658,11 @@ a>h5 {
     border-bottom: 1px solid #ddd;
 
 }
+#seatmapList {
+    width: 50% !important;
+    display: block;
+    margin: 20px auto;
+}
 .logobeautifier{
     position:absolute;
     height:30%;
