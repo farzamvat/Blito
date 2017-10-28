@@ -13,11 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.util.Optional;
 
 @Component
 public class SalonMapper implements GenericMapper<Salon,SalonViewModel> {
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private SectionMapper sectionMapper;
     @Override
     public Salon createFromViewModel(SalonViewModel viewModel) {
         return null;
@@ -31,6 +34,9 @@ public class SalonMapper implements GenericMapper<Salon,SalonViewModel> {
         salonViewModel.setLongitude(entity.getLongitude());
         salonViewModel.setName(entity.getName());
         salonViewModel.setSalonUid(entity.getSalonUid());
+        salonViewModel.setSalonSvg(entity.getSalonSvg());
+        Optional.ofNullable(entity.getSections())
+                .ifPresent(sections -> salonViewModel.setSections(sectionMapper.createFromEntities(sections)));
         return salonViewModel;
     }
 
@@ -46,5 +52,12 @@ public class SalonMapper implements GenericMapper<Salon,SalonViewModel> {
     @Override
     public Salon updateEntity(SalonViewModel viewModel, Salon entity) {
         return null;
+    }
+    public Salon updateSalonAndItsSectionsSvg(SalonViewModel viewModel,Salon entity) {
+        entity.setSalonSvg(viewModel.getSalonSvg());
+        viewModel.getSections().forEach(sectionViewModel ->
+            entity.getSections().stream().filter(section -> section.getSectionUid().equals(sectionViewModel.getSectionUid()))
+                    .findAny().ifPresent(section -> section.setSectionSvg(sectionViewModel.getSectionSvg())));
+        return entity;
     }
 }

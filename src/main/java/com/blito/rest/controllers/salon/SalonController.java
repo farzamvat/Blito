@@ -57,4 +57,6 @@ public class SalonController {
         return CompletableFuture.supplyAsync(() -> salonService.populateSeatInformationInSalonSchemaByEventDateId(eventDateId))
                 .handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,request,response));
     }
+
+
 }

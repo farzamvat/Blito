@@ -3,10 +3,7 @@ package com.blito.services;
 import com.blito.common.Salon;
 import com.blito.configs.Constants;
 import com.blito.enums.ApiBusinessName;
-import com.blito.models.Permission;
-import com.blito.models.Role;
-import com.blito.models.Seat;
-import com.blito.models.User;
+import com.blito.models.*;
 import com.blito.repositories.PermissionRepository;
 import com.blito.repositories.RoleRepository;
 import com.blito.repositories.SalonRepository;
@@ -57,7 +54,7 @@ public class Initiallizer {
 			});
 			permissionRepository.save(permissions);
 		} else {
-			List<String> permStrs = allPermission.stream().map(permission -> permission.getApiBusinessName()).collect(Collectors.toList());
+			List<String> permStrs = allPermission.stream().map(Permission::getApiBusinessName).collect(Collectors.toList());
 
 			List<Permission> finalPermissions = Arrays.asList(ApiBusinessName.values())
 					.stream()
@@ -79,7 +76,6 @@ public class Initiallizer {
 						if(!salonRepository.findByPlanPath(file.getName()).isPresent()) {
 							Try.of(() -> objectMapper.readValue(file,Salon.class))
 									.onSuccess(salon -> salonSchemaToSalonEntity(salon,file.getName()));
-
 						}
 					}));
 	}
@@ -98,6 +94,7 @@ public class Initiallizer {
 				row.getSeats().forEach(schemaSeat ->
 					salon.addSeat(new Seat(schemaSeat.getName(),schemaSeat.getUid(),row.getName(),row.getUid(),section.getName(),section.getUid()))
 				)));
+		salonSchema.getSections().forEach(section -> salon.getSections().add(new Section(section.getName(),section.getUid())));
 		return salonRepository.save(salon);
 	}
 
@@ -106,28 +103,28 @@ public class Initiallizer {
 		Optional<User> adminResult = userRepository.findByEmail(admin_username);
 
 		Role adminRole = roleRepository.findByName("ADMIN").map(r -> {
-			r.setPermissions(permissionRepository.findAll().stream().collect(Collectors.toSet()));
+			r.setPermissions(new HashSet<>(permissionRepository.findAll()));
 			return roleRepository.save(r);
 		}).orElseGet(() -> {
 			Role r = new Role();
 			r.setName("ADMIN");
-			r.setPermissions(permissionRepository.findAll().stream().collect(Collectors.toSet()));
+			r.setPermissions(new HashSet<>(permissionRepository.findAll()));
 			return roleRepository.save(r);
 		});
 
 		Role userRole = roleRepository.findByName("USER").map(r->{
 			r.setPermissions(permissionRepository
 					.findByApiBusinessNameIn(
-							Arrays.asList(ApiBusinessName.values()).stream().filter(p->p.name().equals("USER")).map(p -> p.name()).collect(Collectors.toSet()))
-					.stream().collect(Collectors.toSet()));
+							new HashSet<>(Arrays.stream(ApiBusinessName.values()).filter(p->p.name().equals("USER")).map(ApiBusinessName::name).collect(Collectors.toSet())))
+					);
 			return roleRepository.save(r);
 		}).orElseGet(() -> {
 			Role r = new Role();
 			r.setName("USER");
 			r.setPermissions(permissionRepository
 					.findByApiBusinessNameIn(
-							Arrays.asList(ApiBusinessName.values()).stream().filter(p->p.name().equals("USER")).map(p -> p.name()).collect(Collectors.toSet()))
-					.stream().collect(Collectors.toSet()));
+						new HashSet<>(Arrays.stream(ApiBusinessName.values()).filter(p->p.name().equals("USER")).map(ApiBusinessName::name).collect(Collectors.toSet())))
+					);
 			return roleRepository.save(r);
 		});
 
