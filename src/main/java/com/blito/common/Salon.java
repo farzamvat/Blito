@@ -22,7 +22,7 @@ public class Salon extends AbstractBaseSalonEntity implements SalonComponent<Sal
     private Double latitude;
     @JsonView(View.SalonSchema.class)
     private Integer numberOfSections;
-    @JsonView(View.IncludingCustomerNameSalonSchema.class)
+    @JsonView(View.SalonSchema.class)
     private List<Section> sections;
 
     public String getAddress() {

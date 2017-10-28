@@ -19,7 +19,7 @@ public class Section extends AbstractBaseSalonEntity implements SalonComponent<S
     private SalonComponent<Salon> salonComponent;
     @JsonView(View.SalonSchema.class)
     private Integer numberOfRows;
-    @JsonView(View.IncludingCustomerNameSalonSchema.class)
+    @JsonView(View.SalonSchema.class)
     private List<Row> rows;
 
 

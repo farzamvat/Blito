@@ -25,7 +25,7 @@ public class Row extends AbstractBaseSalonEntity implements SalonComponent<Row> 
     private Integer firstSeatStartingNumber;
     @JsonView(View.SalonSchema.class)
     private Integer lastSeatEndingNumber;
-    @JsonView(View.IncludingCustomerNameSalonSchema.class)
+    @JsonView(View.SalonSchema.class)
     private List<Seat> seats;
 
     public Row(String uid, String name, SalonComponent<Section> sectionSalonComponent, Integer numberOfSeats, Integer firstSeatStartingNumber, Integer lastSeatEndingNumber,Direction direction) {
