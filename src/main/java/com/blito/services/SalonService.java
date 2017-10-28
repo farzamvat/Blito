@@ -10,6 +10,7 @@ import com.blito.mappers.SalonMapper;
 import com.blito.models.BlitTypeSeat;
 import com.blito.models.Salon;
 import com.blito.models.Section;
+import com.blito.models.User;
 import com.blito.repositories.EventDateRepository;
 import com.blito.repositories.SalonRepository;
 import com.blito.resourceUtil.ResourceUtil;
