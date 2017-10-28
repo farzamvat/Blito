@@ -39,6 +39,10 @@ public class BlitReceiptPdfView extends AbstractPdfView {
 		String eventPhotoId = (String) model.get("event photo");
 		int count = (int) model.get("count");
 		String address = (String) model.get("event address");
+		String seat = "no seats";
+		if (model.containsKey("seats")) {
+			seat = (String) model.get("seats");
+		}
 
 		document.setPageSize(PageSize.A4);
 
@@ -292,6 +296,28 @@ public class BlitReceiptPdfView extends AbstractPdfView {
 		blitTypeCell.setPaddingBottom(8);
 		table.addCell(blitTypeCell);
 		//////////////////////////////////////////////////////////////
+
+        if (!seat.equals("no seats")) {
+            Phrase seatsPhrase = new Phrase();
+            seatsPhrase.add(new Chunk("\ue805", fontello));
+            seatsPhrase.add(new Chunk("    صندلی: ", boldFont));
+            seatsPhrase.add(new Chunk(seat, textFont));
+
+            PdfPCell seatsCell = new PdfPCell(seatsPhrase);
+            seatsCell.setColspan(2);
+            seatsCell.setBorder(Rectangle.NO_BORDER);
+            seatsCell.enableBorderSide(Rectangle.TOP);
+            seatsCell.setBorderColor(Color.GRAY);
+            seatsCell.setBorderWidth(0.5f);
+            seatsCell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
+            seatsCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            seatsCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            seatsCell.setPaddingTop(10);
+            seatsCell.setPaddingBottom(10);
+            table.addCell(seatsCell);
+        }
+
+        /////////////////////////////////////////////////////////////
 
 		Phrase addressPhrase = new Phrase();
 		addressPhrase.add(new Chunk("\ue805", fontello));

@@ -87,8 +87,8 @@ public class EventService {
 	private boolean validateConsistencyOfSeatCounts(EventDateViewModel eventDateViewModel, String salonUid) {
 	    Salon salon = salonRepository.findBySalonUid(salonUid).orElseThrow(() -> new FileNotFoundException(ResourceUtil.getMessage(Response.SALON_NOT_FOUND)));
 	    return eventDateViewModel.getBlitTypes().stream()
-                .filter(blitType -> !blitType.getSeatUids().isEmpty() && blitType.getSeatUids()!=null)
-                .flatMap(blitType -> blitType.getSeatUids().stream()).count() != salon.getSeats().size();
+                .filter(blitType ->blitType.getSeatUids()!=null && !blitType.getSeatUids().isEmpty())
+                .flatMap(blitType -> blitType.getSeatUids().stream()).count() == salon.getSeats().size();
 
     }
 
@@ -98,7 +98,7 @@ public class EventService {
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.VALIDATION));
 		}
 
-		if(vmodel.getSalonUid()!=null && vmodel.getEventDates().stream().anyMatch(eventDateViewModel -> validateConsistencyOfSeatCounts(eventDateViewModel, vmodel.getSalonUid()))){
+		if(vmodel.getSalonUid()!=null && vmodel.getEventDates().stream().anyMatch(eventDateViewModel -> !validateConsistencyOfSeatCounts(eventDateViewModel, vmodel.getSalonUid()))){
 		    throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_SEAT_COUNTS));
         }
 

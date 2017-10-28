@@ -1,15 +1,15 @@
 package com.blito.services.blit;
 
-import com.blito.enums.BankGateway;
-import com.blito.enums.BlitTypeSeatState;
-import com.blito.enums.PaymentStatus;
-import com.blito.enums.Response;
+import com.blito.configs.Constants;
+import com.blito.enums.*;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.exceptions.SeatException;
 import com.blito.models.*;
 import com.blito.repositories.BlitTypeSeatRepository;
+import com.blito.repositories.EventDateRepository;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.viewmodels.blit.ReservedBlitViewModel;
 import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
 import com.blito.rest.viewmodels.blit.SeatErrorViewModel;
 import com.blito.rest.viewmodels.payments.PaymentRequestViewModel;
@@ -30,9 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -52,11 +50,12 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
     private SearchService searchService;
     private ExcelService excelService;
 
+    private EventDateRepository eventDateRepository;
+
     @Autowired
     public void setSalonService(SalonService salonService) {
         this.salonService = salonService;
     }
-
     @Autowired
     public void setBlitTypeSeatRepository(BlitTypeSeatRepository blitTypeSeatRepository) {
         this.blitTypeSeatRepository = blitTypeSeatRepository;
@@ -68,6 +67,11 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
     @Autowired
     public void setExcelService(ExcelService excelService) {
         this.excelService = excelService;
+    }
+
+    @Autowired
+    public void setEventDateRepository(EventDateRepository eventDateRepository) {
+        this.eventDateRepository = eventDateRepository;
     }
 
     private void validateSeatBlitForBuy(Set<BlitTypeSeat> blitTypeSeats) {
@@ -240,5 +244,51 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         });
         attachedUser.addBlits(seatBlit);
         return seatBlit;
+    }
+
+    @Transactional
+    public Map<String, Object> generateReservedBlit(ReservedBlitViewModel reservedBlitViewModel, User user) {
+        EventDate eventDate  = eventDateRepository.findByEventDateId(reservedBlitViewModel.getEventDateId())
+                .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
+        if(eventDate.getEvent().getEventHost().getUser().getUserId()!= user.getUserId()) {
+            throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
+        }
+        BlitTypeSeat blitTypeSeat = blitTypeSeatRepository.findBySeatSeatUidAndBlitTypeEventDateEventDateIdIs(
+                reservedBlitViewModel.getSeatUid(),
+                reservedBlitViewModel.getEventDateId()).orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.Blit_Type_SEAT_NOT_FOUND)));
+
+        if (!blitTypeSeat.getState().equals(BlitTypeSeatState.NOT_AVAILABLE.name())) {
+            throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_RESERVED_FOR_HOST));
+        }
+
+        SeatBlit seatBlit = new SeatBlit();
+        seatBlit.setCount(1);
+        seatBlit.setTotalAmount(0L);
+        seatBlit.setUser(user);
+        seatBlit.setTrackCode(generateTrackCode());
+        seatBlit.setEventName(eventDate.getEvent().getEventName());
+        seatBlit.setEventDateAndTime(reservedBlitViewModel.getEventDateAndTime());
+        seatBlit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+        seatBlit.setEventDate(eventDate.getDate());
+        seatBlit.setCustomerName(eventDate.getEvent().getEventHost().getHostName());
+        seatBlit.setCustomerMobileNumber(eventDate.getEvent().getEventHost().getTelephone());
+        seatBlit.setCustomerEmail(user.getEmail());
+        seatBlit.setEventAddress(eventDate.getEvent().getAddress());
+        seatBlit.setBlitTypeName(Constants.HOST_RESERVED_SEATS);
+        seatBlit.setSeatType(SeatType.SEAT_BLIT.name());
+        seatBlit.setPaymentStatus(PaymentStatus.FREE.name());
+        seatBlit.setPrimaryAmount(0L);
+        seatBlit.setBankGateway(BankGateway.NONE.name());
+        seatBlit.setBlitTypeSeats(new HashSet<>(Collections.singletonList(blitTypeSeat)));
+
+        blitTypeSeat.setState(BlitTypeSeatState.GUEST_NOT_AVAILABLE.name());
+        blitTypeSeat.setSeatBlit(seatBlit);
+        seatBlit.setSeats((seatBlit.getSeats() == null ? "" : seatBlit.getSeats() + " /") +
+                String.format(ResourceUtil.getMessage(Response.SEAT_INFORMATION),
+                        blitTypeSeat.getSeat().getSectionName(),
+                        blitTypeSeat.getSeat().getRowName(),
+                        blitTypeSeat.getSeat().getSeatName()));
+
+        return excelService.blitMapForPdf(seatBlitMapper.createFromEntity(seatBlitRepository.save(seatBlit)));
     }
 }

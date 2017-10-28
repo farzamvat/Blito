@@ -8,11 +8,13 @@ import com.blito.models.User;
 import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
+import com.blito.rest.viewmodels.blit.ReservedBlitViewModel;
 import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.blit.CommonBlitService;
 import com.blito.services.blit.SeatBlitService;
+import com.blito.view.BlitReceiptPdfView;
 import com.blito.view.ExcelView;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiOperation;
@@ -23,10 +25,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -93,4 +92,12 @@ public class BlitController {
 	public ModelAndView searchSeatBlitsForExcel(@RequestBody SearchViewModel<SeatBlit> search) {
 		return new ModelAndView(new ExcelView(), seatBlitService.searchBlitsForExcel(search));
 	}
+
+    @Permission(value = ApiBusinessName.USER)
+    @PostMapping("/generate-reserved-blit")
+    public ModelAndView generateReservedBlit(@Validated @RequestBody ReservedBlitViewModel reservedBlitViewModel) {
+	    User user = SecurityContextHolder.currentUser();
+	    return new ModelAndView(new BlitReceiptPdfView(), seatBlitService.generateReservedBlit(reservedBlitViewModel, user));
+
+    }
 }

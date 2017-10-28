@@ -94,6 +94,8 @@ public enum Response {
 	SELECTED_SEAT_IS_SOLD_OR_RESERVED("error.sold.reserved.selected.seats"),
 	SALON_NOT_FOUND("error.salon.not.found"),
 	INCONSISTENT_SEAT_COUNTS("error.seat.count.not.conforming"),
+    Blit_Type_SEAT_NOT_FOUND("error.blit.type.set.not.found"),
+    NOT_RESERVED_FOR_HOST("error.not.reserved.seat.for.host"),
 	SEAT_INFORMATION("seat.info");
     
 
