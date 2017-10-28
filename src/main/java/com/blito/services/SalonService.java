@@ -9,11 +9,14 @@ import com.blito.exceptions.SeatException;
 import com.blito.mappers.SalonMapper;
 import com.blito.models.BlitTypeSeat;
 import com.blito.models.Salon;
+import com.blito.models.Section;
+import com.blito.models.User;
 import com.blito.repositories.EventDateRepository;
 import com.blito.repositories.SalonRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.rest.viewmodels.salon.SalonViewModel;
+import com.blito.rest.viewmodels.salon.SectionViewModel;
 import com.blito.services.blit.SeatBlitService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.control.Either;
@@ -58,6 +61,25 @@ public class SalonService {
     public Either<ExceptionViewModel,SalonViewModel> getSalonByUid(String salonUid) {
         return Option.ofOptional(salonRepository.findBySalonUid(salonUid).map(salonMapper::createFromEntityWithSchemaAndSvg))
                 .toRight(new ExceptionViewModel(ResourceUtil.getMessage(Response.SALON_NOT_FOUND), 400));
+    }
+
+    @Transactional
+    public Either<ExceptionViewModel,SalonViewModel> updateSalonAndItsSectionsSvg(SalonViewModel salonViewModel) {
+        if(salonViewModel.getSalonSvg().isEmpty() || salonViewModel.getSections().stream().anyMatch(sectionViewModel -> sectionViewModel.getSectionSvg().isEmpty())) {
+            return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.SALON_OR_SECTIONS_SVG_CANNOT_BE_EMPTY),400));
+        }
+        Optional<Salon> salonOptional = salonRepository.findBySalonUid(salonViewModel.getSalonUid());
+        if(!salonOptional.isPresent()) {
+            return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.SALON_NOT_FOUND), 400));
+        } else {
+            return Option.ofOptional(salonOptional).filter(salon -> salon.getSections().size() == salonViewModel.getSections().size())
+                    .filter(salon ->
+                            salon.getSections().stream().map(Section::getSectionUid).allMatch(uid ->
+                                    salonViewModel.getSections().stream().map(SectionViewModel::getSectionUid).collect(Collectors.toList()).contains(uid)))
+                    .map(salon -> salonMapper.updateSalonAndItsSectionsSvg(salonViewModel,salon))
+                    .map(salonMapper::createFromEntity)
+                    .toRight(new ExceptionViewModel(ResourceUtil.getMessage(Response.INCONSISTENT_SECTION_UIDS),400));
+        }
     }
 
     public void validateNoIndividualSeat(com.blito.common.Salon salon) {

@@ -7,15 +7,20 @@ import com.blito.common.Salon;
 import com.blito.rest.viewmodels.View;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class SalonViewModel implements Serializable {
     public SalonViewModel() {
+        sections = new HashSet<>();
     }
 
     @JsonView(View.SimpleSalon.class)
+    @NotBlank
     private String salonUid;
     @JsonView(View.SimpleSalon.class)
     private String name;
@@ -28,7 +33,18 @@ public class SalonViewModel implements Serializable {
     @JsonView(View.SalonSchema.class)
     private Salon schema;
     @JsonView(View.SimpleSalon.class)
+    @NotBlank
     private String salonSvg;
+    @JsonView(View.SalonSchema.class)
+    private Set<SectionViewModel> sections;
+
+    public Set<SectionViewModel> getSections() {
+        return sections;
+    }
+
+    public void setSections(Set<SectionViewModel> sections) {
+        this.sections = sections;
+    }
 
     public String getSalonSvg() {
         return salonSvg;

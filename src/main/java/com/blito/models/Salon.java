@@ -15,15 +15,27 @@ public class Salon {
 	private String address;
 	private String planPath;
 	@OneToMany(mappedBy="salon",targetEntity=Seat.class,cascade = CascadeType.ALL)
-	Set<Seat> seats;
+	private Set<Seat> seats;
 	@OneToMany(mappedBy="salon",targetEntity=EventDate.class,cascade = CascadeType.ALL)
-	Set<EventDate> eventDates;
+	private Set<EventDate> eventDates;
+	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+	@JoinColumn(name = "salonId")
+	private Set<Section> sections;
 	@Column(columnDefinition="TEXT")
 	private String salonSvg;
 
 	public Salon() {
 		seats = new HashSet<>();
 		eventDates = new HashSet<>();
+		sections = new HashSet<>();
+	}
+
+	public Set<Section> getSections() {
+		return sections;
+	}
+
+	public void setSections(Set<Section> sections) {
+		this.sections = sections;
 	}
 
 	public String getSalonSvg() {
