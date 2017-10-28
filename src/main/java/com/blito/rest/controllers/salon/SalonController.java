@@ -57,6 +57,7 @@ public class SalonController {
                 .handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,request,response));
     }
 
+    @JsonView(View.SalonSchema.class)
     @Permission(value = ApiBusinessName.ADMIN)
     @PutMapping("/upload-svg")
     public CompletionStage<ResponseEntity<?>> updateSalonAndSectionsSvg(@RequestBody @Validated SalonViewModel salonViewModel,
