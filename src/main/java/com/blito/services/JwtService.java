@@ -1,5 +1,6 @@
 package com.blito.services;
 
+import com.blito.configs.Constants;
 import com.blito.enums.Response;
 import com.blito.exceptions.UnauthorizedException;
 import com.blito.resourceUtil.ResourceUtil;
@@ -32,9 +33,9 @@ public class JwtService {
 		tokenModel.setRefreshtokenExpireTime(expire + refreshTokenMilliSeconds);
 
 		return CompletableFuture.supplyAsync(() -> {
-			return generateJwtToken(email, expire + accessTokenMilliSeconds);
+			return generateJwtToken(email, expire + accessTokenMilliSeconds, Constants.ACCESS_TOKEN_AUDIENCE);
 		}).thenCombine(CompletableFuture.supplyAsync(() -> {
-			return generateJwtToken(email, expire + refreshTokenMilliSeconds);
+			return generateJwtToken(email, expire + refreshTokenMilliSeconds, Constants.REFRESH_TOKEN_AUDIENCE);
 		}), (accessToken, refreshToken) -> {
 			tokenModel.setAccessToken(accessToken);
 			tokenModel.setRefreshToken(refreshToken);
@@ -49,7 +50,7 @@ public class JwtService {
 		tokenModel.setAccessTokenExipreTime(expire + accessTokenMilliSeconds);
 		
 		return CompletableFuture.supplyAsync(() -> {
-			return generateJwtToken(email, expire + accessTokenMilliSeconds); 
+			return generateJwtToken(email, expire + accessTokenMilliSeconds,Constants.ACCESS_TOKEN_AUDIENCE);
 		}).thenApply(accessToken -> {
 			tokenModel.setAccessToken(accessToken);
 			return tokenModel;
@@ -60,16 +61,18 @@ public class JwtService {
 	{
 		try {
 			Claims claims = Jwts.parser().setSigningKey(tokenSecret).parseClaimsJws(refresh_token).getBody();
-			return claims.getSubject();
+			if(claims.getAudience().equals(Constants.REFRESH_TOKEN_AUDIENCE))
+				return claims.getSubject();
+			else throw new UnauthorizedException(ResourceUtil.getMessage(Response.ACCESS_DENIED));
 		} catch(Exception e)
 		{
 			throw new UnauthorizedException(ResourceUtil.getMessage(Response.ACCESS_DENIED));
 		}
 	}
 
-	private String generateJwtToken(String email, Long expireDate) {
+	private String generateJwtToken(String email, Long expireDate,String audience) {
 		String generatedToken = Jwts.builder().setSubject(email)
-				.signWith(SignatureAlgorithm.HS256, tokenSecret).setExpiration(new Date(expireDate)).compact();
+				.signWith(SignatureAlgorithm.HS256, tokenSecret).setAudience(audience).setExpiration(new Date(expireDate)).compact();
 		return generatedToken;
 	}
 }

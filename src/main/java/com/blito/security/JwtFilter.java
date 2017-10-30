@@ -1,7 +1,11 @@
 package com.blito.security;
 
-import java.io.IOException;
-import java.util.Optional;
+import com.blito.configs.Constants;
+import com.blito.models.User;
+import com.blito.repositories.UserRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -9,14 +13,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.filter.GenericFilterBean;
-
-import com.blito.models.User;
-import com.blito.repositories.UserRepository;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import java.io.IOException;
+import java.util.Optional;
 
 public class JwtFilter extends GenericFilterBean {
 	
@@ -43,6 +41,10 @@ public class JwtFilter extends GenericFilterBean {
 		final String token = authHeader.substring(7);
 		try {
 			final Claims claims = Jwts.parser().setSigningKey(tokenSecret).parseClaimsJws(token).getBody();
+			if(claims.getAudience().equals(Constants.REFRESH_TOKEN_AUDIENCE)) {
+				servletResponse.setStatus(401);
+				return;
+			}
 			Optional<User> currentUser = userRepository.findByEmail(claims.getSubject());
 			if (currentUser.isPresent()) {
 				SecurityContextHolder.setCurrentUser(currentUser.get());

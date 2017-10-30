@@ -1,27 +1,5 @@
 package com.blito.rest.controllers.account;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
-import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ValidationException;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.async.DeferredResult;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.blito.annotations.Permission;
 import com.blito.configs.Constants;
 import com.blito.enums.ApiBusinessName;
@@ -34,19 +12,29 @@ import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.View;
-import com.blito.rest.viewmodels.account.ChangePasswordViewModel;
-import com.blito.rest.viewmodels.account.LoginViewModel;
-import com.blito.rest.viewmodels.account.RegisterVm;
-import com.blito.rest.viewmodels.account.TokenModel;
-import com.blito.rest.viewmodels.account.UserViewModel;
+import com.blito.rest.viewmodels.account.*;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.UserAccountService;
 import com.fasterxml.jackson.annotation.JsonView;
-
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ValidationException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("${api.base.url}")
@@ -202,14 +190,10 @@ public class AccountController {
 			@ApiResponse(code = 401, message = "UnauthorizedException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
 	@GetMapping("/refresh")
-	public DeferredResult<ResponseEntity<TokenModel>> getAccessToken(@RequestParam String refresh_token) {
-		DeferredResult<ResponseEntity<TokenModel>> deferred = new DeferredResult<>();
-		return userAccountService.getNewAccessToken(refresh_token).thenApply(result -> {
-			deferred.setResult(ResponseEntity.ok(result));
-			return deferred;
-		}).exceptionally(throwable -> {
-			deferred.setErrorResult(throwable.getCause());
-			return deferred;
-		}).join();
+	public CompletionStage<ResponseEntity<?>> getAccessToken(@RequestParam String refresh_token,
+																	  HttpServletRequest request,
+																	  HttpServletResponse response) {
+		return CompletableFuture.supplyAsync(() -> userAccountService.getNewAccessToken(refresh_token))
+				.handle((tokenModel,throwable) -> HandleUtility.generateResponseResult(() -> tokenModel,throwable,request,response));
 	}
 }
