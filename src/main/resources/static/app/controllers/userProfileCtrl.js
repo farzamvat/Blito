@@ -1908,14 +1908,12 @@ angular.module('User')
             seatmapService.getSvgImage()
                 .then(function (data) {
                     $scope.salonImage = data.data;
-                    console.log(data);
                 });
         };
         $scope.getSalonList = function () {
             seatmapService.getSeatmapList()
                 .then(function (data) {
                     $scope.seatMapList = data.data.content;
-                    console.log($scope.seatMapList);
                 })
                 .catch(function (data) {
                     console.log(data);
@@ -1930,7 +1928,6 @@ angular.module('User')
                     document.getElementsByClassName("seatMapSpinner")[0].style.display = "none";
                     console.log(data.data.schema);
                     $scope.salonSchema = data.data.schema;
-                    console.log(data);
                 })
                 .catch(function (data) {
                     document.getElementsByClassName("seatMapSpinner")[0].style.display = "none";

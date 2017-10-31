@@ -26,11 +26,20 @@ angular.module('blitoDirectives')
                     section.rows.forEach(function (row) {
                         rowName = parseInt(row.name);
                         row.seats.forEach(function (seat) {
-                            seatMapData.push({ id : seat.uid, info :"kir", value : rowName});
-                            console.log(seatMapData);
+                            seatMapData.push({ id : seat.uid, info : seat.name, value : rowName});
                         });
                     });
                 });
+                var pickedSeats = [];
+                var clickFunction = function (e) {
+                    if (pickedSeats.indexOf(e.domTarget.dd) === -1) {
+                        pickedSeats.push(e.domTarget.dd);
+                        document.getElementById(e.domTarget.dd).style.fill = "green";
+                    } else {
+                        pickedSeats.splice(pickedSeats.indexOf(e.domTarget.dd), 1);
+                        document.getElementById(e.domTarget.dd).style.fill = "#64b5f6";
+                    }
+                };
                 var palette = anychart.palettes.rangeColors();
                 palette.items(["#64b5f6"]);
                 palette.count(directiveInputs[0].sections[0].numberOfRows);
@@ -42,45 +51,41 @@ angular.module('blitoDirectives')
                             rowSeats.push(seat);
                         }
                     });
-                    console.log(rowSeats);
-                    chart.choropleth(rowSeats).name(i);
+                    chart.choropleth(rowSeats)
+                        .name(i)
+                        .listen('click', clickFunction)
                 }
-
-                var seatMapSeries = chart.choropleth();
-                seatMapSeries.data(seatMapData);
-
-                var pickedSeats = [];
-                var clickFunction = function (e) {
-                        if (pickedSeats.indexOf(e.domTarget.dd) === -1) {
-                            pickedSeats.push(e.domTarget.dd);
-                            document.getElementById(e.domTarget.dd).style.fill = "green";
-                        } else {
-                            pickedSeats.splice(pickedSeats.indexOf(e.domTarget.dd), 1);
-                            document.getElementById(e.domTarget.dd).style.fill = "#64b5f6";
-                        }
-                };
-                seatMapSeries.listen('click', clickFunction);
-
-                seatMapSeries.labels(true);
-                var labels = seatMapSeries.labels();
+                chart.labels(true);
+                var labels = chart.labels();
                 // enable labels and adjust them
                 // labels.enabled(true);
                 // labels.useHtml(false);
-                seatMapSeries.labels({fontSize: 10});
+                chart.labels({fontSize: 10});
                 // seatMapSeries.labels().fontColor("white");
-                labels.format("1");
+                labels.format("{%info}");
                 // labels.offsetY(5);
 
                 chart.title(directiveInputs[0].name.toString());
                 chart.contextMenu(false);
 
-                chart.legend()
-                    .enabled(true)
-                    // items source mode categories
+               var legend = chart.legend();
+                legend.enabled(true)
                     .position('right')
-                    .itemsLayout('vertical');
-
-
+                    .itemsLayout('vertical')
+                    .removeAllListeners()
+                ;
+                legend.listen("click", function(e) {
+                    directiveInputs[0].sections[0].rows[e.itemIndex].seats.forEach(function (seat) {
+                        if(pickedSeats.indexOf(seat.uid) === -1){
+                            document.getElementById(seat.uid).style.fill = "green";
+                            pickedSeats.push(seat.uid);
+                        } else {
+                            document.getElementById(seat.uid).style.fill = "#64b5f6";
+                            pickedSeats.splice(pickedSeats.indexOf(seat.uid), 1);
+                        }
+                    });
+                    console.log(pickedSeats);
+                });
                 chart.container("seatMaperChart");
                 chart.draw();
                 document.getElementsByClassName("anychart-credits")[0].style.display = "none";
