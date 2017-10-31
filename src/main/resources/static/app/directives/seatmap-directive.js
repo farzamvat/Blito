@@ -39,6 +39,7 @@ angular.module('blitoDirectives')
                         pickedSeats.splice(pickedSeats.indexOf(e.domTarget.dd), 1);
                         document.getElementById(e.domTarget.dd).style.fill = "#64b5f6";
                     }
+                    console.log(pickedSeats);
                 };
                 var palette = anychart.palettes.rangeColors();
                 palette.items(["#64b5f6"]);
@@ -68,23 +69,37 @@ angular.module('blitoDirectives')
                 chart.title(directiveInputs[0].name.toString());
                 chart.contextMenu(false);
 
-               var legend = chart.legend();
+                var legend = chart.legend();
                 legend.enabled(true)
                     .position('right')
                     .itemsLayout('vertical')
                     .removeAllListeners()
                 ;
+                var rowCheck = function (rowIndex) {
+                    for(var i = 0; i < directiveInputs[0].sections[0].rows[rowIndex].seats.length; i++) {
+                        if(pickedSeats.indexOf(directiveInputs[0].sections[0].rows[rowIndex].seats[i].uid) === -1) {
+                            return false;
+                        }
+                    }
+                    return true;
+                };
                 legend.listen("click", function(e) {
-                    directiveInputs[0].sections[0].rows[e.itemIndex].seats.forEach(function (seat) {
-                        if(pickedSeats.indexOf(seat.uid) === -1){
-                            document.getElementById(seat.uid).style.fill = "green";
-                            pickedSeats.push(seat.uid);
-                        } else {
+
+                    if(rowCheck(e.itemIndex)) {
+                        directiveInputs[0].sections[0].rows[e.itemIndex].seats.forEach(function (seat) {
                             document.getElementById(seat.uid).style.fill = "#64b5f6";
                             pickedSeats.splice(pickedSeats.indexOf(seat.uid), 1);
-                        }
-                    });
+                        })
+                    } else {
+                        directiveInputs[0].sections[0].rows[e.itemIndex].seats.forEach(function (seat) {
+                            if(pickedSeats.indexOf(seat.uid) === -1){
+                                document.getElementById(seat.uid).style.fill = "green";
+                                pickedSeats.push(seat.uid);
+                            }
+                        })
+                    }
                     console.log(pickedSeats);
+
                 });
                 chart.container("seatMaperChart");
                 chart.draw();
