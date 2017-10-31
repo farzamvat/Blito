@@ -1923,13 +1923,13 @@ angular.module('User')
         };
         $scope.salonSchema = {sections : []};
         $scope.salonSeatPicker = function (salonUID) {
+            $scope.getSalonImage();
             document.getElementsByClassName("seatMapSpinner")[0].style.display = "inline";
             seatmapService.getSalonData(salonUID)
                 .then(function (data) {
                     document.getElementsByClassName("seatMapSpinner")[0].style.display = "none";
                     console.log(data.data.schema);
                     $scope.salonSchema = data.data.schema;
-                    $scope.getSalonImage();
                     console.log(data);
                 })
                 .catch(function (data) {
