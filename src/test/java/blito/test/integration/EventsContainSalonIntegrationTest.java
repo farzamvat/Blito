@@ -4,6 +4,8 @@ import com.blito.common.Salon;
 import com.blito.common.Seat;
 import com.blito.configs.Constants;
 import com.blito.enums.*;
+import com.blito.models.SeatBlit;
+import com.blito.models.User;
 import com.blito.payments.zarinpal.PaymentVerificationResponse;
 import com.blito.payments.zarinpal.client.ZarinpalClient;
 import com.blito.repositories.UserRepository;
@@ -13,7 +15,12 @@ import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 import com.blito.rest.viewmodels.payments.ZarinpalPayRequestResponseViewModel;
+import com.blito.search.Operation;
+import com.blito.search.SearchViewModel;
+import com.blito.search.Simple;
 import com.blito.services.PaymentRequestService;
+import com.blito.services.blit.CommonBlitService;
+import com.blito.services.blit.SeatBlitService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
 import io.vavr.control.Try;
@@ -48,6 +55,8 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
     private SeatBlitService seatBlitService;
     @Autowired
     private CommonBlitService commonBlitService;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     public void setObjectMapper(ObjectMapper objectMapper) {
