@@ -15,11 +15,11 @@ public class Notification {
     private String notificationType;
 
     @ManyToOne(targetEntity=User.class, optional=false)
-    @JoinColumn(name="userId")
+    @JoinColumn(name="receiverId")
     User receiver;
 
     @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name="userId")
+    @JoinColumn(name="senderId")
     User sender;
 
 
