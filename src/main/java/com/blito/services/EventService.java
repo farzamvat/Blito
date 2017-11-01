@@ -80,7 +80,7 @@ public class EventService {
 
 	private boolean validateDisjointSeatsInBlitTypeViewModel(Set<BlitTypeViewModel> blitTypes) {
 		return (blitTypes.stream().flatMap(blitType -> blitType.getSeatUids().stream()).distinct().count()
-				== blitTypes.stream().flatMap(blitType -> blitType.getSeatUids().stream()).count())
+				== blitTypes.stream().mapToLong(blitType -> blitType.getSeatUids().size()).sum())
 				&& blitTypes.stream().filter(blitType -> !blitType.getSeatUids().isEmpty()).allMatch(blitType -> blitType.getSeatUids().size() == blitType.getCapacity());
 	}
 
@@ -88,7 +88,7 @@ public class EventService {
 	    Salon salon = salonRepository.findBySalonUid(salonUid).orElseThrow(() -> new FileNotFoundException(ResourceUtil.getMessage(Response.SALON_NOT_FOUND)));
 	    return eventDateViewModel.getBlitTypes().stream()
                 .filter(blitType ->blitType.getSeatUids()!=null && !blitType.getSeatUids().isEmpty())
-                .flatMap(blitType -> blitType.getSeatUids().stream()).count() == salon.getSeats().size();
+                .mapToLong(blitType->blitType.getSeatUids().size()).sum() == salon.getSeats().size();
 
     }
 
@@ -156,13 +156,13 @@ public class EventService {
 	}
 
 	public EventFlatViewModel getFlatEventById(long eventId) {
-		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId).map(e -> e)
+		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 		return eventFlatMapper.createFromEntity(event);
 	}
 
 	public EventViewModel getEventById(long eventId) {
-		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId).map(e -> e)
+		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 
 		return eventMapper.createFromEntity(event);
