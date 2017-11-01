@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -15,6 +16,7 @@ import java.util.Set;
 
 public interface BlitTypeSeatRepository extends JpaRepository<BlitTypeSeat,Long> {
     Set<BlitTypeSeat> findBySeatSeatUidInAndBlitTypeEventDateEventDateId(Set<String> uids,Long eventDateId);
+    Optional<BlitTypeSeat> findBySeatSeatUidAndBlitTypeEventDateEventDateIdIs(String seatUid, Long eventDateId);
     @Transactional
     void deleteByBlitTypeBlitTypeIdAndStateNotIn(Long blitTypeId,List<String> states);
     Set<BlitTypeSeat> findByBlitTypeBlitTypeIdAndStateIs(Long blitTypeId, String state);

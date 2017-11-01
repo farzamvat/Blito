@@ -23,6 +23,7 @@ public class BlitReceiptPdfView extends AbstractPdfView {
 	private String fontPath = "src/main/resources/static/assets/fonts/website-fonts/IranSans.ttf";
 	private String boldFontPath = "src/main/resources/static/assets/fonts/website-fonts/IranSans Bold.ttf";
 	private String fontelloPath = "src/main/resources/static/assets/fonts/website-fonts/fontello.ttf";
+	private String iconicPath = "src/main/resources/static/assets/fonts/website-fonts/IconicFonts.ttf";
 	private String imagePath = "src/main/resources/static/assets/img/logoTicket2.jpg";
 
 	@Override
@@ -39,6 +40,10 @@ public class BlitReceiptPdfView extends AbstractPdfView {
 		String eventPhotoId = (String) model.get("event photo");
 		int count = (int) model.get("count");
 		String address = (String) model.get("event address");
+		String seat = "no seats";
+		if (model.containsKey("seats")) {
+			seat = (String) model.get("seats");
+		}
 
 		document.setPageSize(PageSize.A4);
 
@@ -52,11 +57,11 @@ public class BlitReceiptPdfView extends AbstractPdfView {
 
 		document.add(image);
 		
-		String base64 = new Scanner(new File("images/" + eventPhotoId + ".txt")).useDelimiter("\\Z").next();
-		base64 = base64.split(",")[1];
-
-		byte[] decoded = Base64.decodeBase64(base64);
-		Image eventImage = Image.getInstance(decoded);
+//		String base64 = new Scanner(new File("images/" + eventPhotoId + ".txt")).useDelimiter("\\Z").next();
+//		base64 = base64.split(",")[1];
+//
+//		byte[] decoded = Base64.decodeBase64(base64);
+//		Image eventImage = Image.getInstance(decoded);
 
 		BaseFont textBf = BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 		Font textFont = new Font(textBf, 12);
@@ -67,6 +72,9 @@ public class BlitReceiptPdfView extends AbstractPdfView {
 		BaseFont fontelloBf = BaseFont.createFont(fontelloPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 		Font fontello = new Font(fontelloBf, 10);
 		fontello.setColor(Color.GRAY);
+        BaseFont iconicBf = BaseFont.createFont(iconicPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        Font iconic = new Font(iconicBf, 11);
+        iconic.setColor(Color.GRAY);
 		
 		
 //		////////////////////////////////////////////////////////////////
@@ -293,6 +301,31 @@ public class BlitReceiptPdfView extends AbstractPdfView {
 		table.addCell(blitTypeCell);
 		//////////////////////////////////////////////////////////////
 
+        if (!seat.equals("no seats")) {
+            Phrase seatsPhrase = new Phrase();
+            seatsPhrase.add(new Chunk("\uf1c4", iconic));
+            seatsPhrase.add(new Chunk("    جایگاه: ", boldFont));
+            seatsPhrase.add(new Chunk(seat, textFont));
+
+
+            PdfPCell seatsCell = new PdfPCell(seatsPhrase);
+            seatsCell.setColspan(2);
+            seatsCell.setBorder(Rectangle.NO_BORDER);
+            seatsCell.enableBorderSide(Rectangle.TOP);
+            seatsCell.setBorderColor(Color.LIGHT_GRAY);
+            seatsCell.setBorderWidth(0.5f);
+            seatsCell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
+            seatsCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            seatsCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            seatsCell.setPaddingTop(10);
+            seatsCell.setPaddingBottom(10);
+            seatsCell.setLeading(0,2);
+            seatsCell.setPaddingBottom(23);
+            table.addCell(seatsCell);
+        }
+
+        /////////////////////////////////////////////////////////////
+
 		Phrase addressPhrase = new Phrase();
 		addressPhrase.add(new Chunk("\ue805", fontello));
 		addressPhrase.add(new Chunk("    آدرس: ", boldFont));
@@ -302,7 +335,7 @@ public class BlitReceiptPdfView extends AbstractPdfView {
 		addressCell.setColspan(2);
 		addressCell.setBorder(Rectangle.NO_BORDER);
 		addressCell.enableBorderSide(Rectangle.TOP);
-		addressCell.setBorderColor(Color.GRAY);
+		addressCell.setBorderColor(Color.LIGHT_GRAY);
 		addressCell.setBorderWidth(0.5f);
 		addressCell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
 		addressCell.setHorizontalAlignment(Element.ALIGN_LEFT);

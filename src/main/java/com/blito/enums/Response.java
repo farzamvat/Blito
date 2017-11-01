@@ -95,6 +95,9 @@ public enum Response {
 	SALON_NOT_FOUND("error.salon.not.found"),
 	INCONSISTENT_SECTION_UIDS("error.inconsistent.section.uid"),
 	SALON_OR_SECTIONS_SVG_CANNOT_BE_EMPTY("error.salon.sections.svg.empty"),
+	INCONSISTENT_SEAT_COUNTS("error.seat.count.not.conforming"),
+    Blit_Type_SEAT_NOT_FOUND("error.blit.type.set.not.found"),
+    NOT_RESERVED_FOR_HOST("error.not.reserved.seat.for.host"),
 	SEAT_INFORMATION("seat.info");
     
 

@@ -150,20 +150,21 @@ public class ExcelService {
 		return model;
 	}
 	
-//	public Map<String, Object> testPdfData(){
-//		Map<String, Object> model = new HashMap<String, Object>();
-//
-//		model.put("event name", "کنسرت نیلز");
-//		model.put("customer name", "هستی سحابی");
-//		model.put("customer mobile", "۰۹۱۲۷۹۷۶۸۳۷");
-//		model.put("customer email", "hasti.sahabi@gmail.com");
-//		model.put("event date", "شنبه ۱۱ اردیبهشت، ساعت ۲۱:۰۰");
-//		model.put("track code", "92322178");
-//		model.put("blit type", "VIP");
-//		model.put("count", 5);
-//		model.put("event address", "میدان الف، خیابان چهارم، موسسه‌ی ققنوس");
-//		model.put("event photo", "17e9678e-168a-4dd1-840f-11111d900b94");
-//		return model;
-//	}
+	public Map<String, Object> testPdfData(){
+		Map<String, Object> model = new HashMap<String, Object>();
+
+		model.put("event name", "کنسرت نیلز");
+		model.put("customer name", "هستی سحابی");
+		model.put("customer mobile", "۰۹۱۲۷۹۷۶۸۳۷");
+		model.put("customer email", "hasti.sahabi@gmail.com");
+		model.put("event date", "شنبه ۱۱ اردیبهشت، ساعت ۲۱:۰۰");
+		model.put("track code", "92322178");
+		model.put("blit type", "VIP");
+		model.put("count", 5);
+		model.put("event address", "میدان الف، خیابان چهارم، موسسه‌ی ققنوس");
+		model.put("event photo", "17e9678e-168a-4dd1-840f-11111d900b94");
+		model.put("seats", "جایگاه:A ردیف ۱، صندلی ۱/جایگاه:A ردیف ۱، صندلی ۱/جایگاه:A ردیف ۱، صندلی ۱/جایگاه:A ردیف ۱، صندلی ۱/جایگاه:A ردیف ۱، صندلی ۱/جایگاه:A ردیف ۱، صندلی ۱/جایگاه:A ردیف ۱، صندلی ۱/جایگاه:A ردیف ۱، صندلی ۱/جایگاه:A ردیف ۱، صندلی ۱/جایگاه:A ردیف ۱، صندلی ۱");
+		return model;
+	}
 	
 }

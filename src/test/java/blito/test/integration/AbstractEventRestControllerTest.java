@@ -1,5 +1,6 @@
 package blito.test.integration;
 
+import com.blito.configs.Constants;
 import com.blito.enums.EventType;
 import com.blito.enums.HostType;
 import com.blito.enums.OperatorState;
@@ -75,7 +76,7 @@ public class AbstractEventRestControllerTest extends AbstractRestControllerTest 
 
         blitTypeViewModel3.setCapacity(20);
         blitTypeViewModel3.setFree(true);
-        blitTypeViewModel3.setName("FREE");
+        blitTypeViewModel3.setName(Constants.HOST_RESERVED_SEATS);
 
         eventDateViewModel.setBlitTypes(new HashSet<>(Arrays.asList(blitTypeViewModel1, blitTypeViewModel2,blitTypeViewModel3)));
         eventViewModel.setEventDates(new HashSet<>(Arrays.asList(eventDateViewModel)));

@@ -3,6 +3,7 @@ package com.blito.rest.controllers.blit;
 import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
+import com.blito.services.ExcelService;
 import com.blito.services.blit.CommonBlitService;
 import com.blito.services.blit.SeatBlitService;
 import com.blito.view.BlitReceiptPdfView;
@@ -25,6 +26,8 @@ public class PublicBlitController {
 	private CommonBlitService commonBlitService;
 	@Autowired
 	private SeatBlitService seatBlitService;
+	@Autowired
+	private ExcelService excelService;
 	
 	@GetMapping("/{trackCode}")
 	public ResponseEntity<?> getBlit(@PathVariable String trackCode)
@@ -49,5 +52,10 @@ public class PublicBlitController {
 	@GetMapping("/{trackCode}/blit.pdf")
 	public ModelAndView getBlitPdfReciept(@PathVariable String trackCode) {
 		return new ModelAndView(new BlitReceiptPdfView(), commonBlitService.getBlitPdf(trackCode));
+	}
+
+	@GetMapping("testpdf.pdf")
+	public ModelAndView testPdf(){
+		return new ModelAndView(new BlitReceiptPdfView(), excelService.testPdfData());
 	}
 }

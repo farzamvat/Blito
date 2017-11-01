@@ -1,5 +1,6 @@
 package com.blito.services;
 
+import com.blito.configs.Constants;
 import com.blito.enums.BlitTypeSeatState;
 import com.blito.exceptions.NotFoundException;
 import com.blito.models.BlitType;
@@ -37,22 +38,24 @@ public class SeatPickerService {
     }
 
     @Transactional
-    public Set<BlitTypeSeat> createBlitTypeSeats(BlitTypeViewModel viewModel, BlitType blitType) {
+    public Set<BlitTypeSeat> createBlitTypeSeats(BlitTypeViewModel viewModel, BlitType blitType,BlitTypeSeatState blitTypeSeatState) {
         List<Seat> seats = seatRepository.findBySeatUidIn(new ArrayList<>(viewModel.getSeatUids()));
         blitType.setCapacity(seats.size());
         if(seats.size() == 0 || seats.size() != viewModel.getSeatUids().size()) {
             throw new NotFoundException("seats not found");
         }
-        return seats.stream().map(seat -> new BlitTypeSeat(BlitTypeSeatState.AVAILABLE.name(),seat,blitType))
+        return seats.stream().map(seat -> new BlitTypeSeat(blitTypeSeatState.name(),seat,blitType))
                 .collect(Collectors.toSet());
     }
 
     @Transactional
-    public Set<BlitTypeSeat> updateBlitTypeSeats(BlitTypeViewModel viewModel,BlitType blitType) {
+    public Set<BlitTypeSeat> updateBlitTypeSeats(BlitTypeViewModel viewModel,BlitType blitType,BlitTypeSeatState blitTypeSeatState) {
 
         Set<BlitTypeSeat> availableBlitTypeSeats =
-                blitTypeSeatRepository.findByBlitTypeBlitTypeIdAndStateIs(blitType.getBlitTypeId(),
-                BlitTypeSeatState.AVAILABLE.name());
+                blitType.getName().equals(Constants.HOST_RESERVED_SEATS) ? blitTypeSeatRepository.findByBlitTypeBlitTypeIdAndStateIs(blitType.getBlitTypeId(),
+                        BlitTypeSeatState.NOT_AVAILABLE.name()) :
+                        blitTypeSeatRepository.findByBlitTypeBlitTypeIdAndStateIs(blitType.getBlitTypeId(),
+                                BlitTypeSeatState.AVAILABLE.name());
         Set<Long> shouldDeleteBlitTypeSeats =
                 availableBlitTypeSeats.stream().filter(blitTypeSeat -> !viewModel.getSeatUids().contains(blitTypeSeat.getSeat().getSeatUid()))
                         .map(BlitTypeSeat::getBlitTypeSeatId)
@@ -64,7 +67,7 @@ public class SeatPickerService {
                         .filter(uid ->
                                 !availableBlitTypeSeats.stream().map(blitTypeSeat -> blitTypeSeat.getSeat().getSeatUid()).collect(Collectors.toSet()).contains(uid))
                         .collect(Collectors.toList())
-        ).stream().map(seat -> new BlitTypeSeat(BlitTypeSeatState.AVAILABLE.name(),seat,blitType))
+        ).stream().map(seat -> new BlitTypeSeat(blitTypeSeatState.name(),seat,blitType))
                 .forEach(blitTypeSeat -> blitType.getBlitTypeSeats().add(blitTypeSeat));
         blitType.setCapacity(blitType.getBlitTypeSeats().size());
         return blitType.getBlitTypeSeats();
