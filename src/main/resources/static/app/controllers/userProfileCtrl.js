@@ -1920,6 +1920,7 @@ angular.module('User')
         };
         $scope.salonSchema = {sections : []};
         $scope.salonSeatPicker = function (salonUID, seatMapIndex) {
+            document.getElementsByClassName("seatMapSection"+seatMapIndex)[0].style.display = "block";
             $scope.getSalonImage();
             document.getElementsByClassName("seatMapSpinner")[0].style.display = "inline";
             seatmapService.getSalonData(salonUID)
@@ -1928,6 +1929,8 @@ angular.module('User')
                     console.log(data.data.schema);
                     $scope.salonSchema = data.data.schema;
                     $scope.$broadcast('newSVG', [$scope.salonSchema, $scope.salonImage, seatMapIndex]);
+                    document.getElementsByClassName("generateSeatMap"+seatMapIndex)[0].style.display = "none";
+                    document.getElementsByClassName("resetSeatMap"+seatMapIndex)[0].style.display = "block";
                 })
                 .catch(function (data) {
                     document.getElementsByClassName("seatMapSpinner")[0].style.display = "none";
@@ -1952,13 +1955,17 @@ angular.module('User')
             $scope.$broadcast('blitTypeSubmit', $scope.seatBlitUids);
 
         };
+
         $scope.blitTypeCreateValidation = false;
         $scope.$on("blitIdsChanged",function (event ,data) {
-            $scope.blitTypeCreateValidation = data[0];
+            $scope.blitTypeCreateValidation = data[0].length;
             $scope.$apply();
-            $scope.seatBlitUids = data[1];
+            $scope.seatBlitUids = data[0];
+            $scope.sansPickedSeatMap = data[1];
             console.log($scope.seatBlitUids);
-        })
+            console.log($scope.sansPickedSeatMap);
+
+        });
 
 
     });

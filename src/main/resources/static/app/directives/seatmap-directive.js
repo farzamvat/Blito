@@ -7,13 +7,8 @@ angular.module('blitoDirectives')
             link : seatMapDraw,
             controller : function ($scope) {
                 var seatMapController = this;
-                seatMapController.validationCheckBlitType = function (blitIds) {
-                    if(blitIds.length === 0) {
-                        $scope.$emit("blitIdsChanged", [false, blitIds]);
-
-                    } else {
-                        $scope.$emit("blitIdsChanged", [true, blitIds]);
-                    }
+                seatMapController.validationCheckBlitType = function (blitIds, svgIndex) {
+                        $scope.$emit("blitIdsChanged", [blitIds, svgIndex]);
                 };
                 $scope.$on('blitTypeSubmit', function (event, data) {
                     $scope.resetPickedSeats(data);
@@ -63,7 +58,7 @@ angular.module('blitoDirectives')
                         pickedSeats.splice(pickedSeats.indexOf(e.domTarget.dd), 1);
                         $('#'+"seatMaperChart"+svgIndex+' '+'#'+e.domTarget.dd).css('fill', '#64b5f6');
                     }
-                    ctrl.validationCheckBlitType(pickedSeats);
+                    ctrl.validationCheckBlitType(pickedSeats, svgIndex);
                 };
                 var palette = anychart.palettes.rangeColors();
                 palette.items(["#64b5f6"]);
@@ -121,7 +116,7 @@ angular.module('blitoDirectives')
                 });
                 chart.container("seatMaperChart"+svgIndex);
                 chart.draw();
-                document.getElementsByClassName("anychart-credits")[0].style.display = "none";
+                document.getElementsByClassName("anychart-credits")[svgIndex].style.display = "none";
 
                 scope.resetPickedSeats = function (seatUids) {
                     pickedSeats = [];
