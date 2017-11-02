@@ -1,0 +1,55 @@
+<div id="seatsPickedModel"  class="modal fade" role="dialog" >
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center">ثبت صندلی‌های انتخاب شده</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-inline textAlignRight" name="blitTypeForm">
+                    <fieldset>
+                        <div class="form-group col-xs-12 formRegGroup">
+                            <div class="col-xs-5 col-sm-4 floatRight text-center">
+                                <label class="registerLabel" for="blitType" >نوع بلیت :</label>
+                            </div>
+                            <div class="col-xs-7 col-sm-8 floatRight ">
+                                <select id="blitType" name="blitType" required ng-model="seatsPickedForm.isFree" class="form-control dropDownInput" ng-options="o.v as o.n for o in [{n : 'رایگان', v: true}, {n : 'پولی', v: false}]">
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-12 formRegGroup marginTop30">
+                            <div class="col-xs-5 col-sm-4 floatRight text-center">
+                                <label class="registerLabel" for="blitName" > نام بلیت :</label>
+                            </div>
+                            <div class="col-xs-7 col-sm-8 floatRight ">
+                                <input height="60" id="blitName" name="blitName" ng-model="seatsPickedForm.name" type="text"  class="form-group registerInput" required>
+                            </div>
+                        </div>
+                        <div ng-if="seatsPickedForm.isFree === false" class="form-group col-xs-12 formRegGroup marginTop30">
+                            <div class="col-xs-5 col-sm-4 floatRight text-center">
+                                <label class="registerLabel" for="blitPrice" > قیمت بلیت :</label>
+                            </div>
+                            <div class="col-xs-7 col-sm-8 floatRight ">
+                                <input height="60" id="blitPrice" name="price" ng-model="seatsPickedForm.price" type="number"  class="form-group registerInput" required>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                    <div class="control-group marginTop30">
+                        <div id="successSeatBlitType" class="dispNone text-center alert alert-success col-xs-12" >
+                            <strong>نوع بلیت با موفقیت ثبت شد !</strong>
+                        </div>
+                        <div class="controls">
+                            <button  ng-disabled="blitTypeForm.$invalid || blitTypeSubmited" ng-click="seatsPickedBlitTypeSubmit(seatsPickedForm)" class="btn btn-success btn-lg btnLogin center-block">ثبت نوع بلیت <i id="seatsPickedBlitType" class="fa fa-spinner fa-spin dispNone"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer ">
+                <button type="button" class="btn btn-default center-block" data-dismiss="modal">بستن</button>
+            </div>
+        </div>
+    </div>
+</div>
+

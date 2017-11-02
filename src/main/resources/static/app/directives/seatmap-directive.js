@@ -5,6 +5,25 @@ angular.module('blitoDirectives')
     .directive('seatMap',  function () {
         return {
             link : seatMapDraw,
+            controller : function ($scope) {
+                var seatMapController = this;
+                seatMapController.validationCheckBlitType = function (blitIds) {
+                    if(blitIds.length === 0) {
+                        $scope.$emit("blitIdsChanged", [false, blitIds]);
+
+                    } else {
+                        $scope.$emit("blitIdsChanged", [true, blitIds]);
+                    }
+                };
+                $scope.$on('blitTypeSubmit', function (event, data) {
+                    $scope.resetPickedSeats(data);
+                });
+                $scope.$on('newSVG', function (event, data) {
+                    console.log(data);
+                    $scope.drawSVG(data[0], data[1], data[2]);
+                });
+
+            },
             restrict : 'E',
             scope : {
                 salonSchema : '=',
@@ -12,9 +31,14 @@ angular.module('blitoDirectives')
             }
         };
         function seatMapDraw(scope, element, attr, ctrl) {
-            scope.$watchGroup(['salonSchema', 'salonImage'], function (directiveInputs) {
-                if(document.getElementById("seatMaperChart").childNodes[0]) {
-                    var svgElement = document.getElementById("seatMaperChart");
+            scope.drawSVG = function (svgData, svgImage, svgIndex) {
+                var directiveInputs = [];
+                directiveInputs[0] = svgData;
+                directiveInputs[1] = svgImage;
+                console.log(directiveInputs);
+
+                if(document.getElementById("seatMaperChart"+svgIndex).childNodes[0]) {
+                    var svgElement = document.getElementById("seatMaperChart"+svgIndex);
                     svgElement.removeChild(svgElement.childNodes[0]);
                 }
                 var chart = anychart.seatMap();
@@ -31,15 +55,15 @@ angular.module('blitoDirectives')
                     });
                 });
                 var pickedSeats = [];
-                var clickFunction = function (e) {
+                var seatClickFunction = function (e) {
                     if (pickedSeats.indexOf(e.domTarget.dd) === -1) {
                         pickedSeats.push(e.domTarget.dd);
-                        document.getElementById(e.domTarget.dd).style.fill = "green";
+                        $('#'+"seatMaperChart"+svgIndex+' '+'#'+e.domTarget.dd).css('fill', 'green');
                     } else {
                         pickedSeats.splice(pickedSeats.indexOf(e.domTarget.dd), 1);
-                        document.getElementById(e.domTarget.dd).style.fill = "#64b5f6";
+                        $('#'+"seatMaperChart"+svgIndex+' '+'#'+e.domTarget.dd).css('fill', '#64b5f6');
                     }
-                    console.log(pickedSeats);
+                    ctrl.validationCheckBlitType(pickedSeats);
                 };
                 var palette = anychart.palettes.rangeColors();
                 palette.items(["#64b5f6"]);
@@ -54,17 +78,13 @@ angular.module('blitoDirectives')
                     });
                     chart.choropleth(rowSeats)
                         .name(i)
-                        .listen('click', clickFunction)
+                        .listen('click', seatClickFunction)
                 }
                 chart.labels(true);
                 var labels = chart.labels();
-                // enable labels and adjust them
-                // labels.enabled(true);
-                // labels.useHtml(false);
+
                 chart.labels({fontSize: 10});
-                // seatMapSeries.labels().fontColor("white");
                 labels.format("{%info}");
-                // labels.offsetY(5);
 
                 chart.title(directiveInputs[0].name.toString());
                 chart.contextMenu(false);
@@ -84,27 +104,32 @@ angular.module('blitoDirectives')
                     return true;
                 };
                 legend.listen("click", function(e) {
-
                     if(rowCheck(e.itemIndex)) {
                         directiveInputs[0].sections[0].rows[e.itemIndex].seats.forEach(function (seat) {
-                            document.getElementById(seat.uid).style.fill = "#64b5f6";
+                            $('#'+"seatMaperChart"+svgIndex+' '+'#'+seat.uid).css('fill', '#64b5f6');
                             pickedSeats.splice(pickedSeats.indexOf(seat.uid), 1);
                         })
                     } else {
                         directiveInputs[0].sections[0].rows[e.itemIndex].seats.forEach(function (seat) {
                             if(pickedSeats.indexOf(seat.uid) === -1){
-                                document.getElementById(seat.uid).style.fill = "green";
+                                $('#'+"seatMaperChart"+svgIndex+' '+'#'+seat.uid).css('fill', 'green');
                                 pickedSeats.push(seat.uid);
                             }
                         })
                     }
-                    console.log(pickedSeats);
-
+                    ctrl.validationCheckBlitType(pickedSeats);
                 });
-                chart.container("seatMaperChart");
+                chart.container("seatMaperChart"+svgIndex);
                 chart.draw();
                 document.getElementsByClassName("anychart-credits")[0].style.display = "none";
 
-            });
+                scope.resetPickedSeats = function (seatUids) {
+                    pickedSeats = [];
+                    seatUids.forEach(function (uid) {
+                        document.getElementById(uid).style.fill = "red";
+                    })
+                }
+
+            };
         }
     });

@@ -1471,7 +1471,6 @@ dir-pagination-controls ul {
     margin-top: 10px;
     margin-bottom: 5px;
 }
-
 .eventListSection {
     background: url('../img/pt.jpg') fixed repeat-y;
     margin-top: 10px;
@@ -3027,6 +3026,13 @@ table td{
 }
 tspan{
     pointer-events: none !important;
+}
+.seatMaperChartStyle {
+    height: 500px;
+}
+.hrLine {
+    height: 1px;
+    background-color: #9c9c9c;
 }
 @media (max-width: 770px) {
     .navbar-header-backcolor{

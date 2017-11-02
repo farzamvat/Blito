@@ -789,7 +789,7 @@ angular.module('User')
                 $timeout(function () {
                     dateSetterService.initDate("eventDateClass"+classNumber);
                 }, 1000);
-                $scope.showTimeForms.push({blitTypes : [{}]})
+                $scope.showTimeForms.push({})
             }
         };
         $scope.addFieldShowTimeEdit=function(){
@@ -1903,7 +1903,6 @@ angular.module('User')
         }, 1000);
         //==================================================== seatmap =======================
 
-        // $scope.salonSchema = seatmapService.getSvgSchema();
         $scope.getSalonImage = function () {
             seatmapService.getSvgImage()
                 .then(function (data) {
@@ -1920,7 +1919,7 @@ angular.module('User')
                 })
         };
         $scope.salonSchema = {sections : []};
-        $scope.salonSeatPicker = function (salonUID) {
+        $scope.salonSeatPicker = function (salonUID, seatMapIndex) {
             $scope.getSalonImage();
             document.getElementsByClassName("seatMapSpinner")[0].style.display = "inline";
             seatmapService.getSalonData(salonUID)
@@ -1928,13 +1927,38 @@ angular.module('User')
                     document.getElementsByClassName("seatMapSpinner")[0].style.display = "none";
                     console.log(data.data.schema);
                     $scope.salonSchema = data.data.schema;
+                    $scope.$broadcast('newSVG', [$scope.salonSchema, $scope.salonImage, seatMapIndex]);
                 })
                 .catch(function (data) {
                     document.getElementsByClassName("seatMapSpinner")[0].style.display = "none";
                     console.log(data);
                 })
-        }
+        };
+        $scope.blitTypeSubmited = false;
+        $scope.seatsPickedBlitType = function () {
+            document.getElementById("successSeatBlitType").style.display = "none";
+            $scope.blitTypeSubmited = false;
+            $('#seatsPickedModel').modal('show');
+        };
+        $scope.seatsPickedBlitTypeSubmit = function (blitType) {
+            if(blitType.isFree) {
+                blitType.price = 0;
+            }
+            blitType.capacity = $scope.seatBlitUids.length;
+            blitType.seatUids = $scope.seatBlitUids;
+            console.log(blitType);
+            document.getElementById("successSeatBlitType").style.display = "block";
+            $scope.blitTypeSubmited = true;
+            $scope.$broadcast('blitTypeSubmit', $scope.seatBlitUids);
 
+        };
+        $scope.blitTypeCreateValidation = false;
+        $scope.$on("blitIdsChanged",function (event ,data) {
+            $scope.blitTypeCreateValidation = data[0];
+            $scope.$apply();
+            $scope.seatBlitUids = data[1];
+            console.log($scope.seatBlitUids);
+        })
 
 
     });

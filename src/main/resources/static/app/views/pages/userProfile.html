@@ -822,10 +822,14 @@
                                                         </div>
                                                     </div>
                                                     <div ng-if="seatMapListChosen" class="col-xs-12 marginTop30">
-                                                        <button class="btn btn-success center-block"  ng-click="salonSeatPicker(seatMapListChosen.salonUid)">تعریف بلیت با انتخاب صندلی <i class="fa fa-plus"></i><i class="fa fa-spinner fa-spin dispNone seatMapSpinner"></i></button>
+                                                        <button class="btn btn-success center-block"  ng-click="salonSeatPicker(seatMapListChosen.salonUid, $index)">تعریف بلیت با انتخاب صندلی <i class="fa fa-plus"></i><i class="fa fa-spinner fa-spin dispNone seatMapSpinner"></i></button>
                                                     </div>
                                                     <seat-map  salon-schema="salonSchema" salon-image="salonImage"></seat-map>
-                                                    <div id="seatMaperChart"  class="col-xs-12 marginTop30"></div>
+                                                    <div ng-show="seatMapListChosen">
+                                                    <div id="seatMaperChart{{$index}}"  class="col-xs-12 marginTop30 marginBottom20 seatMaperChartStyle"></div>
+                                                        <button class="btn btn-warning center-block marginTop60" ng-disabled="!blitTypeCreateValidation" ng-click="seatsPickedBlitType()">قیمت گذاری صندلی‌های انتخاب شده <i class="fa fa-money"></i></button>
+                                                        <div class="hrLine marginTop30"></div>
+                                                    </div>
                                                     <div class="col-xs-12 marginTop30">
                                                         <button class="btn btn-success center-block" ng-click="addFieldTicketType($index)">تعریف بلیت بدون انتخاب صندلی <i class="fa fa-plus"></i></button>
                                                     </div>
@@ -1132,5 +1136,7 @@
     <div ng-include="'app/views/partials/edit-exchange.html'"></div>
     <div ng-include="'app/views/partials/discount-code.html'"></div>
     <div ng-include="'app/views/partials/edit-discount.html'"></div>
+    <div ng-include="'app/views/partials/seat-pick-modal.html'"></div>
+
 </div>
 
