@@ -1903,11 +1903,8 @@ angular.module('User')
         }, 1000);
         //==================================================== seatmap =======================
 
-        $scope.getSalonImage = function () {
-            seatmapService.getSvgImage()
-                .then(function (data) {
-                    $scope.salonImage = data.data;
-                });
+        $scope.getSalonImage = function (e) {
+            return seatmapService.getSvgImage(e);
         };
         $scope.getSalonList = function () {
             seatmapService.getSeatmapList()
@@ -1921,21 +1918,29 @@ angular.module('User')
         $scope.salonSchema = {sections : []};
         $scope.salonSeatPicker = function (salonUID, seatMapIndex) {
             document.getElementsByClassName("seatMapSection"+seatMapIndex)[0].style.display = "block";
-            $scope.getSalonImage();
-            document.getElementsByClassName("seatMapSpinner")[0].style.display = "inline";
-            seatmapService.getSalonData(salonUID)
+            document.getElementsByClassName("generateSeatMap"+seatMapIndex)[0].style.display = "none";
+
+            $scope.getSalonImage("sections")
                 .then(function (data) {
-                    document.getElementsByClassName("seatMapSpinner")[0].style.display = "none";
-                    console.log(data.data.schema);
-                    $scope.salonSchema = data.data.schema;
+                    $scope.salonImage = data.data;
+                    $scope.salonSchema = seatmapService.getSvgSchema(salonUID);
                     $scope.$broadcast('newSVG', [$scope.salonSchema, $scope.salonImage, seatMapIndex]);
-                    document.getElementsByClassName("generateSeatMap"+seatMapIndex)[0].style.display = "none";
-                    document.getElementsByClassName("resetSeatMap"+seatMapIndex)[0].style.display = "block";
-                })
-                .catch(function (data) {
-                    document.getElementsByClassName("seatMapSpinner")[0].style.display = "none";
-                    console.log(data);
-                })
+                });
+            console.log($scope.salonImage);
+            // document.getElementsByClassName("seatMapSpinner")[0].style.display = "inline";
+            // $scope.$broadcast('newSVG', [$scope.salonSchema, $scope.salonImage, seatMapIndex]);
+            // .then(function (data) {
+            //     document.getElementsByClassName("seatMapSpinner")[0].style.display = "none";
+            //     console.log(data.data.schema);
+            //     $scope.salonSchema = data.data.schema;
+            //     $scope.$broadcast('newSVG', [$scope.salonSchema, $scope.salonImage, seatMapIndex]);
+            //     document.getElementsByClassName("generateSeatMap"+seatMapIndex)[0].style.display = "none";
+            //     document.getElementsByClassName("resetSeatMap"+seatMapIndex)[0].style.display = "block";
+            // })
+            // .catch(function (data) {
+            //     document.getElementsByClassName("seatMapSpinner")[0].style.display = "none";
+            //     console.log(data);
+            // })
         };
         $scope.blitTypeSubmited = false;
         $scope.seatsPickedBlitType = function () {
