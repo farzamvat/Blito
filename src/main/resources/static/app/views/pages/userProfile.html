@@ -825,7 +825,7 @@
                                                         <button class="btn btn-success center-block generateSeatMap{{$index}}" ng-click="salonSeatPicker(seatMapListChosen.salonUid, $index)">تعریف بلیت با انتخاب صندلی <i class="fa fa-plus"></i><i class="fa fa-spinner fa-spin dispNone seatMapSpinner"></i></button>
                                                         <button class="btn dispNone btn-warning center-block resetSeatMap{{$index}}" ng-click="salonSeatPicker(seatMapListChosen.salonUid, $index)">قیمت گذاری مجدد سالون <i class="fa fa-undo"></i><i class="fa fa-spinner fa-spin dispNone seatMapSpinner"></i></button>
                                                     </div>
-                                                    <seat-map  salon-schema="salonSchema" salon-image="salonImage"></seat-map>
+                                                    <seat-map  salon-schema="salonSchema" ></seat-map>
                                                     <div class="seatMapSection{{$index}} dispNone">
                                                     <div id="seatMaperChart{{$index}}"  class="col-xs-12 marginTop30 marginBottom20 seatMaperChartStyle"></div>
                                                         <button class="btn btn-warning center-block marginTop60" ng-disabled="!blitTypeCreateValidation" ng-click="seatsPickedBlitType()">قیمت گذاری صندلی‌های انتخاب شده <i class="fa fa-money"></i></button>

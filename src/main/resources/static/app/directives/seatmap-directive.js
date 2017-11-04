@@ -5,80 +5,77 @@ angular.module('blitoDirectives')
     .directive('seatMap',  function () {
         return {
             link : seatMapDraw,
-            controller : function ($scope,seatmapService) {
+            controller : function ($scope) {
                 var seatMapController = this;
                 seatMapController.validationCheckBlitType = function (blitIds, svgIndex) {
-                        $scope.$emit("blitIdsChanged", [blitIds, svgIndex]);
+                    $scope.$emit("blitIdsChanged", [blitIds, svgIndex]);
                 };
                 $scope.$on('blitTypeSubmit', function (event, data) {
                     $scope.resetPickedSeats(data);
                 });
                 $scope.$on('newSVG', function (event, data) {
                     console.log(data);
-                    $scope.drawSVG(data[0], data[1], data[2]);
+                    $scope.drawSVG(data[0], data[1]);
                 });
-                seatMapController.getSVGImageDirective = function (svgName) {
-                    return seatmapService.getSvgImage(svgName);
-                }
+
             },
             restrict : 'E',
             scope : {
-                salonSchema : '=',
-                salonImage : '='
+                salonSchema : '='
             }
         };
         function seatMapDraw(scope, element, attr, ctrl) {
-            scope.drawSVG = function (svgData, svgImage, svgIndex) {
-                var directiveInputs = [];
-                directiveInputs[0] = svgData;
-                directiveInputs[1] = svgImage;
-                console.log(directiveInputs);
+            scope.drawSVG = function (svgData, svgIndex) {
                 if (document.getElementById("seatMaperChart" + svgIndex).childNodes[0]) {
                     var svgElement = document.getElementById("seatMaperChart" + svgIndex);
                     svgElement.removeChild(svgElement.childNodes[0]);
                 }
-                var chart,sectionsChart=[];
+                var chart,sectionsChart = [];
                 var seatMapSeries;
-                var svg = directiveInputs[1];
-                chart=anychart.seatMap();
-                chart.geoData(svg);
+                chart = anychart.seatMap();
+                chart.geoData(svgData.salonSvg);
+
                 var seatMapData = new Array();
                 var wholeSalonData=[];
-                for (var sectionIndex = 0; sectionIndex < directiveInputs[0].sections.length; sectionIndex++) {
+
+                for (var sectionIndex = 0; sectionIndex < svgData.schema.sections.length; sectionIndex++) {
                     var rowName = 0;
                     var salonDat={};
-                    salonDat.id=directiveInputs[0].sections[sectionIndex].uid;
-                    salonDat.info=directiveInputs[0].sections[sectionIndex].name;
+                    salonDat.id = svgData.schema.sections[sectionIndex].uid;
+                    salonDat.info = svgData.schema.sections[sectionIndex].name;
                     wholeSalonData.push(salonDat);
-                    sectionsChart[sectionIndex] = anychart.seatMap();
-                    var sectionSvg;
-                    console.log(sectionsChart[sectionIndex]);
-                    console.log("siaaaaa");
-                    ctrl.getSVGImageDirective('test'+(sectionIndex+1))
-                        .then(function (data) {
-                            sectionSvg = data.data;
-                            console.log(sectionIndex);
-                            console.log(sectionsChart);
-                            sectionsChart[sectionIndex].geoData(sectionSvg);
-                        })
+                    sectionsChart.push({chart: anychart.seatMap(), uid: salonDat.id});
+
+                    var svgSection = svgData.sections.filter(function (section) {
+                        if(section.sectionUid === salonDat.id) {
+                            return section;
+                        }
+                    });
+                    console.log(svgSection);
+
+                    sectionsChart[sectionIndex].chart.geoData(svgSection[0].sectionSvg);
 
                     seatMapData[sectionIndex] = new Array();
-                    for (var rowIndex = 0; rowIndex < directiveInputs[0].sections[sectionIndex].rows.length; rowIndex++) {
+                    for (var rowIndex = 0; rowIndex < svgData.schema.sections[sectionIndex].rows.length; rowIndex++) {
                         seatMapData[sectionIndex][rowIndex] = new Array();
-                        rowName = parseInt(directiveInputs[0].sections[sectionIndex].rows[rowIndex].name);
-                        directiveInputs[0].sections[sectionIndex].rows[rowIndex].seats.forEach(function (seat) {
+                        rowName = svgData.schema.sections[sectionIndex].rows[rowIndex].name;
+                        svgData.schema.sections[sectionIndex].rows[rowIndex].seats.forEach(function (seat) {
                             seatMapData[sectionIndex][rowIndex].push({id: seat.uid, info: seat.name, value: rowName});
                         });
                     }
                 }
-                // directiveInputs[0].sections.forEach(function (section) {
+                seatMapSeries=chart.choropleth();
+                seatMapSeries.data(wholeSalonData);
+                chart.title(svgData.schema.name.toString());
+                chart.contextMenu(false);
+                // svgData.schema.sections.forEach(function (section) {
                 //     var rowName = 0;
-                //     seatMapData[directiveInputs[0].sections.getIndex] = new Array();
-                //     console.log(directiveInputs[0].sections.itemIndex);
+                //     seatMapData[svgData.schema.sections.getIndex] = new Array();
+                //     console.log(svgData.schema.sections.itemIndex);
                 //     section.rows.forEach(function (row) {
                 //         rowName = parseInt(row.name);
                 //         row.seats.forEach(function (seat) {
-                //             seatMapData[directiveInputs[0].sections.getIndex][row.getIndex].push({ id : seat.uid, info : seat.name, value : rowName});
+                //             seatMapData[svgData.schema.sections.getIndex][row.getIndex].push({ id : seat.uid, info : seat.name, value : rowName});
                 //         });
                 //     });
                 // });
@@ -93,79 +90,83 @@ angular.module('blitoDirectives')
                     }
                     ctrl.validationCheckBlitType(pickedSeats, svgIndex);
                 };
-                var palette = anychart.palettes.rangeColors();
-                palette.items(["#64b5f6"]);
-                var rowCheck = function (sectionIndex,rowIndex) {
-                    for (var i = 0; i < directiveInputs[0].sections[sectionIndex].rows[rowIndex].seats.length; i++) {
-                        if (pickedSeats.indexOf(directiveInputs[0].sections[sectionIndex].rows[rowIndex].seats[i].uid) === -1) {
+                var rowCheck = function (section,rowIndex) {
+                    for (var i = 0; i < section.rows[rowIndex].seats.length; i++) {
+                        if (pickedSeats.indexOf(section.rows[rowIndex].seats[i].uid) === -1) {
                             return false;
                         }
                     }
                     return true;
                 };
-                for (var sectionIndex = 0; sectionIndex < directiveInputs[0].sections.length; sectionIndex++) {
-                    palette.count(directiveInputs[0].sections[sectionIndex].numberOfRows);
-                    sectionsChart[sectionIndex].palette(palette);
-                    chart.palette(palette);
-                    for (var rowIndex = 0; rowIndex < directiveInputs[0].sections[sectionIndex].rows.length; rowIndex++) {
-                        var rowSeats = [];
-                        seatMapData[sectionIndex][rowIndex].forEach(function (seat) {
-                            if (seat.value === directiveInputs[0].sections[sectionIndex].rows.name) {
-                                rowSeats.push(seat);
-                            }
-                        });
-                        sectionsChart[sectionIndex].choropleth(rowSeats)
-                            .name("name")
-                            .listen('click', seatClickFunction)
-                    }
-
-                    if (sectionIndex === 0) {
-                        seatMapSeries=chart.choropleth();
-                        seatMapSeries.data(wholeSalonData);
-                        chart.title(directiveInputs[0].name.toString());
-                        chart.contextMenu(false);
-                    }
-                    else {
-                    var legend = sectionsChart[sectionIndex].legend();
-                    legend.enabled(true)
-                        .position('right')
-                        .itemsLayout('vertical')
-                        .removeAllListeners()
-                    ;
-
-
-                legend.listen("click", function (e) {
-                    if (rowCheck(sectionIndex,e.itemIndex)) {
-
-                        directiveInputs[0].sections[sectionIndex].rows[e.itemIndex].seats.forEach(function (seat) {
+                var legendListener = function (e) {
+                    var currentSection = svgData.schema.sections.filter(function (section) {
+                        if(section.uid === sectionPickedUid) {
+                            return section;
+                        }
+                    });
+                    console.log(currentSection[0]);
+                    if (rowCheck(currentSection[0],e.itemIndex)) {
+                        currentSection[0].rows[e.itemIndex].seats.forEach(function (seat) {
                             $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#64b5f6');
                             pickedSeats.splice(pickedSeats.indexOf(seat.uid), 1);
-                        })
+                        });
                     } else {
-                        directiveInputs[0].sections[sectionIndex].rows[e.itemIndex].seats.forEach(function (seat) {
+                        currentSection[0].rows[e.itemIndex].seats.forEach(function (seat) {
                             if (pickedSeats.indexOf(seat.uid) === -1) {
                                 $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'green');
                                 pickedSeats.push(seat.uid);
                             }
-                        })
+                        });
                     }
                     ctrl.validationCheckBlitType(pickedSeats);
-                });
-                    }
-                    sectionsChart[sectionIndex].labels(true);
-                    var labels = sectionsChart[sectionIndex].labels();
+                };
+                var palette = anychart.palettes.rangeColors();
+                palette.items(["#64b5f6"]);
 
-                    sectionsChart[sectionIndex].labels({fontSize: 10});
+                for (var sectionIndex = 0; sectionIndex < svgData.schema.sections.length; sectionIndex++) {
+                    palette.count(svgData.schema.sections[sectionIndex].numberOfRows);
+                    sectionsChart[sectionIndex].chart.palette(palette);
+                    chart.palette(palette);
+
+                    for (var rowIndex = 0; rowIndex < svgData.schema.sections[sectionIndex].rows.length; rowIndex++) {
+                        var rowSeats = [];
+                        seatMapData[sectionIndex][rowIndex].forEach(function (seat) {
+                            if (seat.value === svgData.schema.sections[sectionIndex].rows[rowIndex].name) {
+                                rowSeats.push(seat);
+                            }
+                        });
+                        console.log(rowSeats);
+                        sectionsChart[sectionIndex].chart.choropleth(rowSeats)
+                            .name(svgData.schema.sections[sectionIndex].rows[rowIndex].name)
+                            .listen('click', seatClickFunction)
+                    }
+
+                        var legend = sectionsChart[sectionIndex].chart.legend();
+                        legend.enabled(true)
+                            .position('right')
+                            .itemsLayout('vertical')
+                            .removeAllListeners()
+                        ;
+
+
+                        legend.listen("click", legendListener);
+
+                    sectionsChart[sectionIndex].chart.labels(true);
+                    var labels = sectionsChart[sectionIndex].chart.labels();
+
+                    sectionsChart[sectionIndex].chart.labels({fontSize: 10});
                     labels.format("{%info}");
-            }
+                }
                 chart.container("seatMaperChart"+svgIndex);
                 chart.draw();
+                var sectionPickedUid;
                 seatMapSeries.listen('pointClick',function(e){
-                    // console.log(e.point.get('id'));
-                        if(e.point.get('id')== "1")
-                            chart.drillTo(e.point.get('id'),sectionsChart[0]);
-                        if(e.point.get('id')== "2")
-                            chart.drillTo(e.point.get('id'),sectionsChart[1]);
+                    sectionsChart.forEach(function (section) {
+                        if(section.uid === e.point.get('id')) {
+                            chart.drillTo(e.point.get('id'), section.chart);
+                            sectionPickedUid = section.uid;
+                        }
+                    })
                 });
                 document.getElementsByClassName("anychart-credits")[svgIndex].style.display = "none";
 
