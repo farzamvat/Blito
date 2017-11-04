@@ -2,6 +2,7 @@ package com.blito.services;
 
 import com.blito.enums.OperatorState;
 import com.blito.enums.Response;
+import com.blito.enums.SmsMessage;
 import com.blito.enums.State;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
@@ -55,11 +56,38 @@ public class AdminEventService {
 	EventService eventService;
 	@Autowired
 	ImageService imageService;
+	@Autowired
+	SmsService smsService;
 
 	public Event getEventFromRepository(long eventId) {
 		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 		return event;
+	}
+
+	private String fillOperatorStateSmsMessage(OperatorState state, Event event) {
+		String message;
+		switch (state) {
+			case APPROVED:
+				message = String.format(ResourceUtil.getMessage(SmsMessage.OPERATOR_STATE_BASE_MESSAGE),
+						event.getEventHost().getUser().getFirstname(),
+						event.getEventName(),
+						ResourceUtil.getMessage(SmsMessage.OPERATOR_STATE_ACCEPTED),
+						ResourceUtil.getMessage(SmsMessage.OPERATOR_STATE_ACCEPTED_MESSAGE));
+				break;
+			case REJECTED:
+				message = String.format(ResourceUtil.getMessage(SmsMessage.OPERATOR_STATE_BASE_MESSAGE),
+						event.getEventHost().getUser().getFirstname(),
+						event.getEventName(),
+						ResourceUtil.getMessage(SmsMessage.OPERATOR_STATE_REJECTED),
+						ResourceUtil.getMessage(SmsMessage.OPERATOR_STATE_REJECTED_MESSAGE));
+				break;
+			default:
+				message = ResourceUtil.getMessage(SmsMessage.OPERATOR_STATE_DEFAULT_MESSAGE);
+				break;
+
+		}
+		return message;
 	}
 
 	@Transactional
@@ -101,6 +129,8 @@ public class AdminEventService {
 		Event event = getEventFromRepository(vmodel.getEventId());
 		checkEventRestricitons(event);
 		event.setOperatorState(vmodel.getOperatorState().name());
+		smsService.sendOperatorStatusSms(event.getEventHost().getUser().getMobile(),
+				fillOperatorStateSmsMessage(vmodel.getOperatorState(),event));
 	}
 
 	@Transactional
