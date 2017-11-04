@@ -193,7 +193,7 @@ public class AccountController {
 	public CompletionStage<ResponseEntity<?>> getAccessToken(@RequestParam String refresh_token,
 																	  HttpServletRequest request,
 																	  HttpServletResponse response) {
-		return CompletableFuture.supplyAsync(() -> userAccountService.getNewAccessToken(refresh_token))
+		return userAccountService.getNewAccessToken(refresh_token)
 				.handle((tokenModel,throwable) -> HandleUtility.generateResponseResult(() -> tokenModel,throwable,request,response));
 	}
 }

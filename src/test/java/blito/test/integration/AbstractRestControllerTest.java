@@ -43,6 +43,7 @@ public class AbstractRestControllerTest {
     private static boolean initialized = false;
     private static String token;
     private static String userToken;
+    protected static TokenModel tokenModel;
 
     @Transactional
     @Before
@@ -51,11 +52,11 @@ public class AbstractRestControllerTest {
         if (!initialized)
         {
             initialized = true;
-            TokenModel tokenModel = jwtService.generateAccessToken(admin_username).join();
+            TokenModel tokenModel = jwtService.generateToken(admin_username).join();
             TokenModel userTokenModel = jwtService.generateAccessToken(createUser()).join();
             token = tokenModel.getAccessToken();
             userToken = userTokenModel.getAccessToken();
-
+            this.tokenModel = tokenModel;
         }
     }
 
