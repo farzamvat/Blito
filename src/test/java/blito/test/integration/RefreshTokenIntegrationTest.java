@@ -13,7 +13,7 @@ public class RefreshTokenIntegrationTest extends AbstractRestControllerTest {
     @Test
     public void refresh_token_success() {
         givenRestIntegration()
-                .get(getServerAddress() + "/refresh?refresh_token=" + super.tokenModel.getRefreshToken())
+                .get(getServerAddress() + "/api/blito/v1.0/refresh?refresh_token=" + super.tokenModel.getRefreshToken())
                 .then().statusCode(200);
     }
 }
