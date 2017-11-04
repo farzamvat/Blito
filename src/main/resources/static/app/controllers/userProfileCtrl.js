@@ -1916,7 +1916,6 @@ angular.module('User')
         $scope.salonSchema = {sections : []};
         $scope.salonSeatPicker = function (salonUID, seatMapIndex) {
             document.getElementsByClassName("seatMapSection"+seatMapIndex)[0].style.display = "block";
-            document.getElementsByClassName("generateSeatMap"+seatMapIndex)[0].style.display = "none";
             document.getElementsByClassName("seatMapSpinner")[0].style.display = "inline";
 
             seatmapService.getSalonData(salonUID)
@@ -1938,6 +1937,9 @@ angular.module('User')
             $scope.blitTypeSubmited = false;
             $('#seatsPickedModel').modal('show');
         };
+
+        $scope.seatsPickedForm = {};
+        $scope.seatsPickedForm.isReserved = true;
         $scope.seatsPickedBlitTypeSubmit = function (blitType) {
             if(blitType.isFree) {
                 blitType.price = 0;
@@ -1945,10 +1947,10 @@ angular.module('User')
             blitType.capacity = $scope.seatBlitUids.length;
             blitType.seatUids = $scope.seatBlitUids;
             console.log(blitType);
-            document.getElementById("successSeatBlitType").style.display = "block";
             $scope.blitTypeSubmited = true;
-            $scope.$broadcast('blitTypeSubmit', $scope.seatBlitUids);
-
+            $scope.blitTypeCreateValidation = 0;
+            document.getElementById("successSeatBlitType").style.display = "block";
+            $scope.$broadcast('blitTypeSubmit', [$scope.seatBlitUids, blitType.isReserved]);
         };
 
         $scope.blitTypeCreateValidation = false;
@@ -1960,6 +1962,9 @@ angular.module('User')
             console.log($scope.seatBlitUids);
             console.log($scope.sansPickedSeatMap);
 
+        });
+        $scope.$on("resetSVG",function () {
+            console.log("reset");
         });
 
 

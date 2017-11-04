@@ -13,7 +13,19 @@
                                 <label class="registerLabel" for="blitType" >نوع بلیت :</label>
                             </div>
                             <div class="col-xs-7 col-sm-8 floatRight ">
-                                <select id="blitType" name="blitType" required ng-model="seatsPickedForm.isFree" class="form-control dropDownInput" ng-options="o.v as o.n for o in [{n : 'رایگان', v: true}, {n : 'پولی', v: false}]">
+                                <select id="blitType" name="blitType" required ng-model="seatsPickedForm.isReserved" class="form-control dropDownInput" ng-options="o.v as o.n for o in [{n : 'رزرو', v: true}, {n : 'فروشی', v: false}]">
+
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="marginTop30" ng-if="seatsPickedForm.isReserved === false">
+                        <div class="form-group col-xs-12 formRegGroup">
+                            <div class="col-xs-5 col-sm-4 floatRight text-center">
+                                <label class="registerLabel" for="blitType" >پرداخت :</label>
+                            </div>
+                            <div class="col-xs-7 col-sm-8 floatRight ">
+                                <select id="blitTypePayment" name="blitType" required ng-model="seatsPickedForm.isFree" class="form-control dropDownInput" ng-options="o.v as o.n for o in [{n : 'رایگان', v: true}, {n : 'پولی', v: false}]">
 
                                 </select>
                             </div>
@@ -52,4 +64,3 @@
         </div>
     </div>
 </div>
-

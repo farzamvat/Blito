@@ -11,10 +11,9 @@ angular.module('blitoDirectives')
                     $scope.$emit("blitIdsChanged", [blitIds, svgIndex]);
                 };
                 $scope.$on('blitTypeSubmit', function (event, data) {
-                    $scope.resetPickedSeats(data);
+                    $scope.resetPickedSeats(data[0], data[1]);
                 });
                 $scope.$on('newSVG', function (event, data) {
-                    console.log(data);
                     $scope.drawSVG(data[0], data[1]);
                 });
 
@@ -68,17 +67,7 @@ angular.module('blitoDirectives')
                 seatMapSeries.data(wholeSalonData);
                 chart.title(svgData.schema.name.toString());
                 chart.contextMenu(false);
-                // svgData.schema.sections.forEach(function (section) {
-                //     var rowName = 0;
-                //     seatMapData[svgData.schema.sections.getIndex] = new Array();
-                //     console.log(svgData.schema.sections.itemIndex);
-                //     section.rows.forEach(function (row) {
-                //         rowName = parseInt(row.name);
-                //         row.seats.forEach(function (seat) {
-                //             seatMapData[svgData.schema.sections.getIndex][row.getIndex].push({ id : seat.uid, info : seat.name, value : rowName});
-                //         });
-                //     });
-                // });
+
                 var pickedSeats = [];
                 var seatClickFunction = function (e) {
                     if (pickedSeats.indexOf(e.domTarget.dd) === -1) {
@@ -92,7 +81,7 @@ angular.module('blitoDirectives')
                 };
                 var rowCheck = function (section,rowIndex) {
                     for (var i = 0; i < section.rows[rowIndex].seats.length; i++) {
-                        if (pickedSeats.indexOf(section.rows[rowIndex].seats[i].uid) === -1) {
+                        if ((pickedSeats.indexOf(section.rows[rowIndex].seats[i].uid) === -1)  && (!$('#'+"seatMaperChart"+svgIndex+' '+'#'+section.rows[rowIndex].seats[i].uid).hasClass('noPointerEvents'))) {
                             return false;
                         }
                     }
@@ -104,21 +93,22 @@ angular.module('blitoDirectives')
                             return section;
                         }
                     });
-                    console.log(currentSection[0]);
                     if (rowCheck(currentSection[0],e.itemIndex)) {
                         currentSection[0].rows[e.itemIndex].seats.forEach(function (seat) {
-                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#64b5f6');
-                            pickedSeats.splice(pickedSeats.indexOf(seat.uid), 1);
+                            if(!$('#'+"seatMaperChart"+svgIndex+' '+'#'+seat.uid).hasClass('noPointerEvents')) {
+                                $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#64b5f6');
+                                pickedSeats.splice(pickedSeats.indexOf(seat.uid), 1);
+                            }
                         });
                     } else {
                         currentSection[0].rows[e.itemIndex].seats.forEach(function (seat) {
-                            if (pickedSeats.indexOf(seat.uid) === -1) {
+                            if ((pickedSeats.indexOf(seat.uid) === -1) && (!$('#'+"seatMaperChart"+svgIndex+' '+'#'+seat.uid).hasClass('noPointerEvents'))) {
                                 $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'green');
                                 pickedSeats.push(seat.uid);
                             }
                         });
                     }
-                    ctrl.validationCheckBlitType(pickedSeats);
+                    ctrl.validationCheckBlitType(pickedSeats, svgIndex);
                 };
                 var palette = anychart.palettes.rangeColors();
                 palette.items(["#64b5f6"]);
@@ -135,7 +125,6 @@ angular.module('blitoDirectives')
                                 rowSeats.push(seat);
                             }
                         });
-                        console.log(rowSeats);
                         sectionsChart[sectionIndex].chart.choropleth(rowSeats)
                             .name(svgData.schema.sections[sectionIndex].rows[rowIndex].name)
                             .listen('click', seatClickFunction)
@@ -170,12 +159,19 @@ angular.module('blitoDirectives')
                 });
                 document.getElementsByClassName("anychart-credits")[svgIndex].style.display = "none";
 
-                scope.resetPickedSeats = function (seatUids) {
+                scope.resetPickedSeats = function (seatUids, isReserved) {
                     pickedSeats = [];
+                    console.log(seatUids);
                     seatUids.forEach(function (uid) {
-                        document.getElementById(uid).style.fill = "red";
+                        $('#'+uid).addClass('noPointerEvents');
+                        if(isReserved){
+                            document.getElementById(uid).style.fill = "#999999";
+                        } else {
+                            document.getElementById(uid).style.fill = "red";
+                        }
                     })
                 }
+
 
             };
         }

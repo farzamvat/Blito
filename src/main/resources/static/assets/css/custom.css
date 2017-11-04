@@ -3027,6 +3027,9 @@ table td{
 tspan{
     pointer-events: none !important;
 }
+.noPointerEvents{
+    pointer-events: none !important;
+}
 .seatMaperChartStyle {
     height: 500px;
 }
