@@ -8,19 +8,20 @@ public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long notification_id;
+    @Column(columnDefinition="TEXT")
     private String message;
-    private boolean seen;
+    private Boolean seen;
     private Timestamp date;
     @Column(name = "notification_type")
     private String notificationType;
 
     @ManyToOne(targetEntity=User.class, optional=false)
     @JoinColumn(name="receiverId")
-    User receiver;
+    private User receiver;
 
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name="senderId")
-    User sender;
+    private User sender;
 
 
     public Long getNotification_id() {
@@ -39,11 +40,11 @@ public class Notification {
         this.message = message;
     }
 
-    public boolean isSeen() {
+    public Boolean isSeen() {
         return seen;
     }
 
-    public void setSeen(boolean seen) {
+    public void setSeen(Boolean seen) {
         this.seen = seen;
     }
 
