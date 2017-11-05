@@ -115,6 +115,7 @@ public class AdminEventServiceTest {
 	public void init() {
 			user.setFirstname("hasti");
 			user.setEmail("hasti.sahabi@gmail.com");
+			user.setMobile("09127976837");
 			user.setActive(true);
 			SecurityContextHolder.setCurrentUser(userRepo.save(user));
 			
