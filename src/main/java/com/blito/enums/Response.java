@@ -98,6 +98,7 @@ public enum Response {
 	INCONSISTENT_SEAT_COUNTS("error.seat.count.not.conforming"),
     Blit_Type_SEAT_NOT_FOUND("error.blit.type.set.not.found"),
     NOT_RESERVED_FOR_HOST("error.not.reserved.seat.for.host"),
+	SHARED_SEAT_AND_INCONSISTENT_CAPACITY_ERROR("error.shared.seat.and.inconsistent.capacity"),
 	SEAT_INFORMATION("seat.info");
     
 

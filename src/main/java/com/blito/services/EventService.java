@@ -78,12 +78,18 @@ public class EventService {
 
 
 
+	// NOTE : Check if more than one blit type contains a seat && count of seat uids equals capacity
 	private boolean validateDisjointSeatsInBlitTypeViewModel(Set<BlitTypeViewModel> blitTypes) {
-		return (blitTypes.stream().flatMap(blitType -> blitType.getSeatUids().stream()).distinct().count()
+		Set<BlitTypeViewModel> filteredBlitTypesContainSeatUids =
+				blitTypes.stream().filter(blitType -> blitType.getSeatUids() != null
+						&& !blitType.getSeatUids().isEmpty())
+						.collect(Collectors.toSet());
+		return (filteredBlitTypesContainSeatUids.stream().flatMap(blitType -> blitType.getSeatUids().stream()).distinct().count()
 				== blitTypes.stream().mapToLong(blitType -> blitType.getSeatUids().size()).sum())
-				&& blitTypes.stream().filter(blitType -> !blitType.getSeatUids().isEmpty()).allMatch(blitType -> blitType.getSeatUids().size() == blitType.getCapacity());
+				&& filteredBlitTypesContainSeatUids.stream().allMatch(blitType -> blitType.getSeatUids().size() == blitType.getCapacity());
 	}
 
+	// NOTE : Selection validation of all salon's seat picked
 	private boolean validateConsistencyOfSeatCounts(EventDateViewModel eventDateViewModel, String salonUid) {
 	    Salon salon = salonRepository.findBySalonUid(salonUid).orElseThrow(() -> new FileNotFoundException(ResourceUtil.getMessage(Response.SALON_NOT_FOUND)));
 	    return eventDateViewModel.getBlitTypes().stream()
@@ -95,10 +101,10 @@ public class EventService {
 	private void validateEventViewModel(EventViewModel vmodel) {
 		if(vmodel.getEventDates().stream().anyMatch(eventDateViewModel -> !validateDisjointSeatsInBlitTypeViewModel(eventDateViewModel.getBlitTypes())))
 		{
-			throw new InconsistentDataException(ResourceUtil.getMessage(Response.VALIDATION));
+			throw new InconsistentDataException(ResourceUtil.getMessage(Response.SHARED_SEAT_AND_INCONSISTENT_CAPACITY_ERROR));
 		}
 
-		if(vmodel.getSalonUid()!=null && vmodel.getEventDates().stream().anyMatch(eventDateViewModel -> !validateConsistencyOfSeatCounts(eventDateViewModel, vmodel.getSalonUid()))){
+		if(vmodel.getSalonUid() != null && vmodel.getEventDates().stream().anyMatch(eventDateViewModel -> !validateConsistencyOfSeatCounts(eventDateViewModel, vmodel.getSalonUid()))){
 		    throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_SEAT_COUNTS));
         }
 
