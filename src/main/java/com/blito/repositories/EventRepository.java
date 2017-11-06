@@ -1,18 +1,18 @@
 package com.blito.repositories;
 
-import java.util.Optional;
-import java.util.Set;
-
+import com.blito.models.Event;
+import com.blito.rest.viewmodels.event.EventTypeStatisticsViewModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 
-import com.blito.enums.EventType;
-import com.blito.enums.OperatorState;
-import com.blito.enums.State;
-import com.blito.models.Event;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 public interface EventRepository
 		extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event>, PagingAndSortingRepository<Event, Long> {
@@ -28,5 +28,12 @@ public interface EventRepository
 	findByIsDeletedFalseAndEventTypeIsAndEventStateNotAndOperatorStateIsOrderByOrderNumberDesc(String eventType,String eventState,String operatorState, Pageable pageable);
 
 	Set<Event> findByOperatorStateIsAndEventStateNotAndIsDeletedFalse(String operatorState, String eventState);
+
+	// Analytics
+	@Query(value = "select new com.blito.rest.viewmodels.event.EventTypeStatisticsViewModel(e.eventType,avg(bt.capacity),avg(bt.price),sum(bt.soldCount),sum(bt.capacity),count(e)) " +
+			"from event as e join e.eventDates as ed join ed.blitTypes as bt " +
+			"where e.operatorState =  :operatorState \n" +
+			"group by e.eventType")
+	List<EventTypeStatisticsViewModel> averageCapacityAndPriceGroupByEventType(@Param("operatorState") String operatorState);
 
 }

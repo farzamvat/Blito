@@ -1,15 +1,14 @@
 package com.blito.repositories;
 
-import java.util.Optional;
-import java.util.Set;
-
+import com.blito.models.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import com.blito.models.User;
+import java.util.Optional;
+import java.util.Set;
 
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User>, PagingAndSortingRepository<User, Long>  {
 	Optional<User> findByEmail(String email);
@@ -21,5 +20,6 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 	Page<User> findAll(Pageable pageable);
 	Optional<User> findByUserIdAndBannedFalse(long userId);
 	Page<User> findByBannedFalse(Pageable pageable);
+
 
 }
