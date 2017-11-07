@@ -23,13 +23,15 @@ angular.module('User')
                                              FileSaver,
                                              seatmapService) {
         var userProfile = this;
-
+        var sansWithSeats = [];
+        var mainSeatMapPrices = []
         $scope.userData = userInfo.getData();
         $scope.updateInfoSpinner = false;
+        $scope.newShowTime = {blitType : []};
 
         $scope.updateSuccessNotif = false;
         $scope.updateFailNotif = false;
-        $scope.showTimeForms = [{blitTypes : []}];
+        $scope.showTimeForms = [];
         $scope.showTimeEditForms = [{blitTypes : [{}]}];
 
         $scope.showThumbnailProfile = false;
@@ -762,9 +764,9 @@ angular.module('User')
         //==================================================== ********* =================================
         //==================================================== SHOW TIME FIELDS =================================
 
-        $scope.addFieldTicketType=function(i){
-            if($scope.showTimeForms[i].blitTypes.length < 5) {
-                $scope.showTimeForms[i].blitTypes.push({})
+        $scope.addFieldTicketType=function(){
+            if($scope.newShowTime.blitType.length < 10) {
+                $scope.newShowTime.blitType.push({})
             }
         };
         $scope.addFieldTicketTypeEdit=function(i){
@@ -778,20 +780,20 @@ angular.module('User')
                 $scope.showTimeEditForms[i].blitTypes.splice(-1,1);
             }
         };
-        $scope.deleteFieldTicketType=function(parentIndex,i){
-            if( 0 < $scope.showTimeForms[parentIndex].blitTypes.length) {
-                $scope.showTimeForms[parentIndex].blitTypes.splice(i,1);
+        $scope.deleteFieldTicketType=function(i){
+            if( 0 < $scope.newShowTime.blitType.length) {
+                $scope.newShowTime.blitType.splice(i,1);
             }
         };
-        $scope.addFieldShowTime=function(){
-            if($scope.showTimeForms.length < 10) {
-                var classNumber = $scope.showTimeForms.length;
-                $timeout(function () {
-                    dateSetterService.initDate("eventDateClass"+classNumber);
-                }, 1000);
-                $scope.showTimeForms.push({})
-            }
-        };
+        // $scope.addFieldShowTime=function(){
+        //     if($scope.showTimeForms.length < 10) {
+        //         var classNumber = $scope.showTimeForms.length;
+        //         $timeout(function () {
+        //             dateSetterService.initDate("eventDateClass"+classNumber);
+        //         }, 1000);
+        //         $scope.showTimeForms.push({blitTypes : []})
+        //     }
+        // };
         $scope.addFieldShowTimeEdit=function(){
             if($scope.showTimeEditForms.length < 10) {
                 var classNumber = $scope.showTimeEditForms.length;
@@ -806,10 +808,10 @@ angular.module('User')
                 $scope.showTimeEditForms.splice(-1,1);
             }
         };
-        $scope.deleteFieldShowTime=function(){
+        $scope.deleteFieldShowTime=function(i){
             if( 1 < $scope.showTimeForms.length) {
                 userProfile.showTimeNumber--;
-                $scope.showTimeForms.splice(-1,1);
+                $scope.showTimeForms.splice(i,1);
             }
         };
         //==================================================== ********* =================================
@@ -879,9 +881,6 @@ angular.module('User')
         $scope.galleryFiveUUID = null;
         $scope.gallerySixUUID = null;
         $scope.eventSubmitOnce = false;
-        $scope.eventDateClass = function (index) {
-            return "eventDateClass"+index;
-        };
         $scope.submitEvent = function (eventFields) {
             $scope.eventSubmitOnce = true;
             $scope.createEventNotif = false;
@@ -943,7 +942,7 @@ angular.module('User')
                     angular.element(document.getElementsByClassName("gallerySix"))[0].src = '';
                     $scope.mapMarkerClickCheckEvent = true;
                     setInitMaps('makeEventSection');
-                    $scope.showTimeForms = [{blitTypes : []}];
+                    $scope.showTimeForms = [];
                     $timeout(function () {
                         dateSetterService.initDate("eventDateClass0");
                     }, 1000);
@@ -1017,7 +1016,6 @@ angular.module('User')
                 })
         };
         //==================================================== ********* =================================
-        $scope.showTime = [];
         $scope.dropDownTabToggleEvent = function (event) {
             $scope.getPlannersData(1);
             $scope.getPlannersDataList();
@@ -1831,7 +1829,6 @@ angular.module('User')
             dateSetterService.initDate("persianTimeEventStart");
             dateSetterService.initDate("persianTimeEventEnd");
             dateSetterService.initDate("persianExchangeTime");
-            dateSetterService.initDate("eventDateClass0");
         }, 1000);
         //==================================================== ********* =================================
         $scope.showMenuOnSm = function () {
@@ -1902,8 +1899,11 @@ angular.module('User')
             }
         }, 1000);
         //==================================================== seatmap =======================
-
-
+        $scope.sansSet = function () {
+            $timeout(function () {
+                dateSetterService.initDate("eventDateClass0");
+            },1000)
+        };
         $scope.getSalonList = function () {
             seatmapService.getSeatmapList()
                 .then(function (data) {
@@ -1913,6 +1913,16 @@ angular.module('User')
                     console.log(data);
                 })
         };
+        $scope.schemaNumberOfSeats = 0;
+        $scope.allCheckedSeats = 0;
+        $scope.allCheckedSeatsSecondSeatMap = 0;
+        var countNumberOfSeats = function (sections) {
+            sections.forEach(function (section) {
+                section.rows.forEach(function (row) {
+                    $scope.schemaNumberOfSeats += row.numberOfSeats;
+                })
+            })
+        };
         $scope.salonSchema = {sections : []};
         $scope.salonSeatPicker = function (salonUID, seatMapIndex) {
             document.getElementsByClassName("seatMapSection"+seatMapIndex)[0].style.display = "block";
@@ -1920,17 +1930,24 @@ angular.module('User')
 
             seatmapService.getSalonData(salonUID)
                 .then(function (data) {
-                document.getElementsByClassName("seatMapSpinner")[0].style.display = "none";
-                $scope.salonSchema = data.data;
-                $scope.$broadcast('newSVG', [$scope.salonSchema, seatMapIndex]);
-                document.getElementsByClassName("generateSeatMap"+seatMapIndex)[0].style.display = "none";
-                document.getElementsByClassName("resetSeatMap"+seatMapIndex)[0].style.display = "block";
-            })
-            .catch(function (data) {
-                document.getElementsByClassName("seatMapSpinner")[0].style.display = "none";
-                console.log(data);
-            })
+                    $scope.schemaNumberOfSeats = 0;
+                    if(seatMapIndex === 0) {
+                        $scope.allCheckedSeats = 0;
+                    } else {
+                        $scope.allCheckedSeatsSecondSeatMap = 0;
+                    }
+                    document.getElementsByClassName("seatMapSpinner")[0].style.display = "none";
+                    $scope.salonSchema = data.data;
+                    countNumberOfSeats($scope.salonSchema.schema.sections);
+                    $scope.$broadcast('newSVG', [$scope.salonSchema, seatMapIndex]);
+                    document.getElementsByClassName("generateSeatMap"+seatMapIndex)[0].style.display = "none";
+                })
+                .catch(function (data) {
+                    document.getElementsByClassName("seatMapSpinner")[0].style.display = "none";
+                    console.log(data);
+                })
         };
+
         $scope.blitTypeSubmited = false;
         $scope.seatsPickedBlitType = function () {
             document.getElementById("successSeatBlitType").style.display = "none";
@@ -1940,17 +1957,34 @@ angular.module('User')
 
         $scope.seatsPickedForm = {};
         $scope.seatsPickedForm.isReserved = true;
-        $scope.seatsPickedBlitTypeSubmit = function (blitType) {
+        $scope.seatsPickedBlitTypeSubmit = function (bt) {
+            var blitType = angular.copy(bt);
             if(blitType.isFree) {
                 blitType.price = 0;
             }
+            console.log($scope.sansPickedSeatMap);
             blitType.capacity = $scope.seatBlitUids.length;
             blitType.seatUids = $scope.seatBlitUids;
-            console.log(blitType);
             $scope.blitTypeSubmited = true;
             $scope.blitTypeCreateValidation = 0;
+            if($scope.sansPickedSeatMap === 0) {
+                $scope.allCheckedSeats += blitType.capacity;
+            } else {
+                $scope.allCheckedSeatsSecondSeatMap += blitType.capacity;
+            }
+
+            console.log($scope.allCheckedSeats);
+            if($scope.sansPickedSeatMap === 0) {
+                mainSeatMapPrices.push(blitType);
+
+            } else {
+                sansWithSeats.push(blitType);
+            }
+
             document.getElementById("successSeatBlitType").style.display = "block";
-            $scope.$broadcast('blitTypeSubmit', [$scope.seatBlitUids, blitType.isReserved]);
+            $scope.$broadcast('blitTypeSubmit', [$scope.seatBlitUids, blitType.isReserved, $scope.sansPickedSeatMap]);
+            console.log($scope.showTimeForms);
+            console.log(sansWithSeats);
         };
 
         $scope.blitTypeCreateValidation = false;
@@ -1966,6 +2000,31 @@ angular.module('User')
         $scope.$on("resetSVG",function () {
             console.log("reset");
         });
+        $scope.newShowTime.newSeatsPrice = 'false';
+        $scope.submitSansWithSeatpicker = function (newSans) {
+            var newShowTime = angular.copy(newSans);
+            if(newShowTime.newSeatsPrice === 'true') {
+                newShowTime.blitType = newShowTime.blitType.concat(sansWithSeats);
+            } else {
+                newShowTime.blitType = newShowTime.blitType.concat(mainSeatMapPrices);
+            }
+            newShowTime.date = dateSetterService.persianToMs(newShowTime.persianDate);
+            console.log(newShowTime);
+            $scope.showTimeForms.push(newShowTime);
+            $scope.newShowTime = {blitType : [], newSeatsPrice : 'false'};
+            console.log($scope.showTimeForms);
+        };
+        $scope.submitSansWithoutSeatpicker = function (data) {
+            console.log(data);
+            $scope.newShowTime = {blitType : [], newSeatsPrice : 'false'};
+            $scope.showTimeForms.push(data);
+            console.log($scope.showTimeForms);
 
+        };
+        $scope.$watch('seatPicker.isChosen', function() {
+            $scope.sansSet();
+            $scope.newShowTime = {blitType : [], newSeatsPrice : 'false'};
+            $scope.showTimeForms = [];
+        });
 
     });
