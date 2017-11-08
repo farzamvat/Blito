@@ -21,4 +21,4 @@ settings.json
 task.json
 /var/
 /node_modules/
-/log-dir_IS_UNDEFINED
+/log-dir_IS_UNDEFINED/
