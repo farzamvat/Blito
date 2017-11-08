@@ -97,7 +97,7 @@ app.run(['$rootScope', 'Auth', '$location', function ($rootScope, Auth, $locatio
     $rootScope.$on('$routeChangeStart', function (event, next) {
         if(next.$$route.authenticated === true) {
             if(!Auth.isLoggedIn() && !Auth.loggedInRefresh()) {
-                event.preventDefault();
+                // event.preventDefault();
                 $location.path('/');
             }
 

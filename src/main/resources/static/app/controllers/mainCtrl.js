@@ -25,6 +25,14 @@ angular.module('menuPagesModule', [])
             $window.location.assign('/');
 
         };
+            $scope.$on('$routeChangeStart', function () {
+                $("#loading").modal("show");
+            });
+            $scope.$on('$routeChangeSuccess', function () {
+                $("#loading").modal("hide");
+            });
+
+
         main.checkSession = function () {
             if(AuthToken.getRefreshToken() === "logOut") {
                 main.checkingSession = false;
@@ -316,6 +324,5 @@ angular.module('menuPagesModule', [])
             $(angular.element(document.getElementsByClassName('dropdown-menu'))).slideUp(300);
             isOpen=false;
         };
-
     });
 
