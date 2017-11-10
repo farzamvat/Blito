@@ -27,6 +27,8 @@ public class Seat extends AbstractBaseSalonEntity implements SalonComponent<Seat
     @JsonView(View.SalonSchema.class)
     private Timestamp soldDate;
     @JsonView(View.SalonSchema.class)
+    private Long blitTypeId;
+    @JsonView(View.SalonSchema.class)
     private Timestamp reserveDate;
     @JsonView(View.IncludingCustomerNameSalonSchema.class)
     private String customerName;
@@ -34,6 +36,14 @@ public class Seat extends AbstractBaseSalonEntity implements SalonComponent<Seat
     public Seat(String uid, String name, SalonComponent<Row> rowSalonComponent) {
         super(uid, name);
         this.rowSalonComponent = rowSalonComponent;
+    }
+
+    public Long getBlitTypeId() {
+        return blitTypeId;
+    }
+
+    public void setBlitTypeId(Long blitTypeId) {
+        this.blitTypeId = blitTypeId;
     }
 
     public Long getPrice() {

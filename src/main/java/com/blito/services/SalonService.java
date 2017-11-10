@@ -143,6 +143,7 @@ public class SalonService {
                                                         seat.setReserveDate(blitTypeSeat.getReserveDate());
                                                         seat.setSoldDate(blitTypeSeat.getSoldDate());
                                                         seat.setPrice(blitTypeSeat.getBlitType().getPrice());
+                                                        seat.setBlitTypeId(blitTypeSeat.getBlitType().getBlitTypeId());
                                                         seat.setState(Enum.valueOf(BlitTypeSeatState.class,blitTypeSeat.getState()));
                                                         Option.of(blitTypeSeat.getSeatBlit())
                                                                 .peek(seatBlit -> seat.setCustomerName(seatBlit.getCustomerName()));
