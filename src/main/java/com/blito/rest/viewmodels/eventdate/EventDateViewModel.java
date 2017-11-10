@@ -60,4 +60,15 @@ public class EventDateViewModel {
 	public void setDate(Timestamp date) {
 		this.date = date;
 	}
+
+	@Override
+	public String toString() {
+		return "EventDateViewModel{" +
+				"eventDateId=" + eventDateId +
+				", date=" + date +
+				", blitTypes=" + blitTypes +
+				", state=" + state +
+				", hasSalon=" + hasSalon +
+				'}';
+	}
 }

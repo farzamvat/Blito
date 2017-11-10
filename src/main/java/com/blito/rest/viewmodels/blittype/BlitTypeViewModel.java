@@ -88,7 +88,18 @@ public class BlitTypeViewModel {
 	public void setFree(boolean isFree) {
 		this.isFree = isFree;
 	}
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return "BlitTypeViewModel{" +
+				"blitTypeId=" + blitTypeId +
+				", name='" + name + '\'' +
+				", capacity=" + capacity +
+				", soldCount=" + soldCount +
+				", price=" + price +
+				", blitTypeState=" + blitTypeState +
+				", isFree=" + isFree +
+				", seatUids=" + seatUids +
+				'}';
+	}
 }

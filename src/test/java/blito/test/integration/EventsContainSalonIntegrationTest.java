@@ -84,15 +84,15 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
                     .filter(btvm -> btvm.getName().equals("neshaste")).findFirst().get();
             eventViewModel.setSalonUid(salon.getUid());
             blitTypeViewModel.setSeatUids(new HashSet<>());
-            blitTypeViewModel.setCapacity(5);
+            blitTypeViewModel.setCapacity(16);
             salon.getSections()
                     .stream()
                     .flatMap(section -> section.getRows().stream())
-                    .filter(row -> row.getName().equals("2"))
+//                    .filter(row -> row.getName().equals("2"))
                     .flatMap(row -> row.getSeats().stream())
                     .sorted(Comparator.comparing(Seat::getName))
-                    .skip(3)
-                    .limit(5)
+//                    .skip(3)
+//                    .limit(5)
                     .forEachOrdered(seat -> blitTypeViewModel.getSeatUids().add(seat.getUid()));
 
 
@@ -104,6 +104,13 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
                 .post(getServerAddress() + "/api/blito/v1.0/events")
                 .then().statusCode(201).extract().body().as(EventViewModel.class);
 
+
+//        System.out.println(givenRestIntegration()
+//                .when()
+//                .get(getServerAddress() + "/api/blito/v1.0/events/all-user-events")
+//                .thenReturn().body().as(String.class));
+
+        System.out.println("**************************************" + responseViewModel.toString());
         responseViewModel.setSalonUid(salon.getUid());
         responseViewModel.getEventDates().forEach(eventDateViewModel -> {
             BlitTypeViewModel blitTypeViewModel = new BlitTypeViewModel();

@@ -118,6 +118,40 @@ public class EventViewModel {
 		additionalFields = new ArrayList<>();
 	}
 
+	@Override
+	public String toString() {
+		return "EventViewModel{" +
+				"eventId=" + eventId +
+				", eventName='" + eventName + '\'' +
+				", eventType=" + eventType +
+				", blitSaleStartDate=" + blitSaleStartDate +
+				", blitSaleEndDate=" + blitSaleEndDate +
+				", eventSoldDate=" + eventSoldDate +
+				", address='" + address + '\'' +
+				", description='" + description + '\'' +
+				", latitude=" + latitude +
+				", createdAt=" + createdAt +
+				", longitude=" + longitude +
+				", aparatDisplayCode='" + aparatDisplayCode + '\'' +
+				", eventHostId=" + eventHostId +
+				", eventHostName='" + eventHostName + '\'' +
+				", offers=" + offers +
+				", eventDates=" + eventDates +
+				", images=" + images +
+				", views=" + views +
+				", eventLink='" + eventLink + '\'' +
+				", eventState=" + eventState +
+				", operatorState=" + operatorState +
+				", orderNumber=" + orderNumber +
+				", isEvento=" + isEvento +
+				", members='" + members + '\'' +
+				", isDeleted=" + isDeleted +
+				", additionalFields=" + additionalFields +
+				", isPrivate=" + isPrivate +
+				", salonUid='" + salonUid + '\'' +
+				'}';
+	}
+
 	public String getSalonUid() {
 		return salonUid;
 	}
