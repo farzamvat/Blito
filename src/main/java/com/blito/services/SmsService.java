@@ -1,7 +1,6 @@
 package com.blito.services;
 
 import com.blito.rest.viewmodels.google.shortener.UrlShortenerResponseViewModel;
-import com.sun.xml.internal.bind.api.impl.NameConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.nio.charset.StandardCharsets;
 
 @Service
 public class SmsService {
