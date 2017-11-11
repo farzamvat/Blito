@@ -847,7 +847,7 @@
                                                         <tr ng-repeat="sans in showTimeForms"    >
                                                             <td class="dataCenter"> <i class="fa fa-minus btn-danger addDeleteBtn" ng-click="deleteFieldShowTime(i)" aria-hidden="true"></i></td>
                                                             <td class="dataCenter">{{ sans.persianDate}}</td>
-                                                            <td class="dataCenter">{{ sans.blitType.length}} نوع بلیت </td>
+                                                            <td class="dataCenter">{{ sans.blitTypes.length | pNumber}} نوع بلیت </td>
                                                         </tr>
 
                                                         </tbody>
@@ -958,7 +958,7 @@
                                                         <tr ng-repeat="sans in showTimeForms"    >
                                                             <td class="dataCenter"> <i class="fa fa-minus btn-danger addDeleteBtn" ng-click="deleteFieldShowTime(i)" aria-hidden="true"></i></td>
                                                             <td class="dataCenter">{{ sans.persianDate}}</td>
-                                                            <td class="dataCenter">{{ sans.blitType.length}} نوع بلیت </td>
+                                                            <td class="dataCenter">{{ sans.blitTypes.length | pNumber}} نوع بلیت </td>
                                                         </tr>
 
                                                         </tbody>
