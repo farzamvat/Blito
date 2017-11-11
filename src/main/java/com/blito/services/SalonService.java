@@ -81,8 +81,8 @@ public class SalonService {
         }
     }
 
-    public void validateNoIndividualSeat(com.blito.common.Salon salon) {
-        salon.getSections().stream().flatMap(section -> section.getRows().stream())
+    public void validateNoIndividualSeat(SalonViewModel salon) {
+        salon.getSchema().getSections().stream().flatMap(section -> section.getRows().stream())
                 .forEach(row ->
                     row.getSeats().stream().sorted(Comparator.comparing(Seat::getName)).forEachOrdered(currentSeat -> {
                        Seat next = currentSeat.getNextSeat(row);
