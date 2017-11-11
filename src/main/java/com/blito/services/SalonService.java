@@ -113,7 +113,7 @@ public class SalonService {
     }
 
     @Transactional(isolation = Isolation.READ_UNCOMMITTED)
-    public com.blito.common.Salon populateSeatInformationInSalonSchemaByEventDateId(Long eventDateId) {
+    public SalonViewModel populateSeatInformationInSalonSchemaByEventDateId(Long eventDateId) {
         return Option.of(eventDateRepository.findOne(eventDateId))
                 .map(eventDate -> {
                     Set<BlitTypeSeat> blitTypeSeats =
@@ -149,7 +149,7 @@ public class SalonService {
                                             }).onEmpty(() ->
                                                 seat.setState(BlitTypeSeatState.NOT_AVAILABLE))
                                         );
-                                return schema;
+                                return salonMapper.createSalonViewModelForPopulatedSchema(salon, schema);
                             }).getOrElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SALON_NOT_FOUND)));
                 }).getOrElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
     }

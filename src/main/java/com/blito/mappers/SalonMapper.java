@@ -59,4 +59,10 @@ public class SalonMapper implements GenericMapper<Salon,SalonViewModel> {
                     .findAny().ifPresent(section -> section.setSectionSvg(sectionViewModel.getSectionSvg())));
         return entity;
     }
+
+    public SalonViewModel createSalonViewModelForPopulatedSchema(Salon salon, com.blito.common.Salon schema) {
+        SalonViewModel salonViewModel = createFromEntity(salon);
+        salonViewModel.setSchema(schema);
+        return  salonViewModel;
+    }
 }
