@@ -146,7 +146,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
             });
         }
         log.info("User with email '{}' released reserveSeatBlitLock",user.getEmail());
-        salonService.validateNoIndividualSeat(salonService.populateSeatInformationInSalonSchemaByEventDateId(blitType.getEventDate().getEventDateId()));
+        salonService.validateNoIndividualSeat(salonService.populateSeatInformationInSalonSchemaByEventDateId(blitType.getEventDate().getEventDateId()).getSchema());
         seatBlit.setBlitTypeSeats(blitTypeSeats);
         return blitPurchaseAuthorized(blitType,viewModel,user,seatBlit);
     }
@@ -201,7 +201,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
             });
         }
         log.info("unauthorized user with email '{}' released reserveSeatBlitLock",viewModel.getCustomerEmail());
-        salonService.validateNoIndividualSeat(salonService.populateSeatInformationInSalonSchemaByEventDateId(blitType.getEventDate().getEventDateId()));
+        salonService.validateNoIndividualSeat(salonService.populateSeatInformationInSalonSchemaByEventDateId(blitType.getEventDate().getEventDateId()).getSchema());
         seatBlit.setTrackCode(generateTrackCode());
         return Option.of(paymentRequestService.createPurchaseRequest(seatBlit))
                 .map(token -> persistBlit(blitType,seatBlit,Optional.empty(),token))
