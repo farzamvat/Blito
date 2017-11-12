@@ -182,7 +182,7 @@ angular.module('blitoDirectives')
     })
     .directive('seatMapEdit',  function () {
         return {
-            link : seatMapDraw,
+            link : seatMapDrawEdit,
             controller : function ($scope) {
                 var seatMapController = this;
                 $scope.pickedSeats = [];
@@ -201,7 +201,7 @@ angular.module('blitoDirectives')
             restrict : 'E',
             scope : {}
         };
-        function seatMapDraw(scope, element, attr, ctrl) {
+        function seatMapDrawEdit(scope, element, attr, ctrl) {
             scope.drawSVG = function (svgData, svgIndex) {
                 if (document.getElementById("seatMaperChart" + svgIndex).childNodes[0]) {
                     var svgElement = document.getElementById("seatMaperChart" + svgIndex);
@@ -239,8 +239,10 @@ angular.module('blitoDirectives')
                             seatMapData[sectionIndex][rowIndex].push({
                                 id: seat.uid,
                                 info: seat.name,
-                                value: rowName
+                                value: rowName,
+                                price : seat.price
                             });
+
                         });
                     }
                 }
@@ -312,6 +314,7 @@ angular.module('blitoDirectives')
                             .listen('click', seatClickFunction)
                     }
 
+
                     var legend = sectionsChart[sectionIndex].chart.legend();
                     legend.enabled(true)
                         .position('right')
@@ -327,6 +330,8 @@ angular.module('blitoDirectives')
 
                     sectionsChart[sectionIndex].chart.labels({fontSize: 10});
                     labels.format("{%info}");
+                    var toolTip = sectionsChart[sectionIndex].chart.tooltip();
+                    toolTip.format("{%price}")
                 }
                 chart.container("seatMaperChart"+svgIndex);
                 chart.draw();
@@ -336,12 +341,45 @@ angular.module('blitoDirectives')
                         if(section.uid === e.point.get('id')) {
                             chart.drillTo(e.point.get('id'), section.chart);
                             sectionPickedUid = section.uid;
+                            svgData.schema.sections.forEach(function (sect) {
+                                if(sect.uid === section.uid) {
+                                    sect.rows.forEach(function (row) {
+                                        row.seats.forEach(function (seat) {
+                                            switch (seat.state) {
+                                                case "RESERVED" :
+                                                    $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'blue');
+                                                    $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
+                                                    break;
+                                                case "SOLD" :
+                                                    $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'yellow');
+                                                    $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
+                                                    break;
+                                                case "GUEST_NOT_AVAILABLE" :
+                                                    $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#333');
+                                                    $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
+                                                    break;
+                                                case "NOT_AVAILABLE" :
+                                                    console.log($('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid));
+                                                    $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#999999');
+                                                    break;
+                                                case "AVAILABLE" :
+                                                    $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'red');
+                                                    break;
+                                                default :
+                                                    break;
+                                            }
+                                        })
+                                    });
+                                }
+                            })
                         }
                     })
                 });
                 for(var i = 0; i < document.getElementsByClassName("anychart-credits").length ; i++) {
                     document.getElementsByClassName("anychart-credits")[i].style.display = "none";
                 }
+
+
                 scope.resetPickedSeats = function (seatUids, isReserved, sansSeats) {
                     scope.pickedSeats = [];
                     seatUids.forEach(function (uid) {

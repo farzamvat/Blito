@@ -1168,11 +1168,14 @@ angular.module('User')
             if($scope.eventHasSalon) {
                 seatmapService.getPopulatedSchema($scope.showTimeEditForms[sansIndex].eventDateId)
                     .then(function (data) {
+                        console.log(data);
+                        $scope.salonSchema.schema = data.data;
+                        $scope.$broadcast('newSVGEdit', [$scope.salonSchema, 2]);
                         $scope.blitTypesWithSeatsEdit = seatmapService.schemaFormat(data.data.sections);
                         $scope.blitTypesWithOutSeatsEdit = seatmapService.getBlitTypesWithoutSeat($scope.blitTypesWithSeatsEdit, $scope.showTimeEditForms[sansIndex].blitTypes)
                     })
-                    .catch(function () {
-
+                    .catch(function (data) {
+                        console.log(data);
                     })
             } else {
                 $scope.blitTypesWithOutSeatsEdit = $scope.showTimeEditForms[sansIndex].blitTypes;

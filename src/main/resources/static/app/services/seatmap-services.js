@@ -21,6 +21,7 @@ angular.module('UiServices')
         seatMap.schemaFormat = function (schemaSections) {
             var blitTypeIds = [];
             var blitTypes = [];
+            console.log(schemaSections);
             schemaSections.forEach(function (section) {
                 section.rows.forEach(function (row) {
                     row.seats.forEach(function (seat) {
@@ -48,4 +49,7 @@ angular.module('UiServices')
             });
             return blitTypesWithoutSeat;
         };
+        seatMap.editEventDataAnyChartFormat = function (schemaSections) {
+            
+        }
     });
