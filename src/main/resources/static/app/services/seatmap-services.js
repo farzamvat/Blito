@@ -42,14 +42,43 @@ angular.module('UiServices')
             return blitTypes;
         };
         seatMap.getBlitTypesWithoutSeat = function (seatsBlitType, allBlitTypes) {
-            var blitTypesWithoutSeat =  allBlitTypes.filter(function (blitType) {
-                seatsBlitType.forEach(function (seatBlitType) {
-                    return blitType.blitTypeId === seatBlitType.blitTypeId;
+            return allBlitTypes.filter(function (blitType) {
+                var isWithSeats = true;
+                for(var i = 0; i < seatsBlitType.length; i++) {
+                    if(blitType.blitTypeId === seatsBlitType[i].blitTypeId) {
+                        isWithSeats = false;
+                        break;
+                    }
+                }
+                return isWithSeats;
+            });
+        };
+        seatMap.generateNewBlitTypes = function (oldBlitTypes, newBlitTypes) {
+            newBlitTypes.forEach(function (newBlitType) {
+                newBlitType.seatUids.forEach(function (seatUid) {
+                    oldBlitTypes.forEach(function (oldBlitType) {
+                        oldBlitType.seatUids = oldBlitType.seatUids.filter(function (oldSeatUid) {
+                            return oldSeatUid !== seatUid;
+                        })
+                    })
                 })
             });
-            return blitTypesWithoutSeat;
+            oldBlitTypes = oldBlitTypes.filter(function (oldBlitType) {
+                oldBlitType.capacity = oldBlitType.seatUids.length;
+                return oldBlitType.seatUids.length !== 0;
+            });
+            return oldBlitTypes.concat(newBlitTypes);
         };
-        seatMap.editEventDataAnyChartFormat = function (schemaSections) {
-            
+        seatMap.generateMainBlitTypesFormat = function (generatedBlitTypes, allBlitTypes) {
+            generatedBlitTypes.forEach(function (generatedBlitType) {
+                allBlitTypes.forEach(function (blitType) {
+                    if(blitType.blitTypeId === generatedBlitType.blitTypeId) {
+                        generatedBlitType.name = blitType.name;
+                        generatedBlitType.capacity = blitType.capacity;
+                        generatedBlitType.isFree = blitType.isFree;
+                    }
+                })
+            });
+            return generatedBlitTypes;
         }
     });

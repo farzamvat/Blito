@@ -1590,6 +1590,11 @@ dir-pagination-controls ul {
     border-radius: 3px;
     padding: 20px 40px;
 }
+.showTimeSectionEdit {
+    background-color: #ddd;
+    border-radius: 3px;
+    padding: 20px 40px;
+}
 .checkboxStyle {
     margin-left: 10px !important;
 }

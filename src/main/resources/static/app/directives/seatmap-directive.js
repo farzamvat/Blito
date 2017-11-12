@@ -193,6 +193,9 @@ angular.module('blitoDirectives')
                 $scope.$on('blitTypeSubmitEdit', function (event, data) {
                     $scope.resetPickedSeats(data[0], data[1], data[2]);
                 });
+                $scope.$on('blitTypeUidsReset', function (event, data) {
+                    $scope.resetPickedSeatsArray();
+                });
                 $scope.$on('newSVGEdit', function (event, data) {
                     $scope.svgIndex = data[1];
                     $scope.drawSVG(data[0], data[1]);
@@ -203,6 +206,7 @@ angular.module('blitoDirectives')
         };
         function seatMapDrawEdit(scope, element, attr, ctrl) {
             scope.drawSVG = function (svgData, svgIndex) {
+                var populateSchemaOnce = [];
                 if (document.getElementById("seatMaperChart" + svgIndex).childNodes[0]) {
                     var svgElement = document.getElementById("seatMaperChart" + svgIndex);
                     svgElement.removeChild(svgElement.childNodes[0]);
@@ -341,37 +345,10 @@ angular.module('blitoDirectives')
                         if(section.uid === e.point.get('id')) {
                             chart.drillTo(e.point.get('id'), section.chart);
                             sectionPickedUid = section.uid;
-                            svgData.schema.sections.forEach(function (sect) {
-                                if(sect.uid === section.uid) {
-                                    sect.rows.forEach(function (row) {
-                                        row.seats.forEach(function (seat) {
-                                            switch (seat.state) {
-                                                case "RESERVED" :
-                                                    $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'blue');
-                                                    $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
-                                                    break;
-                                                case "SOLD" :
-                                                    $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'yellow');
-                                                    $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
-                                                    break;
-                                                case "GUEST_NOT_AVAILABLE" :
-                                                    $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#333');
-                                                    $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
-                                                    break;
-                                                case "NOT_AVAILABLE" :
-                                                    console.log($('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid));
-                                                    $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#999999');
-                                                    break;
-                                                case "AVAILABLE" :
-                                                    $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'red');
-                                                    break;
-                                                default :
-                                                    break;
-                                            }
-                                        })
-                                    });
-                                }
-                            })
+                            if(populateSchemaOnce.indexOf(section.uid) === -1) {
+                                populateSchemaOnce.push(section.uid);
+                                populatedSalon(section);
+                            }
                         }
                     })
                 });
@@ -384,14 +361,45 @@ angular.module('blitoDirectives')
                     scope.pickedSeats = [];
                     seatUids.forEach(function (uid) {
                         $('#'+"seatMaperChart"+sansSeats+' '+'#'+uid).addClass('noPointerEvents');
-                        if(isReserved){
-                            $('#'+"seatMaperChart"+sansSeats+' '+'#'+uid).css('fill', '#999999')
-                        } else {
-                            $('#'+"seatMaperChart"+sansSeats+' '+'#'+uid).css('fill', 'red')
+                        $('#'+"seatMaperChart"+sansSeats+' '+'#'+uid).css('fill', 'yellow')
+
+                    })
+                };
+                scope.resetPickedSeatsArray = function () {
+                    scope.pickedSeats = [];
+                };
+                var populatedSalon = function (section) {
+                    svgData.schema.sections.forEach(function (sect) {
+                        if(sect.uid === section.uid) {
+                            sect.rows.forEach(function (row) {
+                                row.seats.forEach(function (seat) {
+                                    switch (seat.state) {
+                                        case "RESERVED" :
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'blue');
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
+                                            break;
+                                        case "SOLD" :
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'orange');
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
+                                            break;
+                                        case "GUEST_NOT_AVAILABLE" :
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#333');
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
+                                            break;
+                                        case "NOT_AVAILABLE" :
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#999999');
+                                            break;
+                                        case "AVAILABLE" :
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'red');
+                                            break;
+                                        default :
+                                            break;
+                                    }
+                                })
+                            });
                         }
                     })
                 }
-
 
             };
         }
