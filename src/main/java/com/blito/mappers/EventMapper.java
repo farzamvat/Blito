@@ -8,6 +8,7 @@ import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.event.AdditionalField;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
+import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -124,14 +125,15 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         });
         shouldDelete.forEach(event::removeEventDateById);
 
-        vmodel.getEventDates().forEach(edvm -> {
-            Optional<EventDate> optionalEventDate = event.getEventDates().stream().filter(ed -> ed.getEventDateId() == edvm.getEventDateId()).findFirst();
-            if (optionalEventDate.isPresent()) {
-                eventDateMapper.updateEntity(edvm, optionalEventDate.get());
-            } else {
-                event.addEventDate(eventDateMapper.createFromViewModel(edvm));
-            }
-        });
+        vmodel.getEventDates().forEach(edvm ->
+            Option.ofOptional(event.getEventDates()
+                    .stream()
+                    .filter(eventDate -> edvm.getEventDateId() > 0 && eventDate.getEventDateId() == edvm.getEventDateId())
+                    .findFirst())
+                    .peek(eventDate -> eventDateMapper.updateEntity(edvm, eventDate))
+                    .onEmpty(() -> event.getEventDates().add(eventDateMapper.createFromViewModel(edvm)))
+        );
+
         event.setPrivate(vmodel.isPrivate());
         Optional.ofNullable(vmodel.getSalonUid()).filter(salonUid -> !salonUid.isEmpty())
                 .ifPresent(salonUid -> {

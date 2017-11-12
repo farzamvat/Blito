@@ -56,17 +56,14 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 		});
 		shouldDelete.forEach(eventDate::removeBlitTypeById);
 		
-		vmodel.getBlitTypes().forEach(bvm -> {
-			Optional<BlitType> optionalBlitType =
-					eventDate.getBlitTypes().stream().filter(b -> b.getBlitTypeId() == bvm.getBlitTypeId()).findFirst();
-			if(optionalBlitType.isPresent())
-			{
-				blitTypeMapper.updateEntity(bvm, optionalBlitType.get());
-			}
-			else {
-				eventDate.addBlitType(blitTypeMapper.createFromViewModel(bvm));
-			}
-		});
+		vmodel.getBlitTypes().forEach(bvm ->
+			Option.ofOptional(eventDate.getBlitTypes()
+					.stream()
+					.filter(b -> bvm.getBlitTypeId() > 0 && b.getBlitTypeId() == bvm.getBlitTypeId())
+					.findFirst())
+					.peek(blitType -> blitTypeMapper.updateEntity(bvm,blitType))
+					.onEmpty(() -> eventDate.addBlitType(blitTypeMapper.createFromViewModel(bvm)))
+		);
 	
 		eventDate.setEventDateState(State.CLOSED.name());
 		return eventDate;

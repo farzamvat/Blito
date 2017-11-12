@@ -116,19 +116,38 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
             BlitTypeViewModel blitTypeViewModel = new BlitTypeViewModel();
             blitTypeViewModel.setName("update");
             blitTypeViewModel.setFree(false);
-            blitTypeViewModel.setCapacity(7);
+            blitTypeViewModel.setCapacity(8);
             blitTypeViewModel.setPrice(1000);
             blitTypeViewModel.setSeatUids(new HashSet<>());
-            eventDateViewModel.getBlitTypes().add(blitTypeViewModel);
+
             salon.getSections()
                     .stream()
                     .flatMap(section -> section.getRows().stream())
                     .filter(row -> row.getName().equals("2"))
                     .flatMap(row -> row.getSeats().stream())
                     .sorted(Comparator.comparing(Seat::getName))
-                    .limit(7)
+//                    .limit(8)
                     .forEachOrdered(seat -> blitTypeViewModel.getSeatUids().add(seat.getUid()));
-        });
+            eventDateViewModel.setBlitTypes(new HashSet<>(Collections.singletonList(blitTypeViewModel)));
+
+
+            BlitTypeViewModel blitTypeViewModel2 = new BlitTypeViewModel();
+            blitTypeViewModel2.setName("update2");
+            blitTypeViewModel2.setFree(false);
+            blitTypeViewModel2.setCapacity(8);
+            blitTypeViewModel2.setPrice(5000);
+            blitTypeViewModel2.setSeatUids(new HashSet<>());
+
+            salon.getSections()
+                    .stream()
+                    .flatMap(section -> section.getRows().stream())
+                    .filter(row -> row.getName().equals("1"))
+                    .flatMap(row -> row.getSeats().stream())
+                    .sorted(Comparator.comparing(Seat::getName))
+                    .forEachOrdered(seat -> blitTypeViewModel2.getSeatUids().add(seat.getUid()));
+            eventDateViewModel.getBlitTypes().add(blitTypeViewModel2);
+         });
+
 
         Response response = givenRestIntegration()
                 .body(responseViewModel)
