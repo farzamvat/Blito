@@ -13,6 +13,7 @@ import com.blito.rest.viewmodels.blit.ReservedBlitViewModel;
 import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
+import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 import com.blito.rest.viewmodels.payments.ZarinpalPayRequestResponseViewModel;
 import com.blito.search.Operation;
@@ -32,6 +33,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.io.File;
+import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -116,19 +119,38 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
             BlitTypeViewModel blitTypeViewModel = new BlitTypeViewModel();
             blitTypeViewModel.setName("update");
             blitTypeViewModel.setFree(false);
-            blitTypeViewModel.setCapacity(7);
+            blitTypeViewModel.setCapacity(8);
             blitTypeViewModel.setPrice(1000);
             blitTypeViewModel.setSeatUids(new HashSet<>());
-            eventDateViewModel.getBlitTypes().add(blitTypeViewModel);
+
             salon.getSections()
                     .stream()
                     .flatMap(section -> section.getRows().stream())
                     .filter(row -> row.getName().equals("2"))
                     .flatMap(row -> row.getSeats().stream())
                     .sorted(Comparator.comparing(Seat::getName))
-                    .limit(7)
+//                    .limit(8)
                     .forEachOrdered(seat -> blitTypeViewModel.getSeatUids().add(seat.getUid()));
-        });
+            eventDateViewModel.setBlitTypes(new HashSet<>(Collections.singletonList(blitTypeViewModel)));
+
+
+            BlitTypeViewModel blitTypeViewModel2 = new BlitTypeViewModel();
+            blitTypeViewModel2.setName("update2");
+            blitTypeViewModel2.setFree(false);
+            blitTypeViewModel2.setCapacity(8);
+            blitTypeViewModel2.setPrice(5000);
+            blitTypeViewModel2.setSeatUids(new HashSet<>());
+
+            salon.getSections()
+                    .stream()
+                    .flatMap(section -> section.getRows().stream())
+                    .filter(row -> row.getName().equals("1"))
+                    .flatMap(row -> row.getSeats().stream())
+                    .sorted(Comparator.comparing(Seat::getName))
+                    .forEachOrdered(seat -> blitTypeViewModel2.getSeatUids().add(seat.getUid()));
+            eventDateViewModel.getBlitTypes().add(blitTypeViewModel2);
+         });
+
 
         Response response = givenRestIntegration()
                 .body(responseViewModel)
@@ -363,5 +385,122 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
 
         User user = userRepository.findByEmail("blito.adm@gmail.com").get();
         Map<String, Object> map = seatBlitService.generateReservedBlit(reservedBlitViewModel, user);
+    }
+
+
+    @Test
+    public void createAndUpdateEventTest() {
+        EventHostViewModel eventHostViewModel = new EventHostViewModel();
+        eventHostViewModel.setHostName("createAndUpdateEvent(Host)");
+        eventHostViewModel.setDescription("description");
+        eventHostViewModel.setHostType(HostType.INDIVIDUAL);
+        eventHostViewModel.setTelephone("88002116");
+
+        eventHostViewModel = givenRestIntegration()
+                .body(eventHostViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/event-hosts")
+                .then().statusCode(201).extract().body().as(EventHostViewModel.class);
+
+        EventViewModel eventViewModel = createSampleEventViewModel(eventHostViewModel, "createAndUpdateEvent");
+        Salon salon = getTestSalonSchema();
+        eventViewModel.setSalonUid(salon.getUid());
+        EventDateViewModel eventDateViewModel = new EventDateViewModel();
+        eventDateViewModel.setDate(Timestamp.from(ZonedDateTime.now().plusDays(10).toInstant()));
+        eventDateViewModel.setHasSalon(true);
+        BlitTypeViewModel blitTypeViewModel = new BlitTypeViewModel();
+        blitTypeViewModel.setName("createBlitType");
+        blitTypeViewModel.setPrice(1000);
+        blitTypeViewModel.setCapacity(16);
+        blitTypeViewModel.setFree(false);
+        blitTypeViewModel.setSeatUids(salon.getSections()
+                .stream()
+                .flatMap(section -> section.getRows().stream())
+                .flatMap(row -> row.getSeats().stream())
+                .map(Seat::getUid).collect(Collectors.toSet()));
+        eventDateViewModel.setBlitTypes(new HashSet<>(Collections.singletonList(blitTypeViewModel)));
+        eventViewModel.setEventDates(new HashSet<>(Collections.singletonList(eventDateViewModel)));
+
+        EventViewModel responseViewModel = givenRestIntegration()
+                .body(eventViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/events")
+                .then().statusCode(201).extract().body().as(EventViewModel.class);
+
+        EventDateViewModel eventDateViewModel1 = new EventDateViewModel();
+        EventDateViewModel eventDateViewModel2 = new EventDateViewModel();
+
+        BlitTypeViewModel blitTypeViewModel1_1 = new BlitTypeViewModel();
+        BlitTypeViewModel blitTypeViewModel1_2 = new BlitTypeViewModel();
+        BlitTypeViewModel blitTypeViewModel2_1 = new BlitTypeViewModel();
+        BlitTypeViewModel blitTypeViewModel2_2 = new BlitTypeViewModel();
+
+        eventDateViewModel1.setDate(Timestamp.from(ZonedDateTime.now().plusDays(10).toInstant()));
+        eventDateViewModel1.setHasSalon(true);
+
+        eventDateViewModel2.setDate(Timestamp.from(ZonedDateTime.now().plusDays(9).toInstant()));
+        eventDateViewModel2.setHasSalon(true);
+
+        blitTypeViewModel1_1.setName("sans1update1");
+        blitTypeViewModel1_1.setPrice(5000);
+        blitTypeViewModel1_1.setCapacity(8);
+        blitTypeViewModel1_1.setFree(false);
+        blitTypeViewModel1_1.setSeatUids(salon.getSections()
+                .stream()
+                .flatMap(section -> section.getRows().stream())
+                .filter(row -> row.getName().equals("1"))
+                .flatMap(row -> row.getSeats().stream())
+                .map(Seat::getUid).collect(Collectors.toSet()));
+
+        blitTypeViewModel1_2.setName("sans1update2");
+        blitTypeViewModel1_2.setPrice(2000);
+        blitTypeViewModel1_2.setCapacity(8);
+        blitTypeViewModel1_2.setFree(false);
+        blitTypeViewModel1_2.setSeatUids(salon.getSections()
+                .stream()
+                .flatMap(section -> section.getRows().stream())
+                .filter(row -> row.getName().equals("2"))
+                .flatMap(row -> row.getSeats().stream())
+                .map(Seat::getUid).collect(Collectors.toSet()));
+
+        eventDateViewModel1.setBlitTypes(new HashSet<>(Arrays.asList(blitTypeViewModel1_1, blitTypeViewModel1_2)));
+
+        blitTypeViewModel2_1.setName("sans2update1");
+        blitTypeViewModel2_1.setPrice(5000);
+        blitTypeViewModel2_1.setCapacity(8);
+        blitTypeViewModel2_1.setFree(false);
+        blitTypeViewModel2_1.setSeatUids(salon.getSections()
+                .stream()
+                .flatMap(section -> section.getRows().stream())
+                .filter(row -> row.getName().equals("1"))
+                .flatMap(row -> row.getSeats().stream())
+                .map(Seat::getUid).collect(Collectors.toSet()));
+
+        blitTypeViewModel2_2.setName("sans2update2");
+        blitTypeViewModel2_2.setPrice(2000);
+        blitTypeViewModel2_2.setCapacity(8);
+        blitTypeViewModel2_2.setFree(false);
+        blitTypeViewModel2_2.setSeatUids(salon.getSections()
+                .stream()
+                .flatMap(section -> section.getRows().stream())
+                .filter(row -> row.getName().equals("2"))
+                .flatMap(row -> row.getSeats().stream())
+                .map(Seat::getUid).collect(Collectors.toSet()));
+
+        eventDateViewModel2.setBlitTypes(new HashSet<>(Arrays.asList(blitTypeViewModel2_1, blitTypeViewModel2_2)));
+
+        responseViewModel.setEventDates(new HashSet<>(Arrays.asList(eventDateViewModel1, eventDateViewModel2)));
+
+
+        Response response = givenRestIntegration()
+                .body(responseViewModel)
+                .when()
+                .put(getServerAddress() + "/api/blito/v1.0/events");
+        response.then().statusCode(202);
+        EventViewModel updateResponseViewModel =  response.thenReturn().body().as(EventViewModel.class);
+        updateResponseViewModel.getEventName();
+
+
+
     }
 }
