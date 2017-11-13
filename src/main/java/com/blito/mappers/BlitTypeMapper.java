@@ -59,6 +59,7 @@ public class BlitTypeMapper implements GenericMapper<BlitType,BlitTypeViewModel>
 		vmodel.setBlitTypeState(Enum.valueOf(State.class, blitType.getBlitTypeState()));
 		vmodel.setFree(blitType.isFree());
 		vmodel.setSoldCount(blitType.getSoldCount());
+		vmodel.setHasSeat(!blitType.getBlitTypeSeats().isEmpty());
 		return vmodel;
 	}
 

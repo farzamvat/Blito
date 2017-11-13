@@ -141,6 +141,7 @@ public class PaymentService {
 		seatBlit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 		seatBlit.setPaymentStatus(PaymentStatus.PAID.name());
 		seatBlit.setPaymentError(ResourceUtil.getMessage(Response.PAYMENT_SUCCESS));
+		// TODO: 11/12/17 bug 
 		BlitType blitType = seatBlit.getBlitTypeSeats().stream().findAny().map(BlitTypeSeat::getBlitType).get();
 		blitType.setSoldCount(blitType.getSoldCount() + seatBlit.getCount());
 		log.info("****** NONE FREE SEAT BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}' AND BLIT TYPE CAPACITY IS '{}'",
