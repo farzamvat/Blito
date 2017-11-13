@@ -70,6 +70,10 @@ angular.module('blitoDirectives')
                 seatMapSeries.data(wholeSalonData);
                 chart.title(svgData.schema.name.toString());
                 chart.contextMenu(false);
+                chart.labels(true);
+                var chartLabels=chart.labels();
+                chart.labels({fontSize: 18});
+                chartLabels.format("{%info}");
 
                 var seatClickFunction = function (e) {
                     if (scope.pickedSeats.indexOf(e.domTarget.dd) === -1) {
@@ -138,10 +142,12 @@ angular.module('blitoDirectives')
                     legend.enabled(true)
                         .position('right')
                         .itemsLayout('vertical')
+                        .title("انتخاب ردیف")
                         .removeAllListeners()
                     ;
 
-
+                    legend.title({fontSize:20});
+                    legendItem.itemsFormat
                     legend.listen("click", legendListener);
 
                     sectionsChart[sectionIndex].chart.labels(true);
