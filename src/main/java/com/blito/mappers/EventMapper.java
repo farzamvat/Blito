@@ -131,9 +131,8 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
                     .filter(eventDate -> edvm.getEventDateId() > 0 && eventDate.getEventDateId() == edvm.getEventDateId())
                     .findFirst())
                     .peek(eventDate -> eventDateMapper.updateEntity(edvm, eventDate))
-                    .onEmpty(() -> event.getEventDates().add(eventDateMapper.createFromViewModel(edvm)))
+                    .onEmpty(() -> event.addEventDate(eventDateMapper.createFromViewModel(edvm)))
         );
-
         event.setPrivate(vmodel.isPrivate());
         Optional.ofNullable(vmodel.getSalonUid()).filter(salonUid -> !salonUid.isEmpty())
                 .ifPresent(salonUid -> {
