@@ -29,6 +29,7 @@ import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PaymentService {
@@ -141,12 +142,25 @@ public class PaymentService {
 		seatBlit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 		seatBlit.setPaymentStatus(PaymentStatus.PAID.name());
 		seatBlit.setPaymentError(ResourceUtil.getMessage(Response.PAYMENT_SUCCESS));
-		// TODO: 11/12/17 bug 
-		BlitType blitType = seatBlit.getBlitTypeSeats().stream().findAny().map(BlitTypeSeat::getBlitType).get();
-		blitType.setSoldCount(blitType.getSoldCount() + seatBlit.getCount());
-		log.info("****** NONE FREE SEAT BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}' AND BLIT TYPE CAPACITY IS '{}'",
-				seatBlit.getCustomerEmail(),blitType.getSoldCount(),blitType.getCapacity());
-		seatBlitService.checkBlitTypeSoldConditionAndSetEventDateEventStateSold(blitType);
+		// TODO: 11/12/17 bug
+
+		seatBlit.getBlitTypeSeats()
+				.stream()
+				.collect(Collectors.toMap(BlitTypeSeat::getBlitType,v ->
+						seatBlit.getBlitTypeSeats()
+						.stream()
+						.map(BlitTypeSeat::getBlitType)
+						.filter(blitType -> blitType.getBlitTypeId() == v.getBlitType().getBlitTypeId())
+						.count(),(count1,count2) -> count1 + count2))
+				.forEach((blitType,totalCount) -> blitType.setSoldCount(blitType.getSoldCount() + totalCount.intValue()));
+
+
+//		BlitType blitType = seatBlit.getBlitTypeSeats().stream().findAny().map(BlitTypeSeat::getBlitType).get();
+//		blitType.setSoldCount(blitType.getSoldCount() + seatBlit.getCount());
+//		log.info("****** NONE FREE SEAT BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}' AND BLIT TYPE CAPACITY IS '{}'",
+//				seatBlit.getCustomerEmail(),blitType.getSoldCount(),blitType.getCapacity());
+//		seatBlitService.checkBlitTypeSoldConditionAndSetEventDateEventStateSold(blitType);
+		seatBlit.getBlitTypeSeats().stream().map(BlitTypeSeat::getBlitType).forEach(seatBlitService::checkBlitTypeSoldConditionAndSetEventDateEventStateSold);
 		seatBlit.getBlitTypeSeats().forEach(blitTypeSeat -> {
 			blitTypeSeat.setState(BlitTypeSeatState.SOLD.name());
 			blitTypeSeat.setSoldDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
