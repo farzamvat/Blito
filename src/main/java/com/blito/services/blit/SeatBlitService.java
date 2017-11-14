@@ -2,6 +2,7 @@ package com.blito.services.blit;
 
 import com.blito.configs.Constants;
 import com.blito.enums.*;
+import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.exceptions.SeatException;
@@ -12,6 +13,7 @@ import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.blit.ReservedBlitViewModel;
 import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
 import com.blito.rest.viewmodels.blit.SeatErrorViewModel;
+import com.blito.rest.viewmodels.discount.SeatBlitDiscountValidationViewModel;
 import com.blito.rest.viewmodels.payments.PaymentRequestViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.services.ExcelService;
@@ -125,15 +127,14 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
     @Override
     public Object createBlitAuthorized(SeatBlitViewModel viewModel, User user) {
         SeatBlit seatBlit = seatBlitMapper.createFromViewModel(viewModel);
-        BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(viewModel.getBlitTypeId()))
-                .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
-        checkBlitTypeRestrictionsForBuy(blitType,seatBlit);
-        validateAdditionalFields(blitType.getEventDate().getEvent(),seatBlit);
-        Set<BlitTypeSeat> blitTypeSeats;
+
+        Set<BlitTypeSeat> blitTypeSeats = blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
+        blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).distinct().forEach(this::checkBlitTypeRestrictionsForBuy);
+        EventDate eventDate = blitTypeSeats.stream().findAny().map(BlitTypeSeat::getBlitType).map(BlitType::getEventDate)
+                .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
+        validateAdditionalFields(eventDate.getEvent(),seatBlit);
         synchronized (reserveSeatBlitLock) {
             log.info("User with email '{}' hold reserveSeatBlitLock",user.getEmail());
-            blitTypeSeats =
-                    blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
             validateSeatBlitForBuy(blitTypeSeats);
             blitTypeSeats.forEach(blitTypeSeat -> {
                 blitTypeSeat.setState(BlitTypeSeatState.RESERVED.name());
@@ -146,49 +147,83 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
             });
         }
         log.info("User with email '{}' released reserveSeatBlitLock",user.getEmail());
-        salonService.validateNoIndividualSeat(salonService.populateSeatInformationInSalonSchemaByEventDateId(blitType.getEventDate().getEventDateId()).getSchema());
+        salonService.validateNoIndividualSeat(salonService.populateSeatInformationInSalonSchemaByEventDateId(eventDate.getEventDateId()).getSchema());
         seatBlit.setBlitTypeSeats(blitTypeSeats);
-        return blitPurchaseAuthorized(blitType,viewModel,user,seatBlit);
+        return blitPurchaseAuthorizedSeatBlit(viewModel,user,seatBlit);
+    }
+
+    private Object blitPurchaseAuthorizedSeatBlit(SeatBlitViewModel viewModel,User user,SeatBlit seatBlit) {
+        if (seatBlit.getBlitTypeSeats().stream().map(BlitTypeSeat::getBlitType).allMatch(BlitType::isFree)) {
+            return reserveFreeBlitForAuthorizedUser(viewModel,seatBlit,user);
+        } else {
+            validateDiscountCodeIfPresentAndCalculateTotalAmount(viewModel,seatBlit);
+            seatBlit.setTrackCode(generateTrackCode());
+            return Option.of(paymentRequestService.createPurchaseRequest(seatBlit))
+                    .map(token -> persistBlit(seatBlit,Optional.of(user),token))
+                    .map(b -> paymentRequestService.createZarinpalResponse(b.getToken()))
+                    .getOrElseThrow(() -> new RuntimeException("Never Happerns"));
+        }
     }
 
 
-
     @Transactional
-    @Override
-    public SeatBlitViewModel reserveFreeBlitForAuthorizedUser(BlitType blitType, SeatBlit seatBlit, User user) {
+    public SeatBlitViewModel reserveFreeBlitForAuthorizedUser(SeatBlitViewModel seatBlitViewModel, SeatBlit seatBlit, User user) {
         if(seatBlit.getCount() > 10) {
             throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_COUNT_EXCEEDS_LIMIT));
         }
         if(seatBlit.getCount() +
-                blitTypeSeatRepository.countByBlitTypeBlitTypeIdAndSeatBlitCustomerEmail(blitType.getBlitTypeId(),seatBlit.getCustomerEmail())
+                blitTypeSeatRepository.countByBlitTypeEventDateEventDateIdAndSeatBlitCustomerEmail(seatBlitViewModel.getEventDateId(),seatBlit.getCustomerEmail())
                 > 10) {
             throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_COUNT_EXCEEDS_LIMIT_TOTAL));
         }
 
         final SeatBlitViewModel responseBlit = seatBlitMapper
-                .createFromEntity(reserveFreeBlit(blitType,seatBlit,user));
+                .createFromEntity(reserveFreeBlit(seatBlit,user));
         log.info("User with email '{}' reserved free seat blit",user.getEmail());
 
 		sendEmailAndSmsForPurchasedBlit(responseBlit);
         return responseBlit;
     }
 
+    private void validateDiscountCodeIfPresentAndCalculateTotalAmount(SeatBlitViewModel seatBlitViewModel,SeatBlit seatBlit) {
+        Option.of(seatBlit.getDiscountCode())
+                .filter(code -> !code.isEmpty())
+                .peek(code -> {
+                    SeatBlitDiscountValidationViewModel discountValidationViewModel =
+                            discountService.validateDiscountCodeBeforePurchaseRequestForSeatBlit(seatBlitViewModel);
+                    if(discountValidationViewModel.getValid()) {
+                        if(!discountValidationViewModel.getTotalAmount().equals(seatBlit.getTotalAmount())) {
+                            throw new NotAllowedException(ResourceUtil.getMessage(Response.DISCOUNT_CODE_NOT_VALID));
+                        } else if(seatBlit.getBlitTypeSeats().stream().map(BlitTypeSeat::getBlitType).mapToLong(BlitType::getPrice).sum() != seatBlit.getPrimaryAmount()) {
+                            throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
+                        }
+                    } else {
+                        throw new NotAllowedException(ResourceUtil.getMessage(Response.DISCOUNT_CODE_NOT_VALID));
+                    }
+                }).onEmpty(() -> {
+                    seatBlit.setPrimaryAmount(seatBlit.getTotalAmount());
+                    if(seatBlit.getBlitTypeSeats().stream().map(BlitTypeSeat::getBlitType).mapToLong(BlitType::getPrice).sum() != seatBlit.getTotalAmount()) {
+                        throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
+                    }
+                });
+    }
+
     @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @Override
     public PaymentRequestViewModel createUnauthorizedAndNoneFreeBlits(SeatBlitViewModel viewModel) {
         SeatBlit seatBlit = seatBlitMapper.createFromViewModel(viewModel);
-        BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(viewModel.getBlitTypeId()))
-                .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
-        if (blitType.isFree())
+
+        Set<BlitTypeSeat> blitTypeSeats = blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
+        blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).distinct().forEach(this::checkBlitTypeRestrictionsForBuy);
+        if(blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).anyMatch(BlitType::isFree)) {
             throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
-        checkBlitTypeRestrictionsForBuy(blitType,seatBlit);
-        validateAdditionalFields(blitType.getEventDate().getEvent(),seatBlit);
-        validateDiscountCodeIfPresentAndCalculateTotalAmount(viewModel,seatBlit,blitType);
-        Set<BlitTypeSeat> blitTypeSeats;
+        }
+        EventDate eventDate = blitTypeSeats.stream().findAny().map(BlitTypeSeat::getBlitType).map(BlitType::getEventDate)
+                .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
+        validateAdditionalFields(eventDate.getEvent(),seatBlit);
+
         synchronized (reserveSeatBlitLock) {
             log.info("unauthorized user with email '{}' hold reserveSeatBlitLock",viewModel.getCustomerEmail());
-            blitTypeSeats =
-                    blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
             validateSeatBlitForBuy(blitTypeSeats);
             blitTypeSeats.forEach(blitTypeSeat -> {
                 blitTypeSeat.setState(BlitTypeSeatState.RESERVED.name());
@@ -201,17 +236,17 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
             });
         }
         log.info("unauthorized user with email '{}' released reserveSeatBlitLock",viewModel.getCustomerEmail());
-        salonService.validateNoIndividualSeat(salonService.populateSeatInformationInSalonSchemaByEventDateId(blitType.getEventDate().getEventDateId()).getSchema());
+        salonService.validateNoIndividualSeat(salonService.populateSeatInformationInSalonSchemaByEventDateId(eventDate.getEventDateId()).getSchema());
         seatBlit.setTrackCode(generateTrackCode());
+        validateDiscountCodeIfPresentAndCalculateTotalAmount(viewModel,seatBlit);
         return Option.of(paymentRequestService.createPurchaseRequest(seatBlit))
-                .map(token -> persistBlit(blitType,seatBlit,Optional.empty(),token))
+                .map(token -> persistBlit(seatBlit,Optional.empty(),token))
                 .map(blit -> paymentRequestService.createZarinpalResponse(blit.getToken()))
                 .getOrElseThrow(() -> new RuntimeException("Never Happens"));
     }
 
     @Transactional
-    @Override
-    protected SeatBlit persistBlit(BlitType blitType, SeatBlit seatBlit, Optional<User> userOptional, String token) {
+    protected SeatBlit persistBlit(SeatBlit seatBlit, Optional<User> userOptional, String token) {
         userOptional.ifPresent(user -> {
             User attachedUser = userRepository.findOne(user.getUserId());
             seatBlit.setUser(attachedUser);
@@ -224,12 +259,22 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
     }
 
     @Transactional
-    @Override
-    protected SeatBlit reserveFreeBlit(BlitType blitType, SeatBlit seatBlit, User user) {
+    protected SeatBlit reserveFreeBlit(SeatBlit seatBlit, User user) {
         User attachedUser = userRepository.findOne(user.getUserId());
-        BlitType attachedBlitType = increaseSoldCount(blitType.getBlitTypeId(),seatBlit);
-        log.info("****** FREE SEAT BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}'", user.getEmail(),
-                attachedBlitType.getSoldCount());
+        seatBlit.getBlitTypeSeats()
+                .stream()
+                .collect(Collectors.toMap(BlitTypeSeat::getBlitType,v ->
+                        seatBlit.getBlitTypeSeats()
+                                .stream()
+                                .map(BlitTypeSeat::getBlitType)
+                                .filter(blitType -> blitType.getBlitTypeId() == v.getBlitType().getBlitTypeId())
+                                .count(),(count1,count2) -> count1 + count2))
+                .forEach((blitType,totalCount) -> {
+                    blitType.setSoldCount(blitType.getSoldCount() + totalCount.intValue());
+                    checkBlitTypeSoldConditionAndSetEventDateEventStateSold(blitType);
+                    log.info("****** FREE SEAT BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}'", user.getEmail(),
+                            blitType.getSoldCount());
+                });
         seatBlit.setTrackCode(generateTrackCode());
         seatBlit.setUser(attachedUser);
         seatBlit.setTotalAmount(0L);

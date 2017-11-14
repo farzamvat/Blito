@@ -53,7 +53,6 @@ public class SeatBlitMapper implements GenericMapper<SeatBlit,SeatBlitViewModel>
         vmodel.setPrimaryAmount(blit.getPrimaryAmount());
         vmodel.setBlitId(blit.getBlitId());
         BlitType blitType = blit.getBlitTypeSeats().stream().findAny().get().getBlitType();
-        vmodel.setBlitTypeId(blitType.getBlitTypeId());
         vmodel.setCount(blit.getCount());
         vmodel.setTotalAmount(blit.getTotalAmount());
         vmodel.setTrackCode(blit.getTrackCode());

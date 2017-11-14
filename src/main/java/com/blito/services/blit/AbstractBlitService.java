@@ -5,7 +5,6 @@ import com.blito.enums.Response;
 import com.blito.enums.SeatType;
 import com.blito.enums.State;
 import com.blito.exceptions.AdditionalFieldsValidationException;
-import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.ResourceNotFoundException;
 import com.blito.mappers.CommonBlitMapper;
@@ -19,13 +18,11 @@ import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.blit.AbstractBlitViewModel;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
-import com.blito.rest.viewmodels.discount.DiscountValidationViewModel;
 import com.blito.rest.viewmodels.payments.PaymentRequestViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.services.*;
 import com.blito.services.util.HtmlRenderer;
 import io.vavr.concurrent.Future;
-import io.vavr.control.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +35,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * @author Farzam Vatanzadeh
@@ -56,7 +52,7 @@ public abstract class AbstractBlitService <E extends Blit,V extends AbstractBlit
     protected MailService mailService;
     protected SmsService smsService;
     protected HtmlRenderer htmlRenderer;
-    private DiscountService discountService;
+    protected DiscountService discountService;
     protected BlitTypeRepository blitTypeRepository;
     PaymentRequestService paymentRequestService;
     CommonBlitRepository commonBlitRepository;
@@ -115,23 +111,8 @@ public abstract class AbstractBlitService <E extends Blit,V extends AbstractBlit
     public abstract Map<String,Object> searchBlitsForExcel(SearchViewModel<E> searchViewModel);
     public abstract Page<V> searchBlits(SearchViewModel<E> searchViewModel, Pageable pageable);
     public abstract Object createBlitAuthorized(V viewModel, User user);
-    public abstract V reserveFreeBlitForAuthorizedUser(BlitType blitType, E blit, User user);
     public abstract PaymentRequestViewModel createUnauthorizedAndNoneFreeBlits(V viewModel);
-    protected abstract E persistBlit(BlitType blitType,E blit,Optional<User> userOptional,String token);
-    protected abstract E reserveFreeBlit(BlitType blitType, E blit, User user);
 
-    Object blitPurchaseAuthorized(BlitType blitType, V viewModel, User user, E blit) {
-        if (blitType.isFree()) {
-            return reserveFreeBlitForAuthorizedUser(blitType,blit,user);
-        } else {
-            validateDiscountCodeIfPresentAndCalculateTotalAmount(viewModel,blit,blitType);
-            blit.setTrackCode(generateTrackCode());
-            return Option.of(paymentRequestService.createPurchaseRequest(blit))
-                    .map(token -> persistBlit(blitType,blit,Optional.of(user),token))
-                    .map(b -> paymentRequestService.createZarinpalResponse(b.getToken()))
-                    .getOrElseThrow(() -> new RuntimeException("Never Happens"));
-        }
-    }
 
     BlitType increaseSoldCount(long blitTypeId,E blit) {
         BlitType blitType = blitTypeRepository.findOne(blitTypeId);
@@ -163,7 +144,7 @@ public abstract class AbstractBlitService <E extends Blit,V extends AbstractBlit
             }
         }
     }
-    void checkBlitTypeRestrictionsForBuy(BlitType blitType, E blit) {
+    void checkBlitTypeRestrictionsForBuy(BlitType blitType) {
 
         if (blitType.getBlitTypeState().equals(State.SOLD.name()))
             throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_TYPE_SOLD));
@@ -176,31 +157,6 @@ public abstract class AbstractBlitService <E extends Blit,V extends AbstractBlit
         if(!blitType.getEventDate().getEventDateState().equals(State.OPEN.name())) {
             throw new NotAllowedException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_OPEN));
         }
-        if (blit.getCount() + blitType.getSoldCount() > blitType.getCapacity())
-            throw new InconsistentDataException(
-                    ResourceUtil.getMessage(Response.REQUESTED_BLIT_COUNT_IS_MORE_THAN_CAPACITY));
-    }
-
-    void validateDiscountCodeIfPresentAndCalculateTotalAmount(V vmodel, E blit, BlitType blitType) {
-        Option.of(vmodel.getDiscountCode())
-                .filter(code -> !code.isEmpty())
-                .peek(code -> {
-                    DiscountValidationViewModel discountValidationViewModel = discountService.validateDiscountCodeBeforePurchaseRequest(vmodel.getBlitTypeId(),code,vmodel.getCount());
-                    if(discountValidationViewModel.isValid()) {
-                        if(!discountValidationViewModel.getTotalAmount().equals(blit.getTotalAmount())) {
-                            throw new NotAllowedException(ResourceUtil.getMessage(Response.DISCOUNT_CODE_NOT_VALID));
-                        } else if (blit.getCount() * blitType.getPrice() != blit.getPrimaryAmount()) {
-                            throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
-                        }
-                    }
-                    else {
-                        throw new NotAllowedException(ResourceUtil.getMessage(Response.DISCOUNT_CODE_NOT_VALID));
-                    }
-                }).onEmpty(() -> {
-            blit.setPrimaryAmount(blit.getTotalAmount());
-            if (blit.getCount() * blitType.getPrice() != blit.getTotalAmount())
-                throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
-        });
     }
 
     public Object getBlitByTrackCode(String trackCode) {

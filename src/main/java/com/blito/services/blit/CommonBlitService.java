@@ -4,6 +4,7 @@ import com.blito.enums.BankGateway;
 import com.blito.enums.PaymentStatus;
 import com.blito.enums.Response;
 import com.blito.enums.SeatType;
+import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.models.BlitType;
@@ -12,6 +13,7 @@ import com.blito.models.User;
 import com.blito.repositories.BlitRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
+import com.blito.rest.viewmodels.discount.DiscountValidationViewModel;
 import com.blito.rest.viewmodels.payments.PaymentRequestViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.services.ExcelService;
@@ -45,6 +47,19 @@ public class CommonBlitService extends AbstractBlitService<CommonBlit,CommonBlit
     @Autowired
     private BlitRepository blitRepository;
 
+    private Object blitPurchaseAuthorizedCommonBlit(BlitType blitType, CommonBlitViewModel viewModel, User user, CommonBlit blit) {
+        if (blitType.isFree()) {
+            return reserveFreeBlitForAuthorizedUser(blitType,blit,user);
+        } else {
+            validateDiscountCodeIfPresentAndCalculateTotalAmount(viewModel,blit,blitType);
+            blit.setTrackCode(generateTrackCode());
+            return Option.of(paymentRequestService.createPurchaseRequest(blit))
+                    .map(token -> persistBlit(blitType,blit,Optional.of(user),token))
+                    .map(b -> paymentRequestService.createZarinpalResponse(b.getToken()))
+                    .getOrElseThrow(() -> new RuntimeException("Never Happens"));
+        }
+    }
+
     @Transactional
     @Override
     public Map<String, Object> searchBlitsForExcel(SearchViewModel<CommonBlit> searchViewModel) {
@@ -71,12 +86,13 @@ public class CommonBlitService extends AbstractBlitService<CommonBlit,CommonBlit
         BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(viewModel.getBlitTypeId()))
                 .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
         checkBlitTypeRestrictionsForBuy(blitType,blit);
+        if (blit.getCount() + blitType.getSoldCount() > blitType.getCapacity())
+            throw new InconsistentDataException(ResourceUtil.getMessage(Response.REQUESTED_BLIT_COUNT_IS_MORE_THAN_CAPACITY));
         validateAdditionalFields(blitType.getEventDate().getEvent(),blit);
-        return blitPurchaseAuthorized(blitType,viewModel,user,blit);
+        return blitPurchaseAuthorizedCommonBlit(blitType,viewModel,user,blit);
     }
 
     @Transactional
-    @Override
     public CommonBlitViewModel reserveFreeBlitForAuthorizedUser(BlitType blitType, CommonBlit commonBlit, User user) {
         if (commonBlit.getCount() > 10)
             throw new NotAllowedException(ResourceUtil.getMessage(Response.BLIT_COUNT_EXCEEDS_LIMIT));
@@ -99,6 +115,28 @@ public class CommonBlitService extends AbstractBlitService<CommonBlit,CommonBlit
         return responseBlit;
     }
 
+    private void validateDiscountCodeIfPresentAndCalculateTotalAmount(CommonBlitViewModel vmodel, CommonBlit blit, BlitType blitType) {
+        Option.of(vmodel.getDiscountCode())
+                .filter(code -> !code.isEmpty())
+                .peek(code -> {
+                    DiscountValidationViewModel discountValidationViewModel = discountService.validateDiscountCodeBeforePurchaseRequestForCommonBlit(vmodel.getBlitTypeId(),code,vmodel.getCount());
+                    if(discountValidationViewModel.isValid()) {
+                        if(!discountValidationViewModel.getTotalAmount().equals(blit.getTotalAmount())) {
+                            throw new NotAllowedException(ResourceUtil.getMessage(Response.DISCOUNT_CODE_NOT_VALID));
+                        } else if (blit.getCount() * blitType.getPrice() != blit.getPrimaryAmount()) {
+                            throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
+                        }
+                    }
+                    else {
+                        throw new NotAllowedException(ResourceUtil.getMessage(Response.DISCOUNT_CODE_NOT_VALID));
+                    }
+                }).onEmpty(() -> {
+            blit.setPrimaryAmount(blit.getTotalAmount());
+            if (blit.getCount() * blitType.getPrice() != blit.getTotalAmount())
+                throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_TOTAL_AMOUNT));
+        });
+    }
+
     @Transactional
     @Override
     public PaymentRequestViewModel createUnauthorizedAndNoneFreeBlits(CommonBlitViewModel viewModel) {
@@ -108,6 +146,8 @@ public class CommonBlitService extends AbstractBlitService<CommonBlit,CommonBlit
         if (blitType.isFree())
             throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
         checkBlitTypeRestrictionsForBuy(blitType,commonBlit);
+        if (commonBlit.getCount() + blitType.getSoldCount() > blitType.getCapacity())
+            throw new InconsistentDataException(ResourceUtil.getMessage(Response.REQUESTED_BLIT_COUNT_IS_MORE_THAN_CAPACITY));
         validateAdditionalFields(blitType.getEventDate().getEvent(),commonBlit);
         validateDiscountCodeIfPresentAndCalculateTotalAmount(viewModel,commonBlit,blitType);
         commonBlit.setTrackCode(generateTrackCode());
@@ -118,7 +158,6 @@ public class CommonBlitService extends AbstractBlitService<CommonBlit,CommonBlit
     }
 
     @Transactional
-    @Override
     protected CommonBlit persistBlit(BlitType blitType, CommonBlit blit, Optional<User> userOptional, String token) {
         BlitType attachedBlitType = blitTypeRepository.findOne(blitType.getBlitTypeId());
         userOptional.ifPresent(user -> {
@@ -133,7 +172,6 @@ public class CommonBlitService extends AbstractBlitService<CommonBlit,CommonBlit
     }
 
     @Transactional
-    @Override
     public CommonBlit reserveFreeBlit(BlitType blitType, CommonBlit commonBlit, User user) {
         User attachedUser = userRepository.findOne(user.getUserId());
         BlitType attachedBlitType = increaseSoldCount(blitType.getBlitTypeId(), commonBlit);

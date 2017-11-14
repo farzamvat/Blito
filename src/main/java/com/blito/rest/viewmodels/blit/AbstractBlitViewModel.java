@@ -27,9 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AbstractBlitViewModel extends AbstractViewModel {
-    @NotNull
-    @JsonView(View.SimpleBlit.class)
-    private Long blitTypeId;
 
     @JsonView(View.SimpleBlit.class)
     private Long blitId;
@@ -311,19 +308,11 @@ public class AbstractBlitViewModel extends AbstractViewModel {
         this.primaryAmount = primaryAmount;
     }
 
-    public Long getBlitTypeId() {
-        return blitTypeId;
-    }
-
-    public void setBlitTypeId(Long blitTypeId) {
-        this.blitTypeId = blitTypeId;
-    }
 
     @Override
     public String toString() {
         return "AbstractBlitViewModel{" +
-                "blitTypeId=" + blitTypeId +
-                ", blitId=" + blitId +
+                " blitId=" + blitId +
                 ", createdAt=" + createdAt +
                 ", count=" + count +
                 ", totalAmount=" + totalAmount +
