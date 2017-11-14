@@ -64,6 +64,7 @@ public class BlitTypeMapper implements GenericMapper<BlitType,BlitTypeViewModel>
 		vmodel.setSoldCount(blitType.getSoldCount());
 		vmodel.setHasSeat(!blitType.getBlitTypeSeats().isEmpty());
 		Optional.ofNullable(blitType.getBlitTypeSeats())
+                .filter(blitTypeSeats -> !blitTypeSeats.isEmpty())
 				.ifPresent(blitTypeSeats -> vmodel.setSeatUids(blitTypeSeats.stream().map(BlitTypeSeat::getSeat).map(Seat::getSeatUid).collect(Collectors.toSet())));
 		return vmodel;
 	}
