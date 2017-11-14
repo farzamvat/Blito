@@ -165,7 +165,6 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         }
     }
 
-
     @Transactional
     public SeatBlitViewModel reserveFreeBlitForAuthorizedUser(SeatBlitViewModel seatBlitViewModel, SeatBlit seatBlit, User user) {
         if(seatBlit.getCount() > 10) {
