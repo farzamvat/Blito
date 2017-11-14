@@ -147,7 +147,6 @@ angular.module('blitoDirectives')
                     ;
 
                     legend.title({fontSize:20});
-                    legendItem.itemsFormat
                     legend.listen("click", legendListener);
 
                     sectionsChart[sectionIndex].chart.labels(true);

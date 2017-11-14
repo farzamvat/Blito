@@ -309,7 +309,7 @@
                                 <tbody class="showTimeList">
                                 <tr ng-repeat="sans in showTimeEditForms" >
                                     <td class="dataCenter"> <i class="fa fa-minus btn-danger addDeleteBtn" ng-click="deleteFieldShowTime(i)" aria-hidden="true"></i></td>
-                                    <td class="dataCenter"> <input type="text" required disabled class="datePickerFormat disabledInput" ng-class="dateClass($index)"  readonly/></td>
+                                    <td class="dataCenter"> <input type="text"   class="datePickerFormat disabledInput" ng-class="dateClass($index)"  readonly/></td>
                                     <td class="dataCenter">{{ sans.blitTypes.length | pNumber}} نوع بلیت </td>
                                     <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editEventSans($index)">ویرایش</button>
                                     </td>

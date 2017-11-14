@@ -18,16 +18,15 @@ angular.module('UiServices')
         seatMap.getPopulatedSchema = function (eventDateId) {
             return $http.get(config.baseUrl+'/api/blito/v1.0/salons/populated-schema/' + eventDateId);
         };
-        seatMap.schemaFormat = function (schemaSections) {
+        seatMap.generateSeatBlitTypesWithSeatUids = function (schemaSections) {
             var blitTypeIds = [];
             var blitTypes = [];
-            console.log(schemaSections);
             schemaSections.forEach(function (section) {
                 section.rows.forEach(function (row) {
                     row.seats.forEach(function (seat) {
                         if(blitTypeIds.indexOf(seat.blitTypeId) === -1) {
                             blitTypeIds.push(seat.blitTypeId);
-                            blitTypes.push({ blitTypeId : seat.blitTypeId, price : seat.price, seatUids : []});
+                            blitTypes.push({ blitTypeId : seat.blitTypeId, seatUids : []});
                             blitTypes[blitTypes.length - 1].seatUids.push(seat.uid);
                         } else {
                             blitTypes.forEach(function (blitType) {
@@ -40,6 +39,18 @@ angular.module('UiServices')
                 })
             });
             return blitTypes;
+        };
+        seatMap.generateMainBlitTypesFormat = function (generatedBlitTypes, allBlitTypes) {
+            generatedBlitTypes.forEach(function (generatedBlitType) {
+                allBlitTypes.forEach(function (blitType) {
+                    if(blitType.blitTypeId === generatedBlitType.blitTypeId) {
+                        generatedBlitType.name = blitType.name;
+                        generatedBlitType.capacity = blitType.capacity;
+                        generatedBlitType.isFree = blitType.isFree;
+                    }
+                })
+            });
+            return generatedBlitTypes;
         };
         seatMap.getBlitTypesWithoutSeat = function (seatsBlitType, allBlitTypes) {
             return allBlitTypes.filter(function (blitType) {
@@ -69,16 +80,47 @@ angular.module('UiServices')
             });
             return oldBlitTypes.concat(newBlitTypes);
         };
-        seatMap.generateMainBlitTypesFormat = function (generatedBlitTypes, allBlitTypes) {
-            generatedBlitTypes.forEach(function (generatedBlitType) {
-                allBlitTypes.forEach(function (blitType) {
-                    if(blitType.blitTypeId === generatedBlitType.blitTypeId) {
-                        generatedBlitType.name = blitType.name;
-                        generatedBlitType.capacity = blitType.capacity;
-                        generatedBlitType.isFree = blitType.isFree;
+        seatMap.editedPopulatedSchema = function (newBlitTypes, populatedSchema) {
+            newBlitTypes.forEach(function (newBlitType) {
+                newBlitType.seatUids.forEach(function (seatUid) {
+                    populatedSchema.schema.sections.forEach(function (section) {
+                        section.rows.forEach(function (row) {
+                            row.seats.forEach(function (populatedSeat) {
+                                if((populatedSeat.uid === seatUid) && ((populatedSeat.state === 'NOT_AVAILABLE') || (populatedSeat.state === 'AVAILABLE')) ) {
+                                    populatedSeat.blitTypeId = newBlitType.blitTypeId;
+                                    if(newBlitType.name === 'HOST_RESERVED_SEATS') {
+                                        populatedSeat.state = 'NOT_AVAILABLE';
+                                    } else {
+                                        populatedSeat.state = 'AVAILABLE';
+                                    }
+                                }
+                            })
+                        })
+                    })
+                })
+            });
+            console.log(populatedSchema);
+            return populatedSchema;
+        };
+
+        seatMap.generateWithoutSeatBlitTypes = function (allBlitTypes) {
+            return allBlitTypes.filter(function (blitType) {
+                return !blitType.hasSeat;
+            })
+        };
+        seatMap.generateWithSeatBlitTypesWithoutSeatUids = function (allBlitTypes) {
+            return allBlitTypes.filter(function (blitType) {
+                return blitType.hasSeat;
+            })
+        };
+        seatMap.generateWithSeatBlitTypes = function (seatBlitTypesWithSeatUids, seatBlitTypesWithoutSeatUids) {
+            seatBlitTypesWithSeatUids.forEach(function (blitTypesWithUids) {
+                seatBlitTypesWithoutSeatUids.forEach(function (blitTypesWithoutUids) {
+                    if(blitTypesWithoutUids.blitTypeId === blitTypesWithUids.blitTypeId) {
+                        blitTypesWithoutUids.seatUids = blitTypesWithUids.seatUids;
                     }
                 })
             });
-            return generatedBlitTypes;
+            return seatBlitTypesWithoutSeatUids;
         }
     });
