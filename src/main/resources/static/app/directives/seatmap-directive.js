@@ -5,7 +5,7 @@ angular.module('blitoDirectives')
     .directive('seatMap',  function () {
         return {
             link : seatMapDraw,
-            controller : function ($scope) {
+            controller : function ($scope,$timeout) {
                 var seatMapController = this;
                 $scope.pickedSeats = [];
                 $scope.svgIndex = 0;
@@ -36,6 +36,7 @@ angular.module('blitoDirectives')
                 chart.geoData(svgData.salonSvg);
                 var seatMapData = new Array();
                 var wholeSalonData=[];
+                var ismouse=false,ismobile=true;
 
                 for (var sectionIndex = 0; sectionIndex < svgData.schema.sections.length; sectionIndex++) {
                     var rowName = 0;
@@ -72,10 +73,26 @@ angular.module('blitoDirectives')
                 chart.title(svgData.schema.name.toString());
                 chart.contextMenu(false);
                 chart.labels(true);
+                chart.tooltip(false);
                 var chartLabels=chart.labels();
                 chart.labels({fontSize: 18});
                 chartLabels.format("{%info}");
-
+                // var mouseBehavior=function(){
+                //     ismobile=false;
+                //     ismouse=true;
+                //     console.log("clicked");
+                // };
+                // var touchBehavior=function(){
+                //     ismobile=true;
+                //     ismouse=false;
+                //     console.log("touched");
+                // };
+                // chart.listen("click",mouseBehavior);
+                // chart.listen("touchstart",touchBehavior);
+                var touchSS = function(e){
+                        e.preventDefault();
+                };
+                document.getElementById('seatMaperChart'+svgIndex).addEventListener('touchend', touchSS);
                 var seatClickFunction = function (e) {
                     if (scope.pickedSeats.indexOf(e.domTarget.dd) === -1) {
                         scope.pickedSeats.push(e.domTarget.dd);
@@ -134,9 +151,19 @@ angular.module('blitoDirectives')
                                 rowSeats.push(seat);
                             }
                         });
-                        sectionsChart[sectionIndex].chart.choropleth(rowSeats)
+                        var section=sectionsChart[sectionIndex].chart.choropleth(rowSeats)
                             .name(svgData.schema.sections[sectionIndex].rows[rowIndex].name)
-                            .listen('click', seatClickFunction)
+                            // .listen('touchstart', seatClickFunction)
+                            // .listen('click',seatClickFunction);
+                        section.listen('touchstart', seatClickFunction);
+                        section.listen('click', seatClickFunction);
+                        // if(){
+                        //     sectionsChart[sectionIndex].chart.choropleth(rowSeats)
+                        //         .listen
+                        // } else {
+                        //
+                        // }
+
                     }
 
                     var legend = sectionsChart[sectionIndex].chart.legend();
@@ -149,15 +176,25 @@ angular.module('blitoDirectives')
 
                     legend.title({fontSize:20});
                     legend.listen("click", legendListener);
+                    legend.listen("touchstart", legendListener);
 
                     sectionsChart[sectionIndex].chart.labels(true);
                     var labels = sectionsChart[sectionIndex].chart.labels();
+
 
                     sectionsChart[sectionIndex].chart.labels({fontSize: 10});
                     labels.format("{%info}");
                 }
                 chart.container("seatMaperChart"+svgIndex);
                 chart.draw();
+
+                // document.getElementsByClassName("seatMapSection"+svgIndex)[0].setAttribute('focusable','false');
+                // document.getElementsByTagName('svg')[0].setAttribute('Content-Type','text/html');
+                // document.getElementsByTagName('svg')[0].setAttribute('readonly','true');
+                // var elements=document.querySelectorAll('svg');
+                // for(var i=elements.length;i--;){
+                //     elements[i].style.pointerEvents="none";
+                // }
                 var sectionPickedUid;
                 seatMapSeries.listen('pointClick',function(e){
                     sectionsChart.forEach(function (section) {
@@ -167,6 +204,7 @@ angular.module('blitoDirectives')
                         }
                     })
                 });
+
                 for(var i = 0; i < document.getElementsByClassName("anychart-credits").length ; i++) {
                     document.getElementsByClassName("anychart-credits")[i].style.display = "none";
                 }
@@ -260,6 +298,7 @@ angular.module('blitoDirectives')
                 seatMapSeries.data(wholeSalonData);
                 chart.title(svgData.schema.name.toString());
                 chart.contextMenu(false);
+
 
                 var seatClickFunction = function (e) {
                     if (scope.pickedSeats.indexOf(e.domTarget.dd) === -1) {
