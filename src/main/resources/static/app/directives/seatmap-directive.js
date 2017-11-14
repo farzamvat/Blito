@@ -25,6 +25,7 @@ angular.module('blitoDirectives')
         };
         function seatMapDraw(scope, element, attr, ctrl) {
             scope.drawSVG = function (svgData, svgIndex) {
+                scope.pickedSeats = [];
                 if (document.getElementById("seatMaperChart" + svgIndex).childNodes[0]) {
                     var svgElement = document.getElementById("seatMaperChart" + svgIndex);
                     svgElement.removeChild(svgElement.childNodes[0]);

@@ -30,6 +30,7 @@ angular.module('User')
         $scope.userData = userInfo.getData();
         $scope.updateInfoSpinner = false;
         $scope.newShowTime = {blitTypes : []};
+        $scope.newShowTimeEdit = {blitTypes : []};
 
         $scope.updateSuccessNotif = false;
         $scope.updateFailNotif = false;
@@ -767,14 +768,13 @@ angular.module('User')
         //==================================================== SHOW TIME FIELDS =================================
 
         $scope.addFieldTicketType=function(){
-            if($scope.newShowTime.blitTypes.length < 10) {
-                $scope.newShowTime.blitTypes.push({})
-            }
+            $scope.newShowTime.blitTypes.push({})
         };
         $scope.addFieldTicketTypeEdit=function(){
-            if($scope.blitTypesWithOutSeatsEdit.length < 10) {
-                $scope.blitTypesWithOutSeatsEdit.push({})
-            }
+            $scope.blitTypesWithOutSeatsEdit.push({})
+        };
+        $scope.addFieldTicketTypeEditSubmit = function(){
+            $scope.newShowTimeEdit.blitTypes.push({})
         };
 
         $scope.deleteFieldTicketTypeEdit=function(blitTypeIndex){
@@ -787,10 +787,15 @@ angular.module('User')
                 $scope.newShowTime.blitTypes.splice(i,1);
             }
         };
+        $scope.deleteFieldTicketTypeEditSubmit = function(i){
+            if( 0 < $scope.newShowTimeEdit.blitTypes.length) {
+                $scope.newShowTimeEdit.blitTypes.splice(i,1);
+            }
+        };
 
-        $scope.deleteFieldShowTimeEdit=function(){
+        $scope.deleteFieldShowTimeEdit=function(i){
             if( 1 < $scope.showTimeEditForms.length) {
-                $scope.showTimeEditForms.splice(-1,1);
+                $scope.showTimeEditForms.splice(i,1);
             }
         };
         $scope.deleteFieldShowTime=function(i){
@@ -1076,6 +1081,8 @@ angular.module('User')
             angular.element(document.getElementsByClassName("galleryFourEdit"))[0].src = "";
             angular.element(document.getElementsByClassName("galleryFiveEdit"))[0].src = "";
             angular.element(document.getElementsByClassName("gallerySixEdit"))[0].src = "";
+            document.getElementById("editEventNewSansSubmit").style.display = "none";
+            document.getElementById("createNewSansEdit").style.display = "block";
             $scope.eventEditPhotoSuccess = false;
 
             $scope.showTimeEditForms = angular.copy($scope.userEventsEdit[index].eventDates);
@@ -1171,7 +1178,8 @@ angular.module('User')
                     .then(function (data) {
                         var populatedSchema = data.data;
                         $scope.blitTypesWithOutSeatsEdit = seatmapService.generateWithoutSeatBlitTypes($scope.showTimeEditForms[sansIndex].blitTypes);
-                        $scope.blitTypesWithSeatsEdit = seatmapService.generateWithSeatBlitTypes(seatmapService.generateSeatBlitTypesWithSeatUids(populatedSchema.schema.sections), seatmapService.generateWithSeatBlitTypesWithoutSeatUids($scope.showTimeEditForms[sansIndex].blitTypes));
+                        $scope.blitTypesWithSeatsEdit = seatmapService.generateWithSeatBlitTypes($scope.showTimeEditForms[sansIndex].blitTypes);
+                        console.log($scope.blitTypesWithSeatsEdit);
                         if($scope.showTimeEditForms[sansIndex].edited) {
                             populatedSchema = seatmapService.editedPopulatedSchema($scope.blitTypesWithSeatsEdit, populatedSchema);
                             console.log(populatedSchema);
@@ -1179,26 +1187,30 @@ angular.module('User')
                         $scope.$broadcast('newSVGEdit', [populatedSchema, 2]);
 
                         document.getElementById("editEventSansSubmit").style.display = "block";
-                        document.getElementById("successSeatBlitTypeEdit").style.display = "none";
                     })
                     .catch(function (data) {
                         console.log(data);
                     })
             } else {
                 $scope.blitTypesWithOutSeatsEdit = $scope.showTimeEditForms[sansIndex].blitTypes;
+                document.getElementById("editEventSansSubmit").style.display = "block";
             }
             console.log($scope.blitTypesWithOutSeatsEdit);
+        };
+        $scope.newSansEdit = function () {
+            dateSetterService.initDate("newSansEditSubmitDate");
+            document.getElementById("editEventNewSansSubmit").style.display = "block";
+            document.getElementById("createNewSansEdit").style.display = "none";
         };
 
         $scope.editEventSubmit = function (editEventData) {
             var sendingData = angular.copy(editEventData);
             var latLong = mapMarkerService.getMarker();
             $scope.newShowTimeEditForms = angular.copy($scope.showTimeEditForms);
-
-            // $scope.newShowTimeEditForms.map(function (item) {
-            //     item.date = dateSetterService.persianToMs(item.date);
-            //     return item;
-            // });
+            $scope.newShowTimeEditForms.map(function (item) {
+                delete item.edited;
+                return item;
+            });
             sendingData.blitSaleEndDate = dateSetterService.persianToMs(editEventData.blitSaleEndDate);
             sendingData.blitSaleStartDate = dateSetterService.persianToMs(editEventData.blitSaleStartDate);
             sendingData.eventDates = $scope.newShowTimeEditForms;
@@ -1222,6 +1234,7 @@ angular.module('User')
                 return !(item.imageUUID === null || item.imageUUID === undefined);
             });
             $scope.editEventSpinner = true;
+            console.log(sendingData);
             eventService.editEvent(sendingData)
                 .then(function () {
                     $scope.editEventSpinner = false;
@@ -1963,6 +1976,12 @@ angular.module('User')
         };
         $scope.salonSchema = {sections : []};
         $scope.salonSeatPicker = function (salonUID, seatMapIndex) {
+            for(var i = 0; i < 4 ; i++) {
+                if(document.getElementsByClassName("seatMapSection"+i)[0]) {
+                    document.getElementsByClassName("seatMapSection" + i)[0].style.display = "none";
+                    document.getElementsByClassName("generateSeatMap"+i)[0].style.display = "block";
+                }
+            }
             document.getElementsByClassName("seatMapSection"+seatMapIndex)[0].style.display = "block";
             document.getElementsByClassName("seatMapSpinner")[0].style.display = "inline";
 
@@ -1974,14 +1993,15 @@ angular.module('User')
                     } else {
                         $scope.allCheckedSeatsSecondSeatMap = 0;
                     }
+                    if(document.getElementById("successSeatBlitTypeEditSubmit")){
+                        document.getElementById("successSeatBlitTypeEditSubmit").style.display = "none";
+                    }
+                    sansWithSeats = [];
+                    $scope.seatBlitUids = [];
                     document.getElementsByClassName("seatMapSpinner")[0].style.display = "none";
                     $scope.salonSchema = data.data;
                     countNumberOfSeats($scope.salonSchema.schema.sections);
-                    if(seatMapIndex === 2) {
-                        $scope.$broadcast('newSVGEdit', [$scope.salonSchema, seatMapIndex]);
-                    } else {
-                        $scope.$broadcast('newSVG', [$scope.salonSchema, seatMapIndex]);
-                    }
+                    $scope.$broadcast('newSVG', [$scope.salonSchema, seatMapIndex]);
                     document.getElementsByClassName("generateSeatMap"+seatMapIndex)[0].style.display = "none";
                 })
                 .catch(function (data) {
@@ -1996,6 +2016,10 @@ angular.module('User')
             $scope.blitTypeSubmited = false;
             $scope.seatsPickedForm = {};
             $('#seatsPickedModel').modal('show');
+        };
+        $scope.seatsPickedBlitTypeEditNewSans = function () {
+            document.getElementById("blitTypeSeatsEdit").style.display = "block";
+            document.getElementById("successSeatBlitTypeEditSubmit").style.display = "none";
         };
         $scope.generateBlitTypeSeats = false;
         $scope.seatsPickedBlitTypeEdit = function () {
@@ -2026,6 +2050,10 @@ angular.module('User')
             } else {
                 $scope.allCheckedSeatsSecondSeatMap += blitType.capacity;
             }
+            if($scope.sansPickedSeatMap === 3) {
+                document.getElementById("successSeatBlitTypeEditSubmit").style.display = "block";
+                document.getElementById("blitTypeSeatsEdit").style.display = "none";
+            }
             document.getElementById("successSeatBlitType").style.display = "block";
             $scope.$broadcast('blitTypeSubmit', [$scope.seatBlitUids, blitType.isReserved, $scope.sansPickedSeatMap]);
 
@@ -2036,6 +2064,7 @@ angular.module('User')
             } else {
                 sansWithSeats.push(blitType);
             }
+            console.log(sansWithSeats);
         };
         $scope.seatsPickedBlitTypeSubmitEdit = function (bt) {
             var blitType = angular.copy(bt);
@@ -2110,14 +2139,35 @@ angular.module('User')
             });
             console.log($scope.showTimeEditForms.length-1);
             $timeout(function () {
-                console.log(persianDate(newShowTimeEdit.date).pDate);
                 dateSetterService.initDate("classDate"+($scope.showTimeEditForms.length-1));
                 $(".classDate"+($scope.showTimeEditForms.length-1)).pDatepicker("setDate",dateSetterService.persianToArray(persianDate(newShowTimeEdit.date).pDate));
-            }, 1000);
+            }, 500);
             console.log($scope.showTimeEditForms);
             newEditedBlitTypes = [];
             mainSeatMapPricesEdit = [];
+            if(document.getElementById("successSeatBlitTypeEdit")) {
+                document.getElementById("successSeatBlitTypeEdit").style.display = "none";
+            }
+
             document.getElementById("editEventSansSubmit").style.display = "none";
+        };
+        $scope.submitSansWithSeatpickerEditSubmit = function (newSans) {
+            var newShowTimeEdit = angular.copy(newSans);
+            newShowTimeEdit.date = dateSetterService.persianToMs(newShowTimeEdit.persianDate);
+            newShowTimeEdit.blitTypes = newShowTimeEdit.blitTypes.concat(sansWithSeats);
+            document.getElementsByClassName("seatMapSection3")[0].style.display = "none";
+            document.getElementsByClassName("generateSeatMap3")[0].style.display = "block";
+            delete newShowTimeEdit.persianDate;
+            $scope.showTimeEditForms.push(newShowTimeEdit);
+            $timeout(function () {
+                dateSetterService.initDate("classDate"+($scope.showTimeEditForms.length-1));
+                $(".classDate"+($scope.showTimeEditForms.length-1)).pDatepicker("setDate",dateSetterService.persianToArray(persianDate(newShowTimeEdit.date).pDate));
+            }, 500);
+            $scope.newShowTimeEdit = {blitTypes : []};
+            document.getElementById("editEventNewSansSubmit").style.display = "none";
+            document.getElementById("createNewSansEdit").style.display = "block";
+            console.log($scope.showTimeEditForms);
+            sansWithSeats = [];
         };
         $scope.submitSansWithoutSeatpicker = function (newSans) {
             var newShowTime = angular.copy(newSans);

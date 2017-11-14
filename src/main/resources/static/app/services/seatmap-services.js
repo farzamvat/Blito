@@ -18,28 +18,28 @@ angular.module('UiServices')
         seatMap.getPopulatedSchema = function (eventDateId) {
             return $http.get(config.baseUrl+'/api/blito/v1.0/salons/populated-schema/' + eventDateId);
         };
-        seatMap.generateSeatBlitTypesWithSeatUids = function (schemaSections) {
-            var blitTypeIds = [];
-            var blitTypes = [];
-            schemaSections.forEach(function (section) {
-                section.rows.forEach(function (row) {
-                    row.seats.forEach(function (seat) {
-                        if(blitTypeIds.indexOf(seat.blitTypeId) === -1) {
-                            blitTypeIds.push(seat.blitTypeId);
-                            blitTypes.push({ blitTypeId : seat.blitTypeId, seatUids : []});
-                            blitTypes[blitTypes.length - 1].seatUids.push(seat.uid);
-                        } else {
-                            blitTypes.forEach(function (blitType) {
-                                if(blitType.blitTypeId === seat.blitTypeId) {
-                                    blitType.seatUids.push(seat.uid);
-                                }
-                            })
-                        }
-                    })
-                })
-            });
-            return blitTypes;
-        };
+        // seatMap.generateSeatBlitTypesWithSeatUids = function (schemaSections) {
+        //     var blitTypeIds = [];
+        //     var blitTypes = [];
+        //     schemaSections.forEach(function (section) {
+        //         section.rows.forEach(function (row) {
+        //             row.seats.forEach(function (seat) {
+        //                 if(blitTypeIds.indexOf(seat.blitTypeId) === -1) {
+        //                     blitTypeIds.push(seat.blitTypeId);
+        //                     blitTypes.push({ blitTypeId : seat.blitTypeId, seatUids : []});
+        //                     blitTypes[blitTypes.length - 1].seatUids.push(seat.uid);
+        //                 } else {
+        //                     blitTypes.forEach(function (blitType) {
+        //                         if(blitType.blitTypeId === seat.blitTypeId) {
+        //                             blitType.seatUids.push(seat.uid);
+        //                         }
+        //                     })
+        //                 }
+        //             })
+        //         })
+        //     });
+        //     return blitTypes;
+        // };
         seatMap.generateMainBlitTypesFormat = function (generatedBlitTypes, allBlitTypes) {
             generatedBlitTypes.forEach(function (generatedBlitType) {
                 allBlitTypes.forEach(function (blitType) {
@@ -108,19 +108,19 @@ angular.module('UiServices')
                 return !blitType.hasSeat;
             })
         };
-        seatMap.generateWithSeatBlitTypesWithoutSeatUids = function (allBlitTypes) {
+        seatMap.generateWithSeatBlitTypes = function (allBlitTypes) {
             return allBlitTypes.filter(function (blitType) {
                 return blitType.hasSeat;
             })
         };
-        seatMap.generateWithSeatBlitTypes = function (seatBlitTypesWithSeatUids, seatBlitTypesWithoutSeatUids) {
-            seatBlitTypesWithSeatUids.forEach(function (blitTypesWithUids) {
-                seatBlitTypesWithoutSeatUids.forEach(function (blitTypesWithoutUids) {
-                    if(blitTypesWithoutUids.blitTypeId === blitTypesWithUids.blitTypeId) {
-                        blitTypesWithoutUids.seatUids = blitTypesWithUids.seatUids;
-                    }
-                })
-            });
-            return seatBlitTypesWithoutSeatUids;
-        }
+        // seatMap.generateWithSeatBlitTypes = function (seatBlitTypesWithSeatUids, seatBlitTypesWithoutSeatUids) {
+        //     seatBlitTypesWithSeatUids.forEach(function (blitTypesWithUids) {
+        //         seatBlitTypesWithoutSeatUids.forEach(function (blitTypesWithoutUids) {
+        //             if(blitTypesWithoutUids.blitTypeId === blitTypesWithUids.blitTypeId) {
+        //                 blitTypesWithoutUids.seatUids = blitTypesWithUids.seatUids;
+        //             }
+        //         })
+        //     });
+        //     return seatBlitTypesWithoutSeatUids;
+        // }
     });
