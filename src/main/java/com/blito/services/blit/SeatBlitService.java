@@ -261,19 +261,14 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
     protected SeatBlit reserveFreeBlit(SeatBlit seatBlit, User user) {
         User attachedUser = userRepository.findOne(user.getUserId());
         seatBlit.getBlitTypeSeats()
-                .stream()
-                .collect(Collectors.toMap(BlitTypeSeat::getBlitType,v ->
-                        seatBlit.getBlitTypeSeats()
-                                .stream()
-                                .map(BlitTypeSeat::getBlitType)
-                                .filter(blitType -> blitType.getBlitTypeId() == v.getBlitType().getBlitTypeId())
-                                .count(),(count1,count2) -> count1 + count2))
-                .forEach((blitType,totalCount) -> {
-                    blitType.setSoldCount(blitType.getSoldCount() + totalCount.intValue());
+                .stream().collect(Collectors.groupingBy(BlitTypeSeat::getBlitType,Collectors.counting()))
+                .forEach((blitType, aLong) -> {
+                    blitType.setSoldCount(blitType.getSoldCount() + aLong.intValue());
                     checkBlitTypeSoldConditionAndSetEventDateEventStateSold(blitType);
                     log.info("****** FREE SEAT BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}'", user.getEmail(),
                             blitType.getSoldCount());
                 });
+
         seatBlit.setTrackCode(generateTrackCode());
         seatBlit.setUser(attachedUser);
         seatBlit.setTotalAmount(0L);

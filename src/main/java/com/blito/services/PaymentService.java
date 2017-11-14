@@ -144,20 +144,14 @@ public class PaymentService {
 		seatBlit.setPaymentError(ResourceUtil.getMessage(Response.PAYMENT_SUCCESS));
 
 		seatBlit.getBlitTypeSeats()
-				.stream()
-				.collect(Collectors.toMap(BlitTypeSeat::getBlitType,v ->
-						seatBlit.getBlitTypeSeats()
-						.stream()
-						.map(BlitTypeSeat::getBlitType)
-						.filter(blitType -> blitType.getBlitTypeId() == v.getBlitType().getBlitTypeId())
-						.count(),(count1,count2) -> count1 + count2))
-				.forEach((blitType,totalCount) -> blitType.setSoldCount(blitType.getSoldCount() + totalCount.intValue()));
+				.stream().collect(Collectors.groupingBy(BlitTypeSeat::getBlitType,Collectors.counting()))
+				.forEach((blitType, aLong) -> {
+					blitType.setSoldCount(blitType.getSoldCount() + aLong.intValue());
+					seatBlitService.checkBlitTypeSoldConditionAndSetEventDateEventStateSold(blitType);
+					log.info("****** NONE FREE SEAT BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}' AND BLIT TYPE CAPACITY IS '{}'",
+							seatBlit.getCustomerEmail(),blitType.getSoldCount(),blitType.getCapacity());
+				});
 
-		seatBlit.getBlitTypeSeats().stream().map(BlitTypeSeat::getBlitType).distinct().forEach(blitType -> {
-			seatBlitService.checkBlitTypeSoldConditionAndSetEventDateEventStateSold(blitType);
-			log.info("****** NONE FREE SEAT BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}' AND BLIT TYPE CAPACITY IS '{}'",
-			seatBlit.getCustomerEmail(),blitType.getSoldCount(),blitType.getCapacity());
-		});
 		seatBlit.getBlitTypeSeats().forEach(blitTypeSeat -> {
 			blitTypeSeat.setState(BlitTypeSeatState.SOLD.name());
 			blitTypeSeat.setSoldDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));

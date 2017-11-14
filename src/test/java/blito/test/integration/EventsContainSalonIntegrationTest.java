@@ -181,17 +181,17 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
         openBlitTypeState_success(new ArrayList<>(eventViewModel.getEventDates().stream().flatMap(eventDateViewModel -> eventDateViewModel.getBlitTypes().stream())
                 .map(BlitTypeViewModel::getBlitTypeId).collect(Collectors.toSet())),State.OPEN);
         SeatBlitViewModel seatBlitViewModel = new SeatBlitViewModel();
-        seatBlitViewModel.setBlitTypeId(eventViewModel.getEventDates().stream().flatMap(eventDateViewModel -> eventDateViewModel.getBlitTypes().stream()).filter(blitTypeViewModel -> blitTypeViewModel.getName().equals("update")).findFirst().get().getBlitTypeId());
+//        seatBlitViewModel.setBlitTypeId(eventViewModel.getEventDates().stream().flatMap(eventDateViewModel -> eventDateViewModel.getBlitTypes().stream()).filter(blitTypeViewModel -> blitTypeViewModel.getName().equals("update")).findFirst().get().getBlitTypeId());
         seatBlitViewModel.setEventDateId(eventViewModel.getEventDates().stream().findFirst().get().getEventDateId());
         seatBlitViewModel.setBankGateway(BankGateway.ZARINPAL);
         seatBlitViewModel.setBlitTypeName(eventViewModel.getEventDates().stream().flatMap(eventDateViewModel -> eventDateViewModel.getBlitTypes().stream()).filter(blitTypeViewModel -> blitTypeViewModel.getName().equals("update")).findFirst().get().getName());
-        seatBlitViewModel.setCount(3);
+        seatBlitViewModel.setCount(6);
         seatBlitViewModel.setSeats("2,3,4 row 2");
         seatBlitViewModel.setCustomerEmail("farzam.vat@gmail.com");
         seatBlitViewModel.setCustomerName("fifi");
         seatBlitViewModel.setEventAddress(eventViewModel.getAddress());
         seatBlitViewModel.setEventDateAndTime("event time");
-        seatBlitViewModel.setTotalAmount(3000L);
+        seatBlitViewModel.setTotalAmount(18000L);
         seatBlitViewModel.setSeatType(SeatType.SEAT_BLIT);
         seatBlitViewModel.setSeatUids(new HashSet<>());
         seatBlitViewModel.setEventName(eventViewModel.getEventName());
@@ -202,6 +202,15 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
                 .stream()
                 .flatMap(section -> section.getRows().stream())
                 .filter(row -> row.getName().equals("2"))
+                .flatMap(row -> row.getSeats().stream())
+                .sorted(Comparator.comparing(Seat::getName))
+                .limit(3)
+                .forEachOrdered(seat -> seatBlitViewModel.getSeatUids().add(seat.getUid()));
+
+        getTestSalonSchema().getSections()
+                .stream()
+                .flatMap(section -> section.getRows().stream())
+                .filter(row -> row.getName().equals("1"))
                 .flatMap(row -> row.getSeats().stream())
                 .sorted(Comparator.comparing(Seat::getName))
                 .limit(3)
