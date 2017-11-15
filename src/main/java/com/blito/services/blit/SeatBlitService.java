@@ -299,35 +299,39 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         if (!blitTypeSeat.getState().equals(BlitTypeSeatState.NOT_AVAILABLE.name())) {
             throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_RESERVED_FOR_HOST));
         }
+        return Option.of(blitTypeSeat.getSeatBlit())
+                .map(seatBlit -> excelService.blitMapForPdf(seatBlitMapper.createFromEntity(seatBlit)))
+                .getOrElse(() -> {
+                    SeatBlit seatBlit = new SeatBlit();
+                    seatBlit.setCount(1);
+                    seatBlit.setTotalAmount(0L);
+                    seatBlit.setUser(user);
+                    seatBlit.setTrackCode(generateTrackCode());
+                    seatBlit.setEventName(eventDate.getEvent().getEventName());
+                    seatBlit.setEventDateAndTime(reservedBlitViewModel.getEventDateAndTime());
+                    seatBlit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+                    seatBlit.setEventDate(eventDate.getDate());
+                    seatBlit.setCustomerName(eventDate.getEvent().getEventHost().getHostName());
+                    seatBlit.setCustomerMobileNumber(eventDate.getEvent().getEventHost().getTelephone());
+                    seatBlit.setCustomerEmail(user.getEmail());
+                    seatBlit.setEventAddress(eventDate.getEvent().getAddress());
+                    seatBlit.setBlitTypeName(Constants.HOST_RESERVED_SEATS);
+                    seatBlit.setSeatType(SeatType.SEAT_BLIT.name());
+                    seatBlit.setPaymentStatus(PaymentStatus.FREE.name());
+                    seatBlit.setPrimaryAmount(0L);
+                    seatBlit.setBankGateway(BankGateway.NONE.name());
+                    seatBlit.setBlitTypeSeats(new HashSet<>(Collections.singletonList(blitTypeSeat)));
 
-        SeatBlit seatBlit = new SeatBlit();
-        seatBlit.setCount(1);
-        seatBlit.setTotalAmount(0L);
-        seatBlit.setUser(user);
-        seatBlit.setTrackCode(generateTrackCode());
-        seatBlit.setEventName(eventDate.getEvent().getEventName());
-        seatBlit.setEventDateAndTime(reservedBlitViewModel.getEventDateAndTime());
-        seatBlit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
-        seatBlit.setEventDate(eventDate.getDate());
-        seatBlit.setCustomerName(eventDate.getEvent().getEventHost().getHostName());
-        seatBlit.setCustomerMobileNumber(eventDate.getEvent().getEventHost().getTelephone());
-        seatBlit.setCustomerEmail(user.getEmail());
-        seatBlit.setEventAddress(eventDate.getEvent().getAddress());
-        seatBlit.setBlitTypeName(Constants.HOST_RESERVED_SEATS);
-        seatBlit.setSeatType(SeatType.SEAT_BLIT.name());
-        seatBlit.setPaymentStatus(PaymentStatus.FREE.name());
-        seatBlit.setPrimaryAmount(0L);
-        seatBlit.setBankGateway(BankGateway.NONE.name());
-        seatBlit.setBlitTypeSeats(new HashSet<>(Collections.singletonList(blitTypeSeat)));
+                    blitTypeSeat.setState(BlitTypeSeatState.GUEST_NOT_AVAILABLE.name());
+                    blitTypeSeat.setSeatBlit(seatBlit);
+                    seatBlit.setSeats((seatBlit.getSeats() == null ? "" : seatBlit.getSeats() + " /") +
+                            String.format(ResourceUtil.getMessage(Response.SEAT_INFORMATION),
+                                    blitTypeSeat.getSeat().getSectionName(),
+                                    blitTypeSeat.getSeat().getRowName(),
+                                    blitTypeSeat.getSeat().getSeatName()));
 
-        blitTypeSeat.setState(BlitTypeSeatState.GUEST_NOT_AVAILABLE.name());
-        blitTypeSeat.setSeatBlit(seatBlit);
-        seatBlit.setSeats((seatBlit.getSeats() == null ? "" : seatBlit.getSeats() + " /") +
-                String.format(ResourceUtil.getMessage(Response.SEAT_INFORMATION),
-                        blitTypeSeat.getSeat().getSectionName(),
-                        blitTypeSeat.getSeat().getRowName(),
-                        blitTypeSeat.getSeat().getSeatName()));
+                    return excelService.blitMapForPdf(seatBlitMapper.createFromEntity(seatBlitRepository.save(seatBlit)));
+                });
 
-        return excelService.blitMapForPdf(seatBlitMapper.createFromEntity(seatBlitRepository.save(seatBlit)));
     }
 }
