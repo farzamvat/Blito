@@ -296,7 +296,7 @@
                             <table class="table">
                                 <thead class="tableHeader">
                                 <tr>
-                                    <th class="dataCenter">حذف سانس
+                                    <th ng-if="showTimeEditForms.length > 1" class="dataCenter">حذف سانس
                                     </th>
                                     <th class="dataCenter" >تاریخ و ساعت
                                     </th>
@@ -308,10 +308,12 @@
                                 </thead>
                                 <tbody class="showTimeList">
                                 <tr ng-repeat="sans in showTimeEditForms" >
-                                    <td class="dataCenter"> <i class="fa fa-minus btn-danger addDeleteBtn" ng-click="deleteFieldShowTimeEdit(i)" aria-hidden="true"></i></td>
+                                    <td ng-if="showTimeEditForms.length > 1"class="dataCenter"> <i  class="fa fa-minus btn-danger addDeleteBtn" ng-click="deleteFieldShowTimeEdit($index)" aria-hidden="true"></i></td>
                                     <td class="dataCenter"> <input type="text"   class="datePickerFormat disabledInput" ng-class="dateClass($index)"  readonly/></td>
                                     <td class="dataCenter">{{ sans.blitTypes.length | pNumber}} نوع بلیت </td>
-                                    <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editEventSans($index)">ویرایش</button>
+                                    <td ng-if="sans.eventDateId" class="dataCenter"><button class="btn btn-warning editButton" ng-click="editEventSans($index)">ویرایش <i class="fa fa-spinner fa-spin  dispNone" id="editSansSpinner{{$index}}"></i></button>
+                                    </td>
+                                    <td ng-if="!sans.eventDateId" class="dataCenter text-success"> سانس جدید
                                     </td>
                                 </tr>
                                 </tbody>
