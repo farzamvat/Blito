@@ -42,37 +42,35 @@
                     <table class="table" >
                         <thead class="tableHeader">
                         <tr>
-                            <th class="dataCenter eventPageListTitle">نام بلیت
-                            </th>
+
                             <th class="dataCenter eventPageListTitle">روز و ساعت
                             </th>
 
-                            <th ng-show="eventType !== 'EXHIBITION'" class="dataCenter eventPageListTitle" >قیمت(تومان)
+                            <th ng-show="eventType !== 'EXHIBITION'" class="dataCenter eventPageListTitle" > محدوده قیمت(تومان)
                             </th>
-                            <th ng-show="eventType !== 'EXHIBITION'" class="dataCenter eventPageListTitle" >ظرفیت
+                            <th ng-show="eventType !== 'EXHIBITION'" class="dataCenter eventPageListTitle" >فروخته شده/ظرفیت کل
                             </th>
-                            <th ng-show="eventType !== 'EXHIBITION'" class="dataCenter eventPageListTitle" >وضعیت بلیت
+                            <th ng-show="eventType !== 'EXHIBITION'" class="dataCenter eventPageListTitle" >وضعیت سانس
                             </th>
                         </tr>
                         </thead>
                         <tbody class="showTimeList">
-                        <tr ng-repeat="item in eventFlatDates | filter:search">
-                            <td  class="dataCenter">
-                                {{item.name}}
-                            </td>
+                        <tr ng-repeat="item in eventDates | filter:search">
                             <td class="dataCenter eventPageTimeField"><span  ng-class="setClass($index)"    class="form-group  marginBottom0" ></span></td>
 
-                            <td ng-if="item.price === 0 && eventType !== 'EXHIBITION'" class="dataCenter">رایگان</td>
-                            <td ng-if="item.price !== 0 && eventType !== 'EXHIBITION'" class="dataCenter">{{ item.price | number | pNumber}}</td>
-                            <td ng-if="eventType !== 'EXHIBITION'" class="dataCenter">{{ item.capacity - item.soldCount | number | pNumber}}</td>
+                            <td ng-if="item.maxPrice === 0 && eventType !== 'EXHIBITION'" class="dataCenter">رایگان</td>
+                            <td ng-if="item.maxPrice !== 0 && item.minPrice === 0 && eventType !== 'EXHIBITION'" class="dataCenter">رایگان - {{ item.maxPrice | number | pNumber}}</td>
+                            <td ng-if="item.maxPrice !== 0 && item.minPrice !== 0 && eventType !== 'EXHIBITION'" class="dataCenter">{{ item.maxPrice | number | pNumber}} - {{ item.minPrice | number | pNumber}}</td>
 
-                            <td ng-if="item.blitTypeState === 'OPEN' && eventType !== 'EXHIBITION'" class="dataCenter fontGreen" >
+                            <td ng-if="eventType !== 'EXHIBITION'" class="dataCenter">{{ item.soldCount | number | pNumber}} / {{ item.capacity  | number | pNumber}}</td>
+
+                            <td ng-if="item.state === 'OPEN' && eventType !== 'EXHIBITION'" class="dataCenter fontGreen" >
                                 فعال
                             </td>
-                            <td ng-if="item.blitTypeState === 'CLOSED' && eventType !== 'EXHIBITION'" class="dataCenter fontRed">
+                            <td ng-if="item.state === 'CLOSED' && eventType !== 'EXHIBITION'" class="dataCenter fontRed">
                                 بسته
                             </td>
-                            <td ng-if="item.blitTypeState === 'SOLD' && eventType !== 'EXHIBITION'" class="dataCenter fontRed">
+                            <td ng-if="item.state === 'SOLD' && eventType !== 'EXHIBITION'" class="dataCenter fontRed">
                                 فروخته شد
                             </td>
                         </tr>
@@ -86,7 +84,7 @@
     <div class="col-xs-12 col-sm-12 marginRight8percentEventPage col-md-10 floatRight">
         <ul class="nav nav-tabs marginTop10 EventPageUl">
             <li class="floatRight active"><a class="tabAnchor" data-toggle="tab" data-target="#home">اطلاعات رویداد <i class="fa fa-info"></i></a></li>
-            <li class="floatRight " ng-show="eventDataDetails.aparatDisplayCode !== null"><a class="tabAnchor" data-toggle="tab" data-target="#menu1">تیزر <i class="fa fa-film"></i></a></li>
+            <li class="floatRight " ng-show="eventDataDetails.aparatDisplayCode"><a class="tabAnchor" data-toggle="tab" data-target="#menu1">تیزر <i class="fa fa-film"></i></a></li>
             <li class="floatRight" ng-show="eventDataPhoto.gallery.length !== 0"><a class="tabAnchor" data-toggle="tab" data-target="#menu2"> گالری تصویر <i class="fa fa-photo"></i></a></li>
         </ul>
 

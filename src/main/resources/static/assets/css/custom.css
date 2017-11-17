@@ -3029,6 +3029,12 @@ table td{
 .eventPageHeader h3{
     color:rgb(252, 183, 49);
 }
+#buyTicketModal {
+    transition: 500ms;
+}
+.modalExpandWidth {
+    width: 90%;
+}
 tspan{
     pointer-events: none !important;
 }

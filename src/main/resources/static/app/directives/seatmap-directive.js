@@ -448,4 +448,4 @@ angular.module('blitoDirectives')
 
             };
         }
-    });
+    })

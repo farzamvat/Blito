@@ -32,17 +32,22 @@ angular.module('eventsPageModule')
 
         eventService.getEvent($routeParams.eventLink)
             .then(function (data) {
+                console.log(data.data);
                 $scope.eventDataDetails = angular.copy(data.data);
                 $scope.additionalFields = $scope.eventDataDetails.additionalFields;
-                $scope.additionalFields.forEach(function (field) {
-                   field.value = "";
-                });
+                if($scope.additionalFields){
+                    $scope.additionalFields.forEach(function (field) {
+                        field.value = "";
+                    });
+                }
+
                 $scope.getPlannerData($scope.eventDataDetails.eventHostId);
                 $scope.eventType = $scope.eventDataDetails.eventType;
                 $scope.buyTicketFormatData(data.data.eventDates);
                 mapMarkerService.initMapOnlyShowMarker(document.getElementById('map'));
                 mapMarkerService.setMarker($scope.eventDataDetails.latitude, $scope.eventDataDetails.longitude);
                 $scope.flatEventDates($scope.eventDataDetails.eventDates);
+                $scope.sansListData($scope.eventDataDetails.eventDates);
                 $scope.getImages(data.data);
                 document.getElementById('members').insertAdjacentHTML('afterbegin',$scope.eventDataDetails.members);
                 document.getElementById('showStartTime').innerHTML = persianDate($scope.eventDataDetails.blitSaleStartDate).format("dddd,DD MMMM, ساعت HH:mm");
@@ -51,31 +56,36 @@ angular.module('eventsPageModule')
                 }
             })
             .catch(function (data) {
+                console.log(data);
             });
         $scope.eventFlatDates = [];
-        $scope.flatEventDates = function (dates) {
-            var index = 0;
-            for(var i = 0; i < dates.length; i++) {
-                for(var j = 0; j < dates[i].blitTypes.length; j++) {
-                    $scope.eventFlatDates[index] = {
-                        name : dates[i].blitTypes[j].name,
-                        capacity : dates[i].blitTypes[j].capacity,
-                        blitTypeState : dates[i].blitTypes[j].blitTypeState,
-                        price : dates[i].blitTypes[j].price,
-                        date : dates[i].date,
-                        soldCount : dates[i].blitTypes[j].soldCount,
-                        isFree : dates[i].blitTypes[j].isFree,
-                        blitTypeId : dates[i].blitTypes[j].blitTypeId
+        $scope.sansListData = function (dates) {
+            $scope.eventDates = dates.sort(function (a, b) {
+               return a.date - b.date;
+            });
+            $scope.eventDates.forEach(function (eventDate) {
+                eventDate.capacity = 0;
+                eventDate.soldCount = 0;
+                eventDate.maxPrice = 0;
+                eventDate.minPrice = 100000000;
 
-                    } ;
-                    index++;
-                }
-            }
+                eventDate.blitTypes.forEach(function (blitType) {
+                    if(blitType.price < eventDate.minPrice) {
+                        eventDate.minPrice = blitType.price;
+                    }
+                    if(blitType.price > eventDate.maxPrice) {
+                        eventDate.maxPrice = blitType.price;
+                    }
+                    eventDate.capacity += blitType.capacity;
+                    eventDate.soldCount += blitType.soldCount;
+
+                })
+            });
             $timeout(function () {
-                for(var i = 0 ; i < $scope.eventFlatDates.length; i++) {
-                    dateSetterService.initDate("classDate"+i);
-                    $scope.eventFlatDates[i].persianDate = persianDate($scope.eventFlatDates[i].date).format("dddd,DD MMMM, ساعت HH:mm");
-                    $(".classDate"+i).text(persianDate($scope.eventFlatDates[i].date).format("dddd,DD MMMM, ساعت HH:mm"));
+                for(var sansIndex in $scope.eventDates) {
+                    dateSetterService.initDate("classDate"+sansIndex);
+                    $scope.eventDates[sansIndex].persianDate = persianDate($scope.eventDates[sansIndex].date).format("dddd,DD MMMM, ساعت HH:mm");
+                    $(".classDate"+sansIndex).text(persianDate($scope.eventDates[sansIndex].date).format("dddd,DD MMMM, ساعت HH:mm"));
                 }
             }, 300);
         };
@@ -83,6 +93,28 @@ angular.module('eventsPageModule')
             return images.filter(function (item) {
                 return item.type === type ;
             })
+        };
+        $scope.flatEventDates = function (dates) {
+            var blitTypesIndex = 0;
+            for(var sansIndex in dates) {
+                for(var blitIndex in dates[sansIndex].blitTypes) {
+                    $scope.eventFlatDates[blitTypesIndex] = {
+                        name : dates[sansIndex].blitTypes[blitIndex].name,
+                        capacity : dates[sansIndex].blitTypes[blitIndex].capacity,
+                        blitTypeState : dates[sansIndex].blitTypes[blitIndex].blitTypeState,
+                        price : dates[sansIndex].blitTypes[blitIndex].price,
+                        date : dates[sansIndex].date,
+                        soldCount : dates[sansIndex].blitTypes[blitIndex].soldCount,
+                        isFree : dates[sansIndex].blitTypes[blitIndex].isFree,
+                        blitTypeId : dates[sansIndex].blitTypes[blitIndex].blitTypeId,
+                        seatUids : dates[sansIndex].blitTypes[blitIndex].seatUids,
+                        hasSeat : dates[sansIndex].blitTypes[blitIndex].hasSeat
+
+                    } ;
+                    blitTypesIndex++;
+                }
+            }
+            console.log($scope.eventFlatDates);
         };
         $scope.getImages = function (event) {
             event.images.map(function (imageItem) {
@@ -102,10 +134,35 @@ angular.module('eventsPageModule')
                 $scope.eventDataPhoto = event;
             });
         };
+        $scope.bothTypesOfBlits = false;
+        $scope.showSeatSection = false;
+        $scope.showWithoutSeatSection = false;
         $scope.setCapacityBlit = function (sansId) {
             $scope.eventDatePicked = $scope.eventDataDetails.eventDates.filter(function (item) {
                 return item.eventDateId === sansId;
             });
+            $scope.bothTypesOfBlits  = false;
+            if($scope.eventDatePicked[0].hasSalon) {
+                $scope.eventDatePicked[0].blitTypes.forEach(function (blitType) {
+                    if((blitType.seatUids.length === 0)) {
+                        $scope.bothTypesOfBlits  = true;
+                    }
+                })
+            }
+            if(!$scope.bothTypesOfBlits) {
+                $scope.showSeatSection = true;
+                $("#buyTicketModal").addClass('modalExpandWidth');
+                $(".progress").addClass('dispNone');
+            }
+        };
+        $scope.seatTypePicked = function (seatType) {
+            if(seatType) {
+                $scope.showSeatSection = true;
+                $("#buyTicketModal").addClass('modalExpandWidth');
+                $(".progress").addClass('dispNone');
+            } else {
+                $scope.showWithoutSeatSection = true;
+            }
         };
         $scope.blitTypePicked = function (blitId) {
             $scope.itemWithCapacity = $scope.eventFlatDates.filter(function (item) {
