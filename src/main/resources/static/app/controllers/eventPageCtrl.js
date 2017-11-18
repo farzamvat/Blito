@@ -141,6 +141,8 @@ angular.module('eventsPageModule')
         $scope.blitTypeCreateValidation = 0;
         $scope.setCapacityBlit = function (sansId) {
             $scope.showSeatSection = false;
+            $scope.showWithoutSeatSection = false;
+            $scope.seatsPickedChecked = false;
             $scope.blitTypeCreateValidation = 0;
             $scope.$broadcast('blitTypeUidsReset', []);
             $scope.eventDatePicked = $scope.eventDataDetails.eventDates.filter(function (item) {
@@ -161,6 +163,7 @@ angular.module('eventsPageModule')
         $scope.seatTypePicked = function (seatType) {
             if(seatType) {
                 $scope.showSeatSection = true;
+                $scope.showWithoutSeatSection = false;
                 $("#buyTicketModal").addClass('modalExpandWidth');
                 $(".progress").addClass('dispNone');
                 generateSalonSeatMap();
@@ -168,6 +171,7 @@ angular.module('eventsPageModule')
                 $(".progress").removeClass('dispNone');
                 $("#buyTicketModal").removeClass('modalExpandWidth');
                 $scope.showWithoutSeatSection = true;
+                $scope.seatsPickedChecked = false;
                 $scope.showSeatSection = false;
             }
         };
@@ -175,9 +179,7 @@ angular.module('eventsPageModule')
         var generateSalonSeatMap = function () {
             seatmapService.getPopulatedSchema($scope.eventDatePicked[0].eventDateId)
                 .then(function (data) {
-                    console.log(data);
                     populatedSchema = data.data;
-
                     $scope.$broadcast('newSVGBuyTicket', [populatedSchema, 4]);
                 })
                 .catch(function (data) {
@@ -218,7 +220,15 @@ angular.module('eventsPageModule')
             angular.element(document.getElementById('ticketPay2')).addClass('active').addClass('in');
             angular.element(document.getElementById('payment')).addClass('active');
         };
-        $scope.nextStep1WithSeat = function (eventInfo) {
+        $scope.selectedBlitsTotalPrice = 0;
+        $scope.nextStep1WithSeat = function () {
+            $scope.selectedBlitsTotalPrice = seatmapService.getBoughtBlitTypes($scope.seatBlitUids, populatedSchema);
+            angular.element(document.getElementById('ticketPay1')).removeClass('active');
+            angular.element(document.getElementById('selectTicket')).removeClass('active');
+            angular.element(document.getElementById('ticketPay2')).addClass('active').addClass('in');
+            angular.element(document.getElementById('payment')).addClass('active');
+            $(".progress").removeClass('dispNone');
+            $("#buyTicketModal").removeClass('modalExpandWidth');
         };
         $scope.prevStep1 = function () {
             $scope.discountIsValid = false;
@@ -235,6 +245,10 @@ angular.module('eventsPageModule')
             angular.element(document.getElementById('selectTicket')).addClass('active');
             angular.element(document.getElementById('ticketPay2')).removeClass('active');
             angular.element(document.getElementById('payment')).removeClass('active');
+            if($scope.showSeatSection) {
+                $("#buyTicketModal").addClass('modalExpandWidth');
+                $(".progress").addClass('dispNone');
+            }
         };
         var buyPaymentTicket = {};
         $scope.paymentSelected = function (payment) {
@@ -245,7 +259,7 @@ angular.module('eventsPageModule')
         $scope.paymentSelectedWithSeat = function (payment) {
             var buyerData = userInfo.getData();
             $scope.paymentSelectedDone = "selected";
-            $scope.setPaymentData(payment, buyerData);
+            $scope.setPaymentDataWithSeat(payment, buyerData);
         };
         $scope.buyerInfo = {};
         $scope.paymentSelectedNotUser = function (payment) {
@@ -255,9 +269,6 @@ angular.module('eventsPageModule')
         };
         $scope.setPaymentData = function (payment, buyerData) {
             angular.element(document.getElementsByClassName("btnPaymentActive")).addClass("btnPaymentActivated");
-            var eventPersianDate = $scope.eventFlatDates.filter(function (ticket) {
-                return ticket.blitTypeId === $scope.itemWithCapacity[0].blitTypeId
-            });
             buyPaymentTicket = {
                 blitTypeId: $scope.itemWithCapacity[0].blitTypeId,
                 blitTypeName: $scope.itemWithCapacity[0].name,
@@ -266,8 +277,8 @@ angular.module('eventsPageModule')
                 customerMobileNumber: dataService.persianToEnglishDigit(persianJs(buyerData.mobile).englishNumber().toString()),
                 customerName: buyerData.firstname + " " + buyerData.lastname,
                 eventAddress: $scope.eventDataDetails.address,
-                eventDate: $scope.itemWithCapacity[0].date,
-                eventDateAndTime: eventPersianDate[0].persianDate,
+                eventDate: $scope.eventDatePicked[0].date,
+                eventDateAndTime: $scope.eventDatePicked[0].persianDate,
                 eventName: $scope.eventDataDetails.eventName,
                 seatType: "COMMON",
                 totalAmount: $scope.totalPrice,
@@ -281,23 +292,20 @@ angular.module('eventsPageModule')
         };
         $scope.setPaymentDataWithSeat = function (payment, buyerData) {
             angular.element(document.getElementsByClassName("btnPaymentActive")).addClass("btnPaymentActivated");
-            var eventPersianDate = $scope.eventDatePicked[0];
             buyPaymentTicket = {
-                // blitTypeId: $scope.itemWithCapacity[0].blitTypeId,
-                // blitTypeName: $scope.itemWithCapacity[0].name,
-                // count: $scope.totalNumber,
+                count: $scope.seatBlitUids.length,
                 customerEmail: buyerData.email,
                 customerMobileNumber: dataService.persianToEnglishDigit(persianJs(buyerData.mobile).englishNumber().toString()),
                 customerName: buyerData.firstname + " " + buyerData.lastname,
                 eventAddress: $scope.eventDataDetails.address,
-                eventDateId : eventPersianDate.eventDateId,
-                eventDate: eventPersianDate.date,
-                eventDateAndTime: eventPersianDate.persianDate,
+                eventDateId : $scope.eventDatePicked[0].eventDateId,
+                eventDate: $scope.eventDatePicked[0].date,
+                eventDateAndTime: $scope.eventDatePicked[0].persianDate,
                 eventName: $scope.eventDataDetails.eventName,
                 seatType: "COMMON",
-                // totalAmount: $scope.totalPrice,
+                totalAmount: $scope.selectedBlitsTotalPrice,
                 additionalFields : $scope.additionalFields,
-                // primaryAmount: $scope.primaryTotalPrice,
+                primaryAmount: $scope.selectedBlitsTotalPrice,
                 seatUids : $scope.seatBlitUids,
                 bankGateway: payment
             };
@@ -351,7 +359,6 @@ angular.module('eventsPageModule')
         $scope.nextStep2Free = function () {
             var userData = userInfo.getData();
             $scope.disableFreeButton = true;
-            var eventPersianDate = $scope.eventFlatDates.filter(function (ticket) { return ticket.blitTypeId === $scope.itemWithCapacity[0].blitTypeId});
             var buyFreeTicket = {
                 blitTypeId : $scope.itemWithCapacity[0].blitTypeId,
                 blitTypeName : $scope.itemWithCapacity[0].name,
@@ -360,8 +367,8 @@ angular.module('eventsPageModule')
                 customerMobileNumber : userData.mobile,
                 customerName : userData.firstname+ " " + userData.lastname,
                 eventAddress : $scope.eventDataDetails.address,
-                eventDate : $scope.itemWithCapacity[0].date,
-                eventDateAndTime : eventPersianDate[0].persianDate,
+                eventDate : $scope.eventDatePicked[0].date,
+                eventDateAndTime : $scope.eventDatePicked[0].persianDate,
                 eventName : $scope.eventDataDetails.eventName,
                 additionalFields : $scope.additionalFields,
                 seatType : "COMMON",

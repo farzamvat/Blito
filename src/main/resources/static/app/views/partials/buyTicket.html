@@ -96,9 +96,6 @@
                                                 </div>
                                                 <div ng-if="showWithoutSeatSection" class="control-group text-center marginBottom20">
                                                     <div ng-include="'app/views/partials/buy-ticket-without-seat.html'"></div>
-                                                    <!--<div class="controls">-->
-                                                        <!--<button  id="nextStep1"  ng-click="nextStep1(eventInfo)" ng-disabled="ticketInfo.$invalid"  class="btn btn-success btn-lg btnLogin"> مرحله بعد <i class="fa fa-arrow-left"></i></button>-->
-                                                    <!--</div>-->
                                                 </div>
                                             </div>
                                         </fieldset>
@@ -111,7 +108,7 @@
                                 <div class="tab-pane fade" id="ticketPay2">
                                     <form novalidate name="paymentStatus" class="form-inline textAlignRight marginTop0">
                                         <fieldset class="fieldsetStyle">
-                                            <div class="form-group col-xs-12 formRegGroup floatRight">
+                                            <div ng-if="showWithoutSeatSection" class="form-group col-xs-12 formRegGroup floatRight">
                                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
                                                     <label class="registerLabel" >بلیت انتخابی  :</label>
                                                 </div>
@@ -120,7 +117,7 @@
                                                 </div>
 
                                             </div>
-                                            <div class="form-group col-xs-12 formRegGroup floatRight">
+                                            <div ng-if="showWithoutSeatSection" class="form-group col-xs-12 formRegGroup floatRight">
                                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
                                                     <label class="registerLabel" >تعداد بلیت   :</label>
                                                 </div>
@@ -129,12 +126,32 @@
                                                 </div>
 
                                             </div>
-                                            <div ng-if="!itemWithCapacity[0].isFree" class="form-group col-xs-12 formRegGroup floatRight">
+                                            <div ng-if="!itemWithCapacity[0].isFree && showWithoutSeatSection" class="form-group col-xs-12 formRegGroup floatRight">
                                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
                                                     <label class="registerLabel" >قیمت پرداختی  : (تومان)</label>
                                                 </div>
                                                 <div class="col-xs-7 col-sm-6 floatRight ">
                                                     <label>{{primaryTotalPrice  | number | pNumber}}</label>
+                                                    <input height="60" id="registerLabel" ng-model="paymentSelectedDone" name="paymentPick"  type="text"  class="form-group registerInput " ng-show="" required>
+                                                </div>
+
+                                            </div>
+
+                                            <div ng-if="showSeatSection" class="form-group col-xs-12 formRegGroup floatRight">
+                                                <div class="col-xs-5 col-sm-6 floatRight text-center">
+                                                    <label class="registerLabel" >تعداد بلیت   :</label>
+                                                </div>
+                                                <div class="col-xs-7 col-sm-6 floatRight ">
+                                                    <label>{{seatBlitUids.length  | number | pNumber}}</label>
+                                                </div>
+
+                                            </div>
+                                            <div ng-if="showSeatSection" class="form-group col-xs-12 formRegGroup floatRight">
+                                                <div class="col-xs-5 col-sm-6 floatRight text-center">
+                                                    <label class="registerLabel" >قیمت پرداختی  : (تومان)</label>
+                                                </div>
+                                                <div class="col-xs-7 col-sm-6 floatRight ">
+                                                    <label>{{selectedBlitsTotalPrice  | number | pNumber}}</label>
                                                     <input height="60" id="registerLabel" ng-model="paymentSelectedDone" name="paymentPick"  type="text"  class="form-group registerInput " ng-show="" required>
                                                 </div>
 
@@ -148,7 +165,7 @@
                                             <div id="discountError"  class="text-center dispNone alert alert-danger col-xs-12">
                                                 <strong>کد تخفیف معتبر نمی باشد !</strong>
                                             </div>
-                                            <div ng-if="!itemWithCapacity[0].isFree" class="form-group col-xs-12 formRegGroup floatRight">
+                                            <div ng-if="!itemWithCapacity[0].isFree && showWithoutSeatSection" class="form-group col-xs-12 formRegGroup floatRight">
                                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
                                                     <label class="registerLabel" >کد تخفیف   :</label>
                                                 </div>
@@ -171,7 +188,7 @@
                                             <div id="buyBlitError"  class="text-center dispNone alert alert-danger col-xs-12">
                                                 <strong></strong>
                                             </div>
-                                            <div  ng-if="!itemWithCapacity[0].isFree && logoutMenu" class="form-group col-xs-12 formRegGroup floatRight">
+                                            <div  ng-if="!itemWithCapacity[0].isFree && logoutMenu && showWithoutSeatSection" class="form-group col-xs-12 formRegGroup floatRight">
                                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
                                                     <label class="registerLabel pickPayment" > انتخاب درگاه  :</label>
                                                 </div>
@@ -231,7 +248,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div  ng-if="itemWithCapacity[0].isFree" class="form-group col-xs-12 formRegGroup floatRight">
+                                            <div  ng-if="itemWithCapacity[0].isFree && showWithoutSeatSection" class="form-group col-xs-12 formRegGroup floatRight">
                                                 <div class="controls col-xs-12 col-sm-6 marginBottom20">
                                                     <button id="nextStep2Free" ng-click="nextStep2Free()" ng-disabled="disableFreeButton" name="freePayment" class="btn btn-success btn-lg btnLogin">  دریافت بلیت <i class="fa fa-spin fa-spinner dispNone freeBlitSpinner"></i><i class="fa fa-money"></i></button>
                                                 </div>

@@ -132,6 +132,9 @@ angular.module('userProfileApi', [])
         ticket.buyTicket = function (ticketInfo) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/blits/buy-request', ticketInfo);
         };
+        ticket.buyTicketWithSeat = function (ticketInfo) {
+            return $http.post(config.baseUrl+'/api/blito/v1.0/blits/buy-request-with-seat', ticketInfo);
+        };
         ticket.buyTicketNotUser = function (ticketInfo) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/public/blits/buy-request', ticketInfo);
         };

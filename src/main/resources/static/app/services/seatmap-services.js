@@ -91,6 +91,21 @@ angular.module('UiServices')
                 return blitType.hasSeat;
             })
         };
+        seatMap.getBoughtBlitTypes = function (selectedSeats, populatedSchema) {
+            var pickedBlitPrices = 0;
+            selectedSeats.forEach(function (seatPickedUid) {
+                populatedSchema.schema.sections.forEach(function (section) {
+                    section.rows.forEach(function (row) {
+                        row.seats.forEach(function (seat) {
+                            if(seat.uid === seatPickedUid) {
+                                pickedBlitPrices += seat.price;
+                            }
+                        })
+                    })
+                })
+            });
+            return pickedBlitPrices;
+        };
         seatMap.oneSeatUnpickedPayment = function (seatUids, populatedSchema) {
             var pickedSeatsCheck = false;
             seatUids.forEach(function (seatUid) {
