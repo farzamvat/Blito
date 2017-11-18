@@ -91,4 +91,16 @@ angular.module('UiServices')
                 return blitType.hasSeat;
             })
         };
+        seatMap.oneSeatUnpickedPayment = function (seatUids, populatedSchema) {
+            console.log(populatedSchema);
+            // populatedSchema.schema.sections.forEach(function (section) {
+            //     section.rows.forEach(function (row) {
+            //         row.seats.forEach(function (seat) {
+            //             if(seat.uid === seatUids[seatUids.length-1]) {
+            //
+            //             }
+            //         })
+            //     })
+            // })
+        };
     });

@@ -222,9 +222,16 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div ng-if="bothTypesOfBlits"  class="form-group col-xs-12 marginTop30  formRegGroup floatRight">
+                                                <div ng-if="showSeatSection"  class="form-group col-xs-12 marginTop30  formRegGroup floatRight">
+                                                    <seat-map-buy-ticket></seat-map-buy-ticket>
+                                                    <div id="seatMaperChart4"  class="col-xs-12 marginTop30 marginBottom20 seatMaperChartStyle"></div>
                                                 </div>
-                                                <div class="control-group text-center marginBottom20">
+                                                <div ng-if="showSeatSection" class="control-group text-center marginBottom20">
+                                                    <div class="controls">
+                                                        <button  id="nextStep1"  ng-click="nextStep1(eventInfo)" ng-disabled="ticketInfo.$invalid || (blitTypeCreateValidation === 0)"  class="btn btn-success btn-lg btnLogin"> مرحله بعد <i class="fa fa-arrow-left"></i></button>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="!showSeatSection" class="control-group text-center marginBottom20">
                                                     <div class="controls">
                                                         <button  id="nextStep1"  ng-click="nextStep1(eventInfo)" ng-disabled="ticketInfo.$invalid"  class="btn btn-success btn-lg btnLogin"> مرحله بعد <i class="fa fa-arrow-left"></i></button>
                                                     </div>
@@ -348,7 +355,6 @@
                                                     <button id="prevStep2" ng-click="prevStep1()"  class="btn btn-danger btn-lg btnLogin"><i class="fa fa-arrow-right"></i>   مرحله قبل </button>
                                                 </div>
                                             </div>
-
                                         </fieldset>
                                     </form>
                                     <div class="modal-footer ">

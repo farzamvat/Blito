@@ -3185,6 +3185,9 @@ tspan{
 
 
 @media (max-width: 768px) {
+    .modalExpandWidth {
+        width: inherit;
+    }
     .maximizeImageXs {
         display: block;
         margin: -55px auto;

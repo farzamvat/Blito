@@ -14,7 +14,8 @@ angular.module('eventsPageModule')
                                            ticketsService,
                                            $window,
                                            dataService,
-                                           plannerService) {
+                                           plannerService,
+                                           seatmapService) {
         var promises = [];
         $scope.persianSans = [];
         $scope.eventInfo = {};
@@ -137,22 +138,23 @@ angular.module('eventsPageModule')
         $scope.bothTypesOfBlits = false;
         $scope.showSeatSection = false;
         $scope.showWithoutSeatSection = false;
+        $scope.blitTypeCreateValidation = 0;
         $scope.setCapacityBlit = function (sansId) {
+            $scope.showSeatSection = false;
+            $scope.blitTypeCreateValidation = 0;
+            $scope.$broadcast('blitTypeUidsReset', []);
             $scope.eventDatePicked = $scope.eventDataDetails.eventDates.filter(function (item) {
                 return item.eventDateId === sansId;
             });
             $scope.bothTypesOfBlits  = false;
-            if($scope.eventDatePicked[0].hasSalon) {
-                $scope.eventDatePicked[0].blitTypes.forEach(function (blitType) {
-                    if((blitType.seatUids.length === 0)) {
-                        $scope.bothTypesOfBlits  = true;
-                    }
-                })
+            if((seatmapService.generateWithoutSeatBlitTypes($scope.eventDatePicked[0].blitTypes)).length !== 0) {
+                $scope.bothTypesOfBlits  = true;
             }
             if(!$scope.bothTypesOfBlits) {
                 $scope.showSeatSection = true;
                 $("#buyTicketModal").addClass('modalExpandWidth');
                 $(".progress").addClass('dispNone');
+                generateSalonSeatMap();
             }
         };
         $scope.seatTypePicked = function (seatType) {
@@ -160,10 +162,36 @@ angular.module('eventsPageModule')
                 $scope.showSeatSection = true;
                 $("#buyTicketModal").addClass('modalExpandWidth');
                 $(".progress").addClass('dispNone');
+                generateSalonSeatMap();
             } else {
+                $(".progress").removeClass('dispNone');
+                $("#buyTicketModal").removeClass('modalExpandWidth');
                 $scope.showWithoutSeatSection = true;
+                $scope.showSeatSection = false;
+                $scope.blitTypesWithOutSeatsEdit = seatmapService.generateWithoutSeatBlitTypes($scope.eventDatePicked[0].blitTypes);
             }
         };
+        var populatedSchema = {}
+        var generateSalonSeatMap = function () {
+            seatmapService.getPopulatedSchema($scope.eventDatePicked[0].eventDateId)
+                .then(function (data) {
+                    console.log(data);
+                    populatedSchema = data.data;
+
+                    $scope.$broadcast('newSVGBuyTicket', [populatedSchema, 4]);
+                })
+                .catch(function (data) {
+                    console.log(data);
+                })
+
+        };
+        $scope.$on("blitIdsChangedBuyTicket",function (event ,data) {
+            $scope.blitTypeCreateValidation = data[0].length;
+            $scope.$apply();
+            $scope.seatBlitUids = data[0];
+            seatmapService.oneSeatUnpickedPayment($scope.seatBlitUids, populatedSchema);
+            console.log($scope.seatBlitUids);
+        });
         $scope.blitTypePicked = function (blitId) {
             $scope.itemWithCapacity = $scope.eventFlatDates.filter(function (item) {
                 return item.blitTypeId === blitId;
@@ -319,6 +347,7 @@ angular.module('eventsPageModule')
                 })
 
         };
+
         $scope.validateDiscountInput = function (discountCode) {
             var discountData = {};
             $scope.discountCodeName = discountCode;
@@ -398,5 +427,5 @@ angular.module('eventsPageModule')
         };
         $scope.showEventPic = function () {
             $("#event-photo").modal("show");
-        }
+        };
     });
