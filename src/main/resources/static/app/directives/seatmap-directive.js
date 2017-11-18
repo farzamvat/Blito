@@ -36,7 +36,6 @@ angular.module('blitoDirectives')
                 chart.geoData(svgData.salonSvg);
                 var seatMapData = new Array();
                 var wholeSalonData=[];
-                var ismouse=false,ismobile=true;
 
                 for (var sectionIndex = 0; sectionIndex < svgData.schema.sections.length; sectionIndex++) {
                     var rowName = 0;
@@ -77,21 +76,28 @@ angular.module('blitoDirectives')
                 var chartLabels=chart.labels();
                 chart.labels({fontSize: 18});
                 chartLabels.format("{%info}");
-                // var mouseBehavior=function(){
-                //     ismobile=false;
-                //     ismouse=true;
-                //     console.log("clicked");
-                // };
-                // var touchBehavior=function(){
-                //     ismobile=true;
-                //     ismouse=false;
-                //     console.log("touched");
-                // };
-                // chart.listen("click",mouseBehavior);
-                // chart.listen("touchstart",touchBehavior);
                 var touchSS = function(e){
                         e.preventDefault();
                 };
+                function createDrillUpLabel(text, offset, stage , action ){
+                    var label = anychart.standalones.label();
+                    label.background({fill: "#9E9E9E"});
+                    label.zIndex(99999);
+                    label.text(text);
+                    label.fontColor("#fff");
+                    label.padding(5);
+                    label.offsetX(0);
+                    label.offsetY(10);
+                    // label.parentBounds(0, 0, "100%", "10%");
+                    // label.height(10);
+                    // label.domTarget.parents("div").style.position="absolute";
+                    label.listen("click", action);
+                    label.container(stage);
+                    label.draw();
+                    return label;
+                };
+
+
                 document.getElementById('seatMaperChart'+svgIndex).addEventListener('touchend', touchSS);
                 var seatClickFunction = function (e) {
                     if (scope.pickedSeats.indexOf(e.domTarget.dd) === -1) {
@@ -152,7 +158,7 @@ angular.module('blitoDirectives')
                             }
                         });
                         var section=sectionsChart[sectionIndex].chart.choropleth(rowSeats)
-                            .name(svgData.schema.sections[sectionIndex].rows[rowIndex].name)
+                            .name(svgData.schema.sections[sectionIndex].rows[rowIndex].name);
                             // .listen('touchstart', seatClickFunction)
                             // .listen('click',seatClickFunction);
                         section.listen('touchstart', seatClickFunction);
@@ -185,8 +191,15 @@ angular.module('blitoDirectives')
                     sectionsChart[sectionIndex].chart.labels({fontSize: 10});
                     labels.format("{%info}");
                 }
+                chart.bounds(0, '10%', '100%', '90%');
                 chart.container("seatMaperChart"+svgIndex);
                 chart.draw();
+
+                var DrillupLabel= createDrillUpLabel( "بازگشت" , 0, "seatMaperChart"+svgIndex ,function(){
+                    chart.drillUp();
+                    this.enabled(false);
+                });
+                DrillupLabel.enabled(false);
 
                 // document.getElementsByClassName("seatMapSection"+svgIndex)[0].setAttribute('focusable','false');
                 // document.getElementsByTagName('svg')[0].setAttribute('Content-Type','text/html');
@@ -201,6 +214,7 @@ angular.module('blitoDirectives')
                         if(section.uid === e.point.get('id')) {
                             chart.drillTo(e.point.get('id'), section.chart);
                             sectionPickedUid = section.uid;
+                            DrillupLabel.enabled(true);
                         }
                     })
                 });
