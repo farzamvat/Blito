@@ -592,6 +592,7 @@ angular.module('blitoDirectives')
                 scope.resetPickedSeatsArray = function () {
                     scope.pickedSeats = [];
                 };
+
                 var populatedSalon = function (section) {
                     svgData.schema.sections.forEach(function (sect) {
                         if(sect.uid === section.uid) {

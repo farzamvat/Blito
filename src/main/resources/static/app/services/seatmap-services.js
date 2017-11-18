@@ -92,15 +92,33 @@ angular.module('UiServices')
             })
         };
         seatMap.oneSeatUnpickedPayment = function (seatUids, populatedSchema) {
-            console.log(populatedSchema);
-            // populatedSchema.schema.sections.forEach(function (section) {
-            //     section.rows.forEach(function (row) {
-            //         row.seats.forEach(function (seat) {
-            //             if(seat.uid === seatUids[seatUids.length-1]) {
-            //
-            //             }
-            //         })
-            //     })
-            // })
+            var pickedSeatsCheck = false;
+            seatUids.forEach(function (seatUid) {
+                populatedSchema.schema.sections.forEach(function (section) {
+                    section.rows.forEach(function (row) {
+                        if(row.direction === "LTR") {
+                            if((row.seats[0].nextUid === seatUid) && (seatUids.indexOf(row.seats[0].uid) === -1)) {
+                                pickedSeatsCheck = true;
+                            }
+                            if((row.seats[row.seats.length-1].prevUid === seatUid) && (seatUids.indexOf(row.seats[row.seats.length-1].uid) === -1)) {
+                                pickedSeatsCheck = true;
+                            }
+                        }
+                        for(var seatIndex = 0; seatIndex < row.seats.length ; seatIndex++) {
+                            if((row.seats[seatIndex].nextUid === seatUid) && (seatUids.indexOf(row.seats[seatIndex].uid) === -1) && (row.seats[seatIndex].state === 'AVAILABLE')) {
+                                if(row.seats[seatIndex-1] && ((seatUids.indexOf(row.seats[seatIndex-1].uid) !== -1) || (row.seats[seatIndex-1].state !== 'AVAILABLE'))) {
+                                    pickedSeatsCheck = true;
+                                }
+                            }
+                            if((row.seats[seatIndex].prevUid === seatUid) && (seatUids.indexOf(row.seats[seatIndex].uid) === -1) && (row.seats[seatIndex].state === 'AVAILABLE')) {
+                                if(row.seats[seatIndex+1] && ((seatUids.indexOf(row.seats[seatIndex+1].uid) !== -1) || (row.seats[seatIndex+1].state !== 'AVAILABLE'))) {
+                                    pickedSeatsCheck = true;
+                                }
+                            }
+                        }
+                    })
+                });
+            });
+            return pickedSeatsCheck;
         };
     });
