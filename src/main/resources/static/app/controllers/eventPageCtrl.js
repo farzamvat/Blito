@@ -15,6 +15,7 @@ angular.module('eventsPageModule')
                                            $window,
                                            dataService,
                                            plannerService,
+                                           $filter,
                                            seatmapService) {
         var promises = [];
         $scope.persianSans = [];
@@ -149,6 +150,17 @@ angular.module('eventsPageModule')
                 return item.eventDateId === sansId;
             });
             $scope.blitTypesWithOutSeatsEdit = seatmapService.generateWithoutSeatBlitTypes($scope.eventDatePicked[0].blitTypes);
+            $scope.blitTypesWithOutSeatsEdit.map(function (blitTypeWithoutSeat) {
+                if(blitTypeWithoutSeat.isFree){
+                    blitTypeWithoutSeat.nameWithPrice = '(رایگان)' + blitTypeWithoutSeat.name ;
+                } else {
+                    var newPrice = $filter('number')(blitTypeWithoutSeat.price);
+                    newPrice = $filter('pNumber')(newPrice);
+                    blitTypeWithoutSeat.nameWithPrice =   '('+newPrice+' تومان'+')' + blitTypeWithoutSeat.name;
+                }
+                console.log(blitTypeWithoutSeat);
+                return blitTypeWithoutSeat;
+            });
             $scope.bothTypesOfBlits  = false;
             if((seatmapService.generateWithoutSeatBlitTypes($scope.eventDatePicked[0].blitTypes)).length !== 0) {
                 $scope.bothTypesOfBlits  = true;
@@ -319,6 +331,26 @@ angular.module('eventsPageModule')
             document.getElementsByClassName("payedBlitSpinner")[0].style.display = "inline";
             document.getElementById("buyBlitError").style.display = "none";
             ticketsService.buyTicket(buyPaymentTicket)
+                .then(function (data) {
+                    document.getElementsByClassName("payedBlitSpinner")[0].style.display = "none";
+                    $scope.gateWayDetails = data.data;
+                    if($scope.gateWayDetails.gateway === 'ZARINPAL') {
+                        $window.location.href = $scope.gateWayDetails.zarinpalWebGatewayURL;
+                    }
+                })
+                .catch(function (data) {
+                    $scope.buyTicketOnce = false;
+                    $scope.paymentSelectedDone = '';
+                    document.getElementsByClassName("payedBlitSpinner")[0].style.display = "none";
+                    document.getElementById("buyBlitError").innerHTML= data.data.message;
+                    document.getElementById("buyBlitError").style.display = "inline";
+                })
+        };
+        $scope.nextStep2WithSeat = function () {
+            $scope.buyTicketOnce = true;
+            document.getElementsByClassName("payedBlitSpinner")[0].style.display = "inline";
+            document.getElementById("buyBlitError").style.display = "none";
+            ticketsService.buyTicketWithSeat(buyPaymentTicket)
                 .then(function (data) {
                     document.getElementsByClassName("payedBlitSpinner")[0].style.display = "none";
                     $scope.gateWayDetails = data.data;
