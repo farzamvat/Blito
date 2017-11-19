@@ -7,6 +7,7 @@ import com.blito.enums.SeatType;
 import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
+import com.blito.exceptions.ValidationException;
 import com.blito.models.BlitType;
 import com.blito.models.CommonBlit;
 import com.blito.models.User;
@@ -82,6 +83,9 @@ public class CommonBlitService extends AbstractBlitService<CommonBlit,CommonBlit
     @Transactional
     @Override
     public Object createBlitAuthorized(CommonBlitViewModel viewModel, User user) {
+        if(viewModel.getBlitTypeName() == null || viewModel.getBlitTypeName().isEmpty()) {
+            throw new ValidationException(ResourceUtil.getMessage(Response.VALIDATION));
+        }
         CommonBlit blit = commonBlitMapper.createFromViewModel(viewModel);
         BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(viewModel.getBlitTypeId()))
                 .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
@@ -140,6 +144,9 @@ public class CommonBlitService extends AbstractBlitService<CommonBlit,CommonBlit
     @Transactional
     @Override
     public PaymentRequestViewModel createUnauthorizedAndNoneFreeBlits(CommonBlitViewModel viewModel) {
+        if(viewModel.getBlitTypeName() == null || viewModel.getBlitTypeName().isEmpty()) {
+            throw new ValidationException(ResourceUtil.getMessage(Response.VALIDATION));
+        }
         CommonBlit commonBlit = commonBlitMapper.createFromViewModel(viewModel);
         BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(viewModel.getBlitTypeId()))
                 .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));

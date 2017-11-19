@@ -65,7 +65,6 @@ public class AbstractBlitViewModel extends AbstractViewModel {
     @NotEmpty
     private String eventAddress;
     @JsonView(View.Blit.class)
-    @NotEmpty
     private String blitTypeName;
     @JsonView(View.SimpleBlit.class)
     @NotNull
