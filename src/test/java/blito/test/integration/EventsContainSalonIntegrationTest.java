@@ -181,10 +181,9 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
         openBlitTypeState_success(new ArrayList<>(eventViewModel.getEventDates().stream().flatMap(eventDateViewModel -> eventDateViewModel.getBlitTypes().stream())
                 .map(BlitTypeViewModel::getBlitTypeId).collect(Collectors.toSet())),State.OPEN);
         SeatBlitViewModel seatBlitViewModel = new SeatBlitViewModel();
-//        seatBlitViewModel.setBlitTypeId(eventViewModel.getEventDates().stream().flatMap(eventDateViewModel -> eventDateViewModel.getBlitTypes().stream()).filter(blitTypeViewModel -> blitTypeViewModel.getName().equals("update")).findFirst().get().getBlitTypeId());
         seatBlitViewModel.setEventDateId(eventViewModel.getEventDates().stream().findFirst().get().getEventDateId());
         seatBlitViewModel.setBankGateway(BankGateway.ZARINPAL);
-        seatBlitViewModel.setBlitTypeName(eventViewModel.getEventDates().stream().flatMap(eventDateViewModel -> eventDateViewModel.getBlitTypes().stream()).filter(blitTypeViewModel -> blitTypeViewModel.getName().equals("update")).findFirst().get().getName());
+//        seatBlitViewModel.setBlitTypeName(eventViewModel.getEventDates().stream().flatMap(eventDateViewModel -> eventDateViewModel.getBlitTypes().stream()).filter(blitTypeViewModel -> blitTypeViewModel.getName().equals("update")).findFirst().get().getName());
         seatBlitViewModel.setCount(6);
         seatBlitViewModel.setSeats("2,3,4 row 2");
         seatBlitViewModel.setCustomerEmail("farzam.vat@gmail.com");
@@ -235,14 +234,14 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
         System.out.println(blitResponseViewModel.toString());
 
         Map<String,Object> pdfMap = commonBlitService.getBlitPdf("123456");
-        System.out.println(pdfMap);
+        System.out.println("COMMON:" + pdfMap);
 
         SearchViewModel<SeatBlit> seatBlitSearchViewModel = new SearchViewModel<>();
         seatBlitSearchViewModel.setRestrictions(new ArrayList<>());
         seatBlitSearchViewModel.getRestrictions().add(new Simple<>(Operation.eq,"blitTypeSeats-blitType-eventDate-eventDateId",eventViewModel.getEventDates().stream().findAny().get().getEventDateId()));
         seatBlitSearchViewModel.getRestrictions().add(new Simple<>(Operation.neq,"paymentStatus","PENDING"));
         seatBlitSearchViewModel.getRestrictions().add(new Simple<>(Operation.neq,"paymentStatus","ERROR"));
-        System.out.println(seatBlitService.searchBlitsForExcel(seatBlitSearchViewModel));
+        System.out.println("SEAT:" + seatBlitService.searchBlitsForExcel(seatBlitSearchViewModel));
 
 //        SearchViewModel<CommonBlit> commonBlitSearchViewModel = new SearchViewModel<>();
 //        commonBlitSearchViewModel.setRestrictions(new ArrayList<>());

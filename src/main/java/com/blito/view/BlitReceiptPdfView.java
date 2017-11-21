@@ -36,10 +36,14 @@ public class BlitReceiptPdfView extends AbstractPdfView {
 		String email = (String) model.get("customer email");
 		String eventDate = (String) model.get("event date");
 		String trackCode = (String) model.get("track code");
-		String blitType = (String) model.get("blit type");
+
 		String eventPhotoId = (String) model.get("event photo");
 		int count = (int) model.get("count");
 		String address = (String) model.get("event address");
+		String blitType = "no blit type";
+		if (model.containsKey("blit type")) {
+            blitType = (String) model.get("blit type");
+        }
 		String seat = "no seats";
 		if (model.containsKey("seats")) {
 			seat = (String) model.get("seats");
@@ -250,55 +254,57 @@ public class BlitReceiptPdfView extends AbstractPdfView {
 		countCell.setPaddingBottom(8);
 		table.addCell(countCell);
 		//////////////////////////////////////////////////////////////
-		Phrase blankTitlePhrase = new Phrase();
-		blankTitlePhrase.setFont(boldFont);
-		blankTitlePhrase.add("");
+		if (!blitType.equals("no blit type")) {
+            Phrase blankTitlePhrase = new Phrase();
+            blankTitlePhrase.setFont(boldFont);
+            blankTitlePhrase.add("");
 
-		PdfPCell blankTitleCell = new PdfPCell(blankTitlePhrase);
-		blankTitleCell.setBorder(Rectangle.NO_BORDER);
-		blankTitleCell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
-		blankTitleCell.setHorizontalAlignment(Element.ALIGN_LEFT);
-		blankTitleCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-		blankTitleCell.setPaddingBottom(8);
-		table.addCell(blankTitleCell);
-		///////////////////////////////////////////////////////////////
-		Phrase blitTypeTitlePhrase = new Phrase();
-		blitTypeTitlePhrase.add(new Chunk("\uf145", fontello));
-		blitTypeTitlePhrase.add(new Chunk("    نوع بلیت: ", boldFont));
+            PdfPCell blankTitleCell = new PdfPCell(blankTitlePhrase);
+            blankTitleCell.setBorder(Rectangle.NO_BORDER);
+            blankTitleCell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
+            blankTitleCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            blankTitleCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            blankTitleCell.setPaddingBottom(8);
+            table.addCell(blankTitleCell);
+            ///////////////////////////////////////////////////////////////
+            Phrase blitTypeTitlePhrase = new Phrase();
+            blitTypeTitlePhrase.add(new Chunk("\uf145", fontello));
+            blitTypeTitlePhrase.add(new Chunk("    نوع بلیت: ", boldFont));
 
-		PdfPCell blitTypeTitleCell = new PdfPCell(blitTypeTitlePhrase);
-		blitTypeTitleCell.setBorder(Rectangle.NO_BORDER);
-		blitTypeTitleCell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
-		blitTypeTitleCell.setHorizontalAlignment(Element.ALIGN_LEFT);
-		blitTypeTitleCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-		blitTypeTitleCell.setPaddingBottom(8);
-		table.addCell(blitTypeTitleCell);
-		//////////////////////////////////////////////////////////////
-		Phrase blankPhrase = new Phrase();
-		blankPhrase.setFont(textFont);
-		blankPhrase.add("");
+            PdfPCell blitTypeTitleCell = new PdfPCell(blitTypeTitlePhrase);
+            blitTypeTitleCell.setBorder(Rectangle.NO_BORDER);
+            blitTypeTitleCell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
+            blitTypeTitleCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            blitTypeTitleCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            blitTypeTitleCell.setPaddingBottom(8);
+            table.addCell(blitTypeTitleCell);
+            //////////////////////////////////////////////////////////////
+            Phrase blankPhrase = new Phrase();
+            blankPhrase.setFont(textFont);
+            blankPhrase.add("");
 
-		PdfPCell blankCell = new PdfPCell(blankPhrase);
-		blankCell.setBorder(Rectangle.NO_BORDER);
-		blankCell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
-		blankCell.setHorizontalAlignment(Element.ALIGN_LEFT);
-		blankCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-		blankCell.setPaddingRight(20);
-		blankCell.setPaddingBottom(8);
-		table.addCell(blankCell);
-		///////////////////////////////////////////////////////////////
-		Phrase blitTypePhrase = new Phrase();
-		blitTypePhrase.setFont(textFont);
-		blitTypePhrase.add(blitType);
+            PdfPCell blankCell = new PdfPCell(blankPhrase);
+            blankCell.setBorder(Rectangle.NO_BORDER);
+            blankCell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
+            blankCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            blankCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            blankCell.setPaddingRight(20);
+            blankCell.setPaddingBottom(8);
+            table.addCell(blankCell);
+            ///////////////////////////////////////////////////////////////
+            Phrase blitTypePhrase = new Phrase();
+            blitTypePhrase.setFont(textFont);
+            blitTypePhrase.add(blitType);
 
-		PdfPCell blitTypeCell = new PdfPCell(blitTypePhrase);
-		blitTypeCell.setBorder(Rectangle.NO_BORDER);
-		blitTypeCell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
-		blitTypeCell.setHorizontalAlignment(Element.ALIGN_LEFT);
-		blitTypeCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-		blitTypeCell.setPaddingRight(20);
-		blitTypeCell.setPaddingBottom(8);
-		table.addCell(blitTypeCell);
+            PdfPCell blitTypeCell = new PdfPCell(blitTypePhrase);
+            blitTypeCell.setBorder(Rectangle.NO_BORDER);
+            blitTypeCell.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
+            blitTypeCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            blitTypeCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            blitTypeCell.setPaddingRight(20);
+            blitTypeCell.setPaddingBottom(8);
+            table.addCell(blitTypeCell);
+        }
 		//////////////////////////////////////////////////////////////
 
         if (!seat.equals("no seats")) {

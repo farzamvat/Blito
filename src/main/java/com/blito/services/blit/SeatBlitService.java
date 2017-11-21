@@ -139,7 +139,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
             blitTypeSeats.forEach(blitTypeSeat -> {
                 blitTypeSeat.setState(BlitTypeSeatState.RESERVED.name());
                 blitTypeSeat.setReserveDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
-                seatBlit.setSeats((seatBlit.getSeats() == null ? "" : seatBlit.getSeats() + " /") +
+                seatBlit.setSeats((seatBlit.getSeats() == null ? blitTypeSeat.getSeat().getSalon().getName() + " ," : seatBlit.getSeats() + " /") +
                         String.format(ResourceUtil.getMessage(Response.SEAT_INFORMATION),
                                 blitTypeSeat.getSeat().getSectionName(),
                                 blitTypeSeat.getSeat().getRowName(),
