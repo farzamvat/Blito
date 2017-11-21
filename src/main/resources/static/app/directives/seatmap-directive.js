@@ -88,9 +88,6 @@ angular.module('blitoDirectives')
                     label.padding(5);
                     label.offsetX(0);
                     label.offsetY(10);
-                    // label.parentBounds(0, 0, "100%", "10%");
-                    // label.height(10);
-                    // label.domTarget.parents("div").style.position="absolute";
                     label.listen("click", action);
                     label.container(stage);
                     label.draw();
@@ -159,16 +156,9 @@ angular.module('blitoDirectives')
                         });
                         var section=sectionsChart[sectionIndex].chart.choropleth(rowSeats)
                             .name(svgData.schema.sections[sectionIndex].rows[rowIndex].name);
-                            // .listen('touchstart', seatClickFunction)
-                            // .listen('click',seatClickFunction);
                         section.listen('touchstart', seatClickFunction);
                         section.listen('click', seatClickFunction);
-                        // if(){
-                        //     sectionsChart[sectionIndex].chart.choropleth(rowSeats)
-                        //         .listen
-                        // } else {
-                        //
-                        // }
+
 
                     }
 
@@ -201,13 +191,6 @@ angular.module('blitoDirectives')
                 });
                 DrillupLabel.enabled(false);
 
-                // document.getElementsByClassName("seatMapSection"+svgIndex)[0].setAttribute('focusable','false');
-                // document.getElementsByTagName('svg')[0].setAttribute('Content-Type','text/html');
-                // document.getElementsByTagName('svg')[0].setAttribute('readonly','true');
-                // var elements=document.querySelectorAll('svg');
-                // for(var i=elements.length;i--;){
-                //     elements[i].style.pointerEvents="none";
-                // }
                 var sectionPickedUid;
                 seatMapSeries.listen('pointClick',function(e){
                     sectionsChart.forEach(function (section) {
@@ -219,6 +202,8 @@ angular.module('blitoDirectives')
                     })
                 });
 
+                var interactivity = chart.interactivity();
+                interactivity.keyboardZoomAndMove(false);
                 for(var i = 0; i < document.getElementsByClassName("anychart-credits").length ; i++) {
                     document.getElementsByClassName("anychart-credits")[i].style.display = "none";
                 }
