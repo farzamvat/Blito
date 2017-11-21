@@ -11,14 +11,12 @@ import com.blito.models.*;
 import com.blito.payments.saman.SamanBankService;
 import com.blito.payments.zarinpal.PaymentVerificationResponse;
 import com.blito.payments.zarinpal.client.ZarinpalClient;
-import com.blito.repositories.BlitRepository;
-import com.blito.repositories.BlitTypeRepository;
-import com.blito.repositories.CommonBlitRepository;
-import com.blito.repositories.SeatBlitRepository;
+import com.blito.repositories.*;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.services.blit.CommonBlitService;
 import com.blito.services.blit.SeatBlitService;
 import com.blito.services.util.HtmlRenderer;
+import io.vavr.control.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +60,8 @@ public class PaymentService {
 	private SeatBlitRepository seatBlitRepository;
 	@Autowired
 	private SeatBlitMapper seatBlitMapper;
+	@Autowired
+	private DiscountRepository discountRepository;
 
 	@Transactional
 	public Blit zarinpalPaymentFlow(String authority,String status)
@@ -134,8 +134,18 @@ public class PaymentService {
 		log.info("****** NONE FREE COMMON BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}' AND BLIT TYPE CAPACITY IS '{}'",
 				commonBlit.getCustomerEmail(),blitType.getSoldCount(),blitType.getCapacity());
 		this.seatBlitService.checkBlitTypeSoldConditionAndSetEventDateEventStateSold(blitType);
+		checkIfDiscountCodeExistAndIncrementItsUsage(commonBlit);
 		return commonBlit;
 	}
+
+	private <B extends Blit> void checkIfDiscountCodeExistAndIncrementItsUsage(B blit) {
+		Option.of(blit.getDiscountCode())
+				.peek(discountCode -> {
+					discountRepository.findByCode(discountCode)
+					.ifPresent(discount -> discount.setUsed(blit.getCount() + discount.getUsed()));
+				});
+	}
+
 	@Transactional
 	public SeatBlit finalizeSeatBlitPayment(SeatBlit seatBlit,String refNum) {
 		seatBlit.setRefNum(refNum);
@@ -157,6 +167,7 @@ public class PaymentService {
 			blitTypeSeat.setSoldDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 			blitTypeSeat.setReserveDate(null);
 		});
+		checkIfDiscountCodeExistAndIncrementItsUsage(seatBlit);
 		return seatBlit;
 	}
 }
