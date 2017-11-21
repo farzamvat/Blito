@@ -1522,14 +1522,30 @@ angular.module('User')
                 .catch(function (data) {
                 })
         };
+        $scope.getTicketsSubmitWithSeat = function (index) {
+            console.log($scope.eventDatesTickets[index].eventDateId);
+            ticketsService.getExcelTicketsWithSeat($scope.eventDatesTickets[index].eventDateId)
+                .then(function (data) {
+                    var excelData = new Blob([data.data], { type: 'application/vnd.ms-excel;charset=UTF-8'});
+                    FileSaver.saveAs(excelData, 'blits.xls');
+                })
+                .catch(function (data) {
+                })
+        };
         $scope.showTickets = function (index) {
             $scope.eventTicketsPageChanged = function (newPage) {
                 $scope.getEventTickets(newPage);
+            };
+            $scope.eventTicketsPageWithSeatChanged = function (newPage) {
+                $scope.getEventTicketsWithSeat(newPage);
             };
             $scope.eventDatesTickets = $scope.userEvents[index].eventDates;
             $timeout(function () {
                 for(var i = 0 ; i < $scope.eventDatesTickets.length; i++) {
                     $(".classDateTicket"+i).val(persianDate($scope.eventDatesTickets[i].date).format("dddd,DD MMMM, ساعت HH:mm"));
+                }
+                for(var i = 0 ; i < $scope.eventDatesTickets.length; i++) {
+                    $(".dateClassWithSeat"+i).val(persianDate($scope.eventDatesTickets[i].date).format("dddd,DD MMMM, ساعت HH:mm"));
                 }
             }, 500);
 
@@ -1546,7 +1562,24 @@ angular.module('User')
                     .catch(function (data) {
                     })
             };
+            $scope.getEventTicketsWithSeat = function (pageNumber) {
+                console.log($scope.userEvents[index].eventId);
+                console.log(pageNumber);
+                ticketsService.getEventTicketsWithSeat(pageNumber, $scope.userEvents[index].eventId)
+                    .then(function (data) {
+                        $scope.totalTicketNumberWithSeat = data.data.totalElements;
+                        $scope.eventsTicketsWithSeat = data.data.content;
+                        $scope.eventsTicketsWithSeat = $scope.eventsTicketsWithSeat.map(function (ticket) {
+                            ticket.paymentStatus = dataService.ticketStatusPersian(ticket.paymentStatus);
+                            return ticket;
+                        })
+                    })
+                    .catch(function (data) {
+                        console.log(data);
+                    })
+            };
             $scope.getEventTickets(1);
+            $scope.getEventTicketsWithSeat(1);
             $('#eventTickets').modal('show');
         };
 

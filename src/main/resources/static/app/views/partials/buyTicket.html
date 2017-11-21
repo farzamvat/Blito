@@ -151,7 +151,7 @@
                                                     <label class="registerLabel" >قیمت پرداختی  : (تومان)</label>
                                                 </div>
                                                 <div class="col-xs-7 col-sm-6 floatRight ">
-                                                    <label>{{selectedBlitsTotalPrice  | number | pNumber}}</label>
+                                                    <label>{{selectedBlitsTotalPricePrimary  | number | pNumber}}</label>
                                                     <input height="60" id="registerLabel" ng-model="paymentSelectedDone" name="paymentPick"  type="text"  class="form-group registerInput " ng-show="" required>
                                                 </div>
 
@@ -175,6 +175,16 @@
                                                 </div>
 
                                             </div>
+                                            <div ng-if="!itemWithCapacity[0].isFree && showSeatSection" class="form-group col-xs-12 formRegGroup floatRight">
+                                                <div class="col-xs-5 col-sm-6 floatRight text-center">
+                                                    <label class="registerLabel" >کد تخفیف   :</label>
+                                                </div>
+                                                <div class="col-xs-7 col-sm-6 floatRight ">
+                                                    <input height="60"  name="discountCodeInput" ng-model="discountInput.code" required   type="text"  class="form-group discountValidate " >
+                                                    <button class="btn btn-success validateDiscountButton" ng-disabled="paymentStatus.discountCodeInput.$invalid" ng-click="validateDiscountInputWithSeat(discountInput.code)">        اعمال <i class="fa fa-spin fa-spinner discountSpinner dispNone "></i></button>
+                                                </div>
+
+                                            </div>
                                             <div ng-if="!itemWithCapacity[0].isFree && discountTotalAmount" class="form-group col-xs-12 formRegGroup floatRight marginTop50">
                                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
                                                     <label class="registerLabel" >قیمت پرداختی با اعمال کد تخفیف : (تومان)</label>
@@ -182,9 +192,7 @@
                                                 <div class="col-xs-7 col-sm-6 floatRight ">
                                                     <label>{{discountTotalAmount  | number | pNumber}}</label>
                                                 </div>
-
                                             </div>
-
                                             <div id="buyBlitError"  class="text-center dispNone alert alert-danger col-xs-12">
                                                 <strong></strong>
                                             </div>

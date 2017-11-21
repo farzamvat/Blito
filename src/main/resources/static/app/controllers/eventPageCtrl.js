@@ -34,7 +34,6 @@ angular.module('eventsPageModule')
 
         eventService.getEvent($routeParams.eventLink)
             .then(function (data) {
-                console.log(data.data);
                 $scope.eventDataDetails = angular.copy(data.data);
                 $scope.additionalFields = $scope.eventDataDetails.additionalFields;
                 if($scope.additionalFields){
@@ -116,7 +115,6 @@ angular.module('eventsPageModule')
                     blitTypesIndex++;
                 }
             }
-            console.log($scope.eventFlatDates);
         };
         $scope.getImages = function (event) {
             event.images.map(function (imageItem) {
@@ -158,7 +156,6 @@ angular.module('eventsPageModule')
                     newPrice = $filter('pNumber')(newPrice);
                     blitTypeWithoutSeat.nameWithPrice =   '('+newPrice+' تومان'+')' + blitTypeWithoutSeat.name;
                 }
-                console.log(blitTypeWithoutSeat);
                 return blitTypeWithoutSeat;
             });
             $scope.bothTypesOfBlits  = false;
@@ -210,7 +207,6 @@ angular.module('eventsPageModule')
                 $scope.$apply();
             }
             $scope.$apply();
-            console.log($scope.seatBlitUids);
         });
         $scope.blitTypePicked = function (blitId) {
             $scope.itemWithCapacity = $scope.blitTypesWithOutSeatsEdit.filter(function (item) {
@@ -235,6 +231,7 @@ angular.module('eventsPageModule')
         $scope.selectedBlitsTotalPrice = 0;
         $scope.nextStep1WithSeat = function () {
             $scope.selectedBlitsTotalPrice = seatmapService.getBoughtBlitTypes($scope.seatBlitUids, populatedSchema);
+            $scope.selectedBlitsTotalPricePrimary = seatmapService.getBoughtBlitTypes($scope.seatBlitUids, populatedSchema);
             angular.element(document.getElementById('ticketPay1')).removeClass('active');
             angular.element(document.getElementById('selectTicket')).removeClass('active');
             angular.element(document.getElementById('ticketPay2')).addClass('active').addClass('in');
@@ -317,7 +314,7 @@ angular.module('eventsPageModule')
                 seatType: "COMMON",
                 totalAmount: $scope.selectedBlitsTotalPrice,
                 additionalFields : $scope.additionalFields,
-                primaryAmount: $scope.selectedBlitsTotalPrice,
+                primaryAmount: $scope.selectedBlitsTotalPricePrimary,
                 seatUids : $scope.seatBlitUids,
                 bankGateway: payment
             };
@@ -457,6 +454,38 @@ angular.module('eventsPageModule')
                     document.getElementById("discountError").style.display = "block";
                 })
 
+        };
+        $scope.validateDiscountInputWithSeat = function (discountCode) {
+            var discountData = {};
+            $scope.discountCodeName = discountCode;
+            document.getElementsByClassName("discountSpinner")[0].style.display = "inline";
+            document.getElementById("discountSuccess").style.display = "none";
+            document.getElementById("discountError").style.display = "none";
+            discountData.seatUids = $scope.seatBlitUids;
+            discountData.totalAmount = $scope.selectedBlitsTotalPrice;
+            discountData.eventDateId = $scope.eventDatePicked[0].eventDateId;
+            discountData.code = discountCode;
+            eventService.validateDiscountWithSeat(discountData)
+                .then(function (data) {
+                    document.getElementsByClassName("discountSpinner")[0].style.display = "none";
+                    if(data.data.isValid) {
+                        $scope.discountIsValid = true;
+                        document.getElementById("discountSuccess").style.display = "block";
+                        $scope.discountTotalAmount = data.data.totalAmount;
+                        $scope.totalPrice = data.data.totalAmount;
+                        $scope.selectedBlitsTotalPrice = data.data.totalAmount;
+                        buyPaymentTicket.totalAmount = data.data.totalAmount;
+                        buyPaymentTicket.discountCode = $scope.discountCodeName;
+                    } else {
+                        document.getElementById("discountError").style.display = "block";
+
+                    }
+                })
+                .catch(function (data) {
+                    document.getElementsByClassName("discountSpinner")[0].style.display = "none";
+                    document.getElementById("discountError").innerHTML= data.data.message;
+                    document.getElementById("discountError").style.display = "block";
+                })
         };
         $scope.getPlannerData = function (plannerId) {
             plannerService.getPlannerById(plannerId)
