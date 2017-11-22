@@ -1809,7 +1809,7 @@ angular.module('User')
             $scope.additionalFieldsSection = true;
         };
         $scope.addAdditionalFields = function () {
-            if($scope.additionalFields.length < 6) {
+            if($scope.additionalFields.length ) {
                 $scope.additionalFields.push({ key : "", value : "string"});
             }
         };
@@ -1819,7 +1819,7 @@ angular.module('User')
             }
         };
         $scope.addAdditionalFieldsEdit = function () {
-            if($scope.additionalFieldsEdit.length < 6) {
+            if($scope.additionalFieldsEdit.length ) {
                 $scope.additionalFieldsEdit.push({ key : "", value : "string"});
             }
         };
