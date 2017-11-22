@@ -1104,7 +1104,8 @@ angular.module('User')
                 eventHostId : $scope.userEventsEdit[index].eventHostId,
                 eventLink : $scope.userEventsEdit[index].eventLink,
                 members : $scope.userEventsEdit[index].members,
-                isPrivate : $scope.userEventsEdit[index].isPrivate
+                isPrivate : $scope.userEventsEdit[index].isPrivate,
+                eventState : $scope.userEventsEdit[index].eventState
             };
             if($scope.userEventsEdit[index].salonUid) {
                 $scope.editEventFields.salonUid = $scope.userEventsEdit[index].salonUid;
@@ -1165,6 +1166,7 @@ angular.module('User')
             },500);
         };
         $scope.editEventSans = function (sansIndex) {
+            $scope.generateBlitTypeSeats = false;
             $scope.newShowTimeEdit = {blitTypes : []};
             sansWithSeats = [];
             document.getElementById("editEventNewSansSubmit").style.display = "none";
@@ -1991,7 +1993,7 @@ angular.module('User')
             }
         }, 1000);
         //==================================================== seatmap =======================
-        var sansPickedGenerateTicket
+        var sansPickedGenerateTicket = {};
         $scope.openGuestTicketModal = function (index) {
             $('#guest-modal').modal('show');
             $scope.eventDatesGuestTicket = $scope.userEvents[index].eventDates;
@@ -2001,6 +2003,8 @@ angular.module('User')
                 }
             }, 500);
             $scope.generateSeatMapGuestTicket = function (sansIndex) {
+                console.log(sansIndex);
+                sansPickedGenerateTicket = $scope.eventDatesGuestTicket[sansIndex];
                 seatmapService.getPopulatedSchema($scope.eventDatesGuestTicket[sansIndex].eventDateId)
                     .then(function (data) {
                         var populatedSchema = data.data;
@@ -2013,17 +2017,24 @@ angular.module('User')
 
         };
         $scope.generateTicketForGuest = function () {
+            document.getElementById("generateBlitForGuestSpinner").style.display = "inline";
             var guestData = {
-                eventDateId : "",
-                eventDateAndTime : "",
-                seatUid : $scope.seatBlitUidsGenerateTicket
+                eventDateId : sansPickedGenerateTicket.eventDateId,
+                eventDateAndTime : persianDate(sansPickedGenerateTicket.date).format("dddd,DD MMMM, ساعت HH:mm"),
+                seatUid : $scope.seatBlitUidsGenerateTicket[0]
             };
             seatmapService.getGuestTicket(guestData)
                 .then(function (data) {
                     console.log(data);
+                    $scope.seatBlitUidsGenerateTicket = [];
+                    var pdfData = new Blob([data.data], { type: 'application/pdf;charset=UTF-8'});
+                    FileSaver.saveAs(pdfData, 'blit.pdf');
+                    $scope.$broadcast('resetGuestListPicked', []);
+                    document.getElementById("generateBlitForGuestSpinner").style.display = "none";
                 })
-                .catch(function () {
+                .catch(function (data) {
                     console.log(data);
+                    document.getElementById("generateBlitForGuestSpinner").style.display = "none";
                 })
         };
         $scope.sansSet = function () {
@@ -2120,9 +2131,6 @@ angular.module('User')
         $scope.seatsPickedForm.isReserved = true;
         $scope.seatsPickedBlitTypeSubmit = function (bt) {
             var blitType = angular.copy(bt);
-            if(blitType.isFree) {
-                blitType.price = 0;
-            }
             if(blitType.isReserved) {
 
                 blitType.name = "HOST_RESERVED_SEATS";
@@ -2157,9 +2165,6 @@ angular.module('User')
         };
         $scope.seatsPickedBlitTypeSubmitEdit = function (bt) {
             var blitType = angular.copy(bt);
-            if(blitType.isFree) {
-                blitType.price = 0;
-            }
             if(blitType.isReserved) {
                 blitType.name = "HOST_RESERVED_SEATS";
                 blitType.isFree = true;

@@ -24,8 +24,10 @@
                     </div>
                 </div>
                 <seat-map-generate-ticket></seat-map-generate-ticket>
+                <div id="labelDrillUpSection5"  class="col-xs-12 labelSvgHeight"></div>
                 <div id="seatMaperChart5"  class="col-xs-12 marginTop30 marginBottom20 seatMaperChartStyle"></div>
-                <button ng-click="generateTicketForGuest()"  class="btn btn-success"><i class="fa fa-download"></i>صدور بلیت مهمان</button>
+                <p class="text-center colorRed" > در صورت صدور بلیت برای مهمان دیگر امکان ویرایش آن صندلی وجود ندارد *</p>
+                <button ng-click="generateTicketForGuest()"  class="btn btn-success center-block"><i id="generateBlitForGuestSpinner" class="fa fa-spin fa-spinner dispNone"></i><i class="fa fa-download"></i>صدور بلیت مهمان </button>
 
             </div>
             <div class="modal-footer ">

@@ -821,7 +821,8 @@
                                             <button ng-show="seatMapListChosen" class="btn btn-success center-block generateSeatMap0" ng-click="salonSeatPicker(seatMapListChosen.salonUid, 0)">قیمت گذاری صندلی‌های سالن <i class="fa fa-plus"></i><i class="fa fa-spinner fa-spin dispNone seatMapSpinner"></i></button>
                                             <seat-map></seat-map>
                                             <div  class="seatMapSection0  dispNone">
-                                                <div id="seatMaperChart0"  class="col-xs-12 marginTop30 marginBottom20 seatMaperChartStyle"></div>
+                                                <div id="labelDrillUpSection0"  class="col-xs-12 labelSvgHeight"></div>
+                                                <div id="seatMaperChart0"  class="col-xs-12 marginBottom20 seatMaperChartStyle"></div>
                                                 <button class="btn btn-warning center-block marginTop60" ng-disabled="!blitTypeCreateValidation" ng-click="seatsPickedBlitType()">قیمت گذاری صندلی‌های انتخاب شده <i class="fa fa-money"></i></button>
                                                 <div class="hrLine marginTop30"></div>
                                             </div>
@@ -883,6 +884,7 @@
                                                     </div>
                                                     <seat-map ng-if="newShowTime.newSeatsPrice === 'true'"></seat-map>
                                                     <div ng-if="newShowTime.newSeatsPrice === 'true'" class="seatMapSection1 dispNone">
+                                                        <div id="labelDrillUpSection1"  class="col-xs-12 labelSvgHeight"></div>
                                                         <div id="seatMaperChart1"  class="col-xs-12 marginTop30 marginBottom20 seatMaperChartStyle"></div>
                                                         <button class="btn btn-warning center-block marginTop60" ng-disabled="!blitTypeCreateValidation" ng-click="seatsPickedBlitType()">قیمت گذاری صندلی‌های انتخاب شده <i class="fa fa-money"></i></button>
                                                         <div class="hrLine marginTop30"></div>

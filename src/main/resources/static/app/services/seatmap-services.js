@@ -16,7 +16,12 @@ angular.module('UiServices')
 
         };
         seatMap.getGuestTicket = function (guestDate) {
-            return $http.post(config.baseUrl+'/api/blito/v1.0/blits/generate-reserved-blit',guestDate);
+            return $http({
+                method: 'POST',
+                url: config.baseUrl+"/api/blito/v1.0/blits/generate-reserved-blit.pdf",
+                responseType: "arraybuffer",
+                data : guestDate
+            });
         };
         seatMap.getPopulatedSchema = function (eventDateId) {
             return $http.get(config.baseUrl+'/api/blito/v1.0/salons/populated-schema/' + eventDateId);

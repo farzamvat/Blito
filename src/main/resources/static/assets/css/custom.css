@@ -3038,11 +3038,14 @@ table td{
 tspan{
     pointer-events: none !important;
 }
+.labelSvgHeight {
+    height: 50px;
+}
 .noPointerEvents{
     pointer-events: none !important;
 }
 .seatMaperChartStyle {
-    height: 500px;
+    height: 400px;
 }
 .hrLine {
     height: 1px;

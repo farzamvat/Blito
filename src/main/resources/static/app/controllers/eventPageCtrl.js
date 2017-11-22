@@ -41,7 +41,7 @@ angular.module('eventsPageModule')
                         field.value = "";
                     });
                 }
-
+                console.log($scope.eventDataDetails);
                 $scope.getPlannerData($scope.eventDataDetails.eventHostId);
                 $scope.eventType = $scope.eventDataDetails.eventType;
                 $scope.buyTicketFormatData(data.data.eventDates);
@@ -142,7 +142,9 @@ angular.module('eventsPageModule')
             $scope.showSeatSection = false;
             $scope.showWithoutSeatSection = false;
             $scope.seatsPickedChecked = false;
+            $scope.bothTypesOfBlits  = false;
             $scope.blitTypeCreateValidation = 0;
+            $scope.itemWithCapacity = false;
             $scope.$broadcast('blitTypeUidsReset', []);
             $scope.eventDatePicked = $scope.eventDataDetails.eventDates.filter(function (item) {
                 return item.eventDateId === sansId;
@@ -158,11 +160,20 @@ angular.module('eventsPageModule')
                 }
                 return blitTypeWithoutSeat;
             });
-            $scope.bothTypesOfBlits  = false;
-            if((seatmapService.generateWithoutSeatBlitTypes($scope.eventDatePicked[0].blitTypes)).length !== 0) {
+            if(((seatmapService.generateWithoutSeatBlitTypes($scope.eventDatePicked[0].blitTypes)).length !== 0) && !$scope.eventDataDetails.salonUid) {
+                console.log("aa");
+                $scope.showSeatSection = false;
+                $scope.showWithoutSeatSection = true;
+                $scope.bothTypesOfBlits  = false;
+                console.log(!$scope.bothTypesOfBlits && $scope.showWithoutSeatSection);
+
+            }
+            if(((seatmapService.generateWithoutSeatBlitTypes($scope.eventDatePicked[0].blitTypes)).length !== 0) && $scope.eventDataDetails.salonUid) {
+                $scope.showSeatSection = false;
+                $scope.showWithoutSeatSection = false;
                 $scope.bothTypesOfBlits  = true;
             }
-            if(!$scope.bothTypesOfBlits) {
+            if(!$scope.bothTypesOfBlits && !$scope.showWithoutSeatSection) {
                 $scope.showSeatSection = true;
                 $("#buyTicketModal").addClass('modalExpandWidth');
                 $(".progress").addClass('dispNone');
@@ -170,6 +181,7 @@ angular.module('eventsPageModule')
             }
         };
         $scope.seatTypePicked = function (seatType) {
+            console.log($scope.itemWithCapacity);
             if(seatType) {
                 $scope.showSeatSection = true;
                 $scope.showWithoutSeatSection = false;

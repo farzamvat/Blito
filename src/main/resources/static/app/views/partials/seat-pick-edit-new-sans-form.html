@@ -12,16 +12,7 @@
         </div>
     </fieldset>
     <fieldset class="marginTop30" ng-if="seatsPickedForm.isReserved === false">
-        <div class="form-group col-xs-12 formRegGroup">
-            <div class="col-xs-5 col-sm-4 floatRight text-center">
-                <label class="registerLabel" for="blitType" >پرداخت :</label>
-            </div>
-            <div class="col-xs-7 col-sm-8 floatRight ">
-                <select id="blitTypePayment" name="paymentEditSubmit" required ng-model="seatsPickedForm.isFree" class="form-control dropDownInput" ng-options="o.v as o.n for o in [{n : 'رایگان', v: true}, {n : 'پولی', v: false}]">
 
-                </select>
-            </div>
-        </div>
         <div class="form-group col-xs-12 formRegGroup marginTop30">
             <div class="col-xs-5 col-sm-4 floatRight text-center">
                 <label class="registerLabel" for="blitName" > نام بلیت :</label>
@@ -30,7 +21,7 @@
                 <input height="60" id="blitName" name="blitNameEditSubmit" ng-model="seatsPickedForm.name" type="text"  class="form-group registerInput" required>
             </div>
         </div>
-        <div ng-if="seatsPickedForm.isFree === false" class="form-group col-xs-12 formRegGroup marginTop30">
+        <div  class="form-group col-xs-12 formRegGroup marginTop30">
             <div class="col-xs-5 col-sm-4 floatRight text-center">
                 <label class="registerLabel" for="blitPrice" > قیمت بلیت :</label>
             </div>
@@ -42,7 +33,7 @@
     </fieldset>
     <div class="control-group marginTop30">
         <div class="controls">
-            <button  ng-disabled="editEventForm.blitTypeEditSubmit.$invalid || editEventForm.paymentEditSubmit.$invalid || editEventForm.blitNameEditSubmit.$invalid || editEventForm.priceEditSubmit.$invalid" ng-click="seatsPickedBlitTypeSubmit(seatsPickedForm)" class="btn btn-success btn-lg btnLogin center-block">ثبت نوع بلیت <i id="seatsPickedBlitType" class="fa fa-spinner fa-spin dispNone"></i></button>
+            <button  ng-disabled="editEventForm.blitTypeEditSubmit.$invalid || editEventForm.blitNameEditSubmit.$invalid || editEventForm.priceEditSubmit.$invalid" ng-click="seatsPickedBlitTypeSubmit(seatsPickedForm)" class="btn btn-success btn-lg btnLogin center-block">ثبت نوع بلیت <i id="seatsPickedBlitType" class="fa fa-spinner fa-spin dispNone"></i></button>
         </div>
     </div>
 </form>

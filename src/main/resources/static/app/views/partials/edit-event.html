@@ -334,7 +334,8 @@
                                 </div>
                             </div>
                             <seat-map-edit  ng-if="eventHasSalon"></seat-map-edit>
-                            <div ng-if="eventHasSalon" class="seatMapSection2">
+                            <div ng-if="eventHasSalon && editEventFields.eventState === 'CLOSED'" class="seatMapSection2">
+                                <div id="labelDrillUpSection2"  class="col-xs-12 labelSvgHeight marginTop30"></div>
                                 <div id="seatMaperChart2"  class="col-xs-12 marginTop30 marginBottom20 seatMaperChartStyle"></div>
                                 <div ng-if="generateBlitTypeSeats" class="col-xs-12 marginTop30 marginBottom20" ng-include="'app/views/partials/seat-pick-edit-form.html'"></div>
                                 <div id="successSeatBlitTypeEdit" class="dispNone text-center alert alert-success col-xs-12" >
@@ -412,6 +413,7 @@
                             </div>
                             <seat-map ng-if="editEventFields.salonUid"></seat-map>
                             <div ng-if="editEventFields.salonUid" class="seatMapSection3 dispNone">
+                                <div id="labelDrillUpSection3"  class="col-xs-12 labelSvgHeight marginTop30"></div>
                                 <div id="seatMaperChart3"  class="col-xs-12 marginTop30 marginBottom20 seatMaperChartStyle"></div>
                                 <div id="successSeatBlitTypeEditSubmit" class="dispNone text-center alert alert-success col-xs-12" >
                                     <strong>نوع بلیت با موفقیت ثبت شد !</strong>
