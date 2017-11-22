@@ -15,6 +15,9 @@ angular.module('UiServices')
             return $http.get(config.baseUrl+'/api/blito/v1.0/salons/'+uid);
 
         };
+        seatMap.getGuestTicket = function (guestDate) {
+            return $http.post(config.baseUrl+'/api/blito/v1.0/blits/generate-reserved-blit',guestDate);
+        };
         seatMap.getPopulatedSchema = function (eventDateId) {
             return $http.get(config.baseUrl+'/api/blito/v1.0/salons/populated-schema/' + eventDateId);
         };

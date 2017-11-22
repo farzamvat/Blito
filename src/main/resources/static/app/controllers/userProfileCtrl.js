@@ -1991,6 +1991,41 @@ angular.module('User')
             }
         }, 1000);
         //==================================================== seatmap =======================
+        var sansPickedGenerateTicket
+        $scope.openGuestTicketModal = function (index) {
+            $('#guest-modal').modal('show');
+            $scope.eventDatesGuestTicket = $scope.userEvents[index].eventDates;
+            $timeout(function () {
+                for(var i = 0 ; i < $scope.eventDatesGuestTicket.length; i++) {
+                    $(".dateClassGuestTicket"+i).val(persianDate($scope.eventDatesGuestTicket[i].date).format("dddd,DD MMMM, ساعت HH:mm"));
+                }
+            }, 500);
+            $scope.generateSeatMapGuestTicket = function (sansIndex) {
+                seatmapService.getPopulatedSchema($scope.eventDatesGuestTicket[sansIndex].eventDateId)
+                    .then(function (data) {
+                        var populatedSchema = data.data;
+                        $scope.$broadcast('newSVGGenrateTicket', [populatedSchema, 5]);
+                    })
+                    .catch(function (data) {
+                        console.log(data);
+                    })
+            };
+
+        };
+        $scope.generateTicketForGuest = function () {
+            var guestData = {
+                eventDateId : "",
+                eventDateAndTime : "",
+                seatUid : $scope.seatBlitUidsGenerateTicket
+            };
+            seatmapService.getGuestTicket(guestData)
+                .then(function (data) {
+                    console.log(data);
+                })
+                .catch(function () {
+                    console.log(data);
+                })
+        };
         $scope.sansSet = function () {
             $timeout(function () {
                 dateSetterService.initDate("eventDateClass0");
@@ -2156,6 +2191,12 @@ angular.module('User')
             $scope.seatBlitUids = data[0];
             $scope.sansPickedSeatMap = data[1];
             console.log($scope.seatBlitUids);
+        });
+        $scope.$on("blitIdsChangedGenerateTicket",function (event ,data) {
+            $scope.blitTypeCreateValidationGenerateTicket = data[0].length;
+            $scope.$apply();
+            $scope.seatBlitUidsGenerateTicket = data[0];
+            console.log($scope.seatBlitUidsGenerateTicket);
         });
         $scope.newShowTime.newSeatsPrice = 'false';
         $scope.submitSansWithSeatpicker = function (newSans) {

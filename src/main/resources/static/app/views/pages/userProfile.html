@@ -437,8 +437,7 @@
                                                             </th>
                                                             <th class="dataCenter" >نوع
                                                             </th>
-                                                            <th class="dataCenter" >نام برگزارکننده
-                                                            </th>
+
                                                             <th class="dataCenter" >وضعیت ثبت
                                                             </th>
                                                             <th class="dataCenter" >وضعیت رویداد
@@ -451,13 +450,13 @@
                                                         <tr  total-items="totalEventsNumber" dir-paginate="item in getDataUserEvents | itemsPerPage: 4" pagination-id="events" current-page="currentPageEvent">
                                                             <td class="dataCenter">{{ item.eventName}}</td>
                                                             <td class="dataCenter">{{ item.eventType}}</td>
-                                                            <td class="dataCenter">{{ item.eventHostName}}</td>
                                                             <td class="dataCenter">{{ item.operatorState}}</td>
                                                             <td class="dataCenter">{{ item.eventState}}</td>
                                                             <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editEvent($index)">ویرایش</button></td>
                                                             <td ng-show="item.operatorState === 'تأیید شده'" class="dataCenter"><button class="btn editButton btn-default" ng-click="showTickets($index)">بلیت ها</button></td>
                                                             <td ng-show="item.operatorState === 'تأیید شده'" class="dataCenter"><button class="btn editButton btn-success" ng-click="discountCodeShow($index)">کد تخفیف</button></td>
                                                             <td ng-if="item.operatorState === 'رد شده'" class="dataCenter"><button type="button" ng-click="showSetting($index)"  class="btn editButton btn-info" >تنظیمات رویداد </button></td>
+                                                            <td ng-if="item.salonUid" class="dataCenter"><button type="button" ng-click="openGuestTicketModal($index)"  class="btn editButton btn-info" >صدور بلیت مهمان‌ها </button></td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
@@ -1276,6 +1275,7 @@
         </div>
     </div>
     <div ng-include="'app/views/partials/edit-event.html'"></div>
+    <div ng-include="'app/views/partials/guest-blit-modal.html'"></div>
     <div ng-include="'app/views/partials/user-tickets.html'"></div>
     <div ng-include="'app/views/partials/edit-host.html'"></div>
     <div ng-include="'app/views/partials/event-setting.html'"></div>

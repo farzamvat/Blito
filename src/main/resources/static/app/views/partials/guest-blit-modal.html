@@ -1,0 +1,39 @@
+<div id="guest-modal"  class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog editForm">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center">بلیت مهمان</h4>
+            </div>
+            <div class="modal-body">
+                <div  class="col-xs-12 marginBottom20 marginTop30">
+                    <h3 class="text-center"> صدور بلیت‌های مهمان </h3>
+                    <div ng-repeat="sans in eventDatesGuestTicket" class="col-xs-12 col-sm-6 floatRight marginTop30">
+
+                        <div class="col-xs-12  col-sm-4 floatRight text-center">
+
+                            <label class="registerLabel"  >:  سانس {{$index + 1 | pNumber}}</label>
+                        </div>
+                        <div class="col-xs-12  col-sm-6 floatRight text-center">
+                            <input type="text"  required class=" datePickerFormatTicket dateClassGuestTicket{{$index}}"  disabled readonly/>
+                        </div>
+                        <div class="col-xs-12  col-sm-2 floatRight text-center">
+                            <button ng-click="generateSeatMapGuestTicket($index)" class="btn btn-success"><i class="fa fa-image"></i>سالن</button>
+                        </div>
+                    </div>
+                </div>
+                <seat-map-generate-ticket></seat-map-generate-ticket>
+                <div id="seatMaperChart5"  class="col-xs-12 marginTop30 marginBottom20 seatMaperChartStyle"></div>
+                <button ng-click="generateTicketForGuest()"  class="btn btn-success"><i class="fa fa-download"></i>صدور بلیت مهمان</button>
+
+            </div>
+            <div class="modal-footer ">
+                <button type="button" class="btn btn-default center-block" data-dismiss="modal">بستن</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
