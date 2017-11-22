@@ -173,20 +173,6 @@ angular.module('UiServices', [])
                 format: "YYYY/MM/DD , HH:mm"
             });
         };
-        dateSetter.persianToArray = function (date) {
-            var dateArray = [];
-            dateArray.push(date.year);
-            dateArray.push(date.month);
-            dateArray.push(date.date);
-            dateArray.push(date.hours);
-            dateArray.push(date.minutes);
-            dateArray.push(date.seconds);
-            dateArray.push(date.milliseconds);
-            dateArray = dateArray.map(function (item) {
-                return parseInt(item);
-            });
-            return dateArray;
-        };
 
         dateSetter.persianToMs = function (date) {
             var newData = date.replace(/:|\/|,/gi , ' ').split(" ");

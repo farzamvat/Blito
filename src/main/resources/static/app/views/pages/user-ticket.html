@@ -21,9 +21,13 @@
                             <h2> :نام خریدار ‌</h2>
                             <h4>{{ticketData.customerName}}</h4>
                         </div>
-                        <div class="ticketName ">
+                        <div ng-show="!ticketData.seats" class="ticketName ">
                             <h2> :نام بلیت ‌</h2>
                             <h4>{{ticketData.blitTypeName}}</h4>
+                        </div>
+                        <div ng-show="ticketData.seats" class="ticketName ">
+                            <h2> :جایگاه صندلی ‌</h2>
+                            <h4>{{ticketData.seats}}</h4>
                         </div>
                         <div class="ticketName ">
                             <h2> :تعداد بلیت ‌</h2>
