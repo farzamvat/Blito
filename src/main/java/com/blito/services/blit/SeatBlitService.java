@@ -139,7 +139,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
             blitTypeSeats.forEach(blitTypeSeat -> {
                 blitTypeSeat.setState(BlitTypeSeatState.RESERVED.name());
                 blitTypeSeat.setReserveDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
-                seatBlit.setSeats((seatBlit.getSeats() == null ? blitTypeSeat.getSeat().getSalon().getName() + " ," : seatBlit.getSeats() + " /") +
+                seatBlit.setSeats((seatBlit.getSeats() == null ? blitTypeSeat.getSeat().getSalon().getName() + " , " : seatBlit.getSeats() + " /") +
                         String.format(ResourceUtil.getMessage(Response.SEAT_INFORMATION),
                                 blitTypeSeat.getSeat().getSectionName(),
                                 blitTypeSeat.getSeat().getRowName(),
@@ -227,7 +227,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
             blitTypeSeats.forEach(blitTypeSeat -> {
                 blitTypeSeat.setState(BlitTypeSeatState.RESERVED.name());
                 blitTypeSeat.setReserveDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
-                seatBlit.setSeats((seatBlit.getSeats() == null ? "" : seatBlit.getSeats() + " /") +
+                seatBlit.setSeats((seatBlit.getSeats() == null ? blitTypeSeat.getSeat().getSalon().getName() + " , " : seatBlit.getSeats() + " /") +
                         String.format(ResourceUtil.getMessage(Response.SEAT_INFORMATION),
                                 blitTypeSeat.getSeat().getSectionName(),
                                 blitTypeSeat.getSeat().getRowName(),
@@ -311,9 +311,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
                     seatBlit.setEventDateAndTime(reservedBlitViewModel.getEventDateAndTime());
                     seatBlit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
                     seatBlit.setEventDate(eventDate.getDate());
-                    seatBlit.setCustomerName(eventDate.getEvent().getEventHost().getHostName());
-                    seatBlit.setCustomerMobileNumber(eventDate.getEvent().getEventHost().getTelephone());
-                    seatBlit.setCustomerEmail(user.getEmail());
+                    seatBlit.setCustomerName(ResourceUtil.getMessage(FarsiText.Guest_NAME_IN_PDF));
                     seatBlit.setEventAddress(eventDate.getEvent().getAddress());
                     seatBlit.setBlitTypeName(Constants.HOST_RESERVED_SEATS);
                     seatBlit.setSeatType(SeatType.SEAT_BLIT.name());
@@ -324,7 +322,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
 
                     blitTypeSeat.setState(BlitTypeSeatState.GUEST_NOT_AVAILABLE.name());
                     blitTypeSeat.setSeatBlit(seatBlit);
-                    seatBlit.setSeats((seatBlit.getSeats() == null ? "" : seatBlit.getSeats() + " /") +
+                    seatBlit.setSeats((seatBlit.getSeats() == null ? blitTypeSeat.getSeat().getSalon().getName() + " , " : seatBlit.getSeats() + " /") +
                             String.format(ResourceUtil.getMessage(Response.SEAT_INFORMATION),
                                     blitTypeSeat.getSeat().getSectionName(),
                                     blitTypeSeat.getSeat().getRowName(),
