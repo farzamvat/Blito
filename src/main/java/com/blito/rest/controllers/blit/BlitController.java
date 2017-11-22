@@ -97,7 +97,7 @@ public class BlitController {
 	}
 
     @Permission(value = ApiBusinessName.USER)
-    @PostMapping("/generate-reserved-blit")
+    @PostMapping("/generate-reserved-blit.pdf")
     public ModelAndView generateReservedBlit(@Validated @RequestBody ReservedBlitViewModel reservedBlitViewModel) {
 	    User user = SecurityContextHolder.currentUser();
 	    return new ModelAndView(new BlitReceiptPdfView(), seatBlitService.generateReservedBlit(reservedBlitViewModel, user));
