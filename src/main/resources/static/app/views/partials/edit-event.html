@@ -333,7 +333,7 @@
                                     <input type="text"  ng-model="newShowTimeEdit.persianDate" name="newSansTime" class="datePickerFormat eventDateClassEdit0"  readonly/>
                                 </div>
                             </div>
-                            <seat-map-edit  ng-if="eventHasSalon"></seat-map-edit>
+                            <seat-map-edit  ng-if="eventHasSalon && editEventFields.eventState === 'CLOSED'"></seat-map-edit>
                             <div ng-if="eventHasSalon && editEventFields.eventState === 'CLOSED'" class="seatMapSection2">
                                 <div id="labelDrillUpSection2"  class="col-xs-12 labelSvgHeight marginTop30"></div>
                                 <div id="seatMaperChart2"  class="col-xs-12 marginTop30 marginBottom20 seatMaperChartStyle"></div>
