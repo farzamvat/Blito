@@ -123,7 +123,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         return searchService.search(searchViewModel,pageable,seatBlitMapper,seatBlitRepository);
     }
 
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    @Transactional
     @Override
     public Object createBlitAuthorized(SeatBlitViewModel viewModel, User user) {
         SeatBlit seatBlit = seatBlitMapper.createFromViewModel(viewModel);
@@ -147,6 +147,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
                                 blitTypeSeat.getSeat().getRowName(),
                                 blitTypeSeat.getSeat().getSeatName()));
             });
+            blitTypeSeatRepository.save(blitTypeSeats);
         }
         log.info("User with email '{}' released reserveSeatBlitLock",user.getEmail());
         salonService.validateNoIndividualSeat(salonService.populateSeatInformationInSalonSchemaByEventDateId(eventDate.getEventDateId()).getSchema());
