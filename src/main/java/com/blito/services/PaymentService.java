@@ -157,7 +157,7 @@ public class PaymentService {
 				.stream().collect(Collectors.groupingBy(BlitTypeSeat::getBlitType,Collectors.counting()))
 				.forEach((blitType, aLong) -> {
 					blitType.setSoldCount(blitType.getSoldCount() + aLong.intValue());
-					// TODO: 11/23/17 sold nemishe bug must be fixed
+
 					seatBlitService.checkBlitTypeSoldConditionAndSetEventDateEventStateSold(blitType);
 					log.info("****** NONE FREE SEAT BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}' AND BLIT TYPE CAPACITY IS '{}'",
 							seatBlit.getCustomerEmail(),blitType.getSoldCount(),blitType.getCapacity());
