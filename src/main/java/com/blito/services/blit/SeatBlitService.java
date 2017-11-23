@@ -128,13 +128,14 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
     public Object createBlitAuthorized(SeatBlitViewModel viewModel, User user) {
         SeatBlit seatBlit = seatBlitMapper.createFromViewModel(viewModel);
 
-        Set<BlitTypeSeat> blitTypeSeats = blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
-        blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).distinct().forEach(this::checkBlitTypeRestrictionsForBuy);
-        EventDate eventDate = blitTypeSeats.stream().findAny().map(BlitTypeSeat::getBlitType).map(BlitType::getEventDate)
-                .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
-        validateAdditionalFields(eventDate.getEvent(),seatBlit);
+        Set<BlitTypeSeat> blitTypeSeats = null;
+        EventDate eventDate = null;
         synchronized (reserveSeatBlitLock) {
             blitTypeSeats = blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
+            blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).distinct().forEach(this::checkBlitTypeRestrictionsForBuy);
+            eventDate = blitTypeSeats.stream().findAny().map(BlitTypeSeat::getBlitType).map(BlitType::getEventDate)
+                    .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
+            validateAdditionalFields(eventDate.getEvent(),seatBlit);
             log.info("User with email '{}' hold reserveSeatBlitLock",user.getEmail());
             validateSeatBlitForBuy(blitTypeSeats);
             blitTypeSeats.forEach(blitTypeSeat -> {
@@ -213,17 +214,17 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
     public PaymentRequestViewModel createUnauthorizedAndNoneFreeBlits(SeatBlitViewModel viewModel) {
         SeatBlit seatBlit = seatBlitMapper.createFromViewModel(viewModel);
 
-        Set<BlitTypeSeat> blitTypeSeats = blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
-        blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).distinct().forEach(this::checkBlitTypeRestrictionsForBuy);
-        if(blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).anyMatch(BlitType::isFree)) {
-            throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
-        }
-        EventDate eventDate = blitTypeSeats.stream().findAny().map(BlitTypeSeat::getBlitType).map(BlitType::getEventDate)
-                .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
-        validateAdditionalFields(eventDate.getEvent(),seatBlit);
-
+        Set<BlitTypeSeat> blitTypeSeats = null;
+        EventDate eventDate = null;
         synchronized (reserveSeatBlitLock) {
             blitTypeSeats = blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
+            blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).distinct().forEach(this::checkBlitTypeRestrictionsForBuy);
+            if(blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).anyMatch(BlitType::isFree)) {
+                throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
+            }
+            eventDate = blitTypeSeats.stream().findAny().map(BlitTypeSeat::getBlitType).map(BlitType::getEventDate)
+                    .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
+            validateAdditionalFields(eventDate.getEvent(),seatBlit);
             log.info("unauthorized user with email '{}' hold reserveSeatBlitLock",viewModel.getCustomerEmail());
             validateSeatBlitForBuy(blitTypeSeats);
             blitTypeSeats.forEach(blitTypeSeat -> {
