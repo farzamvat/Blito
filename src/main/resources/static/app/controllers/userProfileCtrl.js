@@ -1809,9 +1809,7 @@ angular.module('User')
             $scope.additionalFieldsSection = true;
         };
         $scope.addAdditionalFields = function () {
-            if($scope.additionalFields.length < 6) {
                 $scope.additionalFields.push({ key : "", value : "string"});
-            }
         };
         $scope.deleteAdditionalFields = function () {
             if($scope.additionalFields.length > 0) {
@@ -1819,9 +1817,7 @@ angular.module('User')
             }
         };
         $scope.addAdditionalFieldsEdit = function () {
-            if($scope.additionalFieldsEdit.length < 6) {
                 $scope.additionalFieldsEdit.push({ key : "", value : "string"});
-            }
         };
         //==================================================== ********* =================================
         //==================================================== PERSIAN DATE PICKER =======================
