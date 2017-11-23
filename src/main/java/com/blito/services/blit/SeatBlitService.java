@@ -134,6 +134,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
                 .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
         validateAdditionalFields(eventDate.getEvent(),seatBlit);
         synchronized (reserveSeatBlitLock) {
+            blitTypeSeats = blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
             log.info("User with email '{}' hold reserveSeatBlitLock",user.getEmail());
             validateSeatBlitForBuy(blitTypeSeats);
             blitTypeSeats.forEach(blitTypeSeat -> {
@@ -222,6 +223,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         validateAdditionalFields(eventDate.getEvent(),seatBlit);
 
         synchronized (reserveSeatBlitLock) {
+            blitTypeSeats = blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
             log.info("unauthorized user with email '{}' hold reserveSeatBlitLock",viewModel.getCustomerEmail());
             validateSeatBlitForBuy(blitTypeSeats);
             blitTypeSeats.forEach(blitTypeSeat -> {
