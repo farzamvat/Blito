@@ -1,5 +1,6 @@
 package com.blito.services.blit;
 
+import com.blito.configs.Constants;
 import com.blito.enums.PaymentStatus;
 import com.blito.enums.Response;
 import com.blito.enums.SeatType;
@@ -132,7 +133,7 @@ public abstract class AbstractBlitService <E extends Blit,V extends AbstractBlit
     public void checkBlitTypeSoldConditionAndSetEventDateEventStateSold(BlitType blitType) {
         if (blitType.getSoldCount() == blitType.getCapacity()) {
             blitType.setBlitTypeState(State.SOLD.name());
-            if (blitType.getEventDate().getBlitTypes().stream()
+            if (blitType.getEventDate().getBlitTypes().stream().filter(bt -> bt.getName().equals(Constants.HOST_RESERVED_SEATS))
                     .allMatch(b -> b.getBlitTypeState().equals(State.SOLD.name()))) {
                 blitType.getEventDate().setEventDateState(State.SOLD.name());
             }
@@ -144,6 +145,9 @@ public abstract class AbstractBlitService <E extends Blit,V extends AbstractBlit
             }
         }
     }
+
+
+
     void checkBlitTypeRestrictionsForBuy(BlitType blitType) {
 
         if (blitType.getBlitTypeState().equals(State.SOLD.name()))
