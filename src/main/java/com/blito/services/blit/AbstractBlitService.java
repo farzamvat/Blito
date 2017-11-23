@@ -133,7 +133,7 @@ public abstract class AbstractBlitService <E extends Blit,V extends AbstractBlit
     public void checkBlitTypeSoldConditionAndSetEventDateEventStateSold(BlitType blitType) {
         if (blitType.getSoldCount() == blitType.getCapacity()) {
             blitType.setBlitTypeState(State.SOLD.name());
-            if (blitType.getEventDate().getBlitTypes().stream().filter(bt -> bt.getName().equals(Constants.HOST_RESERVED_SEATS))
+            if (blitType.getEventDate().getBlitTypes().stream().filter(bt -> !bt.getName().equals(Constants.HOST_RESERVED_SEATS))
                     .allMatch(b -> b.getBlitTypeState().equals(State.SOLD.name()))) {
                 blitType.getEventDate().setEventDateState(State.SOLD.name());
             }
