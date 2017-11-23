@@ -126,14 +126,12 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
     @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @Override
     public Object createBlitAuthorized(SeatBlitViewModel viewModel, User user) {
-        SeatBlit seatBlit = seatBlitMapper.createFromViewModel(viewModel);
 
-        Set<BlitTypeSeat> blitTypeSeats = null;
-        EventDate eventDate = null;
         synchronized (reserveSeatBlitLock) {
-            blitTypeSeats = blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
+            SeatBlit seatBlit = seatBlitMapper.createFromViewModel(viewModel);
+            Set<BlitTypeSeat> blitTypeSeats = blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
             blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).distinct().forEach(this::checkBlitTypeRestrictionsForBuy);
-            eventDate = blitTypeSeats.stream().findAny().map(BlitTypeSeat::getBlitType).map(BlitType::getEventDate)
+            EventDate eventDate = blitTypeSeats.stream().findAny().map(BlitTypeSeat::getBlitType).map(BlitType::getEventDate)
                     .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
             validateAdditionalFields(eventDate.getEvent(),seatBlit);
             log.info("User with email '{}' hold reserveSeatBlitLock",user.getEmail());
@@ -147,11 +145,11 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
                                 blitTypeSeat.getSeat().getRowName(),
                                 blitTypeSeat.getSeat().getSeatName()));
             });
+            salonService.validateNoIndividualSeat(salonService.populateSeatInformationInSalonSchemaByEventDateId(eventDate.getEventDateId()).getSchema());
+            seatBlit.setBlitTypeSeats(blitTypeSeats);
+            log.info("User with email '{}' released reserveSeatBlitLock",user.getEmail());
+            return blitPurchaseAuthorizedSeatBlit(viewModel,user,seatBlit);
         }
-        log.info("User with email '{}' released reserveSeatBlitLock",user.getEmail());
-        salonService.validateNoIndividualSeat(salonService.populateSeatInformationInSalonSchemaByEventDateId(eventDate.getEventDateId()).getSchema());
-        seatBlit.setBlitTypeSeats(blitTypeSeats);
-        return blitPurchaseAuthorizedSeatBlit(viewModel,user,seatBlit);
     }
 
     private Object blitPurchaseAuthorizedSeatBlit(SeatBlitViewModel viewModel,User user,SeatBlit seatBlit) {
