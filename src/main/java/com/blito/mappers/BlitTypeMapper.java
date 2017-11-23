@@ -80,9 +80,9 @@ public class BlitTypeMapper implements GenericMapper<BlitType,BlitTypeViewModel>
 		Optional<Set<String>> seatUids = Optional.ofNullable(vmodel.getSeatUids()).filter(uids -> !uids.isEmpty());
 		if(seatUids.isPresent()) {
 			if(blitType.getName().equals(Constants.HOST_RESERVED_SEATS)) {
-				blitType.setBlitTypeSeats(seatPickerService.updateBlitTypeSeats(vmodel,blitType,BlitTypeSeatState.NOT_AVAILABLE));
+				seatPickerService.updateBlitTypeSeats(vmodel,blitType,BlitTypeSeatState.NOT_AVAILABLE);
 			} else {
-				blitType.setBlitTypeSeats(seatPickerService.updateBlitTypeSeats(vmodel,blitType,BlitTypeSeatState.AVAILABLE));
+				seatPickerService.updateBlitTypeSeats(vmodel,blitType,BlitTypeSeatState.AVAILABLE);
 			}
 		} else {
 			blitTypeSeatRepository.deleteByBlitTypeBlitTypeIdAndStateNotIn(blitType.getBlitTypeId(),

@@ -65,7 +65,7 @@ public class SeatPickerService {
         seatRepository.findBySeatUidIn(
                 viewModel.getSeatUids().stream()
                         .filter(uid ->
-                                !availableBlitTypeSeats.stream().map(blitTypeSeat -> blitTypeSeat.getSeat().getSeatUid()).collect(Collectors.toSet()).contains(uid))
+                                !blitType.getBlitTypeSeats().stream().map(blitTypeSeat -> blitTypeSeat.getSeat().getSeatUid()).collect(Collectors.toSet()).contains(uid))
                         .collect(Collectors.toList())
         ).stream().map(seat -> new BlitTypeSeat(blitTypeSeatState.name(),seat,blitType))
                 .forEach(blitTypeSeat -> blitType.getBlitTypeSeats().add(blitTypeSeat));

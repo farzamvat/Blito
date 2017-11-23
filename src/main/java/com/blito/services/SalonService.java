@@ -112,7 +112,7 @@ public class SalonService {
                 .getOrElseThrow(() -> new RuntimeException(ResourceUtil.getMessage(Response.INTERNAL_SERVER_ERROR)));
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public SalonViewModel populateSeatInformationInSalonSchemaByEventDateId(Long eventDateId) {
         return Option.of(eventDateRepository.findOne(eventDateId))
                 .map(eventDate -> {
