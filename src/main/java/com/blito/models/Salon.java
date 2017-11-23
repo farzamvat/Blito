@@ -21,7 +21,7 @@ public class Salon {
 	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
 	@JoinColumn(name = "salonId")
 	private Set<Section> sections;
-	@Column(columnDefinition="TEXT")
+	@Column(columnDefinition="LONGTEXT")
 	private String salonSvg;
 
 	public Salon() {

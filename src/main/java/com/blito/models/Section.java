@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class Section {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition="LONGTEXT")
     private String sectionSvg;
     private String name;
     private String sectionUid;
