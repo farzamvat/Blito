@@ -99,6 +99,7 @@ public enum Response {
     Blit_Type_SEAT_NOT_FOUND("error.blit.type.set.not.found"),
     NOT_RESERVED_FOR_HOST("error.not.reserved.seat.for.host"),
 	SHARED_SEAT_AND_INCONSISTENT_CAPACITY_ERROR("error.shared.seat.and.inconsistent.capacity"),
+	ERROR_PESSIMISTIC_LOCK("error.pessimistic.lock"),
 	SEAT_INFORMATION("seat.info");
     
 

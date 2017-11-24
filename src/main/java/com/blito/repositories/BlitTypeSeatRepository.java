@@ -2,8 +2,10 @@ package com.blito.repositories;
 
 import com.blito.models.BlitTypeSeat;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -15,6 +17,7 @@ import java.util.Set;
  **/
 
 public interface BlitTypeSeatRepository extends JpaRepository<BlitTypeSeat,Long> {
+    @Lock(LockModeType.PESSIMISTIC_READ)
     Set<BlitTypeSeat> findBySeatSeatUidInAndBlitTypeEventDateEventDateId(Set<String> uids,Long eventDateId);
     Optional<BlitTypeSeat> findBySeatSeatUidAndBlitTypeEventDateEventDateIdIs(String seatUid, Long eventDateId);
     @Transactional

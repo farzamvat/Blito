@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
@@ -128,27 +127,23 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
     public Object createBlitAuthorized(SeatBlitViewModel viewModel, User user) {
         SeatBlit seatBlit = seatBlitMapper.createFromViewModel(viewModel);
 
-        Set<BlitTypeSeat> blitTypeSeats = null;
-        EventDate eventDate = null;
-        synchronized (reserveSeatBlitLock) {
-            blitTypeSeats = blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
-            blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).distinct().forEach(this::checkBlitTypeRestrictionsForBuy);
-            eventDate = blitTypeSeats.stream().findAny().map(BlitTypeSeat::getBlitType).map(BlitType::getEventDate)
-                    .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
-            validateAdditionalFields(eventDate.getEvent(),seatBlit);
-            log.info("User with email '{}' hold reserveSeatBlitLock",user.getEmail());
-            validateSeatBlitForBuy(blitTypeSeats);
-            blitTypeSeats.forEach(blitTypeSeat -> {
-                blitTypeSeat.setState(BlitTypeSeatState.RESERVED.name());
-                blitTypeSeat.setReserveDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
-                seatBlit.setSeats((seatBlit.getSeats() == null ? blitTypeSeat.getSeat().getSalon().getName() + " , " : seatBlit.getSeats() + " /") +
-                        String.format(ResourceUtil.getMessage(Response.SEAT_INFORMATION),
-                                blitTypeSeat.getSeat().getSectionName(),
-                                blitTypeSeat.getSeat().getRowName(),
-                                blitTypeSeat.getSeat().getSeatName()));
-            });
-            blitTypeSeatRepository.save(blitTypeSeats);
-        }
+        Set<BlitTypeSeat> blitTypeSeats = blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
+        blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).distinct().forEach(this::checkBlitTypeRestrictionsForBuy);
+        EventDate eventDate = blitTypeSeats.stream().findAny().map(BlitTypeSeat::getBlitType).map(BlitType::getEventDate)
+                .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
+        validateAdditionalFields(eventDate.getEvent(),seatBlit);
+        log.info("User with email '{}' hold reserveSeatBlitLock",user.getEmail());
+        validateSeatBlitForBuy(blitTypeSeats);
+        blitTypeSeats.forEach(blitTypeSeat -> {
+            blitTypeSeat.setState(BlitTypeSeatState.RESERVED.name());
+            blitTypeSeat.setReserveDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+            seatBlit.setSeats((seatBlit.getSeats() == null ? blitTypeSeat.getSeat().getSalon().getName() + " , " : seatBlit.getSeats() + " /") +
+                    String.format(ResourceUtil.getMessage(Response.SEAT_INFORMATION),
+                            blitTypeSeat.getSeat().getSectionName(),
+                            blitTypeSeat.getSeat().getRowName(),
+                            blitTypeSeat.getSeat().getSeatName()));
+        });
+
         log.info("User with email '{}' released reserveSeatBlitLock",user.getEmail());
         salonService.validateNoIndividualSeat(salonService.populateSeatInformationInSalonSchemaByEventDateId(eventDate.getEventDateId()).getSchema());
         seatBlit.setBlitTypeSeats(blitTypeSeats);
@@ -210,34 +205,31 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
                 });
     }
 
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    @Transactional
     @Override
     public PaymentRequestViewModel createUnauthorizedAndNoneFreeBlits(SeatBlitViewModel viewModel) {
         SeatBlit seatBlit = seatBlitMapper.createFromViewModel(viewModel);
 
-        Set<BlitTypeSeat> blitTypeSeats = null;
-        EventDate eventDate = null;
-        synchronized (reserveSeatBlitLock) {
-            blitTypeSeats = blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
-            blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).distinct().forEach(this::checkBlitTypeRestrictionsForBuy);
-            if(blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).anyMatch(BlitType::isFree)) {
-                throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
-            }
-            eventDate = blitTypeSeats.stream().findAny().map(BlitTypeSeat::getBlitType).map(BlitType::getEventDate)
-                    .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
-            validateAdditionalFields(eventDate.getEvent(),seatBlit);
-            log.info("unauthorized user with email '{}' hold reserveSeatBlitLock",viewModel.getCustomerEmail());
-            validateSeatBlitForBuy(blitTypeSeats);
-            blitTypeSeats.forEach(blitTypeSeat -> {
-                blitTypeSeat.setState(BlitTypeSeatState.RESERVED.name());
-                blitTypeSeat.setReserveDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
-                seatBlit.setSeats((seatBlit.getSeats() == null ? blitTypeSeat.getSeat().getSalon().getName() + " , " : seatBlit.getSeats() + " /") +
-                        String.format(ResourceUtil.getMessage(Response.SEAT_INFORMATION),
-                                blitTypeSeat.getSeat().getSectionName(),
-                                blitTypeSeat.getSeat().getRowName(),
-                                blitTypeSeat.getSeat().getSeatName()));
-            });
+        Set<BlitTypeSeat> blitTypeSeats = blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
+        blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).distinct().forEach(this::checkBlitTypeRestrictionsForBuy);
+        if(blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).anyMatch(BlitType::isFree)) {
+            throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
         }
+        EventDate eventDate = blitTypeSeats.stream().findAny().map(BlitTypeSeat::getBlitType).map(BlitType::getEventDate)
+                .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
+        validateAdditionalFields(eventDate.getEvent(),seatBlit);
+        log.info("unauthorized user with email '{}' hold reserveSeatBlitLock",viewModel.getCustomerEmail());
+        validateSeatBlitForBuy(blitTypeSeats);
+        blitTypeSeats.forEach(blitTypeSeat -> {
+            blitTypeSeat.setState(BlitTypeSeatState.RESERVED.name());
+            blitTypeSeat.setReserveDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+            seatBlit.setSeats((seatBlit.getSeats() == null ? blitTypeSeat.getSeat().getSalon().getName() + " , " : seatBlit.getSeats() + " /") +
+                    String.format(ResourceUtil.getMessage(Response.SEAT_INFORMATION),
+                            blitTypeSeat.getSeat().getSectionName(),
+                            blitTypeSeat.getSeat().getRowName(),
+                            blitTypeSeat.getSeat().getSeatName()));
+        });
+
         log.info("unauthorized user with email '{}' released reserveSeatBlitLock",viewModel.getCustomerEmail());
         salonService.validateNoIndividualSeat(salonService.populateSeatInformationInSalonSchemaByEventDateId(eventDate.getEventDateId()).getSchema());
         seatBlit.setTrackCode(generateTrackCode());

@@ -1,6 +1,8 @@
 package com.blito.rest.utility;
 
+import com.blito.enums.Response;
 import com.blito.exceptions.*;
+import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import io.vavr.control.Either;
 import org.slf4j.Logger;
@@ -8,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import javax.persistence.PessimisticLockException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.function.Supplier;
@@ -56,6 +59,8 @@ public class HandleUtility {
 		}
 		else if(throwable instanceof FileNotFoundException)
 			return ResponseEntity.status(500).body(ExceptionUtil.generate(HttpStatus.INTERNAL_SERVER_ERROR,req,throwable));
+		else if(throwable instanceof PessimisticLockException)
+			return ResponseEntity.status(400).body(ExceptionUtil.generate(HttpStatus.BAD_REQUEST,req,new SeatException(ResourceUtil.getMessage(Response.ERROR_PESSIMISTIC_LOCK))));
 		else
 			return ResponseEntity.status(400).body(ExceptionUtil.generate(HttpStatus.BAD_REQUEST, req, throwable));
 	}
