@@ -233,6 +233,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         log.info("unauthorized user with email '{}' released reserveSeatBlitLock",viewModel.getCustomerEmail());
         salonService.validateNoIndividualSeat(salonService.populateSeatInformationInSalonSchemaByEventDateId(eventDate.getEventDateId()).getSchema());
         seatBlit.setTrackCode(generateTrackCode());
+        seatBlit.setBlitTypeSeats(blitTypeSeats);
         validateDiscountCodeIfPresentAndCalculateTotalAmount(viewModel,seatBlit);
         return Option.of(paymentRequestService.createPurchaseRequest(seatBlit))
                 .map(token -> persistBlit(seatBlit,Optional.empty(),token))
