@@ -4,7 +4,6 @@ import com.blito.common.Salon;
 import com.blito.common.Seat;
 import com.blito.configs.Constants;
 import com.blito.enums.*;
-import com.blito.models.SeatBlit;
 import com.blito.models.User;
 import com.blito.payments.zarinpal.PaymentVerificationResponse;
 import com.blito.payments.zarinpal.client.ZarinpalClient;
@@ -16,14 +15,12 @@ import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 import com.blito.rest.viewmodels.payments.ZarinpalPayRequestResponseViewModel;
-import com.blito.search.Operation;
-import com.blito.search.SearchViewModel;
-import com.blito.search.Simple;
 import com.blito.services.PaymentRequestService;
 import com.blito.services.blit.CommonBlitService;
 import com.blito.services.blit.SeatBlitService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
+import io.vavr.concurrent.Future;
 import io.vavr.control.Try;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -129,7 +126,6 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
                     .filter(row -> row.getName().equals("2"))
                     .flatMap(row -> row.getSeats().stream())
                     .sorted(Comparator.comparing(Seat::getName))
-//                    .limit(8)
                     .forEachOrdered(seat -> blitTypeViewModel.getSeatUids().add(seat.getUid()));
             eventDateViewModel.setBlitTypes(new HashSet<>(Collections.singletonList(blitTypeViewModel)));
 
@@ -160,6 +156,7 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
         return response.thenReturn().body().as(EventViewModel.class);
     }
 
+
     @Test
     public void buySeatBlit_success() {
         ZarinpalPayRequestResponseViewModel zarinpalResponse = new ZarinpalPayRequestResponseViewModel();
@@ -183,7 +180,6 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
         SeatBlitViewModel seatBlitViewModel = new SeatBlitViewModel();
         seatBlitViewModel.setEventDateId(eventViewModel.getEventDates().stream().findFirst().get().getEventDateId());
         seatBlitViewModel.setBankGateway(BankGateway.ZARINPAL);
-//        seatBlitViewModel.setBlitTypeName(eventViewModel.getEventDates().stream().flatMap(eventDateViewModel -> eventDateViewModel.getBlitTypes().stream()).filter(blitTypeViewModel -> blitTypeViewModel.getName().equals("update")).findFirst().get().getName());
         seatBlitViewModel.setCount(6);
         seatBlitViewModel.setSeats("2,3,4 row 2");
         seatBlitViewModel.setCustomerEmail("farzam.vat@gmail.com");
@@ -214,41 +210,52 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
                 .sorted(Comparator.comparing(Seat::getName))
                 .limit(3)
                 .forEachOrdered(seat -> seatBlitViewModel.getSeatUids().add(seat.getUid()));
-        Response response =
-                givenRestIntegration()
+//        Response response =
+//                givenRestIntegration()
+//                .body(seatBlitViewModel)
+//                .when()
+//                .post(getServerAddress() + "/api/blito/v1.0/blits/buy-request-with-seat");
+//        response.then().statusCode(200).body("zarinpalWebGatewayURL",equalTo(zarinpalGatewayURL + "testToken"))
+//        .body("gateway",equalTo(BankGateway.ZARINPAL.name()));
+
+//        Response secondResponse =
+//                givenRestIntegrationUser()
+//                .body(seatBlitViewModel)
+//                .when()
+//                .post(getServerAddress() + "/api/blito/v1.0/blits/buy-request-with-seat");
+        Future<Response> fResponse = Future.ofSupplier(() -> givenRestIntegration()
                 .body(seatBlitViewModel)
                 .when()
-                .post(getServerAddress() + "/api/blito/v1.0/blits/buy-request-with-seat");
-        response.then().statusCode(200).body("zarinpalWebGatewayURL",equalTo(zarinpalGatewayURL + "testToken"))
-        .body("gateway",equalTo(BankGateway.ZARINPAL.name()));
+                .post(getServerAddress() + "/api/blito/v1.0/blits/buy-request-with-seat"));
 
-        givenRestIntegration()
+        Future<Response> sResponse = Future.ofSupplier(() -> givenRestIntegrationUser()
+                .body(seatBlitViewModel)
                 .when()
-                .get(getServerAddress() + "/api/blito/v1.0/zarinpal?Authority=testToken&Status=OK");
+                .post(getServerAddress() + "/api/blito/v1.0/blits/buy-request-with-seat"));
+        System.out.println(fResponse.get().then().body("zarinpalWebGatewayURL",equalTo(zarinpalGatewayURL + "testToken")));
+        System.out.println(sResponse.get().then().body("zarinpalWebGatewayURL",equalTo(zarinpalGatewayURL + "testToken")));
 
-        SeatBlitViewModel blitResponseViewModel = givenRestIntegration()
-                .when()
-                .get(getServerAddress() + "/api/blito/v1.0/public/blits/123456")
-                .then().statusCode(200)
-                .extract().body().as(SeatBlitViewModel.class);
-        System.out.println(blitResponseViewModel.toString());
+//        givenRestIntegration()
+//                .when()
+//                .get(getServerAddress() + "/api/blito/v1.0/zarinpal?Authority=testToken&Status=OK");
+//
+//        SeatBlitViewModel blitResponseViewModel = givenRestIntegration()
+//                .when()
+//                .get(getServerAddress() + "/api/blito/v1.0/public/blits/123456")
+//                .then().statusCode(200)
+//                .extract().body().as(SeatBlitViewModel.class);
+//        System.out.println(blitResponseViewModel.toString());
+//
+//        Map<String,Object> pdfMap = commonBlitService.getBlitPdf("123456");
+//        System.out.println("COMMON:" + pdfMap);
+//
+//        SearchViewModel<SeatBlit> seatBlitSearchViewModel = new SearchViewModel<>();
+//        seatBlitSearchViewModel.setRestrictions(new ArrayList<>());
+//        seatBlitSearchViewModel.getRestrictions().add(new Simple<>(Operation.eq,"blitTypeSeats-blitType-eventDate-eventDateId",eventViewModel.getEventDates().stream().findAny().get().getEventDateId()));
+//        seatBlitSearchViewModel.getRestrictions().add(new Simple<>(Operation.neq,"paymentStatus","PENDING"));
+//        seatBlitSearchViewModel.getRestrictions().add(new Simple<>(Operation.neq,"paymentStatus","ERROR"));
+//        System.out.println("SEAT:" + seatBlitService.searchBlitsForExcel(seatBlitSearchViewModel));
 
-        Map<String,Object> pdfMap = commonBlitService.getBlitPdf("123456");
-        System.out.println("COMMON:" + pdfMap);
-
-        SearchViewModel<SeatBlit> seatBlitSearchViewModel = new SearchViewModel<>();
-        seatBlitSearchViewModel.setRestrictions(new ArrayList<>());
-        seatBlitSearchViewModel.getRestrictions().add(new Simple<>(Operation.eq,"blitTypeSeats-blitType-eventDate-eventDateId",eventViewModel.getEventDates().stream().findAny().get().getEventDateId()));
-        seatBlitSearchViewModel.getRestrictions().add(new Simple<>(Operation.neq,"paymentStatus","PENDING"));
-        seatBlitSearchViewModel.getRestrictions().add(new Simple<>(Operation.neq,"paymentStatus","ERROR"));
-        System.out.println("SEAT:" + seatBlitService.searchBlitsForExcel(seatBlitSearchViewModel));
-
-//        SearchViewModel<CommonBlit> commonBlitSearchViewModel = new SearchViewModel<>();
-//        commonBlitSearchViewModel.setRestrictions(new ArrayList<>());
-//        commonBlitSearchViewModel.getRestrictions().add(new Simple<>(Operation.eq,"blitType-eventDate-eventDateId",eventViewModel.getEventDates().stream().findAny().get().getEventDateId()));
-//        commonBlitSearchViewModel.getRestrictions().add(new Simple<>(Operation.neq,"paymentStatus","PENDING"));
-//        commonBlitSearchViewModel.getRestrictions().add(new Simple<>(Operation.neq,"paymentStatus","ERROR"));
-//        System.out.println(commonBlitService.searchBlitsForExcel(commonBlitSearchViewModel));
     }
 
     public Salon getTestSalonSchema() {
