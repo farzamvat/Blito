@@ -87,7 +87,20 @@ public enum Response {
 	DISCOUNT_PERCENTAGE_IS_FINAL("error.discount.percentage.is.final"),
 	DISCOUNT_CODE_IS_FINAL("error.discount.code.is.final"),
 	DISCOUNT_CODE_EXPIRED("error.discount.code.expired"),
-	ADDITIONAL_FIELDS_VALIDATION_ERROR("error.additional.fields.validation");
+	ADDITIONAL_FIELDS_VALIDATION_ERROR("error.additional.fields.validation"),
+	SEAT_BLIT_RESERVED_TIME_OUT_OF_DATE("error.seat.blit.reserved.time.out.of.date"),
+	INDIVIDUAL_SEAT_ERROR("error.individual.seat"),
+	NO_SEATS_PICKED_ERROR("error.not.seat.picked"),
+	SELECTED_SEAT_IS_SOLD_OR_RESERVED("error.sold.reserved.selected.seats"),
+	SALON_NOT_FOUND("error.salon.not.found"),
+	INCONSISTENT_SECTION_UIDS("error.inconsistent.section.uid"),
+	SALON_OR_SECTIONS_SVG_CANNOT_BE_EMPTY("error.salon.sections.svg.empty"),
+	INCONSISTENT_SEAT_COUNTS("error.seat.count.not.conforming"),
+    Blit_Type_SEAT_NOT_FOUND("error.blit.type.set.not.found"),
+    NOT_RESERVED_FOR_HOST("error.not.reserved.seat.for.host"),
+	SHARED_SEAT_AND_INCONSISTENT_CAPACITY_ERROR("error.shared.seat.and.inconsistent.capacity"),
+	ERROR_PESSIMISTIC_LOCK("error.pessimistic.lock"),
+	SEAT_INFORMATION("seat.info");
     
 
     private final String message;

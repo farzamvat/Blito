@@ -71,7 +71,10 @@ public class User {
 	
 	@OneToMany(mappedBy="user", targetEntity=ExchangeBlit.class, fetch=FetchType.LAZY)
 	private Set<ExchangeBlit> exchangeBlits;
-	
+
+	@OneToMany(mappedBy = "receiver", targetEntity = Notification.class, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Notification> notifications;
+
 	public Timestamp getCreatedAt() {
 		return createdAt;
 	}
@@ -241,5 +244,17 @@ public class User {
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
-	
+
+    public Set<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(Set<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    public void addNotification(Notification notification) {
+	    this.notifications.add(notification);
+	    notification.setReceiver(this);
+    }
 }

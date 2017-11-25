@@ -393,12 +393,12 @@
                                         </div>
                                         <div class="controls">
                                             <div ng-show="!submitExchangeNotif">
-                                            <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangeName.$dirty && exchangeBlitForm.exchangeName.$invalid)">*نام بلیت را وارد نمایید.</p>
-                                            <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangeType.$invalid)">*نوع بلیت را انخاب نمایید.</p>
-                                            <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangePrice.$dirty && exchangeBlitForm.exchangePrice.$invalid)">*قیمت بلیت را وارد نمایید.</p>
-                                            <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangeDescription.$dirty && exchangeBlitForm.exchangeDescription.$invalid)">*توضیحات مربوط به بلیت را وارد نمایید.</p>
-                                            <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangeAddress.$dirty && exchangeBlitForm.exchangeAddress.$invalid)">*آدرس را وارد نمایید.</p>
-                                            <p class="text-center colorRed" ng-show="(!exchangeBlitForm.$invalid && mapMarkerClickCheckExchange)">*مکان را روی نقشه مشخص نمایید.</p>
+                                                <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangeName.$dirty && exchangeBlitForm.exchangeName.$invalid)">*نام بلیت را وارد نمایید.</p>
+                                                <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangeType.$invalid)">*نوع بلیت را انخاب نمایید.</p>
+                                                <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangePrice.$dirty && exchangeBlitForm.exchangePrice.$invalid)">*قیمت بلیت را وارد نمایید.</p>
+                                                <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangeDescription.$dirty && exchangeBlitForm.exchangeDescription.$invalid)">*توضیحات مربوط به بلیت را وارد نمایید.</p>
+                                                <p class="text-center colorRed" ng-show="(exchangeBlitForm.exchangeAddress.$dirty && exchangeBlitForm.exchangeAddress.$invalid)">*آدرس را وارد نمایید.</p>
+                                                <p class="text-center colorRed" ng-show="(!exchangeBlitForm.$invalid && mapMarkerClickCheckExchange)">*مکان را روی نقشه مشخص نمایید.</p>
                                             </div>
                                             <p class="text-center colorRed" ng-show="(((exchangeBlitForm.$invalid || mapMarkerClickCheckExchange)) && !(exchangeBlitForm.exchangeType.$invalid))">*همه فیلد های اجباری را پر نمایید.</p>
                                             <button id="exchangeEventSubmit" ng-disabled="(exchangeBlitForm.$invalid || mapMarkerClickCheckExchange || exchangeSubmitOnce)" ng-click="submitExchangeTicket(exchange)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت آگهی <i ng-show="submitExchangeSpinner" class="fa fa-spinner fa-spin"></i></button>
@@ -437,8 +437,7 @@
                                                             </th>
                                                             <th class="dataCenter" >نوع
                                                             </th>
-                                                            <th class="dataCenter" >نام برگزارکننده
-                                                            </th>
+
                                                             <th class="dataCenter" >وضعیت ثبت
                                                             </th>
                                                             <th class="dataCenter" >وضعیت رویداد
@@ -451,13 +450,13 @@
                                                         <tr  total-items="totalEventsNumber" dir-paginate="item in getDataUserEvents | itemsPerPage: 4" pagination-id="events" current-page="currentPageEvent">
                                                             <td class="dataCenter">{{ item.eventName}}</td>
                                                             <td class="dataCenter">{{ item.eventType}}</td>
-                                                            <td class="dataCenter">{{ item.eventHostName}}</td>
                                                             <td class="dataCenter">{{ item.operatorState}}</td>
                                                             <td class="dataCenter">{{ item.eventState}}</td>
                                                             <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editEvent($index)">ویرایش</button></td>
                                                             <td ng-show="item.operatorState === 'تأیید شده'" class="dataCenter"><button class="btn editButton btn-default" ng-click="showTickets($index)">بلیت ها</button></td>
                                                             <td ng-show="item.operatorState === 'تأیید شده'" class="dataCenter"><button class="btn editButton btn-success" ng-click="discountCodeShow($index)">کد تخفیف</button></td>
                                                             <td ng-if="item.operatorState === 'رد شده'" class="dataCenter"><button type="button" ng-click="showSetting($index)"  class="btn editButton btn-info" >تنظیمات رویداد </button></td>
+                                                            <td ng-if="item.salonUid" class="dataCenter"><button type="button" ng-click="openGuestTicketModal($index)"  class="btn editButton btn-info" >صدور بلیت مهمان‌ها </button></td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
@@ -527,7 +526,7 @@
                         <div class="panel " id="makeEvent">
                             <div class="panel-heading  EmakeEventFormHeader text-center " id="makeEventSection" ng-click="toggleBody('makeEventSection')"><h6>  <i   class="fa fa-arrow-circle-down" aria-hidden="true"></i>  ایجاد رویداد </h6></div>
                             <div class="panel-body makeEventForm EmakeEventPlannerForm">
-                                <form class="form-inline textAlignRight" name="submitEventForm" id="submitEventForm">
+                                <form novalidate class="form-inline textAlignRight" name="submitEventForm" id="submitEventForm">
                                     <fieldset class="fieldsetStyle">
                                         <legend class="legendStyle">مشخصات رویداد</legend>
                                         <div class="row">
@@ -572,7 +571,7 @@
                                                     <label class="registerLabel floatRight" for="eventDescription" >توضیحات تکمیلی :</label>
                                                 </div>
                                                 <div class="col-xs-11  floatRight ">
-                                                <div text-angular="text-angular" name="htmlcontent" required ng-model="eventFields.members" ta-toolbar="[['h1','h2','h3','p'],['bold','italics','ul', 'ol'],['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent']]" ta-disabled='disabled'></div>
+                                                    <div text-angular="text-angular" name="htmlcontent" required ng-model="eventFields.members" ta-toolbar="[['h1','h2','h3','p'],['bold','italics','ul', 'ol'],['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent']]" ta-disabled='disabled'></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -654,104 +653,104 @@
                                             <div class="col-xs-12 col-sm-12 floatRight marginTop30">
                                                 <h3 class="textAlignRight marginRight30 marginBottom20">عکس های گالری (اختیاری)</h3>
                                                 <div class="row">
-                                                <div class="col-xs-12 col-sm-4 floatRight marginTop10">
-                                                <label class="marginRight30"> عکس اول :</label>
-                                                <button class="btn btn-default " ng-click='uploadGalleryOne()'>انتخاب <i class="fa fa-image"></i></button>
-                                                <div class="col-xs-12" ng-show="showThumbnailOne">
-                                                    <img class="img-responsive gallery galleryOne marginTop30"  src="" alt="">
-                                                    <div class="col-xs-12">
-                                                        <div class="btn btn-success marginTop10" ng-click="photoGalleryOne()">بارگذاری   <i ng-show="uploadEventOnePhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
+                                                    <div class="col-xs-12 col-sm-4 floatRight marginTop10">
+                                                        <label class="marginRight30"> عکس اول :</label>
+                                                        <button class="btn btn-default " ng-click='uploadGalleryOne()'>انتخاب <i class="fa fa-image"></i></button>
+                                                        <div class="col-xs-12" ng-show="showThumbnailOne">
+                                                            <img class="img-responsive gallery galleryOne marginTop30"  src="" alt="">
+                                                            <div class="col-xs-12">
+                                                                <div class="btn btn-success marginTop10" ng-click="photoGalleryOne()">بارگذاری   <i ng-show="uploadEventOnePhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
+                                                            </div>
+                                                            <div id="eventPhotoOneError" ng-show="eventPhotoOneError" class="text-center alert alert-danger col-xs-12">
+                                                                <strong></strong>
+                                                            </div>
+                                                            <div ng-show="eventPhotoOneSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
+                                                                <strong>عکس با موفقیت بارگذاری شد</strong>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div id="eventPhotoOneError" ng-show="eventPhotoOneError" class="text-center alert alert-danger col-xs-12">
-                                                        <strong></strong>
+                                                    <div class="col-xs-12 col-sm-4 floatRight marginTop10">
+                                                        <label class="marginRight30"> عکس دوم :</label>
+                                                        <button class="btn btn-default " ng-click='uploadGalleryTwo()'>انتخاب <i class="fa fa-image"></i></button>
+                                                        <div class="col-xs-12" ng-show="showThumbnailTwo">
+                                                            <img class="img-responsive gallery galleryTwo marginTop30"  src="" alt="">
+                                                            <div class="col-xs-12">
+                                                                <div class="btn btn-success marginTop10" ng-click="photoGalleryTwo()">بارگذاری   <i ng-show="uploadEventTwoPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
+                                                            </div>
+                                                            <div id="eventPhotoTwoError" ng-show="eventPhotoTwoError" class="text-center alert alert-danger col-xs-12">
+                                                                <strong></strong>
+                                                            </div>
+                                                            <div ng-show="eventPhotoTwoSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
+                                                                <strong>عکس با موفقیت بارگذاری شد</strong>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div ng-show="eventPhotoOneSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
-                                                        <strong>عکس با موفقیت بارگذاری شد</strong>
+                                                    <div class="col-xs-12 col-sm-4 floatRight marginTop10">
+                                                        <label class="marginRight30"> عکس سوم :</label>
+                                                        <button class="btn btn-default " ng-click='uploadGalleryThree()'>انتخاب <i class="fa fa-image"></i></button>
+                                                        <div class="col-xs-12" ng-show="showThumbnailThree">
+                                                            <img class="img-responsive gallery galleryThree marginTop30"  src="" alt="">
+                                                            <div class="col-xs-12">
+                                                                <div class="btn btn-success marginTop10" ng-click="photoGalleryThree()">بارگذاری   <i ng-show="uploadEventThreePhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
+                                                            </div>
+                                                            <div id="eventPhotoThreeError" ng-show="eventPhotoThreeError" class="text-center alert alert-danger col-xs-12">
+                                                                <strong></strong>
+                                                            </div>
+                                                            <div ng-show="eventPhotoThreeSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
+                                                                <strong>عکس با موفقیت بارگذاری شد</strong>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4 floatRight marginTop10">
-                                                <label class="marginRight30"> عکس دوم :</label>
-                                                <button class="btn btn-default " ng-click='uploadGalleryTwo()'>انتخاب <i class="fa fa-image"></i></button>
-                                                <div class="col-xs-12" ng-show="showThumbnailTwo">
-                                                    <img class="img-responsive gallery galleryTwo marginTop30"  src="" alt="">
-                                                    <div class="col-xs-12">
-                                                        <div class="btn btn-success marginTop10" ng-click="photoGalleryTwo()">بارگذاری   <i ng-show="uploadEventTwoPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
-                                                    </div>
-                                                    <div id="eventPhotoTwoError" ng-show="eventPhotoTwoError" class="text-center alert alert-danger col-xs-12">
-                                                        <strong></strong>
-                                                    </div>
-                                                    <div ng-show="eventPhotoTwoSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
-                                                        <strong>عکس با موفقیت بارگذاری شد</strong>
-                                                    </div>
-                                                </div>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4 floatRight marginTop10">
-                                                <label class="marginRight30"> عکس سوم :</label>
-                                                <button class="btn btn-default " ng-click='uploadGalleryThree()'>انتخاب <i class="fa fa-image"></i></button>
-                                                <div class="col-xs-12" ng-show="showThumbnailThree">
-                                                    <img class="img-responsive gallery galleryThree marginTop30"  src="" alt="">
-                                                    <div class="col-xs-12">
-                                                        <div class="btn btn-success marginTop10" ng-click="photoGalleryThree()">بارگذاری   <i ng-show="uploadEventThreePhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
-                                                    </div>
-                                                    <div id="eventPhotoThreeError" ng-show="eventPhotoThreeError" class="text-center alert alert-danger col-xs-12">
-                                                        <strong></strong>
-                                                    </div>
-                                                    <div ng-show="eventPhotoThreeSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
-                                                        <strong>عکس با موفقیت بارگذاری شد</strong>
-                                                    </div>
-                                                </div>
-                                                </div>
                                                 </div>
                                                 <div class="row">
-                                                <div class="col-xs-12 col-sm-4 floatRight marginTop10">
-                                                <label class="marginRight30"> عکس چهارم :</label>
-                                                <button class="btn btn-default " ng-click='uploadGalleryFour()'>انتخاب <i class="fa fa-image"></i></button>
-                                                <div class="col-xs-12" ng-show="showThumbnailFour">
-                                                    <img class="img-responsive gallery galleryFour marginTop30"  src="" alt="">
-                                                    <div class="col-xs-12">
-                                                        <div class="btn btn-success marginTop10" ng-click="photoGalleryFour()">بارگذاری   <i ng-show="uploadEventFourPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
+                                                    <div class="col-xs-12 col-sm-4 floatRight marginTop10">
+                                                        <label class="marginRight30"> عکس چهارم :</label>
+                                                        <button class="btn btn-default " ng-click='uploadGalleryFour()'>انتخاب <i class="fa fa-image"></i></button>
+                                                        <div class="col-xs-12" ng-show="showThumbnailFour">
+                                                            <img class="img-responsive gallery galleryFour marginTop30"  src="" alt="">
+                                                            <div class="col-xs-12">
+                                                                <div class="btn btn-success marginTop10" ng-click="photoGalleryFour()">بارگذاری   <i ng-show="uploadEventFourPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
+                                                            </div>
+                                                            <div id="eventPhotoFourError" ng-show="eventPhotoFourError" class="text-center alert alert-danger col-xs-12">
+                                                                <strong></strong>
+                                                            </div>
+                                                            <div ng-show="eventPhotoFourSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
+                                                                <strong>عکس با موفقیت بارگذاری شد</strong>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div id="eventPhotoFourError" ng-show="eventPhotoFourError" class="text-center alert alert-danger col-xs-12">
-                                                        <strong></strong>
+                                                    <div class="col-xs-12 col-sm-4 floatRight marginTop10">
+                                                        <label class="marginRight30"> عکس پنجم :</label>
+                                                        <button class="btn btn-default " ng-click='uploadGalleryFive()'>انتخاب <i class="fa fa-image"></i></button>
+                                                        <div class="col-xs-12" ng-show="showThumbnailFive">
+                                                            <img class="img-responsive gallery galleryFive marginTop30"  src="" alt="">
+                                                            <div class="col-xs-12">
+                                                                <div class="btn btn-success marginTop10" ng-click="photoGalleryFive()">بارگذاری   <i ng-show="uploadEventFivePhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
+                                                            </div>
+                                                            <div id="eventPhotoFiveError" ng-show="eventPhotoFiveError" class="text-center alert alert-danger col-xs-12">
+                                                                <strong></strong>
+                                                            </div>
+                                                            <div ng-show="eventPhotoFiveSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
+                                                                <strong>عکس با موفقیت بارگذاری شد</strong>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div ng-show="eventPhotoFourSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
-                                                        <strong>عکس با موفقیت بارگذاری شد</strong>
+                                                    <div class="col-xs-12 col-sm-4 floatRight marginTop10">
+                                                        <label class="marginRight30"> عکس ششم :</label>
+                                                        <button class="btn btn-default " ng-click='uploadGallerySix()'>انتخاب <i class="fa fa-image"></i></button>
+                                                        <div class="col-xs-12" ng-show="showThumbnailSix">
+                                                            <img class="img-responsive gallery gallerySix marginTop30"  src="" alt="">
+                                                            <div class="col-xs-12">
+                                                                <div class="btn btn-success marginTop10" ng-click="photoGallerySix()">بارگذاری   <i ng-show="uploadEventSixPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
+                                                            </div>
+                                                            <div id="eventPhotoSixError" ng-show="eventPhotoSixError" class="text-center alert alert-danger col-xs-12">
+                                                                <strong></strong>
+                                                            </div>
+                                                            <div ng-show="eventPhotoSixSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
+                                                                <strong>عکس با موفقیت بارگذاری شد</strong>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4 floatRight marginTop10">
-                                                <label class="marginRight30"> عکس پنجم :</label>
-                                                <button class="btn btn-default " ng-click='uploadGalleryFive()'>انتخاب <i class="fa fa-image"></i></button>
-                                                <div class="col-xs-12" ng-show="showThumbnailFive">
-                                                    <img class="img-responsive gallery galleryFive marginTop30"  src="" alt="">
-                                                    <div class="col-xs-12">
-                                                        <div class="btn btn-success marginTop10" ng-click="photoGalleryFive()">بارگذاری   <i ng-show="uploadEventFivePhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
-                                                    </div>
-                                                    <div id="eventPhotoFiveError" ng-show="eventPhotoFiveError" class="text-center alert alert-danger col-xs-12">
-                                                        <strong></strong>
-                                                    </div>
-                                                    <div ng-show="eventPhotoFiveSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
-                                                        <strong>عکس با موفقیت بارگذاری شد</strong>
-                                                    </div>
-                                                </div>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4 floatRight marginTop10">
-                                                <label class="marginRight30"> عکس ششم :</label>
-                                                <button class="btn btn-default " ng-click='uploadGallerySix()'>انتخاب <i class="fa fa-image"></i></button>
-                                                <div class="col-xs-12" ng-show="showThumbnailSix">
-                                                    <img class="img-responsive gallery gallerySix marginTop30"  src="" alt="">
-                                                    <div class="col-xs-12">
-                                                        <div class="btn btn-success marginTop10" ng-click="photoGallerySix()">بارگذاری   <i ng-show="uploadEventSixPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></div>
-                                                    </div>
-                                                    <div id="eventPhotoSixError" ng-show="eventPhotoSixError" class="text-center alert alert-danger col-xs-12">
-                                                        <strong></strong>
-                                                    </div>
-                                                    <div ng-show="eventPhotoSixSuccess" class="text-center alert alert-success col-xs-12 marginTop10">
-                                                        <strong>عکس با موفقیت بارگذاری شد</strong>
-                                                    </div>
-                                                </div>
-                                                </div>
                                                 </div>
 
                                             </div>
@@ -795,31 +794,110 @@
                                     <fieldset class="marginTop30 fieldsetStyle">
 
                                         <legend class="legendStyle"> تعریف سانس</legend>
-                                        <div class="row">
-                                            <div class="col-xs-12 text-center" > اضافه و کم کردن سانس
-                                                <i class="fa fa-plus btn-success addDeleteBtn" ng-click="addFieldShowTime()" aria-hidden="true"></i>
-                                                <i class="fa fa-minus btn-danger addDeleteBtn" ng-click="deleteFieldShowTime()" aria-hidden="true"></i>
+                                        <div class="col-xs-12">
+                                            <p class="marginRight30">آیا برای رویداد خود نیاز به انتخاب صندلی دارید :
+                                            </p>
+                                            <div class="col-xs-12 floatRight ">
+                                                <div class="col-xs-5 col-sm-3 col-md-3 floatRight">
+                                                    <label class=" floatRight">    بله
+                                                        <input type="radio" ng-model="seatPicker.isChosen" value="true" name="optradio" >
+                                                    </label>
+                                                </div>
+                                                <div class="col-xs-5 col-sm-3 col-md-3 floatRight">
+                                                    <label class=" floatRight">خیر
+                                                        <input  type="radio" ng-model="seatPicker.isChosen" value="false" name="optradio" >
+                                                    </label>
+                                                </div>
                                             </div>
-                                            <div class="form-group col-xs-12 col-sm-12 formRegGroup floatRight marginTop30 " ng-repeat="showTime in showTimeForms">
-                                                <div class="col-xs-10 col-xs-offset-1 showTimeSection">
+                                        </div>
+                                        <div ng-show="seatPicker.isChosen === 'true'" class="col-xs-12 marginTop60">
+                                            <p class="marginRight30">سالن مورد نظر را انتخاب کنید:
+                                            </p>
+                                            <div class="col-xs-12 floatRight ">
+                                                <select id="seatmapList" ng-change="sansSet()" ng-model="seatMapListChosen" ng-options="obj.name for obj in seatMapList track by obj.salonUid" class="form-control dropDownList">
+
+                                                </select>
+                                            </div>
+                                            <button ng-show="seatMapListChosen" class="btn btn-success center-block generateSeatMap0" ng-click="salonSeatPicker(seatMapListChosen.salonUid, 0)">قیمت گذاری صندلی‌های سالن <i class="fa fa-plus"></i><i class="fa fa-spinner fa-spin dispNone seatMapSpinner"></i></button>
+                                            <seat-map></seat-map>
+                                            <div  class="seatMapSection0  dispNone">
+                                                <div id="labelDrillUpSection0"  class="col-xs-12 labelSvgHeight"></div>
+                                                <div id="seatMaperChart0"  class="col-xs-12 marginBottom20 seatMaperChartStyle"></div>
+                                                <button class="btn btn-warning center-block marginTop60" ng-disabled="!blitTypeCreateValidation" ng-click="seatsPickedBlitType()">قیمت گذاری صندلی‌های انتخاب شده <i class="fa fa-money"></i></button>
+                                                <div class="hrLine marginTop30"></div>
+                                            </div>
+                                        </div>
+
+                                        <div ng-if="(seatPicker.isChosen === 'true') && (seatMapListChosen) && (allCheckedSeats === schemaNumberOfSeats) && (schemaNumberOfSeats !== 0)" class="col-xs-12 marginTop60">
+
+                                            <div class="form-group col-xs-12 col-sm-12 formRegGroup floatRight marginTop30 marginBottom20" >
+                                                <div  class="col-xs-12 text-center" >
+                                                    <table class="table">
+                                                        <thead ng-show="showTimeForms.length >0" class="tableHeader">
+                                                        <tr>
+                                                            <th class="dataCenter">حذف سانس
+                                                            </th>
+                                                            <th class="dataCenter" >تاریخ و ساعت
+                                                            </th>
+                                                            <th class="dataCenter" >تعداد نوع بلیت
+                                                            </th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody class="showTimeList">
+                                                        <tr ng-repeat="sans in showTimeForms"    >
+                                                            <td class="dataCenter"> <i class="fa fa-minus btn-danger addDeleteBtn" ng-click="deleteFieldShowTime(i)" aria-hidden="true"></i></td>
+                                                            <td class="dataCenter">{{ sans.persianDate}}</td>
+                                                            <td class="dataCenter">{{ sans.blitTypes.length | pNumber}} نوع بلیت </td>
+                                                        </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="col-xs-12 showTimeSection">
+
                                                     <div class="col-xs-12">
-                                                        <h4 class="text-center" > سانس  {{$index + 1 | pNumber}}</h4>
+                                                        <h4 class="text-center" > سانس جدید</h4>
                                                         <div class="col-xs-12 col-sm-6 floatRight text-center">
 
                                                             <label class="registerLabel" >تاریخ و ساعت : </label>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-6 floatRight inputXsSize">
-                                                            <input type="text" required ng-model="showTime.date" class="datePickerFormat" ng-class="eventDateClass($index)" readonly/>
+                                                            <input type="text" required ng-model="newShowTime.persianDate" name="newSansTime" class="datePickerFormat eventDateClass0"  readonly/>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group col-xs-12  formRegGroup floatRight marginTop30" ng-repeat="ticketType in showTime.blitTypes">
+
+                                                    <div class="col-xs-12 marginTop60">
+                                                        <p>اگر در این سانس می‌خواهید از قیمت‌هایی که تعیین کردید استفاده کنید گزینه مربوطه را انتخاب کنید در غیر این صورت با انتخاب قیمت گذاری جدید سالن را مجددا قیمت گذاری کنید.</p>
+                                                        <div class="col-xs-6 col-sm-6 col-md-6 floatRight marginTop30">
+                                                            <label class=" floatRight">    استفاده از قیمت‌های تعیین شده
+                                                                <input type="radio" ng-model="newShowTime.newSeatsPrice" value="false" name="newPrice" >
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-xs-6 col-sm-6 col-md-6 floatRight marginTop30">
+                                                            <label class=" floatRight">قیمت گذاری جدید صندلی‌های سالن
+                                                                <input  type="radio" ng-model="newShowTime.newSeatsPrice" value="true" name="newPrice" >
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="newShowTime.newSeatsPrice === 'true'" class="col-xs-12 marginTop30">
+                                                        <button  class="btn btn-info center-block generateSeatMap1" ng-click="salonSeatPicker(seatMapListChosen.salonUid, 1)">قیمت گذاری صندلی‌های سالن <i class="fa fa-plus"></i><i class="fa fa-spinner fa-spin dispNone seatMapSpinner"></i></button>
+                                                    </div>
+                                                    <seat-map ng-if="newShowTime.newSeatsPrice === 'true'"></seat-map>
+                                                    <div ng-if="newShowTime.newSeatsPrice === 'true'" class="seatMapSection1 dispNone">
+                                                        <div id="labelDrillUpSection1"  class="col-xs-12 labelSvgHeight"></div>
+                                                        <div id="seatMaperChart1"  class="col-xs-12 marginTop30 marginBottom20 seatMaperChartStyle"></div>
+                                                        <button class="btn btn-warning center-block marginTop60" ng-disabled="!blitTypeCreateValidation" ng-click="seatsPickedBlitType()">قیمت گذاری صندلی‌های انتخاب شده <i class="fa fa-money"></i></button>
+                                                        <div class="hrLine marginTop30"></div>
+                                                    </div>
+
+                                                    <div class="form-group col-xs-12  formRegGroup floatRight marginTop30" ng-repeat="ticketType in newShowTime.blitTypes">
                                                         <div class="col-xs-12 col-sm-6 floatRight marginTop10">
 
                                                             <div class="col-xs-12  col-sm-12 floatRight text-center">
+                                                                <i class="fa fa-minus btn-danger addDeleteBtn" ng-click="deleteFieldTicketType($index)" aria-hidden="true"></i>
 
                                                                 <label class="registerLabel" for="eventTicket" >{{$index + 1 | pNumber}}. نوع بلیت :</label>
                                                             </div>
-
                                                         </div>
                                                         <div class="col-xs-12 col-sm-6 floatRight ">
                                                             <select id="eventTicket" required ng-model="ticketType.isFree" class="form-control dropDownInput" ng-options="o.v as o.n for o in [{n : 'رایگان', v: true}, {n : 'پولی', v: false}]">
@@ -831,7 +909,7 @@
                                                                 <label class="registerLabel" for="ticketName">نام بلیت :</label>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-6 floatRight inputXsSize">
-                                                                <input height="60" required id="ticketName" ng-model="ticketType.name"   type="text"  class="form-group registerInput" >
+                                                                <input height="60" required id="ticketName" ng-model="ticketType.name" name="blitName"  type="text"  class="form-group registerInput" >
                                                             </div>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-12 floatRight marginTop10">
@@ -839,25 +917,110 @@
                                                                 <label class="registerLabel" for="ticketCapacity">ظرفیت بلیت :</label>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-6 floatRight ">
-                                                                <input height="60" required id="ticketCapacity" ng-model="ticketType.capacity"   type="number"  class="form-group registerInput inputXsSize" >
+                                                                <input height="60" required id="ticketCapacity" ng-model="ticketType.capacity" name="blitCapacity"  type="number"  class="form-group registerInput inputXsSize" >
                                                             </div>
                                                         </div>
-                                                        <div class="col-xs-12 col-sm-12 floatRight marginTop10">
-                                                            <div ng-if="ticketType.isFree === false" class="form-group col-xs-12 formRegGroup floatRight">
-                                                                <div class="col-xs-12 col-sm-6 floatRight text-center">
-                                                                    <label class="registerLabel" for="ticketPurchaseAmount">قیمت بلیت (تومان):</label>
-                                                                </div>
-                                                                <div class="col-xs-12 col-sm-6 floatRight ">
-                                                                    <input height="60" required id="ticketPurchaseAmount" ng-model="ticketType.price"   type="number"  class="form-group registerInput inputXsSize" >
-                                                                </div>
-
+                                                        <div ng-if="ticketType.isFree === false" class="col-xs-12 col-sm-12 floatRight marginTop10">
+                                                            <div class="col-xs-12 col-sm-6 floatRight text-center">
+                                                                <label class="registerLabel" for="ticketPurchaseAmount">قیمت بلیت (تومان):</label>
                                                             </div>
+                                                            <div class="col-xs-12 col-sm-6 floatRight ">
+                                                                <input height="60" required id="ticketPurchaseAmount" ng-model="ticketType.price" name="blitPrice"   type="number"  class="form-group registerInput inputXsSize" >
+                                                            </div>
+
                                                         </div>
 
                                                     </div>
-                                                    <div class="col-xs-12 text-center marginTop10" > اضافه و کم کردن نوع بلیت
-                                                        <i class="fa fa-plus btn-success addDeleteBtn" ng-click="addFieldTicketType($index)" aria-hidden="true"></i>
-                                                        <i class="fa fa-minus btn-danger addDeleteBtn" ng-click="deleteFieldTicketType($index)" aria-hidden="true"></i>
+                                                    <div class="col-xs-12 marginTop30">
+                                                        <button class="btn btn-info center-block" ng-click="addFieldTicketType()">تعریف بلیت بدون انتخاب صندلی <i class="fa fa-plus"></i></button>
+                                                    </div>
+                                                    <div class="col-xs-12 marginTop30">
+                                                        <p class="text-center colorRed" ng-show="submitEventForm.newSansTime.$invalid">* تاریخ و ساعت را انتخاب کنید.</p>
+                                                        <button class="btn btn-success center-block marginTop30" ng-disabled="submitEventForm.blitName.$invalid || submitEventForm.blitCapacity.$invalid || submitEventForm.blitPrice.$invalid  || submitEventForm.newSansTime.$invalid" ng-click="submitSansWithSeatpicker(newShowTime)">ثبت سانس</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div ng-if="seatPicker.isChosen ===  'false'" class="col-xs-12 marginTop60">
+                                            <div class="form-group col-xs-12 col-sm-12 formRegGroup floatRight marginTop30 marginBottom20" >
+                                                <div  class="col-xs-12 text-center" >
+                                                    <table class="table">
+                                                        <thead ng-show="showTimeForms.length > 0" class="tableHeader">
+                                                        <tr>
+                                                            <th class="dataCenter">حذف سانس
+                                                            </th>
+                                                            <th class="dataCenter" >تاریخ و ساعت
+                                                            </th>
+                                                            <th class="dataCenter" >تعداد نوع بلیت
+                                                            </th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody class="showTimeList">
+                                                        <tr ng-repeat="sans in showTimeForms"    >
+                                                            <td class="dataCenter"> <i class="fa fa-minus btn-danger addDeleteBtn" ng-click="deleteFieldShowTime(i)" aria-hidden="true"></i></td>
+                                                            <td class="dataCenter">{{ sans.persianDate}}</td>
+                                                            <td class="dataCenter">{{ sans.blitTypes.length | pNumber}} نوع بلیت </td>
+                                                        </tr>
+
+                                                        </tbody>
+                                                    </table>                                                </div>
+                                                <div class="col-xs-12 showTimeSection">
+
+                                                    <div class="col-xs-12">
+                                                        <h4 class="text-center" > سانس جدید</h4>
+                                                        <div class="col-xs-12 col-sm-6 floatRight text-center">
+
+                                                            <label class="registerLabel" >تاریخ و ساعت : </label>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-6 floatRight inputXsSize">
+                                                            <input type="text" required ng-model="newShowTime.persianDate" name="newSansTimeWithoutSeat" class="datePickerFormat eventDateClass0"  readonly/>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group col-xs-12  formRegGroup floatRight marginTop30" ng-repeat="ticketType in newShowTime.blitTypes">
+                                                        <div class="col-xs-12 col-sm-6 floatRight marginTop10">
+
+                                                            <div class="col-xs-12  col-sm-12 floatRight text-center">
+                                                                <i class="fa fa-minus btn-danger addDeleteBtn" ng-click="deleteFieldTicketType($index)" aria-hidden="true"></i>
+
+                                                                <label class="registerLabel" for="eventTicketWithoutSeat" >{{$index + 1 | pNumber}}. نوع بلیت :</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-6 floatRight ">
+                                                            <select id="eventTicketWithoutSeat" required ng-model="ticketType.isFree" class="form-control dropDownInput" ng-options="o.v as o.n for o in [{n : 'رایگان', v: true}, {n : 'پولی', v: false}]">
+
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-12 floatRight marginTop10">
+                                                            <div class="col-xs-12 col-sm-6 floatRight text-center">
+                                                                <label class="registerLabel" for="ticketNameWithoutSeat">نام بلیت :</label>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-6 floatRight inputXsSize">
+                                                                <input height="60" required id="ticketNameWithoutSeat" ng-model="ticketType.name" name="blitNameWithoutSeat"  type="text"  class="form-group registerInput" >
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-12 floatRight marginTop10">
+                                                            <div class="col-xs-12 col-sm-6 floatRight text-center">
+                                                                <label class="registerLabel" for="ticketCapacityWithoutSeat">ظرفیت بلیت :</label>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-6 floatRight ">
+                                                                <input height="60" required id="ticketCapacityWithoutSeat" ng-model="ticketType.capacity" name="blitCapacityWithoutSeat"  type="number"  class="form-group registerInput inputXsSize" >
+                                                            </div>
+                                                        </div>
+                                                        <div ng-if="ticketType.isFree === false" class="col-xs-12 col-sm-12 floatRight marginTop10">
+                                                            <div class="col-xs-12 col-sm-6 floatRight text-center">
+                                                                <label class="registerLabel" for="ticketPurchaseAmountWithoutSeat">قیمت بلیت (تومان):</label>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-6 floatRight ">
+                                                                <input height="60" required id="ticketPurchaseAmountWithoutSeat" ng-model="ticketType.price" name="blitPriceWithoutSeat"   type="number"  class="form-group registerInput inputXsSize" >
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 marginTop30">
+                                                        <button class="btn btn-info center-block" ng-click="addFieldTicketType()">تعریف بلیت بدون انتخاب صندلی <i class="fa fa-plus"></i></button>
+                                                    </div>
+                                                    <div class="col-xs-12 marginTop30">
+                                                        <button class="btn btn-success center-block marginTop30" ng-disabled="submitEventForm.blitNameWithoutSeat.$invalid || submitEventForm.blitCapacityWithoutSeat.$invalid || submitEventForm.blitPriceWithoutSeat.$invalid  || submitEventForm.newSansTimeWithoutSeat.$invalid || newShowTime.blitTypes.length === 0" ng-click="submitSansWithoutSeatpicker(newShowTime)">ثبت سانس</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -902,15 +1065,16 @@
                                         <div class="controls">
 
                                             <div ng-show="!createEventNotif">
-                                            <p class="text-center colorRed" ng-show="(submitEventForm.eventName.$dirty && submitEventForm.eventName.$invalid)">*نام رویداد را وارد نمایید.</p>
-                                            <p class="text-center colorRed" ng-show="(submitEventForm.eventType.$invalid)">*نوع رویداد را انتخاب نمایید.</p>
-                                            <p class="text-center colorRed" ng-show="(submitEventForm.eventDescription.$dirty && submitEventForm.eventDescription.$invalid)">*توضیحات مربوط به رویداد را وارد نمایید.</p>
-                                            <p class="text-center colorRed" ng-show="(submitEventForm.eventAddress.$dirty && submitEventForm.eventAddress.$invalid)">* آدرس رویداد را وارد نمایید.</p>
-                                            <p class="text-center colorRed" ng-show="(!submitEventForm.$invalid && mapMarkerClickCheckEvent)">مکان را روی نقشه مشخص کنید</p>
-                                            <p class="text-center colorRed" ng-show="(submitEventForm.eventPlannerSelect.$invalid)">* برگزار کننده رویداد را انتخاب نمایید.</p>
+                                                <p class="text-center colorRed" ng-show="(submitEventForm.eventName.$dirty && submitEventForm.eventName.$invalid)">*نام رویداد را وارد نمایید.</p>
+                                                <p class="text-center colorRed" ng-show="(submitEventForm.eventType.$invalid)">*نوع رویداد را انتخاب نمایید.</p>
+                                                <p class="text-center colorRed" ng-show="(submitEventForm.eventDescription.$dirty && submitEventForm.eventDescription.$invalid)">*توضیحات مربوط به رویداد را وارد نمایید.</p>
+                                                <p class="text-center colorRed" ng-show="(submitEventForm.eventAddress.$dirty && submitEventForm.eventAddress.$invalid)">* آدرس رویداد را وارد نمایید.</p>
+                                                <p class="text-center colorRed" ng-show="(!submitEventForm.$invalid && mapMarkerClickCheckEvent)">مکان را روی نقشه مشخص کنید</p>
+                                                <p class="text-center colorRed" ng-show="(submitEventForm.eventPlannerSelect.$invalid)">* برگزار کننده رویداد را انتخاب نمایید.</p>
+                                                <p class="text-center colorRed" ng-show="(schemaNumberOfSeats != allCheckedSeats)">* تمام صندلی ها را قیمت گذاری کنید.</p>
                                             </div>
                                             <p class="text-center colorRed" ng-show="(submitEventForm.$invalid || mapMarkerClickCheckEvent) && !((submitEventForm.eventType.$invalid)||(submitEventForm.eventPlannerSelect.$invalid))">* همه فیلد های اجباری را پر نمایید.</p>
-                                            <button id="signInButton" type="submit"  ng-disabled="submitEventForm.$invalid || mapMarkerClickCheckEvent || eventSubmitOnce" ng-click="submitEvent(eventFields)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت رویداد <i ng-show="createEventSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
+                                            <button id="signInButton" type="submit"  ng-disabled="submitEventForm.$invalid || mapMarkerClickCheckEvent || eventSubmitOnce || (schemaNumberOfSeats != allCheckedSeats) || showTimeForms.length === 0" ng-click="submitEvent(eventFields)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت رویداد <i ng-show="createEventSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
                                         </div>
 
                                     </div>
@@ -927,58 +1091,58 @@
                                     <fieldset class="marginBottom20 fieldsetStyle">
                                         <legend class="legendStyle">اطلاعات برگزار کننده </legend>
                                         <div class="row">
-                                        <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
-                                            <div class="col-xs-10 floatRight text-center">
-                                                <label class="registerLabel floatRight"  for="PlannerName" >نام برگزار کننده :</label>
+                                            <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
+                                                <div class="col-xs-10 floatRight text-center">
+                                                    <label class="registerLabel floatRight"  for="PlannerName" >نام برگزار کننده :</label>
+                                                </div>
+                                                <div class="col-xs-11 floatRight ">
+                                                    <input height="60" id="PlannerName" required name="plannerName" ng-model="eventPlanner.name"   type="text"  class="form-group registerInput" >
+                                                </div>
                                             </div>
-                                            <div class="col-xs-11 floatRight ">
-                                                <input height="60" id="PlannerName" required name="plannerName" ng-model="eventPlanner.name"   type="text"  class="form-group registerInput" >
+                                            <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
+                                                <div class="col-xs-10 floatRight text-center">
+                                                    <label class="registerLabel floatRight"  for="eventPlannerTelephone" > شماره تلفن برگزارکننده  :</label>
+                                                </div>
+                                                <div class="col-xs-11 floatRight ">
+                                                    <input height="60" id="eventPlannerTelephone" required  name="plannerPhoneNumber" ng-model="eventPlanner.mobile "   type="text"  class="form-group registerInput" >
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
-                                            <div class="col-xs-10 floatRight text-center">
-                                                <label class="registerLabel floatRight"  for="eventPlannerTelephone" > شماره تلفن برگزارکننده  :</label>
-                                            </div>
-                                            <div class="col-xs-11 floatRight ">
-                                                <input height="60" id="eventPlannerTelephone" required  name="plannerPhoneNumber" ng-model="eventPlanner.mobile "   type="text"  class="form-group registerInput" >
-                                            </div>
-                                        </div>
                                         </div>
                                         <div class="row">
 
-                                        <div class="form-group col-xs-12 col-sm-6 formRegGroup marginTop30 floatRight">
-                                            <div class="col-xs-10 floatRight text-center">
-                                                <label class="registerLabel floatRight" for="eventPlannerWebsite" > لینک وبسایت  :(اختیاری)</label>
-                                            </div>
-                                            <div class="col-xs-11 floatRight ">
-                                                <input height="60" id="eventPlannerWebsite"   ng-model="eventPlanner.website" url-validation  type="text"  class="form-group registerInput" >
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight marginTop30">
-                                            <div class="col-xs-11 floatRight text-center">
-                                                <label class="registerLabel floatRight"   for="eventPlannerType">نوع برگزارکننده :</label>
-                                            </div>
-                                            <div class="col-xs-11 floatRight ">
-                                                <select id="eventPlannerType" required  name="plannerType" ng-model="eventPlanner.type" ng-options="o.v as o.n for o in [{n : 'نهاد', v: 'ORGANIZATION'},{n : 'کافی شاپ', v: 'COFFEESHOP'},{n : 'فرهنگسرا', v: 'CULTURALCENTER'},{n : 'تئاتر', v: 'THEATER'},{n : 'مؤسسه', v: 'INSTITUTION'},{n : 'فرد', v: 'INDIVIDUAL'}, {n : 'سایر', v: 'OTHER'}]" class="form-control dropDownList">
-
-
-                                                </select>
-
+                                            <div class="form-group col-xs-12 col-sm-6 formRegGroup marginTop30 floatRight">
+                                                <div class="col-xs-10 floatRight text-center">
+                                                    <label class="registerLabel floatRight" for="eventPlannerWebsite" > لینک وبسایت  :(اختیاری)</label>
+                                                </div>
+                                                <div class="col-xs-11 floatRight ">
+                                                    <input height="60" id="eventPlannerWebsite"   ng-model="eventPlanner.website" url-validation  type="text"  class="form-group registerInput" >
+                                                </div>
                                             </div>
 
-                                        </div>
+                                            <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight marginTop30">
+                                                <div class="col-xs-11 floatRight text-center">
+                                                    <label class="registerLabel floatRight"   for="eventPlannerType">نوع برگزارکننده :</label>
+                                                </div>
+                                                <div class="col-xs-11 floatRight ">
+                                                    <select id="eventPlannerType" required  name="plannerType" ng-model="eventPlanner.type" ng-options="o.v as o.n for o in [{n : 'نهاد', v: 'ORGANIZATION'},{n : 'کافی شاپ', v: 'COFFEESHOP'},{n : 'فرهنگسرا', v: 'CULTURALCENTER'},{n : 'تئاتر', v: 'THEATER'},{n : 'مؤسسه', v: 'INSTITUTION'},{n : 'فرد', v: 'INDIVIDUAL'}, {n : 'سایر', v: 'OTHER'}]" class="form-control dropDownList">
+
+
+                                                    </select>
+
+                                                </div>
+
+                                            </div>
                                         </div>
                                         <div class="row">
 
-                                        <div class="form-group col-xs-12 col-sm-6 formRegGroup marginTop30 floatRight">
-                                            <div class="col-xs-10 floatRight text-center">
-                                                <label class="registerLabel floatRight" for="eventPlannerWebsite" > توضیحات برگزارکننده :(حداکثر {{200 - eventPlanner.description.length | pNumber}} کاراکتر مجاز)</label>
+                                            <div class="form-group col-xs-12 col-sm-6 formRegGroup marginTop30 floatRight">
+                                                <div class="col-xs-10 floatRight text-center">
+                                                    <label class="registerLabel floatRight" for="eventPlannerWebsite" > توضیحات برگزارکننده :(حداکثر {{200 - eventPlanner.description.length | pNumber}} کاراکتر مجاز)</label>
+                                                </div>
+                                                <div class="col-xs-11 floatRight ">
+                                                    <textarea ng-model="eventPlanner.description" maxlength="200" required name="plannerDescription"  id="plannerDescription"  type="text"  class="form-group textAreaForm marginTop30" ></textarea>
+                                                </div>
                                             </div>
-                                            <div class="col-xs-11 floatRight ">
-                                                <textarea ng-model="eventPlanner.description" maxlength="200" required name="plannerDescription"  id="plannerDescription"  type="text"  class="form-group textAreaForm marginTop30" ></textarea>
-                                            </div>
-                                        </div>
                                         </div>
 
                                     </fieldset>
@@ -1013,7 +1177,7 @@
                                             <div class="col-xs-12 floatRight marginTop30">
 
                                                 <div class="col-xs-12  floatRight">
-                                                <label class="marginRight10">انتخاب عکس کاور:</label>
+                                                    <label class="marginRight10">انتخاب عکس کاور:</label>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-6 col-md-3 floatRight marginTop30">
                                                     <img ng-click="coverPickedDefault($event, 1)" id="coverPhotoOne" class="plannerCoverDefault coverPhotoOne" alt="">
@@ -1031,20 +1195,20 @@
                                             <div class="col-xs-12 col-sm-6 floatRight marginTop30">
                                                 <label class="marginRight10">اگر عکس خودتان را میخواهید بارگذاری کنید <a ng-click="showUploadPhoto()">اینجا</a> را کلیک کنید</label>
                                                 <div ng-show="uploadUserPhoto">
-                                                <label class="marginRight30">  عکس کاور (نسبت طول به عرض : ۰.۵) :</label>
-                                                <button class="btn btn-default " ng-click='uploadPicCover()'> انتخاب <i class="fa fa-image"></i></button>
-                                                <div class="col-xs-12" ng-show="showThumbnailCover">
-                                                    <img class="img-responsive coverPhotoUpload marginTop30"  src="" alt="">
-                                                    <div class="col-xs-12">
-                                                        <button class="btn btn-success marginTop10" ng-click="photoUploadPlannerCover()">بارگذاری <i ng-show="uploadCoverPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></button>
+                                                    <label class="marginRight30">  عکس کاور (نسبت طول به عرض : ۰.۵) :</label>
+                                                    <button class="btn btn-default " ng-click='uploadPicCover()'> انتخاب <i class="fa fa-image"></i></button>
+                                                    <div class="col-xs-12" ng-show="showThumbnailCover">
+                                                        <img class="img-responsive coverPhotoUpload marginTop30"  src="" alt="">
+                                                        <div class="col-xs-12">
+                                                            <button class="btn btn-success marginTop10" ng-click="photoUploadPlannerCover()">بارگذاری <i ng-show="uploadCoverPhoto" class="fa fa-spinner fa-spin"></i><i class="fa fa-upload"></i></button>
+                                                        </div>
+                                                        <div id="coverPhotoError" ng-show="coverPhotoError" class="text-center alert alert-danger col-xs-12">
+                                                            <strong></strong>
+                                                        </div>
+                                                        <div ng-show="coverPhotoSuccess" class="text-center alert alert-success col-xs-12">
+                                                            <strong>عکس با موفقیت بارگذاری شد!</strong>
+                                                        </div>
                                                     </div>
-                                                    <div id="coverPhotoError" ng-show="coverPhotoError" class="text-center alert alert-danger col-xs-12">
-                                                        <strong></strong>
-                                                    </div>
-                                                    <div ng-show="coverPhotoSuccess" class="text-center alert alert-success col-xs-12">
-                                                        <strong>عکس با موفقیت بارگذاری شد!</strong>
-                                                    </div>
-                                                </div>
                                                 </div>
 
                                             </div>
@@ -1095,10 +1259,10 @@
                                         </div>
                                         <div class="controls">
                                             <div ng-show="!submitPlannerNotif">
-                                            <p class="text-center colorRed" ng-show="(submitPlannerForm.plannerName.$dirty && submitPlannerForm.plannerName.$invalid) ">*نام برگزار کننده را وارد نمایید.</p>
-                                            <p class="text-center colorRed" ng-show="(submitPlannerForm.plannerPhoneNumber.$dirty && submitPlannerForm.plannerPhoneNumber.$invalid) ">*شماره تلفن برگزار کننده را وارد نمایید.</p>
-                                            <p class="text-center colorRed" ng-show="(submitPlannerForm.plannerType.$invalid) ">*نوع برگزار کننده را انتخاب نمایید.</p>
-                                            <p class="text-center colorRed" ng-show="(submitPlannerForm.plannerDescription.$dirty && submitPlannerForm.plannerDescription.$invalid) ">*توضیحات مربوط به برگزار کننده را وارد نمایید.</p>
+                                                <p class="text-center colorRed" ng-show="(submitPlannerForm.plannerName.$dirty && submitPlannerForm.plannerName.$invalid) ">*نام برگزار کننده را وارد نمایید.</p>
+                                                <p class="text-center colorRed" ng-show="(submitPlannerForm.plannerPhoneNumber.$dirty && submitPlannerForm.plannerPhoneNumber.$invalid) ">*شماره تلفن برگزار کننده را وارد نمایید.</p>
+                                                <p class="text-center colorRed" ng-show="(submitPlannerForm.plannerType.$invalid) ">*نوع برگزار کننده را انتخاب نمایید.</p>
+                                                <p class="text-center colorRed" ng-show="(submitPlannerForm.plannerDescription.$dirty && submitPlannerForm.plannerDescription.$invalid) ">*توضیحات مربوط به برگزار کننده را وارد نمایید.</p>
                                             </div>
                                             <p class="text-center colorRed" ng-show="(submitPlannerForm.$invalid )&& !(submitPlannerForm.plannerType.$invalid)">*همه فیلد های اجباری را پر نمایید.</p>
                                             <button id="eventPlannerSubmit" ng-disabled="submitPlannerForm.$invalid || plannerSubmitOnce" ng-click="submitEventPlanner(eventPlanner)"  class="btn btn-success btn-lg btnLogin">ثبت برگزارکننده <i ng-show="submitPlannerSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
@@ -1113,6 +1277,7 @@
         </div>
     </div>
     <div ng-include="'app/views/partials/edit-event.html'"></div>
+    <div ng-include="'app/views/partials/guest-blit-modal.html'"></div>
     <div ng-include="'app/views/partials/user-tickets.html'"></div>
     <div ng-include="'app/views/partials/edit-host.html'"></div>
     <div ng-include="'app/views/partials/event-setting.html'"></div>
@@ -1121,5 +1286,7 @@
     <div ng-include="'app/views/partials/edit-exchange.html'"></div>
     <div ng-include="'app/views/partials/discount-code.html'"></div>
     <div ng-include="'app/views/partials/edit-discount.html'"></div>
+    <div ng-include="'app/views/partials/seat-pick-modal.html'"></div>
+
 </div>
 

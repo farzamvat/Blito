@@ -10,9 +10,11 @@ import com.blito.mappers.*;
 import com.blito.models.*;
 import com.blito.repositories.*;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.event.ChangeEventStateVm;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
+import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
 import com.blito.search.Operation;
 import com.blito.search.SearchViewModel;
@@ -38,59 +40,96 @@ import java.util.stream.Collectors;
 @Service
 public class EventService {
 	@Autowired
-	EventFlatMapper eventFlatMapper;
+	private EventFlatMapper eventFlatMapper;
 	@Autowired
-	EventMapper eventMapper;
+	private EventMapper eventMapper;
 	@Autowired
-	EventDateMapper eventDateCreateMapper;
+	private EventDateMapper eventDateCreateMapper;
 	@Autowired
-	EventHostRepository eventHostRepository;
+	private EventHostRepository eventHostRepository;
 	@Autowired
-	BlitTypeMapper blitTypeMapper;
+	private BlitTypeMapper blitTypeMapper;
 	@Autowired
-	ImageRepository imageRepository;
+	private ImageRepository imageRepository;
 	@Autowired
-	EventRepository eventRepository;
+	private EventRepository eventRepository;
 	@Autowired
-	ImageMapper imageMapper;
+	private ImageMapper imageMapper;
 	@Autowired
-	DiscountMapper discountMapper;
+	private DiscountMapper discountMapper;
 	@Autowired
-	BlitTypeRepository blitTypeRepository;
+	private BlitTypeRepository blitTypeRepository;
 	@Autowired
-	DiscountRepository discountRepository;
+	private DiscountRepository discountRepository;
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 	@Autowired
-	EventDateRepository eventDateRepository;
+	private EventDateRepository eventDateRepository;
 	@Autowired
-	SearchService searchService;
+	private SearchService searchService;
 	@Autowired
-	ImageService imageService;
-	
+	private ImageService imageService;
+	@Autowired
+	private SalonRepository salonRepository;
+	@Autowired
+	private SeatPickerService seatPickerService;
+
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
-	@Transactional
-	public EventViewModel create(EventViewModel vmodel) {
+
+
+	// NOTE : Check if more than one blit type contains a seat && count of seat uids equals capacity
+	private boolean validateDisjointSeatsInBlitTypeViewModel(Set<BlitTypeViewModel> blitTypes) {
+		Set<BlitTypeViewModel> filteredBlitTypesContainSeatUids =
+				blitTypes.stream().filter(blitType -> blitType.getSeatUids() != null
+						&& !blitType.getSeatUids().isEmpty())
+						.collect(Collectors.toSet());
+		return (filteredBlitTypesContainSeatUids.stream().flatMap(blitType -> blitType.getSeatUids().stream()).distinct().count()
+				== blitTypes.stream().mapToLong(blitType -> blitType.getSeatUids().size()).sum())
+				&& filteredBlitTypesContainSeatUids.stream().allMatch(blitType -> blitType.getSeatUids().size() == blitType.getCapacity());
+	}
+
+	// NOTE : Selection validation of all salon's seat picked
+	private boolean validateConsistencyOfSeatCounts(EventDateViewModel eventDateViewModel, String salonUid) {
+	    Salon salon = salonRepository.findBySalonUid(salonUid).orElseThrow(() -> new FileNotFoundException(ResourceUtil.getMessage(Response.SALON_NOT_FOUND)));
+	    return eventDateViewModel.getBlitTypes().stream()
+                .filter(blitType ->blitType.getSeatUids()!=null && !blitType.getSeatUids().isEmpty())
+                .mapToLong(blitType->blitType.getSeatUids().size()).sum() == salon.getSeats().size();
+
+    }
+
+	private void validateEventViewModel(EventViewModel vmodel) {
+		if(vmodel.getEventDates().stream().anyMatch(eventDateViewModel -> !validateDisjointSeatsInBlitTypeViewModel(eventDateViewModel.getBlitTypes())))
+		{
+			throw new InconsistentDataException(ResourceUtil.getMessage(Response.SHARED_SEAT_AND_INCONSISTENT_CAPACITY_ERROR));
+		}
+
+		if(vmodel.getSalonUid() != null && vmodel.getEventDates().stream().anyMatch(eventDateViewModel -> !validateConsistencyOfSeatCounts(eventDateViewModel, vmodel.getSalonUid()))){
+		    throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_SEAT_COUNTS));
+        }
+
 		if (vmodel.getBlitSaleStartDate().after(vmodel.getBlitSaleEndDate())) {
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_DATES));
 		}
-		
+		if (vmodel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream()).anyMatch(bt ->
+				bt.isFree() ? bt.getPrice() != 0 : bt.getPrice() <= 0)) {
+			throw new InconsistentDataException(ResourceUtil.getMessage(Response.ISFREE_AND_PRICE_NOT_MATCHED));
+		}
+	}
+
+	@Transactional
+	public EventViewModel create(EventViewModel vmodel) {
+		validateEventViewModel(vmodel);
 		if(vmodel.getBlitSaleStartDate().before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()))
 				|| vmodel.getBlitSaleEndDate().before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant())))
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INVALID_START_END_DATE));
-		
-		if (vmodel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream()).anyMatch(bt -> {
-			return bt.isFree() ? bt.getPrice() != 0 : bt.getPrice() <= 0;
-		})) {
-			throw new InconsistentDataException(ResourceUtil.getMessage(Response.ISFREE_AND_PRICE_NOT_MATCHED));
-		}
+
 		if (vmodel.getImages().stream().filter(i -> i.getType().equals(ImageType.EVENT_PHOTO)).count() == 0) {
 			vmodel.getImages().add(new ImageViewModel(Constants.DEFAULT_EVENT_PHOTO, ImageType.EVENT_PHOTO));
 		}
 
 		Set<Image> images = imageRepository.findByImageUUIDIn(
-				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toSet()));
+				vmodel.getImages().stream().map(ImageViewModel::getImageUUID).collect(Collectors.toSet()));
 		if (images.size() != vmodel.getImages().size()) {
 			throw new NotFoundException(ResourceUtil.getMessage(Response.IMAGE_NOT_FOUND));
 		}
@@ -123,13 +162,13 @@ public class EventService {
 	}
 
 	public EventFlatViewModel getFlatEventById(long eventId) {
-		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId).map(e -> e)
+		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 		return eventFlatMapper.createFromEntity(event);
 	}
 
 	public EventViewModel getEventById(long eventId) {
-		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId).map(e -> e)
+		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 
 		return eventMapper.createFromEntity(event);
@@ -137,14 +176,7 @@ public class EventService {
 
 	@Transactional
 	public EventViewModel update(EventViewModel vmodel) {
-		if (vmodel.getBlitSaleStartDate().after(vmodel.getBlitSaleEndDate())) {
-			throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_DATES));
-		}
-
-		if (vmodel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream()).anyMatch(bt -> bt.isFree() ? bt.getPrice() != 0 : bt.getPrice() <= 0)) {
-			throw new InconsistentDataException(ResourceUtil.getMessage(Response.ISFREE_AND_PRICE_NOT_MATCHED));
-		}
-
+		validateEventViewModel(vmodel);
 		Event event = eventRepository.findByEventIdAndIsDeletedFalse(vmodel.getEventId())
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 		if(event.getAdditionalFields().size() > vmodel.getAdditionalFields().size())
@@ -169,13 +201,13 @@ public class EventService {
 		}
 
 		Set<Image> images = imageRepository.findByImageUUIDIn(
-				vmodel.getImages().stream().map(iv -> iv.getImageUUID()).collect(Collectors.toSet()));
+				vmodel.getImages().stream().map(ImageViewModel::getImageUUID).collect(Collectors.toSet()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 
 		event = eventMapper.updateEntity(vmodel, event);
 		event.setImages(images);
 		event.setEventHost(eventHost);
-		return eventMapper.createFromEntity(event);
+		return eventMapper.createFromEntity(eventRepository.save(event));
 	}
 
 	@Transactional

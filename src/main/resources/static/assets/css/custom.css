@@ -1471,7 +1471,6 @@ dir-pagination-controls ul {
     margin-top: 10px;
     margin-bottom: 5px;
 }
-
 .eventListSection {
     background: url('../img/pt.jpg') fixed repeat-y;
     margin-top: 10px;
@@ -1588,6 +1587,11 @@ dir-pagination-controls ul {
 }
 .showTimeSection {
     background-color: #eee;
+    border-radius: 3px;
+    padding: 20px 40px;
+}
+.showTimeSectionEdit {
+    background-color: #ddd;
     border-radius: 3px;
     padding: 20px 40px;
 }
@@ -2663,6 +2667,11 @@ a>h5 {
     border-bottom: 1px solid #ddd;
 
 }
+#seatmapList {
+    width: 50% !important;
+    display: block;
+    margin: 20px auto;
+}
 .logobeautifier{
     position:absolute;
     height:30%;
@@ -3025,6 +3034,28 @@ table td{
 .eventPageHeader h3{
     color:rgb(252, 183, 49);
 }
+#buyTicketModal {
+    transition: 500ms;
+}
+.modalExpandWidth {
+    width: 90%;
+}
+tspan{
+    pointer-events: none !important;
+}
+.labelSvgHeight {
+    height: 50px;
+}
+.noPointerEvents{
+    pointer-events: none !important;
+}
+.seatMaperChartStyle {
+    height: 400px;
+}
+.hrLine {
+    height: 1px;
+    background-color: #9c9c9c;
+}
 @media (max-width: 770px) {
     .navbar-header-backcolor{
         width: 172px !important;
@@ -3162,6 +3193,9 @@ table td{
 
 
 @media (max-width: 768px) {
+    .modalExpandWidth {
+        width: inherit;
+    }
     .maximizeImageXs {
         display: block;
         margin: -55px auto;

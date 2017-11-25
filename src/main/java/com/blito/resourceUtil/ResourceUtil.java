@@ -3,7 +3,9 @@ package com.blito.resourceUtil;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import com.blito.enums.FarsiText;
 import com.blito.enums.Response;
+import com.blito.enums.SmsMessage;
 import com.blito.exceptions.SamanBankException;
 import com.blito.exceptions.ZarinpalException;
 import com.blito.validators.ValidationInterface;
@@ -27,6 +29,14 @@ public class ResourceUtil {
 	public static String getMessage(ZarinpalException.ZarinpalResponseStatus status)
 	{
 		return resourceBundle.getString(status.getMessage());
+	}
+
+	public static String getMessage(SmsMessage smsMessage) {
+		return resourceBundle.getString(smsMessage.getMessage());
+	}
+
+	public static String getMessage(FarsiText farsiText) {
+		return resourceBundle.getString(farsiText.getMessage());
 	}
 
 }

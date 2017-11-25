@@ -1,26 +1,11 @@
 package com.blito.models;
 
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 
 @Entity(name="event")
 public class Event {
@@ -350,10 +335,9 @@ public class Event {
 	
 	public void removeEventDateById(Long id)
 	{
-		Optional<EventDate> ed = this.eventDates.stream().filter(b -> b.getEventDateId() == id).findFirst();
-		if(ed.isPresent())
-		{
-			this.eventDates.removeIf(b -> b.getEventDateId() == id);
-		}
+		this.eventDates.stream()
+				.filter(b -> b.getEventDateId() == id)
+				.findFirst()
+				.ifPresent(eventDate -> this.eventDates.removeIf(b -> b.getEventDateId() == id));
 	}
 }

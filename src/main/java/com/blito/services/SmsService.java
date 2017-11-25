@@ -35,4 +35,12 @@ public class SmsService {
 				String.class);
 		log.debug("sending sms to kavenegar response '{}'",smsResponse.getBody());
 	}
+
+	public void sendOperatorStatusSms(String receptor, String message) {
+//	    String messageEncoded = new String(message.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+	    ResponseEntity<String> smsResponse = rest.getForEntity(
+                "https://api.kavenegar.com/v1/" + apiKey +"/sms/send.json?receptor=" + receptor + "&message=" +  message, String.class);
+        log.debug("sending sms to kavenegar response '{}'",smsResponse.getBody());
+
+    }
 }

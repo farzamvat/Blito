@@ -1,22 +1,9 @@
 package com.blito.models;
 
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.Cacheable;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
-import com.blito.enums.State;
 
 @Entity(name="blit_type")
 public class BlitType {
@@ -40,11 +27,11 @@ public class BlitType {
 	
 	private String name;
 	
-	@OneToMany(mappedBy="blitType",targetEntity=BlitTypeSeat.class)
-	Set<BlitTypeSeat> blitTypeSeats;
+	@OneToMany(mappedBy="blitType",targetEntity=BlitTypeSeat.class,orphanRemoval = true,cascade = CascadeType.ALL)
+	private Set<BlitTypeSeat> blitTypeSeats;
 	
 	@OneToMany(mappedBy="blitType",targetEntity=CommonBlit.class)
-	Set<CommonBlit> commonBlits;
+	private Set<CommonBlit> commonBlits;
 	
 	@ManyToMany
 	private Set<Discount> discounts;
@@ -148,4 +135,5 @@ public class BlitType {
 	public void setSoldCount(int soldCount) {
 		this.soldCount = soldCount;
 	}
+
 }

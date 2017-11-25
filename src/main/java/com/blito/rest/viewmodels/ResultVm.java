@@ -19,7 +19,9 @@ public class ResultVm {
 		this.message = message;
 		this.status = true;
 	}
-	
+
+	public ResultVm() {
+	}
 
 	public boolean isStatus() {
 		return status;

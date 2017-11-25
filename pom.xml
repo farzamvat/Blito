@@ -212,6 +212,11 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.0</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.5</version>
+		</dependency>
 
 		<!-- <dependency> <groupId>com.saman.payment</groupId> <artifactId>saman-payment</artifactId> 
 			<version>1.0.0</version> </dependency> -->
@@ -289,7 +294,7 @@
 
 			<!-- tag::wsdl[] -->
 			<!-- <plugin> <groupId>org.jvnet.jaxb2.maven2</groupId> <artifactId>maven-jaxb2-plugin</artifactId> 
-				<version>0.12.3</version> <executions> <execution> <goals> <goal>generate</goal> 
+				<version>0.12.3</version> <executions> <execution> <goals> <goal>generateSeatError</goal>
 				</goals> </execution> </executions> <configuration> <schemaLanguage>WSDL</schemaLanguage> 
 				<generatePackage>com.blito.payments.zarinpal</generatePackage> <schemas> 
 				<schema> <url>https://www.zarinpal.com/pg/services/WebGate/wsdl</url> </schema> 
