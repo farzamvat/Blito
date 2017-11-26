@@ -41,6 +41,9 @@ angular.module('blitoDirectives')
                     for(var i = 0; i < document.getElementsByClassName("anychart-credits").length ; i++) {
                         document.getElementsByClassName("anychart-credits")[i].style.display = "none";
                     }
+                    if(document.getElementById("labelDrillUpSection" + svgIndex).children[1]) {
+                        document.getElementById("labelDrillUpSection" + svgIndex).children[0].style.display = 'none';
+                    }
                 };
                 for (var sectionIndex = 0; sectionIndex < svgData.schema.sections.length; sectionIndex++) {
                     var rowName = 0;
@@ -260,6 +263,9 @@ angular.module('blitoDirectives')
                 var removeAnychartLogo = function () {
                     for(var i = 0; i < document.getElementsByClassName("anychart-credits").length ; i++) {
                         document.getElementsByClassName("anychart-credits")[i].style.display = "none";
+                    }
+                    if(document.getElementById("labelDrillUpSection" + svgIndex).children[1]) {
+                        document.getElementById("labelDrillUpSection" + svgIndex).children[0].style.display = 'none';
                     }
                 };
                 for (var sectionIndex = 0; sectionIndex < svgData.schema.sections.length; sectionIndex++) {
@@ -505,6 +511,9 @@ angular.module('blitoDirectives')
                     for(var i = 0; i < document.getElementsByClassName("anychart-credits").length ; i++) {
                         document.getElementsByClassName("anychart-credits")[i].style.display = "none";
                     }
+                    if(document.getElementById("labelDrillUpSection" + svgIndex).children[1]) {
+                        document.getElementById("labelDrillUpSection" + svgIndex).children[0].style.display = 'none';
+                    }
                 };
                 for (var sectionIndex = 0; sectionIndex < svgData.schema.sections.length; sectionIndex++) {
                     var rowName = 0;
@@ -549,7 +558,6 @@ angular.module('blitoDirectives')
                     removeAnychartLogo();
                     var label = anychart.standalones.label();
                     label.background({fill: "#9E9E9E"});
-                    // label.zIndex(99999);
                     label.text(text);
                     label.fontColor("#fff");
                     label.padding(15);
@@ -656,15 +664,15 @@ angular.module('blitoDirectives')
                                 row.seats.forEach(function (seat) {
                                     switch (seat.state) {
                                         case "RESERVED" :
-                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'blue');
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#515F90');
                                             $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
                                             break;
                                         case "SOLD" :
-                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'orange');
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#801515');
                                             $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
                                             break;
                                         case "GUEST_NOT_AVAILABLE" :
-                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#333');
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#999999');
                                             $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
                                             break;
                                         case "NOT_AVAILABLE" :
@@ -721,6 +729,9 @@ angular.module('blitoDirectives')
                 var removeAnychartLogo = function () {
                     for(var i = 0; i < document.getElementsByClassName("anychart-credits").length ; i++) {
                         document.getElementsByClassName("anychart-credits")[i].style.display = "none";
+                    }
+                    if(document.getElementById("labelDrillUpSection" + svgIndex).children[1]) {
+                        document.getElementById("labelDrillUpSection" + svgIndex).children[0].style.display = 'none';
                     }
                 };
                 for (var sectionIndex = 0; sectionIndex < svgData.schema.sections.length; sectionIndex++) {

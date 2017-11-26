@@ -77,7 +77,9 @@ angular.module('eventsPageModule')
                     if(blitType.price > eventDate.maxPrice) {
                         eventDate.maxPrice = blitType.price;
                     }
-                    eventDate.capacity += blitType.capacity;
+                    if(blitType.name !== 'HOST_RESERVED_SEATS') {
+                        eventDate.capacity += blitType.capacity;
+                    }
                     eventDate.soldCount += blitType.soldCount;
 
                 })
@@ -161,7 +163,6 @@ angular.module('eventsPageModule')
                 return blitTypeWithoutSeat;
             });
             if(((seatmapService.generateWithoutSeatBlitTypes($scope.eventDatePicked[0].blitTypes)).length !== 0) && !$scope.eventDataDetails.salonUid) {
-                console.log("aa");
                 $scope.showSeatSection = false;
                 $scope.showWithoutSeatSection = true;
                 $scope.bothTypesOfBlits  = false;
@@ -198,9 +199,9 @@ angular.module('eventsPageModule')
         };
         var populatedSchema = {};
         var generateSalonSeatMap = function () {
-            seatmapService.getPopulatedSchema($scope.eventDatePicked[0].eventDateId)
+            seatmapService.getPublicPopulatedSchema($scope.eventDatePicked[0].eventDateId)
                 .then(function (data) {
-                    populatedSchema = data.data;
+                    populatedSchema = angular.copy(data.data);
                     $scope.$broadcast('newSVGBuyTicket', [populatedSchema, 4]);
                 })
                 .catch(function (data) {
@@ -272,17 +273,22 @@ angular.module('eventsPageModule')
             }
         };
         var buyPaymentTicket = {};
+        $scope.buyerInfo = {};
         $scope.paymentSelected = function (payment) {
             var buyerData = userInfo.getData();
             $scope.paymentSelectedDone = "selected";
             $scope.setPaymentData(payment, buyerData);
         };
         $scope.paymentSelectedWithSeat = function (payment) {
-            var buyerData = userInfo.getData();
+            var buyerData;
+            if(userInfo.getData().lastname === '') {
+                buyerData = $scope.buyerInfo;
+            } else {
+                buyerData = userInfo.getData();
+            }
             $scope.paymentSelectedDone = "selected";
             $scope.setPaymentDataWithSeat(payment, buyerData);
         };
-        $scope.buyerInfo = {};
         $scope.paymentSelectedNotUser = function (payment) {
             $scope.paymentSelectedDone = "selected";
             var buyerData = $scope.buyerInfo;
@@ -360,6 +366,27 @@ angular.module('eventsPageModule')
             document.getElementsByClassName("payedBlitSpinner")[0].style.display = "inline";
             document.getElementById("buyBlitError").style.display = "none";
             ticketsService.buyTicketWithSeat(buyPaymentTicket)
+                .then(function (data) {
+                    document.getElementsByClassName("payedBlitSpinner")[0].style.display = "none";
+                    $scope.gateWayDetails = data.data;
+                    if($scope.gateWayDetails.gateway === 'ZARINPAL') {
+                        $window.location.href = $scope.gateWayDetails.zarinpalWebGatewayURL;
+                    }
+                })
+                .catch(function (data) {
+                    $scope.buyTicketOnce = false;
+                    $scope.paymentSelectedDone = '';
+                    document.getElementsByClassName("payedBlitSpinner")[0].style.display = "none";
+                    document.getElementById("buyBlitError").innerHTML= data.data.message;
+                    document.getElementById("buyBlitError").style.display = "inline";
+                })
+        };
+        $scope.nextStep2WithSeatNotUser = function () {
+            $scope.buyTicketOnce = true;
+            document.getElementsByClassName("payedBlitSpinner")[0].style.display = "inline";
+            document.getElementById("buyBlitError").style.display = "none";
+            console.log(buyPaymentTicket);
+            ticketsService.buyTicketWithSeatNotUser(buyPaymentTicket)
                 .then(function (data) {
                     document.getElementsByClassName("payedBlitSpinner")[0].style.display = "none";
                     $scope.gateWayDetails = data.data;
