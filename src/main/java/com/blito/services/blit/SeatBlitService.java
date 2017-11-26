@@ -125,7 +125,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
     }
 
     @Transactional
-    public Page<SeatBlitViewModel> getUserSeatBlits(User user, Pageable pageable) {
+    public Page<SeatBlitViewModel> getUserBlits(User user, Pageable pageable) {
         SearchViewModel<SeatBlit> searchViewModel = new SearchViewModel<>();
         searchViewModel.setRestrictions(Arrays.asList(
                 new Simple<>(Operation.neq,"paymentStatus","PENDING"),
