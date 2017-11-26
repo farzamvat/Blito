@@ -1,6 +1,5 @@
 package blito.test.integration;
 
-import com.blito.Application;
 import com.blito.configs.Constants;
 import com.blito.enums.*;
 import com.blito.models.*;
@@ -10,6 +9,7 @@ import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.EventService;
+import com.blito.utils.test.util.AbstractRestControllerTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
 import org.json.JSONArray;
@@ -17,15 +17,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -40,10 +34,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@ActiveProfiles("test")
-@SpringBootTest(classes=Application.class,webEnvironment=WebEnvironment.DEFINED_PORT)
-@RunWith(SpringRunner.class)
-public class EventControllerTest {
+public class EventControllerTest extends AbstractRestControllerTest {
 	@Autowired
 	TestRestTemplate rest;
 	@Autowired
@@ -62,8 +53,6 @@ public class EventControllerTest {
 	BlitTypeRepository blitTypeRepo;
 	@Autowired
 	ImageRepository imageRepository;
-	@Value("${serverAddress}")
-	private String serverAddress;
 	Event event;
 	Event event1;
 	Event event2;
@@ -275,7 +264,7 @@ public class EventControllerTest {
 		given().header("Content-Type",MediaType.APPLICATION_JSON_UTF8_VALUE)
 				.body(requestBody.toString())
 				.when()
-				.post( serverAddress +"/api/blito/v1.0/public/events/search/?page=0&size=20")
+				.post( getServerAddress() +"/api/blito/v1.0/public/events/search/?page=0&size=20")
 				.then().assertThat().statusCode(200).body("numberOfElements",equalTo(5));
 	}
 
@@ -322,7 +311,7 @@ public class EventControllerTest {
 		given().header("Content-Type",MediaType.APPLICATION_JSON_UTF8_VALUE)
 				.body(requestBody.toString())
 				.when()
-				.post(serverAddress +"/api/blito/v1.0/public/events/search?page=0&size=20")
+				.post(getServerAddress() +"/api/blito/v1.0/public/events/search?page=0&size=20")
 				.then().statusCode(200).body("numberOfElements",equalTo(1));
 	}
 
@@ -516,7 +505,7 @@ public class EventControllerTest {
 		Response response = given().header("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE)
 				.body(requestBody.toString())
 				.when()
-				.post( serverAddress +"/api/blito/v1.0/public/events/search/?page=0&size=5");
+				.post( getServerAddress() +"/api/blito/v1.0/public/events/search/?page=0&size=5");
 
 		response.then().assertThat().statusCode(200).body("numberOfElements",equalTo(5));
 
@@ -536,7 +525,7 @@ public class EventControllerTest {
 		given().header("Content-Type",MediaType.APPLICATION_JSON_UTF8_VALUE)
 				.body(requestBody.toString())
 				.when()
-				.post( serverAddress +"/api/blito/v1.0/public/events/search/?page=0&size=5")
+				.post( getServerAddress() +"/api/blito/v1.0/public/events/search/?page=0&size=5")
 				.then().assertThat().statusCode(200).body("numberOfElements",equalTo(1));
 	}
 }

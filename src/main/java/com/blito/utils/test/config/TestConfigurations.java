@@ -1,4 +1,4 @@
-package com.blito.utils.config;
+package com.blito.utils.test.config;
 
 import com.blito.configs.Constants;
 import com.blito.enums.ImageType;

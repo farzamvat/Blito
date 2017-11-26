@@ -1,4 +1,4 @@
-package blito.test.integration;
+package com.blito.utils.test.util;
 
 import com.blito.configs.Constants;
 import com.blito.enums.EventType;

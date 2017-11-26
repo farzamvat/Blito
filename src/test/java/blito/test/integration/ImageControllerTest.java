@@ -4,6 +4,7 @@ import com.blito.configs.Constants;
 import com.blito.enums.Response;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.image.ImageViewModel;
+import com.blito.utils.test.util.AbstractRestControllerTest;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
