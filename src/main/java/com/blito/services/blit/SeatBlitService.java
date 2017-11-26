@@ -15,7 +15,9 @@ import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
 import com.blito.rest.viewmodels.blit.SeatErrorViewModel;
 import com.blito.rest.viewmodels.discount.SeatBlitDiscountValidationViewModel;
 import com.blito.rest.viewmodels.payments.PaymentRequestViewModel;
+import com.blito.search.Operation;
 import com.blito.search.SearchViewModel;
+import com.blito.search.Simple;
 import com.blito.services.ExcelService;
 import com.blito.services.SalonService;
 import com.blito.services.SearchService;
@@ -119,6 +121,17 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
     @Transactional
     @Override
     public Page<SeatBlitViewModel> searchBlits(SearchViewModel<SeatBlit> searchViewModel, Pageable pageable) {
+        return searchService.search(searchViewModel,pageable,seatBlitMapper,seatBlitRepository);
+    }
+
+    @Transactional
+    public Page<SeatBlitViewModel> getUserSeatBlits(User user, Pageable pageable) {
+        SearchViewModel<SeatBlit> searchViewModel = new SearchViewModel<>();
+        searchViewModel.setRestrictions(Arrays.asList(
+                new Simple<>(Operation.neq,"paymentStatus","PENDING"),
+                new Simple<>(Operation.neq,"paymentStatus","ERROR"),
+                new Simple<>(Operation.eq,"user-email",user.getEmail())
+        ));
         return searchService.search(searchViewModel,pageable,seatBlitMapper,seatBlitRepository);
     }
 

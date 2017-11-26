@@ -73,6 +73,22 @@ public class BlitController {
 
 	@JsonView(View.Blit.class)
 	@Permission(value = ApiBusinessName.USER)
+	@GetMapping("/user-common")
+	public CompletionStage<ResponseEntity<?>> getUserCommonBlits(Pageable pageable,HttpServletRequest request,HttpServletResponse response) {
+		User user = SecurityContextHolder.currentUser();
+		return CompletableFuture.supplyAsync(() -> commonBlitService.getUserCommonBlits(user,pageable)).handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,request,response));
+	}
+
+	@JsonView(View.Blit.class)
+	@Permission(value = ApiBusinessName.USER)
+	@GetMapping("/user-seat")
+	public CompletionStage<ResponseEntity<?>> getUserSeatBlits(Pageable pageable,HttpServletRequest request,HttpServletResponse response) {
+		User user = SecurityContextHolder.currentUser();
+		return CompletableFuture.supplyAsync(() -> seatBlitService.getUserSeatBlits(user,pageable)).handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,request,response));
+	}
+
+	@JsonView(View.Blit.class)
+	@Permission(value = ApiBusinessName.USER)
 	@PostMapping("/seats/search")
 	public ResponseEntity<Page<SeatBlitViewModel>> seatBlitSearch(@RequestBody SearchViewModel<SeatBlit> searchViewModel,
 															Pageable pageable) {

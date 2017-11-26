@@ -16,7 +16,9 @@ import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.blit.CommonBlitViewModel;
 import com.blito.rest.viewmodels.discount.DiscountValidationViewModel;
 import com.blito.rest.viewmodels.payments.PaymentRequestViewModel;
+import com.blito.search.Operation;
 import com.blito.search.SearchViewModel;
+import com.blito.search.Simple;
 import com.blito.services.ExcelService;
 import com.blito.services.SearchService;
 import io.vavr.control.Option;
@@ -28,6 +30,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -78,6 +81,17 @@ public class CommonBlitService extends AbstractBlitService<CommonBlit,CommonBlit
     @Override
     public Page<CommonBlitViewModel> searchBlits(SearchViewModel<CommonBlit> searchViewModel, Pageable pageable) {
         return searchService.search(searchViewModel, pageable, commonBlitMapper, commonBlitRepository);
+    }
+
+    @Transactional
+    public Page<CommonBlitViewModel> getUserCommonBlits(User user,Pageable pageable) {
+        SearchViewModel<CommonBlit> searchViewModel = new SearchViewModel<>();
+        searchViewModel.setRestrictions(Arrays.asList(
+                new Simple<>(Operation.neq,"paymentStatus","PENDING"),
+                new Simple<>(Operation.neq,"paymentStatus","ERROR"),
+                new Simple<>(Operation.eq,"user-email",user.getEmail())
+        ));
+        return searchService.search(searchViewModel,pageable,commonBlitMapper,commonBlitRepository);
     }
 
     @Transactional
