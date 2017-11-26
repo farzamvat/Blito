@@ -56,10 +56,7 @@ public class ExchangeBlitServiceTest {
 	@Before
 	public void init()
 	{
-			Image image = new Image();
-			image.setImageUUID(Constants.DEFAULT_EXCHANGEBLIT_PHOTO);
-			image.setImageType(ImageType.EXCHANGEBLIT_PHOTO.name());
-			imageRepository.save(image);
+			Image image = imageRepository.findByImageUUID(Constants.DEFAULT_EXCHANGEBLIT_PHOTO).get();
 			
 			user.setEmail("farzam.vat@gmail.com");
 			user.setActive(true);

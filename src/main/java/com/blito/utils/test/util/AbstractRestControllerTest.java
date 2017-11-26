@@ -1,4 +1,4 @@
-package blito.test.integration;
+package com.blito.utils.test.util;
 /*
     @author Farzam Vatanzadeh
 */
@@ -9,26 +9,30 @@ import com.blito.repositories.UserRepository;
 import com.blito.rest.viewmodels.account.RegisterVm;
 import com.blito.rest.viewmodels.account.TokenModel;
 import com.blito.services.JwtService;
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import static io.restassured.RestAssured.given;
-
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class,webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(classes = Application.class,webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class AbstractRestControllerTest {
     @Value("${serverAddress}")
     private String serverAddress;
+    @LocalServerPort
+    private int port;
     @Value("${blito.admin.username}")
     private String admin_username;
     @Autowired
@@ -60,16 +64,16 @@ public class AbstractRestControllerTest {
         }
     }
 
-    RequestSpecification givenRestIntegration()
+    public RequestSpecification givenRestIntegration()
     {
-        return given()
+        return RestAssured.given()
                 .header("X-AUTH-TOKEN","Bearer " + token)
                 .header("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
     }
 
-    RequestSpecification givenRestIntegrationUser()
+    protected RequestSpecification givenRestIntegrationUser()
     {
-        return given()
+        return RestAssured.given()
                 .header("X-AUTH-TOKEN","Bearer " + userToken)
                 .header("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
     }
@@ -79,9 +83,9 @@ public class AbstractRestControllerTest {
         return admin_username;
     }
 
-    String getServerAddress()
+    protected String getServerAddress()
     {
-        return serverAddress;
+        return serverAddress + port;
     }
 
     private String createUser(){
@@ -93,7 +97,7 @@ public class AbstractRestControllerTest {
         registerVm.setPassword("12345678");
         registerVm.setConfirmPassword("12345678");
 
-        Response response = given()
+        Response response = RestAssured.given()
                                 .header("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE)
                                 .body(registerVm)
                                 .when()

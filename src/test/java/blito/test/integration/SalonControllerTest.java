@@ -4,6 +4,7 @@ package blito.test.integration;
 */
 
 import com.blito.repositories.SalonRepository;
+import com.blito.utils.test.util.AbstractRestControllerTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

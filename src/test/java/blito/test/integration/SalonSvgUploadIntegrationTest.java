@@ -3,6 +3,7 @@ package blito.test.integration;
 import com.blito.common.Salon;
 import com.blito.configs.Constants;
 import com.blito.rest.viewmodels.salon.SalonViewModel;
+import com.blito.utils.test.util.AbstractRestControllerTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.control.Try;
 import org.junit.Test;

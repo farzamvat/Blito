@@ -18,6 +18,7 @@ import com.blito.rest.viewmodels.payments.ZarinpalPayRequestResponseViewModel;
 import com.blito.services.PaymentRequestService;
 import com.blito.services.blit.CommonBlitService;
 import com.blito.services.blit.SeatBlitService;
+import com.blito.utils.test.util.AbstractEventRestControllerTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
 import io.vavr.control.Try;

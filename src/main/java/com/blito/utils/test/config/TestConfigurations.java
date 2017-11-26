@@ -1,5 +1,6 @@
-package com.blito.configs;
+package com.blito.utils.test.config;
 
+import com.blito.configs.Constants;
 import com.blito.enums.ImageType;
 import com.blito.models.Image;
 import com.blito.repositories.ImageRepository;
