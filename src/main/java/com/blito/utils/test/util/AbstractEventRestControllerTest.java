@@ -61,6 +61,7 @@ public class AbstractEventRestControllerTest extends AbstractRestControllerTest 
         BlitTypeViewModel blitTypeViewModel1 = new BlitTypeViewModel();
         BlitTypeViewModel blitTypeViewModel2 = new BlitTypeViewModel();
         BlitTypeViewModel blitTypeViewModel3 = new BlitTypeViewModel();
+        BlitTypeViewModel blitTypeViewModel4 = new BlitTypeViewModel();
         eventDateViewModel.setDate(Timestamp.from(ZonedDateTime.now().plusDays(10).toInstant()));
 
 
@@ -78,7 +79,11 @@ public class AbstractEventRestControllerTest extends AbstractRestControllerTest 
         blitTypeViewModel3.setFree(true);
         blitTypeViewModel3.setName(Constants.HOST_RESERVED_SEATS);
 
-        eventDateViewModel.setBlitTypes(new HashSet<>(Arrays.asList(blitTypeViewModel1, blitTypeViewModel2,blitTypeViewModel3)));
+        blitTypeViewModel4.setCapacity(20);
+        blitTypeViewModel4.setFree(true);
+        blitTypeViewModel4.setName("FREE");
+
+        eventDateViewModel.setBlitTypes(new HashSet<>(Arrays.asList(blitTypeViewModel1, blitTypeViewModel2,blitTypeViewModel3,blitTypeViewModel4)));
         eventViewModel.setEventDates(new HashSet<>(Arrays.asList(eventDateViewModel)));
         return eventViewModel;
     }
