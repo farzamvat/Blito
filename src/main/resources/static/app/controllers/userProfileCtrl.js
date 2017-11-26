@@ -1642,7 +1642,7 @@ angular.module('User')
                 })
         };
         $scope.getUserTickets = function (pageNumber) {
-            ticketsService.getUserTickets(pageNumber, $scope.userData.email)
+            ticketsService.getUserTickets(pageNumber)
                 .then(function (data) {
                     $scope.totalUserTickets = data.data.totalElements;
                     $scope.userTickets = data.data.content;
@@ -1652,15 +1652,12 @@ angular.module('User')
                     })
                 })
                 .catch(function (data) {
+                    console.log(data);
                 })
         };
-        $q.all(userInfoPromise)
-            .then(function () {
-                $scope.getUserTickets(1);
-            })
-            .catch(function () {
 
-            });
+        $scope.getUserTickets(1);
+
         //==================================================== ********* =================================
         //==================================================== DISCOUNT SECTION =======================
         $scope.discountCodeShow = function (index) {
