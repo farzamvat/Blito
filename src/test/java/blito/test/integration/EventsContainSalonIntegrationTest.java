@@ -220,7 +220,7 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
         Response getUserBlitsResposne =
                 givenRestIntegration()
                 .when()
-                .get(getServerAddress() + "/api/blito/v1.0/blits/user-seat");
+                .get(getServerAddress() + "/api/blito/v1.0/blits");
         getUserBlitsResposne.then().statusCode(200).body("numberOfElements",equalTo(0));
     }
 
