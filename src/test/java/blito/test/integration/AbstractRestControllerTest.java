@@ -15,8 +15,10 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,10 +27,13 @@ import static io.restassured.RestAssured.given;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class,webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(classes = Application.class,webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class AbstractRestControllerTest {
     @Value("${serverAddress}")
     private String serverAddress;
+    @LocalServerPort
+    private int port;
     @Value("${blito.admin.username}")
     private String admin_username;
     @Autowired
@@ -81,7 +86,7 @@ public class AbstractRestControllerTest {
 
     String getServerAddress()
     {
-        return serverAddress;
+        return serverAddress + port;
     }
 
     private String createUser(){
