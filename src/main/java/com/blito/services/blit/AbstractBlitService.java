@@ -146,8 +146,6 @@ public abstract class AbstractBlitService <E extends Blit,V extends AbstractBlit
         }
     }
 
-
-
     void checkBlitTypeRestrictionsForBuy(BlitType blitType) {
 
         if (blitType.getBlitTypeState().equals(State.SOLD.name()))
