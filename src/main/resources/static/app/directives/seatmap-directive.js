@@ -94,6 +94,8 @@ angular.module('blitoDirectives')
                     label.text(text);
                     label.fontColor("#fff");
                     label.padding(15);
+                    label.background().cornerType("round");
+                    label.background().corners(5);
                     label.listen("click", action);
                     label.container(stage);
                     label.draw();
@@ -104,7 +106,7 @@ angular.module('blitoDirectives')
                 var seatClickFunction = function (e) {
                     if (scope.pickedSeats.indexOf(e.domTarget.dd) === -1) {
                         scope.pickedSeats.push(e.domTarget.dd);
-                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', 'green');
+                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#39A939');
                     } else {
                         scope.pickedSeats.splice(scope.pickedSeats.indexOf(e.domTarget.dd), 1);
                         $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#64b5f6');
@@ -136,7 +138,7 @@ angular.module('blitoDirectives')
                     } else {
                         currentSection[0].rows[e.itemIndex].seats.forEach(function (seat) {
                             if ((scope.pickedSeats.indexOf(seat.uid) === -1) && (!$('#'+"seatMaperChart"+svgIndex+' '+'#'+seat.uid).hasClass('noPointerEvents'))) {
-                                $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'green');
+                                $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#39A939');
                                 scope.pickedSeats.push(seat.uid);
                             }
                         });
@@ -172,6 +174,7 @@ angular.module('blitoDirectives')
                         .title("انتخاب ردیف")
                         .removeAllListeners()
                     ;
+
 
                     legend.title({fontSize:20});
                     legend.listen("click", legendListener);
@@ -214,7 +217,7 @@ angular.module('blitoDirectives')
                         if(isReserved){
                             $('#'+"seatMaperChart"+sansSeats+' '+'#'+uid).css('fill', '#999999')
                         } else {
-                            $('#'+"seatMaperChart"+sansSeats+' '+'#'+uid).css('fill', 'red')
+                            $('#'+"seatMaperChart"+sansSeats+' '+'#'+uid).css('fill', '#FCB731')
                         }
                     })
                 }
@@ -313,6 +316,8 @@ angular.module('blitoDirectives')
                     label.text(text);
                     label.fontColor("#fff");
                     label.padding(15);
+                    label.background().cornerType("round")
+                    label.background().corners(5)
                     label.listen("click", action);
                     label.container(stage);
                     label.draw();
@@ -323,7 +328,7 @@ angular.module('blitoDirectives')
                 var seatClickFunction = function (e) {
                     if (scope.pickedSeats.indexOf(e.domTarget.dd) === -1) {
                         scope.pickedSeats.push(e.domTarget.dd);
-                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', 'green');
+                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#39A939');
                     } else {
                         scope.pickedSeats.splice(scope.pickedSeats.indexOf(e.domTarget.dd), 1);
                         $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#64b5f6');
@@ -355,7 +360,7 @@ angular.module('blitoDirectives')
                     } else {
                         currentSection[0].rows[e.itemIndex].seats.forEach(function (seat) {
                             if ((scope.pickedSeats.indexOf(seat.uid) === -1) && (!$('#'+"seatMaperChart"+svgIndex+' '+'#'+seat.uid).hasClass('noPointerEvents'))) {
-                                $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'green');
+                                $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#39A939');
                                 scope.pickedSeats.push(seat.uid);
                             }
                         });
@@ -432,7 +437,7 @@ angular.module('blitoDirectives')
                     scope.pickedSeats = [];
                     seatUids.forEach(function (uid) {
                         $('#'+"seatMaperChart"+sansSeats+' '+'#'+uid).addClass('noPointerEvents');
-                        $('#'+"seatMaperChart"+sansSeats+' '+'#'+uid).css('fill', 'yellow')
+                        $('#'+"seatMaperChart"+sansSeats+' '+'#'+uid).css('fill', '#FCB731')
 
                     })
                 };
@@ -446,22 +451,22 @@ angular.module('blitoDirectives')
                                 row.seats.forEach(function (seat) {
                                     switch (seat.state) {
                                         case "RESERVED" :
-                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'blue');
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#234BA1');
                                             $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
                                             break;
                                         case "SOLD" :
-                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'orange');
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#801515');
                                             $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
                                             break;
                                         case "GUEST_NOT_AVAILABLE" :
-                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#333');
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#999999');
                                             $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
                                             break;
                                         case "NOT_AVAILABLE" :
                                             $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#999999');
                                             break;
                                         case "AVAILABLE" :
-                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'red');
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#2A82B8');
                                             break;
                                         default :
                                             break;
@@ -562,6 +567,8 @@ angular.module('blitoDirectives')
                     label.fontColor("#fff");
                     label.padding(15);
                     label.listen("click", action);
+                    label.background().cornerType("round")
+                    label.background().corners(5)
                     label.container(stage);
                     label.draw();
                     return label;
@@ -571,7 +578,7 @@ angular.module('blitoDirectives')
                 var seatClickFunction = function (e) {
                     if (scope.pickedSeats.indexOf(e.domTarget.dd) === -1) {
                         scope.pickedSeats.push(e.domTarget.dd);
-                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', 'green');
+                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#39A939');
                     } else {
                         scope.pickedSeats.splice(scope.pickedSeats.indexOf(e.domTarget.dd), 1);
                         $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#64b5f6');
@@ -664,7 +671,7 @@ angular.module('blitoDirectives')
                                 row.seats.forEach(function (seat) {
                                     switch (seat.state) {
                                         case "RESERVED" :
-                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#515F90');
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#234BA1');
                                             $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
                                             break;
                                         case "SOLD" :
@@ -780,6 +787,8 @@ angular.module('blitoDirectives')
                     label.text(text);
                     label.fontColor("#fff");
                     label.padding(15);
+                    label.background().cornerType("round")
+                    label.background().corners(5)
                     label.listen("click", action);
                     label.container(stage);
                     label.draw();
@@ -794,7 +803,7 @@ angular.module('blitoDirectives')
                     }
                     if (scope.pickedSeats.indexOf(e.domTarget.dd) === -1) {
                         scope.pickedSeats.push(e.domTarget.dd);
-                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', 'green');
+                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#39A939');
                     } else {
                         scope.pickedSeats.splice(scope.pickedSeats.indexOf(e.domTarget.dd), 1);
                         $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#64b5f6');
@@ -889,8 +898,11 @@ angular.module('blitoDirectives')
                                 row.seats.forEach(function (seat) {
                                     if(seat.state === "NOT_AVAILABLE") {
                                         $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#64b5f6');
+                                    } else if (seat.state === "SOLD") {
+                                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#801515');
+                                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
                                     } else {
-                                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#333');
+                                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#999');
                                         $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
                                     }
                                 })

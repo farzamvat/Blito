@@ -2096,7 +2096,7 @@ angular.module('User')
                     $scope.salonSchema = data.data;
                     countNumberOfSeats($scope.salonSchema.schema.sections);
                     $scope.$broadcast('newSVG', [$scope.salonSchema, seatMapIndex]);
-                    document.getElementsByClassName("generateSeatMap"+seatMapIndex)[0].style.display = "none";
+                    // document.getElementsByClassName("generateSeatMap"+seatMapIndex)[0].style.display = "none";
                 })
                 .catch(function (data) {
                     document.getElementsByClassName("seatMapSpinner")[0].style.display = "none";

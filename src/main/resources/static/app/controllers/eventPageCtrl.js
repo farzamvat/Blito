@@ -41,7 +41,6 @@ angular.module('eventsPageModule')
                         field.value = "";
                     });
                 }
-                console.log($scope.eventDataDetails);
                 $scope.getPlannerData($scope.eventDataDetails.eventHostId);
                 $scope.eventType = $scope.eventDataDetails.eventType;
                 $scope.buyTicketFormatData(data.data.eventDates);

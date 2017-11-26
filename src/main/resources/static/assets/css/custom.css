@@ -59,7 +59,9 @@ body, html {
     width: 100% ;
     padding:0 !important;
 }
-
+text {
+    font-family: "iranian Sans" !important;
+}
 h1,h2,h3,h4,h5,h6 {
     font-weight: bold;
 }
