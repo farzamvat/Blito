@@ -460,7 +460,7 @@ angular.module('blitoDirectives')
                                             $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
                                             break;
                                         case "GUEST_NOT_AVAILABLE" :
-                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#999999');
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#333333');
                                             $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
                                             break;
                                         case "NOT_AVAILABLE" :

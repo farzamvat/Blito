@@ -84,7 +84,21 @@
                                                 <div ng-if="showWithoutSeatSection && bothTypesOfBlits" >
                                                     <div ng-include="'app/views/partials/buy-ticket-without-seat.html'"></div>
                                                 </div>
+                                                <div class="seatMapLoading center-block dispNone"><i class="fa fa-cog fa-spin fa-4x center-block marginTop60"></i></div>
+
                                                 <div ng-if="showSeatSection"  class="form-group col-xs-12 marginTop30  formRegGroup floatRight">
+                                                    <div class="col-xs-12">
+                                                        <div class="seatMapSquare seatMapAvailable"></div>
+                                                        <label class="floatRight marginLeft20 paddingTop5">قابل خرید</label>
+                                                        <div class="seatMapSquare seatMapPicked"></div>
+                                                        <label class="floatRight marginLeft20 paddingTop5">انتخاب شده</label>
+                                                        <div class="seatMapSquare seatMapSold"></div>
+                                                        <label class="floatRight marginLeft20 paddingTop5">فروش رفته</label>
+                                                        <div class="seatMapSquare seatMapReserved"></div>
+                                                        <label class="floatRight marginLeft20 paddingTop5">در حال فروش</label>
+                                                        <div class="seatMapSquare seatMapNotAvailable"></div>
+                                                        <label class="floatRight marginLeft20 paddingTop5">رزرو</label>
+                                                    </div>
                                                     <div id="labelDrillUpSection4"  class="col-xs-12 labelSvgHeight"></div>
                                                     <seat-map-buy-ticket></seat-map-buy-ticket>
                                                     <div id="seatMaperChart4"  class="col-xs-12 marginTop30 marginBottom20 seatMaperChartStyle"></div>

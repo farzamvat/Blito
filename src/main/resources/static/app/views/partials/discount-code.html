@@ -23,7 +23,7 @@
                             <h5 class="textAlignRight">انتخاب بلیت  :</h5>
                             <div class="form-group col-xs-12  formRegGroup">
 
-                                <div ng-repeat="blit in eventFlatDates" class="col-xs-12"><button type="button" ng-click="blitPicked($index)"  class="btn btn-default discountCodeButton btnSelected" >{{blit.name}}</button></div>
+                                <div ng-repeat="blit in eventFlatDates" ng-if="!blit.isFree" class="col-xs-12"><button type="button" ng-click="blitPicked($index)"  class="btn btn-default discountCodeButton btnSelected" >{{blit.name}}</button></div>
 
                             </div>
                         </div>

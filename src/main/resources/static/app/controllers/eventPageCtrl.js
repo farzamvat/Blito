@@ -68,18 +68,21 @@ angular.module('eventsPageModule')
                 eventDate.soldCount = 0;
                 eventDate.maxPrice = 0;
                 eventDate.minPrice = 100000000;
-
                 eventDate.blitTypes.forEach(function (blitType) {
-                    if(blitType.price < eventDate.minPrice) {
-                        eventDate.minPrice = blitType.price;
-                    }
-                    if(blitType.price > eventDate.maxPrice) {
-                        eventDate.maxPrice = blitType.price;
-                    }
                     if(blitType.name !== 'HOST_RESERVED_SEATS') {
+                        if (blitType.price < eventDate.minPrice) {
+                            eventDate.minPrice = blitType.price;
+                        }
+                        if (blitType.price > eventDate.maxPrice) {
+                            eventDate.maxPrice = blitType.price;
+                        }
                         eventDate.capacity += blitType.capacity;
+                        eventDate.soldCount += blitType.soldCount;
+
+                    } else {
+                        eventDate.capacity += blitType.capacity;
+                        eventDate.soldCount += blitType.capacity;
                     }
-                    eventDate.soldCount += blitType.soldCount;
 
                 })
             });
@@ -181,7 +184,6 @@ angular.module('eventsPageModule')
             }
         };
         $scope.seatTypePicked = function (seatType) {
-            console.log($scope.itemWithCapacity);
             if(seatType) {
                 $scope.showSeatSection = true;
                 $scope.showWithoutSeatSection = false;
@@ -198,12 +200,15 @@ angular.module('eventsPageModule')
         };
         var populatedSchema = {};
         var generateSalonSeatMap = function () {
+            document.getElementsByClassName("seatMapLoading")[0].style.display = "block";
             seatmapService.getPublicPopulatedSchema($scope.eventDatePicked[0].eventDateId)
                 .then(function (data) {
+                    document.getElementsByClassName("seatMapLoading")[0].style.display = "none";
                     populatedSchema = angular.copy(data.data);
                     $scope.$broadcast('newSVGBuyTicket', [populatedSchema, 4]);
                 })
                 .catch(function (data) {
+                    document.getElementsByClassName("seatMapLoading")[0].style.display = "none";
                     console.log(data);
                 })
 

@@ -2000,14 +2000,17 @@ angular.module('User')
                 }
             }, 500);
             $scope.generateSeatMapGuestTicket = function (sansIndex) {
-                console.log(sansIndex);
+                document.getElementsByClassName("seatMapLoading")[0].style.display = "block";
                 sansPickedGenerateTicket = $scope.eventDatesGuestTicket[sansIndex];
                 seatmapService.getPopulatedSchema($scope.eventDatesGuestTicket[sansIndex].eventDateId)
                     .then(function (data) {
+                        document.getElementsByClassName("seatMapHelpSection")[0].style.display = "block";
+                        document.getElementsByClassName("seatMapLoading")[0].style.display = "none";
                         var populatedSchema = data.data;
                         $scope.$broadcast('newSVGGenrateTicket', [populatedSchema, 5]);
                     })
                     .catch(function (data) {
+                        document.getElementsByClassName("seatMapLoading")[0].style.display = "none";
                         console.log(data);
                     })
             };
@@ -2213,10 +2216,14 @@ angular.module('User')
                     blitType.price = 0;
                 }
             });
+
             newShowTime.date = dateSetterService.persianToMs(newShowTime.persianDate);
             $scope.showTimeForms.push(newShowTime);
             $scope.sansSet();
             $scope.newShowTime = {blitTypes : [], newSeatsPrice : 'false'};
+            $timeout(function () {
+                    $(".addedSansForEvent").removeClass("fadeOutGreen", 1000, "easeInBack");
+            }, 500)
         };
         var newEditedBlitTypes = [];
         $scope.submitSansWithSeatpickerEdit = function (newSans) {
