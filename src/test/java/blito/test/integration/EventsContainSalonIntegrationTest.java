@@ -222,7 +222,7 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
                 givenRestIntegration()
                 .when()
                 .get(getServerAddress() + "/api/blito/v1.0/blits");
-        getUserBlitsResposne.then().statusCode(200).body("numberOfElements",equalTo(0));
+        getUserBlitsResposne.then().statusCode(200);
     }
 
     public Salon getTestSalonSchema() {

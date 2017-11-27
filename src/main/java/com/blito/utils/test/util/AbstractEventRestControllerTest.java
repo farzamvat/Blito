@@ -15,6 +15,7 @@ import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 import io.restassured.response.Response;
+import org.junit.Test;
 
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
@@ -30,6 +31,10 @@ import java.util.Optional;
  **/
 
 public class AbstractEventRestControllerTest extends AbstractRestControllerTest {
+    @Test
+    public void test() {
+
+    }
     public Response createEventHost_success(String eventHostName)
     {
         EventHostViewModel eventHostViewModel = new EventHostViewModel();

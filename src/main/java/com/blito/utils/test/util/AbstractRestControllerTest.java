@@ -13,6 +13,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,7 +35,7 @@ public class AbstractRestControllerTest {
     @LocalServerPort
     private int port;
     @Value("${blito.admin.username}")
-    private String admin_username;
+    protected String admin_username;
     @Autowired
     private UserRepository userRepository;
 
@@ -42,12 +43,33 @@ public class AbstractRestControllerTest {
     private RoleRepository roleRepository;
 
     @Autowired
-    private JwtService jwtService;
+    protected JwtService jwtService;
 
     private static boolean initialized = false;
     private static String token;
     private static String userToken;
     protected static TokenModel tokenModel;
+
+    public static String getToken() {
+        return token;
+    }
+
+    public static void setToken(String token) {
+        AbstractRestControllerTest.token = token;
+    }
+
+    public static String getUserToken() {
+        return userToken;
+    }
+
+    public static void setUserToken(String userToken) {
+        AbstractRestControllerTest.userToken = userToken;
+    }
+
+    @Test
+    public void test() {
+
+    }
 
     @Transactional
     @Before
@@ -73,6 +95,7 @@ public class AbstractRestControllerTest {
 
     protected RequestSpecification givenRestIntegrationUser()
     {
+        createUser();
         return RestAssured.given()
                 .header("X-AUTH-TOKEN","Bearer " + userToken)
                 .header("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
@@ -97,12 +120,14 @@ public class AbstractRestControllerTest {
         registerVm.setPassword("12345678");
         registerVm.setConfirmPassword("12345678");
 
-        Response response = RestAssured.given()
-                                .header("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE)
-                                .body(registerVm)
-                                .when()
-                                .post(getServerAddress() + "/api/blito/v1.0/register");
-        response.then().statusCode(201);
+        if(!userRepository.findByEmail(registerVm.getEmail()).isPresent()) {
+            Response response = RestAssured.given()
+                    .header("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE)
+                    .body(registerVm)
+                    .when()
+                    .post(getServerAddress() + "/api/blito/v1.0/register");
+            response.then().statusCode(201);
+        }
         return registerVm.getEmail();
     }
 }

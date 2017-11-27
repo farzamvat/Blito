@@ -551,6 +551,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractEventRestC
                         .filter(bt -> bt.getName().equals("vaysade"))
                         .findFirst().get().getBlitTypeId())));
 
+
         Response response = givenRestIntegrationUser()
                 .body(discountViewModel)
                 .when()
