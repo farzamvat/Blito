@@ -584,15 +584,16 @@ angular.module('blitoDirectives')
                 //neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew
                 var seatClickFunction = function (f) {
                     var e=f.originalEvent;
-                    if (scope.pickedSeats.indexOf(e.domTarget.dd) === -1) {
-                        scope.pickedSeats.push(e.domTarget.dd);
-                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#39A939');
-                    } else {
-                        scope.pickedSeats.splice(scope.pickedSeats.indexOf(e.domTarget.dd), 1);
-                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#64b5f6');
-                    }
+                        if (scope.pickedSeats.indexOf(e.domTarget.dd) === -1) {
+                            scope.pickedSeats.push(e.domTarget.dd);
+                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#39A939');
+                        } else {
+                            scope.pickedSeats.splice(scope.pickedSeats.indexOf(e.domTarget.dd), 1);
+                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#64b5f6');
+                        }
                     e.preventDefault();
                     ctrl.validationCheckBlitType(scope.pickedSeats, svgIndex);
+
                 };
 
 
@@ -623,13 +624,17 @@ angular.module('blitoDirectives')
                     legend.enabled(false);
 
 
-
                     sectionsChart[sectionIndex].chart.labels(true);
                     var labels = sectionsChart[sectionIndex].chart.labels();
-                    sectionsChart[sectionIndex].chart.labels({fontSize: 10});
+                    if($(window).width() < 1000) {
+                        sectionsChart[sectionIndex].chart.labels({fontSize: 6});
+                    } else {
+                        sectionsChart[sectionIndex].chart.labels({fontSize: 10});
+                    }
                     labels.format("{%info}");
                     //neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew
-                    var toolTip = sectionsChart[sectionIndex].chart.tooltip().enabled(false);
+                    var toolTip = sectionsChart[sectionIndex].chart.tooltip().enabled(true);
+                    toolTip.title("قیمت صندلی")
                     toolTip.format("{%price}")
                 }
                 //neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew

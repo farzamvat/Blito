@@ -78,12 +78,7 @@ angular.module('eventsPageModule')
                         }
                         eventDate.capacity += blitType.capacity;
                         eventDate.soldCount += blitType.soldCount;
-
-                    } else {
-                        eventDate.capacity += blitType.capacity;
-                        eventDate.soldCount += blitType.capacity;
                     }
-
                 })
             });
             $timeout(function () {
@@ -142,7 +137,10 @@ angular.module('eventsPageModule')
         $scope.showSeatSection = false;
         $scope.showWithoutSeatSection = false;
         $scope.blitTypeCreateValidation = 0;
+        $scope.seatType = { isChosen : null};
         $scope.setCapacityBlit = function (sansId) {
+            $scope.seatsPickedLimit = false;
+            $scope.seatType.isChosen = null;
             $scope.showSeatSection = false;
             $scope.showWithoutSeatSection = false;
             $scope.seatsPickedChecked = false;
@@ -184,6 +182,7 @@ angular.module('eventsPageModule')
             }
         };
         $scope.seatTypePicked = function (seatType) {
+            $scope.seatsPickedLimit = false;
             if(seatType) {
                 $scope.showSeatSection = true;
                 $scope.showWithoutSeatSection = false;
@@ -211,19 +210,25 @@ angular.module('eventsPageModule')
                     document.getElementsByClassName("seatMapLoading")[0].style.display = "none";
                     console.log(data);
                 })
-
         };
         $scope.seatsPickedChecked = false;
+        $scope.seatsPickedLimit = false;
         $scope.$on("blitIdsChangedBuyTicket",function (event ,data) {
-            $scope.blitTypeCreateValidation = data[0].length;
-            $scope.$apply();
-            $scope.seatBlitUids = data[0];
-            $scope.seatsPickedChecked = false;
-            if(seatmapService.oneSeatUnpickedPayment($scope.seatBlitUids, populatedSchema)) {
-                $scope.seatsPickedChecked = true;
+            if(data[0].length <= 10) {
+                $scope.seatsPickedLimit = false;
+                $scope.blitTypeCreateValidation = data[0].length;
+                $scope.$apply();
+                $scope.seatBlitUids = data[0];
+                $scope.seatsPickedChecked = false;
+                if (seatmapService.oneSeatUnpickedPayment($scope.seatBlitUids, populatedSchema)) {
+                    $scope.seatsPickedChecked = true;
+                    $scope.$apply();
+                }
+                $scope.$apply();
+            } else {
+                $scope.seatsPickedLimit = true;
                 $scope.$apply();
             }
-            $scope.$apply();
         });
         $scope.blitTypePicked = function (blitId) {
             $scope.itemWithCapacity = $scope.blitTypesWithOutSeatsEdit.filter(function (item) {

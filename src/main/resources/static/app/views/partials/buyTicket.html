@@ -102,6 +102,7 @@
                                                     <div id="labelDrillUpSection4"  class="col-xs-12 labelSvgHeight"></div>
                                                     <seat-map-buy-ticket></seat-map-buy-ticket>
                                                     <div id="seatMaperChart4"  class="col-xs-12 marginTop30 marginBottom20 seatMaperChartStyle"></div>
+                                                    <p class="text-center colorRed" ng-show="seatsPickedLimit">* امکان انتخاب بیشتر از ۱۰ صندلی وجود ندارد.</p>
                                                 </div>
                                                 <div ng-if="!logoutMenu && showSeatSection" class="form-group col-xs-12 marginTop30  formRegGroup floatRight">
                                                     <p class="text-center">کاربر وبسایت هستید؟</p>
@@ -159,7 +160,7 @@
                                                 </div>
                                                 <div ng-if="showSeatSection" class="control-group text-center marginBottom20">
                                                     <div class="controls">
-                                                        <button  id="nextStep1"  ng-click="nextStep1WithSeat(eventInfo)" ng-disabled="ticketInfo.$invalid || ticketInfo.extraFields.$invalid || (blitTypeCreateValidation === 0) || seatsPickedChecked"  class="btn btn-success btn-lg btnLogin"> مرحله بعد <i class="fa fa-arrow-left"></i></button>
+                                                        <button  id="nextStep1"  ng-click="nextStep1WithSeat(eventInfo)" ng-disabled="ticketInfo.$invalid || ticketInfo.extraFields.$invalid || (blitTypeCreateValidation === 0) || seatsPickedChecked || seatsPickedLimit"  class="btn btn-success btn-lg btnLogin"> مرحله بعد <i class="fa fa-arrow-left"></i></button>
                                                     </div>
                                                 </div>
                                             </div>
