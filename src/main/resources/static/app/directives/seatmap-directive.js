@@ -620,10 +620,10 @@ angular.module('blitoDirectives')
                     clientY = e.iF.b.Xw.top;
                     toolTip.css({"display": "block"});
                     svgData.schema.sections.forEach(function (sect) {
-                            sect.rows.forEach(function (row) {
+                            sect.rows.forEach(function (row, rowIndex) {
                                 row.seats.forEach(function (seat) {
                                     if(e.domTarget.dd === seat.uid) {
-                                        toolTip.html("قیمت: "+seat.price);
+                                        toolTip.html("قیمت: "+seat.price+"\n"+"ردیف: "+(rowIndex+1));
                                     }
                                 })
                             });
