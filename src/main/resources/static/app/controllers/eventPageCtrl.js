@@ -247,6 +247,7 @@ angular.module('eventsPageModule')
         };
         $scope.selectedBlitsTotalPrice = 0;
         $scope.nextStep1WithSeat = function () {
+            $scope.itemWithCapacity = null;
             $scope.selectedBlitsTotalPrice = seatmapService.getBoughtBlitTypes($scope.seatBlitUids, populatedSchema);
             $scope.selectedBlitsTotalPricePrimary = seatmapService.getBoughtBlitTypes($scope.seatBlitUids, populatedSchema);
             angular.element(document.getElementById('ticketPay1')).removeClass('active');
