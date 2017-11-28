@@ -1642,7 +1642,7 @@ angular.module('User')
                 })
         };
         $scope.getUserTickets = function (pageNumber) {
-            ticketsService.getUserTickets(pageNumber, $scope.userData.email)
+            ticketsService.getUserTickets(pageNumber)
                 .then(function (data) {
                     $scope.totalUserTickets = data.data.totalElements;
                     $scope.userTickets = data.data.content;
@@ -1652,15 +1652,12 @@ angular.module('User')
                     })
                 })
                 .catch(function (data) {
+                    console.log(data);
                 })
         };
-        $q.all(userInfoPromise)
-            .then(function () {
-                $scope.getUserTickets(1);
-            })
-            .catch(function () {
 
-            });
+        $scope.getUserTickets(1);
+
         //==================================================== ********* =================================
         //==================================================== DISCOUNT SECTION =======================
         $scope.discountCodeShow = function (index) {
@@ -1999,14 +1996,17 @@ angular.module('User')
                 }
             }, 500);
             $scope.generateSeatMapGuestTicket = function (sansIndex) {
-                console.log(sansIndex);
+                document.getElementsByClassName("seatMapLoading")[0].style.display = "block";
                 sansPickedGenerateTicket = $scope.eventDatesGuestTicket[sansIndex];
                 seatmapService.getPopulatedSchema($scope.eventDatesGuestTicket[sansIndex].eventDateId)
                     .then(function (data) {
+                        document.getElementsByClassName("seatMapHelpSection")[0].style.display = "block";
+                        document.getElementsByClassName("seatMapLoading")[0].style.display = "none";
                         var populatedSchema = data.data;
                         $scope.$broadcast('newSVGGenrateTicket', [populatedSchema, 5]);
                     })
                     .catch(function (data) {
+                        document.getElementsByClassName("seatMapLoading")[0].style.display = "none";
                         console.log(data);
                     })
             };
@@ -2092,7 +2092,7 @@ angular.module('User')
                     $scope.salonSchema = data.data;
                     countNumberOfSeats($scope.salonSchema.schema.sections);
                     $scope.$broadcast('newSVG', [$scope.salonSchema, seatMapIndex]);
-                    document.getElementsByClassName("generateSeatMap"+seatMapIndex)[0].style.display = "none";
+                    // document.getElementsByClassName("generateSeatMap"+seatMapIndex)[0].style.display = "none";
                 })
                 .catch(function (data) {
                     document.getElementsByClassName("seatMapSpinner")[0].style.display = "none";
@@ -2212,6 +2212,7 @@ angular.module('User')
                     blitType.price = 0;
                 }
             });
+
             newShowTime.date = dateSetterService.persianToMs(newShowTime.persianDate);
             $scope.showTimeForms.push(newShowTime);
             $scope.sansSet();

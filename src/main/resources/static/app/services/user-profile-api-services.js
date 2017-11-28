@@ -138,21 +138,19 @@ angular.module('userProfileApi', [])
         ticket.buyTicketWithSeat = function (ticketInfo) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/blits/buy-request-with-seat', ticketInfo);
         };
+        ticket.buyTicketWithSeatNotUser = function (ticketInfo) {
+            return $http.post(config.baseUrl+'/api/blito/v1.0/public/blits/buy-request-with-seat', ticketInfo);
+        };
         ticket.buyTicketNotUser = function (ticketInfo) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/public/blits/buy-request', ticketInfo);
         };
-        ticket.getUserTickets = function (pageNumber, userEmail) {
+
+        ticket.getUserTickets = function (pageNumber) {
+            console.log(pageNumber);
             var queryParam = {
                 params : {page: pageNumber-1, size: 5, sort: "createdAt,desc"}
             };
-            var bodyJson = {
-                restrictions : [
-                    {field : "user-email", type : "simple", operation : "eq", value: userEmail},
-                    {field : "paymentStatus", type : "simple", operation : "neq", value: 'PENDING'},
-                    {field : "paymentStatus", type : "simple", operation : "neq", value : 'ERROR'}
-                ]
-            };
-            return $http.post(config.baseUrl+'/api/blito/v1.0/blits/search', bodyJson, queryParam)
+            return $http.get(config.baseUrl+'/api/blito/v1.0/blits', queryParam)
         };
         ticket.getEventTickets = function (pageNumber, eventId) {
             var queryParam = {
