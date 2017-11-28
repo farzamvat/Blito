@@ -85,7 +85,7 @@ angular.module('blitoDirectives')
                 chart.labels({fontSize: 18});
                 chartLabels.format("{%info}");
                 var touchSS = function(e){
-                        e.preventDefault();
+                    e.preventDefault();
                 };
                 function createDrillUpLabel(text, offset, stage , action ){
                     removeAnychartLogo();
@@ -581,19 +581,64 @@ angular.module('blitoDirectives')
                     return label;
                 };
                 document.getElementById('seatMaperChart'+svgIndex).addEventListener('touchend', touchSS);
+                var toolTip = $("<div class='custom-tooltip'></div>").css({
+                    "position": "absolute",
+                    "pointerEvents": "none",
+                    "width": "100px",
+                    "background-color": "rgba(50, 50, 50, 0.7)",
+                    "padding": "4px",
+                    "color": "white",
+                    "border-radius": "3px",
+                    "border": "solid black 2px",
+                    "display": "none"
+                });
+                var clientX , clientY;
+                var initToolTip = function (e) {
+                    var $container = $(this.container().getStage().container());
+                    if (!$container.find('.custom-tooltip').length) {
+                        $container.append(toolTip);
+                    }
+                };
+                chart.listen("mouseMove", initToolTip);
+                chart.listen("touchmove", initToolTip);
+
                 //neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew
-                var seatClickFunction = function (f) {
-                    var e=f.originalEvent;
-                        if (scope.pickedSeats.indexOf(e.domTarget.dd) === -1) {
-                            scope.pickedSeats.push(e.domTarget.dd);
-                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#39A939');
-                        } else {
-                            scope.pickedSeats.splice(scope.pickedSeats.indexOf(e.domTarget.dd), 1);
-                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#64b5f6');
-                        }
+                var seatClickFunction = function (e) {
+                    if (scope.pickedSeats.indexOf(e.domTarget.dd) === -1) {
+                        scope.pickedSeats.push(e.domTarget.dd);
+                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#39A939');
+                    } else {
+                        scope.pickedSeats.splice(scope.pickedSeats.indexOf(e.domTarget.dd), 1);
+                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#64b5f6');
+                    }
                     e.preventDefault();
                     ctrl.validationCheckBlitType(scope.pickedSeats, svgIndex);
 
+                };
+                var setToolTip = function (e) {
+                    clientX = e.iF.b.Xw.left;
+                    clientY = e.iF.b.Xw.top;
+                    toolTip.css({"display": "block"});
+                    svgData.schema.sections.forEach(function (sect) {
+                            sect.rows.forEach(function (row) {
+                                row.seats.forEach(function (seat) {
+                                    if(e.domTarget.dd === seat.uid) {
+                                        toolTip.html("قیمت: "+seat.price);
+                                    }
+                                })
+                            });
+                    });
+                    toolTip.css({"left": clientX - 50, "top": clientY + toolTypeYOffset, "z-index": 99999});
+                };
+                var seatTouch = function (e) {
+                    setToolTip(e);
+                    seatClickFunction(e);
+                };
+                var mouseOverSeat = function (e) {
+                    setToolTip(e);
+                };
+                var mouseOutSeat = function () {
+                    toolTip.css("display","none");
                 };
 
 
@@ -615,7 +660,10 @@ angular.module('blitoDirectives')
                         var section=sectionsChart[sectionIndex].chart.choropleth(rowSeats)
                             .name(svgData.schema.sections[sectionIndex].rows[rowIndex].name);
                         //neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew
-                        section.listen('pointClick', seatClickFunction);
+                        section.listen('click', seatClickFunction);
+                        section.listen('touchstart', seatTouch);
+                        section.listen('mouseOver', mouseOverSeat);
+                        section.listen('mouseOut', mouseOutSeat);
                         // section.listen('click', seatClickFunction);
                     }
 
@@ -626,16 +674,18 @@ angular.module('blitoDirectives')
 
                     sectionsChart[sectionIndex].chart.labels(true);
                     var labels = sectionsChart[sectionIndex].chart.labels();
+                    var toolTypeYOffset;
                     if($(window).width() < 1000) {
+                        toolTypeYOffset = 10;
                         sectionsChart[sectionIndex].chart.labels({fontSize: 6});
                     } else {
+                        toolTypeYOffset = 25;
                         sectionsChart[sectionIndex].chart.labels({fontSize: 10});
                     }
                     labels.format("{%info}");
                     //neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew
-                    var toolTip = sectionsChart[sectionIndex].chart.tooltip().enabled(true);
-                    toolTip.title("قیمت صندلی")
-                    toolTip.format("{%price}")
+                    sectionsChart[sectionIndex].chart.tooltip().enabled(false);
+
                 }
                 //neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew
                 chart.tooltip().enabled(false);
@@ -643,6 +693,7 @@ angular.module('blitoDirectives')
                 chart.draw();
                 var DrillupLabel= createDrillUpLabel( "بازگشت" , 0, "labelDrillUpSection"+svgIndex ,function(){
                     chart.drillUp();
+                    toolTip.css("display","none");
                     this.enabled(false);
                 });
                 DrillupLabel.enabled(false);
