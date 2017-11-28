@@ -2221,9 +2221,6 @@ angular.module('User')
             $scope.showTimeForms.push(newShowTime);
             $scope.sansSet();
             $scope.newShowTime = {blitTypes : [], newSeatsPrice : 'false'};
-            $timeout(function () {
-                    $(".addedSansForEvent").removeClass("fadeOutGreen", 1000, "easeInBack");
-            }, 500)
         };
         var newEditedBlitTypes = [];
         $scope.submitSansWithSeatpickerEdit = function (newSans) {
