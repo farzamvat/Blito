@@ -85,7 +85,7 @@ angular.module('blitoDirectives')
                 chart.labels({fontSize: 18});
                 chartLabels.format("{%info}");
                 var touchSS = function(e){
-                        e.preventDefault();
+                    e.preventDefault();
                 };
                 function createDrillUpLabel(text, offset, stage , action ){
                     removeAnychartLogo();
@@ -397,6 +397,7 @@ angular.module('blitoDirectives')
                     var legend = sectionsChart[sectionIndex].chart.legend();
                     legend.enabled(true)
                         .position('right')
+                        .align('center')
                         .itemsLayout('vertical')
                         .removeAllListeners()
                     ;
@@ -410,7 +411,8 @@ angular.module('blitoDirectives')
 
                     sectionsChart[sectionIndex].chart.labels({fontSize: 10});
                     labels.format("{%info}");
-                    var toolTip = sectionsChart[sectionIndex].chart.tooltip().enabled(false);
+                    var toolTip = sectionsChart[sectionIndex].chart.tooltip().enabled(true);
+                    toolTip.title("قیمت")
                     toolTip.format("{%price}")
                 }
                 chart.tooltip().enabled(false);
@@ -473,7 +475,7 @@ angular.module('blitoDirectives')
                                             $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#999999');
                                             break;
                                         case "AVAILABLE" :
-                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#2A82B8');
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#64b5f6');
                                             break;
                                         default :
                                             break;
@@ -581,9 +583,29 @@ angular.module('blitoDirectives')
                     return label;
                 };
                 document.getElementById('seatMaperChart'+svgIndex).addEventListener('touchend', touchSS);
+                var toolTip = $("<div class='custom-tooltip'></div>").css({
+                    "position": "absolute",
+                    "pointerEvents": "none",
+                    "width": "100px",
+                    "background-color": "rgba(50, 50, 50, 0.7)",
+                    "padding": "4px",
+                    "color": "white",
+                    "border-radius": "3px",
+                    "border": "solid black 2px",
+                    "display": "none"
+                });
+                var clientX , clientY;
+                var initToolTip = function (e) {
+                    var $container = $(this.container().getStage().container());
+                    if (!$container.find('.custom-tooltip').length) {
+                        $container.append(toolTip);
+                    }
+                };
+                chart.listen("mouseMove", initToolTip);
+                chart.listen("touchmove", initToolTip);
+
                 //neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew
-                var seatClickFunction = function (f) {
-                    var e=f.originalEvent;
+                var seatClickFunction = function (e) {
                     if (scope.pickedSeats.indexOf(e.domTarget.dd) === -1) {
                         scope.pickedSeats.push(e.domTarget.dd);
                         $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#39A939');
@@ -593,6 +615,32 @@ angular.module('blitoDirectives')
                     }
                     e.preventDefault();
                     ctrl.validationCheckBlitType(scope.pickedSeats, svgIndex);
+
+                };
+                var setToolTip = function (e) {
+                    clientX = e.iF.b.Xw.left;
+                    clientY = e.iF.b.Xw.top;
+                    toolTip.css({"display": "block"});
+                    svgData.schema.sections.forEach(function (sect) {
+                            sect.rows.forEach(function (row, rowIndex) {
+                                row.seats.forEach(function (seat) {
+                                    if(e.domTarget.dd === seat.uid) {
+                                        toolTip.html("قیمت: "+seat.price+"\n"+"ردیف: "+(rowIndex+1));
+                                    }
+                                })
+                            });
+                    });
+                    toolTip.css({"left": clientX - 50, "top": clientY + toolTypeYOffset, "z-index": 99999});
+                };
+                var seatTouch = function (e) {
+                    setToolTip(e);
+                    seatClickFunction(e);
+                };
+                var mouseOverSeat = function (e) {
+                    setToolTip(e);
+                };
+                var mouseOutSeat = function () {
+                    toolTip.css("display","none");
                 };
 
 
@@ -614,7 +662,10 @@ angular.module('blitoDirectives')
                         var section=sectionsChart[sectionIndex].chart.choropleth(rowSeats)
                             .name(svgData.schema.sections[sectionIndex].rows[rowIndex].name);
                         //neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew
-                        section.listen('pointClick', seatClickFunction);
+                        section.listen('click', seatClickFunction);
+                        section.listen('touchstart', seatTouch);
+                        section.listen('mouseOver', mouseOverSeat);
+                        section.listen('mouseOut', mouseOutSeat);
                         // section.listen('click', seatClickFunction);
                     }
 
@@ -623,14 +674,20 @@ angular.module('blitoDirectives')
                     legend.enabled(false);
 
 
-
                     sectionsChart[sectionIndex].chart.labels(true);
                     var labels = sectionsChart[sectionIndex].chart.labels();
-                    sectionsChart[sectionIndex].chart.labels({fontSize: 10});
+                    var toolTypeYOffset;
+                    if($(window).width() < 1000) {
+                        toolTypeYOffset = 10;
+                        sectionsChart[sectionIndex].chart.labels({fontSize: 6});
+                    } else {
+                        toolTypeYOffset = 25;
+                        sectionsChart[sectionIndex].chart.labels({fontSize: 10});
+                    }
                     labels.format("{%info}");
                     //neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew
-                    var toolTip = sectionsChart[sectionIndex].chart.tooltip().enabled(false);
-                    toolTip.format("{%price}")
+                    sectionsChart[sectionIndex].chart.tooltip().enabled(false);
+
                 }
                 //neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew
                 chart.tooltip().enabled(false);
@@ -638,6 +695,7 @@ angular.module('blitoDirectives')
                 chart.draw();
                 var DrillupLabel= createDrillUpLabel( "بازگشت" , 0, "labelDrillUpSection"+svgIndex ,function(){
                     chart.drillUp();
+                    toolTip.css("display","none");
                     this.enabled(false);
                 });
                 DrillupLabel.enabled(false);
