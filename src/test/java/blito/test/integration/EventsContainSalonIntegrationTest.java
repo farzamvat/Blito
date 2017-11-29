@@ -3,18 +3,15 @@ package blito.test.integration;
 import com.blito.common.Salon;
 import com.blito.common.Seat;
 import com.blito.configs.Constants;
-import com.blito.enums.*;
+import com.blito.enums.HostType;
 import com.blito.models.User;
-import com.blito.payments.zarinpal.PaymentVerificationResponse;
 import com.blito.payments.zarinpal.client.ZarinpalClient;
 import com.blito.repositories.UserRepository;
 import com.blito.rest.viewmodels.blit.ReservedBlitViewModel;
-import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
-import com.blito.rest.viewmodels.payments.ZarinpalPayRequestResponseViewModel;
 import com.blito.services.PaymentRequestService;
 import com.blito.services.blit.CommonBlitService;
 import com.blito.services.blit.SeatBlitService;
@@ -23,7 +20,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
 import io.vavr.control.Try;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -34,8 +30,6 @@ import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static org.hamcrest.CoreMatchers.equalTo;
 
 /**
  * @author Farzam Vatanzadeh
@@ -157,73 +151,73 @@ public class EventsContainSalonIntegrationTest extends AbstractEventRestControll
     }
 
 
-    @Test
-    public void buySeatBlit_success() {
-        ZarinpalPayRequestResponseViewModel zarinpalResponse = new ZarinpalPayRequestResponseViewModel();
-        zarinpalResponse.setGateway(BankGateway.ZARINPAL);
-        zarinpalResponse.setZarinpalWebGatewayURL(zarinpalGatewayURL + "testToken");
-        Mockito.when(paymentRequestService.createPurchaseRequest(Mockito.any())).thenReturn("testToken");
-        Mockito.when(paymentRequestService.createZarinpalResponse("testToken")).thenReturn(zarinpalResponse);
-        Mockito.when(seatBlitService.generateTrackCode()).thenReturn("123456");
-
-        PaymentVerificationResponse paymentVerificationResponse = new PaymentVerificationResponse();
-        paymentVerificationResponse.setRefID(123123L);
-        paymentVerificationResponse.setStatus(100);
-        Mockito.when(zarinpalClient.getPaymentVerificationResponse(Mockito.anyInt(),Mockito.anyString())).thenReturn(paymentVerificationResponse);
-
-        EventViewModel eventViewModel = createAndUpdateEventWithSalon();
-        approveEvent_success(eventViewModel.getEventId(), OperatorState.APPROVED);
-        openEventState_success(eventViewModel.getEventId(), State.OPEN);
-        eventViewModel.getEventDates().forEach(eventDateViewModel -> openEventDateState_success(eventDateViewModel.getEventDateId(),State.OPEN));
-        openBlitTypeState_success(new ArrayList<>(eventViewModel.getEventDates().stream().flatMap(eventDateViewModel -> eventDateViewModel.getBlitTypes().stream())
-                .map(BlitTypeViewModel::getBlitTypeId).collect(Collectors.toSet())),State.OPEN);
-        SeatBlitViewModel seatBlitViewModel = new SeatBlitViewModel();
-        seatBlitViewModel.setEventDateId(eventViewModel.getEventDates().stream().findFirst().get().getEventDateId());
-        seatBlitViewModel.setBankGateway(BankGateway.ZARINPAL);
-        seatBlitViewModel.setCount(6);
-        seatBlitViewModel.setSeats("2,3,4 row 2");
-        seatBlitViewModel.setCustomerEmail("blito.adm@gmail.com");
-        seatBlitViewModel.setCustomerName("fifi");
-        seatBlitViewModel.setEventAddress(eventViewModel.getAddress());
-        seatBlitViewModel.setEventDateAndTime("event time");
-        seatBlitViewModel.setTotalAmount(18000L);
-        seatBlitViewModel.setSeatType(SeatType.SEAT_BLIT);
-        seatBlitViewModel.setSeatUids(new HashSet<>());
-        seatBlitViewModel.setEventName(eventViewModel.getEventName());
-        seatBlitViewModel.setEventDate(eventViewModel.getEventDates().stream().findFirst().get().getDate());
-        seatBlitViewModel.setCustomerMobileNumber("09124337522");
-
-        getTestSalonSchema().getSections()
-                .stream()
-                .flatMap(section -> section.getRows().stream())
-                .filter(row -> row.getName().equals("2"))
-                .flatMap(row -> row.getSeats().stream())
-                .sorted(Comparator.comparing(Seat::getName))
-                .limit(3)
-                .forEachOrdered(seat -> seatBlitViewModel.getSeatUids().add(seat.getUid()));
-
-        getTestSalonSchema().getSections()
-                .stream()
-                .flatMap(section -> section.getRows().stream())
-                .filter(row -> row.getName().equals("1"))
-                .flatMap(row -> row.getSeats().stream())
-                .sorted(Comparator.comparing(Seat::getName))
-                .limit(3)
-                .forEachOrdered(seat -> seatBlitViewModel.getSeatUids().add(seat.getUid()));
-        Response response =
-                givenRestIntegration()
-                .body(seatBlitViewModel)
-                .when()
-                .post(getServerAddress() + "/api/blito/v1.0/blits/buy-request-with-seat");
-        response.then().statusCode(200).body("zarinpalWebGatewayURL",equalTo(zarinpalGatewayURL + "testToken"))
-        .body("gateway",equalTo(BankGateway.ZARINPAL.name()));
-
-        Response getUserBlitsResposne =
-                givenRestIntegration()
-                .when()
-                .get(getServerAddress() + "/api/blito/v1.0/blits");
-        getUserBlitsResposne.then().statusCode(200);
-    }
+//    @Test
+//    public void buySeatBlit_success() {
+//        ZarinpalPayRequestResponseViewModel zarinpalResponse = new ZarinpalPayRequestResponseViewModel();
+//        zarinpalResponse.setGateway(BankGateway.ZARINPAL);
+//        zarinpalResponse.setZarinpalWebGatewayURL(zarinpalGatewayURL + "testToken");
+//        Mockito.when(paymentRequestService.createPurchaseRequest(Mockito.any())).thenReturn("testToken");
+//        Mockito.when(paymentRequestService.createZarinpalResponse("testToken")).thenReturn(zarinpalResponse);
+//        Mockito.when(seatBlitService.generateTrackCode()).thenReturn("123456");
+//
+//        PaymentVerificationResponse paymentVerificationResponse = new PaymentVerificationResponse();
+//        paymentVerificationResponse.setRefID(123123L);
+//        paymentVerificationResponse.setStatus(100);
+//        Mockito.when(zarinpalClient.getPaymentVerificationResponse(Mockito.anyInt(),Mockito.anyString())).thenReturn(paymentVerificationResponse);
+//
+//        EventViewModel eventViewModel = createAndUpdateEventWithSalon();
+//        approveEvent_success(eventViewModel.getEventId(), OperatorState.APPROVED);
+//        openEventState_success(eventViewModel.getEventId(), State.OPEN);
+//        eventViewModel.getEventDates().forEach(eventDateViewModel -> openEventDateState_success(eventDateViewModel.getEventDateId(),State.OPEN));
+//        openBlitTypeState_success(new ArrayList<>(eventViewModel.getEventDates().stream().flatMap(eventDateViewModel -> eventDateViewModel.getBlitTypes().stream())
+//                .map(BlitTypeViewModel::getBlitTypeId).collect(Collectors.toSet())),State.OPEN);
+//        SeatBlitViewModel seatBlitViewModel = new SeatBlitViewModel();
+//        seatBlitViewModel.setEventDateId(eventViewModel.getEventDates().stream().findFirst().get().getEventDateId());
+//        seatBlitViewModel.setBankGateway(BankGateway.ZARINPAL);
+//        seatBlitViewModel.setCount(6);
+//        seatBlitViewModel.setSeats("2,3,4 row 2");
+//        seatBlitViewModel.setCustomerEmail("blito.adm@gmail.com");
+//        seatBlitViewModel.setCustomerName("fifi");
+//        seatBlitViewModel.setEventAddress(eventViewModel.getAddress());
+//        seatBlitViewModel.setEventDateAndTime("event time");
+//        seatBlitViewModel.setTotalAmount(18000L);
+//        seatBlitViewModel.setSeatType(SeatType.SEAT_BLIT);
+//        seatBlitViewModel.setSeatUids(new HashSet<>());
+//        seatBlitViewModel.setEventName(eventViewModel.getEventName());
+//        seatBlitViewModel.setEventDate(eventViewModel.getEventDates().stream().findFirst().get().getDate());
+//        seatBlitViewModel.setCustomerMobileNumber("09124337522");
+//
+//        getTestSalonSchema().getSections()
+//                .stream()
+//                .flatMap(section -> section.getRows().stream())
+//                .filter(row -> row.getName().equals("2"))
+//                .flatMap(row -> row.getSeats().stream())
+//                .sorted(Comparator.comparing(Seat::getName))
+//                .limit(3)
+//                .forEachOrdered(seat -> seatBlitViewModel.getSeatUids().add(seat.getUid()));
+//
+//        getTestSalonSchema().getSections()
+//                .stream()
+//                .flatMap(section -> section.getRows().stream())
+//                .filter(row -> row.getName().equals("1"))
+//                .flatMap(row -> row.getSeats().stream())
+//                .sorted(Comparator.comparing(Seat::getName))
+//                .limit(3)
+//                .forEachOrdered(seat -> seatBlitViewModel.getSeatUids().add(seat.getUid()));
+//        Response response =
+//                givenRestIntegration()
+//                .body(seatBlitViewModel)
+//                .when()
+//                .post(getServerAddress() + "/api/blito/v1.0/blits/buy-request-with-seat");
+//        response.then().statusCode(200).body("zarinpalWebGatewayURL",equalTo(zarinpalGatewayURL + "testToken"))
+//        .body("gateway",equalTo(BankGateway.ZARINPAL.name()));
+//
+//        Response getUserBlitsResposne =
+//                givenRestIntegration()
+//                .when()
+//                .get(getServerAddress() + "/api/blito/v1.0/blits");
+//        getUserBlitsResposne.then().statusCode(200);
+//    }
 
     public Salon getTestSalonSchema() {
         return Try.of(() -> new File(EventsContainSalonIntegrationTest.class.getResource(Constants.BASE_SALON_SCHEMAS + "/TestSalon" ).toURI()))
