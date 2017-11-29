@@ -5,15 +5,6 @@
 angular.module('eventsPageModule')
     .controller('userTicketCtrl', function($scope, ticketsService, $routeParams, mapMarkerService, photoService, FileSaver){
         $("#buyTicket").modal("hide");
-        function contains(value, searchFor)
-        {
-            var v = (value || '').toLowerCase();
-            var v2 = searchFor;
-            if (v2) {
-                v2 = v2.toLowerCase();
-            }
-            return v.indexOf(v2) > -1;
-        }
         $scope.imageDownload = function (UUID) {
             photoService.download(UUID)
                 .then(function (data) {
