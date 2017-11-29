@@ -38,7 +38,7 @@ public class ImageControllerTest extends AbstractRestControllerTest {
 			givenRestIntegration()
 			.contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
 			.when()
-			.multiPart(new File("blito.iml"))
+			.multiPart(new File("JenkinsFile"))
 			.post(getServerAddress() + "/api/blito/v1.0/images/multipart/upload");
 		response.then().statusCode(200);
 		return response.then().extract().body().as(ImageViewModel.class);
@@ -71,7 +71,7 @@ public class ImageControllerTest extends AbstractRestControllerTest {
 				givenRestIntegration()
 						.contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
 						.when()
-						.multiPart(new File("blito.iml"))
+						.multiPart(new File("JenkinsFile"))
 						.formParam("defaultId", Constants.DEFAULT_EXCHANGEBLIT_PHOTO)
 						.post(getServerAddress() + "/api/blito/v1.0/images/multipart/upload");
 		response.then().statusCode(200);
