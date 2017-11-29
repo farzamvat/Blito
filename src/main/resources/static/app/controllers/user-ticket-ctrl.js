@@ -24,13 +24,11 @@ angular.module('eventsPageModule')
         };
         ticketsService.getBoughtTicket($routeParams.trackCode)
             .then(function (data) {
-                console.log("b");
                 $scope.paymentStatus = data.data.result.status;
                 if($scope.paymentStatus) {
                     var newFirstSeat = '';
                     $scope.ticketData = data.data;
                     if($scope.ticketData.seats) {
-                        console.log($scope.ticketData.seats);
                         $scope.ticketData.seats = $scope.ticketData.seats.split("/");
                         $scope.ticketData.seats[0]
                             .split('،')
