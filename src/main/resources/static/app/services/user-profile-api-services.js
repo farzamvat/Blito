@@ -146,7 +146,6 @@ angular.module('userProfileApi', [])
         };
 
         ticket.getUserTickets = function (pageNumber) {
-            console.log(pageNumber);
             var queryParam = {
                 params : {page: pageNumber-1, size: 5, sort: "createdAt,desc"}
             };

@@ -166,7 +166,6 @@ angular.module('eventsPageModule')
                 $scope.showSeatSection = false;
                 $scope.showWithoutSeatSection = true;
                 $scope.bothTypesOfBlits  = false;
-                console.log(!$scope.bothTypesOfBlits && $scope.showWithoutSeatSection);
 
             }
             if(((seatmapService.generateWithoutSeatBlitTypes($scope.eventDatePicked[0].blitTypes)).length !== 0) && $scope.eventDataDetails.salonUid) {
@@ -396,7 +395,6 @@ angular.module('eventsPageModule')
             $scope.buyTicketOnce = true;
             document.getElementsByClassName("payedBlitSpinner")[0].style.display = "inline";
             document.getElementById("buyBlitError").style.display = "none";
-            console.log(buyPaymentTicket);
             ticketsService.buyTicketWithSeatNotUser(buyPaymentTicket)
                 .then(function (data) {
                     document.getElementsByClassName("payedBlitSpinner")[0].style.display = "none";
