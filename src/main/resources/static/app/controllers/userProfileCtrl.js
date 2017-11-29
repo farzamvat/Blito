@@ -2184,14 +2184,12 @@ angular.module('User')
             $scope.$apply();
             $scope.seatBlitUidsEdit = data[0];
             $scope.sansPickedSeatMapEdit = data[1];
-            console.log($scope.seatBlitUidsEdit);
         });
         $scope.$on("blitIdsChanged",function (event ,data) {
             $scope.blitTypeCreateValidation = data[0].length;
             $scope.$apply();
             $scope.seatBlitUids = data[0];
             $scope.sansPickedSeatMap = data[1];
-            console.log($scope.seatBlitUids);
         });
         $scope.$on("blitIdsChangedGenerateTicket",function (event ,data) {
             $scope.blitTypeCreateValidationGenerateTicket = data[0].length;
