@@ -26,21 +26,7 @@ angular.module('eventsPageModule')
             .then(function (data) {
                 $scope.paymentStatus = data.data.result.status;
                 if($scope.paymentStatus) {
-                    var newFirstSeat = '';
                     $scope.ticketData = data.data;
-                    if($scope.ticketData.seats) {
-                        $scope.ticketData.seats = $scope.ticketData.seats.split("/");
-                        $scope.ticketData.seats[0]
-                            .split('،')
-                            .forEach(function (item) {
-                                if (!contains(item, 'بخش') && !contains(item, 'ردیف') && !contains(item, 'صندلی')) {
-                                    $scope.salonName = item;
-                                } else {
-                                    newFirstSeat += item;
-                                }
-                            });
-                        $scope.ticketData.seats[0] = newFirstSeat;
-                    }
                     mapMarkerService.initMapOnlyShowMarker(document.getElementById('ticketMap'));
                     mapMarkerService.setMarker($scope.ticketData.location.latitude, $scope.ticketData.location.longitude);
                     $scope.imageDownload($scope.ticketData.eventPhotoId);
