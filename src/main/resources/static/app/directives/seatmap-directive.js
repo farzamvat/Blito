@@ -165,22 +165,24 @@ angular.module('blitoDirectives')
                         var section=sectionsChart[sectionIndex].chart.choropleth(rowSeats)
                             .name(svgData.schema.sections[sectionIndex].rows[rowIndex].name);
                         section.listen('pointClick', seatClickFunction);
+                        sectionsChart[sectionIndex].chart.contextMenu(false);
 
                     }
 
                     var legend = sectionsChart[sectionIndex].chart.legend();
                     legend.enabled(true)
                         .position('right')
-                        .itemsLayout('vertical')
                         .title("انتخاب ردیف")
+                        .itemsLayout('vertical')
                         .removeAllListeners()
                     ;
-
 
                     legend.title({fontSize:20});
                     legend.listen("click", legendListener);
                     legend.listen("touchstart", legendListener);
-
+                    legend.itemsSpacing(0);
+                    legend.iconSize(10);
+                    legend.margin(0,0,0,50);
                     sectionsChart[sectionIndex].chart.labels(true);
                     var labels = sectionsChart[sectionIndex].chart.labels();
 
@@ -397,6 +399,7 @@ angular.module('blitoDirectives')
                     var legend = sectionsChart[sectionIndex].chart.legend();
                     legend.enabled(true)
                         .position('right')
+                        .title("انتخاب ردیف")
                         .itemsLayout('vertical')
                         .removeAllListeners()
                     ;
@@ -404,6 +407,9 @@ angular.module('blitoDirectives')
 
                     legend.listen("click", legendListener);
                     legend.listen('touchstart', seatClickFunction);
+                    legend.itemsSpacing(0);
+                    legend.iconSize(10);
+                    legend.margin(0,0,0,50);
 
                     sectionsChart[sectionIndex].chart.labels(true);
                     var labels = sectionsChart[sectionIndex].chart.labels();
