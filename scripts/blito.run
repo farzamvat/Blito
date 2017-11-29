@@ -3,3 +3,4 @@ kill -9 $pid
 echo "Process with ${pid} killed"
 
 cd ..
+mvn -Dspring.profiles.active=dev spring-boot:run &
