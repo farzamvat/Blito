@@ -1,4 +1,4 @@
 pid=$(lsof -n -i :8085 | grep LISTEN | awk '{print $2}')
 kill -9 $pid || true
 echo "Process with ${pid} killed"
-/usr/local/apache-maven/bin/mvn -Dspring.profiles.active=dev spring-boot:run &
+mvn -Dspring.profiles.active=dev spring-boot:run &
