@@ -27,7 +27,7 @@
                         </div>
                         <div ng-show="ticketData.seats" class="ticketName ">
                             <h2> :جایگاه صندلی ‌</h2>
-                            <h4>{{ticketData.seats}}</h4>
+                            <span ng-repeat="seat in ticketData.seats">{{seat}}</span>
                         </div>
                         <div class="ticketName ">
                             <h2> :تعداد بلیت ‌</h2>
@@ -38,6 +38,10 @@
                     <div class="col-xs-1 floatRight hidden-sm hidden-md hidden-lg"></div>
 
                     <div class="cardAddress cardLeft col-xs-10   col-sm-6  floatRight">
+                        <div ng-show="!ticketData.seats" class="ticketName ">
+                            <h2> :نام سالن ‌</h2>
+                            <h4>{{salonName}}</h4>
+                        </div>
                         <div class="ticketAddress ">
                             <h2> :آدرس رویداد </h2>
                             <h4 class="textAlignRight">{{ticketData.eventAddress}}</h4>
