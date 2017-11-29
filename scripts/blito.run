@@ -1,4 +1,5 @@
 pid=$(lsof -n -i :8085 | grep LISTEN | awk '{print $2}')
 kill -9 $pid
+echo "Process with ${pid} killed"
 
 cd ..
