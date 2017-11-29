@@ -88,7 +88,6 @@ angular.module('UiServices')
                     })
                 })
             });
-            console.log(populatedSchema);
             return populatedSchema;
         };
 
