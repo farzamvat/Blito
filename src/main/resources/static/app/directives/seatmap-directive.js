@@ -397,6 +397,7 @@ angular.module('blitoDirectives')
                     var legend = sectionsChart[sectionIndex].chart.legend();
                     legend.enabled(true)
                         .position('right')
+                        .align('center')
                         .itemsLayout('vertical')
                         .removeAllListeners()
                     ;
@@ -410,7 +411,8 @@ angular.module('blitoDirectives')
 
                     sectionsChart[sectionIndex].chart.labels({fontSize: 10});
                     labels.format("{%info}");
-                    var toolTip = sectionsChart[sectionIndex].chart.tooltip().enabled(false);
+                    var toolTip = sectionsChart[sectionIndex].chart.tooltip().enabled(true);
+                    toolTip.title("قیمت")
                     toolTip.format("{%price}")
                 }
                 chart.tooltip().enabled(false);
@@ -473,7 +475,7 @@ angular.module('blitoDirectives')
                                             $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#999999');
                                             break;
                                         case "AVAILABLE" :
-                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#2A82B8');
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#64b5f6');
                                             break;
                                         default :
                                             break;
