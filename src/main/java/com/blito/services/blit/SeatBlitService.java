@@ -6,6 +6,7 @@ import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.exceptions.SeatException;
+import com.blito.mappers.BlitMapper;
 import com.blito.models.*;
 import com.blito.repositories.BlitTypeSeatRepository;
 import com.blito.repositories.EventDateRepository;
@@ -52,8 +53,13 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
     private SalonService salonService;
     private SearchService searchService;
     private ExcelService excelService;
-
     private EventDateRepository eventDateRepository;
+    private BlitMapper blitMapper;
+
+    @Autowired
+    public void setBlitMapper(BlitMapper blitMapper) {
+        this.blitMapper = blitMapper;
+    }
 
     @Autowired
     public void setSalonService(SalonService salonService) {
@@ -126,13 +132,13 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
 
     @Transactional
     public Page<SeatBlitViewModel> getUserBlits(User user, Pageable pageable) {
-        SearchViewModel<SeatBlit> searchViewModel = new SearchViewModel<>();
+        SearchViewModel<Blit> searchViewModel = new SearchViewModel<>();
         searchViewModel.setRestrictions(Arrays.asList(
                 new Simple<>(Operation.neq,"paymentStatus","PENDING"),
                 new Simple<>(Operation.neq,"paymentStatus","ERROR"),
                 new Simple<>(Operation.eq,"user-email",user.getEmail())
         ));
-        return searchService.search(searchViewModel,pageable,seatBlitMapper,seatBlitRepository);
+        return searchService.search(searchViewModel,pageable,blitMapper,blitRepository);
     }
 
     @Transactional
