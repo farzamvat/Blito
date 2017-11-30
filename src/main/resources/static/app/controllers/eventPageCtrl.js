@@ -233,6 +233,7 @@ angular.module('eventsPageModule')
             $scope.itemWithCapacity = $scope.blitTypesWithOutSeatsEdit.filter(function (item) {
                 return item.blitTypeId === blitId;
             });
+            $scope.eventInfo.ticketNumber = null;
         };
         $scope.nextStep1 = function (eventInfo) {
             document.getElementById("buyBlitError").style.display = "none";
