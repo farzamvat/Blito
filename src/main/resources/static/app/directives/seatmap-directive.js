@@ -871,6 +871,10 @@ angular.module('blitoDirectives')
 
                 var seatClickFunction = function (f) {
                     var e=f.originalEvent;
+                    if(scope.pickedSeats.length > 0) {
+                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + scope.pickedSeats[0]).css('fill', '#64b5f6');
+                        scope.pickedSeats.pop();
+                    }
                     if (scope.pickedSeats.indexOf(e.domTarget.dd) === -1) {
                         scope.pickedSeats.push(e.domTarget.dd);
                         $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#39A939');
