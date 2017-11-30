@@ -60,5 +60,8 @@ public class ZonedDateTimeTest {
 			throw new SeatException("message",new HashSet<>(Collections.singleton(new SeatErrorViewModel("uid","sold"))));
 		}).handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,mockHttpServletRequest,mockHttpServletResponse)).join();
 
+		ResponseEntity<?> responseSeatException = CompletableFuture.supplyAsync(() -> {
+			throw new SeatException(ResourceUtil.getMessage(Response.INDIVIDUAL_SEAT_ERROR));
+		}).handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,mockHttpServletRequest,mockHttpServletResponse)).join();
 	}
 }
