@@ -121,13 +121,13 @@ angular.module('UiServices')
             seatUids.forEach(function (seatUid) {
                 populatedSchema.schema.sections.forEach(function (section) {
                     section.rows.forEach(function (row) {
-                        if((row.seats[0].nextUid === seatUid) && (seatUids.indexOf(row.seats[0].uid) === -1) && (row.seats[0].state === 'AVAILABLE')) {
-                            pickedSeatsCheck = true;
-                        }
-                        if((row.seats[row.seats.length-1].prevUid === seatUid) && (seatUids.indexOf(row.seats[row.seats.length-1].uid) === -1) && (row.seats[row.seats.length-1].state === 'AVAILABLE')) {
-                            pickedSeatsCheck = true;
-                        }
                         for(var seatIndex = 0; seatIndex < row.seats.length ; seatIndex++) {
+                            if( (row.seats[seatIndex-1]) && (!row.seats[seatIndex-1].prevUid) && (row.seats[seatIndex-1].nextUid === seatUid) && (seatUids.indexOf(row.seats[seatIndex-1].uid) === -1) && (row.seats[seatIndex-1].state === 'AVAILABLE')) {
+                                pickedSeatsCheck = true;
+                            }
+                            if((row.seats[seatIndex+1]) && (!row.seats[seatIndex+1].nextUid) &&(row.seats[seatIndex+1].prevUid === seatUid) && (seatUids.indexOf(row.seats[seatIndex+1].uid) === -1) && (row.seats[seatIndex+1].state === 'AVAILABLE')) {
+                                pickedSeatsCheck = true;
+                            }
                             if((row.seats[seatIndex].nextUid === seatUid) && (seatUids.indexOf(row.seats[seatIndex].uid) === -1) && (row.seats[seatIndex].state === 'AVAILABLE')) {
                                 if(row.seats[seatIndex-1] && ((seatUids.indexOf(row.seats[seatIndex-1].uid) !== -1) || (row.seats[seatIndex-1].state !== 'AVAILABLE'))) {
                                     pickedSeatsCheck = true;
