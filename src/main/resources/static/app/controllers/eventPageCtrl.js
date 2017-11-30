@@ -265,7 +265,6 @@ angular.module('eventsPageModule')
             $scope.discountIsValid = false;
             $scope.discountTotalAmount = '';
             $scope.discountInput.code = null;
-            $scope.itemWithCapacity = null;
             buyPaymentTicket = {};
             document.getElementById("discountSuccess").style.display = "none";
             document.getElementById("discountError").style.display = "none";
