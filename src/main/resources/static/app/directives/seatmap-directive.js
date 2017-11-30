@@ -406,7 +406,7 @@ angular.module('blitoDirectives')
 
 
                     legend.listen("click", legendListener);
-                    legend.listen('touchstart', seatClickFunction);
+                    legend.listen('touchstart', legendListener);
                     legend.itemsSpacing(0);
                     legend.iconSize(10);
                     legend.margin(0,0,0,50);
@@ -909,17 +909,6 @@ angular.module('blitoDirectives')
                         section.listen('pointClick', seatClickFunction);
 
                     }
-
-
-                    var legend = sectionsChart[sectionIndex].chart.legend();
-                    legend.enabled(true)
-                        .position('right')
-                        .itemsLayout('vertical')
-                        .removeAllListeners()
-                    ;
-
-
-
                     sectionsChart[sectionIndex].chart.labels(true);
                     var labels = sectionsChart[sectionIndex].chart.labels();
 
