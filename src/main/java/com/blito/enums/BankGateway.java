@@ -1,5 +1,5 @@
 package com.blito.enums;
 
 public enum BankGateway {
-	SAMAN,MELLAT,HOMAPAY,ZARINPAL,NONE
+	SAMAN,MELLAT,HOMAPAY,ZARINPAL,NONE,PAYDOTIR
 }
