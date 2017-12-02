@@ -60,7 +60,8 @@
 
                             <td ng-if="item.maxPrice === 0 && eventType !== 'EXHIBITION'" class="dataCenter">رایگان</td>
                             <td ng-if="item.maxPrice !== 0 && item.minPrice === 0 && eventType !== 'EXHIBITION'" class="dataCenter">رایگان - {{ item.maxPrice | number | pNumber}}</td>
-                            <td ng-if="item.maxPrice !== 0 && item.minPrice !== 0 && eventType !== 'EXHIBITION'" class="dataCenter">{{ item.maxPrice | number | pNumber}} - {{ item.minPrice | number | pNumber}}</td>
+                            <td ng-if="item.maxPrice !== 0 && item.minPrice !== 0 && eventType !== 'EXHIBITION' && item.maxPrice !== item.minPrice" class="dataCenter">{{ item.maxPrice | number | pNumber}} - {{ item.minPrice | number | pNumber}}</td>
+                            <td ng-if="item.maxPrice !== 0 && item.minPrice !== 0 && eventType !== 'EXHIBITION' && item.maxPrice === item.minPrice" class="dataCenter">{{ item.maxPrice | number | pNumber}}</td>
 
                             <td ng-if="eventType !== 'EXHIBITION'" class="dataCenter">{{ item.soldCount | number | pNumber}} / {{ item.capacity  | number | pNumber}}</td>
 

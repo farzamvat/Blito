@@ -6,6 +6,7 @@ import com.blito.exceptions.InconsistentDataException;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.exceptions.SeatException;
+import com.blito.mappers.BlitMapper;
 import com.blito.models.*;
 import com.blito.repositories.BlitTypeSeatRepository;
 import com.blito.repositories.EventDateRepository;
@@ -15,7 +16,9 @@ import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
 import com.blito.rest.viewmodels.blit.SeatErrorViewModel;
 import com.blito.rest.viewmodels.discount.SeatBlitDiscountValidationViewModel;
 import com.blito.rest.viewmodels.payments.PaymentRequestViewModel;
+import com.blito.search.Operation;
 import com.blito.search.SearchViewModel;
+import com.blito.search.Simple;
 import com.blito.services.ExcelService;
 import com.blito.services.SalonService;
 import com.blito.services.SearchService;
@@ -50,8 +53,13 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
     private SalonService salonService;
     private SearchService searchService;
     private ExcelService excelService;
-
     private EventDateRepository eventDateRepository;
+    private BlitMapper blitMapper;
+
+    @Autowired
+    public void setBlitMapper(BlitMapper blitMapper) {
+        this.blitMapper = blitMapper;
+    }
 
     @Autowired
     public void setSalonService(SalonService salonService) {
@@ -123,6 +131,17 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
     }
 
     @Transactional
+    public Page<SeatBlitViewModel> getUserBlits(User user, Pageable pageable) {
+        SearchViewModel<Blit> searchViewModel = new SearchViewModel<>();
+        searchViewModel.setRestrictions(Arrays.asList(
+                new Simple<>(Operation.neq,"paymentStatus","PENDING"),
+                new Simple<>(Operation.neq,"paymentStatus","ERROR"),
+                new Simple<>(Operation.eq,"user-email",user.getEmail())
+        ));
+        return searchService.search(searchViewModel,pageable,blitMapper,blitRepository);
+    }
+
+    @Transactional
     @Override
     public Object createBlitAuthorized(SeatBlitViewModel viewModel, User user) {
         SeatBlit seatBlit = seatBlitMapper.createFromViewModel(viewModel);
@@ -137,7 +156,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         blitTypeSeats.forEach(blitTypeSeat -> {
             blitTypeSeat.setState(BlitTypeSeatState.RESERVED.name());
             blitTypeSeat.setReserveDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
-            seatBlit.setSeats((seatBlit.getSeats() == null ? blitTypeSeat.getSeat().getSalon().getName() + " , " : seatBlit.getSeats() + " /") +
+            seatBlit.setSeats((seatBlit.getSeats() == null ? blitTypeSeat.getSeat().getSalon().getName() + " ، " : seatBlit.getSeats() + " /") +
                     String.format(ResourceUtil.getMessage(Response.SEAT_INFORMATION),
                             blitTypeSeat.getSeat().getSectionName(),
                             blitTypeSeat.getSeat().getRowName(),
@@ -223,7 +242,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         blitTypeSeats.forEach(blitTypeSeat -> {
             blitTypeSeat.setState(BlitTypeSeatState.RESERVED.name());
             blitTypeSeat.setReserveDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
-            seatBlit.setSeats((seatBlit.getSeats() == null ? blitTypeSeat.getSeat().getSalon().getName() + " , " : seatBlit.getSeats() + " /") +
+            seatBlit.setSeats((seatBlit.getSeats() == null ? blitTypeSeat.getSeat().getSalon().getName() + " ، " : seatBlit.getSeats() + " /") +
                     String.format(ResourceUtil.getMessage(Response.SEAT_INFORMATION),
                             blitTypeSeat.getSeat().getSectionName(),
                             blitTypeSeat.getSeat().getRowName(),
@@ -233,6 +252,9 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         log.info("unauthorized user with email '{}' released reserveSeatBlitLock",viewModel.getCustomerEmail());
         salonService.validateNoIndividualSeat(salonService.populateSeatInformationInSalonSchemaByEventDateId(eventDate.getEventDateId()).getSchema());
         seatBlit.setTrackCode(generateTrackCode());
+        seatBlit.setBlitTypeSeats(blitTypeSeats);
+        userRepository.findByEmail(seatBlit.getCustomerEmail())
+                .ifPresent(user -> seatBlit.setUser(user));
         validateDiscountCodeIfPresentAndCalculateTotalAmount(viewModel,seatBlit);
         return Option.of(paymentRequestService.createPurchaseRequest(seatBlit))
                 .map(token -> persistBlit(seatBlit,Optional.empty(),token))

@@ -24,6 +24,7 @@ import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 import com.blito.search.Operation;
 import com.blito.search.SearchViewModel;
 import com.blito.search.Simple;
+import com.blito.utils.test.util.AbstractEventRestControllerTest;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
@@ -549,6 +550,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractEventRestC
                         .flatMap(ed -> ed.getBlitTypes().stream())
                         .filter(bt -> bt.getName().equals("vaysade"))
                         .findFirst().get().getBlitTypeId())));
+
 
         Response response = givenRestIntegrationUser()
                 .body(discountViewModel)

@@ -41,6 +41,9 @@ angular.module('blitoDirectives')
                     for(var i = 0; i < document.getElementsByClassName("anychart-credits").length ; i++) {
                         document.getElementsByClassName("anychart-credits")[i].style.display = "none";
                     }
+                    if(document.getElementById("labelDrillUpSection" + svgIndex).children[1]) {
+                        document.getElementById("labelDrillUpSection" + svgIndex).children[0].style.display = 'none';
+                    }
                 };
                 for (var sectionIndex = 0; sectionIndex < svgData.schema.sections.length; sectionIndex++) {
                     var rowName = 0;
@@ -82,7 +85,7 @@ angular.module('blitoDirectives')
                 chart.labels({fontSize: 18});
                 chartLabels.format("{%info}");
                 var touchSS = function(e){
-                        e.preventDefault();
+                    e.preventDefault();
                 };
                 function createDrillUpLabel(text, offset, stage , action ){
                     removeAnychartLogo();
@@ -91,6 +94,8 @@ angular.module('blitoDirectives')
                     label.text(text);
                     label.fontColor("#fff");
                     label.padding(15);
+                    label.background().cornerType("round");
+                    label.background().corners(5);
                     label.listen("click", action);
                     label.container(stage);
                     label.draw();
@@ -98,10 +103,11 @@ angular.module('blitoDirectives')
                 };
                 document.getElementById('seatMaperChart'+svgIndex).addEventListener('touchend', touchSS);
 
-                var seatClickFunction = function (e) {
+                var seatClickFunction = function (f) {
+                    var e=f.originalEvent;
                     if (scope.pickedSeats.indexOf(e.domTarget.dd) === -1) {
                         scope.pickedSeats.push(e.domTarget.dd);
-                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', 'green');
+                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#39A939');
                     } else {
                         scope.pickedSeats.splice(scope.pickedSeats.indexOf(e.domTarget.dd), 1);
                         $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#64b5f6');
@@ -133,7 +139,7 @@ angular.module('blitoDirectives')
                     } else {
                         currentSection[0].rows[e.itemIndex].seats.forEach(function (seat) {
                             if ((scope.pickedSeats.indexOf(seat.uid) === -1) && (!$('#'+"seatMaperChart"+svgIndex+' '+'#'+seat.uid).hasClass('noPointerEvents'))) {
-                                $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'green');
+                                $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#39A939');
                                 scope.pickedSeats.push(seat.uid);
                             }
                         });
@@ -158,30 +164,36 @@ angular.module('blitoDirectives')
                         });
                         var section=sectionsChart[sectionIndex].chart.choropleth(rowSeats)
                             .name(svgData.schema.sections[sectionIndex].rows[rowIndex].name);
-                        section.listen('touchstart', seatClickFunction);
-                        section.listen('click', seatClickFunction);
+                        section.listen('pointClick', seatClickFunction);
+                        sectionsChart[sectionIndex].chart.contextMenu(false);
+
                     }
 
                     var legend = sectionsChart[sectionIndex].chart.legend();
                     legend.enabled(true)
                         .position('right')
-                        .itemsLayout('vertical')
                         .title("انتخاب ردیف")
+                        .itemsLayout('vertical')
                         .removeAllListeners()
                     ;
 
                     legend.title({fontSize:20});
                     legend.listen("click", legendListener);
                     legend.listen("touchstart", legendListener);
-
+                    legend.itemsSpacing(0);
+                    legend.iconSize(10);
+                    legend.margin(0,0,0,50);
                     sectionsChart[sectionIndex].chart.labels(true);
                     var labels = sectionsChart[sectionIndex].chart.labels();
 
 
                     sectionsChart[sectionIndex].chart.labels({fontSize: 10});
                     labels.format("{%info}");
+                    var toolTip = sectionsChart[sectionIndex].chart.tooltip().enabled(false);
+                    toolTip.format("{%price}")
                 }
                 chart.bounds(0, '10%', '100%', '90%');
+                chart.tooltip().enabled(false);
                 chart.container("seatMaperChart"+svgIndex);
                 chart.draw();
 
@@ -202,8 +214,8 @@ angular.module('blitoDirectives')
                     })
                 });
                 removeAnychartLogo();
-                var interactivity = chart.interactivity();
-                interactivity.keyboardZoomAndMove(false);
+                // var interactivity = chart.interactivity();
+                // interactivity.keyboardZoomAndMove(false);
                 scope.resetPickedSeats = function (seatUids, isReserved, sansSeats) {
                     scope.pickedSeats = [];
                     seatUids.forEach(function (uid) {
@@ -211,7 +223,7 @@ angular.module('blitoDirectives')
                         if(isReserved){
                             $('#'+"seatMaperChart"+sansSeats+' '+'#'+uid).css('fill', '#999999')
                         } else {
-                            $('#'+"seatMaperChart"+sansSeats+' '+'#'+uid).css('fill', 'red')
+                            $('#'+"seatMaperChart"+sansSeats+' '+'#'+uid).css('fill', '#FCB731')
                         }
                     })
                 }
@@ -261,6 +273,9 @@ angular.module('blitoDirectives')
                     for(var i = 0; i < document.getElementsByClassName("anychart-credits").length ; i++) {
                         document.getElementsByClassName("anychart-credits")[i].style.display = "none";
                     }
+                    if(document.getElementById("labelDrillUpSection" + svgIndex).children[1]) {
+                        document.getElementById("labelDrillUpSection" + svgIndex).children[0].style.display = 'none';
+                    }
                 };
                 for (var sectionIndex = 0; sectionIndex < svgData.schema.sections.length; sectionIndex++) {
                     var rowName = 0;
@@ -307,6 +322,8 @@ angular.module('blitoDirectives')
                     label.text(text);
                     label.fontColor("#fff");
                     label.padding(15);
+                    label.background().cornerType("round")
+                    label.background().corners(5)
                     label.listen("click", action);
                     label.container(stage);
                     label.draw();
@@ -314,10 +331,11 @@ angular.module('blitoDirectives')
                 };
                 document.getElementById('seatMaperChart'+svgIndex).addEventListener('touchend', touchSS);
 
-                var seatClickFunction = function (e) {
+                var seatClickFunction = function (f) {
+                    var e=f.originalEvent;
                     if (scope.pickedSeats.indexOf(e.domTarget.dd) === -1) {
                         scope.pickedSeats.push(e.domTarget.dd);
-                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', 'green');
+                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#39A939');
                     } else {
                         scope.pickedSeats.splice(scope.pickedSeats.indexOf(e.domTarget.dd), 1);
                         $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#64b5f6');
@@ -349,7 +367,7 @@ angular.module('blitoDirectives')
                     } else {
                         currentSection[0].rows[e.itemIndex].seats.forEach(function (seat) {
                             if ((scope.pickedSeats.indexOf(seat.uid) === -1) && (!$('#'+"seatMaperChart"+svgIndex+' '+'#'+seat.uid).hasClass('noPointerEvents'))) {
-                                $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'green');
+                                $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#39A939');
                                 scope.pickedSeats.push(seat.uid);
                             }
                         });
@@ -372,30 +390,37 @@ angular.module('blitoDirectives')
                                 rowSeats.push(seat);
                             }
                         });
-                        sectionsChart[sectionIndex].chart.choropleth(rowSeats)
-                            .name(svgData.schema.sections[sectionIndex].rows[rowIndex].name)
-                            .listen('click', seatClickFunction)
+                        var section=sectionsChart[sectionIndex].chart.choropleth(rowSeats)
+                            .name(svgData.schema.sections[sectionIndex].rows[rowIndex].name);
+                        section.listen('pointClick', seatClickFunction);
                     }
 
 
                     var legend = sectionsChart[sectionIndex].chart.legend();
                     legend.enabled(true)
                         .position('right')
+                        .title("انتخاب ردیف")
                         .itemsLayout('vertical')
                         .removeAllListeners()
                     ;
 
 
                     legend.listen("click", legendListener);
+                    legend.listen('touchstart', legendListener);
+                    legend.itemsSpacing(0);
+                    legend.iconSize(10);
+                    legend.margin(0,0,0,50);
 
                     sectionsChart[sectionIndex].chart.labels(true);
                     var labels = sectionsChart[sectionIndex].chart.labels();
 
                     sectionsChart[sectionIndex].chart.labels({fontSize: 10});
                     labels.format("{%info}");
-                    var toolTip = sectionsChart[sectionIndex].chart.tooltip();
+                    var toolTip = sectionsChart[sectionIndex].chart.tooltip().enabled(true);
+                    toolTip.title("قیمت")
                     toolTip.format("{%price}")
                 }
+                chart.tooltip().enabled(false);
                 chart.container("seatMaperChart"+svgIndex);
                 chart.draw();
                 var DrillupLabel= createDrillUpLabel( "بازگشت" , 0, "labelDrillUpSection"+svgIndex ,function(){
@@ -419,14 +444,14 @@ angular.module('blitoDirectives')
                 });
 
                 removeAnychartLogo();
-                var interactivity = chart.interactivity();
-                interactivity.keyboardZoomAndMove(false);
+                // var interactivity = chart.interactivity();
+                // interactivity.keyboardZoomAndMove(false);
 
                 scope.resetPickedSeats = function (seatUids, isReserved, sansSeats) {
                     scope.pickedSeats = [];
                     seatUids.forEach(function (uid) {
                         $('#'+"seatMaperChart"+sansSeats+' '+'#'+uid).addClass('noPointerEvents');
-                        $('#'+"seatMaperChart"+sansSeats+' '+'#'+uid).css('fill', 'yellow')
+                        $('#'+"seatMaperChart"+sansSeats+' '+'#'+uid).css('fill', '#FCB731')
 
                     })
                 };
@@ -440,22 +465,22 @@ angular.module('blitoDirectives')
                                 row.seats.forEach(function (seat) {
                                     switch (seat.state) {
                                         case "RESERVED" :
-                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'blue');
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#234BA1');
                                             $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
                                             break;
                                         case "SOLD" :
-                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'orange');
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#801515');
                                             $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
                                             break;
                                         case "GUEST_NOT_AVAILABLE" :
-                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#333');
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#333333');
                                             $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
                                             break;
                                         case "NOT_AVAILABLE" :
                                             $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#999999');
                                             break;
                                         case "AVAILABLE" :
-                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'red');
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#64b5f6');
                                             break;
                                         default :
                                             break;
@@ -505,6 +530,9 @@ angular.module('blitoDirectives')
                     for(var i = 0; i < document.getElementsByClassName("anychart-credits").length ; i++) {
                         document.getElementsByClassName("anychart-credits")[i].style.display = "none";
                     }
+                    if(document.getElementById("labelDrillUpSection" + svgIndex).children[1]) {
+                        document.getElementById("labelDrillUpSection" + svgIndex).children[0].style.display = 'none';
+                    }
                 };
                 for (var sectionIndex = 0; sectionIndex < svgData.schema.sections.length; sectionIndex++) {
                     var rowName = 0;
@@ -549,27 +577,75 @@ angular.module('blitoDirectives')
                     removeAnychartLogo();
                     var label = anychart.standalones.label();
                     label.background({fill: "#9E9E9E"});
-                    // label.zIndex(99999);
                     label.text(text);
                     label.fontColor("#fff");
                     label.padding(15);
                     label.listen("click", action);
+                    label.background().cornerType("round")
+                    label.background().corners(5)
                     label.container(stage);
                     label.draw();
                     return label;
                 };
                 document.getElementById('seatMaperChart'+svgIndex).addEventListener('touchend', touchSS);
+                var toolTip = $("<div class='custom-tooltip'></div>").css({
+                    "position": "absolute",
+                    "pointerEvents": "none",
+                    "width": "100px",
+                    "background-color": "rgba(50, 50, 50, 0.7)",
+                    "padding": "4px",
+                    "color": "white",
+                    "border-radius": "3px",
+                    "border": "solid black 2px",
+                    "display": "none"
+                });
+                var clientX , clientY;
+                var initToolTip = function (e) {
+                    var $container = $(this.container().getStage().container());
+                    if (!$container.find('.custom-tooltip').length) {
+                        $container.append(toolTip);
+                    }
+                };
+                chart.listen("mouseMove", initToolTip);
+                chart.listen("touchmove", initToolTip);
 
+                //neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew
                 var seatClickFunction = function (e) {
                     if (scope.pickedSeats.indexOf(e.domTarget.dd) === -1) {
                         scope.pickedSeats.push(e.domTarget.dd);
-                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', 'green');
+                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#39A939');
                     } else {
                         scope.pickedSeats.splice(scope.pickedSeats.indexOf(e.domTarget.dd), 1);
                         $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#64b5f6');
                     }
                     e.preventDefault();
                     ctrl.validationCheckBlitType(scope.pickedSeats, svgIndex);
+
+                };
+                var setToolTip = function (e) {
+                    clientX = e.iF.b.Xw.left;
+                    clientY = e.iF.b.Xw.top;
+                    toolTip.css({"display": "block"});
+                    svgData.schema.sections.forEach(function (sect) {
+                            sect.rows.forEach(function (row, rowIndex) {
+                                row.seats.forEach(function (seat) {
+                                    if(e.domTarget.dd === seat.uid) {
+                                        toolTip.html("قیمت: "+seat.price+"\n"+"ردیف: "+(rowIndex+1));
+                                    }
+                                })
+                            });
+                    });
+                    toolTip.css({"left": clientX - 50, "top": clientY + toolTypeYOffset, "z-index": 99999});
+                };
+                var seatTouch = function (e) {
+                    setToolTip(e);
+                    seatClickFunction(e);
+                };
+                var mouseOverSeat = function (e) {
+                    setToolTip(e);
+                };
+                var mouseOutSeat = function () {
+                    toolTip.css("display","none");
                 };
 
 
@@ -588,33 +664,43 @@ angular.module('blitoDirectives')
                                 rowSeats.push(seat);
                             }
                         });
-                        sectionsChart[sectionIndex].chart.choropleth(rowSeats)
-                            .name(svgData.schema.sections[sectionIndex].rows[rowIndex].name)
-                            .listen('click', seatClickFunction)
+                        var section=sectionsChart[sectionIndex].chart.choropleth(rowSeats)
+                            .name(svgData.schema.sections[sectionIndex].rows[rowIndex].name);
+                        //neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew
+                        section.listen('click', seatClickFunction);
+                        section.listen('touchstart', seatTouch);
+                        section.listen('mouseOver', mouseOverSeat);
+                        section.listen('mouseOut', mouseOutSeat);
+                        // section.listen('click', seatClickFunction);
                     }
 
 
                     var legend = sectionsChart[sectionIndex].chart.legend();
-                    legend.enabled(true)
-                        .position('right')
-                        .itemsLayout('vertical')
-                        .removeAllListeners()
-                    ;
-
+                    legend.enabled(false);
 
 
                     sectionsChart[sectionIndex].chart.labels(true);
                     var labels = sectionsChart[sectionIndex].chart.labels();
-
-                    sectionsChart[sectionIndex].chart.labels({fontSize: 10});
+                    var toolTypeYOffset;
+                    if($(window).width() < 1000) {
+                        toolTypeYOffset = 10;
+                        sectionsChart[sectionIndex].chart.labels({fontSize: 6});
+                    } else {
+                        toolTypeYOffset = 25;
+                        sectionsChart[sectionIndex].chart.labels({fontSize: 10});
+                    }
                     labels.format("{%info}");
-                    var toolTip = sectionsChart[sectionIndex].chart.tooltip();
-                    toolTip.format("{%price}")
+                    //neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew
+                    sectionsChart[sectionIndex].chart.tooltip().enabled(false);
+
                 }
+                //neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew
+                chart.tooltip().enabled(false);
                 chart.container("seatMaperChart"+svgIndex);
                 chart.draw();
                 var DrillupLabel= createDrillUpLabel( "بازگشت" , 0, "labelDrillUpSection"+svgIndex ,function(){
                     chart.drillUp();
+                    toolTip.css("display","none");
                     this.enabled(false);
                 });
                 DrillupLabel.enabled(false);
@@ -628,14 +714,16 @@ angular.module('blitoDirectives')
                             if(populateSchemaOnce.indexOf(section.uid) === -1) {
                                 populateSchemaOnce.push(section.uid);
                                 populatedSalon(section);
+
                             }
                         }
                     })
                 });
 
                 removeAnychartLogo();
-                var interactivity = chart.interactivity();
-                interactivity.keyboardZoomAndMove(false);
+                //neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew
+                // var interactivity = chart.interactivity();
+                // interactivity.keyboardZoomAndMove(false);
 
                 scope.resetPickedSeats = function (seatUids, isReserved, sansSeats) {
                     scope.pickedSeats = [];
@@ -656,15 +744,15 @@ angular.module('blitoDirectives')
                                 row.seats.forEach(function (seat) {
                                     switch (seat.state) {
                                         case "RESERVED" :
-                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'blue');
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#234BA1');
                                             $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
                                             break;
                                         case "SOLD" :
-                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', 'orange');
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#801515');
                                             $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
                                             break;
                                         case "GUEST_NOT_AVAILABLE" :
-                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#333');
+                                            $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#999999');
                                             $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
                                             break;
                                         case "NOT_AVAILABLE" :
@@ -722,6 +810,9 @@ angular.module('blitoDirectives')
                     for(var i = 0; i < document.getElementsByClassName("anychart-credits").length ; i++) {
                         document.getElementsByClassName("anychart-credits")[i].style.display = "none";
                     }
+                    if(document.getElementById("labelDrillUpSection" + svgIndex).children[1]) {
+                        document.getElementById("labelDrillUpSection" + svgIndex).children[0].style.display = 'none';
+                    }
                 };
                 for (var sectionIndex = 0; sectionIndex < svgData.schema.sections.length; sectionIndex++) {
                     var rowName = 0;
@@ -769,6 +860,8 @@ angular.module('blitoDirectives')
                     label.text(text);
                     label.fontColor("#fff");
                     label.padding(15);
+                    label.background().cornerType("round")
+                    label.background().corners(5)
                     label.listen("click", action);
                     label.container(stage);
                     label.draw();
@@ -776,14 +869,15 @@ angular.module('blitoDirectives')
                 };
                 document.getElementById('seatMaperChart'+svgIndex).addEventListener('touchend', touchSS);
 
-                var seatClickFunction = function (e) {
+                var seatClickFunction = function (f) {
+                    var e=f.originalEvent;
                     if(scope.pickedSeats.length > 0) {
                         $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + scope.pickedSeats[0]).css('fill', '#64b5f6');
                         scope.pickedSeats.pop();
                     }
                     if (scope.pickedSeats.indexOf(e.domTarget.dd) === -1) {
                         scope.pickedSeats.push(e.domTarget.dd);
-                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', 'green');
+                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#39A939');
                     } else {
                         scope.pickedSeats.splice(scope.pickedSeats.indexOf(e.domTarget.dd), 1);
                         $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#64b5f6');
@@ -814,29 +908,20 @@ angular.module('blitoDirectives')
                                 rowSeats.push(seat);
                             }
                         });
-                        sectionsChart[sectionIndex].chart.choropleth(rowSeats)
-                            .name(svgData.schema.sections[sectionIndex].rows[rowIndex].name)
-                            .listen('click', seatClickFunction)
+                        var section=sectionsChart[sectionIndex].chart.choropleth(rowSeats)
+                            .name(svgData.schema.sections[sectionIndex].rows[rowIndex].name);
+                        section.listen('pointClick', seatClickFunction);
+
                     }
-
-
-                    var legend = sectionsChart[sectionIndex].chart.legend();
-                    legend.enabled(true)
-                        .position('right')
-                        .itemsLayout('vertical')
-                        .removeAllListeners()
-                    ;
-
-
-
                     sectionsChart[sectionIndex].chart.labels(true);
                     var labels = sectionsChart[sectionIndex].chart.labels();
 
                     sectionsChart[sectionIndex].chart.labels({fontSize: 10});
                     labels.format("{%info}");
-                    var toolTip = sectionsChart[sectionIndex].chart.tooltip();
+                    var toolTip = sectionsChart[sectionIndex].chart.tooltip().enabled(false);
                     toolTip.format("{%price}")
                 }
+                chart.tooltip().enabled(false);
                 chart.container("seatMaperChart"+svgIndex);
                 chart.draw();
                 var DrillupLabel= createDrillUpLabel( "بازگشت" , 0, "labelDrillUpSection"+svgIndex ,function(){
@@ -860,8 +945,8 @@ angular.module('blitoDirectives')
                 });
 
                 removeAnychartLogo();
-                var interactivity = chart.interactivity();
-                interactivity.keyboardZoomAndMove(false);
+                // var interactivity = chart.interactivity();
+                // interactivity.keyboardZoomAndMove(false);
 
                 scope.resetPickedSeats = function (seatUids, isReserved, sansSeats) {
                     scope.pickedSeats = [];
@@ -878,8 +963,11 @@ angular.module('blitoDirectives')
                                 row.seats.forEach(function (seat) {
                                     if(seat.state === "NOT_AVAILABLE") {
                                         $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#64b5f6');
+                                    } else if (seat.state === "SOLD") {
+                                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#801515');
+                                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
                                     } else {
-                                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#333');
+                                        $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).css('fill', '#999');
                                         $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + seat.uid).addClass('noPointerEvents');
                                     }
                                 })

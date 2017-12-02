@@ -1,5 +1,6 @@
 package blito.test.integration;
 
+import com.blito.utils.test.util.AbstractRestControllerTest;
 import org.junit.Test;
 
 /**

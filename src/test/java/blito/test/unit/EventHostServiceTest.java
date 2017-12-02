@@ -1,10 +1,15 @@
 package blito.test.unit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
+import com.blito.Application;
+import com.blito.enums.HostType;
+import com.blito.exceptions.NotAllowedException;
+import com.blito.exceptions.NotFoundException;
+import com.blito.models.User;
+import com.blito.repositories.EventHostRepository;
+import com.blito.repositories.UserRepository;
+import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
+import com.blito.security.SecurityContextHolder;
+import com.blito.services.EventHostService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,20 +22,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.blito.Application;
-import com.blito.configs.Constants;
-import com.blito.enums.HostType;
-import com.blito.enums.ImageType;
-import com.blito.exceptions.NotAllowedException;
-import com.blito.exceptions.NotFoundException;
-import com.blito.models.Image;
-import com.blito.models.User;
-import com.blito.repositories.EventHostRepository;
-import com.blito.repositories.ImageRepository;
-import com.blito.repositories.UserRepository;
-import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
-import com.blito.security.SecurityContextHolder;
-import com.blito.services.EventHostService;
+import static org.junit.Assert.*;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
@@ -40,8 +32,6 @@ public class EventHostServiceTest {
 
 	@Autowired
 	private EventHostRepository hostRepo;
-	@Autowired
-	private ImageRepository imageRepo;
 	@Autowired
 	private UserRepository userRepo;
 	@Autowired
@@ -72,14 +62,6 @@ public class EventHostServiceTest {
 		user2 = userRepo.save(user2);
 		user2.setActive(true);
 		SecurityContextHolder.setCurrentUser(user);
-		Image image1 = new Image();
-		image1.setImageUUID(Constants.DEFAULT_HOST_PHOTO);
-		image1.setImageType(ImageType.HOST_PHOTO.name());
-		imageRepo.save(image1);
-		Image image2 = new Image();
-		image2.setImageType(ImageType.HOST_COVER_PHOTO.name());
-		image2.setImageUUID(Constants.DEFAULT_HOST_COVER_PHOTO_1);
-		imageRepo.save(image2);
 
 		createVmodel.setHostName("Shenakht");
 		createVmodel.setTelephone("22431103");

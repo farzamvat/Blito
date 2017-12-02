@@ -42,7 +42,7 @@ public class ExceptionUtil {
 
 	public static ExceptionViewModel generateSeatError(HttpStatus status, HttpServletRequest request, SeatException exception) {
 		ExceptionViewModel exceptionViewModel = generate(status,request,exception);
-		Optional.of(exception.getSeatErrors())
+		Optional.ofNullable(exception.getSeatErrors())
 				.filter(seatErrorViewModels -> !seatErrorViewModels.isEmpty())
 				.ifPresent(seatErrorViewModels -> exceptionViewModel.setErrors(new ArrayList<>(exception.getSeatErrors())));
 		return exceptionViewModel;

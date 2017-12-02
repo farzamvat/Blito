@@ -4,9 +4,10 @@ package blito.test.unit;
 import com.blito.Application;
 import com.blito.enums.*;
 import com.blito.mappers.EventFlatMapper;
-import com.blito.models.*;
+import com.blito.models.Event;
+import com.blito.models.EventHost;
+import com.blito.models.User;
 import com.blito.repositories.*;
-import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
@@ -23,6 +24,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +32,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
@@ -39,6 +40,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class,webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 @Transactional
 public class DiscountServiceTest {
 
@@ -387,13 +389,13 @@ public class DiscountServiceTest {
         assertEquals(1, discountRepo.count());
 
         vmodel.setCode("changed code");
-        vmodel = discountService.updateDiscountCodeByUser(vmodel, user).get();
-//        System.out.println("********");
-//        System.out.println(exceptionViewModel.getErrors());
-//        System.out.println(exceptionViewModel.getMessage());
-        assertEquals("changed code", vmodel.getCode());
+        if(discountService.updateDiscountCodeByUser(vmodel, user).isLeft())
+            assertTrue(true);
+        else
+            assertTrue(false);
+
         assertEquals(1, discountRepo.count());
-        assertEquals("changed code", discountRepo.findAll().stream().findFirst().get().getCode());
+        assertEquals("TAKHFIF!@#$", discountRepo.findAll().stream().findFirst().get().getCode());
 
     }
 

@@ -45,6 +45,14 @@ public class BlitController {
 	@Autowired
     private ExcelService excelService;
 
+	@JsonView(View.Blit.class)
+	@Permission(value = ApiBusinessName.USER)
+	@GetMapping
+	public CompletionStage<ResponseEntity<?>> getUserBlits(Pageable pageable,HttpServletRequest request,HttpServletResponse response) {
+		User user = SecurityContextHolder.currentUser();
+		return CompletableFuture.supplyAsync(() -> seatBlitService.getUserBlits(user,pageable)).handle((result, throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,request,response));
+	}
+
 	@Permission(value = ApiBusinessName.USER)
 	@PostMapping("/buy-request")
 	public CompletionStage<ResponseEntity<?>> buyBlit(@Validated @RequestBody CommonBlitViewModel vmodel,
@@ -70,6 +78,7 @@ public class BlitController {
 			Pageable pageable) {
 		return ResponseEntity.ok(commonBlitService.searchBlits(searchViewModel, pageable));
 	}
+
 
 	@JsonView(View.Blit.class)
 	@Permission(value = ApiBusinessName.USER)

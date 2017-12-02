@@ -81,13 +81,28 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div ng-show="showWithoutSeatSection && bothTypesOfBlits" >
+                                                <div ng-if="showWithoutSeatSection && bothTypesOfBlits" >
                                                     <div ng-include="'app/views/partials/buy-ticket-without-seat.html'"></div>
                                                 </div>
+                                                <div class="seatMapLoading center-block dispNone"><i class="fa fa-cog fa-spin fa-4x center-block marginTop60"></i></div>
+
                                                 <div ng-if="showSeatSection"  class="form-group col-xs-12 marginTop30  formRegGroup floatRight">
+                                                    <div class="col-xs-12">
+                                                        <div class="seatMapSquare seatMapAvailable"></div>
+                                                        <label class="floatRight marginLeft20 paddingTop5">قابل خرید</label>
+                                                        <div class="seatMapSquare seatMapPicked"></div>
+                                                        <label class="floatRight marginLeft20 paddingTop5">انتخاب شده</label>
+                                                        <div class="seatMapSquare seatMapSold"></div>
+                                                        <label class="floatRight marginLeft20 paddingTop5">فروش رفته</label>
+                                                        <div class="seatMapSquare seatMapReserved"></div>
+                                                        <label class="floatRight marginLeft20 paddingTop5">رزرو</label>
+                                                        <div class="seatMapSquare seatMapNotAvailable"></div>
+                                                        <label class="floatRight marginLeft20 paddingTop5">غیر قابل خرید</label>
+                                                    </div>
                                                     <div id="labelDrillUpSection4"  class="col-xs-12 labelSvgHeight"></div>
                                                     <seat-map-buy-ticket></seat-map-buy-ticket>
                                                     <div id="seatMaperChart4"  class="col-xs-12 marginTop30 marginBottom20 seatMaperChartStyle"></div>
+
                                                 </div>
                                                 <div ng-if="!logoutMenu && showSeatSection" class="form-group col-xs-12 marginTop30  formRegGroup floatRight">
                                                     <p class="text-center">کاربر وبسایت هستید؟</p>
@@ -101,16 +116,16 @@
                                                         </div>
 
                                                         <div class="col-xs-7 col-sm-8 floatRight ">
-                                                            <input height="60" id="name" ng-model="buyerInfo.firstname"   type="text"  class="form-group registerInput" required>
+                                                            <input height="60" id="name" ng-model="buyerInfo.firstname" name="firstname"   type="text"  class="form-group registerInput" required>
                                                         </div>
                                                     </div>
-                                                    <div class="row marginTop10">
+                                                    <div class="row marginTop10 marginBottom20">
                                                         <div class="col-xs-5 col-sm-4 floatRight text-center">
                                                             <label class="registerLabel" for="name" > نام خانوادگی :</label>
                                                         </div>
 
                                                         <div class="col-xs-7 col-sm-8 floatRight ">
-                                                            <input height="60" id="lastname" ng-model="buyerInfo.lastname"   type="text"  class="form-group registerInput" required>
+                                                            <input height="60" id="lastname" ng-model="buyerInfo.lastname" name="lastname"  type="text"  class="form-group registerInput" required>
                                                         </div>
                                                     </div>
                                                     <div class="row marginTop10">
@@ -119,7 +134,7 @@
                                                         </div>
 
                                                         <div class="col-xs-7 col-sm-8 floatRight ">
-                                                            <input height="60" id="email" ng-model="buyerInfo.email"   type="email"  class="form-group registerInput" required>
+                                                            <input height="60" id="email" ng-model="buyerInfo.email" name="email"  type="email"  class="form-group registerInput" required>
                                                         </div>
                                                     </div>
                                                     <div class="row marginTop10">
@@ -128,11 +143,10 @@
                                                         </div>
 
                                                         <div class="col-xs-7 col-sm-8 floatRight ">
-                                                            <input height="60" id="mobile" ng-model="buyerInfo.mobile"   type="text"  class="form-group registerInput" required>
+                                                            <input height="60" id="mobile" ng-model="buyerInfo.mobile"  name="mobile" type="text"  class="form-group registerInput" required>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <p class="text-center colorRed" ng-show="seatsPickedChecked">* بین صندلی‌های انتخابی شما یا کنار آن‌ها، نمی‌تواند تک صندلی خریداری نشده وجود داشته باشد.</p>
                                                 <div ng-if="additionalFields && additionalFields.length > 0 && showSeatSection" class="form-group col-xs-12 marginTop10  formRegGroup floatRight">
                                                     <div ng-repeat="item in additionalFields" class="row marginTop10">
                                                         <div class="col-xs-5 col-sm-4 floatRight text-center">
@@ -143,13 +157,19 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-xs-12 marginTop30">
+                                                    <p class="text-center colorRed " ng-show="seatsPickedLimit">* امکان انتخاب بیشتر از ۱۰ صندلی وجود ندارد.</p>
+                                                    <p class="text-center colorRed " ng-show="seatsPickedChecked">* بین صندلی‌های انتخابی شما یا کنار آن‌ها، نمی‌تواند تک صندلی خریداری نشده وجود داشته باشد.</p>
+                                                </div>
                                                 <div ng-if="showSeatSection" class="control-group text-center marginBottom20">
+
                                                     <div class="controls">
-                                                        <button  id="nextStep1"  ng-click="nextStep1WithSeat(eventInfo)" ng-disabled="ticketInfo.extraFields.$invalid || (blitTypeCreateValidation === 0) || seatsPickedChecked"  class="btn btn-success btn-lg btnLogin"> مرحله بعد <i class="fa fa-arrow-left"></i></button>
+
+                                                        <button  id="nextStep1"  ng-click="nextStep1WithSeat(eventInfo)" ng-disabled="ticketInfo.$invalid || ticketInfo.extraFields.$invalid || (blitTypeCreateValidation === 0) || seatsPickedChecked || seatsPickedLimit"  class="btn btn-success btn-lg btnLogin"> مرحله بعد <i class="fa fa-arrow-left"></i></button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div ng-show="showWithoutSeatSection && !bothTypesOfBlits" >
+                                            <div ng-if="showWithoutSeatSection && !bothTypesOfBlits" >
                                             <div ng-include="'app/views/partials/buy-ticket-without-seat.html'"></div>
                                             </div>
                                         </fieldset>
@@ -270,7 +290,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div  ng-if="!itemWithCapacity[0].isFree && !logoutMenu" class="form-group col-xs-12 formRegGroup floatRight">
+                                            <div  ng-if="!itemWithCapacity[0].isFree && !logoutMenu && showWithoutSeatSection" class="form-group col-xs-12 formRegGroup floatRight">
                                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
                                                     <label class="registerLabel pickPayment" > انتخاب درگاه  :</label>
                                                 </div>
@@ -290,7 +310,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div  ng-if="showSeatSection && logoutMenu" class="form-group col-xs-12 formRegGroup floatRight">
+                                            <div  ng-if="showSeatSection" class="form-group col-xs-12 formRegGroup floatRight">
                                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
                                                     <label class="registerLabel pickPayment" > انتخاب درگاه  :</label>
                                                 </div>
@@ -302,8 +322,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="control-group text-center marginBottom20">
-                                                    <div class="controls col-xs-12 col-sm-6 marginBottom20">
+                                                    <div ng-if="logoutMenu" class="controls col-xs-12 col-sm-6 marginBottom20">
                                                         <button  ng-disabled="paymentStatus.paymentPick.$invalid || buyTicketOnce"  id="nextStep2"  ng-click="nextStep2WithSeat()" type="submit"  class="btn btn-success btn-lg btnLogin">  پرداخت <i class="fa fa-spin fa-spinner dispNone payedBlitSpinner"></i><i class="fa fa-money"></i></button>
+                                                    </div>
+                                                    <div ng-if="!logoutMenu" class="controls col-xs-12 col-sm-6 marginBottom20">
+                                                        <button  ng-disabled="paymentStatus.paymentPick.$invalid || buyTicketOnce"  id="nextStep2"  ng-click="nextStep2WithSeatNotUser()" type="submit"  class="btn btn-success btn-lg btnLogin">  پرداخت <i class="fa fa-spin fa-spinner dispNone payedBlitSpinner"></i><i class="fa fa-money"></i></button>
                                                     </div>
                                                     <div class="controls col-xs-12 col-sm-6 marginBottom20">
                                                         <button id="prevStep1" ng-click="prevStep1()"  class="btn btn-danger btn-lg btnLogin"><i class="fa fa-arrow-right"></i>   مرحله قبل </button>

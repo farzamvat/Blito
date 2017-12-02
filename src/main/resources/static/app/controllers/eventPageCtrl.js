@@ -41,7 +41,6 @@ angular.module('eventsPageModule')
                         field.value = "";
                     });
                 }
-                console.log($scope.eventDataDetails);
                 $scope.getPlannerData($scope.eventDataDetails.eventHostId);
                 $scope.eventType = $scope.eventDataDetails.eventType;
                 $scope.buyTicketFormatData(data.data.eventDates);
@@ -69,17 +68,17 @@ angular.module('eventsPageModule')
                 eventDate.soldCount = 0;
                 eventDate.maxPrice = 0;
                 eventDate.minPrice = 100000000;
-
                 eventDate.blitTypes.forEach(function (blitType) {
-                    if(blitType.price < eventDate.minPrice) {
-                        eventDate.minPrice = blitType.price;
+                    if(blitType.name !== 'HOST_RESERVED_SEATS') {
+                        if (blitType.price < eventDate.minPrice) {
+                            eventDate.minPrice = blitType.price;
+                        }
+                        if (blitType.price > eventDate.maxPrice) {
+                            eventDate.maxPrice = blitType.price;
+                        }
+                        eventDate.capacity += blitType.capacity;
+                        eventDate.soldCount += blitType.soldCount;
                     }
-                    if(blitType.price > eventDate.maxPrice) {
-                        eventDate.maxPrice = blitType.price;
-                    }
-                    eventDate.capacity += blitType.capacity;
-                    eventDate.soldCount += blitType.soldCount;
-
                 })
             });
             $timeout(function () {
@@ -138,7 +137,10 @@ angular.module('eventsPageModule')
         $scope.showSeatSection = false;
         $scope.showWithoutSeatSection = false;
         $scope.blitTypeCreateValidation = 0;
+        $scope.seatType = { isChosen : null};
         $scope.setCapacityBlit = function (sansId) {
+            $scope.seatsPickedLimit = false;
+            $scope.seatType.isChosen = null;
             $scope.showSeatSection = false;
             $scope.showWithoutSeatSection = false;
             $scope.seatsPickedChecked = false;
@@ -161,11 +163,9 @@ angular.module('eventsPageModule')
                 return blitTypeWithoutSeat;
             });
             if(((seatmapService.generateWithoutSeatBlitTypes($scope.eventDatePicked[0].blitTypes)).length !== 0) && !$scope.eventDataDetails.salonUid) {
-                console.log("aa");
                 $scope.showSeatSection = false;
                 $scope.showWithoutSeatSection = true;
                 $scope.bothTypesOfBlits  = false;
-                console.log(!$scope.bothTypesOfBlits && $scope.showWithoutSeatSection);
 
             }
             if(((seatmapService.generateWithoutSeatBlitTypes($scope.eventDatePicked[0].blitTypes)).length !== 0) && $scope.eventDataDetails.salonUid) {
@@ -181,7 +181,7 @@ angular.module('eventsPageModule')
             }
         };
         $scope.seatTypePicked = function (seatType) {
-            console.log($scope.itemWithCapacity);
+            $scope.seatsPickedLimit = false;
             if(seatType) {
                 $scope.showSeatSection = true;
                 $scope.showWithoutSeatSection = false;
@@ -198,32 +198,42 @@ angular.module('eventsPageModule')
         };
         var populatedSchema = {};
         var generateSalonSeatMap = function () {
-            seatmapService.getPopulatedSchema($scope.eventDatePicked[0].eventDateId)
+            document.getElementsByClassName("seatMapLoading")[0].style.display = "block";
+            seatmapService.getPublicPopulatedSchema($scope.eventDatePicked[0].eventDateId)
                 .then(function (data) {
-                    populatedSchema = data.data;
+                    document.getElementsByClassName("seatMapLoading")[0].style.display = "none";
+                    populatedSchema = angular.copy(data.data);
                     $scope.$broadcast('newSVGBuyTicket', [populatedSchema, 4]);
                 })
                 .catch(function (data) {
+                    document.getElementsByClassName("seatMapLoading")[0].style.display = "none";
                     console.log(data);
                 })
-
         };
         $scope.seatsPickedChecked = false;
+        $scope.seatsPickedLimit = false;
         $scope.$on("blitIdsChangedBuyTicket",function (event ,data) {
-            $scope.blitTypeCreateValidation = data[0].length;
-            $scope.$apply();
-            $scope.seatBlitUids = data[0];
-            $scope.seatsPickedChecked = false;
-            if(seatmapService.oneSeatUnpickedPayment($scope.seatBlitUids, populatedSchema)) {
-                $scope.seatsPickedChecked = true;
+            if(data[0].length <= 10) {
+                $scope.seatsPickedLimit = false;
+                $scope.blitTypeCreateValidation = data[0].length;
+                $scope.$apply();
+                $scope.seatBlitUids = data[0];
+                $scope.seatsPickedChecked = false;
+                if (seatmapService.oneSeatUnpickedPayment($scope.seatBlitUids, populatedSchema)) {
+                    $scope.seatsPickedChecked = true;
+                    $scope.$apply();
+                }
+                $scope.$apply();
+            } else {
+                $scope.seatsPickedLimit = true;
                 $scope.$apply();
             }
-            $scope.$apply();
         });
         $scope.blitTypePicked = function (blitId) {
             $scope.itemWithCapacity = $scope.blitTypesWithOutSeatsEdit.filter(function (item) {
                 return item.blitTypeId === blitId;
             });
+            $scope.eventInfo.ticketNumber = null;
         };
         $scope.nextStep1 = function (eventInfo) {
             document.getElementById("buyBlitError").style.display = "none";
@@ -242,6 +252,7 @@ angular.module('eventsPageModule')
         };
         $scope.selectedBlitsTotalPrice = 0;
         $scope.nextStep1WithSeat = function () {
+            $scope.itemWithCapacity = null;
             $scope.selectedBlitsTotalPrice = seatmapService.getBoughtBlitTypes($scope.seatBlitUids, populatedSchema);
             $scope.selectedBlitsTotalPricePrimary = seatmapService.getBoughtBlitTypes($scope.seatBlitUids, populatedSchema);
             angular.element(document.getElementById('ticketPay1')).removeClass('active');
@@ -272,17 +283,22 @@ angular.module('eventsPageModule')
             }
         };
         var buyPaymentTicket = {};
+        $scope.buyerInfo = {};
         $scope.paymentSelected = function (payment) {
             var buyerData = userInfo.getData();
             $scope.paymentSelectedDone = "selected";
             $scope.setPaymentData(payment, buyerData);
         };
         $scope.paymentSelectedWithSeat = function (payment) {
-            var buyerData = userInfo.getData();
+            var buyerData;
+            if(userInfo.getData().lastname === '') {
+                buyerData = $scope.buyerInfo;
+            } else {
+                buyerData = userInfo.getData();
+            }
             $scope.paymentSelectedDone = "selected";
             $scope.setPaymentDataWithSeat(payment, buyerData);
         };
-        $scope.buyerInfo = {};
         $scope.paymentSelectedNotUser = function (payment) {
             $scope.paymentSelectedDone = "selected";
             var buyerData = $scope.buyerInfo;
@@ -360,6 +376,26 @@ angular.module('eventsPageModule')
             document.getElementsByClassName("payedBlitSpinner")[0].style.display = "inline";
             document.getElementById("buyBlitError").style.display = "none";
             ticketsService.buyTicketWithSeat(buyPaymentTicket)
+                .then(function (data) {
+                    document.getElementsByClassName("payedBlitSpinner")[0].style.display = "none";
+                    $scope.gateWayDetails = data.data;
+                    if($scope.gateWayDetails.gateway === 'ZARINPAL') {
+                        $window.location.href = $scope.gateWayDetails.zarinpalWebGatewayURL;
+                    }
+                })
+                .catch(function (data) {
+                    $scope.buyTicketOnce = false;
+                    $scope.paymentSelectedDone = '';
+                    document.getElementsByClassName("payedBlitSpinner")[0].style.display = "none";
+                    document.getElementById("buyBlitError").innerHTML= data.data.message;
+                    document.getElementById("buyBlitError").style.display = "inline";
+                })
+        };
+        $scope.nextStep2WithSeatNotUser = function () {
+            $scope.buyTicketOnce = true;
+            document.getElementsByClassName("payedBlitSpinner")[0].style.display = "inline";
+            document.getElementById("buyBlitError").style.display = "none";
+            ticketsService.buyTicketWithSeatNotUser(buyPaymentTicket)
                 .then(function (data) {
                     document.getElementsByClassName("payedBlitSpinner")[0].style.display = "none";
                     $scope.gateWayDetails = data.data;
