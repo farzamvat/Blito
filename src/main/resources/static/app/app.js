@@ -42,5 +42,3 @@ angular.module('Blito',
         redirectToUrlAfterLogin : {url : '/'}
     })
 ;
-
-//89.163.225.84:8085
