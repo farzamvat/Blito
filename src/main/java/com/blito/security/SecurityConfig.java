@@ -37,6 +37,7 @@ public class SecurityConfig {
 					.addMatcher("/blits/*")
 					.addMatcher("/images/*")
 					.addMatcher("/discount/*")
+					.addMatcher("/salons/*")
 					.getUrlPatterns());
 		return filterRegistration;
 	}

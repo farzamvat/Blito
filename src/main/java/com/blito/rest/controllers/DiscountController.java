@@ -12,6 +12,7 @@ import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.discount.DiscountEnableViewModel;
 import com.blito.rest.viewmodels.discount.DiscountValidationViewModel;
 import com.blito.rest.viewmodels.discount.DiscountViewModel;
+import com.blito.rest.viewmodels.discount.SeatBlitDiscountValidationViewModel;
 import com.blito.search.SearchViewModel;
 import com.blito.security.SecurityContextHolder;
 import com.blito.services.DiscountService;
@@ -54,6 +55,16 @@ public class DiscountController {
             return CompletableFuture.completedFuture(ResponseEntity.badRequest().body(ExceptionUtil
                 .generate(HttpStatus.BAD_REQUEST, req, bindingResult, ControllerEnumValidation.class)));
         return CompletableFuture.supplyAsync(() -> discountService.validateDiscountCode(vmodel))
+                .handle((response, throwable) -> HandleUtility.generateResponseResult(() -> response, throwable, req, res));
+    }
+
+    @PostMapping("/validate-discount-code-seat-blit")
+    public CompletionStage<ResponseEntity<?>> validateDiscountCodeSeatBlit(@Valid @RequestBody SeatBlitDiscountValidationViewModel vmodel,
+                                                                           BindingResult bindingResult, HttpServletRequest req, HttpServletResponse res){
+        if (bindingResult.hasFieldErrors())
+            return CompletableFuture.completedFuture(ResponseEntity.badRequest().body(ExceptionUtil
+                    .generate(HttpStatus.BAD_REQUEST, req, bindingResult, ControllerEnumValidation.class)));
+        return CompletableFuture.supplyAsync(() -> discountService.validateDiscountCodeForSeatBlit(vmodel))
                 .handle((response, throwable) -> HandleUtility.generateResponseResult(() -> response, throwable, req, res));
     }
 

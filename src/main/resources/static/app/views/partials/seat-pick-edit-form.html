@@ -1,0 +1,40 @@
+<div class="form-inline textAlignRight" >
+    <fieldset>
+        <div class="form-group col-xs-12 formRegGroup">
+            <div class="col-xs-5 col-sm-4 floatRight text-center">
+                <label class="registerLabel" for="blitType" >نوع بلیت :</label>
+            </div>
+            <div class="col-xs-7 col-sm-8 floatRight ">
+                <select id="blitType" name="typeEdit" required ng-model="seatsPickedForm.isReserved" class="form-control dropDownInput" ng-options="o.v as o.n for o in [{n : 'رزرو', v: true}, {n : 'فروشی', v: false}]">
+
+                </select>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="marginTop30" ng-if="seatsPickedForm.isReserved === false">
+
+        <div class="form-group col-xs-12 formRegGroup marginTop30">
+            <div class="col-xs-5 col-sm-4 floatRight text-center">
+                <label class="registerLabel" for="blitName" > نام بلیت :</label>
+            </div>
+            <div class="col-xs-7 col-sm-6 floatRight ">
+                <input height="60" id="blitName" name="blitNameEdit" ng-model="seatsPickedForm.name" type="text"  class="form-group registerInput" required>
+            </div>
+        </div>
+        <div class="form-group col-xs-12 formRegGroup marginTop30">
+            <div class="col-xs-5 col-sm-4 floatRight text-center">
+                <label class="registerLabel" for="blitPrice" > قیمت بلیت :</label>
+            </div>
+            <div class="col-xs-7 col-sm-6 floatRight ">
+                <input height="60" id="blitPrice" name="priceEdit" ng-model="seatsPickedForm.price" type="number"  class="form-group registerInput" required>
+            </div>
+        </div>
+
+    </fieldset>
+    <div class="control-group marginTop30">
+
+        <div class="controls">
+            <button  ng-disabled="editEventForm.typeEdit.$invalid  || editEventForm.blitNameEdit.$invalid || editEventForm.priceEdit.$invalid" ng-click="seatsPickedBlitTypeSubmitEdit(seatsPickedForm)" class="btn btn-success btn-lg btnLogin center-block">ثبت نوع بلیت <i id="seatsPickedBlitType" class="fa fa-spinner fa-spin dispNone"></i></button>
+        </div>
+    </div>
+</div>

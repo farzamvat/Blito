@@ -5,7 +5,7 @@
     <meta name="enamad" content="717583151"/>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=0.6, maximum-scale=1, user-scalable=0.5" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.6, maximum-scale=3, user-scalable=2" />
     <meta name="google-site-verification" content="Ae0XnHBmGrtad5c_FptpZisRSO68n0CfHx3OE2iq138" />
     <meta name="description" content="{{pageDescription}}"/>
     <title ng-bind="title + ' | بلیتو'"></title>
@@ -18,6 +18,7 @@
     <link rel="mask-icon" href="fav-icons/safari-pinned-tab.svg" />
     <meta name="theme-color" content="#1e1e1e"/>
     <!-- external css libraries-->
+    <link rel='stylesheet' href='assets/css/anychart/anychart-ui.min.css'/>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="bower_components/slick-carousel/slick/slick.css"/>
@@ -27,6 +28,10 @@
     <link rel="stylesheet" href="assets/css/tabProfile.css"/>
 
     <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/js/anychart/anychart-base.min.js"></script>
+    <script type="text/javascript" src="assets/js/anychart/anychart-map.min.js"></script>
+    <script type="text/javascript" src="assets/js/anychart/anychart-exports.min.js"></script>
+    <script type="text/javascript" src="assets/js/anychart/anychart-ui.min.js"></script>
     <!-- angular js libraries-->
     <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
     <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
@@ -74,10 +79,14 @@
     <script type="text/javascript" src="app/services/ui-services.js"></script>
     <script type="text/javascript" src="app/services/user-profile-api-services.js"></script>
     <script type="text/javascript" src="app/services/home-page-services.js"></script>
+    <script type="text/javascript" src="app/services/seatmap-services.js"></script>
 
     <!-- angular directives-->
     <script type="text/javascript" src="app/directives/changeClassBySize.js"></script>
     <script type="text/javascript" src="app/directives/validation.js"></script>
+    <script type="text/javascript" src="app/directives/seatmap-directive.js"></script>
+
+
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
                 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

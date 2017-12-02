@@ -1,17 +1,21 @@
 package com.blito.models;
 
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity(name="seat_blit")
 @PrimaryKeyJoinColumn(referencedColumnName="blitId")
 public class SeatBlit extends Blit {
-	@OneToMany(mappedBy="seatBlit",targetEntity=BlitTypeSeat.class)
-	Set<BlitTypeSeat> blitTypeSeats;
-	String seats;
+	@OneToMany(mappedBy="seatBlit",targetEntity=BlitTypeSeat.class,cascade = CascadeType.ALL)
+	private Set<BlitTypeSeat> blitTypeSeats;
+	@Column(columnDefinition="TEXT")
+	private String seats;
+
+	public SeatBlit() {
+		blitTypeSeats = new HashSet<>();
+	}
+
 	public Set<BlitTypeSeat> getBlitTypeSeats() {
 		return blitTypeSeats;
 	}

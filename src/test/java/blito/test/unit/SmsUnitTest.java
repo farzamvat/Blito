@@ -38,4 +38,5 @@ public class SmsUnitTest {
 		smsService.sendBlitRecieptSms("09127976837", "32816213");
 		Thread.sleep(5000);
 	}
+
 }

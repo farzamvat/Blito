@@ -71,6 +71,9 @@ angular.module('userProfileApi', [])
         event.validateDiscount = function (validateData) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/validate-discount-code', validateData);
         };
+        event.validateDiscountWithSeat = function (validateData) {
+            return $http.post(config.baseUrl+'/api/blito/v1.0/validate-discount-code-seat-blit', validateData);
+        };
         event.discountState = function (discountData) {
             return $http.put(config.baseUrl+'/api/blito/v1.0/discount/set-enable', discountData);
         };
@@ -132,21 +135,21 @@ angular.module('userProfileApi', [])
         ticket.buyTicket = function (ticketInfo) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/blits/buy-request', ticketInfo);
         };
+        ticket.buyTicketWithSeat = function (ticketInfo) {
+            return $http.post(config.baseUrl+'/api/blito/v1.0/blits/buy-request-with-seat', ticketInfo);
+        };
+        ticket.buyTicketWithSeatNotUser = function (ticketInfo) {
+            return $http.post(config.baseUrl+'/api/blito/v1.0/public/blits/buy-request-with-seat', ticketInfo);
+        };
         ticket.buyTicketNotUser = function (ticketInfo) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/public/blits/buy-request', ticketInfo);
         };
-        ticket.getUserTickets = function (pageNumber, userEmail) {
+
+        ticket.getUserTickets = function (pageNumber) {
             var queryParam = {
                 params : {page: pageNumber-1, size: 5, sort: "createdAt,desc"}
             };
-            var bodyJson = {
-                restrictions : [
-                    {field : "user-email", type : "simple", operation : "eq", value: userEmail},
-                    {field : "paymentStatus", type : "simple", operation : "neq", value: 'PENDING'},
-                    {field : "paymentStatus", type : "simple", operation : "neq", value : 'ERROR'}
-                ]
-            };
-            return $http.post(config.baseUrl+'/api/blito/v1.0/blits/search', bodyJson, queryParam)
+            return $http.get(config.baseUrl+'/api/blito/v1.0/blits', queryParam)
         };
         ticket.getEventTickets = function (pageNumber, eventId) {
             var queryParam = {
@@ -158,6 +161,17 @@ angular.module('userProfileApi', [])
                 ]
             };
             return $http.post(config.baseUrl+'/api/blito/v1.0/blits/search', bodyJson, queryParam)
+        };
+        ticket.getEventTicketsWithSeat = function (pageNumber, eventId) {
+            var queryParam = {
+                params : {page: pageNumber-1, size: 4, sort: "createdAt,desc"}
+            };
+            var bodyJson = {
+                restrictions : [
+                    {field : "blitTypeSeats-blitType-eventDate-event-eventId", type : "simple", operation : "eq", value: eventId}
+                ]
+            };
+            return $http.post(config.baseUrl+'/api/blito/v1.0/blits/seats/search', bodyJson, queryParam)
         };
         ticket.getBoughtTicket = function (trackCode) {
             return $http.get(config.baseUrl+'/api/blito/v1.0/public/blits/'+trackCode)
@@ -180,6 +194,21 @@ angular.module('userProfileApi', [])
             return $http({
                 method: 'POST',
                 url: config.baseUrl+'/api/blito/v1.0/blits/blits.xlsx',
+                data: bodyJson,
+                responseType: "arraybuffer"
+            });
+        };
+        ticket.getExcelTicketsWithSeat = function (sansId) {
+            var bodyJson = {
+                restrictions : [
+                    {field : "blitTypeSeats-blitType-eventDate-eventDateId", type : "simple", operation : "eq", value : sansId},
+                    {field : "paymentStatus", type : "simple", operation : "neq", value : 'PENDING'},
+                    {field : "paymentStatus", type : "simple", operation : "neq", value : 'ERROR'}
+                ]
+            };
+            return $http({
+                method: 'POST',
+                url: config.baseUrl+'/api/blito/v1.0/blits/seats/blits.xlsx',
                 data: bodyJson,
                 responseType: "arraybuffer"
             });

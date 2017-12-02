@@ -59,7 +59,9 @@ body, html {
     width: 100% ;
     padding:0 !important;
 }
-
+text {
+    font-family: "iranian Sans" !important;
+}
 h1,h2,h3,h4,h5,h6 {
     font-weight: bold;
 }
@@ -140,11 +142,17 @@ textarea:focus, input:focus {
 .fontSize18 {
     font-size: 18px;
 }
+.marginLeft20 {
+    margin-left: 20px;
+}
 .marginRight10 {
     margin-right: 10px;
 }
 .marginTop10 {
     margin-top: 10px;
+}
+.paddingTop5 {
+    padding-top: 5px;
 }
 .marginTop50 {
     margin-top: 50px;
@@ -322,6 +330,11 @@ button.slick-next {
     background-color: rgb(252, 183, 49);
     color: white;
 }
+
+.fadeOutGreen {
+    /*background-color: #39A939;*/
+}
+
 .btn {
     border-radius: 2px !important;
 }
@@ -1471,7 +1484,6 @@ dir-pagination-controls ul {
     margin-top: 10px;
     margin-bottom: 5px;
 }
-
 .eventListSection {
     background: url('../img/pt.jpg') fixed repeat-y;
     margin-top: 10px;
@@ -1588,6 +1600,11 @@ dir-pagination-controls ul {
 }
 .showTimeSection {
     background-color: #eee;
+    border-radius: 3px;
+    padding: 20px 40px;
+}
+.showTimeSectionEdit {
+    background-color: #ddd;
     border-radius: 3px;
     padding: 20px 40px;
 }
@@ -2663,6 +2680,11 @@ a>h5 {
     border-bottom: 1px solid #ddd;
 
 }
+#seatmapList {
+    width: 50% !important;
+    display: block;
+    margin: 20px auto;
+}
 .logobeautifier{
     position:absolute;
     height:30%;
@@ -3025,7 +3047,65 @@ table td{
 .eventPageHeader h3{
     color:rgb(252, 183, 49);
 }
+#buyTicketModal {
+    transition: 500ms;
+}
+.modalExpandWidth {
+    width: 90%;
+}
+.seatMapLoading {
+    margin: 0 auto;
+    width: 50px;
+}
+tspan{
+    pointer-events: none !important;
+}
+.seatMapSquare {
+    float: right;
+    width: 20px;
+    height: 20px;
+    margin: 5px;
+    border: 1px solid rgba(0, 0, 0, .2);
+}
+.seatMapSold {
+    background-color: #801515;
+}
+.seatMapReserved {
+    background-color: #234BA1;
+}
+.seatMapPicked {
+    background-color: #39A939;
+}
+.seatMapNotAvailable {
+    background-color: #999;
+}
+.seatMapAvailable {
+    background-color: #64b5f6;
+}
+.seatMapForSale {
+    background-color: #FCB731;
+}
+.seatMapGuestTicketGenerated {
+    background-color: #333333;
+}
+.labelSvgHeight {
+    height: 50px;
+}
+.noPointerEvents{
+    pointer-events: none !important;
+}
+.seatMaperChartStyle {
+    height: 400px;
+}
+.hrLine {
+    height: 1px;
+    background-color: #9c9c9c;
+}
 @media (max-width: 770px) {
+    select,
+    input{
+        font-size: 22px !important;
+    }
     .navbar-header-backcolor{
         width: 172px !important;
         margin-left: -8px !important;
@@ -3162,6 +3242,9 @@ table td{
 
 
 @media (max-width: 768px) {
+    .modalExpandWidth {
+        width: inherit;
+    }
     .maximizeImageXs {
         display: block;
         margin: -55px auto;

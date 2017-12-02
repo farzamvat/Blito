@@ -4,19 +4,15 @@ import com.blito.enums.OperatorState;
 import com.blito.enums.Response;
 import com.blito.enums.State;
 import com.blito.mappers.DiscountMapper;
-import com.blito.models.BlitType;
-import com.blito.models.Discount;
-import com.blito.models.Event;
-import com.blito.models.User;
-import com.blito.repositories.BlitTypeRepository;
-import com.blito.repositories.DiscountRepository;
-import com.blito.repositories.EventRepository;
-import com.blito.repositories.UserRepository;
+import com.blito.models.*;
+import com.blito.repositories.*;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.ResultVm;
+import com.blito.rest.viewmodels.blit.SeatBlitViewModel;
 import com.blito.rest.viewmodels.discount.DiscountEnableViewModel;
 import com.blito.rest.viewmodels.discount.DiscountValidationViewModel;
 import com.blito.rest.viewmodels.discount.DiscountViewModel;
+import com.blito.rest.viewmodels.discount.SeatBlitDiscountValidationViewModel;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.search.Operation;
 import com.blito.search.SearchViewModel;
@@ -50,6 +46,8 @@ public class DiscountService {
     private SearchService searchService;
     @Autowired
     private EventRepository eventRepository;
+    @Autowired
+    private BlitTypeSeatRepository blitTypeSeatRepository;
 
 
     @Transactional
@@ -139,9 +137,46 @@ public class DiscountService {
         }));
     }
 
-    DiscountValidationViewModel validateDiscountCodeBeforePurchaseRequest(Long blitTypeId, String code, int count) {
+    public SeatBlitDiscountValidationViewModel validateDiscountCodeBeforePurchaseRequestForSeatBlit(SeatBlitViewModel viewModel) {
+        SeatBlitDiscountValidationViewModel discountValidationViewModel =
+                new SeatBlitDiscountValidationViewModel(viewModel.getSeatUids(),viewModel.getEventDateId(),viewModel.getDiscountCode());
+        return validateDiscountCodeForSeatBlit(discountValidationViewModel);
+    }
+
+    public DiscountValidationViewModel validateDiscountCodeBeforePurchaseRequestForCommonBlit(Long blitTypeId, String code, int count) {
         DiscountValidationViewModel discountValidationViewModel = new DiscountValidationViewModel(code, count, blitTypeId);
         return validateDiscountCode(discountValidationViewModel);
+    }
+
+    @Transactional
+    public SeatBlitDiscountValidationViewModel validateDiscountCodeForSeatBlit(SeatBlitDiscountValidationViewModel viewModel) {
+        return discountRepository.findByCode(viewModel.getCode())
+                .map(discount -> {
+                    Set<Long> discountBlitTypeIds = discount.getBlitTypes().stream().map(BlitType::getBlitTypeId).collect(Collectors.toSet());
+                    Set<BlitTypeSeat> blitTypeSeats = blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
+                    if(blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).map(BlitType::getBlitTypeId)
+                            .anyMatch(blitTypeId -> !discountBlitTypeIds.contains(blitTypeId))) {
+                        viewModel.setValid(false);
+                    } else if (!discount.getEnabled()) {
+                        viewModel.setValid(false);
+                    } else if (discount.getUsed() + viewModel.getSeatUids().size() > discount.getReusability()) {
+                        viewModel.setValid(false);
+                    } else if (discount.getExpirationDate().before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()))) {
+                        viewModel.setValid(false);
+                    } else if (discount.getEffectDate().after(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()))) {
+                        viewModel.setValid(false);
+                    } else {
+                        viewModel.setValid(true);
+                        double totalAmount =
+                                blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).mapToLong(BlitType::getPrice).sum()
+                                        * (100 - discount.getPercentage()) / 100;
+                        viewModel.setTotalAmount(Double.valueOf(totalAmount).longValue());
+                    }
+                    return viewModel;
+                }).orElseGet(() -> {
+                    viewModel.setValid(false);
+                    return viewModel;
+                });
     }
 
     @Transactional

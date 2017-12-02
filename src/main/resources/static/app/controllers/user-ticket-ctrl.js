@@ -26,6 +26,7 @@ angular.module('eventsPageModule')
                 }
             })
             .catch(function (data) {
+                console.log(data);
             })
         $scope.getPdf = function () {
             ticketsService.getPdfTicket($scope.ticketData.trackCode)

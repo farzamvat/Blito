@@ -1,34 +1,60 @@
 package com.blito.rest.viewmodels.blittype;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotEmpty;
-
 import com.blito.enums.State;
 import com.blito.rest.viewmodels.View;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BlitTypeViewModel {
 	@JsonView(View.BlitType.class)
-	long blitTypeId;
+	private long blitTypeId;
 	@JsonView(View.BlitType.class)
 	@NotEmpty
-	String name;
+	private String name;
 	@JsonView(View.BlitType.class)
 	@NotNull
 	@Min(1)
-	int capacity;
+	private int capacity;
 	@JsonView(View.BlitType.class)
-	int soldCount;
+	private int soldCount;
 	@JsonView(View.BlitType.class)
-	long price;
+	private long price;
 	@JsonView(View.BlitType.class)
-	State blitTypeState;
+	private State blitTypeState;
 	@JsonView(View.BlitType.class)
 	@NotNull
-	boolean isFree;
+	private boolean isFree;
+	@JsonView(View.BlitType.class)
+	private Set<String> seatUids;
+	@JsonView(View.BlitType.class)
+	private Boolean hasSeat = false;
+
+	public Boolean getHasSeat() {
+		return hasSeat;
+	}
+
+	public void setHasSeat(Boolean hasSeat) {
+		this.hasSeat = hasSeat;
+	}
+
+	public BlitTypeViewModel() {
+		this.setSeatUids(new HashSet<>());
+	}
+
+	public Set<String> getSeatUids() {
+		return seatUids;
+	}
+
+	public void setSeatUids(Set<String> seatUids) {
+		this.seatUids = seatUids;
+	}
+
 	public long getBlitTypeId() {
 		return blitTypeId;
 	}
@@ -72,7 +98,18 @@ public class BlitTypeViewModel {
 	public void setFree(boolean isFree) {
 		this.isFree = isFree;
 	}
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return "BlitTypeViewModel{" +
+				"blitTypeId=" + blitTypeId +
+				", name='" + name + '\'' +
+				", capacity=" + capacity +
+				", soldCount=" + soldCount +
+				", price=" + price +
+				", blitTypeState=" + blitTypeState +
+				", isFree=" + isFree +
+				", seatUids=" + seatUids +
+				'}';
+	}
 }

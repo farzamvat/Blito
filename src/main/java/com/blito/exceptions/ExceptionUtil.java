@@ -11,8 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ValidationException;
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -20,8 +19,8 @@ import java.util.stream.Collectors;
 public class ExceptionUtil {
 	
 	public static <T extends Exception> ExceptionViewModel generate(HttpStatus status,
-			HttpServletRequest request,
-			T exception)
+																	HttpServletRequest request,
+																	T exception)
 	{
 		ExceptionViewModel exvm = new ExceptionViewModel();
 		exvm.setError(status.name());
@@ -34,21 +33,23 @@ public class ExceptionUtil {
 	}
 	
 	public static <T extends Throwable> ExceptionViewModel generate(HttpStatus status,
-			HttpServletRequest request,
-			T throwable)
+																	HttpServletRequest request,
+																	T throwable)
 	{
-		ExceptionViewModel exvm = new ExceptionViewModel();
-		exvm.setError(status.name());
-		exvm.setStatus(status.value());
-		exvm.setPath(request.getServletPath());
-		exvm.setMessage(throwable.getMessage());
-		exvm.setException(throwable.getClass().getName());
-		exvm.setTimestamp(System.currentTimeMillis());
-		return exvm;
+		// TODO: 10/15/17 must test
+		return generate(status,request,(Exception)throwable);
+	}
+
+	public static ExceptionViewModel generateSeatError(HttpStatus status, HttpServletRequest request, SeatException exception) {
+		ExceptionViewModel exceptionViewModel = generate(status,request,exception);
+		Optional.ofNullable(exception.getSeatErrors())
+				.filter(seatErrorViewModels -> !seatErrorViewModels.isEmpty())
+				.ifPresent(seatErrorViewModels -> exceptionViewModel.setErrors(new ArrayList<>(exception.getSeatErrors())));
+		return exceptionViewModel;
 	}
 	
 	public static <T extends Enum<T> & ValidationInterface> ExceptionViewModel generate(HttpStatus status,
-			HttpServletRequest request, BindingResult bindingResult, Class<T> clazz)
+																						HttpServletRequest request, BindingResult bindingResult, Class<T> clazz)
 	{
 		ExceptionViewModel exvm = new ExceptionViewModel();
 		exvm.setError(status.name());
@@ -91,7 +92,7 @@ public class ExceptionUtil {
 		
 	}
 
-	public static ExceptionViewModel generate(HttpStatus status,String message,BindingResult bindingResult,HttpServletRequest request) {
+	public static ExceptionViewModel generate(HttpStatus status, String message, BindingResult bindingResult, HttpServletRequest request) {
 		ExceptionViewModel exceptionViewModell = new ExceptionViewModel(message,status.value());
 		exceptionViewModell.setPath(request.getServletPath());
 		bindingResult.getFieldErrors().forEach(fieldError -> {
@@ -106,8 +107,8 @@ public class ExceptionUtil {
 	}
 	
 	public static <T extends Enum<T> & ValidationInterface> ExceptionViewModel generate(HttpStatus status,
-			HttpServletRequest request,
-			MethodArgumentNotValidException exception, Class<T> clazz)
+																						HttpServletRequest request,
+																						MethodArgumentNotValidException exception, Class<T> clazz)
 	{
 		ExceptionViewModel exvm = new ExceptionViewModel();
 		T[] validationEnums = clazz.getEnumConstants();

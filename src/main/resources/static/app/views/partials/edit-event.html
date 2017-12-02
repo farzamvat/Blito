@@ -293,85 +293,214 @@
 
                         <legend class="legendStyle"> تعریف نوع بلیت و سانس</legend>
                         <div class="row">
+                            <table class="table">
+                                <thead class="tableHeader">
+                                <tr>
+                                    <th ng-if="showTimeEditForms.length > 1" class="dataCenter">حذف سانس
+                                    </th>
+                                    <th class="dataCenter" >تاریخ و ساعت
+                                    </th>
+                                    <th class="dataCenter" >تعداد نوع بلیت
+                                    </th>
+                                    <th class="dataCenter">ویرایش سانس
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody class="showTimeList">
+                                <tr ng-repeat="sans in showTimeEditForms" >
+                                    <td ng-if="showTimeEditForms.length > 1"class="dataCenter"> <i  class="fa fa-minus btn-danger addDeleteBtn" ng-click="deleteFieldShowTimeEdit($index)" aria-hidden="true"></i></td>
+                                    <td class="dataCenter"> <input type="text"   class="datePickerFormat disabledInput" disabled ng-class="dateClass($index)"  readonly/></td>
+                                    <td class="dataCenter">{{ sans.blitTypes.length | pNumber}} نوع بلیت </td>
+                                    <td ng-if="sans.eventDateId" class="dataCenter"><button class="btn btn-warning editButton" ng-click="editEventSans($index)">ویرایش <i class="fa fa-spinner fa-spin  dispNone" id="editSansSpinner{{$index}}"></i></button>
+                                    </td>
+                                    <td ng-if="!sans.eventDateId" class="dataCenter text-success"> سانس جدید
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
+                    <fieldset id="editEventSansSubmit" class="marginTop30 fieldsetStyle dispNone">
+                        <div class="col-xs-12 showTimeSectionEdit">
 
+                            <div class="col-xs-12">
+                                <h4 class="text-center" >ویرایش سانس</h4>
+                                <div class="col-xs-12 col-sm-6 floatRight text-center">
 
-
-
-
-
-                            <div class="col-xs-12 text-center" > اضافه و کم کردن سانس
-                                <i class="fa fa-plus btn-success addDeleteBtn" ng-click="addFieldShowTimeEdit()" aria-hidden="true"></i>
-                                <i class="fa fa-minus btn-danger addDeleteBtn" ng-click="deleteFieldShowTimeEdit()" aria-hidden="true"></i>
+                                    <label class="registerLabel" >تاریخ و ساعت : </label>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 floatRight inputXsSize">
+                                    <input type="text"  ng-model="newShowTimeEdit.persianDate" name="newSansTime" class="datePickerFormat eventDateClassEdit0"  readonly/>
+                                </div>
                             </div>
-                            <div class="form-group col-xs-12 col-sm-12 formRegGroup floatRight marginTop30 " ng-repeat="showTime in showTimeEditForms">
-                                <div class="col-xs-10 col-xs-offset-1 showTimeSection">
-                                    <div class="col-xs-12">
-                                        <h4 class="text-center" > سانس  {{$index + 1}}</h4>
-                                        <div class="col-xs-5 col-sm-6 floatRight text-center">
+                            <seat-map-edit  ng-if="eventHasSalon && editEventFields.eventState === 'CLOSED'"></seat-map-edit>
+                            <div ng-if="eventHasSalon && editEventFields.eventState === 'CLOSED'" class="seatMapSection2">
+                                <div class="col-xs-12 seatMapHelpSection marginTop30">
+                                    <div class="seatMapSquare seatMapForSale "></div>
+                                    <label class="floatRight marginLeft20 paddingTop5">ویرایش شده</label>
+                                    <div class="seatMapSquare seatMapNotAvailable"></div>
+                                    <label class="floatRight marginLeft20 paddingTop5"> مهمان</label>
+                                    <div class="seatMapSquare seatMapGuestTicketGenerated"></div>
+                                    <label class="floatRight marginLeft20 paddingTop5">مهمان با بلیت</label>
+                                    <div class="seatMapSquare seatMapPicked"></div>
+                                    <label class="floatRight marginLeft20 paddingTop5">انتخاب شده</label>
+                                    <div class="seatMapSquare seatMapAvailable"></div>
+                                    <label class="floatRight marginLeft20 paddingTop5">برای فروش</label>
+                                    <div class="seatMapSquare seatMapSold"></div>
+                                    <label class="floatRight marginLeft20 paddingTop5">فروش رفته</label>
+                                    <div class="seatMapSquare seatMapReserved"></div>
+                                    <label class="floatRight marginLeft20 paddingTop5">در حال فروش</label>
+                                </div>
+                                <div id="labelDrillUpSection2"  class="col-xs-12 labelSvgHeight marginTop30"></div>
+                                <div id="seatMaperChart2"  class="col-xs-12 marginTop30 marginBottom20 seatMaperChartStyle"></div>
+                                <div ng-if="generateBlitTypeSeats" class="col-xs-12 marginTop30 marginBottom20" ng-include="'app/views/partials/seat-pick-edit-form.html'"></div>
+                                <div id="successSeatBlitTypeEdit" class="dispNone text-center alert alert-success col-xs-12" >
+                                    <strong>نوع بلیت با موفقیت ثبت شد !</strong>
+                                </div>
+                                <button class="btn btn-warning center-block marginTop60" ng-disabled="!blitTypeCreateValidationEdit" ng-click="seatsPickedBlitTypeEdit()">قیمت گذاری مجدد صندلی‌های انتخاب شده <i class="fa fa-money"></i></button>
+                                <div class="hrLine marginTop30"></div>
+                            </div>
 
-                                            <label class="registerLabel" >تاریخ و ساعت : </label>
-                                        </div>
-                                        <div class="col-xs-7 col-sm-6 floatRight ">
-                                            <input type="text" ng-model="showTime.date" required class=" datePickerFormat" ng-class="dateClass($index)" readonly/>
+                            <div class="form-group col-xs-12  formRegGroup floatRight marginTop30" ng-repeat="ticketType in blitTypesWithOutSeatsEdit">
+                                <div class="col-xs-12 col-sm-6 floatRight marginTop10">
 
-                                            <!--<input height="60"     type="text"  class="form-group registerInput floatRight eventShowTime" >-->
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="form-group col-xs-12  formRegGroup floatRight marginTop30" ng-repeat="ticketType in showTime.blitTypes">
-                                        <div class="col-xs-5 col-sm-6 floatRight marginTop10">
-
-                                            <div class="col-xs-12  col-sm-12 floatRight text-center">
-
-                                                <label class="registerLabel" for="eventTicket" >{{$index + 1}}. نوع بلیت :</label>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-xs-7 col-sm-6 floatRight ">
-                                            <select id="eventTicket" ng-model="ticketType.isFree" required class="form-control dropDownInput" ng-options="o.v as o.n for o in [{n : 'رایگان', v: true}, {n : 'پولی', v: false}]">
-
-                                            </select>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-12 floatRight marginTop10">
-                                            <div class="col-xs-5 col-sm-6 floatRight text-center">
-                                                <label class="registerLabel" for="ticketName">نام بلیت :</label>
-                                            </div>
-                                            <div class="col-xs-7 col-sm-6 floatRight ">
-                                                <input height="60" id="ticketName" ng-model="ticketType.name" required  type="text"  class="form-group registerInput" >
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-12 floatRight marginTop10">
-                                            <div class="col-xs-5 col-sm-6 floatRight text-center">
-                                                <label class="registerLabel" for="ticketCapacity">ظرفیت بلیت :</label>
-                                            </div>
-                                            <div class="col-xs-7 col-sm-6 floatRight ">
-                                                <input height="60" id="ticketCapacity" required ng-model="ticketType.capacity"   type="number"  class="form-group registerInput" >
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-12 floatRight marginTop10">
-                                            <div ng-if="ticketType.isFree === false" class="form-group col-xs-12 formRegGroup floatRight">
-                                                <div class="col-xs-5 col-sm-6 floatRight text-center">
-                                                    <label class="registerLabel" for="ticketPurchaseAmount">قیمت بلیت :</label>
-                                                </div>
-                                                <div class="col-xs-7 col-sm-6 floatRight ">
-                                                    <input height="60" id="ticketPurchaseAmount" required ng-model="ticketType.price"   type="number"  class="form-group registerInput" >
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-xs-12 text-center marginTop10" > اضافه و کم کردن نوع بلیت
-                                        <i class="fa fa-plus btn-success addDeleteBtn" ng-click="addFieldTicketTypeEdit($index)" aria-hidden="true"></i>
+                                    <div class="col-xs-12  col-sm-12 floatRight text-center">
                                         <i class="fa fa-minus btn-danger addDeleteBtn" ng-click="deleteFieldTicketTypeEdit($index)" aria-hidden="true"></i>
+
+                                        <label class="registerLabel" for="eventTicket" >{{$index + 1 | pNumber}}. نوع بلیت :</label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 floatRight ">
+                                    <select id="eventTicket" required ng-model="ticketType.isFree" class="form-control dropDownInput" ng-options="o.v as o.n for o in [{n : 'رایگان', v: true}, {n : 'پولی', v: false}]">
+
+                                    </select>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 floatRight marginTop10">
+                                    <div class="col-xs-12 col-sm-6 floatRight text-center">
+                                        <label class="registerLabel" for="ticketName">نام بلیت :</label>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 floatRight inputXsSize">
+                                        <input height="60" required id="ticketName" ng-model="ticketType.name" name="blitNameEdit"  type="text"  class="form-group registerInput" >
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 floatRight marginTop10">
+                                    <div class="col-xs-12 col-sm-6 floatRight text-center">
+                                        <label class="registerLabel" for="ticketCapacity">ظرفیت بلیت :</label>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 floatRight ">
+                                        <input height="60" required id="ticketCapacity" ng-model="ticketType.capacity" name="blitCapacityEdit"  type="number"  class="form-group registerInput inputXsSize" >
+                                    </div>
+                                </div>
+                                <div ng-if="ticketType.isFree === false" class="col-xs-12 col-sm-12 floatRight marginTop10">
+                                    <div class="col-xs-12 col-sm-6 floatRight text-center">
+                                        <label class="registerLabel" for="ticketPurchaseAmount">قیمت بلیت (تومان):</label>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 floatRight ">
+                                        <input height="60" required id="ticketPurchaseAmount" ng-model="ticketType.price" name="blitPriceEdit"   type="number"  class="form-group registerInput inputXsSize" >
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-xs-12 marginTop30">
+                                <button class="btn btn-info center-block" ng-click="addFieldTicketTypeEdit()">تعریف بلیت بدون انتخاب صندلی <i class="fa fa-plus"></i></button>
+                            </div>
+                            <div class="col-xs-12 marginTop30">
+                                <!--<p class="text-center colorRed" ng-show="submitEventForm.newSansTime.$invalid">* تاریخ و ساعت را انتخاب کنید.</p>-->
+                                <button class="btn btn-success center-block marginTop30" ng-disabled="editEventForm.blitNameEdit.$invalid || editEventForm.blitCapacityEdit.$invalid || editEventForm.blitPriceEdit.$invalid" ng-click="submitSansWithSeatpickerEdit(newShowTimeEdit)">ثبت ویرایش سانس</button>
+                            </div>
                         </div>
-
+                        <div class="hrLine marginTop30"></div>
                     </fieldset>
+                    <fieldset id="editEventNewSansSubmit" class="marginTop30 fieldsetStyle dispNone">
+                        <div class="col-xs-12 showTimeSectionEdit">
+
+                            <div class="col-xs-12">
+                                <h4 class="text-center" >ثبت سانس</h4>
+                                <div class="col-xs-12 col-sm-6 floatRight text-center">
+
+                                    <label class="registerLabel" >تاریخ و ساعت : </label>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 floatRight inputXsSize">
+                                    <input type="text"  ng-model="newShowTimeEdit.persianDate" name="newSansTime" class="datePickerFormat newSansEditSubmitDate"  readonly/>
+                                </div>
+                            </div>
+
+                            <div ng-if="editEventFields.salonUid"  class="col-xs-12 marginTop30">
+                                <button  class="btn btn-info center-block generateSeatMap3" ng-click="salonSeatPicker(editEventFields.salonUid, 3)">قیمت گذاری صندلی‌های سالن <i class="fa fa-plus"></i><i class="fa fa-spinner fa-spin dispNone seatMapSpinner"></i></button>
+                            </div>
+                            <seat-map ng-if="editEventFields.salonUid"></seat-map>
+                            <div ng-if="editEventFields.salonUid" class="seatMapSection3 dispNone">
+                                <div class="col-xs-12 seatMapHelpSection marginTop30">
+                                    <div class="seatMapSquare seatMapForSale "></div>
+                                    <label class="floatRight marginLeft20 paddingTop5">برای فروش</label>
+                                    <div class="seatMapSquare seatMapNotAvailable"></div>
+                                    <label class="floatRight marginLeft20 paddingTop5">برای مهمان</label>
+                                    <div class="seatMapSquare seatMapPicked"></div>
+                                    <label class="floatRight marginLeft20 paddingTop5">انتخاب شده</label>
+                                </div>
+                                <div id="labelDrillUpSection3"  class="col-xs-12 labelSvgHeight marginTop30"></div>
+                                <div id="seatMaperChart3"  class="col-xs-12 marginTop30 marginBottom20 seatMaperChartStyle"></div>
+                                <div id="successSeatBlitTypeEditSubmit" class="dispNone text-center alert alert-success col-xs-12" >
+                                    <strong>نوع بلیت با موفقیت ثبت شد !</strong>
+                                </div>
+                                <div id="blitTypeSeatsEdit" class="col-xs-12 marginTop30 marginBottom20 dispNone" ng-include="'app/views/partials/seat-pick-edit-new-sans-form.html'"></div>
+                                <button class="btn btn-warning center-block marginTop60" ng-disabled="!blitTypeCreateValidation" ng-click="seatsPickedBlitTypeEditNewSans()">قیمت گذاری صندلی‌های انتخاب شده <i class="fa fa-money"></i></button>
+                                <div class="hrLine marginTop30"></div>
+                            </div>
+
+                            <div class="form-group col-xs-12  formRegGroup floatRight marginTop30" ng-repeat="ticketType in newShowTimeEdit.blitTypes">
+                                <div class="col-xs-12 col-sm-6 floatRight marginTop10">
+
+                                    <div class="col-xs-12  col-sm-12 floatRight text-center">
+                                        <i class="fa fa-minus btn-danger addDeleteBtn" ng-click="deleteFieldTicketTypeEditSubmit($index)" aria-hidden="true"></i>
+
+                                        <label class="registerLabel" for="eventTicket" >{{$index + 1 | pNumber}}. نوع بلیت :</label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 floatRight ">
+                                    <select id="eventTicketEditSubmit" required ng-model="ticketType.isFree" class="form-control dropDownInput" ng-options="o.v as o.n for o in [{n : 'رایگان', v: true}, {n : 'پولی', v: false}]">
+
+                                    </select>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 floatRight marginTop10">
+                                    <div class="col-xs-12 col-sm-6 floatRight text-center">
+                                        <label class="registerLabel" for="ticketName">نام بلیت :</label>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 floatRight inputXsSize">
+                                        <input height="60" required id="ticketNameEditSubmit" ng-model="ticketType.name" name="blitName"  type="text"  class="form-group registerInput" >
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 floatRight marginTop10">
+                                    <div class="col-xs-12 col-sm-6 floatRight text-center">
+                                        <label class="registerLabel" for="ticketCapacity">ظرفیت بلیت :</label>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 floatRight ">
+                                        <input height="60" required id="ticketCapacityEditSubmit" ng-model="ticketType.capacity" name="blitCapacity"  type="number"  class="form-group registerInput inputXsSize" >
+                                    </div>
+                                </div>
+                                <div ng-if="ticketType.isFree === false" class="col-xs-12 col-sm-12 floatRight marginTop10">
+                                    <div class="col-xs-12 col-sm-6 floatRight text-center">
+                                        <label class="registerLabel" for="ticketPurchaseAmount">قیمت بلیت (تومان):</label>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 floatRight ">
+                                        <input height="60" required id="ticketPurchaseAmountEditSubmit" ng-model="ticketType.price" name="blitPrice"   type="number"  class="form-group registerInput inputXsSize" >
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-xs-12 marginTop30">
+                                <button class="btn btn-info center-block" ng-click="addFieldTicketTypeEditSubmit()">تعریف بلیت بدون انتخاب صندلی <i class="fa fa-plus"></i></button>
+                            </div>
+                            <div class="col-xs-12 marginTop30">
+                                <!--<p class="text-center colorRed" ng-show="submitEventForm.newSansTime.$invalid">* تاریخ و ساعت را انتخاب کنید.</p>-->
+                                <button class="btn btn-success center-block marginTop30" ng-disabled="editEventForm.blitNameEdit.$invalid || editEventForm.blitCapacityEdit.$invalid || editEventForm.blitPriceEdit.$invalid" ng-click="submitSansWithSeatpickerEditSubmit(newShowTimeEdit)">ثبت  سانس</button>
+                            </div>
+                        </div>
+                        <div class="hrLine marginTop30"></div>
+                    </fieldset>
+                    <button id="createNewSansEdit"  ng-click="newSansEdit()" name="creatSansEdit" class="btn btn-info center-block">سانس جدید <i class="fa fa-plus"></i></button>
+
                     <fieldset class="marginTop30 fieldsetStyle">
 
                         <legend class="legendStyle">اطلاعات مورد نیاز (اختیاری)</legend>

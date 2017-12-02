@@ -139,7 +139,7 @@ public class UserAccountService {
 	public CompletableFuture<TokenModel> getNewAccessToken(String refresh_token)
 	{
 		if(refresh_token == null || refresh_token.equals(""))
-			throw new UnauthorizedException(ResourceUtil.getMessage(Response.REFRESH_TOKEN_NOT_PRESENT));
+			throw new UnauthorizedException(ResourceUtil.getMessage(Response.ACCESS_DENIED));
 		User user = userRepository.findByEmail(jwtService.refreshTokenValidation(refresh_token))
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
 		return jwtService.generateAccessToken(user.getEmail())

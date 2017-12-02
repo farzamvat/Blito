@@ -1,32 +1,34 @@
 package com.blito.models;
 
+import javax.persistence.*;
 import java.sql.Timestamp;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import com.blito.enums.BlitTypeSeatState;
 
 @Entity(name="blit_type_seat")
 public class BlitTypeSeat {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	long blitTypeSeatId;
-	Timestamp soldDate;
-	String state;
+	private long blitTypeSeatId;
+	private Timestamp soldDate;
+	private Timestamp reserveDate;
+	private String state;
 	@ManyToOne
 	@JoinColumn(name="seatId")
-	Seat seat;
+	private Seat seat;
 	@ManyToOne
 	@JoinColumn(name="blitTypeId")
-	BlitType blitType;
+	private BlitType blitType;
 	@ManyToOne(optional=true)
 	@JoinColumn(name="blitId")
-	SeatBlit seatBlit;
-	
+	private SeatBlit seatBlit;
+
+	public BlitTypeSeat(String state, Seat seat, BlitType blitType) {
+		setState(state);
+		setSeat(seat);
+		setBlitType(blitType);
+	}
+
+	public BlitTypeSeat() {
+	}
+
 	public long getBlitTypeSeatId() {
 		return blitTypeSeatId;
 	}
@@ -65,5 +67,12 @@ public class BlitTypeSeat {
 		this.seatBlit = seatBlit;
 		seatBlit.getBlitTypeSeats().add(this);
 	}
-	
+
+	public Timestamp getReserveDate() {
+		return reserveDate;
+	}
+
+	public void setReserveDate(Timestamp reserveDate) {
+		this.reserveDate = reserveDate;
+	}
 }

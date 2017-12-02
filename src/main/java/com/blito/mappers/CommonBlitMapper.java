@@ -3,6 +3,7 @@ package com.blito.mappers;
 import com.blito.enums.BankGateway;
 import com.blito.enums.ImageType;
 import com.blito.enums.PaymentStatus;
+import com.blito.enums.SeatType;
 import com.blito.models.CommonBlit;
 import com.blito.rest.viewmodels.LocationViewModel;
 import com.blito.rest.viewmodels.ResultVm;
@@ -35,7 +36,7 @@ public class CommonBlitMapper implements GenericMapper<CommonBlit, CommonBlitVie
 		blit.setBlitTypeName(vmodel.getBlitTypeName());
 		blit.setPrimaryAmount(vmodel.getPrimaryAmount());
 		blit.setDiscountCode(vmodel.getDiscountCode());
-		blit.setSeatType(vmodel.getSeatType().name());
+		blit.setSeatType(SeatType.COMMON.name());
 		blit.setBankGateway(vmodel.getBankGateway().name());
 		blit.setAdditionalFields(vmodel.getAdditionalFields().stream().collect(Collectors.toMap(AdditionalField::getKey,AdditionalField::getValue)));
 		return blit;
@@ -62,6 +63,7 @@ public class CommonBlitMapper implements GenericMapper<CommonBlit, CommonBlitVie
 		vmodel.setPaymentStatus(Enum.valueOf(PaymentStatus.class, blit.getPaymentStatus()));
 		vmodel.setPaymentError(blit.getPaymentError());
 		vmodel.setSamanBankToken(blit.getToken());
+		vmodel.setSeatType(SeatType.COMMON);
 		vmodel.setRefNum(blit.getRefNum());
 		vmodel.setBankGateway(Enum.valueOf(BankGateway.class, blit.getBankGateway()));
 		vmodel.setCreatedAt(blit.getCreatedAt());

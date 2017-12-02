@@ -1,13 +1,14 @@
 package com.blito.mappers;
 
-import com.blito.enums.EventType;
-import com.blito.enums.OfferTypeEnum;
-import com.blito.enums.OperatorState;
-import com.blito.enums.State;
-import com.blito.models.Event;
-import com.blito.models.EventDate;
+import com.blito.enums.*;
+import com.blito.exceptions.FileNotFoundException;
+import com.blito.models.*;
+import com.blito.repositories.SalonRepository;
+import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.event.AdditionalField;
 import com.blito.rest.viewmodels.event.EventViewModel;
+import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
+import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,9 +24,11 @@ import java.util.stream.Collectors;
 public class EventMapper implements GenericMapper<Event, EventViewModel> {
 
     @Autowired
-    EventDateMapper eventDateMapper;
+    private EventDateMapper eventDateMapper;
     @Autowired
-    ImageMapper imageMapper;
+    private ImageMapper imageMapper;
+    @Autowired
+    private SalonRepository salonRepository;
 
     @Override
     public Event createFromViewModel(EventViewModel vmodel) {
@@ -40,15 +43,20 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         event.setLatitude(vmodel.getLatitude());
         event.setLongitude(vmodel.getLongitude());
         event.setOperatorState(OperatorState.PENDING.name());
-        vmodel.getEventDates().forEach(ed -> {
-            event.addEventDate(eventDateMapper.createFromViewModel(ed));
-        });
+        vmodel.getEventDates().forEach(ed -> event.addEventDate(eventDateMapper.createFromViewModel(ed)));
         event.setAdditionalFields(vmodel.getAdditionalFields().stream().collect(Collectors.toMap(AdditionalField::getKey, AdditionalField::getValue)));
         event.setMembers(vmodel.getMembers());
         event.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
         event.setEventState(State.CLOSED.name());
         event.setEvento(false);
         event.setPrivate(vmodel.isPrivate());
+        Optional.ofNullable(vmodel.getSalonUid()).filter(salonUid -> !salonUid.isEmpty())
+                .ifPresent(salonUid -> {
+                    Salon salon = salonRepository.findBySalonUid(salonUid).orElseThrow(() -> new FileNotFoundException(ResourceUtil.getMessage(Response.SALON_NOT_FOUND)));
+                    event.getEventDates().forEach(eventDate -> eventDate.setSalon(salon));
+                });
+
+
         return event;
     }
 
@@ -87,6 +95,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
                 .map(AdditionalField::new)
                 .collect(Collectors.toList()));
         vmodel.setPrivate(event.isPrivate());
+        event.getEventDates().stream().filter(eventDate -> eventDate.getSalon() != null).findAny().ifPresent(eventDate -> vmodel.setSalonUid(eventDate.getSalon().getSalonUid()));
         return vmodel;
     }
 
@@ -107,28 +116,29 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         event.setMembers(vmodel.getMembers());
         event.setAdditionalFields(vmodel.getAdditionalFields().stream().collect(Collectors.toMap(AdditionalField::getKey, AdditionalField::getValue)));
 
-        List<Long> oldOnes = vmodel.getEventDates().stream().map(b -> b.getEventDateId()).filter(id -> id > 0).collect(Collectors.toList());
+        List<Long> oldOnes = vmodel.getEventDates().stream().map(EventDateViewModel::getEventDateId).filter(id -> id > 0).collect(Collectors.toList());
         List<Long> shouldDelete = new ArrayList<>();
         event.getEventDates().forEach(bt -> {
             if (!oldOnes.contains(bt.getEventDateId())) {
                 shouldDelete.add(bt.getEventDateId());
             }
         });
-        shouldDelete.forEach(id ->
-                event.removeEventDateById(id)
+        shouldDelete.forEach(event::removeEventDateById);
+
+        vmodel.getEventDates().forEach(edvm ->
+            Option.ofOptional(event.getEventDates()
+                    .stream()
+                    .filter(eventDate -> edvm.getEventDateId() > 0 && eventDate.getEventDateId() == edvm.getEventDateId())
+                    .findFirst())
+                    .peek(eventDate -> eventDateMapper.updateEntity(edvm, eventDate))
+                    .onEmpty(() -> event.addEventDate(eventDateMapper.createFromViewModel(edvm)))
         );
-
-
-        vmodel.getEventDates().stream().forEach(edvm -> {
-            Optional<EventDate> optionalEventDate = event.getEventDates().stream().filter(ed -> ed.getEventDateId() == edvm.getEventDateId()).findFirst();
-            if (optionalEventDate.isPresent()) {
-                eventDateMapper.updateEntity(edvm, optionalEventDate.get());
-            } else {
-                event.addEventDate(eventDateMapper.createFromViewModel(edvm));
-            }
-
-        });
         event.setPrivate(vmodel.isPrivate());
+        Optional.ofNullable(vmodel.getSalonUid()).filter(salonUid -> !salonUid.isEmpty())
+                .ifPresent(salonUid -> {
+                    Salon salon = salonRepository.findBySalonUid(salonUid).orElseThrow(() -> new FileNotFoundException(ResourceUtil.getMessage(Response.SALON_NOT_FOUND)));
+                    event.getEventDates().forEach(eventDate -> eventDate.setSalon(salon));
+                });
         return event;
     }
 }
