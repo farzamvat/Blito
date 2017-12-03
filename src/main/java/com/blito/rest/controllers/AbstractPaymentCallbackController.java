@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,14 +52,14 @@ public abstract class AbstractPaymentCallbackController {
                             .map(b -> {
                                 RedirectView redirectView =
                                         new RedirectView(String.valueOf(new StringBuilder(getServerAddress()).append("/payment/").append(b.getTrackCode())));
-//                                redirectView.setStatusCode(HttpStatus.SEE_OTHER);
+                                redirectView.setStatusCode(HttpStatus.SEE_OTHER);
                                 return redirectView;
                             })
                             .orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
                 }
                 RedirectView redirectView =
                         new RedirectView(String.valueOf(new StringBuilder(getServerAddress()).append("/payment/").append(blit.getTrackCode())));
-//                redirectView.setStatusCode(HttpStatus.SEE_OTHER);
+                redirectView.setStatusCode(HttpStatus.SEE_OTHER);
                 return redirectView;
         });
     }

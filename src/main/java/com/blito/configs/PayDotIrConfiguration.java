@@ -35,6 +35,6 @@ public class PayDotIrConfiguration {
     @Autowired
     @Bean
     public PayDotIrClient payDotIrClientTest(ObjectMapper objectMapper) {
-        return new PayDotIrClient(objectMapper,"test",paymentUrl,paymentVerificationUrl,"www.blito.ir");
+        return new PayDotIrClient(objectMapper,"test",paymentUrl,paymentVerificationUrl,redirectUrl);
     }
 }
