@@ -104,7 +104,8 @@ public class PaymentRestIntegrationTest {
                 .when()
                 .body(request)
                 .post(getServerAddress() + "/pay-payment-callback")
-                .then().header("location",equalTo(serverAddress + port + "/payment/" + blit.getTrackCode())).statusCode(302);
+                .then().statusCode(200);
+//                .then().header("location",equalTo(serverAddress + port + "/payment/" + blit.getTrackCode())).statusCode(302);
     }
 
     @Test
