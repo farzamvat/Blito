@@ -30,7 +30,7 @@ public class ZarinpalConfigurations {
 	@Bean
 	public ZarinpalClient zarinpalClient(Jaxb2Marshaller marshaller)
 	{
-		ZarinpalClient client = new ZarinpalClient(String.valueOf(new StringBuilder(serverAddress).append(baseUrl).append("/zarinpal")),zarinpalMerchantId);
+		ZarinpalClient client = new ZarinpalClient(String.valueOf(new StringBuilder(serverAddress).append(baseUrl).append("/zarinpal-payment-callback")),zarinpalMerchantId);
 		client.setDefaultUri("https://www.zarinpal.com/pg/services/WebGate/service");
 		client.setMarshaller(marshaller);
 		client.setUnmarshaller(marshaller);

@@ -305,7 +305,8 @@ angular.module('eventsPageModule')
             $scope.setPaymentData(payment, buyerData);
         };
         $scope.setPaymentData = function (payment, buyerData) {
-            angular.element(document.getElementsByClassName("btnPaymentActive")).addClass("btnPaymentActivated");
+            angular.element(document.getElementsByClassName("btnPaymentActivated")).removeClass("btnPaymentActivated");
+            angular.element(document.getElementsByClassName(payment)).addClass("btnPaymentActivated");
             buyPaymentTicket = {
                 blitTypeId: $scope.itemWithCapacity[0].blitTypeId,
                 blitTypeName: $scope.itemWithCapacity[0].name,
@@ -328,7 +329,8 @@ angular.module('eventsPageModule')
             }
         };
         $scope.setPaymentDataWithSeat = function (payment, buyerData) {
-            angular.element(document.getElementsByClassName("btnPaymentActive")).addClass("btnPaymentActivated");
+            angular.element(document.getElementsByClassName("btnPaymentActivated")).removeClass("btnPaymentActivated");
+            angular.element(document.getElementsByClassName(payment)).addClass("btnPaymentActivated");
             buyPaymentTicket = {
                 count: $scope.seatBlitUids.length,
                 customerEmail: buyerData.email,
@@ -362,6 +364,9 @@ angular.module('eventsPageModule')
                     if($scope.gateWayDetails.gateway === 'ZARINPAL') {
                         $window.location.href = $scope.gateWayDetails.zarinpalWebGatewayURL;
                     }
+                    if($scope.gateWayDetails.gateway === 'PAYDOTIR') {
+                        $window.location.href = $scope.gateWayDetails.payDotIrWebGatewayURL;
+                    }
                 })
                 .catch(function (data) {
                     $scope.buyTicketOnce = false;
@@ -381,6 +386,9 @@ angular.module('eventsPageModule')
                     $scope.gateWayDetails = data.data;
                     if($scope.gateWayDetails.gateway === 'ZARINPAL') {
                         $window.location.href = $scope.gateWayDetails.zarinpalWebGatewayURL;
+                    }
+                    if($scope.gateWayDetails.gateway === 'PAYDOTIR') {
+                        $window.location.href = $scope.gateWayDetails.payDotIrWebGatewayURL;
                     }
                 })
                 .catch(function (data) {
@@ -402,6 +410,9 @@ angular.module('eventsPageModule')
                     if($scope.gateWayDetails.gateway === 'ZARINPAL') {
                         $window.location.href = $scope.gateWayDetails.zarinpalWebGatewayURL;
                     }
+                    if($scope.gateWayDetails.gateway === 'PAYDOTIR') {
+                        $window.location.href = $scope.gateWayDetails.payDotIrWebGatewayURL;
+                    }
                 })
                 .catch(function (data) {
                     $scope.buyTicketOnce = false;
@@ -422,6 +433,9 @@ angular.module('eventsPageModule')
                     $scope.gateWayDetails = data.data;
                     if($scope.gateWayDetails.gateway === 'ZARINPAL') {
                         $window.location.href = $scope.gateWayDetails.zarinpalWebGatewayURL;
+                    }
+                    if($scope.gateWayDetails.gateway === 'PAYDOTIR') {
+                        $window.location.href = $scope.gateWayDetails.payDotIrWebGatewayURL;
                     }
                 })
                 .catch(function (data) {

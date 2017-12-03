@@ -18,6 +18,7 @@ import com.blito.search.Operation;
 import com.blito.search.SearchViewModel;
 import com.blito.search.Simple;
 import io.vavr.control.Either;
+import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,6 +58,14 @@ public class DiscountService {
             return Either.left(new ExceptionViewModel(ResourceUtil.getMessage(Response.NOT_ALLOWED), 400));
         }
         return createDiscountCode(vmodel, user, blitTypes);
+    }
+
+    public <B extends Blit> void checkIfDiscountCodeExistAndIncrementItsUsage(B blit) {
+        Option.of(blit.getDiscountCode())
+                .peek(discountCode -> {
+                    discountRepository.findByCode(discountCode)
+                            .ifPresent(discount -> discount.setUsed(blit.getCount() + discount.getUsed()));
+                });
     }
 
     @Transactional
