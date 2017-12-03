@@ -130,6 +130,7 @@ public abstract class AbstractBlitService <E extends Blit,V extends AbstractBlit
         return trackCode;
     }
 
+
     public void checkBlitTypeSoldConditionAndSetEventDateEventStateSold(BlitType blitType) {
         if (blitType.getSoldCount() == blitType.getCapacity()) {
             blitType.setBlitTypeState(State.SOLD.name());

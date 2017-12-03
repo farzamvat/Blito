@@ -100,6 +100,7 @@ public enum Response {
     NOT_RESERVED_FOR_HOST("error.not.reserved.seat.for.host"),
 	SHARED_SEAT_AND_INCONSISTENT_CAPACITY_ERROR("error.shared.seat.and.inconsistent.capacity"),
 	ERROR_PESSIMISTIC_LOCK("error.pessimistic.lock"),
+	PAY_DOT_IR_ERROR("error.pay.ir"),
 	SEAT_INFORMATION("seat.info");
     
 

@@ -1,6 +1,7 @@
 package com.blito.payments.zarinpal.client;
 
 
+import io.vavr.control.Try;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 
 import com.blito.exceptions.ZarinpalException;
@@ -35,17 +36,19 @@ public class ZarinpalClient extends WebServiceGatewaySupport {
 		return response.getAuthority();
 	}
 	
-	public PaymentVerificationResponse getPaymentVerificationResponse(int amount,String authority)
+	public Try<PaymentVerificationResponse> getPaymentVerificationResponse(int amount,String authority)
 	{
-		PaymentVerification paymentVerification = new PaymentVerification();
-		paymentVerification.setAmount(amount);
-		paymentVerification.setAuthority(authority);
-		paymentVerification.setMerchantID(this.zarinpalMerchantId);
-		PaymentVerificationResponse verificationResponse = 
-				(PaymentVerificationResponse) getWebServiceTemplate().marshalSendAndReceive(paymentVerification);
-		if(verificationResponse.getStatus() != 100)
-			throw new ZarinpalException(ZarinpalException.generateMessage(verificationResponse.getStatus()));
-		return verificationResponse;
+		return Try.of(() -> {
+			PaymentVerification paymentVerification = new PaymentVerification();
+			paymentVerification.setAmount(amount);
+			paymentVerification.setAuthority(authority);
+			paymentVerification.setMerchantID(this.zarinpalMerchantId);
+			PaymentVerificationResponse verificationResponse =
+					(PaymentVerificationResponse) getWebServiceTemplate().marshalSendAndReceive(paymentVerification);
+			if(verificationResponse.getStatus() != 100)
+				throw new ZarinpalException(ZarinpalException.generateMessage(verificationResponse.getStatus()));
+			return verificationResponse;
+		});
 	}
 	
 }

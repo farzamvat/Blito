@@ -28,6 +28,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -56,7 +59,7 @@ public class CommonBlitService extends AbstractBlitService<CommonBlit,CommonBlit
             blit.setTrackCode(generateTrackCode());
             return Option.of(paymentRequestService.createPurchaseRequest(blit))
                     .map(token -> persistBlit(blitType,blit,Optional.of(user),token))
-                    .map(b -> paymentRequestService.createZarinpalResponse(b.getToken()))
+                    .map(b -> paymentRequestService.createPaymentRequest(Enum.valueOf(BankGateway.class,b.getBankGateway()),b.getToken()))
                     .getOrElseThrow(() -> new RuntimeException("Never Happens"));
         }
     }
@@ -160,7 +163,7 @@ public class CommonBlitService extends AbstractBlitService<CommonBlit,CommonBlit
         commonBlit.setTrackCode(generateTrackCode());
         return Option.of(paymentRequestService.createPurchaseRequest(commonBlit))
                 .map(token -> persistBlit(blitType,commonBlit,Optional.empty(),token))
-                .map(blit -> paymentRequestService.createZarinpalResponse(blit.getToken()))
+                .map(b -> paymentRequestService.createPaymentRequest(Enum.valueOf(BankGateway.class,b.getBankGateway()),b.getToken()))
                 .getOrElseThrow(() -> new RuntimeException("Never Happens"));
     }
 
@@ -192,6 +195,21 @@ public class CommonBlitService extends AbstractBlitService<CommonBlit,CommonBlit
         commonBlit.setPaymentStatus(PaymentStatus.FREE.name());
         commonBlit.setBankGateway(BankGateway.NONE.name());
         attachedUser.addBlits(commonBlit);
+        return commonBlit;
+    }
+
+    @Transactional
+    public CommonBlit finalizeCommonBlitPayment(CommonBlit commonBlit, Optional<String> refNum) {
+        BlitType blitType = commonBlit.getBlitType();
+        refNum.ifPresent(rn -> commonBlit.setRefNum(rn));
+        commonBlit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+        commonBlit.setPaymentStatus(PaymentStatus.PAID.name());
+        commonBlit.setPaymentError(ResourceUtil.getMessage(Response.PAYMENT_SUCCESS));
+        blitType.setSoldCount(blitType.getSoldCount() + commonBlit.getCount());
+        log.info("****** NONE FREE COMMON BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}' AND BLIT TYPE CAPACITY IS '{}'",
+                commonBlit.getCustomerEmail(),blitType.getSoldCount(),blitType.getCapacity());
+        checkBlitTypeSoldConditionAndSetEventDateEventStateSold(blitType);
+        discountService.checkIfDiscountCodeExistAndIncrementItsUsage(commonBlit);
         return commonBlit;
     }
 

@@ -177,7 +177,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
             seatBlit.setTrackCode(generateTrackCode());
             return Option.of(paymentRequestService.createPurchaseRequest(seatBlit))
                     .map(token -> persistBlit(seatBlit,Optional.of(user),token))
-                    .map(b -> paymentRequestService.createZarinpalResponse(b.getToken()))
+                    .map(b -> paymentRequestService.createPaymentRequest(Enum.valueOf(BankGateway.class,b.getBankGateway()),b.getToken()))
                     .getOrElseThrow(() -> new RuntimeException("Never Happerns"));
         }
     }
@@ -258,7 +258,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         validateDiscountCodeIfPresentAndCalculateTotalAmount(viewModel,seatBlit);
         return Option.of(paymentRequestService.createPurchaseRequest(seatBlit))
                 .map(token -> persistBlit(seatBlit,Optional.empty(),token))
-                .map(blit -> paymentRequestService.createZarinpalResponse(blit.getToken()))
+                .map(b -> paymentRequestService.createPaymentRequest(Enum.valueOf(BankGateway.class,b.getBankGateway()),b.getToken()))
                 .getOrElseThrow(() -> new RuntimeException("Never Happens"));
     }
 
@@ -300,6 +300,32 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
             blitTypeSeat.setReserveDate(null);
         });
         attachedUser.addBlits(seatBlit);
+        return seatBlit;
+    }
+
+    @Transactional
+    public SeatBlit finalizeSeatBlitPayment(SeatBlit seatBlit,Optional<String> refNum) {
+        refNum.ifPresent(rn -> seatBlit.setRefNum(rn));
+        seatBlit.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+        seatBlit.setPaymentStatus(PaymentStatus.PAID.name());
+        seatBlit.setPaymentError(ResourceUtil.getMessage(Response.PAYMENT_SUCCESS));
+
+        seatBlit.getBlitTypeSeats()
+                .stream().collect(Collectors.groupingBy(BlitTypeSeat::getBlitType,Collectors.counting()))
+                .forEach((blitType, aLong) -> {
+                    blitType.setSoldCount(blitType.getSoldCount() + aLong.intValue());
+
+                    checkBlitTypeSoldConditionAndSetEventDateEventStateSold(blitType);
+                    log.info("****** NONE FREE SEAT BLIT SOLD COUNT RESERVED BY USER '{}' SOLD COUNT IS '{}' AND BLIT TYPE CAPACITY IS '{}'",
+                            seatBlit.getCustomerEmail(),blitType.getSoldCount(),blitType.getCapacity());
+                });
+
+        seatBlit.getBlitTypeSeats().forEach(blitTypeSeat -> {
+            blitTypeSeat.setState(BlitTypeSeatState.SOLD.name());
+            blitTypeSeat.setSoldDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+            blitTypeSeat.setReserveDate(null);
+        });
+        discountService.checkIfDiscountCodeExistAndIncrementItsUsage(seatBlit);
         return seatBlit;
     }
 
