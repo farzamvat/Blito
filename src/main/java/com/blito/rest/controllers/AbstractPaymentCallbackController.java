@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.concurrent.CompletableFuture;
@@ -41,18 +42,24 @@ public abstract class AbstractPaymentCallbackController {
     }
 
     private Logger log = LoggerFactory.getLogger(getClass());
-    protected CompletionStage<RedirectView> completePayment(String token,Supplier<BlitoPaymentResult> supplier) {
+    protected CompletionStage<RedirectView> completePayment(String token, Supplier<BlitoPaymentResult> supplier) {
         return CompletableFuture.supplyAsync(() -> paymentService.finalizingPayment(supplier.get()))
                 .handle((blit,throwable) -> {
                 if(throwable != null) {
                     log.error("******* ERROR IN PAYMENT FLOW '{}'",throwable.getCause());
                     return blitRepository.findByToken(token)
-                            .map(b ->
-                                new RedirectView(String.valueOf(new StringBuilder(getServerAddress()).append("/payment/").append(b.getTrackCode())))
-                            )
+                            .map(b -> {
+                                RedirectView redirectView =
+                                        new RedirectView(String.valueOf(new StringBuilder(getServerAddress()).append("/payment/").append(b.getTrackCode())));
+                                redirectView.setStatusCode(HttpStatus.SEE_OTHER);
+                                return redirectView;
+                            })
                             .orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
                 }
-                return new RedirectView(String.valueOf(new StringBuilder(getServerAddress()).append("/payment/").append(blit.getTrackCode())));
+                RedirectView redirectView =
+                        new RedirectView(String.valueOf(new StringBuilder(getServerAddress()).append("/payment/").append(blit.getTrackCode())));
+                redirectView.setStatusCode(HttpStatus.SEE_OTHER);
+                return redirectView;
         });
     }
 }

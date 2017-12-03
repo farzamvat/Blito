@@ -12,12 +12,13 @@ import java.util.concurrent.CompletionStage;
 public class PaymentCallbackController extends AbstractPaymentCallbackController {
 	
 	@GetMapping("/zarinpal-payment-callback")
-	public CompletionStage<RedirectView> zarinpalCallback(@RequestParam String Authority, @RequestParam String Status) {
+	public CompletionStage<RedirectView> zarinpalCallback(@RequestParam String Authority,
+														  @RequestParam String Status) {
 		return completePayment(Authority,() -> BlitoPaymentResult.transformZarinpal(Authority,Status));
 	}
 
 	@PostMapping("/pay-payment-callback")
-	public CompletionStage<RedirectView> payDotIrCallback(@RequestBody PayDotIrCallbackRequest payload) {
+	public CompletionStage<RedirectView> payDotIrCallback(@ModelAttribute PayDotIrCallbackRequest payload) {
 		return completePayment(String.valueOf(payload.getTransId()),() -> BlitoPaymentResult.transformPayDotIr(payload.getStatus(),payload.getTransId(),payload.getMessage()));
 	}
 }
