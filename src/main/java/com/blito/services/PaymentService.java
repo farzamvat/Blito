@@ -37,7 +37,6 @@ public class PaymentService {
 	private static final Object commonBlitPaymentCompletionLock = new Object();
 	private static final Object seatBlitPaymentCompletionLock = new Object();
 	private static final Logger log = LoggerFactory.getLogger(PaymentService.class);
-
 	@Autowired
 	private BlitRepository blitRepository;
 	@Autowired
