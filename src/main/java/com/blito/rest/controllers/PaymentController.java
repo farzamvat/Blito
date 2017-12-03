@@ -11,11 +11,6 @@ public class PaymentController {
 	{
 		return new ModelAndView("index");
 	}
-
-	@PostMapping("/payment/{trackCode}")
-	public ModelAndView paymentResultPost(@RequestBody String dump) {
-		return new ModelAndView("index");
-	}
 	
 	@GetMapping("/payment/error/{message}")
 	public ModelAndView paymentResultInCaseOfError(@PathVariable String message)

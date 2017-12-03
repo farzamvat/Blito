@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.function.Supplier;
@@ -43,7 +42,7 @@ public abstract class AbstractPaymentCallbackController {
     }
 
     private Logger log = LoggerFactory.getLogger(getClass());
-    protected CompletionStage<RedirectView> completePayment(HttpServletRequest request,String token, Supplier<BlitoPaymentResult> supplier) {
+    protected CompletionStage<RedirectView> completePayment(String token, Supplier<BlitoPaymentResult> supplier) {
         return CompletableFuture.supplyAsync(() -> paymentService.finalizingPayment(supplier.get()))
                 .handle((blit,throwable) -> {
                 if(throwable != null) {
