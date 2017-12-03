@@ -9,6 +9,7 @@ import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.controllers.PaymentCallbackController;
 import com.blito.services.PaymentService;
 import io.restassured.RestAssured;
+import io.restassured.response.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -24,8 +25,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-
 /**
  * @author Farzam Vatanzadeh
  * 12/3/17
@@ -34,7 +33,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class PaymentRestIntegrationTest {
     @Value("${serverAddress}")
     private String serverAddress;
@@ -52,6 +50,7 @@ public class PaymentRestIntegrationTest {
     private String getServerAddress() {
         return serverAddress + port + baseUrl;
     }
+
 
     @Test
     public void zarinpalCallback_fail() {
@@ -100,12 +99,15 @@ public class PaymentRestIntegrationTest {
         request.setTransId(Integer.parseInt(blit.getToken()));
         request.setFactorNumber("12345");
         request.setMobile("09124337522");
-        RestAssured.given().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+        Response response = RestAssured.given().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .when()
                 .body(request)
-                .post(getServerAddress() + "/pay-payment-callback")
+                .post(getServerAddress() + "/pay-payment-callback");
+        String redirectUrl = response.then().statusCode(302).extract().header("Location");
+        RestAssured.given()
+                .get(redirectUrl)
                 .then().statusCode(200);
-//                .then().header("location",equalTo(serverAddress + port + "/payment/" + blit.getTrackCode())).statusCode(302);
+
     }
 
     @Test
@@ -124,10 +126,13 @@ public class PaymentRestIntegrationTest {
         request.setTransId(Integer.parseInt(blit.getToken()));
         request.setFactorNumber("12345");
         request.setMobile("09124337522");
-        RestAssured.given().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+        Response response = RestAssured.given().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .when()
                 .body(request)
-                .post(getServerAddress() + "/pay-payment-callback")
-                .then().header("location",equalTo(serverAddress + port + "/payment/" + blit.getTrackCode())).statusCode(302);
+                .post(getServerAddress() + "/pay-payment-callback");
+        String url = response.then().statusCode(302).extract().header("Location");
+        RestAssured.given()
+                .get(url)
+                .then().statusCode(200);
     }
 }
