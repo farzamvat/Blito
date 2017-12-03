@@ -27,12 +27,6 @@ public class BlitoPaymentResult {
         return new BlitoPaymentResult(String.valueOf(transId), status == 1 ? PayResult.SUCCESS : PayResult.FAILURE , message);
     }
 
-    public BlitoPaymentResult(String token, String message) {
-        this.token = token;
-        this.message = message;
-
-    }
-
     public BlitoPaymentResult(String token, PayResult result) {
         this.token = token;
         this.result = result;

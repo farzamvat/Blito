@@ -1,26 +1,25 @@
 package com.blito.services;
 
-import com.blito.enums.PaymentStatus;
-import com.blito.enums.Response;
-import com.blito.enums.SeatType;
-import com.blito.enums.State;
-import com.blito.exceptions.BlitNotAvailableException;
-import com.blito.exceptions.InconsistentDataException;
-import com.blito.exceptions.NotFoundException;
-import com.blito.exceptions.ZarinpalException;
+import com.blito.enums.*;
+import com.blito.exceptions.*;
 import com.blito.mappers.CommonBlitMapper;
 import com.blito.mappers.SeatBlitMapper;
 import com.blito.models.Blit;
 import com.blito.models.CommonBlit;
 import com.blito.models.SeatBlit;
-import com.blito.payments.saman.SamanBankService;
+import com.blito.payments.payir.viewmodel.PayDotIrClient;
 import com.blito.payments.zarinpal.PaymentVerificationResponse;
 import com.blito.payments.zarinpal.client.ZarinpalClient;
-import com.blito.repositories.*;
+import com.blito.repositories.BlitRepository;
+import com.blito.repositories.CommonBlitRepository;
+import com.blito.repositories.DiscountRepository;
+import com.blito.repositories.SeatBlitRepository;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.viewmodels.payments.BlitoPaymentResult;
+import com.blito.rest.viewmodels.payments.BlitoPaymentVerificationResult;
 import com.blito.services.blit.CommonBlitService;
 import com.blito.services.blit.SeatBlitService;
-import com.blito.services.util.HtmlRenderer;
+import io.vavr.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,28 +30,20 @@ import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Optional;
+import java.util.function.BiFunction;
 
 @Service
 public class PaymentService {
 	private static final Object commonBlitPaymentCompletionLock = new Object();
 	private static final Object seatBlitPaymentCompletionLock = new Object();
 	private static final Logger log = LoggerFactory.getLogger(PaymentService.class);
-	@Autowired
-	private SamanBankService samanBankService;
+
 	@Autowired
 	private BlitRepository blitRepository;
-	@Autowired
-	private BlitTypeRepository blitTypeRepository;
 	@Autowired
 	private ZarinpalClient zarinpalClient;
 	@Autowired
 	private CommonBlitRepository commonBlitRepository;
-	@Autowired
-	private HtmlRenderer htmlRenderer;
-	@Autowired
-	private MailService mailService;
-	@Autowired
-	private SmsService smsService;
 	@Autowired
 	private CommonBlitService commonBlitService;
 	@Autowired
@@ -65,6 +56,99 @@ public class PaymentService {
 	private SeatBlitMapper seatBlitMapper;
 	@Autowired
 	private DiscountRepository discountRepository;
+	@Autowired
+	private PayDotIrClient payDotIrClient;
+
+	@Transactional
+	public Blit finalizingPayment(BlitoPaymentResult paymentResult) {
+		Blit blit = blitRepository.findByToken(paymentResult.getToken()).orElseThrow(() ->
+				new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
+		if(paymentResult.getResult().equals(PayResult.SUCCESS)) {
+
+			log.info("success in '{}' payment callback blit trackCode '{}' user email '{}'",
+					blit.getBankGateway(),
+					blit.getTrackCode(),
+					blit.getCustomerEmail());
+
+			if(blit.getSeatType().equals(SeatType.COMMON.name())) {
+				CommonBlit commonBlit = commonBlitRepository.findOne(blit.getBlitId());
+				if(commonBlit.getBlitType().getBlitTypeState().equals(State.SOLD.name()))
+					throw new BlitNotAvailableException(ResourceUtil.getMessage(Response.BLIT_NOT_AVAILABLE));
+				checkBlitCapacity(commonBlit);
+
+				CommonBlit persisted = verifyAndFinalizePayment(commonBlit,(b, verification) -> {
+					synchronized (commonBlitPaymentCompletionLock) {
+						log.info("User with email '{}' holding the lock after payment",b.getCustomerEmail());
+						log.info("User with email '{}' released the lock after payment",b.getCustomerEmail());
+						return commonBlitService.finalizeCommonBlitPayment(b, Optional.ofNullable(verification.getRefNum()));
+					}
+				});
+				commonBlitService.sendEmailAndSmsForPurchasedBlit(commonBlitMapper.createFromEntity(persisted));
+				return commonBlit;
+			} else {
+				SeatBlit seatBlit = seatBlitRepository.findOne(blit.getBlitId());
+				if(seatBlit.getBlitTypeSeats().stream().anyMatch(blitTypeSeat -> Optional.ofNullable(blitTypeSeat.getReserveDate()).isPresent() && blitTypeSeat.getReserveDate().before(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusMinutes(10L).toInstant())))) {
+					throw new BlitNotAvailableException(ResourceUtil.getMessage(Response.SEAT_BLIT_RESERVED_TIME_OUT_OF_DATE));
+				}
+
+				SeatBlit persisted = verifyAndFinalizePayment(seatBlit,(s, verification) -> {
+					synchronized (seatBlitPaymentCompletionLock) {
+						log.info("User with email '{}' holding the lock after payment",seatBlit.getCustomerEmail());
+						log.info("User with email '{}' released the lock after payment",seatBlit.getCustomerEmail());
+						return seatBlitService.finalizeSeatBlitPayment(seatBlit, Optional.ofNullable(verification.getRefNum()));
+					}
+				});
+				seatBlitService.sendEmailAndSmsForPurchasedBlit(seatBlitMapper.createFromEntity(persisted));
+				return seatBlit;
+			}
+		} else {
+			return setError(blit);
+		}
+	}
+
+	private <B extends Blit> B verifyAndFinalizePayment(B blit,
+														BiFunction<B,BlitoPaymentVerificationResult,B> biFunction
+													  ) {
+		return Try.of(() -> verifyPayment(blit))
+				.map(verification -> {
+					log.info("success in '{}' verification response trackCode '{}' user email '{}' ref number '{}'",
+							blit.getBankGateway(),
+							blit.getTrackCode(),
+							blit.getCustomerEmail(), verification.getRefNum());
+
+					return biFunction.apply(blit,verification);
+				})
+				.onFailure(throwable -> {
+					log.error("Exception in '{}' payment verification '{}'", throwable);
+					setError(blit);
+				}).getOrElseThrow(() -> new RuntimeException(ResourceUtil.getMessage(Response.INTERNAL_SERVER_ERROR)));
+	}
+
+	private Blit setError(Blit blit) {
+		blit.setPaymentError(ResourceUtil.getMessage(Response.PAYMENT_ERROR));
+		blit.setPaymentStatus(PaymentStatus.ERROR.name());
+		return blitRepository.save(blit);
+	}
+
+	private <B extends Blit> BlitoPaymentVerificationResult verifyPayment(B blit) {
+		switch (Enum.valueOf(BankGateway.class,blit.getBankGateway())) {
+			case ZARINPAL:
+				return BlitoPaymentVerificationResult
+						.transformZarinpalVerificationResponse(
+								zarinpalClient.getPaymentVerificationResponse(
+										blit.getTotalAmount().intValue(),
+										blit.getToken())
+						);
+			case PAYDOTIR:
+				return BlitoPaymentVerificationResult
+						.transformPayDotIrVerificationResponse(
+								payDotIrClient.verifyPaymentRequest(Integer.parseInt(blit.getToken()))
+										.getOrElseThrow(() -> new PayDotIrException(ResourceUtil.getMessage(Response.PAY_DOT_IR_ERROR)))
+						);
+			default:
+				throw new NotFoundException(ResourceUtil.getMessage(Response.BANK_GATEWAY_NOT_FOUND));
+		}
+	}
 
 	@Transactional
 	public Blit zarinpalPaymentFlow(String authority,String status)
@@ -92,7 +176,7 @@ public class PaymentService {
 					persistedBlit = commonBlitService.finalizeCommonBlitPayment(commonBlit, Optional.ofNullable(String.valueOf(verificationResponse.getRefID())));
 					log.info("User with email '{}' released the lock after payment",commonBlit.getCustomerEmail());
 				}
-				this.commonBlitService.sendEmailAndSmsForPurchasedBlit(commonBlitMapper.createFromEntity(persistedBlit));
+				commonBlitService.sendEmailAndSmsForPurchasedBlit(commonBlitMapper.createFromEntity(persistedBlit));
 				return persistedBlit;
 			}
 			else {

@@ -20,7 +20,7 @@ public class PayDotIrConfiguration {
     private String paymentVerificationUrl;
     @Value("${pay.ir.api.key}")
     private String apiKey;
-    @Value("${serverAddress}" + "${api.base.url}" + "/pay-ir/callback")
+    @Value("${serverAddress}" + "${api.base.url}" + "/pay-payment-callback")
     private String redirectUrl;
 
     @Autowired

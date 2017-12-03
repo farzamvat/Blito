@@ -4,16 +4,15 @@ import com.blito.enums.Response;
 import com.blito.exceptions.PayDotIrException;
 import com.blito.payments.payir.viewmodel.request.PayDotIrPurchaseRequest;
 import com.blito.payments.payir.viewmodel.request.PayDotIrVerificationRequest;
+import com.blito.payments.payir.viewmodel.response.AbstractPayDotIrResponse;
 import com.blito.payments.payir.viewmodel.response.PayDotIrResponse;
-import com.blito.requestbuilder.RequestBuilder;
+import com.blito.payments.payir.viewmodel.response.PayDotIrVerificationResponse;
 import com.blito.resourceUtil.ResourceUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import io.vavr.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -54,13 +53,14 @@ public class PayDotIrClient {
         PayDotIrPurchaseRequest purchaseRequest = new PayDotIrPurchaseRequest(amount,redirectUrl,factorNumber,mobile,apiKey);
         return responseExtractor(Try.ofSupplier(() ->
                 restTemplate.postForEntity(paymentRequestUrl,purchaseRequest,String.class)
-            ));
+            ),PayDotIrResponse.class);
     }
 
-    private Try<PayDotIrResponse> responseExtractor(Try<ResponseEntity<String>> httpResponse) {
+    private <T extends AbstractPayDotIrResponse> Try<T> responseExtractor(
+            Try<ResponseEntity<String>> httpResponse, Class<T> responseType) {
         return httpResponse.mapTry(response -> {
             if(JsonPath.parse(response.getBody()).read("$.status").equals(1)) {
-                return objectMapper.readValue(response.getBody(), PayDotIrResponse.class);
+                return objectMapper.readValue(response.getBody(), responseType);
             }
             throw new PayDotIrException(ResourceUtil.getMessage(Response.PAY_DOT_IR_ERROR));
         }).onFailure(throwable -> {
@@ -69,16 +69,10 @@ public class PayDotIrClient {
         });
     }
 
-    public Try<PayDotIrResponse> verifyPaymentRequest(Integer transId) {
+    public Try<PayDotIrVerificationResponse> verifyPaymentRequest(Integer transId) {
         PayDotIrVerificationRequest verificationRequest = new PayDotIrVerificationRequest(transId,apiKey);
         return responseExtractor(Try.ofSupplier(() ->
-                new RequestBuilder<PayDotIrVerificationRequest,String>()
-                        .setMethod(HttpMethod.POST)
-                        .addHeader("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE)
-                        .setUrl(paymentVerificationUrl)
-                        .setBody(verificationRequest)
-                        .setResponseType(String.class)
-                        .send()
-        ));
+                restTemplate.postForEntity(paymentVerificationUrl,verificationRequest,String.class)
+        ),PayDotIrVerificationResponse.class);
     }
 }
