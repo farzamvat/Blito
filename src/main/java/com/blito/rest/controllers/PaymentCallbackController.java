@@ -20,7 +20,7 @@ public class PaymentCallbackController extends AbstractPaymentCallbackController
 	}
 
 	@PostMapping("/pay-payment-callback")
-	public CompletionStage<RedirectView> payDotIrCallback(@RequestBody PayDotIrCallbackRequest payload,
+	public CompletionStage<RedirectView> payDotIrCallback(@ModelAttribute PayDotIrCallbackRequest payload,
 														  HttpServletRequest request) {
 		return completePayment(request,String.valueOf(payload.getTransId()),() -> BlitoPaymentResult.transformPayDotIr(payload.getStatus(),payload.getTransId(),payload.getMessage()));
 	}
