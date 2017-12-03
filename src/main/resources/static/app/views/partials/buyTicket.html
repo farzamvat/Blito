@@ -305,12 +305,13 @@
                                                             <img class="paymentImages" src="../../../assets/img/zarrinpal.png" alt="">
                                                         </button>
                                                     </div>
+                                                    <div class="col-xs-12 col-sm-6 marginTop10">
+                                                        <button ng-click="paymentSelectedNotUser('PAYDOTIR')" class="PAYDOTIR btnPaymentActive center-block">
+                                                            <img class="paymentImages" src="../../../assets/img/pay-ir.png" alt="">
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <div class="col-xs-12 col-sm-6 marginTop10">
-                                                    <button ng-click="paymentSelectedNotUser('PAYDOTIR')" class="PAYDOTIR btnPaymentActive center-block">
-                                                        <img class="paymentImages" src="../../../assets/img/pay-ir.png" alt="">
-                                                    </button>
-                                                </div>
+
                                                 <div class="control-group text-center marginBottom20">
                                                     <div class="controls col-xs-12 col-sm-6 marginBottom20">
                                                         <button  ng-disabled="paymentStatus.paymentPick.$invalid || buyTicketNotUserOnce"  id="nextStep2NotUser" ng-click="nextStep2NotUser()" type="submit"  class="btn btn-success btn-lg btnLogin">  پرداخت <i class="fa fa-spin fa-spinner dispNone payedBlitSpinner"></i><i class="fa fa-money"></i></button>
