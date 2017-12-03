@@ -20,6 +20,10 @@ public class BlitoPaymentVerificationResult {
         this.amount = amount;
     }
 
+    public BlitoPaymentVerificationResult(PayResult result) {
+        this.result = result;
+    }
+
     public BlitoPaymentVerificationResult(PayResult payResult, long refID) {
         this.result = payResult;
         this.refNum = String.valueOf(refID);

@@ -6,7 +6,7 @@ package com.blito.payments.payir.viewmodel.response;
  * Mailto : farzam.vat@gmail.com
  **/
 
-public class PayDotIrErrorResposne extends AbstractPayDotIrResponse {
+public class PayDotIrErrorResponse extends AbstractPayDotIrResponse {
     private Integer errorCode;
     private String errorMessage;
 

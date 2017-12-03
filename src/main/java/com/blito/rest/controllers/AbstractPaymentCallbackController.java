@@ -22,28 +22,37 @@ import java.util.function.Supplier;
  * Mailto : farzam.vat@gmail.com
  **/
 
-public class AbstractPaymentCallbackController {
+public abstract class AbstractPaymentCallbackController {
     @Value("${serverAddress}")
-    private String serverAddress;
+    protected String serverAddress;
     @Value("${api.base.url}")
-    private String baseUrl;
+    protected String baseUrl;
     @Autowired
-    private PaymentService paymentService;
+    protected PaymentService paymentService;
     @Autowired
-    BlitRepository blitRepository;
+    protected BlitRepository blitRepository;
+
+    public void setServerAddress(String serverAddress) {
+        this.serverAddress = serverAddress;
+    }
+
+    public String getServerAddress() {
+        return serverAddress;
+    }
 
     private Logger log = LoggerFactory.getLogger(getClass());
-    public CompletionStage<RedirectView> completePayment(String token,Supplier<BlitoPaymentResult> supplier) {
+    protected CompletionStage<RedirectView> completePayment(String token,Supplier<BlitoPaymentResult> supplier) {
         return CompletableFuture.supplyAsync(() -> paymentService.finalizingPayment(supplier.get()))
                 .handle((blit,throwable) -> {
                 if(throwable != null) {
                     log.error("******* ERROR IN PAYMENT FLOW '{}'",throwable.getCause());
                     return blitRepository.findByToken(token)
-                            .map(b -> {
-                                return new RedirectView(String.valueOf(new StringBuilder(serverAddress).append("/payment/").append(b.getTrackCode())));
-                            }).orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
+                            .map(b ->
+                                new RedirectView(String.valueOf(new StringBuilder(getServerAddress()).append("/payment/").append(b.getTrackCode())))
+                            )
+                            .orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
                 }
-                return new RedirectView(String.valueOf(new StringBuilder(serverAddress).append("/payment/").append(blit.getTrackCode())));
+                return new RedirectView(String.valueOf(new StringBuilder(getServerAddress()).append("/payment/").append(blit.getTrackCode())));
         });
     }
 }
