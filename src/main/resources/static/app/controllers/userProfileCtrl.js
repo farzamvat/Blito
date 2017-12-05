@@ -928,6 +928,8 @@ angular.module('User')
                 .then(function () {
                     $scope.eventSubmitOnce = false;
                     $scope.additionalFields = [];
+                    $(angular.element(document.getElementById('PlannerSection')).siblings()[0]).slideUp(300);
+                    $(angular.element(document.getElementById('PlannerSection'))).removeClass('orangeBackground');
                     angular.element(document.getElementsByClassName("profilePhotoUpload"))[0].src = '';
                     angular.element(document.getElementsByClassName("galleryOne"))[0].src = '';
                     angular.element(document.getElementsByClassName("galleryTwo"))[0].src = '';
