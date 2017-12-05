@@ -332,9 +332,12 @@ button.slick-next {
 }
 
 .fadeOutGreen {
-    /*background-color: #39A939;*/
+    background-color: rgba(57,169,57, 0.6);
+    transition: all .4s ease-in;
 }
-
+.fadeInWhite {
+    background-color: #fff;
+}
 .btn {
     border-radius: 2px !important;
 }
