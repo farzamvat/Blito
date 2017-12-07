@@ -332,9 +332,12 @@ button.slick-next {
 }
 
 .fadeOutGreen {
-    /*background-color: #39A939;*/
+    background-color: rgba(57,169,57, 0.6);
+    transition: all .4s ease-in;
 }
-
+.fadeInWhite {
+    background-color: #fff;
+}
 .btn {
     border-radius: 2px !important;
 }
@@ -3067,6 +3070,14 @@ tspan{
     margin: 5px;
     border: 1px solid rgba(0, 0, 0, .2);
 }
+.h_iframe-aparat_embed_frame {
+    width: 50% !important;
+    height: 50% !important;
+    display: block;
+    margin: 2px auto;
+}
+
+
 .seatMapSold {
     background-color: #801515;
 }

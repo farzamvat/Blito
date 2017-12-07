@@ -150,6 +150,7 @@ public class EventService {
 		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(link)
 				.orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 		event.setViews(event.getViews() + 1);
+		this.openOrCloseEventOnSaleDateConditions(event);
 		return eventFlatMapper.createFromEntity(event);
 	}
 
@@ -158,12 +159,14 @@ public class EventService {
 		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(eventLink)
 				.orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 		event.setViews(event.getViews() + 1);
+		this.openOrCloseEventOnSaleDateConditions(event);
 		return eventMapper.createFromEntity(event);
 	}
 
 	public EventFlatViewModel getFlatEventById(long eventId) {
 		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+		this.openOrCloseEventOnSaleDateConditions(event);
 		return eventFlatMapper.createFromEntity(event);
 	}
 
@@ -241,6 +244,37 @@ public class EventService {
 		return eventLink;
 	}
 
+	private void openOrCloseEventOnSaleDateConditions(Event event) {
+		Timestamp now = Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant());
+		if (event.getBlitSaleStartDate().before(now) && !event.isDeleted()
+				&& !event.getEventState().equals(State.ENDED.name())
+				&& event.getOperatorState().equals(OperatorState.APPROVED.name())
+				&& !event.getEventState().equals(State.OPEN.name()) && !event.isOpenInit()) {
+			event.setOpenInit(true);
+			event.setEventState(State.OPEN.name());
+			event.getEventDates().forEach(ed -> {
+				ed.setEventDateState(State.OPEN.name());
+				ed.getBlitTypes().forEach(bt -> {
+					bt.setBlitTypeState(State.OPEN.name());
+				});
+			});
+		}
+
+		if (event.getBlitSaleEndDate().before(now) && !event.isDeleted()
+				&& event.getEventState().equals(State.OPEN.name())
+				&& event.getOperatorState().equals(OperatorState.APPROVED.name())
+				&& !event.isClosedInit()) {
+			event.setClosedInit(true);
+			event.setEventState(State.CLOSED.name());
+			event.getEventDates().forEach(ed -> {
+				ed.setEventDateState(State.CLOSED.name());
+				ed.getBlitTypes().forEach(bt -> {
+					bt.setBlitTypeState(State.CLOSED.name());
+				});
+			});
+		}
+	}
+
 	@Transactional
 	public <V> Page<V> searchEvents(SearchViewModel<Event> searchViewModel, Pageable pageable,
 			GenericMapper<Event, V> mapper) {
@@ -249,36 +283,8 @@ public class EventService {
 		Simple<Event> isApprovedRestriction = new Simple<>(Operation.eq, "operatorState", OperatorState.APPROVED.name());
 		searchViewModel.getRestrictions().addAll(Arrays.asList(isDeletedRestriction, isPrivateRestriction, isApprovedRestriction));
 		Page<Event> page = searchService.search(searchViewModel, pageable, eventRepository);
-		Timestamp now = Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant());
-		page.forEach(event -> {
-			if (event.getBlitSaleStartDate().before(now) && !event.isDeleted()
-					&& !event.getEventState().equals(State.ENDED.name())
-					&& event.getOperatorState().equals(OperatorState.APPROVED.name())
-					&& !event.getEventState().equals(State.OPEN.name()) && !event.isOpenInit()) {
-				event.setOpenInit(true);
-				event.setEventState(State.OPEN.name());
-				event.getEventDates().forEach(ed -> {
-					ed.setEventDateState(State.OPEN.name());
-					ed.getBlitTypes().forEach(bt -> {
-						bt.setBlitTypeState(State.OPEN.name());
-					});
-				});
-			}
 
-			if (event.getBlitSaleEndDate().before(now) && !event.isDeleted()
-					&& event.getEventState().equals(State.OPEN.name())
-					&& event.getOperatorState().equals(OperatorState.APPROVED.name())
-					&& !event.isClosedInit()) {
-				event.setClosedInit(true);
-				event.setEventState(State.CLOSED.name());
-				event.getEventDates().forEach(ed -> {
-					ed.setEventDateState(State.CLOSED.name());
-					ed.getBlitTypes().forEach(bt -> {
-						bt.setBlitTypeState(State.CLOSED.name());
-					});
-				});
-			}
-		});
+		page.forEach(this::openOrCloseEventOnSaleDateConditions);
 		return page.map(mapper::createFromEntity);
 	}
 

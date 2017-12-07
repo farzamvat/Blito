@@ -83,30 +83,52 @@
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 marginRight8percentEventPage col-md-10 floatRight">
-        <ul class="nav nav-tabs marginTop10 EventPageUl">
-            <li class="floatRight active"><a class="tabAnchor" data-toggle="tab" data-target="#home">اطلاعات رویداد <i class="fa fa-info"></i></a></li>
-            <li class="floatRight " ng-show="eventDataDetails.aparatDisplayCode"><a class="tabAnchor" data-toggle="tab" data-target="#menu1">تیزر <i class="fa fa-film"></i></a></li>
-            <li class="floatRight" ng-show="eventDataPhoto.gallery.length !== 0"><a class="tabAnchor" data-toggle="tab" data-target="#menu2"> گالری تصویر <i class="fa fa-photo"></i></a></li>
-        </ul>
-
         <div class="tab-content  tabContent ">
             <div id="home" class="tab-pane fade in active eventTabContent">
                 <div class="row">
                     <div class="col-xs-12 col-sm-8  floatRight textAlignRight">
-                        <h3 class="textAlignRight textCenterMobile">توضیحات تکمیلی </h3>
+                        <h3 class="textAlignRight textCenterMobile"><i class="fa fa-info-circle"></i> توضیحات    </h3>
                         <div id="members" class="marginTop30">
 
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-4  floatRight textAlignRight marginTop30Mobile">
-                        <h3 class="text-center">برگزارکننده </h3>
+                        <h3 class="text-center"><i class="fa fa-user-circle"></i> برگزارکننده </h3>
                         <a href="{{plannerLink}}">
-                        <img class="circleImage eventPageHostImage" ng-src="{{plannerPhoto}}">
-                        <h5 class="text-center">{{eventDataDetails.eventHostName}}</h5>
+                            <img class="circleImage eventPageHostImage" ng-src="{{plannerPhoto}}">
+                            <h5 class="text-center">{{eventDataDetails.eventHostName}}</h5>
                         </a>
                     </div>
-                    <div class="col-xs-12 col-sm-12  floatRight textAlignRight marginTop30Mobile">
-                        <h3 class="textAlignRight textCenterMobile">مکان رویداد</h3>
+                    <div ng-show="eventDataPhoto.gallery.length !== 0" class="col-xs-12   floatRight textAlignRight marginTop20">
+                        <h3 class="textAlignRight textCenterMobile"><i class="fa fa-photo"></i> گالری عکس  </h3>
+                        <div id="photoGallery" class="carousel slide" data-ride="carousel">
+                            <ol class="carousel-indicators hidden-xs">
+                                <li ng-repeat="photo in eventDataPhoto.gallery" data-target="#photoGallery" data-slide-to="{{$index}}" ng-class="{active : $index === 0}"></li>
+
+                            </ol>
+                            <div class="carousel-inner carouselGallery" role="listbox" >
+                                <div ng-repeat="photo in eventDataPhoto.gallery" class="item" ng-class="{active : $index === 0}">
+                                    <img ng-src="{{photo.imageUUID}}" alt="First slide galleryPhotos">
+                                </div>
+
+                            </div>
+                            <span class="left carousel-control" href="#photoGallery" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </span>
+                            <span class="right carousel-control" href="#photoGallery" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </span>
+                        </div>
+                    </div>
+                    <div ng-show="eventDataDetails.aparatDisplayCode" class="col-xs-12   floatRight textAlignRight marginTop20 ">
+                        <h3 class="textAlignRight textCenterMobile"><i class="fa fa-video-camera"></i> تیزر   </h3>
+                        <div  id="menu1"  >
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 marginTop20 floatRight textAlignRight marginTop30Mobile">
+                        <h3 class="textAlignRight textCenterMobile"><i class="fa fa-map"></i> مکان رویداد </h3>
                         <p class="text-center">{{eventDataDetails.address}}</p>
                         <div id="map" >
                         </div>
@@ -114,30 +136,8 @@
                 </div>
             </div>
 
-            <div  id="menu1"  class="tab-pane fade videoDiv">
-            </div>
-            <div id="menu2" class="tab-pane fade  marginTop60" ng-if="eventDataPhoto.gallery.length !== 0">
-                <div id="photoGallery" class="carousel slide" data-ride="carousel">
-                    <ol class="carousel-indicators hidden-xs">
-                        <li ng-repeat="photo in eventDataPhoto.gallery" data-target="#photoGallery" data-slide-to="{{$index}}" ng-class="{active : $index === 0}"></li>
 
-                    </ol>
-                    <div class="carousel-inner carouselGallery" role="listbox" >
-                        <div  ng-repeat="photo in eventDataPhoto.gallery" class="item" ng-class="{active : $index === 0}">
-                            <img  ng-src="{{photo.imageUUID}}" alt="First slide galleryPhotos">
-                        </div>
 
-                    </div>
-                    <span class="left carousel-control" href="#photoGallery" role="button" data-slide="prev">
-                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </span>
-                    <span class="right carousel-control" href="#photoGallery" role="button" data-slide="next">
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </span>
-                </div>
-            </div>
         </div>
     </div>
     <div class="col-xs-12 col-sm-2 col-md-2 floatRight">

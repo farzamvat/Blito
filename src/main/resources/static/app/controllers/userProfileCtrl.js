@@ -928,6 +928,8 @@ angular.module('User')
                 .then(function () {
                     $scope.eventSubmitOnce = false;
                     $scope.additionalFields = [];
+                    $(angular.element(document.getElementById('PlannerSection')).siblings()[0]).slideUp(300);
+                    $(angular.element(document.getElementById('PlannerSection'))).removeClass('orangeBackground');
                     angular.element(document.getElementsByClassName("profilePhotoUpload"))[0].src = '';
                     angular.element(document.getElementsByClassName("galleryOne"))[0].src = '';
                     angular.element(document.getElementsByClassName("galleryTwo"))[0].src = '';
@@ -2202,6 +2204,9 @@ angular.module('User')
             $scope.showTimeForms.push(newShowTime);
             $scope.sansSet();
             $scope.newShowTime = {blitTypes : [], newSeatsPrice : 'false'};
+            $timeout(function () {
+                    $(".addedSansForEvent").addClass('fadeInWhite');
+            }, 300)
         };
         var newEditedBlitTypes = [];
         $scope.submitSansWithSeatpickerEdit = function (newSans) {
@@ -2258,6 +2263,9 @@ angular.module('User')
             $scope.showTimeForms.push(newShowTime);
             $scope.newShowTime = {blitTypes : [], newSeatsPrice : 'false'};
             $scope.sansSet();
+            $timeout(function () {
+                $(".addedSansForEvent").addClass('fadeInWhite');
+            }, 300)
         };
         $scope.$watch('seatPicker.isChosen', function() {
             $scope.sansSet();
