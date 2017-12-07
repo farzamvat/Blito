@@ -7,7 +7,6 @@ import com.blito.exceptions.PayDotIrException;
 import com.blito.mappers.CommonBlitMapper;
 import com.blito.models.Blit;
 import com.blito.payments.payir.viewmodel.PayDotIrClient;
-import com.blito.payments.payir.viewmodel.response.PayDotIrResponse;
 import com.blito.payments.saman.SamanBankService;
 import com.blito.payments.zarinpal.client.ZarinpalClient;
 import com.blito.repositories.BlitTypeRepository;
@@ -79,11 +78,12 @@ public class PaymentRequestService {
 			case PAYDOTIR:
 				log.debug("Before requesting token from zarinpal gateway user email '{}' and blit track code '{}'",
 						blit.getCustomerEmail(), blit.getTrackCode());
+				throw new PayDotIrException(ResourceUtil.getMessage(Response.PAY_DOT_IR_ERROR));
 				// TODO: 12/2/17 zarinpal pay.ir tokens
-				return payDotIrClient.createPaymentRequest(blit.getTotalAmount().intValue(),
-						blit.getCustomerMobileNumber(),
-						blit.getTrackCode()).map(PayDotIrResponse::getTransId).map(String::valueOf)
-						.getOrElseThrow(() -> new PayDotIrException(ResourceUtil.getMessage(Response.PAY_DOT_IR_ERROR)));
+//				return payDotIrClient.createPaymentRequest(blit.getTotalAmount().intValue(),
+//						blit.getCustomerMobileNumber(),
+//						blit.getTrackCode()).map(PayDotIrResponse::getTransId).map(String::valueOf)
+//						.getOrElseThrow(() -> new PayDotIrException(ResourceUtil.getMessage(Response.PAY_DOT_IR_ERROR)));
 
 		default:
 			throw new NotFoundException(ResourceUtil.getMessage(Response.BANK_GATEWAY_NOT_FOUND));
