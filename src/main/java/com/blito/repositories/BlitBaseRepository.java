@@ -17,6 +17,7 @@ import java.util.Set;
 public interface BlitBaseRepository <T extends Blit> extends JpaRepository<T,Long>, JpaSpecificationExecutor<T>, PagingAndSortingRepository<T, Long> {
 	Optional<T> findByToken(String token);
 	Optional<T> findByTrackCode(String trackCode);
+	Optional<T> findByTrackCodeAndIsDeletedFalse(String trackCode);
 	Set<T> findByCustomerEmail(String email);
 
 	// Analytics
