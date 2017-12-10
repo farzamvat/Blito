@@ -2127,44 +2127,6 @@ a{
     background:rgba(0,0,0,.5);
     box-shadow: 2px 2px 5px #222;
 }
-/*#eventListOther:not(:active),*/
-/*#eventListCinema:not(:active),*/
-/*#eventListTheater:not(:active),*/
-/*#eventListConcert:not(:active),*/
-/*#eventListSport:not(:active),*/
-/*#eventListWorkshop:not(:active),*/
-/*#eventListTour:not(:active){*/
-/*animation-name: eventListAnimation1;*/
-/*animation-duration: 1s;*/
-
-/*}*/
-/*#eventListOther:active,*/
-/*#eventListCinema:active,*/
-/*#eventListTheater:active,*/
-/*#eventListConcert:active,*/
-/*#eventListSport:active,*/
-/*#eventListWorkshop:active,*/
-/*#eventListTour:active{*/
-/*animation-name: eventListAnimation2;*/
-/*animation-duration: 1s;*/
-
-/*}*/
-/*!*.pageHeaderLinksDiv:not(:active){*!*/
-/*!*animation-name: eventListAnimation;*!*/
-/*!*animation-duration: 1s;*!*/
-/*!*}*!*/
-/*@keyframes eventListAnimation2 {*/
-/*0%   {transform: rotateX(calc());*/
-/*margin-top: 30px;}*/
-/*50%  {transform: rotateX(90deg);*/
-/*margin-top: 12px;}*/
-/*}*/
-/*@keyframes eventListAnimation1 {*/
-/*0%   {transform: rotateX(90deg);*/
-/*margin-top: 12px;}*/
-/*50%  {transform: rotateX(0deg);*/
-/*margin-top: 30px;}*/
-/*}*/
 .paymentImages {
     width: 100px;
 }
@@ -3253,6 +3215,19 @@ tspan{
 
 
 @media (max-width: 768px) {
+    .eventContent p {
+        font-size: 18px !important;
+    }
+    .eventContent h1 {
+        font-size: 24px;
+    }
+    .eventPageImage img {
+        height: 357px !important;
+        width: 250px !important;
+    }
+    .marginTop100Mobile {
+        margin-top: 100px;
+    }
     .modalExpandWidth {
         width: inherit;
     }
