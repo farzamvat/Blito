@@ -14,7 +14,7 @@
             <i ng-click="showEventPic()" class="fa fa-search-plus fa-2x maximizeImage hidden-xs"></i>
             <i ng-click="showEventPic()" class="fa fa-search-plus fa-2x maximizeImageXs hidden-sm hidden-md hidden-lg"></i>
         </div>
-        <div class="col-xs-12 col-sm-7 col-md-4 col-lg-4 floatRight textAlignRight eventContent" >
+        <div class="col-xs-12 col-sm-7 col-md-4 col-lg-4 floatRight textAlignRight eventContent marginTop100Mobile" >
             <h1>{{eventDataDetails.eventName}}</h1>
             <p>{{eventDataDetails.description}}</p>
             <button ng-show="eventDataDetails.eventState === 'OPEN' && eventType !== 'EXHIBITION'" ng-click="showBuyTicketModal()" class="btn btn-success buyTicket  marginTop10"><i class="fa fa-ticket" aria-hidden="true"></i>  خرید بلیت
@@ -36,7 +36,6 @@
                 <div class="panel-heading eventPagePanelHeading">
                     <span class="glyphicon glyphicon-list"></span> لیست سانس ها
                 </div>
-
                 <div class="panel-body noScrollBar noscrollX textAlignRight">
 
                     <table class="table" >
@@ -66,7 +65,7 @@
                             <td ng-if="eventType !== 'EXHIBITION'" class="dataCenter">{{ item.soldCount | number | pNumber}} / {{ item.capacity  | number | pNumber}}</td>
 
                             <td ng-if="item.state === 'OPEN' && eventType !== 'EXHIBITION'" class="dataCenter fontGreen" >
-                                فعال
+                                قابل خرید
                             </td>
                             <td ng-if="item.state === 'CLOSED' && eventType !== 'EXHIBITION'" class="dataCenter fontRed">
                                 بسته
