@@ -163,7 +163,7 @@ public abstract class AbstractBlitService <E extends Blit,V extends AbstractBlit
     }
 
     public Object getBlitByTrackCode(String trackCode) {
-        return blitRepository.findByTrackCodeAndIsDeletedFalse(trackCode).map(blit -> {
+        return blitRepository.findByTrackCode(trackCode).map(blit -> {
             if (blit.getSeatType().equals(SeatType.COMMON.name())) {
                 if (blit.getPaymentStatus().equals(PaymentStatus.PENDING.name()))
                     return new CommonBlitViewModel(
