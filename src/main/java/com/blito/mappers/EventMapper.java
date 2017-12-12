@@ -102,7 +102,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
     @Override
     public Event updateEntity(EventViewModel vmodel, Event event) {
         event.setAddress(vmodel.getAddress());
-        event.setAparatDisplayCode(event.getAparatDisplayCode());
+        event.setAparatDisplayCode(vmodel.getAparatDisplayCode());
         event.setBlitSaleStartDate(vmodel.getBlitSaleStartDate());
         event.setBlitSaleEndDate(vmodel.getBlitSaleEndDate());
         event.setDescription(vmodel.getDescription());
