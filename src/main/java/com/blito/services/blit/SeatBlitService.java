@@ -144,8 +144,10 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
     @Transactional
     @Override
     public Object createBlitAuthorized(SeatBlitViewModel viewModel, User user) {
+        if(viewModel.getCount() != viewModel.getSeatUids().size()) {
+            throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_SEAT_COUNTS));
+        }
         SeatBlit seatBlit = seatBlitMapper.createFromViewModel(viewModel);
-
         Set<BlitTypeSeat> blitTypeSeats = blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
         blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).distinct().forEach(this::checkBlitTypeRestrictionsForBuy);
         EventDate eventDate = blitTypeSeats.stream().findAny().map(BlitTypeSeat::getBlitType).map(BlitType::getEventDate)
@@ -227,8 +229,10 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
     @Transactional
     @Override
     public PaymentRequestViewModel createUnauthorizedAndNoneFreeBlits(SeatBlitViewModel viewModel) {
+        if(viewModel.getCount() != viewModel.getSeatUids().size()) {
+            throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_SEAT_COUNTS));
+        }
         SeatBlit seatBlit = seatBlitMapper.createFromViewModel(viewModel);
-
         Set<BlitTypeSeat> blitTypeSeats = blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
         blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).distinct().forEach(this::checkBlitTypeRestrictionsForBuy);
         if(blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).anyMatch(BlitType::isFree)) {
