@@ -1,10 +1,7 @@
 package com.blito.services;
 
 import com.blito.enums.*;
-import com.blito.exceptions.BlitNotAvailableException;
-import com.blito.exceptions.InconsistentDataException;
-import com.blito.exceptions.NotFoundException;
-import com.blito.exceptions.PaymentException;
+import com.blito.exceptions.*;
 import com.blito.mappers.CommonBlitMapper;
 import com.blito.mappers.SeatBlitMapper;
 import com.blito.models.Blit;
@@ -64,6 +61,9 @@ public class PaymentService {
 	public Blit finalizingPayment(BlitoPaymentResult paymentResult) {
 		Blit blit = blitRepository.findByToken(paymentResult.getToken()).orElseThrow(() ->
 				new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
+		if(blit.getPaymentStatus().equals(PaymentStatus.PAID.name())) {
+			throw new AlreadyPaidException("blit already paid track code : " + blit.getTrackCode());
+		}
 		if(paymentResult.getResult().equals(PayResult.SUCCESS)) {
 
 			log.info("success in '{}' payment callback blit trackCode '{}' user email '{}'",
