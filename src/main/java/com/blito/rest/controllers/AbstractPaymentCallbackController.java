@@ -1,6 +1,7 @@
 package com.blito.rest.controllers;
 
 import com.blito.enums.Response;
+import com.blito.exceptions.AlreadyPaidException;
 import com.blito.exceptions.ResourceNotFoundException;
 import com.blito.repositories.BlitRepository;
 import com.blito.resourceUtil.ResourceUtil;
@@ -49,7 +50,8 @@ public abstract class AbstractPaymentCallbackController {
                     log.error("******* ERROR IN PAYMENT FLOW '{}'",throwable.getCause());
                     return blitRepository.findByToken(token)
                             .map(b -> {
-                                paymentService.setError(b);
+                                if(!(throwable instanceof AlreadyPaidException))
+                                    paymentService.setError(b);
                                 RedirectView redirectView =
                                         new RedirectView(String.valueOf(new StringBuilder(getServerAddress()).append("/payment/").append(b.getTrackCode())));
                                 redirectView.setStatusCode(HttpStatus.SEE_OTHER);
