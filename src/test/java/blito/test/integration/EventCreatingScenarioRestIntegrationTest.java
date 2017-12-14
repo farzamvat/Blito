@@ -218,6 +218,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractEventRestC
                 .put(getServerAddress() + "/api/blito/v1.0/events");
         eventUpdateResponse.then().statusCode(202);
         assertTrue(eventRepository.findOne(eventViewModel.getEventId()).getAdditionalFields().containsKey("age"));
+        assertEquals(1,eventRepository.findOne(eventViewModel.getEventId()).getAdditionalFields().size());
     }
 
 
