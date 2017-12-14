@@ -50,8 +50,9 @@ public abstract class AbstractPaymentCallbackController {
                     log.error("******* ERROR IN PAYMENT FLOW '{}'",throwable.getCause());
                     return blitRepository.findByToken(token)
                             .map(b -> {
-                                if(!(throwable instanceof AlreadyPaidException))
+                                if(!(throwable.getCause() instanceof AlreadyPaidException)) {
                                     paymentService.setError(b);
+                                }
                                 RedirectView redirectView =
                                         new RedirectView(String.valueOf(new StringBuilder(getServerAddress()).append("/payment/").append(b.getTrackCode())));
                                 redirectView.setStatusCode(HttpStatus.SEE_OTHER);
