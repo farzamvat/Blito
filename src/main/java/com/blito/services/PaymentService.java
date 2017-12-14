@@ -124,11 +124,10 @@ public class PaymentService {
 				})
 				.onFailure(throwable -> {
 					log.error("Exception in verifyAndFinalizePayment '{}' payment verification '{}'",blit.getBankGateway(), throwable);
-					setError(blit);
 				}).getOrElseThrow(() -> new PaymentException(ResourceUtil.getMessage(Response.PAYMENT_ERROR)));
 	}
 
-	private Blit setError(Blit blit) {
+	public Blit setError(Blit blit) {
 		blit.setPaymentError(ResourceUtil.getMessage(Response.PAYMENT_ERROR));
 		blit.setPaymentStatus(PaymentStatus.ERROR.name());
 		return blitRepository.save(blit);
