@@ -144,14 +144,16 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
     @Transactional
     @Override
     public Object createBlitAuthorized(SeatBlitViewModel viewModel, User user) {
+        if(viewModel.getCount() != viewModel.getSeatUids().size()) {
+            log.info("**** seat blit count not equals with seat size user '{}'" + user.getEmail());
+        }
         SeatBlit seatBlit = seatBlitMapper.createFromViewModel(viewModel);
-
         Set<BlitTypeSeat> blitTypeSeats = blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
         blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).distinct().forEach(this::checkBlitTypeRestrictionsForBuy);
         EventDate eventDate = blitTypeSeats.stream().findAny().map(BlitTypeSeat::getBlitType).map(BlitType::getEventDate)
                 .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
         validateAdditionalFields(eventDate.getEvent(),seatBlit);
-        log.info("User with email '{}' hold reserveSeatBlitLock",user.getEmail());
+
         validateSeatBlitForBuy(blitTypeSeats);
         blitTypeSeats.forEach(blitTypeSeat -> {
             blitTypeSeat.setState(BlitTypeSeatState.RESERVED.name());
@@ -162,8 +164,6 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
                             blitTypeSeat.getSeat().getRowName(),
                             blitTypeSeat.getSeat().getSeatName()));
         });
-
-        log.info("User with email '{}' released reserveSeatBlitLock",user.getEmail());
 //        salonService.validateNoIndividualSeat(salonService.populateSeatInformationInSalonSchemaByEventDateId(eventDate.getEventDateId()).getSchema());
         seatBlit.setBlitTypeSeats(blitTypeSeats);
         return blitPurchaseAuthorizedSeatBlit(viewModel,user,seatBlit);
@@ -227,8 +227,10 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
     @Transactional
     @Override
     public PaymentRequestViewModel createUnauthorizedAndNoneFreeBlits(SeatBlitViewModel viewModel) {
+        if(viewModel.getCount() != viewModel.getSeatUids().size()) {
+            log.info("**** seat blit count not equals with seat size user '{}'" + viewModel.getCustomerEmail());
+        }
         SeatBlit seatBlit = seatBlitMapper.createFromViewModel(viewModel);
-
         Set<BlitTypeSeat> blitTypeSeats = blitTypeSeatRepository.findBySeatSeatUidInAndBlitTypeEventDateEventDateId(viewModel.getSeatUids(),viewModel.getEventDateId());
         blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).distinct().forEach(this::checkBlitTypeRestrictionsForBuy);
         if(blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).anyMatch(BlitType::isFree)) {
@@ -237,7 +239,6 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         EventDate eventDate = blitTypeSeats.stream().findAny().map(BlitTypeSeat::getBlitType).map(BlitType::getEventDate)
                 .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
         validateAdditionalFields(eventDate.getEvent(),seatBlit);
-        log.info("unauthorized user with email '{}' hold reserveSeatBlitLock",viewModel.getCustomerEmail());
         validateSeatBlitForBuy(blitTypeSeats);
         blitTypeSeats.forEach(blitTypeSeat -> {
             blitTypeSeat.setState(BlitTypeSeatState.RESERVED.name());
@@ -248,8 +249,6 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
                             blitTypeSeat.getSeat().getRowName(),
                             blitTypeSeat.getSeat().getSeatName()));
         });
-
-        log.info("unauthorized user with email '{}' released reserveSeatBlitLock",viewModel.getCustomerEmail());
 //        salonService.validateNoIndividualSeat(salonService.populateSeatInformationInSalonSchemaByEventDateId(eventDate.getEventDateId()).getSchema());
         seatBlit.setTrackCode(generateTrackCode());
         seatBlit.setBlitTypeSeats(blitTypeSeats);

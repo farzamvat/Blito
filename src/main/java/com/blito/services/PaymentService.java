@@ -1,10 +1,7 @@
 package com.blito.services;
 
 import com.blito.enums.*;
-import com.blito.exceptions.BlitNotAvailableException;
-import com.blito.exceptions.InconsistentDataException;
-import com.blito.exceptions.NotFoundException;
-import com.blito.exceptions.PaymentException;
+import com.blito.exceptions.*;
 import com.blito.mappers.CommonBlitMapper;
 import com.blito.mappers.SeatBlitMapper;
 import com.blito.models.Blit;
@@ -64,6 +61,9 @@ public class PaymentService {
 	public Blit finalizingPayment(BlitoPaymentResult paymentResult) {
 		Blit blit = blitRepository.findByToken(paymentResult.getToken()).orElseThrow(() ->
 				new NotFoundException(ResourceUtil.getMessage(Response.BLIT_NOT_FOUND)));
+		if(blit.getPaymentStatus().equals(PaymentStatus.PAID.name())) {
+			throw new AlreadyPaidException("blit already paid track code : " + blit.getTrackCode());
+		}
 		if(paymentResult.getResult().equals(PayResult.SUCCESS)) {
 
 			log.info("success in '{}' payment callback blit trackCode '{}' user email '{}'",
@@ -124,11 +124,10 @@ public class PaymentService {
 				})
 				.onFailure(throwable -> {
 					log.error("Exception in verifyAndFinalizePayment '{}' payment verification '{}'",blit.getBankGateway(), throwable);
-					setError(blit);
-				}).getOrElseThrow(() -> new PaymentException(ResourceUtil.getMessage(Response.INTERNAL_SERVER_ERROR)));
+				}).getOrElseThrow(() -> new PaymentException(ResourceUtil.getMessage(Response.PAYMENT_ERROR)));
 	}
 
-	private Blit setError(Blit blit) {
+	public Blit setError(Blit blit) {
 		blit.setPaymentError(ResourceUtil.getMessage(Response.PAYMENT_ERROR));
 		blit.setPaymentStatus(PaymentStatus.ERROR.name());
 		return blitRepository.save(blit);
