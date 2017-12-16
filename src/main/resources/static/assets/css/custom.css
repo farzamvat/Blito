@@ -813,7 +813,7 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 }
 .profileTabs>li>a {
     border-radius: 0;
-    font-size: 11px !important;
+    font-size: 18px !important;
 }
 .profileTabContent {
     background-color: #eee;
@@ -1623,7 +1623,7 @@ dir-pagination-controls ul {
 }
 .tabDropDown>li>a {
     color: white;
-    font-size: 10px;
+    font-size: 16px;
     text-decoration: none;
     text-align: center !important;
 }
@@ -2885,8 +2885,8 @@ table td{
     overflow-x: hidden;
 }
 .profileToggleMenu {
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     vertical-align: middle;
     align-content: center;
@@ -3215,6 +3215,12 @@ tspan{
 
 
 @media (max-width: 768px) {
+    .fontSize18Mobile {
+        font-size: 18px !important;
+    }
+    .fontSize16Mobile {
+        font-size: 16px !important;
+    }
     .eventContent p {
         font-size: 18px !important;
     }
