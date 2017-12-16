@@ -3003,6 +3003,9 @@ table td{
     height: 250px !important;
     width: 176px !important;
 }
+.eventPageImage img:hover {
+    cursor: zoom-in;
+}
 .noPadding{
     padding: 0 !important;
 }
@@ -3239,11 +3242,12 @@ tspan{
     }
     .maximizeImageXs {
         display: block;
-        margin: -55px auto;
+        margin: -75px auto;
         text-align: center;
         color: white;
         transition: 200ms;
         cursor: pointer;
+        pointer-events: none;
     }
 
     .marginTop30Mobile {
