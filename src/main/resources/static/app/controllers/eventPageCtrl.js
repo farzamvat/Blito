@@ -597,4 +597,18 @@ angular.module('eventsPageModule')
         $scope.showEventPic = function () {
             $("#event-photo").modal("show");
         };
+        function sticky_relocate() {
+            var window_top = $(window).scrollTop();
+            var div_top = $('#sticky-anchor').offset().top;
+            if (window_top > div_top) {
+                $('#buyTicketOnScroll').slideDown();
+            } else {
+                $('#buyTicketOnScroll').slideUp();
+            }
+        }
+
+        $(function() {
+            $(window).scroll(sticky_relocate);
+            sticky_relocate();
+        });
     });

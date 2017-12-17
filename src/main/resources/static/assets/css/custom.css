@@ -3025,6 +3025,39 @@ table td{
     margin: 0 auto;
     width: 50px;
 }
+.buyTicketDropDown {
+    width: auto;
+    height: 50px;
+    background-color: rgba(80, 80, 80, 0.6);
+    margin-top: 30px;
+    position: fixed;
+    z-index: 1000;
+    float: right !important;
+    margin-left: auto;
+    margin-right: auto;
+    right: 0;
+    border-radius: 3px;
+    border-bottom: 2px solid #333;
+    border-left: 2px solid #333;
+}
+.buyTicketDropDown h3 {
+    color: white;
+}
+.dropDownImageEventPage {
+    margin-top: 15px;
+    margin-right: 10px;
+    height: 30px;
+    margin-left: 10px;
+}
+.dropDownButton {
+    width: 200px !important;
+    margin-right: 20px;
+    margin-top: 12px;
+    margin-left: 10px;
+}
+nav {
+    z-index: 20001;
+}
 tspan{
     pointer-events: none !important;
 }
@@ -3218,6 +3251,22 @@ tspan{
 
 
 @media (max-width: 768px) {
+    .buyTicketDropDown {
+        height: 145px;
+        margin-top: 30px;
+        width: 100%;
+    }
+    .buyTicketDropDown h3 {
+        margin-top: 40px;
+    }
+    .dropDownButton {
+        margin-right: 30px;
+        margin-top: 8px;
+    }
+    .dropDownImageEventPage {
+        margin-top: 22px;
+        height: 70px;
+    }
     .fontSize18Mobile {
         font-size: 18px !important;
     }
