@@ -117,8 +117,8 @@
             </div>
         </div>
         <div class="hidden-xs hidden-sm col-sm-3   floatRight blitoOffer">
-            <h4 class="text-center marginTop10"> بلیتو کنسرت  </h4>
-            <div class="row marginTop33 ">
+            <h4 ng-show="ourOfferConcert.length > 0"  class="text-center marginTop10"> بلیتو کنسرت  </h4>
+            <div ng-show="ourOfferConcert.length > 0"  class="row marginTop33 ">
                 <div class="col-sm-1 floatRight">
                 </div>
                 <div ng-show="showSections[1]" class="col-sm-10 floatRight blitoOfferMain  ">
@@ -172,8 +172,8 @@
             </div>
         </div>
         <div class="hidden-xs hidden-sm col-sm-3  floatRight blitoOffer">
-            <h4 class="text-center marginTop10">بلیتو کارگاه</h4>
-            <div class="row marginTop30">
+            <h4 ng-show="ourOfferTour.length > 0" class="text-center marginTop10">بلیتو کارگاه</h4>
+            <div ng-show="ourOfferTour.length > 0" class="row marginTop30">
                 <div class="col-sm-1 floatRight">
                 </div>
                 <div ng-show="showSections[3]" class="col-sm-10 floatRight blitoOfferMain">
@@ -226,8 +226,8 @@
 
         </div>
         <div class="hidden-xs hidden-sm col-sm-3  floatRight blitoOffer">
-            <h4 class="text-center marginTop10"> بلیتو ایونتو</h4>
-            <div class="row marginTop30">
+            <h4 ng-show="ourOfferEvento.length > 0"  class="text-center marginTop10"> بلیتو ایونتو</h4>
+            <div ng-show="ourOfferEvento.length > 0"  class="row marginTop30">
                 <div class="col-sm-1 floatRight">
                 </div>
                 <div ng-show="showSections[5]" class="col-sm-10 floatRight blitoOfferMain">
