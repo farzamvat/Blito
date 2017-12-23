@@ -82,6 +82,10 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 templateUrl : 'app/views/pages/activateUser.html',
                 authenticated: false
             })
+            .when('/ended-events', {
+                templateUrl : 'app/views/pages/ended-events.html',
+                authenticated: false
+            })
             .when('/user-profile', {
                 templateUrl : 'app/views/pages/userProfile.html',
                 authenticated: true

@@ -42,10 +42,10 @@ angular.module('homePageApi', [])
 
             return $http.post(config.baseUrl + '/api/blito/v1.0/public/exchange-blits/search',bodyJson, queryParam);
         };
-        miniSlider.getEndedEvents = function (size) {
+        miniSlider.getEndedEvents = function (page, size) {
             var queryParam = {
                 cache : true,
-                params : {page: 0, size: size, sort: "createdAt,desc"}
+                params : {page: page-1, size: size, sort: "createdAt,desc"}
             };
             var bodyJson = {
                 restrictions: [
