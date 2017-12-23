@@ -599,11 +599,11 @@ angular.module('eventsPageModule')
         };
         function sticky_relocate() {
             var window_top = $(window).scrollTop();
-            var div_top = $('#sticky-anchor').offset().top;
+            var div_top = $('#sticky-pick').offset().top;
             if (window_top > div_top) {
-                $('#buyTicketOnScroll').slideDown();
+                $('#sticky-anchor').addClass('buyTicketAfterScroll');
             } else {
-                $('#buyTicketOnScroll').slideUp();
+                $('#sticky-anchor').removeClass('buyTicketAfterScroll');
             }
         }
 
