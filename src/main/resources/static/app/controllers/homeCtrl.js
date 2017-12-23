@@ -77,7 +77,7 @@ angular.module('homePageModule', [])
             .catch(function (data) {
             });
 
-        miniSliderService.getEndedEvents(6)
+        miniSliderService.getEndedEvents(1, 6)
             .then(function (data) {
                 $scope.ended = $scope.catchImagesEvents(data.data.content, 6);
             })

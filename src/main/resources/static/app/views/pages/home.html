@@ -318,7 +318,9 @@
         </div>
         <div class="col-xs-12 col-md-10 slidingEvents floatRight">
             <h3 class="textAlignRight">رویداد های تمام شده</h3>
-
+            <div class="marginTop30">
+                <a href="/ended-events" class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</a>
+            </div>
             <div class="col-xs-12 slickSliders">
                 <slick ng-if="showSections[6]" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
                     <div ng-repeat="event in ended" >
