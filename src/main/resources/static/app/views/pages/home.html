@@ -117,8 +117,8 @@
             </div>
         </div>
         <div class="hidden-xs hidden-sm col-sm-3   floatRight blitoOffer">
-            <h4 class="text-center marginTop10"> بلیتو کنسرت  </h4>
-            <div class="row marginTop33 ">
+            <h4 ng-show="ourOfferConcert.length > 0"  class="text-center marginTop10"> بلیتو کنسرت  </h4>
+            <div ng-show="ourOfferConcert.length > 0"  class="row marginTop33 ">
                 <div class="col-sm-1 floatRight">
                 </div>
                 <div ng-show="showSections[1]" class="col-sm-10 floatRight blitoOfferMain  ">
@@ -172,8 +172,8 @@
             </div>
         </div>
         <div class="hidden-xs hidden-sm col-sm-3  floatRight blitoOffer">
-            <h4 class="text-center marginTop10">بلیتو کارگاه</h4>
-            <div class="row marginTop30">
+            <h4 ng-show="ourOfferTour.length > 0" class="text-center marginTop10">بلیتو کارگاه</h4>
+            <div ng-show="ourOfferTour.length > 0" class="row marginTop30">
                 <div class="col-sm-1 floatRight">
                 </div>
                 <div ng-show="showSections[3]" class="col-sm-10 floatRight blitoOfferMain">
@@ -226,8 +226,8 @@
 
         </div>
         <div class="hidden-xs hidden-sm col-sm-3  floatRight blitoOffer">
-            <h4 class="text-center marginTop10"> بلیتو ایونتو</h4>
-            <div class="row marginTop30">
+            <h4 ng-show="ourOfferEvento.length > 0"  class="text-center marginTop10"> بلیتو ایونتو</h4>
+            <div ng-show="ourOfferEvento.length > 0"  class="row marginTop30">
                 <div class="col-sm-1 floatRight">
                 </div>
                 <div ng-show="showSections[5]" class="col-sm-10 floatRight blitoOfferMain">
@@ -255,11 +255,10 @@
     <div class="row textAlignRight marginLeft0 imgRelative" >
         <div class="col-xs-12 col-sm-6 col-md-6 floatRight exchangeTicketText">
             <h2>آگهی بلیت</h2>
-            <p>
-                        تا بحال شده بلیت فیلم مورد علاقتون یا کنسرت خواننده ای ک دوستش دارید رو بخرید اما نتونید شرکت کنید؟ قطعا نگران این موضوع میشید که چطوری پول از دست رفته رو برگردونید؟بلیتو فضایی رو ایجاد کرده که شما میتونید بلیتای خودتون رو اگهی کنید و نگران هزینه ای که بابت خریدش پرداخت کردید نباشید.رایگان اگهی کنید.
+            <p class="fontSize16Mobile">
+                        تا بحال شده بلیت فیلم مورد علاقتون یا کنسرت خواننده ای ک دوستش دارید رو بخرید اما نتونید شرکت کنید؟ قطعا نگران این موضوع میشید که چطوری پول از دست رفته رو برگردونید؟بلیتو فضایی رو ایجاد کرده که شما میتونید بلیت‌های خودتون رو اگهی کنید و نگران هزینه ای که بابت خریدش پرداخت کردید نباشید.رایگان اگهی کنید.
             </p>
-            <a href="/exchange-tickets" class="btn btn-success co-xs-12 btn-lg btnExchangeTicket"> <i class="fa fa-list-alt" aria-hidden="true"></i> بلیت های آگهی شده </a>
-            <!--<button class="btn btn-success co-xs-12 btn-lg btnExchangeTicket"> بلیت خود را اگهی کنید <i class="fa fa-tags" aria-hidden="true"></i></button>-->
+            <a href="/exchange-tickets" class="btn btn-success co-xs-12 btn-lg btnExchangeTicket fontSize18Mobile"> <i class="fa fa-list-alt" aria-hidden="true"></i> بلیت های آگهی شده </a>
         </div>
 
         <div class="col-md-3 floatRight col-sm-3 hidden-xs ">
@@ -319,7 +318,9 @@
         </div>
         <div class="col-xs-12 col-md-10 slidingEvents floatRight">
             <h3 class="textAlignRight">رویداد های تمام شده</h3>
-
+            <div class="marginTop30">
+                <a href="/ended-events" class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</a>
+            </div>
             <div class="col-xs-12 slickSliders">
                 <slick ng-if="showSections[6]" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
                     <div ng-repeat="event in ended" >

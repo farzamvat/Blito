@@ -813,7 +813,7 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 }
 .profileTabs>li>a {
     border-radius: 0;
-    font-size: 11px !important;
+    font-size: 18px !important;
 }
 .profileTabContent {
     background-color: #eee;
@@ -1267,6 +1267,7 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 }
 .buyTicket {
     font-size: 14px !important;
+    transition: 500ms;
 }
 .floatRight {
     float: right !important;
@@ -1623,7 +1624,7 @@ dir-pagination-controls ul {
 }
 .tabDropDown>li>a {
     color: white;
-    font-size: 10px;
+    font-size: 16px;
     text-decoration: none;
     text-align: center !important;
 }
@@ -2127,44 +2128,6 @@ a{
     background:rgba(0,0,0,.5);
     box-shadow: 2px 2px 5px #222;
 }
-/*#eventListOther:not(:active),*/
-/*#eventListCinema:not(:active),*/
-/*#eventListTheater:not(:active),*/
-/*#eventListConcert:not(:active),*/
-/*#eventListSport:not(:active),*/
-/*#eventListWorkshop:not(:active),*/
-/*#eventListTour:not(:active){*/
-/*animation-name: eventListAnimation1;*/
-/*animation-duration: 1s;*/
-
-/*}*/
-/*#eventListOther:active,*/
-/*#eventListCinema:active,*/
-/*#eventListTheater:active,*/
-/*#eventListConcert:active,*/
-/*#eventListSport:active,*/
-/*#eventListWorkshop:active,*/
-/*#eventListTour:active{*/
-/*animation-name: eventListAnimation2;*/
-/*animation-duration: 1s;*/
-
-/*}*/
-/*!*.pageHeaderLinksDiv:not(:active){*!*/
-/*!*animation-name: eventListAnimation;*!*/
-/*!*animation-duration: 1s;*!*/
-/*!*}*!*/
-/*@keyframes eventListAnimation2 {*/
-/*0%   {transform: rotateX(calc());*/
-/*margin-top: 30px;}*/
-/*50%  {transform: rotateX(90deg);*/
-/*margin-top: 12px;}*/
-/*}*/
-/*@keyframes eventListAnimation1 {*/
-/*0%   {transform: rotateX(90deg);*/
-/*margin-top: 12px;}*/
-/*50%  {transform: rotateX(0deg);*/
-/*margin-top: 30px;}*/
-/*}*/
 .paymentImages {
     width: 100px;
 }
@@ -2923,8 +2886,8 @@ table td{
     overflow-x: hidden;
 }
 .profileToggleMenu {
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     vertical-align: middle;
     align-content: center;
@@ -3041,6 +3004,9 @@ table td{
     height: 250px !important;
     width: 176px !important;
 }
+.eventPageImage img:hover {
+    cursor: zoom-in;
+}
 .noPadding{
     padding: 0 !important;
 }
@@ -3059,6 +3025,45 @@ table td{
 .seatMapLoading {
     margin: 0 auto;
     width: 50px;
+}
+.buyTicketAfterScroll {
+    top : 0;
+    width: 200px;
+    position: fixed;
+    right: 0;
+    margin-top: 55px;
+    z-index: 1000;
+}
+.buyTicketDropDown {
+    width: auto;
+    height: 50px;
+    background-color: transparent;
+    margin-top: 30px;
+    position: fixed;
+    z-index: 1000;
+    float: right !important;
+    margin-left: auto;
+    margin-right: auto;
+    right: 0;
+    border-radius: 3px;
+}
+.buyTicketDropDown h3 {
+    color: white;
+}
+.dropDownImageEventPage {
+    margin-top: 15px;
+    margin-right: 10px;
+    height: 30px;
+    margin-left: 10px;
+}
+.dropDownButton {
+    width: 100% ;
+    margin-right: 20px;
+    margin-top: 12px;
+    margin-left: 10px;
+}
+nav {
+    z-index: 20001;
 }
 tspan{
     pointer-events: none !important;
@@ -3253,16 +3258,61 @@ tspan{
 
 
 @media (max-width: 768px) {
+    .buyTicketDropDown {
+        bottom: 0;
+        height: auto;
+        margin-top: 30px;
+        width: 100%;
+        background: transparent;
+    }
+    .buyTicketDropDown h3 {
+        margin-top: 40px;
+    }
+    .paddingMobileZero {
+        padding: 0;
+    }
+    .dropDownButton {
+        width: 100%;
+        height: 80px;
+        margin: 0;
+    }
+    .dropDownImageEventPage {
+        margin-top: 22px;
+        height: 70px;
+    }
+    .fontSize18Mobile {
+        font-size: 18px !important;
+    }
+    .fontSize24Mobile {
+        font-size: 24px !important;
+    }
+    .fontSize16Mobile {
+        font-size: 16px !important;
+    }
+    .eventContent p {
+        font-size: 18px !important;
+    }
+    .eventContent h1 {
+        font-size: 24px;
+    }
+    .eventPageImage img {
+        height: 357px !important;
+        width: 250px !important;
+    }
+    .marginTop100Mobile {
+        margin-top: 100px;
+    }
     .modalExpandWidth {
         width: inherit;
     }
     .maximizeImageXs {
         display: block;
-        margin: -55px auto;
+        margin: -75px auto;
         text-align: center;
         color: white;
         transition: 200ms;
         cursor: pointer;
+        pointer-events: none;
     }
 
     .marginTop30Mobile {
@@ -3639,7 +3689,7 @@ tspan{
         font-size: 15px !important;
     }
     .eventContent p {
-        font-size: 16px !important;
+        font-size: 14px ;
     }
     .eventInfoHolder >label{
         font-size: 16px !important;

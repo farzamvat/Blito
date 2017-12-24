@@ -1,0 +1,39 @@
+<div class="row" ng-controller="endedEventsPageCtrl as events">
+    <h1 class="text-center marginTop60">رویداد‌های تمام‌ شده</h1>
+    <div class="col-md-12 eventsPageRows">
+        <div class="col-xs-6 col-sm-4 col-md-3 floatRight marginTop10 marginBottom50" pagination-id="eventPagination" total-items="totalEventsNumber" dir-paginate="item in eventList | itemsPerPage: 12"  current-page="currentPage">
+            <a href="{{url+item.eventLink}}">
+                <div class="recipe"  >
+                    <div class="image center-block" >
+                        <img ng-src="{{item.image}}" class="center-block eventListImage"  >
+                        <div class="name">
+                            <h5> برگزارکننده   : {{ item.eventHostName }} <i class="fa fa-calendar-check-o"></i> </h5>
+                        </div>
+                        <h4 class="text-center slidingEventsTitle"><span ng-if="item.eventName.length > 20">...</span>{{item.eventName | limitTo : 20}}</h4>
+                        <div class="eventDescription center-block">
+                            {{item.description}}
+                        </div>
+
+                        <div ng-show="item.eventState === 'SOLD'" class="soldout ">
+                            <img src="../../../assets/img/soldout.png"/>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </div>
+
+    <div class="col-xs-12">
+        <div class="col-md-4 col-md-offset-4">
+            <dir-pagination-controls  class="col-xs-12" pagination-id="eventPagination" on-page-change="pageChanged(newPageNumber)"
+                                      max-size="5">
+            </dir-pagination-controls>
+        </div>
+    </div>
+</div>
+
+
+
+
+</div>

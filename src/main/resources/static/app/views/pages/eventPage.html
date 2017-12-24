@@ -1,4 +1,10 @@
 <div ng-controller="eventPageCtrl as eventPage" style="margin-bottom: 20px">
+    <div ng-show="eventDataDetails.eventState === 'OPEN'" id="buyTicketOnScroll" class="buyTicketDropDown dispNone" >
+        <div class="col-xs-12 hidden-sm hidden-md hidden-lg paddingMobileZero">
+            <button ng-show="eventDataDetails.eventState === 'OPEN' && eventType !== 'EXHIBITION'" ng-click="showBuyTicketModal()" class="btn btn-success buyTicket  marginTop10 fontSize24Mobile dropDownButton floatRight btn-block"><i class="fa fa-ticket" aria-hidden="true"></i>  خرید بلیت
+            </button>
+        </div>
+    </div>
     <div class="row eventPageHeader eventPageHeaderCover" ng-class="{'eventPageHeaderCinema': eventType === 'CINEMA',
                                                                      'eventPageHeaderTheatre': eventType === 'THEATER',
                                                                      'eventPageHeaderEducation': eventType === 'WORKSHOP',
@@ -10,14 +16,13 @@
 
 
         <div class="col-xs-12 col-sm-4 col-md-2 col-lg-2 floatRight eventPageImage">
-            <img ng-src="{{eventDataPhoto.eventPhoto[0].imageUUID}}"   class="img-responsive imgMobileSize ">
-            <i ng-click="showEventPic()" class="fa fa-search-plus fa-2x maximizeImage hidden-xs"></i>
-            <i ng-click="showEventPic()" class="fa fa-search-plus fa-2x maximizeImageXs hidden-sm hidden-md hidden-lg"></i>
+            <img ng-click="showEventPic()" ng-src="{{eventDataPhoto.eventPhoto[0].imageUUID}}"   class="img-responsive imgMobileSize">
+            <i  class="fa fa-search-plus fa-4x maximizeImageXs hidden-sm hidden-md hidden-lg"></i>
         </div>
-        <div class="col-xs-12 col-sm-7 col-md-4 col-lg-4 floatRight textAlignRight eventContent" >
+        <div class="col-xs-12 col-sm-7 col-md-4 col-lg-4 floatRight textAlignRight eventContent marginTop100Mobile" >
             <h1>{{eventDataDetails.eventName}}</h1>
-            <p>{{eventDataDetails.description}}</p>
-            <button ng-show="eventDataDetails.eventState === 'OPEN' && eventType !== 'EXHIBITION'" ng-click="showBuyTicketModal()" class="btn btn-success buyTicket  marginTop10"><i class="fa fa-ticket" aria-hidden="true"></i>  خرید بلیت
+            <p id="sticky-pick">{{eventDataDetails.description}}</p>
+            <button id="sticky-anchor" ng-show="eventDataDetails.eventState === 'OPEN' && eventType !== 'EXHIBITION'" ng-click="showBuyTicketModal()" class="btn btn-success buyTicket  marginTop10 fontSize18Mobile "><i class="fa fa-ticket" aria-hidden="true"></i>  خرید بلیت
             </button>
             <div  ng-show="eventDataDetails.eventState === 'CLOSED' && eventType !== 'EXHIBITION'"  class="text-blito  marginTop10 ">
                 <div class="col-xs-12 eventInfoHolder">
@@ -34,9 +39,8 @@
 
             <div class="panel panel-primary  customPanelEventPage eventPageShowTimeColor">
                 <div class="panel-heading eventPagePanelHeading">
-                    <span class="glyphicon glyphicon-list"></span> لیست سانس ها
+                    <span class="glyphicon glyphicon-list"></span>  سانس ها
                 </div>
-
                 <div class="panel-body noScrollBar noscrollX textAlignRight">
 
                     <table class="table" >
@@ -56,17 +60,17 @@
                         </thead>
                         <tbody class="showTimeList">
                         <tr ng-repeat="item in eventDates | filter:search">
-                            <td class="dataCenter eventPageTimeField"><span  ng-class="setClass($index)"    class="form-group  marginBottom0" ></span></td>
+                            <td class="dataCenter eventPageTimeField"><span  ng-class="setClass($index)"    class="form-group  marginBottom0 fontSize16Mobile" ></span></td>
 
-                            <td ng-if="item.maxPrice === 0 && eventType !== 'EXHIBITION'" class="dataCenter">رایگان</td>
-                            <td ng-if="item.maxPrice !== 0 && item.minPrice === 0 && eventType !== 'EXHIBITION'" class="dataCenter">رایگان - {{ item.maxPrice | number | pNumber}}</td>
-                            <td ng-if="item.maxPrice !== 0 && item.minPrice !== 0 && eventType !== 'EXHIBITION' && item.maxPrice !== item.minPrice" class="dataCenter">{{ item.maxPrice | number | pNumber}} - {{ item.minPrice | number | pNumber}}</td>
-                            <td ng-if="item.maxPrice !== 0 && item.minPrice !== 0 && eventType !== 'EXHIBITION' && item.maxPrice === item.minPrice" class="dataCenter">{{ item.maxPrice | number | pNumber}}</td>
+                            <td ng-if="item.maxPrice === 0 && eventType !== 'EXHIBITION'" class="dataCenter fontSize16Mobile">رایگان</td>
+                            <td ng-if="item.maxPrice !== 0 && item.minPrice === 0 && eventType !== 'EXHIBITION'" class="dataCenter fontSize16Mobile">رایگان - {{ item.maxPrice | number | pNumber}}</td>
+                            <td ng-if="item.maxPrice !== 0 && item.minPrice !== 0 && eventType !== 'EXHIBITION' && item.maxPrice !== item.minPrice" class="dataCenter fontSize16Mobile">{{ item.maxPrice | number | pNumber}} - {{ item.minPrice | number | pNumber}}</td>
+                            <td ng-if="item.maxPrice !== 0 && item.minPrice !== 0 && eventType !== 'EXHIBITION' && item.maxPrice === item.minPrice" class="dataCenter fontSize16Mobile">{{ item.maxPrice | number | pNumber}}</td>
 
                             <td ng-if="eventType !== 'EXHIBITION'" class="dataCenter">{{ item.soldCount | number | pNumber}} / {{ item.capacity  | number | pNumber}}</td>
 
                             <td ng-if="item.state === 'OPEN' && eventType !== 'EXHIBITION'" class="dataCenter fontGreen" >
-                                فعال
+                                قابل خرید
                             </td>
                             <td ng-if="item.state === 'CLOSED' && eventType !== 'EXHIBITION'" class="dataCenter fontRed">
                                 بسته
@@ -78,7 +82,6 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
     </div>

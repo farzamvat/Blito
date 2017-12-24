@@ -21,10 +21,10 @@
                                 <!-- Text input-->
                                 <div class="form-group col-xs-12 formRegGroup">
                                     <div class="col-xs-5 col-sm-4 floatRight text-center">
-                                        <label class="registerLabel" for="userIdSingIn" >پست الکترونيکی :</label>
+                                        <label class="registerLabel"  >پست الکترونيکی :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input height="60" id="userIdSingIn" name="email" ng-model="loginFields.email" type="email"  class="form-group registerInput" required>
+                                        <input height="60"  name="email" ng-model="loginFields.email" type="email"  class="form-group registerInput" required>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signInForm.email.$dirty && signInForm.email.$invalid">پست الکترونیکی نا معتبر است</div>
@@ -53,9 +53,9 @@
                                 <div id="loginError" ng-show="loginErrorNotif" class="text-center alert alert-danger col-xs-12" >
                                     <strong></strong>
                                 </div>
-                                <label class="control-label" for="signInButton"></label>
+                                <label class="control-label" ></label>
                                 <div class="controls">
-                                    <button id="signInButton" ng-disabled="signInForm.$invalid || loginOnce" ng-click="login(loginFields)" name="signin" class="btn btn-success btn-lg btnLogin">ورود <i ng-show="submitLogin" class="fa fa-spinner fa-spin"></i></button>
+                                    <button  ng-disabled="signInForm.$invalid || loginOnce" ng-click="login(loginFields)" name="signin" class="btn btn-success btn-lg btnLogin">ورود <i ng-show="submitLogin" class="fa fa-spinner fa-spin"></i></button>
                                 </div>
                                 <p class="text-center marginTop30 forgetPassword"><a ng-click="forgetPassModal()">رمز خود را فراموش کرده اید؟</a></p>
                             </div>

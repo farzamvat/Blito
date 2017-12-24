@@ -597,4 +597,27 @@ angular.module('eventsPageModule')
         $scope.showEventPic = function () {
             $("#event-photo").modal("show");
         };
+        function sticky_relocate() {
+            var window_top = $(window).scrollTop();
+            var div_top = $('#sticky-pick').offset().top;
+            if($( window ).width() > 768) {
+                if (window_top > div_top) {
+                    $('#sticky-anchor').addClass('buyTicketAfterScroll');
+                } else {
+                    $('#sticky-anchor').removeClass('buyTicketAfterScroll');
+                }
+            } else {
+                $('#sticky-anchor').removeClass('buyTicketAfterScroll');
+                if (window_top > div_top) {
+                    $('#buyTicketOnScroll').fadeIn();
+                } else {
+                    $('#buyTicketOnScroll').fadeOut();
+                }
+            }
+        }
+
+        $(function() {
+            $(window).scroll(sticky_relocate);
+            sticky_relocate();
+        });
     });
