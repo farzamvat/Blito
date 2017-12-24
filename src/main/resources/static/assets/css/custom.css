@@ -3283,6 +3283,9 @@ tspan{
     .fontSize18Mobile {
         font-size: 18px !important;
     }
+    .fontSize24Mobile {
+        font-size: 24px !important;
+    }
     .fontSize16Mobile {
         font-size: 16px !important;
     }
@@ -3686,7 +3689,7 @@ tspan{
         font-size: 15px !important;
     }
     .eventContent p {
-        font-size: 16px !important;
+        font-size: 14px ;
     }
     .eventInfoHolder >label{
         font-size: 16px !important;
