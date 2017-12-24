@@ -600,10 +600,19 @@ angular.module('eventsPageModule')
         function sticky_relocate() {
             var window_top = $(window).scrollTop();
             var div_top = $('#sticky-pick').offset().top;
-            if (window_top > div_top) {
-                $('#sticky-anchor').addClass('buyTicketAfterScroll');
+            if($( window ).width() > 768) {
+                if (window_top > div_top) {
+                    $('#sticky-anchor').addClass('buyTicketAfterScroll');
+                } else {
+                    $('#sticky-anchor').removeClass('buyTicketAfterScroll');
+                }
             } else {
                 $('#sticky-anchor').removeClass('buyTicketAfterScroll');
+                if (window_top > div_top) {
+                    $('#buyTicketOnScroll').fadeIn();
+                } else {
+                    $('#buyTicketOnScroll').fadeOut();
+                }
             }
         }
 
