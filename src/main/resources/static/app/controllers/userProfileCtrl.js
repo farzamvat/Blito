@@ -2244,8 +2244,12 @@ angular.module('User')
             } else {
                 newShowTimeEdit.hasSalon = false;
             }
-            document.getElementsByClassName("seatMapSection3")[0].style.display = "none";
-            document.getElementsByClassName("generateSeatMap3")[0].style.display = "block";
+            if(document.getElementsByClassName("seatMapSection3")[0]) {
+                document.getElementsByClassName("seatMapSection3")[0].style.display = "none";
+            }
+            if(document.getElementsByClassName("generateSeatMap3")[0]) {
+                document.getElementsByClassName("generateSeatMap3")[0].style.display = "block";
+            }
             delete newShowTimeEdit.persianDate;
             $scope.showTimeEditForms.push(newShowTimeEdit);
             $timeout(function () {
