@@ -89,11 +89,14 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         vmodel.setEventSoldDate(event.getEventSoldDate());
         vmodel.setDeleted(event.isDeleted());
         vmodel.setViews(event.getViews());
-        vmodel.setAdditionalFields(event.getAdditionalFields()
-                .entrySet()
-                .stream()
-                .map(AdditionalField::new)
-                .collect(Collectors.toList()));
+        Optional.ofNullable(event.getAdditionalFields())
+                .ifPresent(additionalFields -> {
+                    vmodel.setAdditionalFields(additionalFields
+                            .entrySet()
+                            .stream()
+                            .map(AdditionalField::new)
+                            .collect(Collectors.toList()));
+                });
         vmodel.setPrivate(event.isPrivate());
         event.getEventDates().stream().filter(eventDate -> eventDate.getSalon() != null).findAny().ifPresent(eventDate -> vmodel.setSalonUid(eventDate.getSalon().getSalonUid()));
         return vmodel;
@@ -114,7 +117,14 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         event.setEventLink(vmodel.getEventLink());
         event.setEventType(vmodel.getEventType().name());
         event.setMembers(vmodel.getMembers());
-        event.setAdditionalFields(vmodel.getAdditionalFields().stream().collect(Collectors.toMap(AdditionalField::getKey, AdditionalField::getValue)));
+        Option.of(vmodel.getAdditionalFields())
+                .filter(additionalFieldList -> !additionalFieldList.isEmpty())
+                .peek(additionalFieldList -> {
+                    event.setAdditionalFields(vmodel.getAdditionalFields().stream().collect(Collectors.toMap(AdditionalField::getKey, AdditionalField::getValue)));
+                })
+                .onEmpty(() -> {
+                    event.setAdditionalFields(null);
+                });
 
         List<Long> oldOnes = vmodel.getEventDates().stream().map(EventDateViewModel::getEventDateId).filter(id -> id > 0).collect(Collectors.toList());
         List<Long> shouldDelete = new ArrayList<>();

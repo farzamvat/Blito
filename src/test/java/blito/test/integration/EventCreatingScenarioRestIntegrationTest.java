@@ -33,10 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -222,6 +219,33 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractEventRestC
     }
 
 
+    @Test
+    public void updateEvent_removeAdditionalFields_suceess() {
+        EventHostViewModel eventHostViewModel =
+                createEventHost_success("eventHostName15").thenReturn().body().as(EventHostViewModel.class);
+        EventViewModel eventViewModel = createSampleEventViewModel(eventHostViewModel, "Event15");
+        eventViewModel.setAdditionalFields(Collections.singletonList(new AdditionalField("student number",Constants.FIELD_STRING_TYPE)));
+
+        Response eventCreationResponse =
+                givenRestIntegration()
+                        .body(eventViewModel)
+                        .when()
+                        .post(getServerAddress() + "/api/blito/v1.0/events");
+        eventCreationResponse.then().statusCode(201);
+        eventViewModel = eventCreationResponse.body().as(EventViewModel.class);
+
+        assertEquals(1,eventRepository.findOne(eventViewModel.getEventId()).getAdditionalFields().size());
+
+        eventViewModel.setAdditionalFields(Collections.emptyList());
+        Response eventUpdateResponse =
+                givenRestIntegration()
+                        .body(eventViewModel)
+                        .when()
+                        .put(getServerAddress() + "/api/blito/v1.0/events");
+        eventUpdateResponse.then().statusCode(202);
+        assertTrue(eventRepository.findOne(eventViewModel.getEventId()).getAdditionalFields().isEmpty());
+        assertEquals(0,eventRepository.findOne(eventViewModel.getEventId()).getAdditionalFields().size());
+    }
 
     @Test
     public void createDiscountCode_success()
