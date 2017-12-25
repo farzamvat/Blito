@@ -515,6 +515,7 @@
                                 </div>
                                 <div class="col-xs-12 marginTop30">
                                     <div ng-repeat="inputs in additionalFieldsEdit" class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
+                                        <i ng-show="!checkSoldCountForAdditionalField" class="fa fa-minus btn-danger addDeleteBtn floatRight" ng-click="deleteAdditionalFieldsEdit($index)" aria-hidden="true"></i>
                                         <div class="col-xs-10 floatRight text-center">
                                             <label class="registerLabel floatRight" for="eventName" >نام فیلد :</label>
                                         </div>
