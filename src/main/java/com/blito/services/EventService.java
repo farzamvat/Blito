@@ -182,8 +182,13 @@ public class EventService {
 		validateEventViewModel(vmodel);
 		Event event = eventRepository.findByEventIdAndIsDeletedFalse(vmodel.getEventId())
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
-		if(event.getAdditionalFields().size() > vmodel.getAdditionalFields().size())
-			throw new AdditionalFieldsValidationException(ResourceUtil.getMessage(Response.ADDITIONAL_FIELDS_VALIDATION_ERROR));
+		if(event.getAdditionalFields().size() > vmodel.getAdditionalFields().size()) {
+			if(event.getEventDates().stream().flatMap(eventDate -> eventDate.getBlitTypes().stream()).anyMatch(
+					blitType -> blitType.getSoldCount() > 0 ? true : false))
+			{
+				throw new AdditionalFieldsValidationException(ResourceUtil.getMessage(Response.ADDITIONAL_FIELDS_VALIDATION_ERROR));
+			}
+		}
 
 		EventHost eventHost = eventHostRepository.findByEventHostIdAndIsDeletedFalse(vmodel.getEventHostId())
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));

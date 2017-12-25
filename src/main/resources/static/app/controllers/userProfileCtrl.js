@@ -1074,6 +1074,7 @@ angular.module('User')
             $scope.galleryFiveEditUUID = null;
             $scope.gallerySixEditUUID = null;
             $scope.additionalFieldsSection = false;
+            $scope.checkSoldCountForAdditionalField = false;
             document.getElementById("editEventSansSubmit").style.display = "none";
             angular.element(document.getElementsByClassName("profilePhotoUploadEditEvent"))[0].src = "";
             angular.element(document.getElementsByClassName("galleryOneEdit"))[0].src = "";
@@ -1093,7 +1094,13 @@ angular.module('User')
             } else {
                 $scope.additionalFieldsSection = true;
             }
-
+            $scope.userEventsEdit[index].eventDates.forEach(function (eventDate) {
+                eventDate.blitTypes.forEach(function (blitType) {
+                    if(blitType.soldCount > 0) {
+                        $scope.checkSoldCountForAdditionalField = true;
+                    }
+                })
+            });
             $scope.editEventFields = {
                 eventId : $scope.userEventsEdit[index].eventId,
                 eventName : $scope.userEventsEdit[index].eventName,
@@ -1903,6 +1910,9 @@ angular.module('User')
         $scope.addAdditionalFieldsEdit = function () {
                 $scope.additionalFieldsEdit.push({ key : "", value : "string"});
         };
+        $scope.deleteAdditionalFieldsEdit = function (i) {
+            $scope.additionalFieldsEdit.splice(i, 1);
+        };
         //==================================================== ********* =================================
         //==================================================== PERSIAN DATE PICKER =======================
         $timeout(function () {
@@ -2244,8 +2254,12 @@ angular.module('User')
             } else {
                 newShowTimeEdit.hasSalon = false;
             }
-            document.getElementsByClassName("seatMapSection3")[0].style.display = "none";
-            document.getElementsByClassName("generateSeatMap3")[0].style.display = "block";
+            if(document.getElementsByClassName("seatMapSection3")[0]) {
+                document.getElementsByClassName("seatMapSection3")[0].style.display = "none";
+            }
+            if(document.getElementsByClassName("generateSeatMap3")[0]) {
+                document.getElementsByClassName("generateSeatMap3")[0].style.display = "block";
+            }
             delete newShowTimeEdit.persianDate;
             $scope.showTimeEditForms.push(newShowTimeEdit);
             $timeout(function () {

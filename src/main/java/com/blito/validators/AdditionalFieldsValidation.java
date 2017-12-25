@@ -28,7 +28,7 @@ public class AdditionalFieldsValidation implements ConstraintValidator<Additiona
 			return true;
 		if(value.keySet().stream().distinct().count() != value.keySet().size())
 			return false;
-		else if(!value.values().stream().allMatch(field -> field.equals(Constants.FIELD_STRING_TYPE)))
+		else if(value.values().stream().anyMatch(field -> !field.equals(Constants.FIELD_STRING_TYPE)))
 			return false;
 		return true;
 	}
