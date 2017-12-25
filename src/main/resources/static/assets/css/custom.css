@@ -1067,6 +1067,9 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     margin-top: 30px !important;
     padding: 15px 60px;
     font-size: 14px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }
 .btnReg {
     margin-top: 20px !important;
