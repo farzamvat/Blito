@@ -113,6 +113,8 @@ public class UserAccountService {
 	{
 		User user = userRepository.findByEmail(email)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
+		if(!user.isActive())
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.USER_NOT_ACTIVATED));
 		if(user.isBanned())
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.USER_IS_BANNED));
 		user.setResetKey(RandomUtil.generatePassword());
