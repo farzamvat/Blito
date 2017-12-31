@@ -22,7 +22,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -56,19 +55,16 @@ public class AccountController {
 			@ApiResponse(code = 500, message = "InternalServerException", response = ExceptionViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
 	@PostMapping("/register")
-	public DeferredResult<ResponseEntity<ResultVm>> register(@Validated @RequestBody RegisterVm vmodel) {
+	public CompletionStage<ResponseEntity<?>> register(@Validated @RequestBody RegisterVm vmodel,
+															  HttpServletRequest request,
+															  HttpServletResponse response) {
 		if (!vmodel.getPassword().equals(vmodel.getConfirmPassword())) {
 			throw new ValidationException(ResourceUtil.getMessage(Response.VALIDATION));
 		}
-		DeferredResult<ResponseEntity<ResultVm>> deferred = new DeferredResult<>();
-		return userAccountService.createUser(vmodel).thenApply(result -> {
-			deferred.setResult(ResponseEntity.status(HttpStatus.CREATED)
-					.body(new ResultVm(ResourceUtil.getMessage(Response.REGISTER_SUCCESS), true)));
-			return deferred;
-		}).exceptionally(t -> {
-			deferred.setErrorResult(t.getCause());
-			return deferred;
-		}).join();
+		return CompletableFuture.runAsync(() -> userAccountService.registerUser(vmodel))
+				.handle((aVoid,throwable) -> HandleUtility.generateResponseResult(
+						() -> new ResultVm(ResourceUtil.getMessage(Response.REGISTER_SUCCESS), true)
+						,throwable,request,response));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //
@@ -129,18 +125,27 @@ public class AccountController {
 	// ***************** SWAGGER DOCS ***************** //
 	@Permission(value = ApiBusinessName.USER)
 	@PostMapping("/account/change-password")
-	public DeferredResult<ResponseEntity<?>> changePassword(@Validated @RequestBody ChangePasswordViewModel vmodel) {
+	public CompletionStage<ResponseEntity<?>> changePassword(@Validated @RequestBody ChangePasswordViewModel vmodel,
+															 HttpServletRequest request,
+															 HttpServletResponse response) {
 		if (!vmodel.getConfirmNewPassword().equals(vmodel.getNewPassword())) {
 			throw new ValidationException(ResourceUtil.getMessage(Response.VALIDATION));
 		}
-		DeferredResult<ResponseEntity<?>> deferred = new DeferredResult<>();
-		return userAccountService.changePassword(vmodel).thenApply(user -> {
-			deferred.setResult(ResponseEntity.accepted().body(new ResultVm(ResourceUtil.getMessage(Response.SUCCESS))));
-			return deferred;
-		}).exceptionally(throwable -> {
-			deferred.setErrorResult(throwable.getCause());
-			return deferred;
-		}).join();
+		User user = SecurityContextHolder.currentUser();
+		return CompletableFuture.runAsync(() -> userAccountService.changePassword(vmodel,user))
+				.handle((aVoid,throwable) -> HandleUtility.generateResponseResult(() ->
+								new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)), throwable, request,response));
+	}
+
+	@GetMapping("/retry-activation")
+	public CompletionStage<ResponseEntity<?>> retrySendingActivationKey(@RequestParam String email,
+																		HttpServletRequest request,
+																		HttpServletResponse response) {
+		if (!Pattern.compile(Constants.EMAIL_REGEX).matcher(email).matches())
+			throw new ValidationException(ResourceUtil.getMessage(ControllerEnumValidation.EMAIL));
+		return CompletableFuture.runAsync(() -> userAccountService.retrySendingActivationKey(email))
+				.handle(((aVoid, throwable) -> HandleUtility.generateResponseResult(() ->
+						new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)),throwable,request,response)));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //
