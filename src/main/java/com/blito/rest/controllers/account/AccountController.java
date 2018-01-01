@@ -78,6 +78,7 @@ public class AccountController {
 				if (u.getActivationKey().equals(key)) {
 					u.setActive(true);
 					u.setActivationKey(null);
+					u.setActivationRetrySentDate(null);
 					u = userRepository.save(u);
 					return new ModelAndView("activationSuccess").addObject("firstname", u.getFirstname())
 							.addObject("serverAddress", serverAddress);

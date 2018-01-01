@@ -15,7 +15,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Optional;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Farzam Vatanzadeh
@@ -62,4 +67,43 @@ public class UserAccountServiceTest {
         userAccountService.retrySendingActivationKey("anyEmail@gmail.com");
     }
 
+    @Test(expected = NotAllowedException.class)
+    public void retrySendingActivationKey_retryTimeout_fail() {
+        User timeoutUser = new User();
+        timeoutUser.setEmail("farzam.vat@gmail.com");
+        timeoutUser.setActive(false);
+        timeoutUser.setBanned(false);
+        timeoutUser.setActivationRetrySentDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+        UserRepository userRepository = Mockito.spy(UserRepository.class);
+        Mockito.when(userRepository.findByEmail(timeoutUser.getEmail())).thenReturn(Optional.of(timeoutUser));
+        userAccountService.setUserRepository(userRepository);
+        userAccountService.retrySendingActivationKey(timeoutUser.getEmail());
+    }
+
+    @Test
+    public void retrySendingActivationKey_retrySent70MinutesAgo_success() {
+        User user = new User();
+        user.setEmail("farzam.vat@gmail.com");
+        user.setActive(false);
+        user.setBanned(false);
+        user.setActivationRetrySentDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusSeconds(70).toInstant()));
+        UserRepository userRepository = Mockito.spy(UserRepository.class);
+        Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        userAccountService.setUserRepository(userRepository);
+        userAccountService.retrySendingActivationKey(user.getEmail());
+        assertNotNull(user.getActivationKey());
+    }
+
+    @Test
+    public void retrySendingActivationKey_withoutEarlierRetry_success() {
+        User user = new User();
+        user.setEmail("farzam.vat@gmail.com");
+        user.setActive(false);
+        user.setBanned(false);
+        UserRepository userRepository = Mockito.spy(UserRepository.class);
+        Mockito.when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        userAccountService.setUserRepository(userRepository);
+        userAccountService.retrySendingActivationKey(user.getEmail());
+        assertNotNull(user.getActivationKey());
+    }
 }

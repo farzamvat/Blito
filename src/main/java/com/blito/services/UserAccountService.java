@@ -111,6 +111,7 @@ public class UserAccountService {
 				.orElseThrow(() -> new InternalServerException(ResourceUtil.getMessage(Response.INTERNAL_SERVER_ERROR)));
 		User user = userMapper.registerViewModeltoUser(registerVm);
 		user.setActivationKey(UUID.randomUUID().toString());
+		user.setActivationRetrySentDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 		user.setPassword(encoder.encode(user.getPassword()));
 		user.getRoles().add(userRole);
 		user.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
@@ -137,8 +138,15 @@ public class UserAccountService {
 				.onEmpty(() -> {
 					throw new NotAllowedException(ResourceUtil.getMessage(Response.USER_IS_BANNED));
 				})
+				.filter(user ->
+						user.getActivationRetrySentDate() == null || user.getActivationRetrySentDate().before(
+								Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusSeconds(60).toInstant())))
+				.onEmpty(() -> {
+					throw new NotAllowedException(ResourceUtil.getMessage(Response.USER_ACTIVATION_RETRY_TIMEOUT));
+				})
 				.peek(user -> {
 					user.setActivationKey(UUID.randomUUID().toString());
+					user.setActivationRetrySentDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 					mailService.sendActivationEmail(user);
 					userRepository.save(user);
 				});

@@ -81,7 +81,7 @@ public class AccountControllerRestIntegrationTest extends AbstractRestController
     @Test
     public void registerUser_retrySendingActivationKey_succes() {
         RegisterVm registerVm = new RegisterVm();
-        registerVm.setEmail("farzam.vat@gmail.com");
+        registerVm.setEmail("hasti.sahabi@gmail.com");
         registerVm.setFirstname("farzam");
         registerVm.setLastname("vatanzadeh");
         registerVm.setMobile("09124337522");
@@ -102,7 +102,7 @@ public class AccountControllerRestIntegrationTest extends AbstractRestController
                 .header("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .when()
                 .get(getServerAddress() + baseUrl + "/retry-activation?email="+ registerVm.getEmail())
-                .then().statusCode(200).body("message",equalTo(ResourceUtil.getMessage(Response.SUCCESS)));
+                .then().statusCode(400).body("message",equalTo(ResourceUtil.getMessage(Response.USER_ACTIVATION_RETRY_TIMEOUT)));
     }
 
     @Test
