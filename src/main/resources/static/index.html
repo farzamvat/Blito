@@ -8,9 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.6, maximum-scale=3, user-scalable=2" />
     <meta name="google-site-verification" content="Ae0XnHBmGrtad5c_FptpZisRSO68n0CfHx3OE2iq138" />
     <meta name="description" content="{{pageDescription}}"/>
+    <meta name="keywords" content="{{keyWord}}">
     <title ng-bind="title + ' | بلیتو'"></title>
-    <meta name="robots" content="{{robotValue}}" />
-    <meta name="googlebot" content="{{robotValue}}" />
     <link rel="apple-touch-icon" sizes="180x180" href="fav-icons/apple-touch-icon.png"/>
     <link rel="icon" type="image/png" sizes="32x32" href="fav-icons/favicon-32x32.png"/>
     <link rel="icon" type="image/png" sizes="16x16" href="fav-icons/favicon-16x16.png"/>
@@ -133,7 +132,7 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse ">
         <ul class="nav navbar-nav floatRight textAlignRight">
-            <li ng-show="logoutMenu" class="floatRight" ng-class="{ active: isActive('/user-profile')}"><a class="" href="/user-profile"><i class="fa fa-user" aria-hidden="true"></i>  {{firstname}} {{lastname}} </a></li>
+            <li ng-if="logoutMenu" class="floatRight" ng-class="{ active: isActive('/user-profile')}"><a class="" href="/user-profile"><i class="fa fa-user" aria-hidden="true"></i>  {{firstname}} {{lastname}} </a></li>
             <li class="floatRight" ng-class="{ active: isActive('/')}"><a class="" href="/"><i class="fa fa-home" aria-hidden="true"></i> خانه </a></li>
             <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema') || isActive('/entertainment') || isActive('/theater') || isActive('/concert') || isActive('/other') || isActive('/tour') || isActive('/workshop') ||isActive('/exhibition')}">
                 <a href="" ng-click="DropDownMenue()" class="dropdown-toggle"><i class="fa fa-calendar" aria-hidden="true"></i> رویداد ها   <span class="caret"></span></a>
