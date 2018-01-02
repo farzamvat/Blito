@@ -3,11 +3,15 @@
  */
 
 angular.module('bioPageModule', [])
-    .controller('bioPageCtrl', function ($scope, plannerService, $routeParams, photoService, config, $window) {
+    .controller('bioPageCtrl', function ($scope, plannerService, $routeParams, photoService, config, $location) {
         $scope.url = config.baseUrl+"/event-page/";
         plannerService.getPlannerByLink($routeParams.plannerLink)
             .then(function (data) {
                 $scope.plannerData = data.data;
+                $scope.title = $location.path().replace('/event-host-page/','').replace( /\d+/,'').replace( /-/,'');
+                $scope.pageDescription = $scope.plannerData.description;
+                $scope.keyWord = $scope.plannerData.hostName;
+                $scope.robotValue = 'index';
                 $scope.getEvents(1);
                 for(var i = 0; i < $scope.plannerData.images.length; i++) {
                     if ($scope.plannerData.images[i].type === 'HOST_PHOTO') {
