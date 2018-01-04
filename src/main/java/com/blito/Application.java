@@ -32,7 +32,7 @@ public class Application {
 		initializer.insertAdminUserAndRoleAndOldBlitoUsers();
 		initializer.insertSalonSchemasAndDataIntoDB();
 	}
-	@GetMapping("/")
+	@GetMapping("/x")
 	public ModelAndView index() {
 		return new ModelAndView("index");
 	}
