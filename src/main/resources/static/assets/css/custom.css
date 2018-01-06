@@ -142,6 +142,9 @@ textarea:focus, input:focus {
 .fontSize18 {
     font-size: 18px;
 }
+.fontSize18H1Tag {
+    font-size: 18px !important;
+}
 .marginLeft20 {
     margin-left: 20px;
 }
@@ -240,7 +243,7 @@ button.slick-next {
     margin-top: 15px;
     font-size: 16px ;
 }
-.slidingEvents h3 {
+.slidingEvents h2 {
     float: right;
     display: inline-block;
     font-size: 18px;
@@ -3192,8 +3195,8 @@ tspan{
     .exchangeTicketText h2{
         font-size: 22px;
     }
-    .slidingEvents h3{
-        font-size: 25px;
+    .slidingEvents h2{
+        font-size: 25px !important;
     }
     .slidingEvents a{
         font-size: 15px;

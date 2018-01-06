@@ -1,11 +1,11 @@
 <div ng-controller="exchangePageCtrl as eventPage">
     <div class="row eventPageHeader exchangePageCover" >
         <div class="col-xs-12 col-sm-4 col-md-3 floatRight eventPageImage">
-            <img ng-src="{{exchangeData.newImage}}"   class="img-responsive imgMobileSize ">
+            <img ng-src="{{exchangeData.newImage}}" alt="{{exchangeData.title}}"  class="img-responsive imgMobileSize ">
         </div>
         <div class="col-xs-12 col-sm-7 col-md-8 floatRight textAlignRight eventContent paddingLeft50 paddingLeft30-sm" >
             <h1>{{exchangeData.title}}</h1>
-            <h3 class="noPadding"ng-if="exchangeData.state === 'OPEN'">شماره تماس فروشنده : {{ exchangeData.phoneNumber | pNumber}}</h3>
+            <h3 class="noPadding" ng-if="exchangeData.state === 'OPEN'">شماره تماس فروشنده : {{ exchangeData.phoneNumber | pNumber}}</h3>
             <p>{{exchangeData.description}}</p>
             <table ng-if="exchangeData.state === 'OPEN'" class="table">
                 <thead class="tableHeader">
