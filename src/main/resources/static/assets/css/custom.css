@@ -3087,7 +3087,10 @@ tspan{
     display: block;
     margin: 2px auto;
 }
-
+.seatMaperChartStyle div {
+    overflow: visible !important;
+    float: right;
+}
 
 .seatMapSold {
     background-color: #801515;
@@ -3117,7 +3120,12 @@ tspan{
     pointer-events: none !important;
 }
 .seatMaperChartStyle {
-    height: 400px;
+    height: 450px;
+    width: 95%;
+    display: block;
+    padding: 0;
+    margin-right: 0px;
+    float: right;
 }
 .hrLine {
     height: 1px;
