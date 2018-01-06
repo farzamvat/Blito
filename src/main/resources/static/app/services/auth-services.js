@@ -45,6 +45,12 @@ angular.module('authServices', [])
                 return $http.get(config.baseUrl + '/api/blito/v1.0/account/user-info');
 
         };
+        authService.resendActivationEmail = function (userEmail) {
+            var queryParam = {
+                params : { email : userEmail}
+            }
+            return $http.get(config.baseUrl + '/api/blito/v1.0/retry-activation', queryParam);
+        };
         authService.logout = function () {
             AuthToken.setToken();
         };
