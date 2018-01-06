@@ -214,12 +214,14 @@ public class UserAccountService {
 	@Transactional
 	public void changePassword(ChangePasswordViewModel vmodel,User user)
 	{
-		if(!user.isActive())
+		User fetchedUser = userRepository.findByEmail(user.getEmail())
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.USER_NOT_FOUND)));
+		if(!fetchedUser.isActive())
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.USER_NOT_ACTIVATED));
-		if(user.isBanned())
+		if(fetchedUser.isBanned())
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.USER_IS_BANNED));
-		if(encoder.matches(vmodel.getOldPassowrd(), user.getPassword())) {
-			user.setPassword(encoder.encode(vmodel.getNewPassword()));
+		if(encoder.matches(vmodel.getOldPassowrd(), fetchedUser.getPassword())) {
+			fetchedUser.setPassword(encoder.encode(vmodel.getNewPassword()));
 		}
 		else {
 			throw new WrongPasswordException(ResourceUtil.getMessage(Response.INCORRECT_PASSWORD));
