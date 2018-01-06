@@ -2,7 +2,7 @@
     <div class="col-md-12 eventsPageRows">
         <div class="row">
             <div class="row exchangeBlitHeader">
-                <div class="eventListBeautifer noshadow"><h4 class="text-center">{{pageTitle}}</h4></div>
+                <div class="eventListBeautifer noshadow"><h1 class="text-center fontSize18H1Tag">{{pageTitle}}</h1></div>
                 <div class="eventListHeaderBorderBottom"></div>
             </div>
             <button class="btn btn-make-exchange btn-success" ng-click="makeNewExchange()"> ایجاد آگهی جدید</button>
@@ -10,7 +10,7 @@
                 <a href="{{urlExchange+item.exchangeLink}}">
                     <div class="recipe"  >
                         <div class="image center-block" >
-                            <img ng-src="{{item.newImage}}" class="center-block eventListImage">
+                            <img ng-src="{{item.newImage}}" alt="{{item.title}}" class="center-block eventListImage">
                             <div class="name">
                                 <h5>    نوع رویداد : {{ item.type }}<i class="fa fa-star"></i></h5>
 

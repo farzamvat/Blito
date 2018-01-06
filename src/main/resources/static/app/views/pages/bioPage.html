@@ -1,7 +1,7 @@
 <div ng-controller="bioPageCtrl" class="bioPageContainer">
     <div class="row eventPageHeader bioPageHeaderCover plannerCover">
     </div>
-    <img ng-src="{{plannerPhoto}}" class="circleImage bioPageLogoImage"/>
+    <img ng-src="{{plannerPhoto}}" alt="{{plannerData.hostName}}" class="circleImage bioPageLogoImage"/>
     <div class="col-xs-12 col-sm-8 col-sm-offset-2 plannerBioContent" >
         <h1>{{plannerData.hostName}}</h1>
     </div>
@@ -16,7 +16,7 @@
             <a href="{{url+item.eventLink}}">
                 <div class="recipe"  >
                     <div class="image center-block" >
-                        <img ng-src="{{item.image}}" class="center-block eventListImage"  >
+                        <img ng-src="{{item.image}}" alt="{{item.eventName}}" class="center-block eventListImage"  >
 
                         <h4 class="text-center slidingEventsTitle"><span ng-if="item.eventName.length > 20">...</span>{{item.eventName | limitTo : 20}}</h4>
                     </div>

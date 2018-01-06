@@ -60,7 +60,7 @@
             <a href="{{url+item.eventLink}}">
                 <div class="recipe"  >
                     <div class="image center-block" >
-                        <img ng-src="{{item.image}}" class="center-block eventListImage"  >
+                        <img ng-src="{{item.image}}" alt="{{item.eventName}}" class="center-block eventListImage"  >
                         <div class="name">
                             <h5> برگزارکننده   : {{ item.eventHostName }} <i class="fa fa-calendar-check-o"></i> </h5>
                             <h5 ng-show="item.eventType !== 'EXHIBITION'">{{ item.capacity - item.soldCount | number | pNumber}}: بلیت باقی مانده  <i class="fa fa-ticket"></i>‌</h5>
