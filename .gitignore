@@ -22,3 +22,4 @@ task.json
 /var/
 /node_modules/
 /log-dir_IS_UNDEFINED/
+/src/main/resources/static/node_modules/
