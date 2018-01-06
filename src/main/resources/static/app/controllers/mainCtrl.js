@@ -296,6 +296,12 @@ angular.module('menuPagesModule', [])
             document.getElementById("successForgetPass").style.display = "none";
             document.getElementById("errorForgetPass").style.display = "none";
         };
+        $scope.resendActivationEmail = function () {
+            $("#registrationModal").modal("hide");
+            $("#resendEmail").modal("show");
+            document.getElementById("successResendEmail").style.display = "none";
+            document.getElementById("errorResendEmail").style.display = "none";
+        };
         $scope.resetPasswordSubmit = function (email) {
             document.getElementById("successForgetPass").style.display = "none";
             document.getElementById("errorForgetPass").style.display = "none";
@@ -311,7 +317,25 @@ angular.module('menuPagesModule', [])
                     document.getElementById("errorForgetPass").innerHTML= data.data.message;
                 })
         };
-
+        $scope.resendEmailClickOnce = false;
+        $scope.resendActivationEmailSubmit = function (email) {
+            $scope.resendEmailClickOnce = true;
+            document.getElementById("successResendEmail").style.display = "none";
+            document.getElementById("errorResendEmail").style.display = "none";
+            document.getElementById("spinnerResendEmail").style.display = "inline";
+            Auth.resendActivationEmail(email)
+                .then(function () {
+                    $scope.resendEmailClickOnce = false;
+                    document.getElementById("spinnerResendEmail").style.display = "none";
+                    document.getElementById("successResendEmail").style.display = "block";
+                })
+                .catch(function (data) {
+                    $scope.resendEmailClickOnce = false;
+                    document.getElementById("spinnerResendEmail").style.display = "none";
+                    document.getElementById("errorResendEmail").style.display = "block";
+                    document.getElementById("errorResendEmail").innerHTML= data.data.message;
+                })
+        };
         $scope.isActive = function (viewLocation) {
             return viewLocation === $location.path();
         };
