@@ -210,19 +210,17 @@ angular.module('eventsPageModule')
                     console.log(data);
                 })
         };
-        $scope.seatsPickedChecked = false;
+        $scope.seatsPickedChecked = true;
         $scope.seatsPickedLimit = false;
         $scope.$on("blitIdsChangedBuyTicket",function (event ,data) {
             if(data[0].length <= 10) {
                 $scope.seatsPickedLimit = false;
                 $scope.blitTypeCreateValidation = data[0].length;
-                $scope.$apply();
                 $scope.seatBlitUids = data[0];
-                $scope.seatsPickedChecked = false;
-                if (seatmapService.oneSeatUnpickedPayment($scope.seatBlitUids, populatedSchema)) {
-                    $scope.seatsPickedChecked = true;
-                    $scope.$apply();
-                }
+                // if (seatmapService.oneSeatUnpickedPayment($scope.seatBlitUids, populatedSchema)) {
+                //     $scope.seatsPickedChecked = true;
+                //     $scope.$apply();
+                // }
                 $scope.$apply();
             } else {
                 $scope.seatsPickedLimit = true;
