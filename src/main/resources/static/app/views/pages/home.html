@@ -38,39 +38,112 @@
             <div class="ground"></div>
         </div>
     </div>
-    <div class="categorySectionBackground">
-    <div class="row categorySection">
-        <div  class="col-xs-3 floatRight">
-            <a href="/concert" class="img-responsive marginTopMinus10 center-block categoryImage categoryConcert ">
-                <div class="categoryInside">
-                    <h4 class="categoryTitle">کنسرت</h4>
-                </div>
-            </a>
-        </div>
-        <div  class="col-xs-3 floatRight">
-            <a href="/theater" class="img-responsive marginTopMinus10 center-block categoryImage categoryTheatre">
-                <div class="categoryInside">
-                    <h4 class="categoryTitle">تئاتر</h4>
-                </div>
-            </a>
+    <div class="row plannerIntroRow">
+        <div class="col-xs-12 col-md-4 floatRight plannerIntroBox">
+            <div class="submitEventIntroHomePage">
+                <div class="topPagePictures">
+                    <figure class="chartMainPage marginTop10" data-percent="85">
+                        <div class="centerAbsoluteItem">
+                            <div class="numberOfEvents">
+                                {{totalNumberOfEvents | pNumber}}
+                            </div>
+                        </div>
+                        <svg width="200" height="200">
 
-        </div>
-        <div  class="col-xs-3 floatRight">
-            <a href="/workshop" class="img-responsive marginTopMinus10 center-block categoryImage categoryWorkshop">
-                <div class="categoryInside">
-                    <h4 class="categoryTitle">کارگاه</h4>
-                </div>
-            </a>
+                            <circle class="outer" cx="95" cy="95" r="85" stroke="url(#grad1)" transform="rotate(-90, 95, 95)"/>
 
-        </div>
-        <div  class="col-xs-3 floatRight">
-            <a href="/tour" class="img-responsive marginTopMinus10 center-block categoryImage categoryTour">
-                <div class="categoryInside">
-                    <h4 class="categoryTitle">تور</h4>
+                        </svg>
+                    </figure>
                 </div>
-            </a>
+                <div class="topPageDescription">
+                    <h2 class="text-center">رویداد‌های برگزار شده</h2>
+                    <p class="text-center fontSize16 padding5">شما می‌توانید با ثبت نام در بلیتو رویداد‌ دلخواه خود را ثبت کنید و بلیت فروشی آنلالین خود را شروع کنید</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-4 floatRight plannerIntroBox">
+            <div class="submitEventIntroHomePage">
+                <div class="topPagePictures">
+                    <div class="graph__wrapper">
+                        <div class="coordinates">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <svg width="315px" height="107px" viewBox="0 0 315 107" version="1.1">
+                            <defs>
+                                <linearGradient x1="0%" y1="100%" x2="100%" y2="100%" id="linearGradient-1">
+                                    <stop stop-color="#333" offset="0%"></stop>
+                                    <stop stop-color="#999" offset="41.7610013%"></stop>
+                                    <stop stop-color="#FCB731" offset="78.6870217%"></stop>
+                                    <stop stop-color="#FCB731" offset="100%"></stop>
+                                </linearGradient>
+                            </defs>
+                            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                                <path d="M2.10546875,100.75 L50.5546875,80.3476562 L90.2109375,70.1796875 L140.2109375,30.1796875 L190.2109375,10.1796875  " id="Path-1" stroke="url(#linearGradient-1)" stroke-width="4" sketch:type="MSShapeGroup" class="path"></path>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <div class="topPageDescription">
+                    <h2 class="text-center">موفقیت فروش</h2>
+                    <p class="text-center fontSize16 padding5">بلیتو با استفاده از تبلیغات و اطلاع رسانی از طریق شبکه‌های اجتماعی، فروش شما را افزایش می‌دهد</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-4 floatRight plannerIntroBox">
+            <div class="submitEventIntroHomePage">
+                <div class="topPagePictures">
+                    <div class="centerImageItem">
+                        <img class="numberOfEvents" src="../../../assets/img/clock.png">
+                    </div>
+                </div>
+                <div class="topPageDescription marginTop10">
+                    <h2 class="text-center">زمان ثبت رویداد</h2>
+                    <p class="text-center fontSize16 padding5">با استفاده از بلیتو در کم‌ترین زمان، رویداد خود را ثبت  و اجرا کنید</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 plannerIntroBox">
+            <button class="btn btn-success center-block marginBottom50 marginTop30 fontSize18 submitEventHomePage">ثبت رویداد</button>
         </div>
     </div>
+    <div class="categorySectionBackground">
+        <div class="row categorySection">
+            <div  class="col-xs-3 floatRight">
+                <a href="/concert" class="img-responsive marginTopMinus10 center-block categoryImage categoryConcert ">
+                    <div class="categoryInside">
+                        <h4 class="categoryTitle">کنسرت</h4>
+                    </div>
+                </a>
+            </div>
+            <div  class="col-xs-3 floatRight">
+                <a href="/theater" class="img-responsive marginTopMinus10 center-block categoryImage categoryTheatre">
+                    <div class="categoryInside">
+                        <h4 class="categoryTitle">تئاتر</h4>
+                    </div>
+                </a>
+
+            </div>
+            <div  class="col-xs-3 floatRight">
+                <a href="/workshop" class="img-responsive marginTopMinus10 center-block categoryImage categoryWorkshop">
+                    <div class="categoryInside">
+                        <h4 class="categoryTitle">کارگاه</h4>
+                    </div>
+                </a>
+
+            </div>
+            <div  class="col-xs-3 floatRight">
+                <a href="/tour" class="img-responsive marginTopMinus10 center-block categoryImage categoryTour">
+                    <div class="categoryInside">
+                        <h4 class="categoryTitle">تور</h4>
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
     <div ng-show="concertRow.length > 0" class="row slidingEventsRow">
         <div class="col-xs-12 col-md-9 slidingEvents floatRight">
@@ -242,7 +315,7 @@
         <div class="col-xs-12 col-sm-6 col-md-6 floatRight exchangeTicketText">
             <h2>آگهی بلیت</h2>
             <p class="fontSize16Mobile">
-                        تا بحال شده بلیت فیلم مورد علاقتون یا کنسرت خواننده ای ک دوستش دارید رو بخرید اما نتونید شرکت کنید؟ قطعا نگران این موضوع میشید که چطوری پول از دست رفته رو برگردونید؟بلیتو فضایی رو ایجاد کرده که شما میتونید بلیت‌های خودتون رو اگهی کنید و نگران هزینه ای که بابت خریدش پرداخت کردید نباشید.رایگان اگهی کنید.
+                تا بحال شده بلیت فیلم مورد علاقتون یا کنسرت خواننده ای ک دوستش دارید رو بخرید اما نتونید شرکت کنید؟ قطعا نگران این موضوع میشید که چطوری پول از دست رفته رو برگردونید؟بلیتو فضایی رو ایجاد کرده که شما میتونید بلیت‌های خودتون رو اگهی کنید و نگران هزینه ای که بابت خریدش پرداخت کردید نباشید.رایگان اگهی کنید.
             </p>
             <a href="/exchange-tickets" class="btn btn-success co-xs-12 btn-lg btnExchangeTicket fontSize18Mobile"> <i class="fa fa-list-alt" aria-hidden="true"></i> بلیت های آگهی شده </a>
         </div>

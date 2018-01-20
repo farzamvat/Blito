@@ -154,6 +154,9 @@ textarea:focus, input:focus {
 .marginTop10 {
     margin-top: 10px;
 }
+.padding5 {
+    padding: 5px;
+}
 .paddingTop5 {
     padding-top: 5px;
 }
@@ -227,6 +230,7 @@ button.slick-next {
 .sliderSection {
     margin-top: 0;
     padding: 0 !important;
+    /*box-shadow: 10px 10px 10px #000;*/
 }
 .slidingEvents {
     /*background-color: #eee;*/
@@ -251,6 +255,12 @@ button.slick-next {
 }
 .categorySectionBackground {
     background: url('../img/back.jpg') fixed;
+}
+.plannerIntroRow {
+    background-color: #fafafa;
+}
+.plannerIntroBox {
+    background-color: rgba(250, 250, 250, 1);
 }
 .nav-dropdown-menu>li>a:focus, .nav-dropdown-menu>li>a:hover{
     background-color: #303030;
@@ -3118,6 +3128,129 @@ tspan{
 }
 .noPointerEvents{
     pointer-events: none !important;
+}
+
+.chartMainPage .numberOfEvents {
+    position: relative;
+    left: -50%;
+    top: 65px;
+    font-size: 48px;
+}
+.centerAbsoluteItem {
+    position: absolute;
+    left: 49%;
+}
+.centerImageItem {
+    padding-top: 20px;
+}
+.centerImageItem img {
+    width: 200px;
+    display: block;
+    margin: 0 auto;
+}
+.node {
+    width: 200px;
+    height: 200px;
+    top: 45px;
+    left: 45px;
+}
+
+.chartMainPage svg .outer {
+    stroke: #FCB731;
+}
+.chartMainPage svg {
+    display: block;
+    margin: 1px auto;
+}
+.outer {
+    margin: 2px auto;
+    fill: transparent;
+    stroke: #333;
+    stroke-width: 20;
+    stroke-dasharray: 534;
+    transition: stroke-dashoffset 1s;
+    -webkit-animation-play-state: running;
+    -moz-transform: rotate(-89deg) translateX(-190px);
+}
+.chartMainPage[data-percent='85'] .outer {
+    stroke-dashoffset: 100;
+    -webkit-animation: show75 2.5s;
+    animation: show75 2.5s;
+}
+
+/* END set initial animation values */
+
+/* Keyframes for the initial animation */
+
+
+@-webkit-keyframes show75 {
+    from {
+        stroke-dashoffset: 537;
+    }
+
+    to {
+        stroke-dashoffset: 100;
+    }
+}
+
+@keyframes show75 {
+    from {
+        stroke-dashoffset: 537;
+    }
+
+    to {
+        stroke-dashoffset: 100;
+    }
+}
+.topPagePictures {
+    height: 200px;
+}
+.graph__wrapper {
+    width: 250px;
+    height: 150px;
+    display: block;
+    margin: 10px auto;
+    border-left: 3px solid #444;
+    border-bottom: 3px solid #444;
+}
+.graph__wrapper svg {
+    position: absolute;
+    margin: 36px 0 0 15px;
+}
+.coordinates {
+    position: absolute;
+}
+
+
+.path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    -webkit-animation: dash 3s ease-in forwards;
+    animation: dash 3s ease-in forwards;
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+}
+@-webkit-keyframes dash {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+@keyframes dash {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+.submitEventIntroHomePage {
+    /*background-color: white;*/
+    /*width: 90%;*/
+    /*height: 400px;*/
+    /*display: block;*/
+    /*margin: 60px auto;*/
+    /*box-shadow: 0px 0px 10px  #888;*/
+    /*border: 1px solid #999;*/
+}
+.submitEventHomePage {
+    width: 200px;
 }
 .seatMaperChartStyle {
     height: 450px;

@@ -15,6 +15,13 @@ angular.module('homePageModule', [])
         // $scope.urlExchange = "http://localhost:3000"+"/exchange-page/";
         $scope.url = config.baseUrl+"/event-page/";
         $scope.urlExchange = config.baseUrl+"/exchange-page/";
+        miniSliderService.getAllEvents()
+            .then(function (data) {
+                console.log(data);
+                $scope.totalNumberOfEvents = data.data.totalElements;
+            })
+            .catch(function (data) {
+            });
         indexBannerService.getIndexBanner()
             .then(function (data) {
                 $scope.bannerData = $scope.catchImagesExchange(data.data.content, 0);
