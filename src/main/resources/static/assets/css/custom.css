@@ -256,11 +256,77 @@ button.slick-next {
 .categorySectionBackground {
     background: url('../img/back.jpg') fixed;
 }
+
 .plannerIntroRow {
-    background-color: #fafafa;
+    background: url('../img/back.jpg') fixed;
+    /*background-color: rgba(250, 250, 250, 0.4);*/
+}
+
+
+.circleAnimate {
+    background:rgb(252, 183, 49);
+    width: 100px;
+    height: 100px;
+    margin: 1px auto;
+    border-radius: 100%;
+    z-index: 0;
+}
+
+.circleAnimate {
+    -webkit-animation: grow 3s;
+}
+
+@-webkit-keyframes grow {
+    0% {
+        -webkit-transform: scale(0);
+        -moz-transform: scale(0);
+        -o-transform: scale(0);
+        -ms-transform: scale(0);
+        transform: scale(0);
+    }
+    100% {
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -o-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+    }
+}
+.bliBox {
+    margin-top: -40px;
+    position: absolute;
+    left: 50%;
+    z-index: 1000;
+    color: rgb(252, 183, 49);
+}
+.bliBox img,h3 {
+    position: relative;
+    left: -50%;
+    cursor: pointer;
+}
+.plannerIntroButtonSection {
+    background-color: rgba(250, 250, 250, 0.9);
 }
 .plannerIntroBox {
+    background-color: rgba(250, 250, 250, 0.9);
+    -moz-box-shadow:    inset  0px 11px 5px -5px #000;
+    -webkit-box-shadow: inset  0px 11px 5px -5px #000;
+    box-shadow:         inset  0px 11px 5px -5px #000;
+    padding-top: 30px;
+    height: 270px;
+}
+.plannerIntroButtonSection {
+    -moz-box-shadow:    inset  0px -9px 5px 5px #000;
+    -webkit-box-shadow: inset  0px -9px 5px 5px #000;
+    box-shadow:         inset  0px -9px 5px 5px #000;
+}
+.submitEventIntroHomePage {
+    width: 90%;
     background-color: rgba(250, 250, 250, 1);
+    padding: 10px 15px;
+    border-radius: 3px;
+    display: block;
+    margin: 10px auto;
 }
 .nav-dropdown-menu>li>a:focus, .nav-dropdown-menu>li>a:hover{
     background-color: #303030;
@@ -3130,84 +3196,76 @@ tspan{
     pointer-events: none !important;
 }
 
-.chartMainPage .numberOfEvents {
-    position: relative;
-    left: -50%;
-    top: 65px;
+#counter{
+    display: block;
+    margin: 10px auto;
+    padding-top: 20px;
+    text-align: center;
     font-size: 48px;
+    color: #333;
 }
-.centerAbsoluteItem {
+.loading-clock {
+    margin: 10px auto;
+    width: 80px;
+    height: 80px;
+    border: 3px solid black;
+    border-radius: 100%;
+    position: relative;
+}
+.loading-clock:before,
+.loading-clock:after {
     position: absolute;
-    left: 49%;
+    display: block;
+    content: "";
+    width: 2px;
+    left: 37px; /* half width of clock - half width of hand */
+    background: black;
+    box-shadow: 0 0 2px rgba(0,0,0,0.1);
+}
+/* Animations */
+@keyframes rotate {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+/* Big hand */
+.loading-clock:before {
+    top: 30px;
+    height: 30px; /* half the width/height of the clock */
+    transform-origin: 1px 5px;
+    animation: rotate 5.35s infinite linear;
+    background-color: rgb(252, 183, 49);
+}
+/* Little hand */
+.loading-clock:after {
+    top: 21px;
+    height: 16px; /* top + height for little hand must = top + height for big hand */
+    transform-origin: 1px 15px;
+    animation: rotate 10.2s infinite linear; /* time should be big-hand time * 12 */
+    background-color: rgb(252, 183, 49);
+}
+.width80Per {
+    width: 80%;
+    display: block;
+    margin: 1px auto;
 }
 .centerImageItem {
     padding-top: 20px;
 }
 .centerImageItem img {
-    width: 200px;
+    width: 100px;
     display: block;
     margin: 0 auto;
 }
-.node {
-    width: 200px;
-    height: 200px;
-    top: 45px;
-    left: 45px;
-}
-
-.chartMainPage svg .outer {
-    stroke: #FCB731;
-}
-.chartMainPage svg {
-    display: block;
-    margin: 1px auto;
-}
-.outer {
-    margin: 2px auto;
-    fill: transparent;
-    stroke: #333;
-    stroke-width: 20;
-    stroke-dasharray: 534;
-    transition: stroke-dashoffset 1s;
-    -webkit-animation-play-state: running;
-    -moz-transform: rotate(-89deg) translateX(-190px);
-}
-.chartMainPage[data-percent='85'] .outer {
-    stroke-dashoffset: 100;
-    -webkit-animation: show75 2.5s;
-    animation: show75 2.5s;
-}
-
-/* END set initial animation values */
-
-/* Keyframes for the initial animation */
 
 
-@-webkit-keyframes show75 {
-    from {
-        stroke-dashoffset: 537;
-    }
 
-    to {
-        stroke-dashoffset: 100;
-    }
-}
-
-@keyframes show75 {
-    from {
-        stroke-dashoffset: 537;
-    }
-
-    to {
-        stroke-dashoffset: 100;
-    }
-}
 .topPagePictures {
-    height: 200px;
+    height: 100px;
+    z-index: 100;
 }
 .graph__wrapper {
-    width: 250px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
     display: block;
     margin: 10px auto;
     border-left: 3px solid #444;
@@ -3225,8 +3283,8 @@ tspan{
 .path {
     stroke-dasharray: 1000;
     stroke-dashoffset: 1000;
-    -webkit-animation: dash 3s ease-in forwards;
-    animation: dash 3s ease-in forwards;
+    -webkit-animation: dash 8s ease-in forwards;
+    animation: dash 8s ease-in forwards;
     -webkit-animation-delay: 1s;
     animation-delay: 1s;
 }
@@ -3240,17 +3298,10 @@ tspan{
         stroke-dashoffset: 0;
     }
 }
-.submitEventIntroHomePage {
-    /*background-color: white;*/
-    /*width: 90%;*/
-    /*height: 400px;*/
-    /*display: block;*/
-    /*margin: 60px auto;*/
-    /*box-shadow: 0px 0px 10px  #888;*/
-    /*border: 1px solid #999;*/
-}
+
 .submitEventHomePage {
     width: 200px;
+    height: 60px;
 }
 .seatMaperChartStyle {
     height: 450px;
@@ -3405,6 +3456,7 @@ tspan{
 
 
 @media (max-width: 768px) {
+
     .buyTicketDropDown {
         bottom: 0;
         height: auto;
@@ -3826,6 +3878,12 @@ tspan{
 }
 
 @media (max-width: 1200px) {
+    .plannerIntroBox {
+        -moz-box-shadow:    none;
+        -webkit-box-shadow: none;
+        box-shadow:        none;
+
+    }
     .discountParts {
         width: 100%;
     }

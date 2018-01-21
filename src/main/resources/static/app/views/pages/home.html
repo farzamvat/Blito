@@ -38,26 +38,19 @@
             <div class="ground"></div>
         </div>
     </div>
-    <div class="row plannerIntroRow">
+    <div class="row plannerIntroRow dispNone">
         <div class="col-xs-12 col-md-4 floatRight plannerIntroBox">
             <div class="submitEventIntroHomePage">
-                <div class="topPagePictures">
-                    <figure class="chartMainPage marginTop10" data-percent="85">
-                        <div class="centerAbsoluteItem">
-                            <div class="numberOfEvents">
-                                {{totalNumberOfEvents | pNumber}}
-                            </div>
-                        </div>
-                        <svg width="200" height="200">
 
-                            <circle class="outer" cx="95" cy="95" r="85" stroke="url(#grad1)" transform="rotate(-90, 95, 95)"/>
-
-                        </svg>
-                    </figure>
+                <div class="circleAnimate">
+                    <div class="topPagePictures">
+                        <div id="counter">{{totalEventsShown | pNumber}}</div>
+                    </div>
                 </div>
+
                 <div class="topPageDescription">
-                    <h2 class="text-center">رویداد‌های برگزار شده</h2>
-                    <p class="text-center fontSize16 padding5">شما می‌توانید با ثبت نام در بلیتو رویداد‌ دلخواه خود را ثبت کنید و بلیت فروشی آنلالین خود را شروع کنید</p>
+                    <h4 class="text-center">رویداد‌های برگزار شده</h4>
+                    <p class="text-center fontSize16 padding5 width200px">شما می‌توانید با ثبت نام در بلیتو رویداد‌ دلخواه خود را ثبت کنید و بلیت فروشی آنلالین خود را شروع کنید</p>
                 </div>
             </div>
         </div>
@@ -83,33 +76,35 @@
                                 </linearGradient>
                             </defs>
                             <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-                                <path d="M2.10546875,100.75 L50.5546875,80.3476562 L90.2109375,70.1796875 L140.2109375,30.1796875 L190.2109375,10.1796875  " id="Path-1" stroke="url(#linearGradient-1)" stroke-width="4" sketch:type="MSShapeGroup" class="path"></path>
+                                <path d="M2.10546875,50.75 L30.5546875,40.3476562 L50.5546875,15.3476562 L70.5546875,2.3476562   " id="Path-1" stroke="url(#linearGradient-1)" stroke-width="4" sketch:type="MSShapeGroup" class="path"></path>
                             </g>
                         </svg>
                     </div>
                 </div>
                 <div class="topPageDescription">
-                    <h2 class="text-center">موفقیت فروش</h2>
-                    <p class="text-center fontSize16 padding5">بلیتو با استفاده از تبلیغات و اطلاع رسانی از طریق شبکه‌های اجتماعی، فروش شما را افزایش می‌دهد</p>
+                    <h4 class="text-center">موفقیت فروش</h4>
+                    <p class="text-center fontSize16 padding5 width200px">بلیتو با استفاده از تبلیغات و اطلاع رسانی از طریق شبکه‌های اجتماعی، فروش شما را افزایش می‌دهد</p>
                 </div>
             </div>
         </div>
         <div class="col-xs-12 col-md-4 floatRight plannerIntroBox">
             <div class="submitEventIntroHomePage">
                 <div class="topPagePictures">
-                    <div class="centerImageItem">
-                        <img class="numberOfEvents" src="../../../assets/img/clock.png">
-                    </div>
+                    <div class="loading-clock"></div>
                 </div>
                 <div class="topPageDescription marginTop10">
-                    <h2 class="text-center">زمان ثبت رویداد</h2>
-                    <p class="text-center fontSize16 padding5">با استفاده از بلیتو در کم‌ترین زمان، رویداد خود را ثبت  و اجرا کنید</p>
+                    <h4 class="text-center">برگزاری سریع رویداد</h4>
+                    <p class="text-center fontSize16 padding5 width80Per">با استفاده از بلیتو در کم‌ترین زمان، رویداد خود را ثبت  و برگزار کنید</p>
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 plannerIntroBox">
-            <button class="btn btn-success center-block marginBottom50 marginTop30 fontSize18 submitEventHomePage">ثبت رویداد</button>
+        <div class="col-xs-12 plannerIntroButtonSection">
+            <button class="btn btn-success center-block marginBottom50 marginTop30 fontSize18 submitEventHomePage">ثبت رویداد </button>
         </div>
+    </div>
+    <div class="bliBox hidden-xs" ng-click="bliBoxClick()">
+        <img src="../../../assets/img/box.png" id="bliBoxImage"  alt="">
+        <h3 class="text-center ">بلی باکس</h3>
     </div>
     <div class="categorySectionBackground">
         <div class="row categorySection">

@@ -139,5 +139,25 @@ angular.module('homePageModule', [])
                 })
             return events;
         }
+        // $('#bliBoxImage').effect('shake');
+        $scope.bliBoxClick = function () {
+            $('.plannerIntroRow').slideToggle(600);
+            count( 0, $scope.totalNumberOfEvents, 3000);
+        };
+        function count( startnum, endnum, time){
+            $scope.totalEventsShown = startnum;
+            // elem.text(curnum);
+            var speed = time / (endnum - startnum);
+            var timer = window.setInterval(function(){
+                if($scope.totalEventsShown < endnum){
+                    $scope.totalEventsShown++;
+                    $scope.$apply();
+                    // elem.text(curnum);
+                }else{
+                    clearInterval(timer);
+                }
 
+            },speed);
+
+        }
     });
