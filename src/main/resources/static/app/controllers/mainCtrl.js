@@ -17,6 +17,7 @@ angular.module('menuPagesModule', [])
                                       dataService,
                                       updateInfo) {
         var main = this;
+        var changeRouteAfterLogin = false;
         main.checkingSession = false;
         $scope.loadPage = false;
         $scope.logout = function () {
@@ -32,7 +33,27 @@ angular.module('menuPagesModule', [])
                 $("#loading").modal("hide");
             });
 
-
+        $scope.makeNewExchange = function () {
+            if($scope.loggedIn) {
+                $location.path('/user-profile');
+            } else {
+                changeRouteAfterLogin = true;
+                $("#registrationModal").modal("show");
+            }
+        };
+        $scope.submitEventPlannerIntro = function () {
+            if($scope.logoutMenu) {
+                $location.path('/user-profile');
+            } else {
+                changeRouteAfterLogin = true;
+                $("#registrationModal").modal("show");
+            }
+        };
+        $scope.changeTabFix = function () {
+            $scope.$on('$routeChangeSuccess', function () {
+                $rootScope.$broadcast('firstTabBroadCast', []);
+            });
+        };
         main.checkSession = function () {
             if(AuthToken.getRefreshToken() === "logOut") {
                 main.checkingSession = false;
@@ -223,14 +244,7 @@ angular.module('menuPagesModule', [])
                     break;
             }
         });
-        $scope.makeNewExchange = function () {
-            if($scope.loggedIn) {
-                $location.path('/user-profile');
-            } else {
-                $("#registrationModal").modal("show");
-            }
 
-        };
         $scope.registerOnce = false;
         $scope.regUser = function (regData) {
             $scope.registerOnce = true;
@@ -276,6 +290,9 @@ angular.module('menuPagesModule', [])
                     $("#registrationModal").modal("hide");
                     $scope.Msg = "با موفقیت وارد شدید !";
                     $("#notification").modal("show");
+                    if(changeRouteAfterLogin) {
+                        $location.path('/user-profile');
+                    }
                     $timeout(function () {
                         $("#notification").modal("hide");
                     },2000)
@@ -336,6 +353,7 @@ angular.module('menuPagesModule', [])
                     document.getElementById("errorResendEmail").innerHTML= data.data.message;
                 })
         };
+
         $scope.isActive = function (viewLocation) {
             return viewLocation === $location.path();
         };

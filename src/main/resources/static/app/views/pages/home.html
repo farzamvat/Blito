@@ -37,6 +37,9 @@
             <div class="co_name">!بی برنامه نمونید </div>
             <div class="ground"></div>
         </div>
+        <div class="bliBox hidden-xs" >
+        <img src="../../../assets/img/up.png" ng-click="bliBoxClick()" id="bliBoxImageUp" alt="">
+        </div>
     </div>
     <div class="row plannerIntroRow dispNone">
         <div class="col-xs-12 col-md-4 floatRight plannerIntroBox">
@@ -50,7 +53,7 @@
 
                 <div class="topPageDescription">
                     <h4 class="text-center">رویداد‌های برگزار شده</h4>
-                    <p class="text-center fontSize16 padding5 width200px">شما می‌توانید با ثبت نام در بلیتو رویداد‌ دلخواه خود را ثبت کنید و بلیت فروشی آنلالین خود را شروع کنید</p>
+                    <p class="text-center fontSize16 padding5 width200px">شما می‌توانید با ثبت نام در بلیتو رویداد‌ دلخواه خود را ثبت کنید و بلیت فروشی آنلاین خود را شروع کنید</p>
                 </div>
             </div>
         </div>
@@ -99,12 +102,12 @@
             </div>
         </div>
         <div class="col-xs-12 plannerIntroButtonSection">
-            <button class="btn btn-success center-block marginBottom50 marginTop30 fontSize18 submitEventHomePage">ثبت رویداد </button>
+            <button class="btn btn-success center-block marginBottom50 marginTop30 fontSize18 submitEventHomePage" ng-click="submitEventPlannerIntro()">ثبت رویداد </button>
         </div>
     </div>
     <div class="bliBox hidden-xs" ng-click="bliBoxClick()">
-        <img src="../../../assets/img/box.png" id="bliBoxImage"  alt="">
-        <h3 class="text-center ">بلی باکس</h3>
+        <img src="../../../assets/img/down.png" id="bliBoxImageDown"  alt="">
+        <!--<h3 class="text-center ">بلی باکس</h3>-->
     </div>
     <div class="categorySectionBackground">
         <div class="row categorySection">
@@ -115,16 +118,18 @@
                     </div>
                 </a>
             </div>
-            <div  class="col-xs-3 floatRight">
-                <a href="/theater" class="img-responsive marginTopMinus10 center-block categoryImage categoryTheatre">
+            <div  class="col-xs-3 col-sm-2 floatRight">
+                <a href="/theater" class="img-responsive marginTopMinus10 center-block categoryImage categoryTheatre ">
                     <div class="categoryInside">
                         <h4 class="categoryTitle">تئاتر</h4>
                     </div>
                 </a>
 
             </div>
-            <div  class="col-xs-3 floatRight">
-                <a href="/workshop" class="img-responsive marginTopMinus10 center-block categoryImage categoryWorkshop">
+            <div  class="hidden-xs col-sm-2 floatRight">
+            </div>
+            <div  class="col-xs-3  col-sm-2 floatRight">
+                <a href="/workshop" class="img-responsive marginTopMinus10 center-block categoryImage categoryWorkshop ">
                     <div class="categoryInside">
                         <h4 class="categoryTitle">کارگاه</h4>
                     </div>
@@ -313,6 +318,7 @@
                 تا بحال شده بلیت فیلم مورد علاقتون یا کنسرت خواننده ای ک دوستش دارید رو بخرید اما نتونید شرکت کنید؟ قطعا نگران این موضوع میشید که چطوری پول از دست رفته رو برگردونید؟بلیتو فضایی رو ایجاد کرده که شما میتونید بلیت‌های خودتون رو اگهی کنید و نگران هزینه ای که بابت خریدش پرداخت کردید نباشید.رایگان اگهی کنید.
             </p>
             <a href="/exchange-tickets" class="btn btn-success co-xs-12 btn-lg btnExchangeTicket fontSize18Mobile"> <i class="fa fa-list-alt" aria-hidden="true"></i> بلیت های آگهی شده </a>
+            <a ng-click="makeNewExchange()" class="btn btn-success co-xs-12 btn-lg btnExchangeTicket fontSize18Mobile"> <i class="fa fa-ticket" aria-hidden="true"></i> ثبت آگهی </a>
         </div>
 
         <div class="col-md-3 floatRight col-sm-3 hidden-xs ">

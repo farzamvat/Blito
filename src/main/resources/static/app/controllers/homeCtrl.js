@@ -3,22 +3,20 @@
  */
 
 angular.module('homePageModule', [])
-    .controller('homeCtrl', function ($scope, miniSliderService, photoService, indexBannerService, ourOffersService, eventDetailService, $q,config, $timeout) {
+    .controller('homeCtrl', function ($scope, miniSliderService, photoService, indexBannerService, ourOffersService, eventDetailService, $q,config, $interval) {
         $scope.concertRow = [];
         $scope.showSections = [false,false,false,false,false,false,false];
         $scope.showSectionsExcahnge = [false,false];
         $scope.bannerData = [];
         var promises = [[],[],[],[],[],[],[]];
         var promisesExchange = [[], []];
-        // $scope.url = "http://localhost:3000"+"/event-page/";
-        //
-        // $scope.urlExchange = "http://localhost:3000"+"/exchange-page/";
         $scope.url = config.baseUrl+"/event-page/";
         $scope.urlExchange = config.baseUrl+"/exchange-page/";
         miniSliderService.getAllEvents()
             .then(function (data) {
                 console.log(data);
                 $scope.totalNumberOfEvents = data.data.totalElements;
+                count( 0, $scope.totalNumberOfEvents, 3000);
             })
             .catch(function (data) {
             });
@@ -139,20 +137,34 @@ angular.module('homePageModule', [])
                 })
             return events;
         }
-        // $('#bliBoxImage').effect('shake');
+        var hasShakeAnimation = true;
+        var ticketAnimationInterval = $interval(function () {
+            if(hasShakeAnimation) {
+                hasShakeAnimation = !hasShakeAnimation;
+                $('#bliBoxImageDown').animate({top : '10px'}, 500, 'swing');
+                $('#bliBoxImageUp').animate({top : '-10px'}, 500, 'swing');
+
+            } else {
+                hasShakeAnimation = !hasShakeAnimation;
+                $('#bliBoxImageUp').animate({top : '0px'}, 500, 'swing');
+                $('#bliBoxImageDown').animate({top : '0px'}, 500, 'swing');
+            }
+
+        },1500)
         $scope.bliBoxClick = function () {
             $('.plannerIntroRow').slideToggle(600);
             count( 0, $scope.totalNumberOfEvents, 3000);
+            $interval.cancel(ticketAnimationInterval);
+            $('#bliBoxImageUp').animate({top : '0px'}, 500, 'swing');
+            $('#bliBoxImageDown').animate({top : '0px'}, 500, 'swing');
         };
         function count( startnum, endnum, time){
             $scope.totalEventsShown = startnum;
-            // elem.text(curnum);
             var speed = time / (endnum - startnum);
             var timer = window.setInterval(function(){
                 if($scope.totalEventsShown < endnum){
                     $scope.totalEventsShown++;
                     $scope.$apply();
-                    // elem.text(curnum);
                 }else{
                     clearInterval(timer);
                 }

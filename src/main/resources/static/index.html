@@ -131,7 +131,7 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse ">
         <ul class="nav navbar-nav floatRight textAlignRight">
-            <li ng-if="logoutMenu" class="floatRight" ng-class="{ active: isActive('/user-profile')}"><a class="" href="/user-profile"><i class="fa fa-user" aria-hidden="true"></i>  {{firstname}} {{lastname}} </a></li>
+            <li ng-if="logoutMenu" ng-click="changeTabFix()" class="floatRight" ng-class="{ active: isActive('/user-profile')}"><a class="" href="/user-profile"><i class="fa fa-user" aria-hidden="true"></i>  {{firstname}} {{lastname}} </a></li>
             <li class="floatRight" ng-class="{ active: isActive('/')}"><a class="" href="/"><i class="fa fa-home" aria-hidden="true"></i> خانه </a></li>
             <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema') || isActive('/entertainment') || isActive('/theater') || isActive('/concert') || isActive('/other') || isActive('/tour') || isActive('/workshop') ||isActive('/exhibition')}">
                 <a href="" ng-click="DropDownMenue()" class="dropdown-toggle"><i class="fa fa-calendar" aria-hidden="true"></i> رویداد ها   <span class="caret"></span></a>
@@ -152,7 +152,8 @@
             <li ng-hide="logoutMenu" class="floatRight signInButton"><a href="" data-toggle="modal" data-target="#registrationModal"><i class="fa fa-sign-in" aria-hidden="true"></i> ورود/ثبت نام  </a></li>
 
             <li ng-show="logoutMenu" ng-click="logout()" class="floatRight signInButton"><a href=""><i class="fa fa-sign-out" aria-hidden="true"></i> خروج</a></li>
-
+            <li class="floatRight btn-success" ><a ng-click="submitEventPlannerIntro()"><i class="fa fa-star-o" aria-hidden="true"></i> ثبت رویداد   </a>
+            </li>
         </ul>
     </div>
 </nav>

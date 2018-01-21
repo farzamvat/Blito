@@ -299,10 +299,29 @@ button.slick-next {
     z-index: 1000;
     color: rgb(252, 183, 49);
 }
-.bliBox img,h3 {
+.bliBox img, .bliBox h3  {
     position: relative;
     left: -50%;
     cursor: pointer;
+}
+.bliBox img {
+    width: 80px;
+}
+#bliBoxImageDown {
+    margin-top: 10px;
+}
+.shakeAnimation {
+    -webkit-animation: shake 0.2s ease-in-out 0.1s infinite alternate;
+}
+@-webkit-keyframes shake {
+    from {
+        -webkit-transform: rotate(10deg);
+    }
+    to {
+        -webkit-transform-origin:center center;
+        -webkit-transform: rotate(-10deg);
+    }
+
 }
 .plannerIntroButtonSection {
     background-color: rgba(250, 250, 250, 0.9);
@@ -892,7 +911,7 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 }
 .profileTabs>li>a {
     border-radius: 0;
-    font-size: 18px !important;
+    font-size: 16px !important;
 }
 .profileTabContent {
     background-color: #eee;
