@@ -2,4 +2,4 @@ pid=$(lsof -n -i :8085 | grep LISTEN | awk '{print $2}')
 kill -9 $pid || true
 echo "Process with ${pid} killed"
 cd ..
-echo "mvn -Dspring.profiles.active=dev spring-boot:run" | at now + 1 minutes
+java -Dspring.profiles.active=dev -javaagent:newrelic/newrelic.jar -jar target/blito-0.0.1-SNAPSHOT.jar
