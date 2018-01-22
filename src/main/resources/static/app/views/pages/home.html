@@ -107,20 +107,19 @@
     </div>
     <div class="bliBox hidden-xs" ng-click="bliBoxClick()">
         <img src="../../../assets/img/down.png" id="bliBoxImageDown"  alt="">
-        <!--<h3 class="text-center ">بلی باکس</h3>-->
     </div>
     <div class="categorySectionBackground">
         <div class="row categorySection">
             <div  class="col-xs-3 floatRight">
-                <a href="/concert" class="img-responsive marginTopMinus10 center-block categoryImage categoryConcert ">
-                    <div class="categoryInside">
+                <a href="/concert" class="img-responsive marginTopMinus10 center-block categoryImage categoryConcert borderRound15">
+                    <div class="categoryInside borderRound15">
                         <h4 class="categoryTitle">کنسرت</h4>
                     </div>
                 </a>
             </div>
             <div  class="col-xs-3 col-sm-2 floatRight">
-                <a href="/theater" class="img-responsive marginTopMinus10 center-block categoryImage categoryTheatre ">
-                    <div class="categoryInside">
+                <a href="/theater" class="img-responsive marginTopMinus10 center-block categoryImage categoryTheatre borderRound15">
+                    <div class="categoryInside borderRound15">
                         <h4 class="categoryTitle">تئاتر</h4>
                     </div>
                 </a>
@@ -129,16 +128,16 @@
             <div  class="hidden-xs col-sm-2 floatRight">
             </div>
             <div  class="col-xs-3  col-sm-2 floatRight">
-                <a href="/workshop" class="img-responsive marginTopMinus10 center-block categoryImage categoryWorkshop ">
-                    <div class="categoryInside">
+                <a href="/workshop" class="img-responsive marginTopMinus10 center-block categoryImage categoryWorkshop borderRound15">
+                    <div class="categoryInside borderRound15">
                         <h4 class="categoryTitle">کارگاه</h4>
                     </div>
                 </a>
 
             </div>
             <div  class="col-xs-3 floatRight">
-                <a href="/tour" class="img-responsive marginTopMinus10 center-block categoryImage categoryTour">
-                    <div class="categoryInside">
+                <a href="/tour" class="img-responsive marginTopMinus10 center-block categoryImage categoryTour borderRound15">
+                    <div class="categoryInside borderRound15">
                         <h4 class="categoryTitle">تور</h4>
                     </div>
                 </a>
@@ -150,7 +149,7 @@
             <img src="../../../assets/img/concertLogo.png" class="slidingEventsMiniLogo">
             <h2 class="textAlignRight">کنسرت</h2>
             <div class="marginTop30">
-                <a href="/concert" class="  eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</a>
+                <a href="/concert" class="  eventMore "><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</a>
             </div>
             <div class="col-xs-12 slickSliders">
                 <slick ng-if="showSections[0]" dots="true" lazy-load="ondemand"   infinite="true" autoplay="true"   speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
@@ -161,8 +160,6 @@
                                 <h4>{{ event.eventName }}</h4>
                                 <h5>{{ event.capacity - event.soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
                             </div>
-
-
                             <div ng-show="event.eventState === 'SOLD'" class="soldout">
                                 <img src="../../../assets/img/soldout.png"/>
                             </div>
@@ -317,8 +314,8 @@
             <p class="fontSize16Mobile">
                 تا بحال شده بلیت فیلم مورد علاقتون یا کنسرت خواننده ای ک دوستش دارید رو بخرید اما نتونید شرکت کنید؟ قطعا نگران این موضوع میشید که چطوری پول از دست رفته رو برگردونید؟بلیتو فضایی رو ایجاد کرده که شما میتونید بلیت‌های خودتون رو اگهی کنید و نگران هزینه ای که بابت خریدش پرداخت کردید نباشید.رایگان اگهی کنید.
             </p>
-            <a href="/exchange-tickets" class="btn btn-success co-xs-12 btn-lg btnExchangeTicket fontSize18Mobile"> <i class="fa fa-list-alt" aria-hidden="true"></i> بلیت های آگهی شده </a>
-            <a ng-click="makeNewExchange()" class="btn btn-success co-xs-12 btn-lg btnExchangeTicket fontSize18Mobile"> <i class="fa fa-ticket" aria-hidden="true"></i> ثبت آگهی </a>
+            <a ng-click="makeNewExchange()" class="btn btn-success co-xs-12 btn-lg btnExchangeTicket fontSize18Mobile btnSubmitExchange"> <i class="fa fa-ticket" aria-hidden="true"></i> ثبت آگهی </a>
+            <a href="/exchange-tickets" class="btn btn-success co-xs-12 btn-lg btnExchangeTicket fontSize18Mobile btnExchangeList"> <i class="fa fa-list-alt" aria-hidden="true"></i> بلیت های آگهی شده </a>
         </div>
 
         <div class="col-md-3 floatRight col-sm-3 hidden-xs ">

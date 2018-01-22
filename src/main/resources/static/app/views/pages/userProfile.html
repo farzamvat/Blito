@@ -1,17 +1,17 @@
 <div class="profilePage" ng-controller="userProfileCtrl as userProfile">
     <div ng-click="showMenuOnSm()" class="hidden-sm hidden-lg hidden-md profileToggleMenu"><i class="fa fa-plus fa-4x"></i></div>
-    <div class="tabbable smallPageSize userProfileTab marginTop60"  >
+    <div class="tabbable smallPageSize userProfileTab marginTop60 "  >
         <div class="col-xs-3 col-sm-2  floatRight ">
-            <ul class="nav nav-tabs profileTabs">
+            <ul class="nav nav-tabs profileTabs borderRound15">
                 <li class="active">
-                    <a class="navigationMenuA" ng-click="closeTabDropDowns()" data-target="#1"  data-toggle="tab">
+                    <a class="navigationMenuA firsPanelTab" ng-click="closeTabDropDowns()" data-target="#1"  data-toggle="tab">
                         <span class="">  بليت های من </span>
                         <i class="fa fa-ticket" aria-hidden="true"></i>
                     </a>
                 </li>
                 <li>
                     <a class="navigationMenuA" data-target="#4" data-toggle="tab" ng-click="dropDownTabToggleEvent($event)">
-                        <span class="">   رویدادهای من  </span>
+                        <span class="">   مدیریت رویداد  </span>
                         <i class="fa fa-calendar" aria-hidden="true"></i>
                     </a>
                     <ul class="tabDropDown" id="toggleEvent">
@@ -30,23 +30,23 @@
                         <li ng-click="scrollTo('exchangeTicket', 'exchangeTicketSection')"><a><span class="">ایجاد آگهی</span><i class="fa fa-magic"></i></a></li>
                     </ul>
                 </li>
-                <li ng-click="editUserInfo()"><a class="navigationMenuA"ng-click="closeTabDropDowns()" data-target="#2" data-toggle="tab"><span class=" ">   ویرایش اطلاعات </span><i class="fa fa-edit" aria-hidden="true"></i></a></li>
+                <li ng-click="editUserInfo()"><a class="navigationMenuA lastPanelTab" ng-click="closeTabDropDowns()" data-target="#2" data-toggle="tab"><span class=" ">   ویرایش اطلاعات </span><i class="fa fa-edit" aria-hidden="true"></i></a></li>
             </ul>
         </div>
-        <div class="col-xs-12 col-sm-10 floatRight paddingRight0">
-            <div class="tab-content profileTabContent marginBottom20">
-                <div class="tab-pane tabProfile fade in active" id="1">
-                    <div class="col-xs-12 col-sm-12  floatRight">
+        <div class="col-xs-12 col-sm-10 floatRight paddingRight0 ">
+            <div class="tab-content profileTabContent marginBottom20 borderRound15">
+                <div class="tab-pane tabProfile fade in active " id="1">
+                    <div class="col-xs-12 col-sm-12  floatRight ">
                         <legend class="legendStyle marginTop30 text-center"></legend>
 
-                        <div class="panel ">
-                            <div class="panel-heading makeEventFormHeader text-center orangeBackground" id="myTicketSection" ng-click="toggleBody('myTicketSection')"><h6 class="fontSize18Mobile">  <i   class="fa fa-arrow-circle-down" aria-hidden="true"></i>  بلیت های خریداری شده </h6></div>
-                            <div class="panel-body makeEventForm textAlignRight">
-                                <div class="col-xs-12 col-sm-12 floatRight">
+                        <div class="panel borderRound15">
+                            <div class="panel-heading makeEventFormHeader text-center orangeBackground " id="myTicketSection" ng-click="toggleBody('myTicketSection')"><h6 class="fontSize18Mobile">  <i   class="fa fa-arrow-circle-down" aria-hidden="true"></i>  بلیت های خریداری شده </h6></div>
+                            <div class="panel-body makeEventForm textAlignRight ">
+                                <div class="col-xs-12 col-sm-12 floatRight ">
 
-                                    <div class="panel-body textAlignRight">
+                                    <div class="panel-body textAlignRight ">
 
-                                        <table class="table">
+                                        <table class="table borderBottomRound">
                                             <thead class="tableHeader">
                                             <tr>
                                                 <th class="dataCenter">نام رویداد
@@ -66,7 +66,7 @@
                                                 </th>
                                             </tr>
                                             </thead>
-                                            <tbody class="showTimeList tableOverFlow">
+                                            <tbody class="showTimeList tableOverFlow ">
                                             <tr pagination-id="userTickets"  total-items="totalUserTickets" dir-paginate="item in userTickets | itemsPerPage: 5"  current-page="currentPage">
                                                 <td class="dataCenter">{{ item.eventName}}</td>
                                                 <td class="dataCenter">{{ item.eventDateAndTime}}</td>
@@ -94,7 +94,7 @@
                     </div>
                 </div>
                 <div class="tab-pane tabProfile  fade" id="2">
-                    <form name="editUserData" class="form-inline textAlignRight editInfoSection">
+                    <form name="editUserData" class="form-inline textAlignRight editInfoSection borderRound15">
                         <fieldset class="fieldsetStyle ">
 
                             <legend class="legendStyle marginTop30 text-center">اطلاعات کاربر   </legend>
@@ -104,7 +104,7 @@
                                         <label class="registerLabel" for="firstname" >نام  :</label>
                                     </div>
                                     <div class="col-xs-12 col-sm-8 floatRight ">
-                                        <input height="60" id="firstname" name="firstname" ng-model="editInfo.firstname"  value="{{firstname}}"  type="text"  class="form-group registerInput editDataInput inputXsSize" required>
+                                        <input height="60" id="firstname" name="firstname" ng-model="editInfo.firstname"  value="{{firstname}}"  type="text"  class="form-group registerInput editDataInput inputXsSize borderRound15" required>
                                     </div>
                                 </div>
                                 <div class="form-group col-xs-12 marginTop30  formRegGroup floatRight">
@@ -112,17 +112,17 @@
                                         <label class="registerLabel" for="lastname" >نام خانوادگی  :</label>
                                     </div>
                                     <div class="col-xs-12 col-sm-8 floatRight ">
-                                        <input height="60" id="lastname" name="lastname"  value="{{lastname}}" ng-model="editInfo.lastname"  type="text"  class="form-group registerInput editDataInput inputXsSize" required>
+                                        <input height="60" id="lastname" name="lastname"  value="{{lastname}}" ng-model="editInfo.lastname"  type="text"  class="form-group registerInput editDataInput inputXsSize borderRound15" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="row marginTop30">
                                 <div class="form-group col-xs-12  formRegGroup floatRight">
                                     <div class="col-xs-12 col-sm-4 floatRight text-center">
-                                        <label class="registerLabel" for="mobile" > شماره موبایل  :</label>
+                                        <label class="registerLabel" for="mobileMain" > شماره موبایل  :</label>
                                     </div>
                                     <div class="col-xs-12 col-sm-8 floatRight ">
-                                        <input height="60" id="mobile" name="mobile"  value="{{mobile}}" ng-model="editInfo.mobile"  type="text"  class="form-group registerInput editDataInput inputXsSize" required>
+                                        <input height="60" id="mobileMain" name="mobile"  value="{{mobile}}" ng-model="editInfo.mobile"  type="text"  class="form-group registerInput editDataInput inputXsSize borderRound15" required>
                                     </div>
                                 </div>
 
@@ -142,25 +142,25 @@
                             </div>
                         </div>
                     </form>
-                    <form name="changePasswordForm" class="form-inline textAlignRight marginTop30 editInfoSection">
+                    <form name="changePasswordForm" class="form-inline textAlignRight marginTop30 editInfoSection borderRound15">
                         <fieldset class="fieldsetStyle ">
                             <legend class="legendStyle marginTop30 text-center">تغییر رمز عبور    </legend>
                             <div class="row marginTop30">
                                 <div class="form-group col-xs-12  formRegGroup floatRight">
                                     <div class="col-xs-12 col-sm-4 floatRight text-center">
-                                        <label class="registerLabel" for="password" >رمز عبور قدیم :</label>
+                                        <label class="registerLabel" for="passwordMain" >رمز عبور قدیم :</label>
                                     </div>
                                     <div class="col-xs-12 col-sm-8 floatRight ">
-                                        <input height="60" id="passwordOld" name="passwordOld" ng-model="password.oldPassowrd" length-validation    type="password"  class="form-group registerInput inputXsSize editDataInput" required>
+                                        <input height="60" id="passwordMain" name="passwordOld" ng-model="password.oldPassowrd" length-validation    type="password"  class="form-group registerInput inputXsSize editDataInput borderRound15" required>
                                     </div>
                                     <div class="col-xs-12 form-control-static text-center colorRed" ng-show="changePasswordForm.passwordOld.$touched && changePasswordForm.passwordOld.$invalid" >رمز نا معتبر است</div>
                                 </div>
                                 <div class="form-group col-xs-12  formRegGroup floatRight marginTop30">
                                     <div class="col-xs-12 col-sm-4 floatRight text-center">
-                                        <label class="registerLabel" for="password" >رمز عبور جدید :</label>
+                                        <label class="registerLabel" for="passwordMain2" >رمز عبور جدید :</label>
                                     </div>
                                     <div class="col-xs-12 col-sm-8 floatRight ">
-                                        <input height="60" id="password" name="passwordChange" ng-model="password.newPassword" length-validation    type="password"  class="form-group registerInput inputXsSize editDataInput" required>
+                                        <input height="60" id="passwordMain2" name="passwordChange" ng-model="password.newPassword" length-validation    type="password"  class="form-group registerInput inputXsSize editDataInput borderRound15" required>
                                     </div>
                                     <div class="col-xs-12 form-control-static text-center colorRed" ng-show="changePasswordForm.passwordChange.$touched && changePasswordForm.passwordChange.$invalid" >رمز نا معتبر است</div>
                                 </div>
@@ -169,7 +169,7 @@
                                         <label class="registerLabel" for="passwordRepeat" >تکرار رمز عبور جدید :</label>
                                     </div>
                                     <div class="col-xs-12 col-sm-8 floatRight ">
-                                        <input height="60" id="passwordRepeat" name="passwordChangeRepeat" length-validation password-validation="password"    ng-model="password.confirmNewPassword"  type="password"  class="form-group registerInput inputXsSize editDataInput" required>
+                                        <input height="60" id="passwordRepeat" name="passwordChangeRepeat" length-validation password-validation="password"    ng-model="password.confirmNewPassword"  type="password"  class="form-group registerInput inputXsSize editDataInput borderRound15" required>
                                     </div>
                                     <span data-ng-show="changePasswordForm.passwordChangeRepeat.$error.match">رمزهای عبور برابر نیستند</span>
                                     <div class="col-xs-12 form-control-static text-center colorRed" ng-match="fields.password" ng-show="changePasswordForm.passwordChangeRepeat.$touched && changePasswordForm.passwordChangeRepeat.$invalid">رمز نا معتبر است</div>
@@ -192,7 +192,7 @@
                 <div class="tab-pane tabProfile  fade" id="3">
                     <legend class="legendStyle marginTop30 text-center"> مدیریت آگهی بلیت   </legend>
                     <div class="col-xs-12 marginTop10">
-                        <div class="panel " id="exchangeTicketList">
+                        <div class="panel borderRound15" id="exchangeTicketList">
                             <div class="panel-heading makeEventFormHeader text-center orangeBackground" id="exchangeTicketListSection" ng-click="toggleBody('exchangeTicketListSection')"><h6 class="fontSize18Mobile">  <i    class="fa fa-arrow-circle-down " aria-hidden="true"></i>  لیست آگهی ها </h6></div>
                             <div class="panel-body  textAlignRight">
                                 <div class="col-xs-12 col-sm-12 floatRight">
@@ -247,10 +247,10 @@
                     </div>
                     <div class="col-xs-12 ">
 
-                        <div class="panel marginTop10" id="exchangeTicket">
+                        <div class="panel marginTop10 borderRound15" id="exchangeTicket">
 
                             <div class="panel-heading makeEventFormHeader text-center " id="exchangeTicketSection" ng-click="toggleBody('exchangeTicketSection')"><h6 class="fontSize18Mobile">  <i   class="fa fa-arrow-circle-down" aria-hidden="true"></i>  آگهی جدید </h6></div>
-                            <div class="panel-body makeEventForm makeEventPlannerForm">
+                            <div class="panel-body makeEventForm makeEventPlannerForm borderBottomRound">
                                 <form class="form-inline textAlignRight " name="exchangeBlitForm">
                                     <fieldset class="fieldsetStyle">
                                         <legend class="legendStyle">مشخصات فروشنده</legend>
@@ -258,18 +258,18 @@
 
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="exchangeName" >تلفن فروشنده :</label>
+                                                    <label class="registerLabel floatRight" for="exchangeNameMain" >تلفن فروشنده :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input height="60" id="sellerPhoneNumber" ng-model="exchange.sellerPhoneNumber " name="exchangeName"  type="text"  class="form-group registerInput" required>
+                                                    <input height="60" id="exchangeNameMain" ng-model="exchange.sellerPhoneNumber " name="exchangeNameMain2"  type="text"  class="form-group registerInput borderRound15" required>
                                                 </div>
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="exchangeName" >پست الکترونیکی فروشنده :</label>
+                                                    <label class="registerLabel floatRight" for="exchangeNameMain2" >پست الکترونیکی فروشنده :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input height="60" id="sellerEmail" ng-model="exchange.sellerEmail " name="exchangeName"  type="text"  class="form-group registerInput" required>
+                                                    <input height="60" id="exchangeNameMain2" ng-model="exchange.sellerEmail " name="exchangeNameMain2"  type="text"  class="form-group registerInput borderRound15" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -278,19 +278,19 @@
                                         <div class="row">
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="exchangeName" >نام بلیت :</label>
+                                                    <label class="registerLabel floatRight" for="exchangeNameMain3" >نام بلیت :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input height="60" id="exchangeName" ng-model="exchange.name " name="exchangeName"  type="text"  class="form-group registerInput" required>
+                                                    <input height="60" id="exchangeNameMain3" ng-model="exchange.name " name="exchangeName"  type="text"  class="form-group registerInput borderRound15" required>
                                                 </div>
                                             </div>
 
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="exchangeType">نوع بلیت :</label>
+                                                    <label class="registerLabel floatRight" for="exchangeTypeMain">نوع بلیت :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <select id="exchangeType" ng-model="exchange.type" name="exchangeType" required class="form-control dropDownList" ng-options="o.v as o.n for o in [{n : 'تئاتر', v: 'THEATER'},{n : 'سینما', v: 'CINEMA'},{n : 'کنسرت', v: 'CONCERT'},{n : 'تور', v: 'TOURISM'},{n : 'سرگرمی', v: 'ENTERTAINMENT'},{n : 'کارگاه', v: 'WORKSHOP'}, {n : 'نمایشگاه', v: 'EXHIBITION'},{n : 'بن تخفیف', v: 'DISCOUNT_TICKET'}, {n : 'سایر', v: 'OTHER'}]">
+                                                    <select id="exchangeTypeMain" ng-model="exchange.type" name="exchangeType" required class="form-control dropDownList borderRound15" ng-options="o.v as o.n for o in [{n : 'تئاتر', v: 'THEATER'},{n : 'سینما', v: 'CINEMA'},{n : 'کنسرت', v: 'CONCERT'},{n : 'تور', v: 'TOURISM'},{n : 'سرگرمی', v: 'ENTERTAINMENT'},{n : 'کارگاه', v: 'WORKSHOP'}, {n : 'نمایشگاه', v: 'EXHIBITION'},{n : 'بن تخفیف', v: 'DISCOUNT_TICKET'}, {n : 'سایر', v: 'OTHER'}]">
                                                     </select>
                                                 </div>
                                             </div>
@@ -298,32 +298,32 @@
                                         <div class="row marginTop30">
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="eventExchangeDate" >تاریخ و ساعت رویداد  :</label>
+                                                    <label class="registerLabel floatRight" for="eventExchangeDateMain" >تاریخ و ساعت رویداد  :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input type="text" id="eventExchangeDate" name="exchangeDateTime"required ng-model="exchange.eventTime" class="persianExchangeTime datePickerFormat" readonly/>
+                                                    <input type="text" id="eventExchangeDateMain" name="exchangeDateTime"required ng-model="exchange.eventTime" class="persianExchangeTime datePickerFormat borderRound15" readonly/>
                                                 </div>
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="exchangePrice" >قیمت بلیت (تومان) :</label>
+                                                    <label class="registerLabel floatRight" for="exchangePriceMain" >قیمت بلیت (تومان) :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input height="60" id="exchangePrice" required ng-model="exchange.price" name="exchangePrice"  type="number"  class="form-group registerInput" >
+                                                    <input height="60" id="exchangePriceMain" required ng-model="exchange.price" name="exchangePrice"  type="number"  class="form-group registerInput borderRound15" >
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row marginTop30">
                                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="exchangeDescription" >توضیحات  :(حداکثر {{100 - exchange.description.length | pNumber}} کاراکتر مجاز)</label>
+                                                    <label class="registerLabel floatRight" for="exchangeDescriptionMain" >توضیحات  :(حداکثر {{100 - exchange.description.length | pNumber}} کاراکتر مجاز)</label>
                                                 </div>
                                                 <div class="col-xs-11  floatRight ">
-                                                    <textarea ng-model="exchange.description" required maxlength="100" id="exchangeDescription"  name="exchangeDescription" type="text"  class="form-group textAreaForm" ></textarea>
+                                                    <textarea ng-model="exchange.description" required maxlength="100" id="exchangeDescriptionMain"  name="exchangeDescription" type="text"  class="form-group textAreaForm borderRound15" ></textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
-                                                <label  class="marginRight30"><input class="checkboxStyle" ng-model="exchange.isBlito"    type="checkbox" value=""> رویداد در وبسایت بلیتو بوده</label>
+                                                <label  class="marginRight30"><input class="checkboxStyle borderRound15" ng-model="exchange.isBlito"    type="checkbox" value=""> رویداد در وبسایت بلیتو بوده</label>
                                             </div>
                                         </div>
 
@@ -359,10 +359,10 @@
                                         <div class="row">
                                             <div class="form-group col-xs-12 col-md-6 formRegGroup floatRight">
                                                 <div class="col-xs-10   floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="exchangeAddress" >آدرس :</label>
+                                                    <label class="registerLabel floatRight" for="exchangeAddressMain" >آدرس :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <textarea ng-model="exchange.address" name="exchangeAddress"  required id="exchangeAddress"   type="text"  class="form-group textAreaForm marginTop30" ></textarea>
+                                                    <textarea ng-model="exchange.address" name="exchangeAddress"  required id="exchangeAddressMain"   type="text"  class="form-group textAreaForm marginTop30 borderRound15" ></textarea>
                                                 </div>
                                             </div>
 
@@ -372,7 +372,7 @@
                                                     <div class="col-xs-12">با کلیک روی نقشه مکان را مشخص کنید</div>
                                                 </div>
                                                 <div class="col-xs-12 floatRight ">
-                                                    <div id="mapExchange" ng-click="clickMapValidationChangeExchange()">
+                                                    <div id="mapExchange" class="borderRound15" ng-click="clickMapValidationChangeExchange()">
                                                     </div>
                                                 </div>
 
@@ -383,7 +383,7 @@
 
                                     </fieldset>
                                     <div class="control-group text-center marginBottom20">
-                                        <label class="control-label" for="signInButton"></label>
+                                        <label class="control-label" for="signInButtonMain"></label>
                                         <div ng-show="submitExchangeNotif" class="text-center alert alert-success col-xs-12 marginTop10">
                                             <strong>آگهی با موفقیت ثبت شد</strong>
                                         </div>
@@ -400,7 +400,7 @@
                                                 <p class="text-center colorRed" ng-show="(!exchangeBlitForm.$invalid && mapMarkerClickCheckExchange)">*مکان را روی نقشه مشخص نمایید.</p>
                                             </div>
                                             <p class="text-center colorRed" ng-show="(((exchangeBlitForm.$invalid || mapMarkerClickCheckExchange)) && !(exchangeBlitForm.exchangeType.$invalid))">*همه فیلد های اجباری را پر نمایید.</p>
-                                            <button id="exchangeEventSubmit" ng-disabled="(exchangeBlitForm.$invalid || mapMarkerClickCheckExchange || exchangeSubmitOnce)" ng-click="submitExchangeTicket(exchange)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت آگهی <i ng-show="submitExchangeSpinner" class="fa fa-spinner fa-spin"></i></button>
+                                            <button id="exchangeEventSubmitMain" ng-disabled="(exchangeBlitForm.$invalid || mapMarkerClickCheckExchange || exchangeSubmitOnce)" ng-click="submitExchangeTicket(exchange)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت آگهی <i ng-show="submitExchangeSpinner" class="fa fa-spinner fa-spin"></i></button>
                                         </div>
 
                                     </div>
@@ -414,19 +414,19 @@
                 <div class="tab-pane tabProfile  fade" id="4">
                     <legend class="legendStyle marginTop30 text-center "> مدیریت رویداد   </legend>
                     <div class="col-xs-12 marginTop10">
-                        <div class="panel " id="eventList">
-                            <div class="panel-heading EmakeEventFormHeader text-center orangeBackground " id="eventListSection" ng-click="toggleBody('eventListSection')"><h6 class="fontSize18Mobile"> <i  class="fa fa-arrow-circle-down " aria-hidden="true"></i>  لیست رویداد ها و برگزارکننده ها </h6></div>
-                            <div class="panel-body ">
-                                <form class="form-inline textAlignRight">
+                        <div class="panel borderRound15" id="eventList">
+                            <div class="panel-heading EmakeEventFormHeader text-center orangeBackground borderTopRound" id="eventListSection" ng-click="toggleBody('eventListSection')"><h6 class="fontSize18Mobile"> <i  class="fa fa-arrow-circle-down " aria-hidden="true"></i>  لیست رویداد ها و برگزارکننده ها </h6></div>
+                            <div class="panel-body borderRound15">
+                                <form class="form-inline textAlignRight ">
                                     <fieldset class="fieldsetStyle">
                                         <div class="col-xs-12 col-sm-12 floatRight">
                                             <div class="panel panel-primary customPanel customPanelUser">
 
-                                                <div class="panel-heading">
+                                                <div class="panel-heading borderTopRound">
                                                     <span class="glyphicon glyphicon-list"></span> لیست رویداد ها
 
                                                 </div>
-                                                <div class="panel-body textAlignRight">
+                                                <div class="panel-body textAlignRight borderBottomRound">
 
                                                     <table class="table">
                                                         <thead class="tableHeader">
@@ -447,7 +447,7 @@
                                                         </thead>
                                                         <tbody class="showTimeList">
                                                         <tr  total-items="totalEventsNumber" dir-paginate="item in getDataUserEvents | itemsPerPage: 4" pagination-id="events" current-page="currentPageEvent">
-                                                            <td class="dataCenter">{{ item.eventName}}</td>
+                                                            <td class="dataCenter"><a href="/event-page/{{ item.eventLink}}">{{ item.eventName}}</a></td>
                                                             <td class="dataCenter hidden-xs">{{ item.eventType}}</td>
                                                             <td class="dataCenter">{{ item.operatorState}}</td>
                                                             <td class="dataCenter hidden-xs">{{ item.eventState}}</td>
@@ -473,11 +473,11 @@
                                         </div>
                                         <div class="col-xs-12 col-sm-12 floatRight">
                                             <div class="panel panel-primary customPanel customPanelUser">
-                                                <div class="panel-heading">
+                                                <div class="panel-heading borderTopRound">
                                                     <span class="glyphicon glyphicon-list"></span> لیست برگزارکننده ها
 
                                                 </div>
-                                                <div class="panel-body textAlignRight">
+                                                <div class="panel-body textAlignRight borderBottomRound">
 
                                                     <table class="table">
                                                         <thead class="tableHeader">
@@ -497,7 +497,7 @@
                                                         </thead>
                                                         <tbody class="showTimeList">
                                                         <tr  total-items="totalPlannersNumber" dir-paginate="item in eventHosts | itemsPerPage: 4" pagination-id="plannersIdPagination"   current-page="currentPage">
-                                                            <td class="dataCenter">{{ item.hostName}}</td>
+                                                            <td class="dataCenter"><a href="/event-host-page/{{item.eventHostLink}}">{{ item.hostName}}</a></td>
                                                             <td class="dataCenter">{{ item.telephone | pNumber}}</td>
                                                             <td class="dataCenter">{{ item.websiteLink}}</td>
                                                             <td class="dataCenter"><button type="button" ng-click="showSettingPlanner($index)"  class="btn editButton btn-info" >تنظیمات </button></td>
@@ -522,28 +522,28 @@
                         </div>
                     </div>
                     <div class="col-xs-12 marginTop10">
-                        <div class="panel " id="makeEvent">
-                            <div class="panel-heading  EmakeEventFormHeader text-center " id="makeEventSection" ng-click="toggleBody('makeEventSection')"><h6 class="fontSize18Mobile">  <i   class="fa fa-arrow-circle-down" aria-hidden="true"></i>  ایجاد رویداد </h6></div>
-                            <div class="panel-body makeEventForm EmakeEventPlannerForm">
-                                <form novalidate class="form-inline textAlignRight" name="submitEventForm" id="submitEventForm">
+                        <div class="panel borderRound15" id="makeEvent">
+                            <div class="panel-heading  EmakeEventFormHeader text-center borderTopRound" id="makeEventSection" ng-click="toggleBody('makeEventSection')"><h6 class="fontSize18Mobile">  <i   class="fa fa-arrow-circle-down" aria-hidden="true"></i>  ایجاد رویداد </h6></div>
+                            <div class="panel-body makeEventForm EmakeEventPlannerForm borderBottomRound">
+                                <form novalidate class="form-inline textAlignRight borderBottomRound" name="submitEventForm" id="submitEventForm">
                                     <fieldset class="fieldsetStyle">
                                         <legend class="legendStyle">مشخصات رویداد</legend>
                                         <div class="row">
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="eventName" >نام رویداد :</label>
+                                                    <label class="registerLabel floatRight" for="eventNameMain" >نام رویداد :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input height="60" id="eventName" ng-model="eventFields.name" required  name="eventName" type="text"  class="form-group registerInput" >
+                                                    <input height="60" id="eventNameMain" ng-model="eventFields.name" required  name="eventName" type="text"  class="form-group registerInput borderRound15" >
                                                 </div>
                                             </div>
 
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="eventType">نوع رویداد :</label>
+                                                    <label class="registerLabel floatRight" for="eventTypeMain">نوع رویداد :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <select id="eventType" required name="eventType" ng-model="eventFields.eventType" class="form-control dropDownList"
+                                                    <select id="eventTypeMain" required name="eventType" ng-model="eventFields.eventType" class="form-control dropDownList borderRound15"
                                                             ng-options="o.v as o.n for o in [{n : 'تئاتر', v: 'THEATER'},{n : 'سینما', v: 'CINEMA'},{n : 'کنسرت', v: 'CONCERT'},{n : 'تور', v: 'TOURISM'},{n : 'سرگرمی', v: 'ENTERTAINMENT'},{n : 'کارگاه', v: 'WORKSHOP'}, {n : 'نمایشگاه', v: 'EXHIBITION'},{n : 'سایر', v: 'OTHER'}]">
                                                     </select>
 
@@ -554,23 +554,23 @@
                                         <div class="row marginTop30">
                                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="eventDescription" >توضیحات کلی  :(حداکثر {{ 200 -  eventFields.description.length | pNumber}} کاراکتر مجاز)</label>
+                                                    <label class="registerLabel floatRight" for="eventDescriptionMain" >توضیحات کلی  :(حداکثر {{ 200 -  eventFields.description.length | pNumber}} کاراکتر مجاز)</label>
                                                 </div>
                                                 <div class="col-xs-11  floatRight">
-                                                    <textarea ng-model="eventFields.description" required name="eventDescription" maxlength="200" id="eventDescription"  type="text"  class="form-group textAreaForm" ></textarea>
+                                                    <textarea ng-model="eventFields.description" required name="eventDescription" maxlength="200" id="eventDescriptionMain"  type="text"  class="form-group textAreaForm borderRound15" ></textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6  formRegGroup floatRight">
-                                                <label  class="marginRight30"><input class="checkboxStyle" ng-model="eventFields.isPrivate"    type="checkbox" value="">رویداد خصوصی</label>
+                                                <label  class="marginRight30"><input class="checkboxStyle" ng-model="eventFields.isPrivate"    type="checkbox" value="">رویداد خصوصی (در صورتی که می‌خواهید رویداد شما روی سایت قرار نگیرد و فقط از طریق لینک قابل دسترس باشد)</label>
                                             </div>
                                         </div>
                                         <div class="row marginTop30">
                                             <div class="form-group col-xs-11  formRegGroup  floatRight ">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="eventDescription" >توضیحات تکمیلی :</label>
+                                                    <label class="registerLabel floatRight"  >توضیحات تکمیلی :</label>
                                                 </div>
                                                 <div class="col-xs-11  floatRight ">
-                                                    <div text-angular="text-angular" name="htmlcontent" required ng-model="eventFields.members" ta-toolbar="[['h1','h2','h3','p'],['bold','italics','ul', 'ol'],['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent']]" ta-disabled='disabled'></div>
+                                                    <div text-angular="text-angular" class="borderRound15" name="htmlcontent" required ng-model="eventFields.members" ta-toolbar="[['h1','h2','h3','p'],['bold','italics','ul', 'ol'],['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent']]" ta-disabled='disabled'></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -581,20 +581,20 @@
                                         <div class="row">
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="eventTicketStartTime">زمان شروع فروش بلیت :</label>
+                                                    <label class="registerLabel floatRight" for="eventTicketStartTimeMain">زمان شروع فروش بلیت :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input height="60" id="eventTicketStartTime" required name="eventStartTime" ng-model="eventFields.ticketStartTime" type="text"  class="form-group datePickerFormat persianTimeEventStart" readonly>
+                                                    <input height="60" id="eventTicketStartTimeMain" required name="eventStartTime" ng-model="eventFields.ticketStartTime" type="text"  class="form-group datePickerFormat persianTimeEventStart borderRound15" readonly>
                                                 </div>
 
                                             </div>
 
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="eventTicketEndTime" > زمان پایان فروش بلیت :</label>
+                                                    <label class="registerLabel floatRight" for="eventTicketEndTimeMain" > زمان پایان فروش بلیت :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input height="60" id="eventTicketEndTime" required name="eventEndTime" ng-model="eventFields.ticketEndTime"  type="text"  class="form-group datePickerFormat persianTimeEventEnd" readonly>
+                                                    <input height="60" id="eventTicketEndTimeMain" required name="eventEndTime" ng-model="eventFields.ticketEndTime"  type="text"  class="form-group datePickerFormat persianTimeEventEnd borderRound15" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -606,10 +606,10 @@
                                         <div class="row">
                                             <div class="form-group col-xs-12 col-md-6 formRegGroup floatRight">
                                                 <div class="col-xs-10   floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="eventAddress" >آدرس :</label>
+                                                    <label class="registerLabel floatRight" for="eventAddressMain" >آدرس :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <textarea ng-model="eventFields.address" required name="eventAddress" id="eventAddress"  type="text"  class="form-group textAreaForm marginTop30" ></textarea>
+                                                    <textarea ng-model="eventFields.address" required name="eventAddress" id="eventAddressMain"  type="text"  class="form-group textAreaForm marginTop30 borderRound15" ></textarea>
                                                 </div>
                                             </div>
 
@@ -619,7 +619,7 @@
                                                     <div class="col-xs-12">با کلیک روی نقشه مکان را مشخص کنید</div>
                                                 </div>
                                                 <div class="col-xs-12 floatRight ">
-                                                    <div id="map" ng-click="clickMapValidationChangeEvent()">
+                                                    <div id="map" class="borderRound15" ng-click="clickMapValidationChangeEvent()">
                                                     </div>
                                                 </div>
                                             </div>
@@ -761,10 +761,10 @@
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-10  formRegGroup floatRight marginTop30">
                                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
-                                                    <label class="registerLabel" for="aparatVideo"> <a href="http://www.aparat.com"  target="_blank"><img class="aparatLink" src="assets/img/aparat.png" alt=""></a> لینک آپارات (iframe) :(اختیاری)</label>
+                                                    <label class="registerLabel" for="aparatVideoMain"> <a href="http://www.aparat.com"  target="_blank"><img class="aparatLink" src="assets/img/aparat.png" alt=""></a> لینک آپارات (iframe) :(اختیاری)</label>
                                                 </div>
                                                 <div class="col-xs-7 col-sm-6 floatRight ">
-                                                    <input height="60"  id="aparatVideo"  ng-model="eventFields.aparatLink"  type="text"  class="form-group registerInput" >
+                                                    <input height="60"  id="aparatVideoMain"  ng-model="eventFields.aparatLink"  type="text"  class="form-group registerInput borderRound15" >
                                                 </div>
 
                                             </div>
@@ -775,10 +775,10 @@
                                         <div class="row marginTop30">
                                             <div class="form-group col-xs-12 col-sm-10  formRegGroup floatRight">
                                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
-                                                    <label class="registerLabel" for="eventPlanner">انتخاب برگزارکننده   :</label>
+                                                    <label class="registerLabel" for="eventPlannerMain">انتخاب برگزارکننده   :</label>
                                                 </div>
                                                 <div class="col-xs-7 col-sm-6 floatRight ">
-                                                    <select id="eventPlanner" required name="eventPlannerSelect" ng-model="eventFields.eventPlanner" ng-options="obj.hostName for obj in eventHostsList track by obj.eventHostId" class="form-control dropDownList">
+                                                    <select id="eventPlannerMain" required name="eventPlannerSelect" ng-model="eventFields.eventPlanner" ng-options="obj.hostName for obj in eventHostsList track by obj.eventHostId" class="form-control dropDownList borderRound15">
 
                                                     </select>
                                                 </div>
@@ -813,7 +813,7 @@
                                             <p class="marginRight30">سالن مورد نظر را انتخاب کنید:
                                             </p>
                                             <div class="col-xs-12 floatRight ">
-                                                <select id="seatmapList" ng-change="sansSet()" ng-model="seatMapListChosen" ng-options="obj.name for obj in seatMapList track by obj.salonUid" class="form-control dropDownList">
+                                                <select id="seatmapList" ng-change="sansSet()" ng-model="seatMapListChosen" ng-options="obj.name for obj in seatMapList track by obj.salonUid" class="form-control dropDownList borderRound15">
 
                                                 </select>
                                             </div>
@@ -869,7 +869,7 @@
                                                             <label class="registerLabel" >تاریخ و ساعت : </label>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-6 floatRight inputXsSize">
-                                                            <input type="text" required ng-model="newShowTime.persianDate" name="newSansTime" class="datePickerFormat eventDateClass0"  readonly/>
+                                                            <input type="text" required ng-model="newShowTime.persianDate" name="newSansTime" class="datePickerFormat eventDateClass0 borderRound15"  readonly/>
                                                         </div>
                                                     </div>
 
@@ -907,7 +907,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-6 floatRight ">
-                                                            <select id="eventTicket" required ng-model="ticketType.isFree" class="form-control dropDownInput" ng-options="o.v as o.n for o in [{n : 'رایگان', v: true}, {n : 'پولی', v: false}]">
+                                                            <select id="eventTicket" required ng-model="ticketType.isFree" class="form-control dropDownInput borderRound15" ng-options="o.v as o.n for o in [{n : 'رایگان', v: true}, {n : 'پولی', v: false}]">
 
                                                             </select>
                                                         </div>
@@ -916,7 +916,7 @@
                                                                 <label class="registerLabel" for="ticketName">نام بلیت :</label>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-6 floatRight inputXsSize">
-                                                                <input height="60" required id="ticketName" ng-model="ticketType.name" name="blitName"  type="text"  class="form-group registerInput" >
+                                                                <input height="60" required id="ticketName" ng-model="ticketType.name" name="blitName"  type="text"  class="form-group registerInput borderRound15" >
                                                             </div>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-12 floatRight marginTop10">
@@ -924,7 +924,7 @@
                                                                 <label class="registerLabel" for="ticketCapacity">ظرفیت بلیت :</label>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-6 floatRight ">
-                                                                <input height="60" required id="ticketCapacity" ng-model="ticketType.capacity" name="blitCapacity"  type="number"  class="form-group registerInput inputXsSize" >
+                                                                <input height="60" required id="ticketCapacity" ng-model="ticketType.capacity" name="blitCapacity"  type="number"  class="form-group registerInput inputXsSize borderRound15" >
                                                             </div>
                                                         </div>
                                                         <div ng-if="ticketType.isFree === false" class="col-xs-12 col-sm-12 floatRight marginTop10">
@@ -932,7 +932,7 @@
                                                                 <label class="registerLabel" for="ticketPurchaseAmount">قیمت بلیت (تومان):</label>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-6 floatRight ">
-                                                                <input height="60" required id="ticketPurchaseAmount" ng-model="ticketType.price" name="blitPrice"   type="number"  class="form-group registerInput inputXsSize" >
+                                                                <input height="60" required id="ticketPurchaseAmount" ng-model="ticketType.price" name="blitPrice"   type="number"  class="form-group registerInput inputXsSize borderRound15" >
                                                             </div>
 
                                                         </div>
@@ -981,7 +981,7 @@
                                                             <label class="registerLabel" >تاریخ و ساعت : </label>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-6 floatRight inputXsSize">
-                                                            <input type="text" required ng-model="newShowTime.persianDate" name="newSansTimeWithoutSeat" class="datePickerFormat eventDateClass0"  readonly/>
+                                                            <input type="text" required ng-model="newShowTime.persianDate" name="newSansTimeWithoutSeat" class="datePickerFormat eventDateClass0 borderRound15"  readonly/>
                                                         </div>
                                                     </div>
 
@@ -995,7 +995,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-6 floatRight ">
-                                                            <select id="eventTicketWithoutSeat" required ng-model="ticketType.isFree" class="form-control dropDownInput" ng-options="o.v as o.n for o in [{n : 'رایگان', v: true}, {n : 'پولی', v: false}]">
+                                                            <select id="eventTicketWithoutSeat" required ng-model="ticketType.isFree" class="form-control dropDownInput borderRound15" ng-options="o.v as o.n for o in [{n : 'رایگان', v: true}, {n : 'پولی', v: false}]">
 
                                                             </select>
                                                         </div>
@@ -1004,7 +1004,7 @@
                                                                 <label class="registerLabel" for="ticketNameWithoutSeat">نام بلیت :</label>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-6 floatRight inputXsSize">
-                                                                <input height="60" required id="ticketNameWithoutSeat" ng-model="ticketType.name" name="blitNameWithoutSeat"  type="text"  class="form-group registerInput" >
+                                                                <input height="60" required id="ticketNameWithoutSeat" ng-model="ticketType.name" name="blitNameWithoutSeat"  type="text"  class="form-group registerInput borderRound15" >
                                                             </div>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-12 floatRight marginTop10">
@@ -1012,7 +1012,7 @@
                                                                 <label class="registerLabel" for="ticketCapacityWithoutSeat">ظرفیت بلیت :</label>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-6 floatRight ">
-                                                                <input height="60" required id="ticketCapacityWithoutSeat" ng-model="ticketType.capacity" name="blitCapacityWithoutSeat"  type="number"  class="form-group registerInput inputXsSize" >
+                                                                <input height="60" required id="ticketCapacityWithoutSeat" ng-model="ticketType.capacity" name="blitCapacityWithoutSeat"  type="number"  class="form-group registerInput inputXsSize borderRound15" >
                                                             </div>
                                                         </div>
                                                         <div ng-if="ticketType.isFree === false" class="col-xs-12 col-sm-12 floatRight marginTop10">
@@ -1020,7 +1020,7 @@
                                                                 <label class="registerLabel" for="ticketPurchaseAmountWithoutSeat">قیمت بلیت (تومان):</label>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-6 floatRight ">
-                                                                <input height="60" required id="ticketPurchaseAmountWithoutSeat" ng-model="ticketType.price" name="blitPriceWithoutSeat"   type="number"  class="form-group registerInput inputXsSize" >
+                                                                <input height="60" required id="ticketPurchaseAmountWithoutSeat" ng-model="ticketType.price" name="blitPriceWithoutSeat"   type="number"  class="form-group registerInput inputXsSize borderRound15" >
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1054,7 +1054,7 @@
                                                             <label class="registerLabel floatRight" for="eventName" >نام فیلد :</label>
                                                         </div>
                                                         <div class="col-xs-11 floatRight ">
-                                                            <input height="60" ng-model="inputs.key" name="extraField"  required   type="text"  class="form-group registerInput" >
+                                                            <input height="60" ng-model="inputs.key" name="extraField"  required   type="text"  class="form-group registerInput borderRound15" >
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1063,7 +1063,7 @@
                                         </div>
                                     </fieldset>
                                     <div class="control-group ">
-                                        <label class="control-label" for="signInButton"></label>
+                                        <label class="control-label" for="signInButtonMain"></label>
                                         <div ng-show="createEventNotif" class="text-center alert alert-success col-xs-12">
                                             <strong>رویداد با موفقیت ثبت شد!</strong>
                                         </div>
@@ -1082,7 +1082,7 @@
                                                 <p class="text-center colorRed" ng-show="(schemaNumberOfSeats != allCheckedSeats)">* تمام صندلی ها را قیمت گذاری کنید.</p>
                                             </div>
                                             <p class="text-center colorRed" ng-show="(submitEventForm.$invalid || mapMarkerClickCheckEvent) && !((submitEventForm.eventType.$invalid)||(submitEventForm.eventPlannerSelect.$invalid))">* همه فیلد های اجباری را پر نمایید.</p>
-                                            <button id="signInButton" type="submit"  ng-disabled="submitEventForm.$invalid || mapMarkerClickCheckEvent || eventSubmitOnce || (schemaNumberOfSeats != allCheckedSeats) || showTimeForms.length === 0" ng-click="submitEvent(eventFields)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت رویداد <i ng-show="createEventSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
+                                            <button id="signInButtonMain" type="submit"  ng-disabled="submitEventForm.$invalid || mapMarkerClickCheckEvent || eventSubmitOnce || (schemaNumberOfSeats != allCheckedSeats) || showTimeForms.length === 0" ng-click="submitEvent(eventFields)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت رویداد <i ng-show="createEventSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
                                         </div>
 
                                     </div>
@@ -1092,27 +1092,27 @@
                         </div>
                     </div>
                     <div class="col-xs-12 marginTop10">
-                        <div class="panel " id="eventPlannerSection">
-                            <div class="panel-heading makeEventFormHeader text-center " id="PlannerSection" ng-click="toggleBody('PlannerSection')"><h6 class="fontSize18Mobile"> <i  class="fa fa-arrow-circle-down " aria-hidden="true"></i>  ایجاد برگزارکننده </h6></div>
-                            <div class="panel-body EmakeEventPlannerForm">
+                        <div class="panel borderRound15" id="eventPlannerSection">
+                            <div class="panel-heading makeEventFormHeader text-center borderTopRound" id="PlannerSection" ng-click="toggleBody('PlannerSection')"><h6 class="fontSize18Mobile"> <i  class="fa fa-arrow-circle-down " aria-hidden="true"></i>  ایجاد برگزارکننده </h6></div>
+                            <div class="panel-body EmakeEventPlannerForm borderBottomRound">
                                 <form class="form-inline textAlignRight" name="submitPlannerForm">
                                     <fieldset class="marginBottom20 fieldsetStyle">
                                         <legend class="legendStyle">اطلاعات برگزار کننده </legend>
                                         <div class="row">
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight"  for="PlannerName" >نام برگزار کننده :</label>
+                                                    <label class="registerLabel floatRight"  for="PlannerNameMain" >نام برگزار کننده :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input height="60" id="PlannerName" required name="plannerName" ng-model="eventPlanner.name"   type="text"  class="form-group registerInput" >
+                                                    <input height="60" id="PlannerNameMain" required name="plannerName" ng-model="eventPlanner.name"   type="text"  class="form-group registerInput borderRound15" >
                                                 </div>
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight"  for="eventPlannerTelephone" > شماره تلفن برگزارکننده  :</label>
+                                                    <label class="registerLabel floatRight"  for="eventPlannerTelephoneMain" > شماره تلفن برگزارکننده  :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input height="60" id="eventPlannerTelephone" required  name="plannerPhoneNumber" ng-model="eventPlanner.mobile "   type="text"  class="form-group registerInput" >
+                                                    <input height="60" id="eventPlannerTelephoneMain" required  name="plannerPhoneNumber" ng-model="eventPlanner.mobile "   type="text"  class="form-group registerInput borderRound15" >
                                                 </div>
                                             </div>
                                         </div>
@@ -1120,19 +1120,19 @@
 
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup marginTop30 floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="eventPlannerWebsite" > لینک وبسایت  :(اختیاری)</label>
+                                                    <label class="registerLabel floatRight" for="eventPlannerWebsiteMain2" > لینک وبسایت  :(اختیاری)</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input height="60" id="eventPlannerWebsite"   ng-model="eventPlanner.website" url-validation  type="text"  class="form-group registerInput" >
+                                                    <input height="60" id="eventPlannerWebsiteMain2"   ng-model="eventPlanner.website" url-validation  type="text"  class="form-group registerInput borderRound15" >
                                                 </div>
                                             </div>
 
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight marginTop30">
                                                 <div class="col-xs-11 floatRight text-center">
-                                                    <label class="registerLabel floatRight"   for="eventPlannerType">نوع برگزارکننده :</label>
+                                                    <label class="registerLabel floatRight"   for="eventPlannerTypeMain">نوع برگزارکننده :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <select id="eventPlannerType" required  name="plannerType" ng-model="eventPlanner.type" ng-options="o.v as o.n for o in [{n : 'نهاد', v: 'ORGANIZATION'},{n : 'کافی شاپ', v: 'COFFEESHOP'},{n : 'فرهنگسرا', v: 'CULTURALCENTER'},{n : 'تئاتر', v: 'THEATER'},{n : 'مؤسسه', v: 'INSTITUTION'},{n : 'فرد', v: 'INDIVIDUAL'}, {n : 'سایر', v: 'OTHER'}]" class="form-control dropDownList">
+                                                    <select id="eventPlannerTypeMain"  required  name="plannerType" ng-model="eventPlanner.type" ng-options="o.v as o.n for o in [{n : 'نهاد', v: 'ORGANIZATION'},{n : 'کافی شاپ', v: 'COFFEESHOP'},{n : 'فرهنگسرا', v: 'CULTURALCENTER'},{n : 'تئاتر', v: 'THEATER'},{n : 'مؤسسه', v: 'INSTITUTION'},{n : 'فرد', v: 'INDIVIDUAL'}, {n : 'سایر', v: 'OTHER'}]" class="form-control dropDownList borderRound15">
 
 
                                                     </select>
@@ -1145,10 +1145,10 @@
 
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup marginTop30 floatRight">
                                                 <div class="col-xs-10 floatRight text-center">
-                                                    <label class="registerLabel floatRight" for="eventPlannerWebsite" > توضیحات برگزارکننده :(حداکثر {{200 - eventPlanner.description.length | pNumber}} کاراکتر مجاز)</label>
+                                                    <label class="registerLabel floatRight" for="eventPlannerWebsiteMain" > توضیحات برگزارکننده :(حداکثر {{200 - eventPlanner.description.length | pNumber}} کاراکتر مجاز)</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <textarea ng-model="eventPlanner.description" maxlength="200" required name="plannerDescription"  id="plannerDescription"  type="text"  class="form-group textAreaForm marginTop30" ></textarea>
+                                                    <textarea ng-model="eventPlanner.description" maxlength="200" required name="plannerDescription"  id="eventPlannerWebsiteMain"  type="text"  class="form-group textAreaForm marginTop30 borderRound15" ></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -1188,16 +1188,16 @@
                                                     <label class="marginRight10">انتخاب عکس کاور:</label>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-6 col-md-3 floatRight marginTop30">
-                                                    <img ng-click="coverPickedDefault($event, 1)" id="coverPhotoOne" class="plannerCoverDefault coverPhotoOne" alt="">
+                                                    <img ng-click="coverPickedDefault($event, 1)" id="coverPhotoOne" class="plannerCoverDefault coverPhotoOne borderRound15" alt="">
                                                 </div>
                                                 <div class="col-xs-12 col-sm-6 col-md-3 floatRight marginTop30">
-                                                    <img ng-click="coverPickedDefault($event, 2)" id="coverPhotoTwo" class="plannerCoverDefault coverPhotoTwo"  alt="">
+                                                    <img ng-click="coverPickedDefault($event, 2)" id="coverPhotoTwo" class="plannerCoverDefault coverPhotoTwo borderRound15"  alt="">
                                                 </div>
                                                 <div class="col-xs-12 col-sm-6 col-md-3 floatRight marginTop30">
-                                                    <img ng-click="coverPickedDefault($event, 3)" id="coverPhotoThree" class="plannerCoverDefault coverPhotoThree" alt="">
+                                                    <img ng-click="coverPickedDefault($event, 3)" id="coverPhotoThree" class="plannerCoverDefault coverPhotoThree borderRound15" alt="">
                                                 </div>
                                                 <div class="col-xs-12 col-sm-6 col-md-3 floatRight marginTop30">
-                                                    <img ng-click="coverPickedDefault($event, 4)" id="coverPhotoFour" class="plannerCoverDefault coverPhotoFour"  alt="">
+                                                    <img ng-click="coverPickedDefault($event, 4)" id="coverPhotoFour" class="plannerCoverDefault coverPhotoFour borderRound15"  alt="">
                                                 </div>
                                             </div>
                                             <div class="col-xs-12 col-sm-6 floatRight marginTop30">
@@ -1226,34 +1226,34 @@
                                         <legend class="legendStyle">لینک های  شبکه اجتماعی (اختیاری)</legend>
                                         <div class="form-group col-sm-6 formRegGroup floatRight">
                                             <div class="col-xs-10 floatRight text-center">
-                                                <label class="registerLabel floatRight" for="plannerTelegram" > تلگرام :</label>
+                                                <label class="registerLabel floatRight" for="plannerTelegramMain" > تلگرام :</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
-                                                <input height="60" id="plannerTelegram" placeholder="www.t.me"  ng-model="eventPlanner.telegram"   type="text"  class="form-group registerInput" >
+                                                <input height="60" id="plannerTelegramMain" placeholder="www.t.me"  ng-model="eventPlanner.telegram"   type="text"  class="form-group registerInput borderRound15" >
                                             </div>
                                         </div>
                                         <div class="form-group col-sm-6 formRegGroup floatRight">
                                             <div class="col-xs-10 floatRight text-center">
-                                                <label class="registerLabel floatRight"  for="plannerInstagram" > اینستاگرام :</label>
+                                                <label class="registerLabel floatRight"  for="plannerInstagramMain" > اینستاگرام :</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
-                                                <input height="60" id="plannerInstagram" placeholder="www.instagram.com" ng-model="eventPlanner.instagram"    type="text"  class="form-group registerInput" >
+                                                <input height="60" id="plannerInstagramMain" placeholder="www.instagram.com" ng-model="eventPlanner.instagram"    type="text"  class="form-group registerInput borderRound15" >
                                             </div>
                                         </div>
                                         <div class="form-group col-sm-6 formRegGroup floatRight">
                                             <div class="col-xs-10 floatRight text-center">
-                                                <label class="registerLabel floatRight" for="plannerTwitter" > تویتر :</label>
+                                                <label class="registerLabel floatRight" for="plannerTwitterMain" > تویتر :</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
-                                                <input height="60" id="plannerTwitter" placeholder="www.twitter.com" ng-model="eventPlanner.twitter"   type="text"  class="form-group registerInput" >
+                                                <input height="60" id="plannerTwitterMain" placeholder="www.twitter.com" ng-model="eventPlanner.twitter"   type="text"  class="form-group registerInput borderRound15" >
                                             </div>
                                         </div>
                                         <div class="form-group col-sm-6 formRegGroup floatRight">
                                             <div class="col-xs-10 floatRight text-center">
-                                                <label class="registerLabel floatRight" for="plannerLinkedIn" >لینکداین :</label>
+                                                <label class="registerLabel floatRight" for="plannerLinkedInMain" >لینکداین :</label>
                                             </div>
                                             <div class="col-xs-11 floatRight ">
-                                                <input height="60" id="plannerLinkedIn" placeholder="www.linkedin.com" ng-model="eventPlanner.linkedin"    type="text"  class="form-group registerInput" >
+                                                <input height="60" id="plannerLinkedInMain" placeholder="www.linkedin.com" ng-model="eventPlanner.linkedin"    type="text"  class="form-group registerInput borderRound15" >
                                             </div>
                                         </div>
 
@@ -1273,7 +1273,7 @@
                                                 <p class="text-center colorRed" ng-show="(submitPlannerForm.plannerDescription.$dirty && submitPlannerForm.plannerDescription.$invalid) ">*توضیحات مربوط به برگزار کننده را وارد نمایید.</p>
                                             </div>
                                             <p class="text-center colorRed" ng-show="(submitPlannerForm.$invalid )&& !(submitPlannerForm.plannerType.$invalid)">*همه فیلد های اجباری را پر نمایید.</p>
-                                            <button id="eventPlannerSubmit" ng-disabled="submitPlannerForm.$invalid || plannerSubmitOnce" ng-click="submitEventPlanner(eventPlanner)"  class="btn btn-success btn-lg btnLogin">ثبت برگزارکننده <i ng-show="submitPlannerSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
+                                            <button id="eventPlannerSubmitMain" ng-disabled="submitPlannerForm.$invalid || plannerSubmitOnce" ng-click="submitEventPlanner(eventPlanner)"  class="btn btn-success btn-lg btnLogin">ثبت برگزارکننده <i ng-show="submitPlannerSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
                                         </div>
                                     </div>
                                 </form>
