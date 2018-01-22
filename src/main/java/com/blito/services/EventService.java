@@ -20,7 +20,6 @@ import com.blito.search.Operation;
 import com.blito.search.SearchViewModel;
 import com.blito.search.Simple;
 import com.blito.security.SecurityContextHolder;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,6 +146,9 @@ public class EventService {
 	public EventFlatViewModel getFlatEventByLink(String link) {
 		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(link)
 				.orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+		if(event.getOperatorState() != OperatorState.APPROVED.name()) {
+			throw new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND));
+		}
 		event.setViews(event.getViews() + 1);
 		this.openOrCloseEventOnSaleDateConditions(event);
 		return eventFlatMapper.createFromEntity(event);
@@ -156,6 +158,9 @@ public class EventService {
 	public EventViewModel getEventByLink(String eventLink) {
 		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(eventLink)
 				.orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+		if(event.getOperatorState() != OperatorState.APPROVED.name()) {
+			throw new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND));
+		}
 		event.setViews(event.getViews() + 1);
 		this.openOrCloseEventOnSaleDateConditions(event);
 		return eventMapper.createFromEntity(event);
