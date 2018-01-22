@@ -20,6 +20,7 @@ import com.blito.search.Operation;
 import com.blito.search.SearchViewModel;
 import com.blito.search.Simple;
 import com.blito.security.SecurityContextHolder;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -241,6 +242,12 @@ public class EventService {
 				.map(eventMapper::createFromEntity);
 	}
 
+	public JSONObject countOfApprovedEvents() {
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("count",eventRepository.countByOperatorState(OperatorState.APPROVED.name()));
+		return jsonObject;
+	}
+
 	private String generateEventLink(Event event) {
 		String eventLink = event.getEventName().replaceAll(" ", "-") + "-" + RandomUtil.generateLinkRandomNumber();
 		while (eventRepository.findByEventLinkAndIsDeletedFalse(eventLink).isPresent()) {
@@ -288,8 +295,7 @@ public class EventService {
 		Simple<Event> isApprovedRestriction = new Simple<>(Operation.eq, "operatorState", OperatorState.APPROVED.name());
 		searchViewModel.getRestrictions().addAll(Arrays.asList(isDeletedRestriction, isPrivateRestriction, isApprovedRestriction));
 		Page<Event> page = searchService.search(searchViewModel, pageable, eventRepository);
-
-		page.forEach(this::openOrCloseEventOnSaleDateConditions);
+//		page.forEach(this::openOrCloseEventOnSaleDateConditions);
 		return page.map(mapper::createFromEntity);
 	}
 
