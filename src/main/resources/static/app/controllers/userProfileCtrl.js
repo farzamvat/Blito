@@ -1273,6 +1273,7 @@ angular.module('User')
             $scope.coverEditPhotoSuccess = false;
             $scope.eventPlannerEdit = $scope.eventHosts[index];
             $("#editHost").modal("show");
+            console.log($scope.eventHosts[index]);
             $scope.eventHosts[index].images.forEach(function (item) {
                 if(item.type === "HOST_PHOTO") {
                     $scope.plannerImageIdEdit = item.imageUUID;
