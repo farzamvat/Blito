@@ -146,7 +146,7 @@ public class EventService {
 	public EventFlatViewModel getFlatEventByLink(String link) {
 		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(link)
 				.orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
-		if(event.getOperatorState() != OperatorState.APPROVED.name()) {
+		if(!event.getOperatorState().equals(OperatorState.APPROVED.name())) {
 			throw new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND));
 		}
 		event.setViews(event.getViews() + 1);
@@ -158,7 +158,7 @@ public class EventService {
 	public EventViewModel getEventByLink(String eventLink) {
 		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(eventLink)
 				.orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
-		if(event.getOperatorState() != OperatorState.APPROVED.name()) {
+		if(!event.getOperatorState().equals(OperatorState.APPROVED.name())) {
 			throw new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND));
 		}
 		event.setViews(event.getViews() + 1);
