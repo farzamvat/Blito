@@ -32,10 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -242,10 +239,10 @@ public class EventService {
 				.map(eventMapper::createFromEntity);
 	}
 
-	public JSONObject countOfApprovedEvents() {
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("count",eventRepository.countByOperatorState(OperatorState.APPROVED.name()));
-		return jsonObject;
+	public HashMap<String, Long> countOfApprovedEvents() {
+		return new HashMap<String,Long>() {{
+			this.put("count",eventRepository.countByOperatorState(OperatorState.APPROVED.name()));
+		}};
 	}
 
 	private String generateEventLink(Event event) {
