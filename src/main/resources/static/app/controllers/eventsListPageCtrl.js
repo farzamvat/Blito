@@ -4,13 +4,12 @@
 
 angular.module('eventsPageModule', [])
     .controller('eventsListPageCtrl', function ($scope, $location, eventService, photoService, eventDetailService, config) {
-
-        // $scope.url = "http://localhost:3000"+"/event-page/";
         $scope.url = config.baseUrl+"/event-page/";
 
         $scope.getEventsByTypeData = function (type,page) {
             eventService.getEventsByType(type, page)
                 .then(function (data) {
+                    console.log(data.data);
                     $scope.totalEventsNumber = data.data.totalElements;
                     $scope.eventList = $scope.catchImagesEvents(data.data.content);
                     $scope.eventList = $scope.eventList.map(eventDetailService.calculateFreeBlits);
