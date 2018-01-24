@@ -1674,6 +1674,14 @@ dir-pagination-controls ul {
     line-height: 30px;
     border-bottom:1px dotted rgb(252, 183, 49);
 }
+.recipe .nameEnded {
+    opacity: 0.9;
+    height:20px;
+    background: rgba(252, 170, 49, 1);
+}
+.recipe .nameEnded h4{
+    font-size: 16px;
+}
 .recipe .name h3 {
     font-size: 14px;
     margin-top: 5px;
@@ -2583,6 +2591,19 @@ a>h5 {
     margin-left: auto;
     text-align: center;
 }
+.endedEvents{
+    transition: .5s;
+    pointer-events: none;
+    height: 75px;
+    vertical-align: middle;
+    position: relative;
+    width: 40px;
+    margin-right: auto;
+    top: -185px;
+    margin-bottom: -190px;
+    margin-left: auto;
+    text-align: center;
+}
 .marginBottomOurOffer {
     margin-bottom: -150px;
 }
@@ -2598,6 +2619,27 @@ a>h5 {
     -webkit-transform: scale(1.2);
     -ms-transform: scale(1.2);
     -moz-transform: scale(1.2);
+}
+.endedEvents img,
+.recipe .endedEvents img{
+    width: 100%;
+    height: auto;
+    margin-top: 40px;
+    transform: scale(1.2);
+    -webkit-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+}
+.recipe .endedEvents{
+    transition: .5s;
+    pointer-events: none;
+    height: 150px;
+    position: relative;
+    width: 90px;
+    margin-right: auto;
+    top: -228px;
+    margin-left: auto;
+    text-align: center;
 }
 .recipe .soldout{
     transition: .5s;
