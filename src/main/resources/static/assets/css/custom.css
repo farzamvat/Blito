@@ -3427,6 +3427,15 @@ input,textarea, select {
     height: 1px;
     background-color: #9c9c9c;
 }
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
+}
 @media (max-width: 770px) {
     select,
     input{
