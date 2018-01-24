@@ -1,13 +1,12 @@
 package com.blito.mappers;
 
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.blito.models.User;
 import com.blito.rest.viewmodels.account.RegisterVm;
 import com.blito.rest.viewmodels.account.UserViewModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
 
 @Component
 public class UserMapper implements GenericMapper <User, UserViewModel> {
@@ -21,7 +20,7 @@ public class UserMapper implements GenericMapper <User, UserViewModel> {
 		User user = new User();
 		user.setFirstname(vmodel.getFirstname());
 		user.setLastname(vmodel.getLastname());
-		user.setEmail(vmodel.getEmail());
+		user.setEmail(vmodel.getEmail().toLowerCase());
 		user.setPassword(vmodel.getPassword());
 		user.setMobile(vmodel.getMobile());
 		user.setOldUser(false);

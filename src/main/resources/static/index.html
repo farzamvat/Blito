@@ -8,9 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.6, maximum-scale=3, user-scalable=2" />
     <meta name="google-site-verification" content="Ae0XnHBmGrtad5c_FptpZisRSO68n0CfHx3OE2iq138" />
     <meta name="description" content="{{pageDescription}}"/>
+    <meta name="keywords" content="{{keyWord}}"/>
     <title ng-bind="title + ' | بلیتو'"></title>
-    <meta name="robots" content="{{robotValue}}" />
-    <meta name="googlebot" content="{{robotValue}}" />
     <link rel="apple-touch-icon" sizes="180x180" href="fav-icons/apple-touch-icon.png"/>
     <link rel="icon" type="image/png" sizes="32x32" href="fav-icons/favicon-32x32.png"/>
     <link rel="icon" type="image/png" sizes="16x16" href="fav-icons/favicon-16x16.png"/>
@@ -107,7 +106,6 @@
             a.appendChild(r);
         })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
     </script>
-    <script>!function(e,t,a){"use strict";  var s=t.head||t.getElementsByTagName( "head" )[ 0 ], p=t.createElement( "script" ); e.iwmfBadge=a, p.async=true, p.src= "https://c.iwmf.ir/get-code/people-vote-4-2.js?v=10.1", s.appendChild(p) }(this,document,"b-bottom-left");</script>
 </head>
 <body ng-cloak="">
 
@@ -133,11 +131,11 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse ">
         <ul class="nav navbar-nav floatRight textAlignRight">
-            <li ng-show="logoutMenu" class="floatRight" ng-class="{ active: isActive('/user-profile')}"><a class="" href="/user-profile"><i class="fa fa-user" aria-hidden="true"></i>  {{firstname}} {{lastname}} </a></li>
+            <li ng-if="logoutMenu" ng-click="changeTabFix()" class="floatRight" ng-class="{ active: isActive('/user-profile')}"><a class="" href="/user-profile"><i class="fa fa-user" aria-hidden="true"></i>  {{firstname}} {{lastname}} </a></li>
             <li class="floatRight" ng-class="{ active: isActive('/')}"><a class="" href="/"><i class="fa fa-home" aria-hidden="true"></i> خانه </a></li>
             <li class="dropdown floatRight" ng-class="{ active: isActive('/cinema') || isActive('/entertainment') || isActive('/theater') || isActive('/concert') || isActive('/other') || isActive('/tour') || isActive('/workshop') ||isActive('/exhibition')}">
                 <a href="" ng-click="DropDownMenue()" class="dropdown-toggle"><i class="fa fa-calendar" aria-hidden="true"></i> رویداد ها   <span class="caret"></span></a>
-                <ul class="dropdown-menu nav-dropdown-menu textAlignRight">
+                <ul class="dropdown-menu nav-dropdown-menu textAlignRight borderBottomRound">
                     <li><a href="/concert">کنسرت</a></li>
                     <li><a href="/tour">تور</a></li>
                     <li><a href="/theater">تئاتر</a></li>
@@ -154,7 +152,8 @@
             <li ng-hide="logoutMenu" class="floatRight signInButton"><a href="" data-toggle="modal" data-target="#registrationModal"><i class="fa fa-sign-in" aria-hidden="true"></i> ورود/ثبت نام  </a></li>
 
             <li ng-show="logoutMenu" ng-click="logout()" class="floatRight signInButton"><a href=""><i class="fa fa-sign-out" aria-hidden="true"></i> خروج</a></li>
-
+            <li class="floatRight  btn-success submitEventMenu" ><a ng-click="submitEventPlannerIntro()"><i class="fa fa-star-o" aria-hidden="true"></i> ثبت رویداد   </a>
+            </li>
         </ul>
     </div>
 </nav>
@@ -219,6 +218,7 @@
 <div ng-include="'app/views/partials/loading.html'"></div>
 <div ng-include="'app/views/partials/showNotif.html'"></div>
 <div ng-include="'app/views/partials/forget-password.html'"></div>
+<div ng-include="'app/views/partials/resend-activation-email.html'"></div>
 
 </body>
 <script  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0K9LZjvsK4TGAOLzQVVnGfY20eyO5nbY"></script>

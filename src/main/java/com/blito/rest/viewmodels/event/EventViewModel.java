@@ -73,6 +73,7 @@ public class EventViewModel {
 	Set<OfferTypeEnum> offers;
 
 	@JsonView(View.Event.class)
+	@Valid
 	@NotEmpty
 	Set<EventDateViewModel> eventDates;
 

@@ -4,6 +4,7 @@ import com.blito.enums.State;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,6 +13,7 @@ public class EventDateViewModel {
 	long eventDateId;
 	@NotEmpty
 	private Timestamp date;
+	@Valid
 	@NotEmpty
 	private Set<BlitTypeViewModel> blitTypes;
 	private State state;

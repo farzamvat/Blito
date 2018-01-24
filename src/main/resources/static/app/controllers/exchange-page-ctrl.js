@@ -3,7 +3,7 @@
  */
 
 angular.module('eventsPageModule')
-    .controller('exchangePageCtrl', function ($scope, $routeParams, exchangeService, mapMarkerService, dateSetterService, photoService, $timeout) {
+    .controller('exchangePageCtrl', function ($scope, $routeParams, exchangeService, mapMarkerService, dateSetterService, photoService, $timeout, $location) {
         $scope.userEmail = 'email';
 
         exchangeService.getExchange($routeParams.exchangeLink)
@@ -12,6 +12,10 @@ angular.module('eventsPageModule')
                 $scope.catchImagesExchange($scope.exchangeData.image.imageUUID)
                 mapMarkerService.initMapOnlyShowMarker(document.getElementById('map'));
                 mapMarkerService.setMarker($scope.exchangeData.latitude, $scope.exchangeData.longitude);
+                $scope.title = $location.path().replace('/exchange-page/','').replace( /\d+/,'').replace( /-/,'');
+                $scope.pageDescription = $scope.exchangeData.description;
+                $scope.keyWord =  $scope.exchangeData.title +'آگهی بلیط'+ '،'+ 'آگهی بلیط کنسرت' + '،'+ 'آگهی بلیط تئاتر' ;
+                $scope.robotValue = 'index';
                 $timeout(function () {
                     $(".dateInit").val(persianDate($scope.exchangeData.eventDate).format("dddd,DD MMMM, ساعت HH:mm"));
                 },1000)

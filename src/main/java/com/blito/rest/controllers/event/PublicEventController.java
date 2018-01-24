@@ -4,6 +4,7 @@ import com.blito.mappers.EventFlatMapper;
 import com.blito.mappers.EventMapper;
 import com.blito.models.Event;
 import com.blito.repositories.EventRepository;
+import com.blito.rest.utility.HandleUtility;
 import com.blito.rest.viewmodels.View;
 import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 
 @RestController
 @RequestMapping("${api.base.url}" + "/public/events")
@@ -44,6 +47,13 @@ public class PublicEventController {
 	@GetMapping("/all")
 	public ResponseEntity<Page<EventViewModel>> getAllEvents(Pageable pageable) {
 		return ResponseEntity.ok(eventService.getAllEvents(pageable));
+	}
+
+	@GetMapping("/count")
+	public CompletionStage<ResponseEntity<?>> getCountOfApprovedEvents(HttpServletRequest request,HttpServletResponse response) {
+		return CompletableFuture.supplyAsync(() -> {
+			return eventService.countOfApprovedEvents();
+		}).handle((result,throwaable) -> HandleUtility.generateResponseResult(() -> result,throwaable,request,response));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //
@@ -69,12 +79,6 @@ public class PublicEventController {
 	}
 
 	@JsonView(View.Event.class)
-	@GetMapping("/flat/link/{eventLink}")
-	public ResponseEntity<EventFlatViewModel> getFlatEventByLink(@PathVariable String eventLink) {
-		return ResponseEntity.ok(eventService.getFlatEventByLink(eventLink));
-	}
-	
-	@JsonView(View.Event.class)
 	@GetMapping("/link/{eventLink}")
 	public ResponseEntity<EventViewModel> getEventByEventLink(@PathVariable String eventLink)
 	{
@@ -91,5 +95,4 @@ public class PublicEventController {
 	public ResponseEntity<EventViewModel> getEvent(@PathVariable long eventId) {
 		return ResponseEntity.ok(eventService.getEventById(eventId));
 	}
-
 }

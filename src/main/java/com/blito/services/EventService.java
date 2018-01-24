@@ -31,10 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -146,18 +143,12 @@ public class EventService {
 	}
 
 	@Transactional
-	public EventFlatViewModel getFlatEventByLink(String link) {
-		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(link)
-				.orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
-		event.setViews(event.getViews() + 1);
-		this.openOrCloseEventOnSaleDateConditions(event);
-		return eventFlatMapper.createFromEntity(event);
-	}
-
-	@Transactional
 	public EventViewModel getEventByLink(String eventLink) {
 		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(eventLink)
 				.orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+		if(!event.getOperatorState().equals(OperatorState.APPROVED.name())) {
+			throw new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND));
+		}
 		event.setViews(event.getViews() + 1);
 		this.openOrCloseEventOnSaleDateConditions(event);
 		return eventMapper.createFromEntity(event);
@@ -241,6 +232,12 @@ public class EventService {
 				.map(eventMapper::createFromEntity);
 	}
 
+	public HashMap<String, Long> countOfApprovedEvents() {
+		return new HashMap<String,Long>() {{
+			this.put("count",eventRepository.countByOperatorState(OperatorState.APPROVED.name()));
+		}};
+	}
+
 	private String generateEventLink(Event event) {
 		String eventLink = event.getEventName().replaceAll(" ", "-") + "-" + RandomUtil.generateLinkRandomNumber();
 		while (eventRepository.findByEventLinkAndIsDeletedFalse(eventLink).isPresent()) {
@@ -288,8 +285,7 @@ public class EventService {
 		Simple<Event> isApprovedRestriction = new Simple<>(Operation.eq, "operatorState", OperatorState.APPROVED.name());
 		searchViewModel.getRestrictions().addAll(Arrays.asList(isDeletedRestriction, isPrivateRestriction, isApprovedRestriction));
 		Page<Event> page = searchService.search(searchViewModel, pageable, eventRepository);
-
-		page.forEach(this::openOrCloseEventOnSaleDateConditions);
+//		page.forEach(this::openOrCloseEventOnSaleDateConditions);
 		return page.map(mapper::createFromEntity);
 	}
 

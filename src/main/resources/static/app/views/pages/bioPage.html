@@ -1,7 +1,7 @@
 <div ng-controller="bioPageCtrl" class="bioPageContainer">
     <div class="row eventPageHeader bioPageHeaderCover plannerCover">
     </div>
-    <img ng-src="{{plannerPhoto}}" class="circleImage bioPageLogoImage"/>
+    <img ng-src="{{plannerPhoto}}" alt="{{plannerData.hostName}}" class="circleImage bioPageLogoImage"/>
     <div class="col-xs-12 col-sm-8 col-sm-offset-2 plannerBioContent" >
         <h1>{{plannerData.hostName}}</h1>
     </div>
@@ -11,12 +11,12 @@
         </div>
     </div>
     <div class="row">
-        <h3 class="textAlignRight plannerEventContent col-xs-12 col-sm-8 col-sm-offset-2 "> رویداد های <span>{{plannerData.hostName}}</span> </h3>
+        <h3 class="textAlignRight plannerEventContent col-xs-12 col-sm-8 col-sm-offset-2 "> رویداد‌ها </h3>
         <div class="col-xs-6 col-sm-4  floatRight marginTop10 marginBottom50" total-items="totalEventsNumber" pagination-id="eventPlannerPagination"  dir-paginate="item in eventList | itemsPerPage: 6"  current-page="currentPage">
             <a href="{{url+item.eventLink}}">
                 <div class="recipe"  >
                     <div class="image center-block" >
-                        <img ng-src="{{item.image}}" class="center-block eventListImage"  >
+                        <img ng-src="{{item.image}}" alt="{{item.eventName}}" class="center-block eventListImage"  >
 
                         <h4 class="text-center slidingEventsTitle"><span ng-if="item.eventName.length > 20">...</span>{{item.eventName | limitTo : 20}}</h4>
                     </div>
@@ -34,7 +34,7 @@
 
     <div class="row plannerdescrptionHolder">
         <div ng-show="(plannerData.instagramLink)  || (plannerData.telegramLink ) || (plannerData.twitterLink) || (plannerData.linkedinLink ) " class="col-xs-12 col-sm-8 col-sm-offset-2 textAlignCenter marginTop30">
-            <h3 class="PlannerSocialMediaHeader textAlignRight padRight10">شبکه های اجتماعی <span>{{plannerData.hostName}}</span></h3>
+            <h3 class="PlannerSocialMediaHeader textAlignRight padRight10">شبکه های اجتماعی </h3>
             <div class="col-xs-12  plannerPagesocialmediaHolder noBorder textAlignCenter ">
                     <div ng-show="plannerData.instagramLink" >
                         <a class="socialmediaPlanner" href="{{socialLinkCorrection(plannerData.instagramLink)}}" target="_blank">

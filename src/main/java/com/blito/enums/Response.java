@@ -101,6 +101,7 @@ public enum Response {
 	SHARED_SEAT_AND_INCONSISTENT_CAPACITY_ERROR("error.shared.seat.and.inconsistent.capacity"),
 	ERROR_PESSIMISTIC_LOCK("error.pessimistic.lock"),
 	PAY_DOT_IR_ERROR("error.pay.ir"),
+	USER_ACTIVATION_RETRY_TIMEOUT("error.user.activation.retry.timeout"),
 	SEAT_INFORMATION("seat.info");
     
 

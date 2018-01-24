@@ -126,7 +126,7 @@ public class AbstractRestControllerTest {
                     .body(registerVm)
                     .when()
                     .post(getServerAddress() + "/api/blito/v1.0/register");
-            response.then().statusCode(201);
+            response.then().statusCode(200);
         }
         return registerVm.getEmail();
     }

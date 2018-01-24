@@ -16,7 +16,8 @@ angular.module('eventsPageModule')
                                            dataService,
                                            plannerService,
                                            $filter,
-                                           seatmapService) {
+                                           seatmapService,
+                                           $location) {
         var promises = [];
         $scope.persianSans = [];
         $scope.eventInfo = {};
@@ -35,6 +36,11 @@ angular.module('eventsPageModule')
         eventService.getEvent($routeParams.eventLink)
             .then(function (data) {
                 $scope.eventDataDetails = angular.copy(data.data);
+                $scope.pageDescription = $scope.eventDataDetails.description;
+                $scope.keyWord =  $scope.eventDataDetails.eventName + $scope.eventDataDetails.eventType;
+                $scope.robotValue = 'index';
+                $scope.title = $location.path().replace('/event-page/','').replace( /\d+/,'').replace( /-/,'');
+
                 $scope.additionalFields = $scope.eventDataDetails.additionalFields;
                 if($scope.additionalFields){
                     $scope.additionalFields.forEach(function (field) {

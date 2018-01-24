@@ -1,7 +1,7 @@
 <div ng-controller="eventPageCtrl as eventPage" style="margin-bottom: 20px">
     <div ng-show="eventDataDetails.eventState === 'OPEN'" id="buyTicketOnScroll" class="buyTicketDropDown dispNone" >
         <div class="col-xs-12 hidden-sm hidden-md hidden-lg paddingMobileZero">
-            <button ng-show="eventDataDetails.eventState === 'OPEN' && eventType !== 'EXHIBITION'" ng-click="showBuyTicketModal()" class="btn btn-success buyTicket  marginTop10 fontSize24Mobile dropDownButton floatRight btn-block"><i class="fa fa-ticket" aria-hidden="true"></i>  خرید بلیت
+            <button ng-show="eventDataDetails.eventState === 'OPEN' && eventType !== 'EXHIBITION'" ng-click="showBuyTicketModal()" class=" buyTicket  marginTop10 fontSize24Mobile dropDownButton floatRight btn-block"><i class="fa fa-ticket" aria-hidden="true"></i>  خرید بلیت
             </button>
         </div>
     </div>
@@ -16,7 +16,7 @@
 
 
         <div class="col-xs-12 col-sm-4 col-md-2 col-lg-2 floatRight eventPageImage">
-            <img ng-click="showEventPic()" ng-src="{{eventDataPhoto.eventPhoto[0].imageUUID}}"   class="img-responsive imgMobileSize">
+            <img ng-click="showEventPic()" ng-src="{{eventDataPhoto.eventPhoto[0].imageUUID}}"  alt="{{eventDataDetails.eventName}}" class="img-responsive imgMobileSize">
             <i  class="fa fa-search-plus fa-4x maximizeImageXs hidden-sm hidden-md hidden-lg"></i>
         </div>
         <div class="col-xs-12 col-sm-7 col-md-4 col-lg-4 floatRight textAlignRight eventContent marginTop100Mobile" >

@@ -1,0 +1,42 @@
+<div id="resendEmail"  class="modal fade" role="dialog" >
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center">ارسال مجدد ایمیل فعال‌سازی</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-inline textAlignRight" name="resendActivationEmail">
+                    <fieldset>
+                        <div class="form-group col-xs-12 formRegGroup">
+                            <div class="col-xs-5 col-sm-4 floatRight text-center">
+                                <label class="registerLabel"  >پست الکترونيکی :</label>
+                            </div>
+                            <div class="col-xs-7 col-sm-8 floatRight ">
+                                <input height="60" name="email" ng-model="activationEmail.email" type="email"  class="form-group registerInput" required>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="control-group ">
+                        <div id="successResendEmail" class="dispNone text-center alert alert-success col-xs-12" >
+                            <strong>ایمیل فعال‌سازی برای شما ارسال شد !</strong>
+                        </div>
+                        <div id="errorResendEmail" class="dispNone text-center alert alert-danger col-xs-12" >
+                            <strong></strong>
+                        </div>
+                        <div class="controls">
+                            <button  ng-disabled="resendActivationEmail.$invalid || resendEmailClickOnce" ng-click="resendActivationEmailSubmit(activationEmail.email)" name="signin" class="btn btn-success btn-lg btnLogin">ارسال ایمیل <i id="spinnerResendEmail" class="fa fa-spinner fa-spin dispNone"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer ">
+                <button type="button" class="btn btn-default center-block" data-dismiss="modal">بستن</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+

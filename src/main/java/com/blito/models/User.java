@@ -1,24 +1,11 @@
 package com.blito.models;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity(name="user")
 public class User {
@@ -57,6 +44,8 @@ public class User {
 	private boolean isOldUser = false;
 	
 	private Timestamp createdAt;
+
+	private Timestamp activationRetrySentDate;
 	
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
     @JoinTable(name="user_role" , joinColumns=@JoinColumn(name="user_id"), 
@@ -100,7 +89,15 @@ public class User {
 		this.blits.add(blit);
 		blit.setUser(this);
 	}
-	
+
+	public Timestamp getActivationRetrySentDate() {
+		return activationRetrySentDate;
+	}
+
+	public void setActivationRetrySentDate(Timestamp activationRetrySentDate) {
+		this.activationRetrySentDate = activationRetrySentDate;
+	}
+
 	public boolean isOldUser() {
 		return isOldUser;
 	}

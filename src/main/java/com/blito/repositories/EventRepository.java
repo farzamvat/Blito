@@ -23,7 +23,8 @@ public interface EventRepository
 	Page<Event> findByOperatorStateAndIsDeletedFalse(String operatorState, Pageable pageable);
 	Optional<Event> findByEventIdAndIsDeletedFalse(long eventId);
 	Page<Event> findByIsDeletedFalse(Pageable pageable);
-	Set<Event> findByIsDeletedFalse();	
+	Set<Event> findByIsDeletedFalse();
+	Long countByOperatorState(String operatorState);
 	Page<Event> 
 	findByIsDeletedFalseAndEventTypeIsAndEventStateNotAndOperatorStateIsOrderByOrderNumberDesc(String eventType,String eventState,String operatorState, Pageable pageable);
 

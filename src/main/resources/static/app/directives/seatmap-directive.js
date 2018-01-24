@@ -617,6 +617,7 @@ angular.module('blitoDirectives')
                     } else {
                         scope.pickedSeats.splice(scope.pickedSeats.indexOf(e.domTarget.dd), 1);
                         $('#' + "seatMaperChart" + svgIndex + ' ' + '#' + e.domTarget.dd).css('fill', '#64b5f6');
+                        toolTip.css({"display": "none"});
                     }
                     e.preventDefault();
                     ctrl.validationCheckBlitType(scope.pickedSeats, svgIndex);
@@ -630,7 +631,7 @@ angular.module('blitoDirectives')
                             sect.rows.forEach(function (row, rowIndex) {
                                 row.seats.forEach(function (seat) {
                                     if(e.domTarget.dd === seat.uid) {
-                                        toolTip.html("قیمت: "+seat.price+"\n"+"ردیف: "+(rowIndex+1));
+                                        toolTip.html("قیمت: "+seat.price+"\n"+"ردیف: "+(row.name));
                                     }
                                 })
                             });
@@ -666,19 +667,11 @@ angular.module('blitoDirectives')
                         });
                         var section=sectionsChart[sectionIndex].chart.choropleth(rowSeats)
                             .name(svgData.schema.sections[sectionIndex].rows[rowIndex].name);
-                        //neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew
                         section.listen('click', seatClickFunction);
                         section.listen('touchstart', seatTouch);
                         section.listen('mouseOver', mouseOverSeat);
                         section.listen('mouseOut', mouseOutSeat);
-                        // section.listen('click', seatClickFunction);
                     }
-
-
-                    var legend = sectionsChart[sectionIndex].chart.legend();
-                    legend.enabled(false);
-
-
                     sectionsChart[sectionIndex].chart.labels(true);
                     var labels = sectionsChart[sectionIndex].chart.labels();
                     var toolTypeYOffset;
@@ -690,11 +683,9 @@ angular.module('blitoDirectives')
                         sectionsChart[sectionIndex].chart.labels({fontSize: 10});
                     }
                     labels.format("{%info}");
-                    //neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew
                     sectionsChart[sectionIndex].chart.tooltip().enabled(false);
 
                 }
-                //neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew
                 chart.tooltip().enabled(false);
                 chart.container("seatMaperChart"+svgIndex);
                 chart.draw();
@@ -721,9 +712,7 @@ angular.module('blitoDirectives')
                 });
 
                 removeAnychartLogo();
-                //neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeew
-                // var interactivity = chart.interactivity();
-                // interactivity.keyboardZoomAndMove(false);
+
 
                 scope.resetPickedSeats = function (seatUids, isReserved, sansSeats) {
                     scope.pickedSeats = [];

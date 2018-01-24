@@ -14,35 +14,35 @@
             <div class="row eventListHeaderContainer">
                 <div class="hidden-xs col-sm-1  floatRight"></div>
                 <div class="col-xs-12 col-sm-10 floatRight eventListAnchorContainer">
-                    <a  class="eventListAnchor" href="/concert"><div id="eventListConcert" class=" col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight" >
-                        <h4 class="text-center pageHeaderLinks">کنسرت</h4>
+                    <a  class="eventListAnchor " href="/concert"><div id="eventListConcert" class=" col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight borderRound15" >
+                        <h4 class="text-center pageHeaderLinks ">کنسرت</h4>
                     </div>
                     </a>
-                    <a class="eventListAnchor" href="/tour"><div id="eventListTour" class="col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight">
+                    <a class="eventListAnchor " href="/tour"><div id="eventListTour" class="col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight borderRound15">
                         <h4 class="text-center pageHeaderLinks">تور</h4>
                     </div>
                     </a>
-                    <a class="eventListAnchor" href="/exhibition"><div id="eventListExhibition" class="col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight">
+                    <a class="eventListAnchor " href="/exhibition"><div id="eventListExhibition" class="col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight borderRound15">
                         <h4 class="text-center pageHeaderLinks">نمایشگاه</h4>
                     </div>
                     </a>
-                    <a  class="eventListAnchor" href="/theater"><div id="eventListTheater" class=" col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight">
+                    <a  class="eventListAnchor" href="/theater"><div id="eventListTheater" class=" col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight borderRound15">
                         <h4 class="text-center pageHeaderLinks">تئاتر</h4>
                     </div>
                     </a>
-                    <a class="eventListAnchor" href="/entertainment"><div id="eventListSport" class=" col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight">
+                    <a class="eventListAnchor" href="/entertainment"><div id="eventListSport" class=" col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight borderRound15">
                         <h4 class="text-center pageHeaderLinks">سرگرمی</h4>
                     </div>
                     </a>
-                    <a class="eventListAnchor" href="/workshop"><div id="eventListWorkshop" class=" col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight">
+                    <a class="eventListAnchor" href="/workshop"><div id="eventListWorkshop" class=" col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight borderRound15">
                         <h4 class="text-center pageHeaderLinks">کارگاه</h4>
                     </div>
                     </a>
-                    <a class="eventListAnchor" href="/cinema"><div  id="eventListCinema"class=" col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight">
+                    <a class="eventListAnchor" href="/cinema"><div  id="eventListCinema"class=" col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight borderRound15">
                         <h4 class="text-center pageHeaderLinks">سینما</h4>
                     </div>
                     </a>
-                    <a class="eventListAnchor" href="/other"><div id="eventListOther" class=" col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight" >
+                    <a class="eventListAnchor" href="/other"><div id="eventListOther" class=" col-sm-8-5 marginTop30 pageHeaderLinksDiv floatRight borderRound15" >
                         <h4 class="text-center pageHeaderLinks">سایر</h4>
                     </div>
 
@@ -56,8 +56,8 @@
             <a href="{{url+item.eventLink}}">
                 <div class="recipe"  >
                     <div class="image center-block" >
-                        <img ng-src="{{item.image}}" class="center-block eventListImage"  >
-                        <div class="name">
+                        <img ng-src="{{item.image}}" alt="{{item.eventName}}" class="center-block eventListImage"  >
+                        <div ng-show="item.eventState !== 'ENDED'" class="name">
                             <h5> برگزارکننده   : {{ item.eventHostName }} <i class="fa fa-calendar-check-o"></i> </h5>
                             <h5 ng-show="item.eventType !== 'EXHIBITION'">{{ item.capacity - item.soldCount | number | pNumber}}: بلیت باقی مانده  <i class="fa fa-ticket"></i>‌</h5>
                         </div>
@@ -65,7 +65,9 @@
                         <div class="eventDescription center-block">
                             {{item.description}}
                         </div>
-
+                        <div ng-show="item.eventState === 'ENDED'" class="endedEvents">
+                            <img src="../../../assets/img/payan.png"/>
+                        </div>
                         <div ng-show="item.eventState === 'SOLD'" class="soldout ">
                             <img src="../../../assets/img/soldout.png"/>
                         </div>

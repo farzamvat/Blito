@@ -11,6 +11,7 @@ import com.blito.security.SecurityContextHolder;
 import com.blito.services.EventService;
 import com.blito.utils.test.util.AbstractRestControllerTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +31,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -527,5 +529,13 @@ public class EventControllerTest extends AbstractRestControllerTest {
 				.when()
 				.post( getServerAddress() +"/api/blito/v1.0/public/events/search/?page=0&size=5")
 				.then().assertThat().statusCode(200).body("numberOfElements",equalTo(1));
+	}
+
+	@Test
+	public void countOfApprovedEvents() {
+		RestAssured.given().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+				.when()
+				.get(getServerAddress() + "/api/blito/v1.0/public/events/count")
+				.then().statusCode(200).body("count",notNullValue());
 	}
 }
