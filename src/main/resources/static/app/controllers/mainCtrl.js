@@ -324,5 +324,6 @@ angular.module('menuPagesModule', [])
             $(angular.element(document.getElementsByClassName('dropdown-menu'))).slideUp(300);
             isOpen=false;
         };
+
     });
 

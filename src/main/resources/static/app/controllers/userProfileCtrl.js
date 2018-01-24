@@ -2293,5 +2293,4 @@ angular.module('User')
 
         });
 
-
     });

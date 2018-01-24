@@ -404,8 +404,7 @@
                                 <button class="btn btn-info center-block" ng-click="addFieldTicketTypeEdit()">تعریف بلیت بدون انتخاب صندلی <i class="fa fa-plus"></i></button>
                             </div>
                             <div class="col-xs-12 marginTop30">
-                                <!--<p class="text-center colorRed" ng-show="submitEventForm.newSansTime.$invalid">* تاریخ و ساعت را انتخاب کنید.</p>-->
-                                <button class="btn btn-success center-block marginTop30" ng-disabled="editEventForm.blitNameEdit.$invalid || editEventForm.blitCapacityEdit.$invalid || editEventForm.blitPriceEdit.$invalid" ng-click="submitSansWithSeatpickerEdit(newShowTimeEdit)">ثبت ویرایش سانس</button>
+                                <button class="btn btn-success center-block marginTop30" ng-disabled="editEventForm.blitNameEdit.$invalid || editEventForm.blitCapacityEdit.$invalid || editEventForm.blitPriceEdit.$invalid || (blitTypesWithOutSeatsEdit.length === 0)" ng-click="submitSansWithSeatpickerEdit(newShowTimeEdit)">ثبت ویرایش سانس</button>
                             </div>
                         </div>
                         <div class="hrLine marginTop30"></div>
@@ -466,7 +465,7 @@
                                         <label class="registerLabel" for="ticketName">نام بلیت :</label>
                                     </div>
                                     <div class="col-xs-12 col-sm-6 floatRight inputXsSize">
-                                        <input height="60" required id="ticketNameEditSubmit" ng-model="ticketType.name" name="blitName"  type="text"  class="form-group registerInput" >
+                                        <input height="60" required id="ticketNameEditSubmit" ng-model="ticketType.name" name="blitNameEditSubmit"  type="text"  class="form-group registerInput" >
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 floatRight marginTop10">
@@ -474,7 +473,7 @@
                                         <label class="registerLabel" for="ticketCapacity">ظرفیت بلیت :</label>
                                     </div>
                                     <div class="col-xs-12 col-sm-6 floatRight ">
-                                        <input height="60" required id="ticketCapacityEditSubmit" ng-model="ticketType.capacity" name="blitCapacity"  type="number"  class="form-group registerInput inputXsSize" >
+                                        <input height="60" required id="ticketCapacityEditSubmit" ng-model="ticketType.capacity" name="blitCapacityEditSubmit"  type="number"  class="form-group registerInput inputXsSize" >
                                     </div>
                                 </div>
                                 <div ng-if="ticketType.isFree === false" class="col-xs-12 col-sm-12 floatRight marginTop10">
@@ -482,7 +481,7 @@
                                         <label class="registerLabel" for="ticketPurchaseAmount">قیمت بلیت (تومان):</label>
                                     </div>
                                     <div class="col-xs-12 col-sm-6 floatRight ">
-                                        <input height="60" required id="ticketPurchaseAmountEditSubmit" ng-model="ticketType.price" name="blitPrice"   type="number"  class="form-group registerInput inputXsSize" >
+                                        <input height="60" required id="ticketPurchaseAmountEditSubmit" ng-model="ticketType.price" name="blitPriceEditSubmit"   type="number"  class="form-group registerInput inputXsSize" >
                                     </div>
 
                                 </div>
@@ -494,7 +493,7 @@
                             </div>
                             <div class="col-xs-12 marginTop30">
                                 <!--<p class="text-center colorRed" ng-show="submitEventForm.newSansTime.$invalid">* تاریخ و ساعت را انتخاب کنید.</p>-->
-                                <button class="btn btn-success center-block marginTop30" ng-disabled="editEventForm.blitNameEdit.$invalid || editEventForm.blitCapacityEdit.$invalid || editEventForm.blitPriceEdit.$invalid" ng-click="submitSansWithSeatpickerEditSubmit(newShowTimeEdit)">ثبت  سانس</button>
+                                <button class="btn btn-success center-block marginTop30" ng-disabled="editEventForm.blitNameEditSubmit.$invalid || editEventForm.blitCapacityEditSubmit.$invalid || editEventForm.blitPriceEditSubmit.$invalid || (newShowTimeEdit.blitTypes.length === 0) " ng-click="submitSansWithSeatpickerEditSubmit(newShowTimeEdit)">ثبت  سانس</button>
                             </div>
                         </div>
                         <div class="hrLine marginTop30"></div>
