@@ -143,18 +143,6 @@ public class EventService {
 	}
 
 	@Transactional
-	public EventFlatViewModel getFlatEventByLink(String link) {
-		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(link)
-				.orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
-		if(!event.getOperatorState().equals(OperatorState.APPROVED.name())) {
-			throw new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND));
-		}
-		event.setViews(event.getViews() + 1);
-		this.openOrCloseEventOnSaleDateConditions(event);
-		return eventFlatMapper.createFromEntity(event);
-	}
-
-	@Transactional
 	public EventViewModel getEventByLink(String eventLink) {
 		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(eventLink)
 				.orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));

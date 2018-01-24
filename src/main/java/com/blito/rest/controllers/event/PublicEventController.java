@@ -79,12 +79,6 @@ public class PublicEventController {
 	}
 
 	@JsonView(View.Event.class)
-	@GetMapping("/flat/link/{eventLink}")
-	public ResponseEntity<EventFlatViewModel> getFlatEventByLink(@PathVariable String eventLink) {
-		return ResponseEntity.ok(eventService.getFlatEventByLink(eventLink));
-	}
-	
-	@JsonView(View.Event.class)
 	@GetMapping("/link/{eventLink}")
 	public ResponseEntity<EventViewModel> getEventByEventLink(@PathVariable String eventLink)
 	{
@@ -101,5 +95,4 @@ public class PublicEventController {
 	public ResponseEntity<EventViewModel> getEvent(@PathVariable long eventId) {
 		return ResponseEntity.ok(eventService.getEventById(eventId));
 	}
-
 }
