@@ -12,10 +12,9 @@ angular.module('homePageModule', [])
         var promisesExchange = [[], []];
         $scope.url = config.baseUrl+"/event-page/";
         $scope.urlExchange = config.baseUrl+"/exchange-page/";
-        miniSliderService.getAllEvents()
+        miniSliderService.getAllEventsCount()
             .then(function (data) {
-                console.log(data);
-                $scope.totalNumberOfEvents = data.data.totalElements;
+                $scope.totalNumberOfEvents = data.data.count;
                 count( 0, $scope.totalNumberOfEvents, 3000);
             })
             .catch(function (data) {

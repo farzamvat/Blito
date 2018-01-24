@@ -5,17 +5,8 @@
 angular.module('homePageApi', [])
     .service('miniSliderService', function ($http, config) {
         var miniSlider = this;
-        miniSlider.getAllEvents = function () {
-            var queryParam = {
-                cache : true,
-                params : {page: 0, size: 1, sort: "orderNumber,desc"}
-            };
-            var bodyJson = {
-                restrictions: [
-
-                ]
-            };
-            return $http.post(config.baseUrl + '/api/blito/v1.0/public/events/search',bodyJson, queryParam);
+        miniSlider.getAllEventsCount = function () {
+            return $http.get(config.baseUrl + '/api/blito/v1.0/public/events/count');
         };
         miniSlider.getSlidingDataEvents = function (eventType, size, evento) {
             var queryParam = {
