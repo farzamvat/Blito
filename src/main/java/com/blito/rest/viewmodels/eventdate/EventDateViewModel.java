@@ -5,13 +5,14 @@ import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
 public class EventDateViewModel {
 	long eventDateId;
-	@NotEmpty
+	@NotNull
 	private Timestamp date;
 	@Valid
 	@NotEmpty
