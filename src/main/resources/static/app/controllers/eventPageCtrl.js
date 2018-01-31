@@ -2,7 +2,8 @@
  * Created by soroush on 4/25/17.
  */
 angular.module('eventsPageModule')
-    .controller('eventPageCtrl', function ($scope,
+    .controller('eventPageCtrl', function ($rootScope,
+                                           $scope,
                                            $routeParams,
                                            eventService,
                                            mapMarkerService,
@@ -36,10 +37,14 @@ angular.module('eventsPageModule')
         eventService.getEvent($routeParams.eventLink)
             .then(function (data) {
                 $scope.eventDataDetails = angular.copy(data.data);
-                $scope.pageDescription = $scope.eventDataDetails.description;
-                $scope.keyWord =  $scope.eventDataDetails.eventName + $scope.eventDataDetails.eventType;
-                $scope.robotValue = 'index';
-                $scope.title = $location.path().replace('/event-page/','').replace( /\d+/,'').replace( /-/,'');
+                $rootScope.pageDescription = $scope.eventDataDetails.description;
+                $rootScope.keyWord =  $scope.eventDataDetails.eventName + ","
+                    +dataService.eventTypePersian($scope.eventDataDetails.eventType) + ","
+                    + " بلیت " + dataService.eventTypePersian($scope.eventDataDetails.eventType) + ","
+                    +  dataService.eventTypePersian($scope.eventDataDetails.eventType) + " این هفته " +","
+                    + "سرگرمی تهران";
+                $rootScope.robotValue = 'index';
+                $rootScope.title = $location.path().replace('/event-page/','').replace( /\d+/,'').replace( /-/,'');
 
                 $scope.additionalFields = $scope.eventDataDetails.additionalFields;
                 if($scope.additionalFields){
