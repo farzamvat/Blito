@@ -1203,7 +1203,6 @@ angular.module('User')
                         document.getElementById("editEventSansSubmit").style.display = "block";
                     })
                     .catch(function (data) {
-                        console.log(data);
                     })
             } else {
                 $scope.blitTypesWithOutSeatsEdit = $scope.showTimeEditForms[sansIndex].blitTypes;
@@ -1273,7 +1272,6 @@ angular.module('User')
             $scope.coverEditPhotoSuccess = false;
             $scope.eventPlannerEdit = $scope.eventHosts[index];
             $("#editHost").modal("show");
-            console.log($scope.eventHosts[index]);
             $scope.eventHosts[index].images.forEach(function (item) {
                 if(item.type === "HOST_PHOTO") {
                     $scope.plannerImageIdEdit = item.imageUUID;
@@ -1578,7 +1576,6 @@ angular.module('User')
                         })
                     })
                     .catch(function (data) {
-                        console.log(data);
                     })
             };
             $scope.getEventTickets(1);
@@ -1653,7 +1650,6 @@ angular.module('User')
                     })
                 })
                 .catch(function (data) {
-                    console.log(data);
                 })
         };
 
@@ -2011,7 +2007,6 @@ angular.module('User')
                     })
                     .catch(function (data) {
                         document.getElementsByClassName("seatMapLoading")[0].style.display = "none";
-                        console.log(data);
                     })
             };
 
@@ -2032,7 +2027,6 @@ angular.module('User')
                     document.getElementById("generateBlitForGuestSpinner").style.display = "none";
                 })
                 .catch(function (data) {
-                    console.log(data);
                     document.getElementById("generateBlitForGuestSpinner").style.display = "none";
                 })
         };
@@ -2047,7 +2041,6 @@ angular.module('User')
                     $scope.seatMapList = data.data.content;
                 })
                 .catch(function (data) {
-                    console.log(data);
                 })
         };
 
@@ -2098,7 +2091,6 @@ angular.module('User')
                 })
                 .catch(function (data) {
                     document.getElementsByClassName("seatMapSpinner")[0].style.display = "none";
-                    console.log(data);
                 })
         };
 

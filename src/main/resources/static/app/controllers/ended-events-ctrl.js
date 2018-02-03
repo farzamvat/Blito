@@ -13,7 +13,6 @@ angular.module('eventsPageModule')
                     $scope.totalEventsNumber = data.data.totalElements;
                     $scope.eventList = $scope.catchImagesEvents(data.data.content);
                     $scope.eventList = $scope.eventList.map(eventDetailService.calculateFreeBlits);
-                    console.log($scope.eventList);
                     $scope.calculateCapacitySoldOut($scope.eventList);
                 })
                 .catch(function (data) {
