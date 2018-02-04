@@ -26,7 +26,6 @@ angular.module('eventsPageModule')
                 }
             })
             .catch(function (data) {
-                console.log(data);
             })
         $scope.getPdf = function () {
             ticketsService.getPdfTicket($scope.ticketData.trackCode)
@@ -35,7 +34,6 @@ angular.module('eventsPageModule')
                     FileSaver.saveAs(excelData, 'blit.pdf');
                 })
                 .catch(function (data) {
-                    console.log(data)
                 })
         }
     })

@@ -67,7 +67,6 @@ angular.module('eventsPageModule')
                 }
             })
             .catch(function (data) {
-                console.log(data);
             });
         $scope.eventFlatDates = [];
         $scope.sansListData = function (dates) {
@@ -218,7 +217,6 @@ angular.module('eventsPageModule')
                 })
                 .catch(function (data) {
                     document.getElementsByClassName("seatMapLoading")[0].style.display = "none";
-                    console.log(data);
                 })
         };
         $scope.seatsPickedChecked = true;
@@ -228,10 +226,6 @@ angular.module('eventsPageModule')
                 $scope.seatsPickedLimit = false;
                 $scope.blitTypeCreateValidation = data[0].length;
                 $scope.seatBlitUids = data[0];
-                // if (seatmapService.oneSeatUnpickedPayment($scope.seatBlitUids, populatedSchema)) {
-                //     $scope.seatsPickedChecked = true;
-                //     $scope.$apply();
-                // }
                 $scope.$apply();
             } else {
                 $scope.seatsPickedLimit = true;
