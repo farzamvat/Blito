@@ -24,7 +24,7 @@
                                         <label class="registerLabel"  >پست الکترونيکی :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input height="60"  name="email" ng-model="loginFields.email" type="email"  class="form-group registerInput" required>
+                                        <input height="60"  name="email" ng-model="loginFields.email" type="email"  class="form-group registerInput " required>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signInForm.email.$dirty && signInForm.email.$invalid">پست الکترونیکی نا معتبر است</div>
@@ -35,7 +35,7 @@
                                         <label class="registerLabel" for="passwordinput">رمز ورود :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input height="60" required="" id="passwordinput" name="passwordinput" ng-model="loginFields.password" class="form-group  registerInput" type="password"  >
+                                        <input height="60" required="" id="passwordinput" name="passwordinput" ng-model="loginFields.password" class="form-group  registerInput " type="password"  >
                                     </div>
 
                                 </div>
@@ -73,7 +73,7 @@
                                     <label class="registerLabel" for="name">نام :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input id="name" name="name" class="form-group  registerInput" type="text" ng-model="fields.firstname"  required>
+                                        <input id="name" name="name" class="form-group  registerInput " type="text" ng-model="fields.firstname"  required>
                                     </div>
                                 </div>
                                 <!-- Text input-->
@@ -82,7 +82,7 @@
                                     <label class="registerLabel" for="familyName">نام خانوادگی :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input id="familyName" name="familyName" class="form-group  registerInput"  type="text" ng-model="fields.lastname" required>
+                                        <input id="familyName" name="familyName" class="form-group  registerInput "  type="text" ng-model="fields.lastname" required>
                                     </div>
                                 </div>
                                 <!-- Text input-->
@@ -91,7 +91,7 @@
                                     <label class="registerLabel" for="mobile">شماره تلفن همراه :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input id="mobile" name="mobile" class="form-group  registerInput" type="text" ng-model="fields.mobile" required>
+                                        <input id="mobile" name="mobile" class="form-group  registerInput " type="text" ng-model="fields.mobile" required>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signupForm.mobile.$dirty && signupForm.mobile.$invalid" >شماره تلفن فیلد اجباری می باشد</div>
@@ -100,7 +100,7 @@
                                     <label class="registerLabel" for="Email">پست الکترونیکی :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input id="Email" name="email" class="form-group  registerInput" type="email" ng-model="fields.email" required>
+                                        <input id="Email" name="email" class="form-group  registerInput " type="email" ng-model="fields.email" required>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signupForm.email.$dirty && signupForm.email.$invalid" >پست الکترونیکی نا معتبر است</div>
@@ -113,7 +113,7 @@
                                     <label class="registerLabel" for="password">رمز عبور :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input id="password" name="password" class="form-group  registerInput" type="password" ng-model="fields.password"  length-validation required>
+                                        <input id="password" name="password" class="form-group  registerInput " type="password" ng-model="fields.password"  length-validation required>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 form-control-static text-center colorRed" ng-show="signupForm.password.$dirty && signupForm.password.$invalid" >رمز عبور باید حداقل ۸ کاراکتر باشد</div>
@@ -124,7 +124,7 @@
                                     <label class="registerLabel" for="reenterpassword">تکرار رمز عبور :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input id="reenterpassword" class="form-group  registerInput" name="reenterpassword" type="password" password-validation="password" length-validation ng-model="fields.confirmPassword" required>
+                                        <input id="reenterpassword" class="form-group  registerInput fontSize20Mobile" name="reenterpassword" type="password" password-validation="password" length-validation ng-model="fields.confirmPassword" required>
                                     </div>
                                 </div>
 

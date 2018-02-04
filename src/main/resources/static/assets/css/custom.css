@@ -991,7 +991,7 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     border-bottom: 3px solid rgb(252, 183, 49);
 }
 .exchangeTicketText p {
-    font-size: 12px !important;
+    font-size: 16px !important;
 }
 .item>img {
     display: block;
@@ -1095,6 +1095,9 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     font-size: 16px;
     padding-right: 5px;
     color: black;
+}
+body.modal-open {
+    position: fixed;
 }
 .datePickerFormat {
     width: 100%;
@@ -1364,9 +1367,9 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 }
 .btnExchangeTicket {
     font-size: 14px;
-    margin: 10px 15px;
-    width: 200px;
-    padding: 10px 15px;
+    margin: 10px 10px;
+    width: 170px;
+    padding: 10px 10px;
     text-align: center;
 }
 .blitFade {
@@ -3603,11 +3606,17 @@ input[type=number] {
     .fontSize18Mobile {
         font-size: 18px !important;
     }
+    .fontSize20Mobile {
+        font-size: 20px !important;
+    }
     .fontSize24Mobile {
         font-size: 24px !important;
     }
     .fontSize16Mobile {
         font-size: 16px !important;
+    }
+    .fontSize14Mobile {
+        font-size: 14px !important;
     }
     .eventContent p {
         font-size: 18px !important;
@@ -3883,7 +3892,7 @@ input[type=number] {
         background: none;
     }
     .exchangeTicketText {
-        margin-top: 30px;
+        margin-top: 10px;
     }
     .carousel-caption {
         width: 50%;
