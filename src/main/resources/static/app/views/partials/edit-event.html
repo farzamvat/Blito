@@ -404,7 +404,7 @@
                                 <button class="btn btn-info center-block" ng-click="addFieldTicketTypeEdit()">تعریف بلیت بدون انتخاب صندلی <i class="fa fa-plus"></i></button>
                             </div>
                             <div class="col-xs-12 marginTop30">
-                                <button class="btn btn-success center-block marginTop30" ng-disabled="editEventForm.blitNameEdit.$invalid || editEventForm.blitCapacityEdit.$invalid || editEventForm.blitPriceEdit.$invalid || (blitTypesWithOutSeatsEdit.length === 0)" ng-click="submitSansWithSeatpickerEdit(newShowTimeEdit)">ثبت ویرایش سانس</button>
+                                <button class="btn btn-success center-block marginTop30" ng-disabled="editEventForm.blitNameEdit.$invalid || editEventForm.blitCapacityEdit.$invalid || editEventForm.blitPriceEdit.$invalid || ((blitTypesWithOutSeatsEdit.length === 0) && !(editEventFields.salonUid))" ng-click="submitSansWithSeatpickerEdit(newShowTimeEdit)">ثبت ویرایش سانس</button>
                             </div>
                         </div>
                         <div class="hrLine marginTop30"></div>
@@ -493,7 +493,7 @@
                             </div>
                             <div class="col-xs-12 marginTop30">
                                 <!--<p class="text-center colorRed" ng-show="submitEventForm.newSansTime.$invalid">* تاریخ و ساعت را انتخاب کنید.</p>-->
-                                <button class="btn btn-success center-block marginTop30" ng-disabled="editEventForm.blitNameEditSubmit.$invalid || editEventForm.blitCapacityEditSubmit.$invalid || editEventForm.blitPriceEditSubmit.$invalid || (newShowTimeEdit.blitTypes.length === 0) " ng-click="submitSansWithSeatpickerEditSubmit(newShowTimeEdit)">ثبت  سانس</button>
+                                <button class="btn btn-success center-block marginTop30" ng-disabled="editEventForm.blitNameEditSubmit.$invalid || editEventForm.blitCapacityEditSubmit.$invalid || editEventForm.blitPriceEditSubmit.$invalid || ( (newShowTimeEdit.blitTypes.length === 0) && !(editEventFields.salonUid) ) " ng-click="submitSansWithSeatpickerEditSubmit(newShowTimeEdit)">ثبت  سانس</button>
                             </div>
                         </div>
                         <div class="hrLine marginTop30"></div>
