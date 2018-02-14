@@ -62,9 +62,10 @@ public class PublicEventController {
 	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.SimpleEvent.class)
 	@PostMapping("/search")
-	public ResponseEntity<Page<EventFlatViewModel>> search(
+	public CompletionStage<ResponseEntity<?>> search(
 			@RequestBody SearchViewModel<Event> searchViewModel, Pageable pageable,HttpServletRequest req,HttpServletResponse res) {
-		return ResponseEntity.ok(eventService.searchEvents(searchViewModel, pageable,flatMapper));
+		return CompletableFuture.supplyAsync(() -> eventService.searchEvents(searchViewModel,pageable,flatMapper))
+				.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,req,res));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //
@@ -74,15 +75,20 @@ public class PublicEventController {
 	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.Event.class)
 	@GetMapping("/flat/{eventId}")
-	public ResponseEntity<EventFlatViewModel> getFlatEvent(@PathVariable long eventId) {
-		return ResponseEntity.ok(eventService.getFlatEventById(eventId));
+	public CompletionStage<ResponseEntity<?>> getFlatEvent(@PathVariable long eventId,
+														   HttpServletRequest req,
+														   HttpServletResponse res) {
+		return CompletableFuture.supplyAsync(() -> eventService.getFlatEventById(eventId))
+				.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,req,res));
 	}
 
 	@JsonView(View.Event.class)
 	@GetMapping("/link/{eventLink}")
-	public ResponseEntity<EventViewModel> getEventByEventLink(@PathVariable String eventLink)
-	{
-		return ResponseEntity.ok(eventService.getEventByLink(eventLink));
+	public CompletionStage<ResponseEntity<?>> getEventByEventLink(@PathVariable String eventLink,
+																  HttpServletRequest request,
+																  HttpServletResponse response) {
+		return CompletableFuture.supplyAsync(() -> eventService.getEventByLink(eventLink))
+				.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,request,response));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //
@@ -92,7 +98,10 @@ public class PublicEventController {
 	// ***************** SWAGGER DOCS ***************** //
 	@JsonView(View.Event.class)
 	@GetMapping("/{eventId}")
-	public ResponseEntity<EventViewModel> getEvent(@PathVariable long eventId) {
-		return ResponseEntity.ok(eventService.getEventById(eventId));
+	public CompletionStage<ResponseEntity<?>> getEvent(@PathVariable long eventId,
+													   HttpServletRequest request,
+													   HttpServletResponse response) {
+		return CompletableFuture.supplyAsync(() -> eventService.getEventById(eventId))
+		.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,request,response));
 	}
 }
