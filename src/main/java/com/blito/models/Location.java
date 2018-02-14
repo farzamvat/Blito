@@ -1,8 +1,11 @@
 package com.blito.models;
 
+import com.vividsolutions.jts.geom.Point;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Transient;
 
 
 @Entity(name="location")
@@ -13,6 +16,27 @@ public class Location extends Profile {
 	
 	Double longitude;
 	Double latitude;
+	@Transient
+	private Double distance;
+
+	@Column(name = "location", columnDefinition = "POINT")
+	private Point point;
+
+	public Double getDistance() {
+		return distance;
+	}
+
+	public void setDistance(Double distance) {
+		this.distance = distance;
+	}
+
+	public Point getPoint() {
+		return point;
+	}
+
+	public void setPoint(Point point) {
+		this.point = point;
+	}
 
 	public String getAddress() {
 		return address;
