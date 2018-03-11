@@ -2,7 +2,25 @@
  * Created by soroush on 4/25/17.
  */
 angular.module('eventsPageModule')
-    .controller('eventPageCtrl', function ($rootScope,
+    .controller('eventPageCtrl', [
+        '$scope',
+        '$routeParams',
+        'eventService',
+        'mapMarkerService',
+        'photoService',
+        '$q',
+        'dateSetterService',
+        '$timeout',
+        'userInfo',
+        'ticketsService',
+        '$window',
+        'dataService',
+        'plannerService',
+        '$filter',
+        'seatmapService',
+        '$location',
+
+        function ($rootScope,
                                            $scope,
                                            $routeParams,
                                            eventService,
@@ -623,4 +641,4 @@ angular.module('eventsPageModule')
             $(window).scroll(sticky_relocate);
             sticky_relocate();
         });
-    });
+    }]);

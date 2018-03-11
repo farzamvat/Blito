@@ -2,8 +2,8 @@
  * Created by soroush on 4/18/17.
  */
 
-var app = angular.module('appRoutes', ['ngRoute'])
-    .config(function ($routeProvider, $locationProvider) {
+angular.module('appRoutes', [])
+    .config(['$routeProvider', '$locationProvider',function ($routeProvider, $locationProvider) {
 
 
         $locationProvider.html5Mode({
@@ -95,9 +95,9 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 authenticated: false
             })
             .otherwise({redirectTo: '/not-found'})
-    });
+    }])
 
-app.run(['$rootScope', 'Auth', '$location', function ($rootScope, Auth, $location) {
+    .run(['$rootScope', 'Auth', '$location', function ($rootScope, Auth, $location) {
     $rootScope.$on('$routeChangeStart', function (event, next) {
         if(next.$$route.authenticated === true) {
             if(!Auth.isLoggedIn() && !Auth.loggedInRefresh()) {

@@ -2,7 +2,9 @@
  * Created by soroush on 5/17/17.
  */
 angular.module('UiServices', [])
-    .service('mapMarkerService', function ($timeout) {
+    .service('mapMarkerService', [
+        '$timeout',
+        function ($timeout) {
         var mapMarkerService = this;
         var markers = [], map, latitudeLongtitude = {lat : 35.724569, lng : 51.387749};
 
@@ -120,8 +122,8 @@ angular.module('UiServices', [])
             } catch (err) {
             }
         }
-    })
-    .service('eventDetailService', function () {
+    }])
+    .service('eventDetailService', [function () {
         var eventDetail = this;
         var soldCount = 0, capacity = 0;
         eventDetail.calculateFreeBlits = function (event) {
@@ -133,8 +135,11 @@ angular.module('UiServices', [])
             event.soldCount = soldCount;
             return event
         };
-    })
-    .service('imageServices', function ($rootScope, photoService) {
+    }])
+    .service('imageServices', [
+        '$rootScope',
+        'photoService',
+        function ($rootScope, photoService) {
         var image = this;
         image.readBase64Data = function (fileSelector, className) {
             var f = fileSelector.files[0], r = new FileReader();
@@ -155,8 +160,8 @@ angular.module('UiServices', [])
                 .catch(function (data, status) {
                 });
         };
-    })
-    .service('dateSetterService', function () {
+    }])
+    .service('dateSetterService', [function () {
         var dateSetter = this;
         dateSetter.initDate = function (className) {
             $("."+className).pDatepicker({
@@ -203,8 +208,8 @@ angular.module('UiServices', [])
             });
             return dateArray;
         };
-    })
-    .service('dataService', function () {
+    }])
+    .service('dataService', [function () {
         var data = this;
         data.persianToEnglishDigit = function (persianDigit) {
                 var persian = {'۰':0,'۱':1,'۲':2,'۳':3,'۴':4,'۵': 5,'۶': 6,'۷': 7,'۸' : 8,'۹': 9};
@@ -340,4 +345,4 @@ angular.module('UiServices', [])
             return item;
         }
 
-    });
+    }]);

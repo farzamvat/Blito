@@ -2,7 +2,28 @@
  * Created by soroush on 5/2/17.
  */
 angular.module('User')
-    .controller('userProfileCtrl', function ($scope,
+    .controller('userProfileCtrl', [
+        'userInfo',
+        'Auth',
+        '$timeout',
+        'mapMarkerService',
+        'updateInfo',
+        '$location',
+        'scrollAnimation',
+        'photoService',
+        'eventService',
+        'plannerService',
+        'exchangeService',
+        'dataService',
+        'ticketsService',
+        '$q',
+        'dateSetterService',
+        'imageServices',
+        '$window',
+        'FileSaver',
+        'seatmapService',
+
+        function ($scope,
                                              userInfo,
                                              Auth,
                                              $timeout,
@@ -2286,4 +2307,4 @@ angular.module('User')
 
         });
 
-    });
+    }]);

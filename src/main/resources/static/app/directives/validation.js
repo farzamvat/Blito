@@ -3,7 +3,7 @@
  */
 
 angular.module('blitoDirectives')
-    .directive('lengthValidation',  function () {
+    .directive('lengthValidation',  [function () {
         return {
             require: 'ngModel',
             link: function(scope, element, attr, dirCtrl) {
@@ -19,8 +19,8 @@ angular.module('blitoDirectives')
                 dirCtrl.$parsers.push(lengthValidation);
             }
         }
-    })
-    .directive('passwordValidation',  function () {
+    }])
+    .directive('passwordValidation',  [function () {
         return {
             require: 'ngModel',
             link: function (scope, elem, attrs, ctrl) {
@@ -33,10 +33,10 @@ angular.module('blitoDirectives')
                 });
             }
         }
-    })
+    }])
     //
 
-    .directive('urlValidation',  function () {
+    .directive('urlValidation',  [function () {
         return {
             require: 'ngModel',
             link: function(scope, element, attr, dirCtrl) {
@@ -55,6 +55,6 @@ angular.module('blitoDirectives')
                 dirCtrl.$parsers.push(urlValidation);
             }
         }
-    })
+    }])
 ;
 

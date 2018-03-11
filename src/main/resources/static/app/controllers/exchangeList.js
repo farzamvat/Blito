@@ -3,7 +3,14 @@
  */
 
 angular.module('exchangesPageModule', [])
-    .controller('exchangeListCtrl', function ($scope, exchangeService, photoService, dataService, config) {
+    .controller('exchangeListCtrl', [
+        '$scope',
+        'exchangeService',
+        'photoService',
+        'dataService',
+        'config',
+
+        function ($scope, exchangeService, photoService, dataService, config) {
 
         $scope.pageTitle = "آگهی بلیت";
         // $scope.urlExchange = "http://localhost:3000"+"/exchange-page/";
@@ -40,4 +47,4 @@ angular.module('exchangesPageModule', [])
         };
         $scope.getAllExchanges(1);
         $scope.currentPage = 1;
-    });
+    }]);

@@ -2,7 +2,7 @@
  * Created by soroush on 10/25/17.
  */
 angular.module('blitoDirectives')
-    .directive('seatMap',  function () {
+    .directive('seatMap',  [function () {
         return {
             link : seatMapDraw,
             controller : function ($scope) {
@@ -231,8 +231,8 @@ angular.module('blitoDirectives')
 
             };
         }
-    })
-    .directive('seatMapEdit',  function () {
+    }])
+    .directive('seatMapEdit',  [function () {
         return {
             link : seatMapDrawEdit,
             controller : function ($scope) {
@@ -493,8 +493,8 @@ angular.module('blitoDirectives')
 
             };
         }
-    })
-    .directive('seatMapBuyTicket',  function () {
+    }])
+    .directive('seatMapBuyTicket',  [function () {
         return {
             link : seatMapDraw,
             controller : function ($scope,$timeout) {
@@ -762,8 +762,8 @@ angular.module('blitoDirectives')
 
             };
         }
-    })
-    .directive('seatMapGenerateTicket',  function () {
+    }])
+    .directive('seatMapGenerateTicket',  [function () {
         return {
             link : seatMapDraw,
             controller : function ($scope) {
@@ -967,4 +967,4 @@ angular.module('blitoDirectives')
 
             };
         }
-    })
+    }])

@@ -3,7 +3,15 @@
  */
 
 angular.module('bioPageModule', [])
-    .controller('bioPageCtrl', function ($rootScope, $scope, plannerService, $routeParams, photoService, config, $location) {
+    .controller('bioPageCtrl', [
+        '$rootScope',
+        '$scope',
+        'plannerService',
+        '$routeParams',
+        'photoService',
+        'config',
+        '$location',
+        function ($rootScope, $scope, plannerService, $routeParams, photoService, config, $location) {
         $scope.url = config.baseUrl+"/event-page/";
         plannerService.getPlannerByLink($routeParams.plannerLink)
             .then(function (data) {
@@ -74,4 +82,4 @@ angular.module('bioPageModule', [])
             }
             return link;
         }
-    });
+    }]);

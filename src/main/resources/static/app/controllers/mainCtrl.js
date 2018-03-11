@@ -2,7 +2,23 @@
  * Created by soroush on 4/18/17.
  */
 angular.module('menuPagesModule', [])
-    .controller('mainCtrl', function ($rootScope,
+    .controller('mainCtrl', [
+        '$rootScope',
+        '$scope',
+        'Auth',
+        'userCreate',
+        '$window',
+        '$timeout',
+        '$interval',
+        '$location',
+        'userInfo',
+        'AuthToken',
+        'refresh',
+        'config',
+        'dataService',
+        'updateInfo',
+
+        function ($rootScope,
                                       $scope,
                                       Auth,
                                       userCreate,
@@ -363,5 +379,5 @@ angular.module('menuPagesModule', [])
             isOpen=false;
         };
 
-    });
+    }]);
 

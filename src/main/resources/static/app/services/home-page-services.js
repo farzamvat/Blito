@@ -3,7 +3,10 @@
  */
 
 angular.module('homePageApi', [])
-    .service('miniSliderService', function ($http, config) {
+    .service('miniSliderService', [
+        '$http',
+        'config',
+        function ($http, config) {
         var miniSlider = this;
         miniSlider.getAllEventsCount = function () {
             return $http.get(config.baseUrl + '/api/blito/v1.0/public/events/count');
@@ -57,8 +60,11 @@ angular.module('homePageApi', [])
 
             return $http.post(config.baseUrl + '/api/blito/v1.0/public/events/search',bodyJson, queryParam);
         }
-    })
-    .service('indexBannerService', function ($http, config) {
+    }])
+    .service('indexBannerService', [
+        '$http',
+        'config',
+        function ($http, config) {
         var indexBanner = this;
         indexBanner.getIndexBanner = function () {
             var queryParam = {
@@ -69,8 +75,11 @@ angular.module('homePageApi', [])
 
         }
 
-    })
-    .service('ourOffersService', function ($http, config) {
+    }])
+    .service('ourOffersService', [
+        '$http',
+        'config',
+        function ($http, config) {
         var ourOffer = this;
         ourOffer.getOurOffer = function (type, evento) {
             var queryParam = {
@@ -100,4 +109,4 @@ angular.module('homePageApi', [])
 
         }
 
-    });
+    }]);

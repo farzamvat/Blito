@@ -3,7 +3,15 @@
  */
 
 angular.module('eventsPageModule')
-    .controller('userTicketCtrl', function($scope, ticketsService, $routeParams, mapMarkerService, photoService, FileSaver){
+    .controller('userTicketCtrl', [
+        '$scope',
+        'ticketsService',
+        '$routeParams',
+        'mapMarkerService',
+        'photoService',
+        'FileSaver',
+
+        function($scope, ticketsService, $routeParams, mapMarkerService, photoService, FileSaver){
         $("#buyTicket").modal("hide");
         $scope.imageDownload = function (UUID) {
             photoService.download(UUID)
@@ -36,5 +44,5 @@ angular.module('eventsPageModule')
                 .catch(function (data) {
                 })
         }
-    })
+    }])
     ;
