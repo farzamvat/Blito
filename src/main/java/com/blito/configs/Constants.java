@@ -51,6 +51,10 @@ public final class Constants {
     public static final String ACCESS_TOKEN_AUDIENCE = "ACCESS";
     public static final String REFRESH_TOKEN_AUDIENCE = "REFRESH";
 
+    public static final String APARAT_STARTING_URL = "https://www.aparat.com/v/";
+    public static final String APARAT_IFRAME_TEMPLATE_PART_1="<style>.h_iframe-aparat_embed_frame{position:relative;} .h_iframe-aparat_embed_frame .ratio {display:block;width:100%;height:auto;} .h_iframe-aparat_embed_frame iframe {position:absolute;top:0;left:0;width:100%; height:100%;}</style><div class=\"h_iframe-aparat_embed_frame\"> <span style=\"display: block;padding-top: 57%\"></span><iframe src=";
+    public static final String APARAT_IFRAME_TEMPLATE_PART_2="https://www.aparat.com/video/video/embed/videohash/%s/vt/frame\" allowFullScreen=\"true\" webkitallowfullscreen=\"true\" mozallowfullscreen=\"true\" ></iframe></div>";
+
     private Constants()
     {}
 }

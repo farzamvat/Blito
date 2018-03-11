@@ -1,5 +1,6 @@
 package com.blito.mappers;
 
+import com.blito.configs.Constants;
 import com.blito.enums.*;
 import com.blito.exceptions.FileNotFoundException;
 import com.blito.models.*;
@@ -9,6 +10,7 @@ import com.blito.rest.viewmodels.event.AdditionalField;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import io.vavr.control.Option;
+import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +37,9 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         Event event = new Event();
         event.setEventName(vmodel.getEventName());
         event.setAddress(vmodel.getAddress());
-        event.setAparatDisplayCode(vmodel.getAparatDisplayCode());
+        Option.of(vmodel.getAparatDisplayCode())
+                .map(aparatDisplayCode -> new StringBuilder(Constants.APARAT_IFRAME_TEMPLATE_PART_1).append(String.format(Constants.APARAT_IFRAME_TEMPLATE_PART_2,aparatDisplayCode.split(Constants.APARAT_STARTING_URL)[1])).toString())
+                .peek(aparatIframeCode -> event.setAparatDisplayCode(aparatIframeCode));
         event.setBlitSaleEndDate(vmodel.getBlitSaleEndDate());
         event.setBlitSaleStartDate(vmodel.getBlitSaleStartDate());
         event.setDescription(vmodel.getDescription());
@@ -105,7 +109,9 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
     @Override
     public Event updateEntity(EventViewModel vmodel, Event event) {
         event.setAddress(vmodel.getAddress());
-        event.setAparatDisplayCode(vmodel.getAparatDisplayCode());
+        Option.of(vmodel.getAparatDisplayCode())
+                .map(aparatDisplayCode -> new StringBuilder(Constants.APARAT_IFRAME_TEMPLATE_PART_1).append(String.format(Constants.APARAT_IFRAME_TEMPLATE_PART_2,aparatDisplayCode.split(Constants.APARAT_STARTING_URL)[1])).toString())
+                .peek(aparatIframeCode -> event.setAparatDisplayCode(aparatIframeCode));
         event.setBlitSaleStartDate(vmodel.getBlitSaleStartDate());
         event.setBlitSaleEndDate(vmodel.getBlitSaleEndDate());
         event.setDescription(vmodel.getDescription());

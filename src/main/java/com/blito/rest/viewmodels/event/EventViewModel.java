@@ -1,6 +1,7 @@
 package com.blito.rest.viewmodels.event;
 
 import com.blito.annotations.AdditionalFields;
+import com.blito.annotations.AparatUrl;
 import com.blito.enums.EventType;
 import com.blito.enums.OfferTypeEnum;
 import com.blito.enums.OperatorState;
@@ -59,6 +60,7 @@ public class EventViewModel {
 	@JsonView(View.Event.class)
 	private Double longitude;
 
+	@AparatUrl(message = "{aparat.url.not.valid}")
 	@JsonView(View.Event.class)
 	private String aparatDisplayCode;
 
