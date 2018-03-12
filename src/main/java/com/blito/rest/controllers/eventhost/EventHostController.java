@@ -1,19 +1,17 @@
 package com.blito.rest.controllers.eventhost;
 
+import com.blito.models.User;
+import com.blito.rest.utility.HandleUtility;
+import com.blito.rest.viewmodels.address.AddressViewModel;
+import com.blito.security.SecurityContextHolder;
+import com.blito.services.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.blito.annotations.Permission;
@@ -33,12 +31,20 @@ import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import springfox.documentation.spi.service.contexts.SecurityContext;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 
 @RestController
 @RequestMapping("${api.base.url}" + "/event-hosts")
 public class EventHostController {
 	@Autowired
-	EventHostService eventHostService;
+	private EventHostService eventHostService;
+	@Autowired
+	private AddressService addressService;
 
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "create event host")
@@ -106,9 +112,52 @@ public class EventHostController {
 			@ApiResponse(code = 200, message = "get all user's event hosts successful", response = EventHostViewModel.class) })
 	// ***************** SWAGGER DOCS ***************** //
 	@Permission(value = ApiBusinessName.USER)
-	@JsonView(View.EventHost.class)
+	@JsonView(View.OwnerEventHost.class)
 	@GetMapping("/all")
 	public ResponseEntity<Page<EventHostViewModel>> getCurrentUserEventHosts(Pageable pageable) {
 		return ResponseEntity.ok(eventHostService.getCurrentUserEventHosts(pageable));
+	}
+
+	@Permission(ApiBusinessName.USER)
+	@JsonView(View.OwnerEventHost.class)
+	@PostMapping("/addresses")
+	public CompletionStage<ResponseEntity<?>> createNewAddress(@Validated @RequestBody AddressViewModel addressViewModel,
+															   HttpServletRequest request,
+															   HttpServletResponse response) {
+		User currentUser = SecurityContextHolder.currentUser();
+		return CompletableFuture.supplyAsync(() -> addressService.create(addressViewModel,currentUser))
+				.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,request,response));
+	}
+
+	@Permission(ApiBusinessName.USER)
+	@JsonView(View.OwnerEventHost.class)
+	@PutMapping("/addresses")
+	public CompletionStage<ResponseEntity<?>> updateExistingAddress(@Validated @RequestBody AddressViewModel viewModel,
+																	HttpServletRequest request,
+																	HttpServletResponse response) {
+		User currentUser = SecurityContextHolder.currentUser();
+		return CompletableFuture.supplyAsync(() -> addressService.update(viewModel,currentUser))
+				.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,request,response));
+	}
+
+	@Permission(ApiBusinessName.USER)
+	@DeleteMapping("/addresses/{id}")
+	public CompletionStage<ResponseEntity<?>> deleteAddress(@PathVariable Long id,
+															HttpServletRequest request,
+															HttpServletResponse response) {
+		User currentUser = SecurityContextHolder.currentUser();
+		return CompletableFuture.runAsync(() -> addressService.delete(id,currentUser))
+				.handle((aVoid,throwable) -> HandleUtility.generateResponseResult(() -> new ResultVm(ResourceUtil.getMessage(Response.SUCCESS)),
+						throwable,request,response));
+	}
+
+	@Permission(ApiBusinessName.USER)
+	@JsonView(View.OwnerEventHost.class)
+	@GetMapping("/addresses")
+	public CompletionStage<ResponseEntity<?>> getEventHostsAddresses(HttpServletRequest request,
+																	 HttpServletResponse response) {
+		User currentUser = SecurityContextHolder.currentUser();
+		return CompletableFuture.supplyAsync(() -> addressService.getAllEventHostsAddresses(currentUser))
+				.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,request,response));
 	}
 }

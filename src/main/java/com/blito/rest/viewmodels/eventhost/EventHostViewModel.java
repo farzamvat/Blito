@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import com.blito.annotations.Url;
 import com.blito.enums.HostType;
 import com.blito.rest.viewmodels.View;
+import com.blito.rest.viewmodels.address.AddressViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -24,7 +25,6 @@ public class EventHostViewModel {
 	String description;
 	
 	@JsonView(View.EventHost.class)
-	//@Telephone
 	String telephone;
 	
 	@JsonView(View.EventHost.class)
@@ -58,16 +58,28 @@ public class EventHostViewModel {
 	private String eventHostLink;
 	
 	@JsonView(View.SimpleEventHost.class)
-	Set<ImageViewModel> images;
+	private Set<ImageViewModel> images;
+
+	@JsonView(View.OwnerEventHost.class)
+	private Set<AddressViewModel> addresses;
 	
 	public EventHostViewModel()
 	{
 		images = new HashSet<>();
+		addresses = new HashSet<>();
 	}
 	
 	@JsonProperty("isDeleted")
 	public boolean isDeleted() {
 		return isDeleted;
+	}
+
+	public Set<AddressViewModel> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(Set<AddressViewModel> addresses) {
+		this.addresses = addresses;
 	}
 
 	public String getEventHostLink() {

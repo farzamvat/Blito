@@ -11,7 +11,9 @@ import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 public class EventHostMapper implements GenericMapper<EventHost,EventHostViewModel> {
 
 	@Autowired
-	ImageMapper imageMapper;
+	private ImageMapper imageMapper;
+	@Autowired
+	private AddressMapper addressMapper;
 
 	@Override
 	public EventHost createFromViewModel(EventHostViewModel vmodel) {
@@ -45,6 +47,7 @@ public class EventHostMapper implements GenericMapper<EventHost,EventHostViewMod
 		vmodel.setDeleted(eventHost.isDeleted());
 		vmodel.setEventHostLink(eventHost.getEventHostLink());
 		vmodel.setImages(imageMapper.createFromEntities(eventHost.getImages()));
+		vmodel.setAddresses(addressMapper.createFromEntities(eventHost.getAddresses()));
 		return vmodel;
 	}
 
