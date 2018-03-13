@@ -37,9 +37,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         Event event = new Event();
         event.setEventName(vmodel.getEventName());
         event.setAddress(vmodel.getAddress());
-        Option.of(vmodel.getAparatDisplayCode())
-                .map(aparatDisplayCode -> new StringBuilder(Constants.APARAT_IFRAME_TEMPLATE_PART_1).append(String.format(Constants.APARAT_IFRAME_TEMPLATE_PART_2,aparatDisplayCode.split(Constants.APARAT_STARTING_URL)[1])).toString())
-                .peek(aparatIframeCode -> event.setAparatDisplayCode(aparatIframeCode));
+        event.setAparatDisplayCode(vmodel.getAparatDisplayCode());
         event.setBlitSaleEndDate(vmodel.getBlitSaleEndDate());
         event.setBlitSaleStartDate(vmodel.getBlitSaleStartDate());
         event.setDescription(vmodel.getDescription());
@@ -53,7 +51,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         event.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
         event.setEventState(State.CLOSED.name());
         event.setEvento(false);
-        event.setPrivate(vmodel.isPrivate());
+        event.setPrivate(vmodel.getPrivate());
         Optional.ofNullable(vmodel.getSalonUid()).filter(salonUid -> !salonUid.isEmpty())
                 .ifPresent(salonUid -> {
                     Salon salon = salonRepository.findBySalonUid(salonUid).orElseThrow(() -> new FileNotFoundException(ResourceUtil.getMessage(Response.SALON_NOT_FOUND)));
@@ -109,9 +107,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
     @Override
     public Event updateEntity(EventViewModel vmodel, Event event) {
         event.setAddress(vmodel.getAddress());
-        Option.of(vmodel.getAparatDisplayCode())
-                .map(aparatDisplayCode -> new StringBuilder(Constants.APARAT_IFRAME_TEMPLATE_PART_1).append(String.format(Constants.APARAT_IFRAME_TEMPLATE_PART_2,aparatDisplayCode.split(Constants.APARAT_STARTING_URL)[1])).toString())
-                .peek(aparatIframeCode -> event.setAparatDisplayCode(aparatIframeCode));
+        event.setAparatDisplayCode(vmodel.getAparatDisplayCode());
         event.setBlitSaleStartDate(vmodel.getBlitSaleStartDate());
         event.setBlitSaleEndDate(vmodel.getBlitSaleEndDate());
         event.setDescription(vmodel.getDescription());
@@ -149,7 +145,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
                     .peek(eventDate -> eventDateMapper.updateEntity(edvm, eventDate))
                     .onEmpty(() -> event.addEventDate(eventDateMapper.createFromViewModel(edvm)))
         );
-        event.setPrivate(vmodel.isPrivate());
+        event.setPrivate(vmodel.getPrivate());
         Optional.ofNullable(vmodel.getSalonUid()).filter(salonUid -> !salonUid.isEmpty())
                 .ifPresent(salonUid -> {
                     Salon salon = salonRepository.findBySalonUid(salonUid).orElseThrow(() -> new FileNotFoundException(ResourceUtil.getMessage(Response.SALON_NOT_FOUND)));
