@@ -51,7 +51,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         event.setAdditionalFields(vmodel.getAdditionalFields().stream().collect(Collectors.toMap(AdditionalField::getKey, AdditionalField::getValue)));
         event.setMembers(vmodel.getMembers());
         event.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
-        event.setEndDate(new Timestamp(7258105800000L));
+        event.setEndDate(new Timestamp(Constants.EVENT_DEFAULT_END_DATE));
         event.setEventState(State.CLOSED.name());
         event.setEvento(false);
         event.setPrivate(vmodel.isPrivate());

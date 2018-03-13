@@ -64,7 +64,7 @@ public class EventFlatViewModel {
 	private int orderNumber;
 	@JsonView(View.Event.class)
 	private String members;
-	@JsonView(View.SimpleEvent.class)
+	@JsonView(View.Event.class)
 	private Timestamp createdAt;
 	@JsonView(View.AdminEvent.class)
 	private boolean isDeleted;
@@ -74,7 +74,7 @@ public class EventFlatViewModel {
 	private Map<String,String> additionalFields;
 	@JsonView(View.AdminEvent.class)
 	private boolean isPrivate;
-	@JsonView(View.SimpleEvent.class)
+	@JsonView(View.Event.class)
 	private Timestamp endDate;
 	
 	
