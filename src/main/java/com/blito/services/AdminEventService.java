@@ -28,6 +28,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -102,6 +105,9 @@ public class AdminEventService {
 				ed.setEventDateState(State.CLOSED.name());
 				ed.getBlitTypes().forEach(bt -> bt.setBlitTypeState(State.CLOSED.name()));
 			});
+
+		if(vmodel.getState() == State.ENDED)
+		    event.setEndDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 
 		event.setEventState(vmodel.getState().name());
 	}

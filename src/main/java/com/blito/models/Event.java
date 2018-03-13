@@ -80,6 +80,16 @@ public class Event {
 	
 	private boolean isPrivate = false;
 
+	public Timestamp getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Timestamp endDate) {
+		this.endDate = endDate;
+	}
+
+	private Timestamp endDate;
+
 	public boolean isPrivate() {
 		return isPrivate;
 	}

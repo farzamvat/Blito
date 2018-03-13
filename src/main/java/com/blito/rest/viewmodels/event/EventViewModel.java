@@ -58,6 +58,9 @@ public class EventViewModel {
 	private Timestamp createdAt;
 
 	@JsonView(View.Event.class)
+	private Timestamp endDate;
+
+	@JsonView(View.Event.class)
 	private Double longitude;
 
 	@AparatUrl(message = "{aparat.url.not.valid}")
@@ -377,6 +380,13 @@ public class EventViewModel {
 	public void setPrivate(boolean isPrivate) {
 		this.isPrivate = isPrivate;
 	}
-	
-	
+
+
+	public Timestamp getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Timestamp endDate) {
+		this.endDate = endDate;
+	}
 }

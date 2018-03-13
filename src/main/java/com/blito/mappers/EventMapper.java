@@ -102,6 +102,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
                             .collect(Collectors.toList()));
                 });
         vmodel.setPrivate(event.isPrivate());
+        vmodel.setEndDate(event.getEndDate());
         event.getEventDates().stream().filter(eventDate -> eventDate.getSalon() != null).findAny().ifPresent(eventDate -> vmodel.setSalonUid(eventDate.getSalon().getSalonUid()));
         return vmodel;
     }
