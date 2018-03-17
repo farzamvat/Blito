@@ -44,7 +44,6 @@ var ngPersian = require("../bower_components/angular-persian/dist/angularpersian
 var textAngularR = require("rangy");
 var textAngularRS = require("textangular");
 var textAngularS = require("textangular/dist/textAngular-sanitize.min");
-// var textAngular = require("../bower_components/textAngular/dist/textAngular.min.js");
 var ngFileSaver = require("../bower_components/angular-file-saver/dist/angular-file-saver.min.js");
 var ngFileSaverRq = require("../bower_components/angular-file-saver/dist/angular-file-saver.bundle.min.js");
 var angulartics = require("../bower_components/angulartics/dist/angulartics.min.js");
