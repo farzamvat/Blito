@@ -52,7 +52,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         event.setEndDate(new Timestamp(Constants.EVENT_DEFAULT_END_DATE));
         event.setEventState(State.CLOSED.name());
         event.setEvento(false);
-        event.setPrivate(vmodel.getPrivate());
+        event.setPrivate(vmodel.isPrivate());
         Optional.ofNullable(vmodel.getSalonUid()).filter(salonUid -> !salonUid.isEmpty())
                 .ifPresent(salonUid -> {
                     Salon salon = salonRepository.findBySalonUid(salonUid).orElseThrow(() -> new FileNotFoundException(ResourceUtil.getMessage(Response.SALON_NOT_FOUND)));
@@ -147,7 +147,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
                     .peek(eventDate -> eventDateMapper.updateEntity(edvm, eventDate))
                     .onEmpty(() -> event.addEventDate(eventDateMapper.createFromViewModel(edvm)))
         );
-        event.setPrivate(vmodel.getPrivate());
+        event.setPrivate(vmodel.isPrivate());
         Optional.ofNullable(vmodel.getSalonUid()).filter(salonUid -> !salonUid.isEmpty())
                 .ifPresent(salonUid -> {
                     Salon salon = salonRepository.findBySalonUid(salonUid).orElseThrow(() -> new FileNotFoundException(ResourceUtil.getMessage(Response.SALON_NOT_FOUND)));
