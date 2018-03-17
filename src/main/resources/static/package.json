@@ -1,0 +1,22 @@
+{
+  "name": "sy",
+  "version": "1.0.0",
+  "description": "s",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bundle": "webpack"
+  },
+  "author": "s",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "1.6.4",
+    "jquery": "3.2.1",
+    "rangy": "^1.3.0",
+    "textangular": "^1.5.16",
+    "webpack": "4.1.1"
+  },
+  "devDependencies": {
+    "webpack-cli": "^2.0.11"
+  }
+}
