@@ -13,7 +13,6 @@ angular.module('exchangesPageModule', [])
         function ($scope, exchangeService, photoService, dataService, config) {
 
         $scope.pageTitle = "آگهی بلیت";
-        // $scope.urlExchange = "http://localhost:3000"+"/exchange-page/";
         $scope.urlExchange = config.baseUrl+"/exchange-page/";
 
         $scope.getAllExchanges = function (page) {

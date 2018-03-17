@@ -180,6 +180,7 @@ angular.module('UiServices', [])
         };
 
         dateSetter.persianToMs = function (date) {
+            console.log(date);
             var newData = date.replace(/:|\/|,/gi , ' ').split(" ");
             newData.splice(3,2);
             newData = newData.map(function (persianNumb) {

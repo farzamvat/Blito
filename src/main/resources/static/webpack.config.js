@@ -15,12 +15,18 @@ module.exports = {
                     compress: true,
                     comments: false,
                     mangle: false,
-                    toplevel: true,
+                    toplevel: false,
                     keep_classnames: true,
                     keep_fnames: true
                 }
             })
         ]
-    }
+    },
+    plugins: [
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery"
+        })
+    ]
 };
 

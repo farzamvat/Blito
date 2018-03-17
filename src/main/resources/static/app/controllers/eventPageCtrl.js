@@ -3,6 +3,7 @@
  */
 angular.module('eventsPageModule')
     .controller('eventPageCtrl', [
+        '$rootScope',
         '$scope',
         '$routeParams',
         'eventService',
