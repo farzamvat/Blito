@@ -74,6 +74,8 @@ public class EventFlatViewModel {
 	private Map<String,String> additionalFields;
 	@JsonView(View.AdminEvent.class)
 	private boolean isPrivate;
+	@JsonView(View.Event.class)
+	private Timestamp endDate;
 	
 	
 	public Map<String, String> getAdditionalFields() {
@@ -300,6 +302,13 @@ public class EventFlatViewModel {
 	public void setPrivate(boolean isPrivate) {
 		this.isPrivate = isPrivate;
 	}
-	
-	
+
+
+	public Timestamp getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Timestamp endDate) {
+		this.endDate = endDate;
+	}
 }

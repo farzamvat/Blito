@@ -292,6 +292,8 @@ public class EventService {
 		}
 	}
 
+
+
 	@Transactional
 	public <V> Page<V> searchEvents(SearchViewModel<Event> searchViewModel, Pageable pageable,
 			GenericMapper<Event, V> mapper) {

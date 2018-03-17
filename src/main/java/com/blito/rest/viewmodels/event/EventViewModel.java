@@ -58,6 +58,9 @@ public class EventViewModel {
 	private Timestamp createdAt;
 
 	@JsonView(View.Event.class)
+	private Timestamp endDate;
+
+	@JsonView(View.Event.class)
 	private Double longitude;
 
 	@AparatUrl(message = "{aparat.url.not.valid}")
@@ -345,5 +348,14 @@ public class EventViewModel {
 
 	public void setSalonUid(String salonUid) {
 		this.salonUid = salonUid;
+	}
+
+
+	public Timestamp getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Timestamp endDate) {
+		this.endDate = endDate;
 	}
 }

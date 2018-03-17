@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
@@ -66,7 +68,7 @@ public class PublicEventController {
 	@PostMapping("/search")
 	public CompletionStage<ResponseEntity<?>> search(
 			@RequestBody SearchViewModel<Event> searchViewModel, Pageable pageable,HttpServletRequest req,HttpServletResponse res) {
-		return CompletableFuture.supplyAsync(() -> eventService.searchEvents(searchViewModel,pageable,flatMapper))
+		return CompletableFuture.supplyAsync(() -> eventService.searchEvents(searchViewModel, pageable, flatMapper))
 				.handle((result,throwable) -> HandleUtility.generateResponseResult(() -> result,throwable,req,res));
 	}
 
