@@ -197,6 +197,7 @@ public class EventServiceTest {
 		eventViewModel.setEventHostName(eventHost1.getHostName());
 		eventViewModel.setEventName("My Event");
 		eventViewModel.setEventType(EventType.CONCERT);
+		eventViewModel.setPrivate(false);
 
 		EventDateViewModel eventDateViewModel = new EventDateViewModel();
 		BlitTypeViewModel blitTypeViewModel1 = new BlitTypeViewModel();
@@ -310,7 +311,7 @@ public class EventServiceTest {
 		
 		eventDateViewModel.setBlitTypes(Arrays.asList(blitTypeViewModel1,blitTypeViewModel2).stream().collect(Collectors.toSet()));
 		vmodel.setEventDates(Arrays.asList(eventDateViewModel).stream().collect(Collectors.toSet()));
-		vmodel.setEventHostId(1000);
+		vmodel.setEventHostId(1000L);
 		vmodel = eventService.create(vmodel);
 	}
 	

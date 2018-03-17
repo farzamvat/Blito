@@ -101,11 +101,11 @@ public class EventViewModel {
 	private Integer orderNumber;
 
 	@JsonView(View.SimpleEvent.class)
-	private Boolean isEvento;
+	private boolean isEvento;
 	@JsonView(View.Event.class)
 	private String members;
 	@JsonView(View.AdminEvent.class)
-	private Boolean isDeleted;
+	private boolean isDeleted;
 
 	@Valid
 	@AdditionalFields
@@ -113,7 +113,7 @@ public class EventViewModel {
 	private List<AdditionalField> additionalFields;
 	
 	@JsonView(View.AdminEvent.class)
-	private Boolean isPrivate;
+	private boolean isPrivate;
 	@JsonView(View.Event.class)
 	private String salonUid;
 
@@ -300,13 +300,7 @@ public class EventViewModel {
 		this.orderNumber = orderNumber;
 	}
 
-	public Boolean getEvento() {
-		return isEvento;
-	}
 
-	public void setEvento(Boolean evento) {
-		isEvento = evento;
-	}
 
 	public String getMembers() {
 		return members;
@@ -316,14 +310,6 @@ public class EventViewModel {
 		this.members = members;
 	}
 
-	@JsonProperty("isDeleted")
-	public Boolean getDeleted() {
-		return isDeleted;
-	}
-
-	public void setDeleted(Boolean deleted) {
-		isDeleted = deleted;
-	}
 
 	public List<AdditionalField> getAdditionalFields() {
 		return additionalFields;
@@ -333,14 +319,7 @@ public class EventViewModel {
 		this.additionalFields = additionalFields;
 	}
 
-	@JsonProperty("isPrivate")
-	public Boolean getPrivate() {
-		return isPrivate;
-	}
 
-	public void setPrivate(Boolean aPrivate) {
-		isPrivate = aPrivate;
-	}
 
 	public String getSalonUid() {
 		return salonUid;
@@ -357,5 +336,32 @@ public class EventViewModel {
 
 	public void setEndDate(Timestamp endDate) {
 		this.endDate = endDate;
+	}
+
+	@JsonProperty("isEvento")
+	public boolean isEvento() {
+		return isEvento;
+	}
+
+	public void setEvento(boolean evento) {
+		isEvento = evento;
+	}
+
+	@JsonProperty("isDeleted")
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		isDeleted = deleted;
+	}
+
+	@JsonProperty("isPrivate")
+	public boolean isPrivate() {
+		return isPrivate;
+	}
+
+	public void setPrivate(boolean aPrivate) {
+		isPrivate = aPrivate;
 	}
 }
