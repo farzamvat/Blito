@@ -20,6 +20,7 @@ import com.blito.search.Operation;
 import com.blito.search.SearchViewModel;
 import com.blito.search.Simple;
 import com.blito.security.SecurityContextHolder;
+import io.vavr.control.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,21 +152,35 @@ public class EventService {
 		}
 		event.setViews(event.getViews() + 1);
 		this.openOrCloseEventOnSaleDateConditions(event);
-		return eventMapper.createFromEntity(event);
+		EventViewModel viewModel = eventMapper.createFromEntity(event);
+		transformAparatUrlToIframe(viewModel.getAparatDisplayCode()).peek(iframe -> viewModel.setAparatDisplayCode(iframe));
+		return viewModel;
 	}
 
+	private Option<String> transformAparatUrlToIframe(String aparatUrl) {
+		return Option.of(aparatUrl)
+				.filter(Objects::nonNull)
+				.filter(url -> url.startsWith(Constants.APARAT_STARTING_URL))
+				.map(aparatDisplayCode -> new StringBuilder(Constants.APARAT_IFRAME_TEMPLATE_PART_1).append(String.format(Constants.APARAT_IFRAME_TEMPLATE_PART_2,aparatDisplayCode.split(Constants.APARAT_STARTING_URL)[1])).toString());
+	}
+
+	@Transactional
 	public EventFlatViewModel getFlatEventById(long eventId) {
 		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 		this.openOrCloseEventOnSaleDateConditions(event);
-		return eventFlatMapper.createFromEntity(event);
+		EventFlatViewModel viewModel = eventFlatMapper.createFromEntity(event);
+		transformAparatUrlToIframe(viewModel.getAparatDisplayCode()).peek(iframe -> viewModel.setAparatDisplayCode(iframe));
+		return viewModel;
 	}
 
+	@Transactional
 	public EventViewModel getEventById(long eventId) {
 		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
-
-		return eventMapper.createFromEntity(event);
+		EventViewModel viewModel = eventMapper.createFromEntity(event);
+		transformAparatUrlToIframe(viewModel.getAparatDisplayCode()).peek(iframe -> viewModel.setAparatDisplayCode(iframe));
+		return viewModel;
 	}
 
 	@Transactional

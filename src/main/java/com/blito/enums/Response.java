@@ -102,6 +102,7 @@ public enum Response {
 	ERROR_PESSIMISTIC_LOCK("error.pessimistic.lock"),
 	PAY_DOT_IR_ERROR("error.pay.ir"),
 	USER_ACTIVATION_RETRY_TIMEOUT("error.user.activation.retry.timeout"),
+	ADDRESS_NOT_FOUND("error.address.not.found"),
 	SEAT_INFORMATION("seat.info");
     
 
