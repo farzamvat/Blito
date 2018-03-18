@@ -1,6 +1,18 @@
 /**
  * Created by soroush on 4/18/17.
  */
+var anyChartUi = require('../assets/css/anychart/anychart-ui.min.css');
+var bootstrapCss = require('../bower_components/bootstrap/dist/css/bootstrap.min.css');
+var fontAwesom = require('../assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css');
+var slickCss = require('../bower_components/slick-carousel/slick/slick.css');
+var slickThemeCss = require('../bower_components/slick-carousel/slick/slick-theme.css');
+var wizardStyle = require('../assets/css/wizardStyle.css');
+var customCss = require('../assets/css/custom.css');
+var tabProfileCss = require('../assets/css/tabProfile.css');
+var textAngularCss = require('../node_modules/textangular/dist/textAngular.css');
+var persianDatePickerCss = require('../bower_components/persian-datepicker/dist/css/persian-datepicker-0.4.5.min.css');
+var persianDatePickerDarkCss = require('../bower_components/persian-datepicker/dist/css/theme/persian-datepicker-dark.css');
+
 var jquery = require('../bower_components/jquery/dist/jquery.min.js');
 var anyChartBase = require('../assets/js/anychart/anychart-base.min.js');
 var anyChartMap = require('../assets/js/anychart/anychart-map.min.js');
