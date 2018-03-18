@@ -152,7 +152,6 @@ textarea:focus, input:focus {
 /*}*/
 /*--------------------------------------------*/
 .midSection {
-    background: url('/assets/img/th3.png') ;
     background-size: 100% 500px;
     height: 500px;
 }
@@ -706,7 +705,6 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 }
 .userProfileInfo {
     height: 170px;
-    background: url('/assets/img/orange1.png') fixed repeat-y;
     background-size: 100% 400px;
 }
 .profilePage {
@@ -1613,7 +1611,6 @@ dir-pagination-controls ul {
     margin-bottom: 5px;
 }
 .eventListSection {
-    background: url('/assets/img/pt.jpg') fixed repeat-y;
     margin-top: 10px;
     margin-bottom: 10px;
 }

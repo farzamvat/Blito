@@ -37,11 +37,11 @@ module.exports = {
     module: {
         rules: [
             { test: /\.css$/, use: ['style-loader', 'css-loader' ]},
-            { test: /\.jpg/,  use: ["file-loader"] },
-            { test: /\.png/,  use: ["file-loader"] },
-            { test: /\.gif/,  use: ["file-loader"] },
-            { test: /\.svg/,  use: ["file-loader"] },
-            { test: /\.(woff|woff2|eot|ttf)$/, loader: 'url-loader?limit=100000' }
+            { test: /\.jpg/,  loader: 'file-loader',   query: { publicPath: '/webpack'} },
+            { test: /\.png/,  loader: 'file-loader',   query: { publicPath: '/webpack'}  },
+            { test: /\.gif/,  loader: 'file-loader',   query: { publicPath: '/webpack'}  },
+            { test: /\.svg/,  loader: 'file-loader',   query: { publicPath: '/webpack'}  },
+            { test: /\.(woff|woff2|eot|ttf)$/, loader: 'url-loader?limit=100000',   query: { publicPath: '/webpack'} }
 
         ]
     }
