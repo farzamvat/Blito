@@ -3,7 +3,18 @@
  */
 
 angular.module('homePageModule', [])
-    .controller('homeCtrl', function ($scope, miniSliderService, photoService, indexBannerService, ourOffersService, eventDetailService, $q,config, $interval) {
+    .controller('homeCtrl', [
+        '$scope',
+        'miniSliderService',
+        'photoService',
+        'indexBannerService',
+        'ourOffersService',
+        'eventDetailService',
+        '$q',
+        'config',
+        '$interval',
+
+        function ($scope, miniSliderService, photoService, indexBannerService, ourOffersService, eventDetailService, $q,config, $interval) {
         $scope.concertRow = [];
         $scope.showSections = [false,false,false,false,false,false,false];
         $scope.showSectionsExcahnge = [false,false];
@@ -171,4 +182,4 @@ angular.module('homePageModule', [])
             },speed);
 
         }
-    });
+    }]);

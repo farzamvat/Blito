@@ -3,7 +3,14 @@
  */
 
 angular.module('eventsPageModule', [])
-    .controller('eventsListPageCtrl', function ($scope, $location, eventService, photoService, eventDetailService, config) {
+    .controller('eventsListPageCtrl', [
+        '$scope',
+        '$location',
+        'eventService',
+        'photoService',
+        'eventDetailService',
+        'config'
+        , function ($scope, $location, eventService, photoService, eventDetailService, config) {
         $scope.url = config.baseUrl+"/event-page/";
 
         $scope.getEventsByTypeData = function (type,page) {
@@ -93,4 +100,4 @@ angular.module('eventsPageModule', [])
             });
         };
         $scope.currentPage = 1;
-    });
+    }]);

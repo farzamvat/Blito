@@ -72,20 +72,20 @@
 
                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                 <div class="col-xs-10 floatRight text-center">
-                                    <label class="registerLabel floatRight" for="eventTicketStartTime">زمان شروع فروش بلیت :</label>
+                                    <label class="registerLabel floatRight" for="eventTicketStartTimeEdit">زمان شروع فروش بلیت :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <input height="60" id="eventTicketStartTime" required  ng-model="editEventFields.blitSaleStartDate" type="text"  class="form-group datePickerFormat blitSaleStartDate" readonly>
+                                    <input height="60" id="eventTicketStartTimeEdit" required  ng-model="editEventFields.blitSaleStartDate" type="text"  class="form-group datePickerFormat blitSaleStartDate" readonly>
                                 </div>
 
                             </div>
 
                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
                                 <div class="col-xs-10 floatRight text-center">
-                                    <label class="registerLabel floatRight" for="eventTicketEndTime" > زمان پایان فروش بلیت :</label>
+                                    <label class="registerLabel floatRight" for="eventTicketEndTimeEdit" > زمان پایان فروش بلیت :</label>
                                 </div>
                                 <div class="col-xs-11 floatRight ">
-                                    <input height="60" id="eventTicketEndTime" required  ng-model="editEventFields.blitSaleEndDate"  type="text"  class="form-group datePickerFormat blitSaleEndDate" readonly>
+                                    <input height="60" id="eventTicketEndTimeEdit" required  ng-model="editEventFields.blitSaleEndDate"  type="text"  class="form-group datePickerFormat blitSaleEndDate" readonly>
                                 </div>
                             </div>
                         </div>
@@ -330,7 +330,7 @@
                                     <label class="registerLabel" >تاریخ و ساعت : </label>
                                 </div>
                                 <div class="col-xs-12 col-sm-6 floatRight inputXsSize">
-                                    <input type="text"  ng-model="newShowTimeEdit.persianDate" name="newSansTime" class="datePickerFormat eventDateClassEdit0"  readonly/>
+                                    <input type="text" id="editSansDate"  ng-model="newShowTimeEdit.persianDate" name="newSansTime" class="datePickerFormat eventDateClassEdit0"  readonly/>
                                 </div>
                             </div>
                             <seat-map-edit  ng-if="eventHasSalon && editEventFields.eventState === 'CLOSED'"></seat-map-edit>
@@ -419,7 +419,7 @@
                                     <label class="registerLabel" >تاریخ و ساعت : </label>
                                 </div>
                                 <div class="col-xs-12 col-sm-6 floatRight inputXsSize">
-                                    <input type="text"  ng-model="newShowTimeEdit.persianDate" name="newSansTime" class="datePickerFormat newSansEditSubmitDate"  readonly/>
+                                    <input type="text" id="newSansTimeEditSubmit"  ng-model="newShowTimeEdit.persianDate" name="newSansTime" class="datePickerFormat newSansEditSubmitDate"  readonly/>
                                 </div>
                             </div>
 
@@ -492,7 +492,6 @@
                                 <button class="btn btn-info center-block" ng-click="addFieldTicketTypeEditSubmit()">تعریف بلیت بدون انتخاب صندلی <i class="fa fa-plus"></i></button>
                             </div>
                             <div class="col-xs-12 marginTop30">
-                                <!--<p class="text-center colorRed" ng-show="submitEventForm.newSansTime.$invalid">* تاریخ و ساعت را انتخاب کنید.</p>-->
                                 <button class="btn btn-success center-block marginTop30" ng-disabled="editEventForm.blitNameEditSubmit.$invalid || editEventForm.blitCapacityEditSubmit.$invalid || editEventForm.blitPriceEditSubmit.$invalid || ( (newShowTimeEdit.blitTypes.length === 0) && !(editEventFields.salonUid) ) " ng-click="submitSansWithSeatpickerEditSubmit(newShowTimeEdit)">ثبت  سانس</button>
                             </div>
                         </div>

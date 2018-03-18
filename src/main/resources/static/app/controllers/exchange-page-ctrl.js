@@ -3,7 +3,18 @@
  */
 
 angular.module('eventsPageModule')
-    .controller('exchangePageCtrl', function ($rootScope, $scope, $routeParams, exchangeService, mapMarkerService, dateSetterService, photoService, $timeout, $location) {
+    .controller('exchangePageCtrl', [
+        '$rootScope',
+        '$scope',
+        '$routeParams',
+        'exchangeService',
+        'mapMarkerService',
+        'dateSetterService',
+        'photoService',
+        '$timeout',
+        '$location',
+
+        function ($rootScope, $scope, $routeParams, exchangeService, mapMarkerService, dateSetterService, photoService, $timeout, $location) {
         $scope.userEmail = 'email';
 
         exchangeService.getExchange($routeParams.exchangeLink)
@@ -33,4 +44,4 @@ angular.module('eventsPageModule')
 
         $scope.eventType = "cinema";
 
-    });
+    }]);

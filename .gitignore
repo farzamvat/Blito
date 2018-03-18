@@ -24,3 +24,4 @@ task.json
 /log-dir_IS_UNDEFINED/
 /src/main/resources/static/node_modules/
 /newrelic/logs/
+/src/main/resources/static/webpack/
