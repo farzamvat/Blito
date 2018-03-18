@@ -5,7 +5,7 @@ module.exports = {
     context: __dirname + '/app',
     entry: './app.js',
     output: {
-        path: __dirname + '/',
+        path: __dirname + '/webpack',
         filename: '[name].js'
     },
     optimization: {
