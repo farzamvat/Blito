@@ -52,8 +52,6 @@
 
                             <th ng-show="eventType !== 'EXHIBITION'" class="dataCenter eventPageListTitle" > محدوده قیمت(تومان)
                             </th>
-                            <th ng-show="eventType !== 'EXHIBITION'" class="dataCenter eventPageListTitle" >بلیت باقی ‌مانده
-                            </th>
                             <th ng-show="eventType !== 'EXHIBITION'" class="dataCenter eventPageListTitle" >وضعیت سانس
                             </th>
                         </tr>
@@ -67,7 +65,6 @@
                             <td ng-if="item.maxPrice !== 0 && item.minPrice !== 0 && eventType !== 'EXHIBITION' && item.maxPrice !== item.minPrice" class="dataCenter fontSize16Mobile">{{ item.maxPrice | number | pNumber}} - {{ item.minPrice | number | pNumber}}</td>
                             <td ng-if="item.maxPrice !== 0 && item.minPrice !== 0 && eventType !== 'EXHIBITION' && item.maxPrice === item.minPrice" class="dataCenter fontSize16Mobile">{{ item.maxPrice | number | pNumber}}</td>
 
-                            <td ng-if="eventType !== 'EXHIBITION'" class="dataCenter">{{ item.capacity - item.soldCount  | number | pNumber}}</td>
 
                             <td ng-if="item.state === 'OPEN' && eventType !== 'EXHIBITION'" class="dataCenter fontGreen" >
                                 قابل خرید
