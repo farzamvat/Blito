@@ -888,7 +888,7 @@ angular.module('User')
                 delete showTime.persianDate;
                 return showTime;
             });
-
+            console.log($scope.eventImageId);
             var eventSubmitData = {
                 eventName : eventFields.name,
                 eventType : eventFields.eventType,
@@ -902,9 +902,9 @@ angular.module('User')
                 isPrivate : eventFields.isPrivate,
                 eventDates : newShowTime,
                 images : [
-                    {imageUUID : $scope.eventImageId, type : "EVENT_PHOTO"},
+                    {imageUUID : $scope.eventImageId,   type : "EVENT_PHOTO"},
                     {imageUUID : $scope.galleryOneUUID, type : "GALLERY"},
-                    {imageUUID : $scope.galleryTwoUUID, type : "GALLERY"},
+                    {imageUUID : $scope.galleryTwoUUID,  type : "GALLERY"},
                     {imageUUID : $scope.galleryThreeUUID, type : "GALLERY"},
                     {imageUUID : $scope.galleryFourUUID, type : "GALLERY"},
                     {imageUUID : $scope.galleryFiveUUID, type : "GALLERY"},
@@ -938,7 +938,14 @@ angular.module('User')
                     angular.element(document.getElementsByClassName("galleryFive"))[0].src = '';
                     angular.element(document.getElementsByClassName("gallerySix"))[0].src = '';
                     document.getElementsByClassName("seatMapSection0")[0].style.display = "none";
-                    $scope.mapMarkerClickCheckEvent = true;
+                    $scope.eventImageId = null;
+                    $scope.galleryOneUUID = null;
+                    $scope.galleryTwoUUID = null;
+                    $scope.galleryThreeUUID = null;
+                    $scope.galleryFourUUID = null;
+                    $scope.galleryFiveUUID = null;
+                    $scope.gallerySixUUID = null;
+                        $scope.mapMarkerClickCheckEvent = true;
                     setInitMaps('makeEventSection');
                     $scope.showTimeForms = [];
                     $timeout(function () {
