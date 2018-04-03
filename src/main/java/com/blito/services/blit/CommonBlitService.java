@@ -92,6 +92,7 @@ public class CommonBlitService extends AbstractBlitService<CommonBlit,CommonBlit
         CommonBlit blit = commonBlitMapper.createFromViewModel(viewModel);
         BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(viewModel.getBlitTypeId()))
                 .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
+        blit.setEventDateAndTime(blitType.getEventDate().getDateTime());
         checkBlitTypeRestrictionsForBuy(blitType);
         if (blit.getCount() + blitType.getSoldCount() > blitType.getCapacity())
             throw new InconsistentDataException(ResourceUtil.getMessage(Response.REQUESTED_BLIT_COUNT_IS_MORE_THAN_CAPACITY));
@@ -153,6 +154,7 @@ public class CommonBlitService extends AbstractBlitService<CommonBlit,CommonBlit
         CommonBlit commonBlit = commonBlitMapper.createFromViewModel(viewModel);
         BlitType blitType = Optional.ofNullable(blitTypeRepository.findOne(viewModel.getBlitTypeId()))
                 .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.BLIT_TYPE_NOT_FOUND)));
+        commonBlit.setEventDateAndTime(blitType.getEventDate().getDateTime());
         if (blitType.isFree())
             throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
         checkBlitTypeRestrictionsForBuy(blitType);

@@ -20,21 +20,31 @@ public class EventDate {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	long eventDateId;
 	
-	Timestamp date;
+	private Timestamp date;
 	
-	String eventDateState;
+	private String eventDateState;
 	
 	@OneToMany(mappedBy="eventDate", targetEntity=BlitType.class,fetch=FetchType.EAGER, cascade=CascadeType.ALL,orphanRemoval=true)
-	Set<BlitType> blitTypes;
+	private Set<BlitType> blitTypes;
 	
 	@ManyToOne
 	@JoinColumn(name="eventId")
-	Event event;
+	private Event event;
 	
 	@ManyToOne(optional=true)
 	@JoinColumn(name="salonId")
-	Salon salon;
-	
+	private Salon salon;
+
+	private String dateTime;
+
+	public String getDateTime() {
+		return dateTime;
+	}
+
+	public void setDateTime(String dateTime) {
+		this.dateTime = dateTime;
+	}
+
 	public EventDate()
 	{
 		blitTypes = new HashSet<>();
