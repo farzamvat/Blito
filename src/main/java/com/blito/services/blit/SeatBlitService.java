@@ -152,8 +152,8 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).distinct().forEach(this::checkBlitTypeRestrictionsForBuy);
         EventDate eventDate = blitTypeSeats.stream().findAny().map(BlitTypeSeat::getBlitType).map(BlitType::getEventDate)
                 .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
+        Option.of(eventDate.getDateTime()).peek(dateTime -> seatBlit.setEventDateAndTime(dateTime));
         validateAdditionalFields(eventDate.getEvent(),seatBlit);
-
         validateSeatBlitForBuy(blitTypeSeats);
         blitTypeSeats.forEach(blitTypeSeat -> {
             blitTypeSeat.setState(BlitTypeSeatState.RESERVED.name());
@@ -166,8 +166,6 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         });
 //        salonService.validateNoIndividualSeat(salonService.populateSeatInformationInSalonSchemaByEventDateId(eventDate.getEventDateId()).getSchema());
         seatBlit.setBlitTypeSeats(blitTypeSeats);
-        blitTypeSeats.stream().findAny().map(blitTypeSeat -> blitTypeSeat.getBlitType().getEventDate().getDateTime())
-                .ifPresent(dateTime -> seatBlit.setEventDateAndTime(dateTime));
         return blitPurchaseAuthorizedSeatBlit(viewModel,user,seatBlit);
     }
 
@@ -240,6 +238,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         }
         EventDate eventDate = blitTypeSeats.stream().findAny().map(BlitTypeSeat::getBlitType).map(BlitType::getEventDate)
                 .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
+        Option.of(eventDate.getDateTime()).peek(dateTime -> seatBlit.setEventDateAndTime(dateTime));
         validateAdditionalFields(eventDate.getEvent(),seatBlit);
         validateSeatBlitForBuy(blitTypeSeats);
         blitTypeSeats.forEach(blitTypeSeat -> {
@@ -254,8 +253,6 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
 //        salonService.validateNoIndividualSeat(salonService.populateSeatInformationInSalonSchemaByEventDateId(eventDate.getEventDateId()).getSchema());
         seatBlit.setTrackCode(generateTrackCode());
         seatBlit.setBlitTypeSeats(blitTypeSeats);
-        blitTypeSeats.stream().findAny().map(blitTypeSeat -> blitTypeSeat.getBlitType().getEventDate().getDateTime())
-                .ifPresent(dateTime -> seatBlit.setEventDateAndTime(dateTime));
         userRepository.findByEmail(seatBlit.getCustomerEmail())
                 .ifPresent(user -> seatBlit.setUser(user));
         validateDiscountCodeIfPresentAndCalculateTotalAmount(viewModel,seatBlit);
