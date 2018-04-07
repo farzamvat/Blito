@@ -9,6 +9,12 @@ public class Complex<T> extends AbstractSearchViewModel<T> {
 
     private Operator operator;
     private List<AbstractSearchViewModel<T>> restrictions;
+
+    public Complex(Operator operator, List<AbstractSearchViewModel<T>> restrictions) {
+        this.operator = operator;
+        this.restrictions = restrictions;
+    }
+
     @Override
     public Specification<T> action() {
         return (root,query,cb) ->

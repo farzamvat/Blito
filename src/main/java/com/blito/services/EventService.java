@@ -1,10 +1,7 @@
 package com.blito.services;
 
 import com.blito.configs.Constants;
-import com.blito.enums.ImageType;
-import com.blito.enums.OperatorState;
-import com.blito.enums.Response;
-import com.blito.enums.State;
+import com.blito.enums.*;
 import com.blito.exceptions.*;
 import com.blito.mappers.*;
 import com.blito.models.*;
@@ -16,9 +13,7 @@ import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
-import com.blito.search.Operation;
-import com.blito.search.SearchViewModel;
-import com.blito.search.Simple;
+import com.blito.search.*;
 import com.blito.security.SecurityContextHolder;
 import io.vavr.control.Option;
 import org.slf4j.Logger;
@@ -183,6 +178,11 @@ public class EventService {
 		return viewModel;
 	}
 
+//	@Transactional
+//	public EventViewModel createEditedVersion(EventViewModel) {
+//
+//	}
+
 	@Transactional
 	public EventViewModel update(EventViewModel vmodel) {
 		validateEventViewModel(vmodel);
@@ -300,9 +300,10 @@ public class EventService {
 		Simple<Event> isDeletedRestriction = new Simple<>(Operation.eq, "isDeleted", "false");
 		Simple<Event> isPrivateRestriction = new Simple<>(Operation.eq, "isPrivate", "false");
 		Simple<Event> isApprovedRestriction = new Simple<>(Operation.eq, "operatorState", OperatorState.APPROVED.name());
-		searchViewModel.getRestrictions().addAll(Arrays.asList(isDeletedRestriction, isPrivateRestriction, isApprovedRestriction));
+		Simple<Event> isEditedRestriction = new Simple<>(Operation.eq, "operatorState", OperatorState.EDITED.name());
+		Complex<Event> editedOrApproved = new Complex<>(Operator.or, Arrays.asList(isApprovedRestriction,isEditedRestriction));
+		searchViewModel.getRestrictions().addAll(Arrays.asList(isDeletedRestriction, isPrivateRestriction, editedOrApproved));
 		Page<Event> page = searchService.search(searchViewModel, pageable, eventRepository);
-//		page.forEach(this::openOrCloseEventOnSaleDateConditions);
 		return page.map(mapper::createFromEntity);
 	}
 
