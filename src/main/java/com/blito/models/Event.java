@@ -354,11 +354,11 @@ public class Event {
 		}
 	}
 	
-	public void removeEventDateById(Long id)
+	public void removeEventDateByUid(String uid)
 	{
 		this.eventDates.stream()
-				.filter(b -> b.getEventDateId() == id)
+				.filter(b -> b.getUid().equals(uid))
 				.findFirst()
-				.ifPresent(eventDate -> this.eventDates.removeIf(b -> b.getEventDateId() == id));
+				.ifPresent(eventDate -> this.eventDates.removeIf(b -> b.getUid().equals(uid)));
 	}
 }

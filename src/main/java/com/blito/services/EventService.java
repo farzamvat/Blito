@@ -135,6 +135,10 @@ public class EventService {
 		event.setImages(images);
 		event.setEventHost(eventHost);
 		event.setEventLink(generateEventLink(event));
+		event.getEventDates().forEach(eventDate -> {
+			eventDate.setUid(UUID.randomUUID().toString());
+			eventDate.getBlitTypes().forEach(blitType -> blitType.setUid(UUID.randomUUID().toString()));
+		});
 		return eventMapper.createFromEntity(eventRepository.save(event));
 	}
 
@@ -346,8 +350,10 @@ public class EventService {
 		Simple<Event> isPrivateRestriction = new Simple<>(Operation.eq, "isPrivate", "false");
 		Simple<Event> isApprovedRestriction = new Simple<>(Operation.eq, "operatorState", OperatorState.APPROVED.name());
 		Simple<Event> isEditedRestriction = new Simple<>(Operation.eq, "operatorState", OperatorState.EDITED.name());
-		Complex<Event> editedOrApproved = new Complex<>(Operator.or, Arrays.asList(isApprovedRestriction,isEditedRestriction));
-		searchViewModel.getRestrictions().addAll(Arrays.asList(isDeletedRestriction, isPrivateRestriction, editedOrApproved));
+		Simple<Event> isEditRejectedRestriction = new Simple<>(Operation.eq, "operatorState", OperatorState.EDIT_REJECTED.name());
+		Complex<Event> isEditedOrApprovedOrEditRejected = new Complex<>(Operator.or,
+				Arrays.asList(isApprovedRestriction,isEditedRestriction,isEditRejectedRestriction));
+		searchViewModel.getRestrictions().addAll(Arrays.asList(isDeletedRestriction, isPrivateRestriction, isEditedOrApprovedOrEditRejected));
 		Page<Event> page = searchService.search(searchViewModel, pageable, eventRepository);
 		return page.map(mapper::createFromEntity);
 	}

@@ -20,6 +20,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -129,22 +130,26 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
                     event.setAdditionalFields(null);
                 });
 
-        List<Long> oldOnes = vmodel.getEventDates().stream().map(EventDateViewModel::getEventDateId).filter(id -> id > 0).collect(Collectors.toList());
-        List<Long> shouldDelete = new ArrayList<>();
-        event.getEventDates().forEach(bt -> {
-            if (!oldOnes.contains(bt.getEventDateId())) {
-                shouldDelete.add(bt.getEventDateId());
+        List<String> oldOnes = vmodel.getEventDates().stream().map(EventDateViewModel::getUid).filter(uid -> !uid.isEmpty()).collect(Collectors.toList());
+        List<String> shouldDelete = new ArrayList<>();
+        event.getEventDates().forEach(eventDate -> {
+            if (!oldOnes.contains(eventDate.getUid())) {
+                shouldDelete.add(eventDate.getUid());
             }
         });
-        shouldDelete.forEach(event::removeEventDateById);
+        shouldDelete.forEach(event::removeEventDateByUid);
 
         vmodel.getEventDates().forEach(edvm ->
             Option.ofOptional(event.getEventDates()
                     .stream()
-                    .filter(eventDate -> edvm.getEventDateId() > 0 && eventDate.getEventDateId() == edvm.getEventDateId())
+                    .filter(eventDate -> !edvm.getUid().isEmpty() && eventDate.getUid().equals(edvm.getUid()))
                     .findFirst())
                     .peek(eventDate -> eventDateMapper.updateEntity(edvm, eventDate))
-                    .onEmpty(() -> event.addEventDate(eventDateMapper.createFromViewModel(edvm)))
+                    .onEmpty(() -> {
+                        EventDate eventDate = eventDateMapper.createFromViewModel(edvm);
+                        eventDate.setUid(UUID.randomUUID().toString());
+                        event.addEventDate(eventDate);
+                    })
         );
         event.setPrivate(vmodel.isPrivate());
         Optional.ofNullable(vmodel.getSalonUid()).filter(salonUid -> !salonUid.isEmpty())

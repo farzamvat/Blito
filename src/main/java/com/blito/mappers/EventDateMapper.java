@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -25,6 +26,7 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 		EventDate eventDate = new EventDate();
 		eventDate.setDate(vmodel.getDate());
 		eventDate.setDateTime(vmodel.getDateTime());
+		eventDate.setUid(vmodel.getUid());
 		eventDate.setEventDateState(State.CLOSED.name());
 		vmodel.getBlitTypes().forEach(bt -> {
 			eventDate.addBlitType(blitTypeMapper.createFromViewModel(bt));
@@ -37,6 +39,7 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 		EventDateViewModel vmodel = new EventDateViewModel();
 		vmodel.setDate(eventDate.getDate());
 		vmodel.setDateTime(eventDate.getDateTime());
+		vmodel.setUid(eventDate.getUid());
 		vmodel.setBlitTypes(eventDate.getBlitTypes().stream().map(blitTypeMapper::createFromEntity).collect(Collectors.toSet()));
 		vmodel.setEventDateId(eventDate.getEventDateId());
 		vmodel.setState(Enum.valueOf(State.class, eventDate.getEventDateState()));
@@ -48,23 +51,27 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 	public EventDate updateEntity(EventDateViewModel vmodel, EventDate eventDate) {
 		eventDate.setDate(vmodel.getDate());
 		eventDate.setDateTime(vmodel.getDateTime());
-		List<Long> oldOnes = vmodel.getBlitTypes().stream().map(BlitTypeViewModel::getBlitTypeId).filter(id -> id > 0).collect(Collectors.toList());
-		List<Long> shouldDelete = new ArrayList<>();
+		List<String> oldOnes = vmodel.getBlitTypes().stream().map(BlitTypeViewModel::getUid).filter(uid -> !uid.isEmpty()).collect(Collectors.toList());
+		List<String> shouldDelete = new ArrayList<>();
 		eventDate.getBlitTypes().forEach(bt -> {
-			if(!oldOnes.contains(bt.getBlitTypeId()))
+			if(!oldOnes.contains(bt.getUid()))
 			{
-				shouldDelete.add(bt.getBlitTypeId());
+				shouldDelete.add(bt.getUid());
 			}
 		});
-		shouldDelete.forEach(eventDate::removeBlitTypeById);
+		shouldDelete.forEach(eventDate::removeBlitTypeByUid);
 		
 		vmodel.getBlitTypes().forEach(bvm ->
 			Option.ofOptional(eventDate.getBlitTypes()
 					.stream()
-					.filter(b -> bvm.getBlitTypeId() > 0 && b.getBlitTypeId() == bvm.getBlitTypeId())
+					.filter(b -> !bvm.getUid().isEmpty() && b.getUid().equals(bvm.getUid()))
 					.findFirst())
 					.peek(blitType -> blitTypeMapper.updateEntity(bvm,blitType))
-					.onEmpty(() -> eventDate.addBlitType(blitTypeMapper.createFromViewModel(bvm)))
+					.onEmpty(() -> {
+						BlitType blitType = blitTypeMapper.createFromViewModel(bvm);
+						blitType.setUid(UUID.randomUUID().toString());
+						eventDate.addBlitType(blitType);
+					})
 		);
 	
 		return eventDate;
