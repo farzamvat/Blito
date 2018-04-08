@@ -76,7 +76,7 @@ public class BlitTypeMapper implements GenericMapper<BlitType,BlitTypeViewModel>
 		blitType.setCapacity(vmodel.getCapacity());
 		blitType.setFree(vmodel.isFree());
 		blitType.setPrice(vmodel.getPrice());
-		blitType.setBlitTypeState(State.CLOSED.name());
+		blitType.setBlitTypeState(vmodel.getBlitTypeState().name());
 		Optional<Set<String>> seatUids = Optional.ofNullable(vmodel.getSeatUids()).filter(uids -> !uids.isEmpty());
 		if(seatUids.isPresent()) {
 			if(blitType.getName().equals(Constants.HOST_RESERVED_SEATS)) {

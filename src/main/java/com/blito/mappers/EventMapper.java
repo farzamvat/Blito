@@ -58,8 +58,6 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
                     Salon salon = salonRepository.findBySalonUid(salonUid).orElseThrow(() -> new FileNotFoundException(ResourceUtil.getMessage(Response.SALON_NOT_FOUND)));
                     event.getEventDates().forEach(eventDate -> eventDate.setSalon(salon));
                 });
-
-
         return event;
     }
 
@@ -114,11 +112,13 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         event.setBlitSaleEndDate(vmodel.getBlitSaleEndDate());
         event.setDescription(vmodel.getDescription());
         event.setEventName(vmodel.getEventName());
-        event.setEventState(State.CLOSED.name());
-        event.setOperatorState(OperatorState.PENDING.name());
+        event.setEventState(vmodel.getEventState().name());
+        event.setOperatorState(OperatorState.APPROVED.name());
         event.setLongitude(vmodel.getLongitude());
         event.setLatitude(vmodel.getLatitude());
-        event.setEventLink(vmodel.getEventLink());
+        if(vmodel.getEventLink() != null) {
+            event.setEventLink(vmodel.getEventLink());
+        }
         event.setEventType(vmodel.getEventType().name());
         event.setMembers(vmodel.getMembers());
         Option.of(vmodel.getAdditionalFields())

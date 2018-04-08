@@ -88,6 +88,13 @@ public class AdminEventService {
 						ResourceUtil.getMessage(SmsMessage.OPERATOR_STATE_REJECTED),
 						ResourceUtil.getMessage(SmsMessage.OPERATOR_STATE_REJECTED_MESSAGE));
 				break;
+			case EDIT_REJECTED:
+				message = String.format(ResourceUtil.getMessage(SmsMessage.OPERATOR_STATE_EDIT_REJECTED_MESSAGE),
+						event.getEventHost().getUser().getFirstname(),
+						event.getEventName(),
+						ResourceUtil.getMessage(SmsMessage.OPERATOR_STATE_REJECTED_MESSAGE));
+				break;
+
 			default:
 				message = ResourceUtil.getMessage(SmsMessage.OPERATOR_STATE_DEFAULT_MESSAGE);
 				break;
@@ -137,7 +144,17 @@ public class AdminEventService {
 	public void changeOperatorState(AdminChangeEventOperatorStateVm vmodel) {
 		Event event = getEventFromRepository(vmodel.getEventId());
 		checkEventRestricitons(event);
-		event.setOperatorState(vmodel.getOperatorState().name());
+		if(event.getOperatorState().equals(OperatorState.EDITED.name()) && event.getEditedVersion() != null) {
+			if(vmodel.getOperatorState().equals(OperatorState.APPROVED.name())) {
+				EventViewModel editedVersionViewModel = eventMapper.createFromEntity(event.getEditedVersion());
+				eventMapper.updateEntity(editedVersionViewModel,event);
+				event.setEditedVersion(null);
+			} else {
+				event.setOperatorState(OperatorState.EDIT_REJECTED.name());
+			}
+		} else {
+			event.setOperatorState(vmodel.getOperatorState().name());
+		}
 		Future.runRunnable(() -> smsService.sendOperatorStatusSms(event.getEventHost().getUser().getMobile(),
 				fillOperatorStateSmsMessage(vmodel.getOperatorState(),event)))
 				.onFailure(throwable -> log.debug("Error in sending sms in change operator state '{}'",throwable));

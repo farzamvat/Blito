@@ -4,5 +4,6 @@ public enum OperatorState {
 	PENDING,
 	APPROVED,
 	REJECTED,
-	EDITED
+	EDITED,
+	EDIT_REJECTED;
 }

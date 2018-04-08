@@ -67,7 +67,7 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 					.onEmpty(() -> eventDate.addBlitType(blitTypeMapper.createFromViewModel(bvm)))
 		);
 	
-		eventDate.setEventDateState(State.CLOSED.name());
+		eventDate.setEventDateState(vmodel.getState().name());
 		return eventDate;
 	}
 
