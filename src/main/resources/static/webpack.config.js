@@ -7,7 +7,7 @@ module.exports = {
     entry: './app.js',
     output: {
         path: __dirname + '/webpack',
-        filename: '[name].[hash].js'
+        filename: '[name].[chunkhash].js'
     },
     optimization: {
         minimizer: [
