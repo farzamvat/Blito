@@ -8,6 +8,5 @@ public enum EventType {
 	WORKSHOP,
 	ENTERTAINMENT,
 	EXHIBITION,
-	EDITED_VERSION,
 	OTHER
 }

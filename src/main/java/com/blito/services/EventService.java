@@ -218,7 +218,7 @@ public class EventService {
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 
 		Event editedVersion = eventMapper.createFromViewModel(vmodel);
-		editedVersion.setEventType(EventType.EDITED_VERSION.name());
+		editedVersion.setOperatorState(OperatorState.OPERATOR_IGNORE.name());
 		editedVersion.setDeleted(true);
 		editedVersion.setImages(images);
 		editedVersion.setEventHost(eventHost);

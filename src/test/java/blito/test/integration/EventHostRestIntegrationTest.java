@@ -22,13 +22,28 @@ public class EventHostRestIntegrationTest extends AbstractEventRestControllerTes
 
     private AddressViewModel createAddress(String name,Long eventHostId,String address) {
         AddressViewModel addressViewModel = new AddressViewModel();
-        addressViewModel.setLatitude(35.342);
+        addressViewModel.setLatitude(34.4);
         addressViewModel.setLongitude(53.123);
         addressViewModel.setName(name);
         addressViewModel.setAddress(address);
         addressViewModel.setEventHostId(eventHostId);
 
         Response response = givenRestIntegration()
+                .body(addressViewModel)
+                .post(getServerAddress() + "/api/blito/v1.0/event-hosts/addresses");
+        response.then().statusCode(200);
+        return response.thenReturn().as(AddressViewModel.class);
+    }
+
+    private AddressViewModel createAddressUser(String name,Long eventHostId,String address) {
+        AddressViewModel addressViewModel = new AddressViewModel();
+        addressViewModel.setLatitude(35.342);
+        addressViewModel.setLongitude(53.123);
+        addressViewModel.setName(name);
+        addressViewModel.setAddress(address);
+        addressViewModel.setEventHostId(eventHostId);
+
+        Response response = givenRestIntegrationUser()
                 .body(addressViewModel)
                 .post(getServerAddress() + "/api/blito/v1.0/event-hosts/addresses");
         response.then().statusCode(200);
@@ -76,15 +91,24 @@ public class EventHostRestIntegrationTest extends AbstractEventRestControllerTes
 
     @Test
     public void getAllEventHostsAddresses_success() {
-        EventHostViewModel eventHostViewModel =
-                createEventHost_success("event host for getting all addresses")
-                .thenReturn().as(EventHostViewModel.class);
-        createAddress("first",eventHostViewModel.getEventHostId(),"address");
-        createAddress("second",eventHostViewModel.getEventHostId(), "address");
-        createAddress("third",eventHostViewModel.getEventHostId(),"address");
+        EventHostViewModel newEventHostViewModel = new EventHostViewModel();
+        newEventHostViewModel.setHostName("event host for getting all addresses");
+        newEventHostViewModel.setDescription("description");
+        newEventHostViewModel.setHostType(HostType.INDIVIDUAL);
+        newEventHostViewModel.setTelephone("88002116");
+        Response response =
+                givenRestIntegrationUser()
+                        .body(newEventHostViewModel)
+                        .post(getServerAddress() + "/api/blito/v1.0/event-hosts");
+        response.then().statusCode(201);
+        newEventHostViewModel = response.thenReturn().as(EventHostViewModel.class);
 
-        givenRestIntegration()
+        createAddressUser("first",newEventHostViewModel.getEventHostId(),"address");
+        createAddressUser("second",newEventHostViewModel.getEventHostId(), "address");
+        createAddressUser("third",newEventHostViewModel.getEventHostId(),"address");
+
+        givenRestIntegrationUser()
             .get(getServerAddress() + "/api/blito/v1.0/event-hosts/addresses")
-            .then().body("size()",equalTo(3));
+            .then().body("size()", equalTo(3));
     }
 }

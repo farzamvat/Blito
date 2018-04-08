@@ -15,6 +15,9 @@ public class Complex<T> extends AbstractSearchViewModel<T> {
         this.restrictions = restrictions;
     }
 
+    public Complex() {
+    }
+
     @Override
     public Specification<T> action() {
         return (root,query,cb) ->

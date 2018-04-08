@@ -5,5 +5,6 @@ public enum OperatorState {
 	APPROVED,
 	REJECTED,
 	EDITED,
+	OPERATOR_IGNORE,
 	EDIT_REJECTED;
 }

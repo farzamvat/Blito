@@ -145,7 +145,7 @@ public class AdminEventService {
 		Event event = getEventFromRepository(vmodel.getEventId());
 		checkEventRestricitons(event);
 		if(event.getOperatorState().equals(OperatorState.EDITED.name()) && event.getEditedVersion() != null) {
-			if(vmodel.getOperatorState().equals(OperatorState.APPROVED.name())) {
+			if(vmodel.getOperatorState().name().equals(OperatorState.APPROVED.name())) {
 				EventViewModel editedVersionViewModel = eventMapper.createFromEntity(event.getEditedVersion());
 				eventMapper.updateEntity(editedVersionViewModel,event);
 				event.setEditedVersion(null);
