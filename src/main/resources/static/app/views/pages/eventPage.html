@@ -58,8 +58,8 @@
                         </thead>
                         <tbody class="showTimeList">
                         <tr ng-repeat="item in eventDates | filter:search">
-                            <td class="dataCenter eventPageTimeField"><span  ng-class="setClass($index)"    class="form-group  marginBottom0 fontSize16Mobile" ></span></td>
-
+                            <td ng-show="item.dateTime === null" class="dataCenter eventPageTimeField"><span  ng-class="setClass($index)"    class="form-group  marginBottom0 fontSize16Mobile" ></span></td>
+                            <td ng-show="item.dateTime !== null" class="dataCenter eventPageTimeField"><span  class="form-group  marginBottom0 fontSize16Mobile" >{{item.dateTime}}</span></td>
                             <td ng-if="item.maxPrice === 0 && eventType !== 'EXHIBITION'" class="dataCenter fontSize16Mobile">رایگان</td>
                             <td ng-if="item.maxPrice !== 0 && item.minPrice === 0 && eventType !== 'EXHIBITION'" class="dataCenter fontSize16Mobile">رایگان - {{ item.maxPrice | number | pNumber}}</td>
                             <td ng-if="item.maxPrice !== 0 && item.minPrice !== 0 && eventType !== 'EXHIBITION' && item.maxPrice !== item.minPrice" class="dataCenter fontSize16Mobile">{{ item.maxPrice | number | pNumber}} - {{ item.minPrice | number | pNumber}}</td>

@@ -886,9 +886,9 @@ angular.module('User')
             newShowTime = newShowTime.map(function (showTime) {
                 delete showTime.newSeatsPrice;
                 delete showTime.persianDate;
+                showTime.dateTime =  persianDate(showTime.date).format("dddd,DD MMMM, ساعت HH:mm");
                 return showTime;
             });
-            console.log($scope.eventImageId);
             var eventSubmitData = {
                 eventName : eventFields.name,
                 eventType : eventFields.eventType,
@@ -1095,6 +1095,7 @@ angular.module('User')
             $scope.eventEditPhotoSuccess = false;
 
             $scope.showTimeEditForms = angular.copy($scope.userEventsEdit[index].eventDates);
+
             $scope.additionalFieldsEdit = angular.copy($scope.userEventsEdit[index].additionalFields);
             if(!$scope.additionalFieldsEdit) {
                 $scope.additionalFieldsEdit = [];
@@ -1230,6 +1231,7 @@ angular.module('User')
             $scope.newShowTimeEditForms = angular.copy($scope.showTimeEditForms);
             $scope.newShowTimeEditForms.map(function (item) {
                 delete item.edited;
+                item.dateTime =  persianDate(item.date).format("dddd,DD MMMM, ساعت HH:mm");
                 return item;
             });
             sendingData.blitSaleEndDate = dateSetterService.persianToMs(editEventData.blitSaleEndDate);
