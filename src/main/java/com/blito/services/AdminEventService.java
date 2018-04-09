@@ -1,5 +1,6 @@
 package com.blito.services;
 
+import com.blito.configs.Constants;
 import com.blito.enums.OperatorState;
 import com.blito.enums.Response;
 import com.blito.enums.SmsMessage;
@@ -144,15 +145,19 @@ public class AdminEventService {
 	public void changeOperatorState(AdminChangeEventOperatorStateVm vmodel) {
 		Event event = getEventFromRepository(vmodel.getEventId());
 		checkEventRestricitons(event);
-		if(event.getOperatorState().equals(OperatorState.EDITED.name()) && event.getEditedVersion() != null) {
-			if(vmodel.getOperatorState().name().equals(OperatorState.APPROVED.name())) {
-				EventViewModel editedVersionViewModel = eventMapper.createFromEntity(event.getEditedVersion());
-				eventMapper.updateEntity(editedVersionViewModel,event);
-				event.setEditedVersion(null);
-			} else {
-				event.setOperatorState(OperatorState.EDIT_REJECTED.name());
-			}
+		if(event.getOperatorState().equals(OperatorState.EDITED.name())
+				&& event.getEditedVersion() != null
+				&& vmodel.getOperatorState().name().equals(OperatorState.APPROVED.name())) {
+			EventViewModel editedVersionViewModel = eventMapper.createFromEntity(event.getEditedVersion());
+			eventMapper.updateEntity(editedVersionViewModel,event);
+			event.setEventLink(editedVersionViewModel.getEventLink().replaceFirst(Constants.EVENT_UPDATE_EDITED_LINK,""));
+			event.setOperatorState(OperatorState.APPROVED.name());
+			event.setEditedVersion(null);
 		} else {
+			if((vmodel.getOperatorState().equals(OperatorState.PENDING.name())
+					|| vmodel.getOperatorState().equals(OperatorState.REJECTED.name())) && event.getEditedVersion() != null) {
+				event.setEditedVersion(null);
+			}
 			event.setOperatorState(vmodel.getOperatorState().name());
 		}
 		Future.runRunnable(() -> smsService.sendOperatorStatusSms(event.getEventHost().getUser().getMobile(),
