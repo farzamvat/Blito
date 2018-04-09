@@ -35,7 +35,8 @@ module.exports = {
         new ExtractTextPlugin("[name].css"),
         new HtmlWebpackPlugin({
             template : 'index.html',
-            filename : '../index.html'
+            filename : '../index.html',
+            inject : 'head'
         })
     ],
 
