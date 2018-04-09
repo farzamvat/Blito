@@ -215,9 +215,6 @@ public class EventService {
 				throw new AlreadyExistsException(ResourceUtil.getMessage(Response.EVENT_LINK_EXISTS));
 			}
 
-		} else {
-			// NOTE : In case of not editing the link property of event
-			vmodel.setEventLink(null);
 		}
 
 		Set<Image> images = imageRepository.findByImageUUIDIn(
@@ -228,6 +225,7 @@ public class EventService {
 		editedVersion.setOperatorState(OperatorState.OPERATOR_IGNORE.name());
 		editedVersion.setDeleted(true);
 		editedVersion.setImages(images);
+		editedVersion.setEventLink(Constants.EVENT_UPDATE_EDITED_LINK + vmodel.getEventLink());
 		editedVersion.setEventHost(eventHost);
 
 		event.setOperatorState(OperatorState.EDITED.name());

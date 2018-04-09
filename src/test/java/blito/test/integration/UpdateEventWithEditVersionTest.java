@@ -64,6 +64,7 @@ public class UpdateEventWithEditVersionTest extends AbstractEventRestControllerT
         eventViewModel.getEventDates().stream().findAny().ifPresent(eventDateViewModel -> eventDateViewModel.getBlitTypes().removeIf(blitTypeViewModel1 ->
                 blitTypeViewModel1.getName().equals(Constants.HOST_RESERVED_SEATS)));
 
+        eventViewModel.setEventLink("my test event link");
         Response eventUpdateResponse =
                 givenRestIntegration()
                         .body(eventViewModel)

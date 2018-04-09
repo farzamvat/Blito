@@ -116,9 +116,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         event.setOperatorState(OperatorState.APPROVED.name());
         event.setLongitude(vmodel.getLongitude());
         event.setLatitude(vmodel.getLatitude());
-        if(vmodel.getEventLink() != null) {
-            event.setEventLink(vmodel.getEventLink());
-        }
+        event.setEventLink(vmodel.getEventLink().replaceFirst(Constants.EVENT_UPDATE_EDITED_LINK,""));
         event.setEventType(vmodel.getEventType().name());
         event.setMembers(vmodel.getMembers());
         Option.of(vmodel.getAdditionalFields())
