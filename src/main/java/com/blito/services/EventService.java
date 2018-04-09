@@ -182,52 +182,24 @@ public class EventService {
 		return viewModel;
 	}
 
+
 	@Transactional
-	public EventViewModel createEditedVersion(EventViewModel vmodel) {
-		validateEventViewModel(vmodel);
-		Event event = eventRepository.findByEventIdAndIsDeletedFalse(vmodel.getEventId())
-				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
-		if(event.getAdditionalFields().size() > vmodel.getAdditionalFields().size()) {
-			if(event.getEventDates().stream().flatMap(eventDate -> eventDate.getBlitTypes().stream()).anyMatch(
-					blitType -> blitType.getSoldCount() > 0 ? true : false))
-			{
-				throw new AdditionalFieldsValidationException(ResourceUtil.getMessage(Response.ADDITIONAL_FIELDS_VALIDATION_ERROR));
-			}
-		}
+	public EventViewModel updatePendingRejected(EventViewModel vmodel,Event event,EventHost eventHost,Set<Image> images) {
+		event = eventMapper.updateEntity(vmodel, event);
+		event.setImages(images);
+		event.setEventHost(eventHost);
+		event.setOperatorState(OperatorState.PENDING.name());
+		return eventMapper.createFromEntity(eventRepository.save(event));
+	}
 
-		EventHost eventHost = eventHostRepository.findByEventHostIdAndIsDeletedFalse(vmodel.getEventHostId())
-				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
-
-		if (eventHost.getUser().getUserId() != SecurityContextHolder.currentUser().getUserId()) {
-			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
-		}
-
-		if (event.getEventState().equals(State.ENDED.name())) {
-			throw new NotAllowedException(ResourceUtil.getMessage(Response.CANNOT_EDIT_EVENT_WHEN_CLOSED));
-		}
-
-		validateIfEventHasBoughtBlit(vmodel,event);
-
-		vmodel.setEventLink(vmodel.getEventLink().replaceAll(" ", "-"));
-		if (!vmodel.getEventLink().equals(event.getEventLink())) {
-			Optional<Event> eventResult = eventRepository.findByEventLinkAndIsDeletedFalse(vmodel.getEventLink());
-			if (eventResult.isPresent() && eventResult.get().getEventId() != vmodel.getEventId()) {
-				throw new AlreadyExistsException(ResourceUtil.getMessage(Response.EVENT_LINK_EXISTS));
-			}
-
-		}
-
-		Set<Image> images = imageRepository.findByImageUUIDIn(
-				vmodel.getImages().stream().map(ImageViewModel::getImageUUID).collect(Collectors.toSet()));
-		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
-
+	@Transactional
+	public EventViewModel updateWithEditedVersion(EventViewModel vmodel,Event event,EventHost eventHost,Set<Image> images) {
 		Event editedVersion = eventMapper.createFromViewModel(vmodel);
+		editedVersion.setImages(images);
 		editedVersion.setOperatorState(OperatorState.OPERATOR_IGNORE.name());
 		editedVersion.setDeleted(true);
-		editedVersion.setImages(images);
 		editedVersion.setEventLink(Constants.EVENT_UPDATE_EDITED_LINK + vmodel.getEventLink());
 		editedVersion.setEventHost(eventHost);
-
 		event.setOperatorState(OperatorState.EDITED.name());
 		event.setEditedVersion(editedVersion);
 		return eventMapper.createFromEntity(eventRepository.save(event));
@@ -269,12 +241,16 @@ public class EventService {
 		return false;
 	}
 
-	@Deprecated
 	@Transactional
 	public EventViewModel update(EventViewModel vmodel) {
 		validateEventViewModel(vmodel);
 		Event event = eventRepository.findByEventIdAndIsDeletedFalse(vmodel.getEventId())
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+
+		if(event.getOperatorState().equals(OperatorState.OPERATOR_IGNORE.name())) {
+			throw new NotAllowedException("Cannot update operator ignore event");
+		}
+
 		if(event.getAdditionalFields().size() > vmodel.getAdditionalFields().size()) {
 			if(event.getEventDates().stream().flatMap(eventDate -> eventDate.getBlitTypes().stream()).anyMatch(
 					blitType -> blitType.getSoldCount() > 0 ? true : false))
@@ -293,7 +269,10 @@ public class EventService {
 		if (event.getEventState().equals(State.ENDED.name())) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.CANNOT_EDIT_EVENT_WHEN_CLOSED));
 		}
-		vmodel.setEventLink(vmodel.getEventLink().replaceAll(" ", "-"));
+
+		validateIfEventHasBoughtBlit(vmodel,event);
+
+		vmodel.setEventLink(vmodel.getEventLink().trim().replaceAll(" ", "-"));
 		if (!vmodel.getEventLink().equals(event.getEventLink())) {
 			Optional<Event> eventResult = eventRepository.findByEventLinkAndIsDeletedFalse(vmodel.getEventLink());
 			if (eventResult.isPresent() && eventResult.get().getEventId() != vmodel.getEventId()) {
@@ -305,10 +284,12 @@ public class EventService {
 				vmodel.getImages().stream().map(ImageViewModel::getImageUUID).collect(Collectors.toSet()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 
-		event = eventMapper.updateEntity(vmodel, event);
-		event.setImages(images);
-		event.setEventHost(eventHost);
-		return eventMapper.createFromEntity(eventRepository.save(event));
+		if(event.getOperatorState().equals(OperatorState.PENDING.name()) ||
+				event.getOperatorState().equals(OperatorState.REJECTED.name())) {
+			return updatePendingRejected(vmodel,event,eventHost,images);
+		} else {
+			return updateWithEditedVersion(vmodel,event,eventHost,images);
+		}
 	}
 
 	@Transactional

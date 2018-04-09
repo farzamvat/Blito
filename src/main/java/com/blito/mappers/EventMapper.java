@@ -116,10 +116,8 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         event.setBlitSaleEndDate(vmodel.getBlitSaleEndDate());
         event.setDescription(vmodel.getDescription());
         event.setEventName(vmodel.getEventName());
-        event.setOperatorState(OperatorState.APPROVED.name());
         event.setLongitude(vmodel.getLongitude());
         event.setLatitude(vmodel.getLatitude());
-        event.setEventLink(vmodel.getEventLink().replaceFirst(Constants.EVENT_UPDATE_EDITED_LINK,""));
         event.setEventType(vmodel.getEventType().name());
         event.setMembers(vmodel.getMembers());
         Option.of(vmodel.getAdditionalFields())
