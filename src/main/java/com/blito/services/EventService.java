@@ -189,6 +189,7 @@ public class EventService {
 		event.setImages(images);
 		event.setEventHost(eventHost);
 		event.setOperatorState(OperatorState.PENDING.name());
+		event.setEventLink(vmodel.getEventLink());
 		return eventMapper.createFromEntity(eventRepository.save(event));
 	}
 
