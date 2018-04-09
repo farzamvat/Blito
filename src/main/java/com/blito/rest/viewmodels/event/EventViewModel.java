@@ -116,12 +116,22 @@ public class EventViewModel {
 	private boolean isPrivate;
 	@JsonView(View.Event.class)
 	private String salonUid;
+	@JsonView(View.AdminEvent.class)
+	private EventViewModel editedVersion;
 
 	public EventViewModel() {
 		eventDates = new HashSet<>();
 		images = new HashSet<>();
 		offers = new HashSet<>();
 		additionalFields = new ArrayList<>();
+	}
+
+	public EventViewModel getEditedVersion() {
+		return editedVersion;
+	}
+
+	public void setEditedVersion(EventViewModel editedVersion) {
+		this.editedVersion = editedVersion;
 	}
 
 	public long getEventId() {
