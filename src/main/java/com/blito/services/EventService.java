@@ -248,18 +248,27 @@ public class EventService {
 
 		event.getEventDates().stream().flatMap(eventDate -> eventDate.getBlitTypes().stream())
 				.filter(blitType ->  !blitTypeUids.contains(blitType.getUid()))
-				.forEach(this::validateIfRemovingBlitTypeHasBoughtBlit);
+				.forEach(blitType -> {
+					if(validateIfRemovingBlitTypeHasBoughtBlit(blitType)) {
+						throw new NotAllowedException(String.format(ResourceUtil.getMessage(Response.CANT_REMOVE_BLIT_TYPE),blitType.getName()));
+					}
+				});
 	}
 
 	public void validateIfRemovingEventDateHasBoughtBlit(EventDate eventDate) {
-		eventDate.getBlitTypes().forEach(this::validateIfRemovingBlitTypeHasBoughtBlit);
+		eventDate.getBlitTypes().forEach(blitType -> {
+			if(validateIfRemovingBlitTypeHasBoughtBlit(blitType)) {
+				throw new NotAllowedException(String.format(ResourceUtil.getMessage(Response.CANT_REMOVE_EVENT_DATE),eventDate.getDateTime()));
+			}
+		});
 	}
 
-	public void validateIfRemovingBlitTypeHasBoughtBlit(BlitType blitType) {
+	public Boolean validateIfRemovingBlitTypeHasBoughtBlit(BlitType blitType) {
 		if(blitType.getCommonBlits().size() > 0 ||
 				(blitType.getBlitTypeSeats().size() > 0 && blitType.getBlitTypeSeats().stream().anyMatch(blitTypeSeat -> blitTypeSeat.getState().equals(State.SOLD.name())))) {
-			throw new RuntimeException();
+			return true;
 		}
+		return false;
 	}
 
 	@Deprecated

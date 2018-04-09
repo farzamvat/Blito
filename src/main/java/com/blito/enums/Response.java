@@ -103,6 +103,8 @@ public enum Response {
 	PAY_DOT_IR_ERROR("error.pay.ir"),
 	USER_ACTIVATION_RETRY_TIMEOUT("error.user.activation.retry.timeout"),
 	ADDRESS_NOT_FOUND("error.address.not.found"),
+	CANT_REMOVE_BLIT_TYPE("error.cant.remove.blit.type"),
+	CANT_REMOVE_EVENT_DATE("error.cant.remove.event.date"),
 	SEAT_INFORMATION("seat.info");
     
 
