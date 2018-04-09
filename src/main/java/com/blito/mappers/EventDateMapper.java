@@ -9,10 +9,7 @@ import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -51,7 +48,7 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 	public EventDate updateEntity(EventDateViewModel vmodel, EventDate eventDate) {
 		eventDate.setDate(vmodel.getDate());
 		eventDate.setDateTime(vmodel.getDateTime());
-		List<String> oldOnes = vmodel.getBlitTypes().stream().map(BlitTypeViewModel::getUid).filter(uid -> !uid.isEmpty()).collect(Collectors.toList());
+		List<String> oldOnes = vmodel.getBlitTypes().stream().map(BlitTypeViewModel::getUid).filter(uid -> Objects.nonNull(uid)).filter(uid -> !uid.isEmpty()).collect(Collectors.toList());
 		List<String> shouldDelete = new ArrayList<>();
 		eventDate.getBlitTypes().forEach(bt -> {
 			if(!oldOnes.contains(bt.getUid()))
@@ -64,7 +61,7 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 		vmodel.getBlitTypes().forEach(bvm ->
 			Option.ofOptional(eventDate.getBlitTypes()
 					.stream()
-					.filter(b -> !bvm.getUid().isEmpty() && b.getUid().equals(bvm.getUid()))
+					.filter(b -> bvm.getUid() != null && !bvm.getUid().isEmpty() && b.getUid().equals(bvm.getUid()))
 					.findFirst())
 					.peek(blitType -> blitTypeMapper.updateEntity(bvm,blitType))
 					.onEmpty(() -> {

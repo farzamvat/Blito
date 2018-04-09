@@ -205,6 +205,9 @@ public class EventService {
 		if (event.getEventState().equals(State.ENDED.name())) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.CANNOT_EDIT_EVENT_WHEN_CLOSED));
 		}
+
+		validateIfEventHasBoughtBlit(vmodel,event);
+
 		vmodel.setEventLink(vmodel.getEventLink().replaceAll(" ", "-"));
 		if (!vmodel.getEventLink().equals(event.getEventLink())) {
 			Optional<Event> eventResult = eventRepository.findByEventLinkAndIsDeletedFalse(vmodel.getEventLink());
@@ -232,6 +235,34 @@ public class EventService {
 		return eventMapper.createFromEntity(eventRepository.save(event));
 	}
 
+	public void validateIfEventHasBoughtBlit(EventViewModel vmodel,Event event) {
+		Set<String> eventDateUids = vmodel.getEventDates().stream()
+				.filter(ed -> Objects.nonNull(ed.getUid()) && !ed.getUid().isEmpty())
+				.map(EventDateViewModel::getUid).collect(Collectors.toSet());
+
+		Set<String> blitTypeUids = vmodel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream())
+				.filter(bt -> Objects.nonNull(bt.getUid()) && !bt.getUid().isEmpty())
+				.map(BlitTypeViewModel::getUid).collect(Collectors.toSet());
+		event.getEventDates().stream().filter(eventDate -> !eventDateUids.contains(eventDate.getUid()))
+				.forEach(this::validateIfRemovingEventDateHasBoughtBlit);
+
+		event.getEventDates().stream().flatMap(eventDate -> eventDate.getBlitTypes().stream())
+				.filter(blitType ->  !blitTypeUids.contains(blitType.getUid()))
+				.forEach(this::validateIfRemovingBlitTypeHasBoughtBlit);
+	}
+
+	public void validateIfRemovingEventDateHasBoughtBlit(EventDate eventDate) {
+		eventDate.getBlitTypes().forEach(this::validateIfRemovingBlitTypeHasBoughtBlit);
+	}
+
+	public void validateIfRemovingBlitTypeHasBoughtBlit(BlitType blitType) {
+		if(blitType.getCommonBlits().size() > 0 ||
+				(blitType.getBlitTypeSeats().size() > 0 && blitType.getBlitTypeSeats().stream().anyMatch(blitTypeSeat -> blitTypeSeat.getState().equals(State.SOLD.name())))) {
+			throw new RuntimeException();
+		}
+	}
+
+	@Deprecated
 	@Transactional
 	public EventViewModel update(EventViewModel vmodel) {
 		validateEventViewModel(vmodel);

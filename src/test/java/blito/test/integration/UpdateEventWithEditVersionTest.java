@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class UpdateEventWithEditeVersionTest extends AbstractEventRestControllerTest {
+public class UpdateEventWithEditVersionTest extends AbstractEventRestControllerTest {
     private static boolean isInit = false;
     private static EventViewModel eventViewModel;
 
@@ -54,7 +54,15 @@ public class UpdateEventWithEditeVersionTest extends AbstractEventRestController
     public void updateEvent() {
 
         eventViewModel.setEventName("Edited Name Event");
+        BlitTypeViewModel blitTypeViewModel = new BlitTypeViewModel();
+        blitTypeViewModel.setName("newType");
+        blitTypeViewModel.setCapacity(20);
+        blitTypeViewModel.setFree(false);
+        blitTypeViewModel.setPrice(1500);
 
+        eventViewModel.getEventDates().stream().findAny().ifPresent(eventDateViewModel -> eventDateViewModel.getBlitTypes().add(blitTypeViewModel));
+        eventViewModel.getEventDates().stream().findAny().ifPresent(eventDateViewModel -> eventDateViewModel.getBlitTypes().removeIf(blitTypeViewModel1 ->
+                blitTypeViewModel1.getName().equals(Constants.HOST_RESERVED_SEATS)));
 
         Response eventUpdateResponse =
                 givenRestIntegration()
