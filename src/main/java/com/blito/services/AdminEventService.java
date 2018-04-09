@@ -145,6 +145,12 @@ public class AdminEventService {
 	public void changeOperatorState(AdminChangeEventOperatorStateVm vmodel) {
 		Event event = getEventFromRepository(vmodel.getEventId());
 		checkEventRestricitons(event);
+		if(event.getOperatorState().equals(OperatorState.APPROVED.name()) &&
+				(vmodel.getOperatorState().equals(OperatorState.EDIT_REJECTED) ||
+						vmodel.getOperatorState().equals(OperatorState.OPERATOR_IGNORE) ||
+						vmodel.getOperatorState().equals(OperatorState.EDITED))) {
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
+		}
 		if(event.getOperatorState().equals(OperatorState.EDITED.name())
 				&& event.getEditedVersion() != null
 				&& vmodel.getOperatorState().name().equals(OperatorState.APPROVED.name())) {
