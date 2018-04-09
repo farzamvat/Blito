@@ -25,3 +25,4 @@ task.json
 /src/main/resources/static/node_modules/
 /newrelic/logs/
 /src/main/resources/static/webpack/
+/src/main/resources/static/index.html

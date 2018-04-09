@@ -1,12 +1,13 @@
 var webpack = require('webpack');
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     context: __dirname + '/app',
     entry: './app.js',
     output: {
         path: __dirname + '/webpack',
-        filename: '[name].js'
+        filename: '[name].[chunkhash].js'
     },
     optimization: {
         minimizer: [
@@ -31,7 +32,11 @@ module.exports = {
             $: "jquery",
             jQuery: "jquery"
         }),
-        new ExtractTextPlugin("[name].css")
+        new ExtractTextPlugin("[name].css"),
+        new HtmlWebpackPlugin({
+            template : 'index.html',
+            filename : '../index.html'
+        })
     ],
 
     module: {
