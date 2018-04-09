@@ -37,6 +37,16 @@ public class EventDate {
 
 	private String dateTime;
 
+	private String uid;
+
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+
 	public String getDateTime() {
 		return dateTime;
 	}
@@ -111,12 +121,10 @@ public class EventDate {
 		this.blitTypes.remove(blitType);
 		blitType.setEventDate(null);
 	}
-	public void removeBlitTypeById(Long id)
+	public void removeBlitTypeByUid(String uid)
 	{
-		Optional<BlitType> bt = this.blitTypes.stream().filter(b -> b.getBlitTypeId() == id).findFirst();
-		if(bt.isPresent())
-		{
-			this.blitTypes.removeIf(b -> b.getBlitTypeId() == id);
-		}
+		this.blitTypes.stream().filter(b -> b.getUid().equals(uid))
+                .findFirst().ifPresent(blitType -> this.blitTypes.removeIf(b -> b.getUid().equals(uid)));
+
 	}
 }

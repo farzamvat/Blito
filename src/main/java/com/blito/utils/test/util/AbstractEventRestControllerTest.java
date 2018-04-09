@@ -68,6 +68,7 @@ public class AbstractEventRestControllerTest extends AbstractRestControllerTest 
         BlitTypeViewModel blitTypeViewModel3 = new BlitTypeViewModel();
         BlitTypeViewModel blitTypeViewModel4 = new BlitTypeViewModel();
         eventDateViewModel.setDate(Timestamp.from(ZonedDateTime.now().plusDays(10).toInstant()));
+        eventDateViewModel.setDateTime("شنبه,۲۵ فروردین, ساعت ۱۹:۰۰");
 
 
         blitTypeViewModel1.setCapacity(20);

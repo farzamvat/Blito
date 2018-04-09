@@ -56,6 +56,7 @@ public final class Constants {
     public static final String APARAT_IFRAME_TEMPLATE_PART_2="\"https://www.aparat.com/video/video/embed/videohash/%s/vt/frame\" allowFullScreen=\"true\" webkitallowfullscreen=\"true\" mozallowfullscreen=\"true\" ></iframe></div>";
 
     public static final long EVENT_DEFAULT_END_DATE = 7258105800000L;
+    public static final String EVENT_UPDATE_EDITED_LINK = "EDITED:";
 
     private Constants()
     {}

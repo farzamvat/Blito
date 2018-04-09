@@ -21,6 +21,15 @@ public class EventDateViewModel {
 	private boolean hasSalon;
 	@NotEmpty
 	private String dateTime;
+	private String uid;
+
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
 
 	public String getDateTime() {
 		return dateTime;

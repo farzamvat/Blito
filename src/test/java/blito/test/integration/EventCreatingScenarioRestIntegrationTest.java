@@ -242,7 +242,7 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractEventRestC
                 .when()
                 .put(getServerAddress() + "/api/blito/v1.0/events");
         eventUpdateResponse.then().statusCode(202);
-        assertTrue(eventRepository.findOne(eventViewModel.getEventId()).getAdditionalFields().containsKey("age"));
+        assertTrue(eventRepository.findOne(eventViewModel.getEventId()).getEditedVersion().getAdditionalFields().containsKey("age"));
         assertEquals(1,eventRepository.findOne(eventViewModel.getEventId()).getAdditionalFields().size());
     }
 
@@ -271,8 +271,8 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractEventRestC
                         .when()
                         .put(getServerAddress() + "/api/blito/v1.0/events");
         eventUpdateResponse.then().statusCode(202);
-        assertTrue(eventRepository.findOne(eventViewModel.getEventId()).getAdditionalFields().isEmpty());
-        assertEquals(0,eventRepository.findOne(eventViewModel.getEventId()).getAdditionalFields().size());
+        assertTrue(eventRepository.findOne(eventViewModel.getEventId()).getEditedVersion().getAdditionalFields().isEmpty());
+        assertEquals(0,eventRepository.findOne(eventViewModel.getEventId()).getEditedVersion().getAdditionalFields().size());
     }
 
     @Test

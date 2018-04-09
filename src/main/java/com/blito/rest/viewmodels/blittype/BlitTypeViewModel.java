@@ -34,6 +34,16 @@ public class BlitTypeViewModel {
 	private Set<String> seatUids;
 	@JsonView(View.BlitType.class)
 	private Boolean hasSeat = false;
+	@JsonView(View.BlitType.class)
+	private String uid;
+
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
 
 	public Boolean getHasSeat() {
 		return hasSeat;

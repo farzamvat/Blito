@@ -62,7 +62,7 @@ public class EventController {
 	@JsonView(View.Event.class)
 	@PutMapping
 	public ResponseEntity<EventViewModel> updateEvent(@Validated @RequestBody EventViewModel vmodel) {
-		return ResponseEntity.accepted().body(eventService.update(vmodel));
+		return ResponseEntity.accepted().body(eventService.createEditedVersion(vmodel));
 	}
 
 	// ***************** SWAGGER DOCS ***************** //
