@@ -75,7 +75,8 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         vmodel.setEventId(event.getEventId());
         Option.of(vmodel.getEventLink())
                 .filter(link -> link.startsWith(Constants.EVENT_UPDATE_EDITED_LINK))
-                .peek(link -> vmodel.setEventLink(link.replaceFirst(Constants.EVENT_UPDATE_EDITED_LINK,"")));
+                .peek(link -> vmodel.setEventLink(link.replaceFirst(Constants.EVENT_UPDATE_EDITED_LINK,"")))
+                .onEmpty(() -> vmodel.setEventLink(event.getEventLink()));
         vmodel.setEventName(event.getEventName());
         vmodel.setEventType(Enum.valueOf(EventType.class, event.getEventType()));
         vmodel.setOrderNumber(event.getOrderNumber());
