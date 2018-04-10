@@ -180,7 +180,6 @@ angular.module('UiServices', [])
         };
 
         dateSetter.persianToMs = function (date) {
-            console.log(date);
             var newData = date.replace(/:|\/|,/gi , ' ').split(" ");
             newData.splice(3,2);
             newData = newData.map(function (persianNumb) {
@@ -304,6 +303,12 @@ angular.module('UiServices', [])
                     break;
                 case "APPROVED" :
                     persianOperatorState = 'تأیید شده';
+                    break;
+                case "EDITED" :
+                    persianOperatorState = 'ویرایش شده';
+                    break;
+                case "EDIT_REJECTED" :
+                    persianOperatorState = 'عدم تایید ویرایش';
                     break;
                 default :
                     persianOperatorState = 'گونه';
