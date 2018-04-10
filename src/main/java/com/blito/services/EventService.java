@@ -200,6 +200,7 @@ public class EventService {
 		editedVersion.setOperatorState(OperatorState.OPERATOR_IGNORE.name());
 		editedVersion.setDeleted(true);
 		editedVersion.setEventHost(eventHost);
+		editedVersion.setEventLink(Constants.EVENT_UPDATE_EDITED_LINK + vmodel.getEventLink());
 		event.setOperatorState(OperatorState.EDITED.name());
 		event.setEditedVersion(editedVersion);
 		return eventMapper.createFromEntity(eventRepository.save(event));
