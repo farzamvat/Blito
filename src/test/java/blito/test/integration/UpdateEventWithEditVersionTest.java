@@ -83,7 +83,6 @@ public class UpdateEventWithEditVersionTest extends AbstractEventRestControllerT
                     .when()
                     .put(getServerAddress() + "/api/blito/v1.0/admin/events/change-event-operator-state");
         changeOperatorStateResponse.then().statusCode(200);
-
     }
 
 }
