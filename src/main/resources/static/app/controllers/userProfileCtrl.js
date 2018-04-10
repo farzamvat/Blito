@@ -1088,9 +1088,11 @@ angular.module('User')
             };
 
             $scope.exchangeTickets = [];
+
             //==================================================== EDIT EVENT =================================
             $scope.editEventFields = {};
-            $scope.editEvent = function (index) {
+            $scope.editEvent = function (index, isEdit) {
+                $scope.isEdit = isEdit;
                 $scope.editEventErrorNotif = false;
                 $scope.editEventNotif = false;
                 $scope.eventEditPhotoSuccess = false;
@@ -1119,15 +1121,26 @@ angular.module('User')
                 document.getElementById("editEventNewSansSubmit").style.display = "none";
                 document.getElementById("createNewSansEdit").style.display = "block";
                 $scope.eventEditPhotoSuccess = false;
+                var editEventDetail = {};
+                if($scope.userEventsEdit[index].editedVersion && $scope.isEdit) {
+                    editEventDetail = angular.copy($scope.userEventsEdit[index].editedVersion);
+                    editEventDetail.eventId = $scope.userEventsEdit[index].eventId;
+                } else {
+                    editEventDetail = angular.copy($scope.userEventsEdit[index]);
+                }
+                if(!$scope.isEdit) {
+                    $("#eventDescriptionAppend").empty();
+                    document.getElementById("eventDescriptionAppend").insertAdjacentHTML('afterbegin', editEventDetail.members);
+                }
 
-            $scope.showTimeEditForms = angular.copy($scope.userEventsEdit[index].eventDates);
-            $scope.additionalFieldsEdit = angular.copy($scope.userEventsEdit[index].additionalFields);
+            $scope.showTimeEditForms = angular.copy(editEventDetail.eventDates);
+            $scope.additionalFieldsEdit = angular.copy(editEventDetail.additionalFields);
             if(!$scope.additionalFieldsEdit) {
                 $scope.additionalFieldsEdit = [];
             } else {
                 $scope.additionalFieldsSection = true;
             }
-            $scope.userEventsEdit[index].eventDates.forEach(function (eventDate) {
+                editEventDetail.eventDates.forEach(function (eventDate) {
                 eventDate.blitTypes.forEach(function (blitType) {
                     if(blitType.soldCount > 0) {
                         $scope.checkSoldCountForAdditionalField = true;
@@ -1135,27 +1148,27 @@ angular.module('User')
                 })
             });
             $scope.editEventFields = {
-                eventId : $scope.userEventsEdit[index].eventId,
-                eventName : $scope.userEventsEdit[index].eventName,
-                eventType : $scope.userEventsEdit[index].eventType,
-                description : $scope.userEventsEdit[index].description,
-                address : $scope.userEventsEdit[index].address,
-                aparatDisplayCode : $scope.userEventsEdit[index].aparatDisplayCode,
-                eventHostId : $scope.userEventsEdit[index].eventHostId,
-                eventLink : $scope.userEventsEdit[index].eventLink,
-                members : $scope.userEventsEdit[index].members,
-                isPrivate : $scope.userEventsEdit[index].isPrivate,
-                eventState : $scope.userEventsEdit[index].eventState
+                eventId : editEventDetail.eventId,
+                eventName : editEventDetail.eventName,
+                eventType : editEventDetail.eventType,
+                description : editEventDetail.description,
+                address : editEventDetail.address,
+                aparatDisplayCode : editEventDetail.aparatDisplayCode,
+                eventHostId : editEventDetail.eventHostId,
+                eventLink : editEventDetail.eventLink,
+                members : editEventDetail.members,
+                isPrivate : editEventDetail.isPrivate,
+                eventState : editEventDetail.eventState
             };
-            if($scope.userEventsEdit[index].salonUid) {
-                $scope.editEventFields.salonUid = $scope.userEventsEdit[index].salonUid;
+            if(editEventDetail.salonUid) {
+                $scope.editEventFields.salonUid = editEventDetail.salonUid;
             }
             $scope.dateClass = function (classNumber) {
                 return "classDate"+classNumber;
             };
             $("#editEvent").modal("show");
             var imageUUID, gallery = [];
-            $scope.userEventsEdit[index].images.forEach(function (image) {
+                editEventDetail.images.forEach(function (image) {
                 if(image.type === "EVENT_PHOTO") {
                     imageUUID = image.imageUUID;
                 } else {
@@ -1190,21 +1203,25 @@ angular.module('User')
                     imageServices.downloadPhotos($scope.gallerySixEditUUID, "gallerySixEdit");
                 }
                 $timeout(function () {
-                    for(var i = 0 ; i < $scope.userEventsEdit[index].eventDates.length; i++) {
+                    for(var i = 0 ; i < editEventDetail.eventDates.length; i++) {
                         dateSetterService.initDate("classDate"+i);
-                        $(".classDate"+i).pDatepicker("setDate",dateSetterService.persianToArray(persianDate($scope.userEventsEdit[index].eventDates[i].date).pDate));
+                        $(".classDate"+i).pDatepicker("setDate",dateSetterService.persianToArray(persianDate(editEventDetail.eventDates[i].date).pDate));
                     }
                     dateSetterService.initDate("blitSaleEndDate");
                     dateSetterService.initDate("blitSaleStartDate");
-                    $(".blitSaleEndDate").pDatepicker("setDate",dateSetterService.persianToArray(persianDate($scope.userEventsEdit[index].blitSaleEndDate).pDate));
-                    $(".blitSaleStartDate").pDatepicker("setDate",dateSetterService.persianToArray(persianDate($scope.userEventsEdit[index].blitSaleStartDate).pDate));
+                    $(".blitSaleEndDate").pDatepicker("setDate",dateSetterService.persianToArray(persianDate(editEventDetail.blitSaleEndDate).pDate));
+                    $(".blitSaleStartDate").pDatepicker("setDate",dateSetterService.persianToArray(persianDate(editEventDetail.blitSaleStartDate).pDate));
                     $scope.editEventFields.blitSaleEndDate = document.getElementById("eventTicketEndTimeEdit").value;
                     $scope.editEventFields.blitSaleStartDate = document.getElementById("eventTicketStartTimeEdit").value;
 
                 }, 500);
                 $timeout(function () {
-                    mapMarkerService.setMarker($scope.userEventsEdit[index].latitude, $scope.userEventsEdit[index].longitude);
-                    mapMarkerService.initMap(document.getElementById('editEventMap'));
+                    mapMarkerService.setMarker(editEventDetail.latitude, editEventDetail.longitude);
+                    if($scope.isEdit) {
+                        mapMarkerService.initMap(document.getElementById('editEventMap'));
+                    } else {
+                        mapMarkerService.initMapOnlyShowMarker(document.getElementById('editEventMap'));
+                    }
                     mapMarkerService.placeMarker(mapMarkerService.getMarker());
                 },500);
             };

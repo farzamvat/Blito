@@ -434,8 +434,7 @@
 
                                                             <th class="dataCenter">نام رویداد
                                                             </th>
-                                                            <th class="dataCenter hidden-xs" >نوع
-                                                            </th>
+
 
                                                             <th class="dataCenter" >وضعیت ثبت
                                                             </th>
@@ -448,10 +447,10 @@
                                                         <tbody class="showTimeList">
                                                         <tr  total-items="totalEventsNumber" dir-paginate="item in getDataUserEvents | itemsPerPage: 4" pagination-id="events" current-page="currentPageEvent">
                                                             <td class="dataCenter"><a href="/event-page/{{ item.eventLink}}">{{ item.eventName}}</a></td>
-                                                            <td class="dataCenter hidden-xs">{{ item.eventType}}</td>
                                                             <td class="dataCenter">{{ item.operatorState}}</td>
                                                             <td class="dataCenter hidden-xs">{{ item.eventState}}</td>
-                                                            <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editEvent($index)">ویرایش</button></td>
+                                                            <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editEvent($index, true)">ویرایش</button></td>
+                                                            <td class="dataCenter" ng-show="item.operatorState === 'ویرایش شده'"><button class="btn btn-info editButton" ng-click="editEvent($index, false)">اطلاعات فعلی رویداد</button></td>
                                                             <td ng-show="item.operatorState === 'تأیید شده'" class="dataCenter"><button class="btn editButton btn-default" ng-click="showTickets($index)">بلیت ها</button></td>
                                                             <td ng-show="item.operatorState === 'تأیید شده'" class="dataCenter"><button class="btn editButton btn-success" ng-click="discountCodeShow($index)">کد تخفیف</button></td>
                                                             <td ng-if="item.operatorState === 'رد شده'" class="dataCenter"><button type="button" ng-click="showSetting($index)"  class="btn editButton btn-info" >تنظیمات رویداد </button></td>
