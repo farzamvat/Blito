@@ -914,7 +914,8 @@ angular.module('User')
                 return showTime;
             });
             eventFields.ticketStartTime = document.getElementById("eventTicketStartTimeMain").value;
-            eventFields.ticketEndTime = document.getElementById("eventTicketEndTimeMain").value;            var eventSubmitData = {
+            eventFields.ticketEndTime = document.getElementById("eventTicketEndTimeMain").value;
+            var eventSubmitData = {
                 eventName : eventFields.name,
                 eventType : eventFields.eventType,
                 eventHostId : eventFields.eventPlanner.eventHostId,
@@ -975,6 +976,8 @@ angular.module('User')
                         $scope.showTimeForms = [];
                         $timeout(function () {
                             dateSetterService.initDate("eventDateClass0");
+                            dateSetterService.initDate("persianTimeEventStart");
+                            dateSetterService.initDate("persianTimeEventEnd");
                         }, 1000);
                         sansWithSeats = [];
                         mainSeatMapPrices = [];
