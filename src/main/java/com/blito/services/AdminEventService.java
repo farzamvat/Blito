@@ -156,6 +156,7 @@ public class AdminEventService {
 				&& vmodel.getOperatorState().name().equals(OperatorState.APPROVED.name())) {
 			EventViewModel editedVersionViewModel = eventMapper.createFromEntity(event.getEditedVersion());
 			eventMapper.updateEntity(editedVersionViewModel,event);
+			event.setEventLink(editedVersionViewModel.getEventLink());
 			event.setOperatorState(OperatorState.APPROVED.name());
 			event.setEditedVersion(null);
 		} else {

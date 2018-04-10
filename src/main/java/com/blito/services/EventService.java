@@ -272,9 +272,6 @@ public class EventService {
 
 		validateIfEventHasBoughtBlit(vmodel,event);
 
-		if(vmodel.getEventLink().startsWith(Constants.EVENT_UPDATE_EDITED_LINK)) {
-			vmodel.setEventLink(vmodel.getEventLink().replaceFirst(Constants.EVENT_UPDATE_EDITED_LINK,""));
-		}
 		vmodel.setEventLink(vmodel.getEventLink().trim().replaceAll(" ", "-"));
 		if (!vmodel.getEventLink().equals(event.getEventLink())) {
 			Optional<Event> eventResult = eventRepository.findByEventLinkAndIsDeletedFalse(vmodel.getEventLink());
