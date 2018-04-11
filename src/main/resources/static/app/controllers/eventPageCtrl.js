@@ -112,7 +112,7 @@ angular.module('eventsPageModule')
             });
             $timeout(function () {
                 for(var sansIndex in $scope.eventDates) {
-                    dateSetterService.initDate("classDate"+sansIndex);
+                    dateSetterService.initDate("classDate"+sansIndex, 0);
                     $scope.eventDates[sansIndex].persianDate = persianDate($scope.eventDates[sansIndex].date).format("dddd,DD MMMM, ساعت HH:mm");
                     $(".classDate"+sansIndex).text(persianDate($scope.eventDates[sansIndex].date).format("dddd,DD MMMM, ساعت HH:mm"));
                 }
