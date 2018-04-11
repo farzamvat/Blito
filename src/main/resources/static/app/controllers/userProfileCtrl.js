@@ -1729,6 +1729,7 @@ angular.module('User')
 
             //==================================================== ********* =================================
             //==================================================== DISCOUNT SECTION =======================
+            $scope.discountProperties = {};
             $scope.discountCodeShow = function (index) {
                 document.getElementById("successDiscount").style.display = "none";
                 document.getElementById("errorDiscount").style.display = "none";
@@ -1744,7 +1745,9 @@ angular.module('User')
                 $scope.flatEventDates($scope.eventDiscount.eventDates);
                 $timeout(function () {
                     dateSetterService.initDate("discountStartTime");
+                    $scope.discountProperties.effectDatePersian = document.getElementById("discountStartDate").value;
                     dateSetterService.initDate("discountEndTime");
+                    $scope.discountProperties.expirationDatePersian = document.getElementById("discountEndDate").value;
                 }, 1000);
                 $scope.currentPageDiscount = 1;
                 $scope.discountList(1);
@@ -1889,6 +1892,8 @@ angular.module('User')
             $scope.submitDiscountCode = function (discountData) {
                 document.getElementById("successDiscount").style.display = "none";
                 document.getElementById("errorDiscount").style.display = "none";
+                discountData.effectDatePersian = document.getElementById("discountStartDate").value;
+                discountData.expirationDatePersian = document.getElementById("discountEndDate").value;
                 var discountSubmit = {};
                 $scope.discountSubmitOnce = false;
                 discountSubmit.code = discountData.code;
@@ -1905,6 +1910,7 @@ angular.module('User')
                         document.getElementById("successDiscount").style.display = "block";
                         document.getElementsByClassName("discountSpinner")[0].style.display = "none";
                         $scope.discountSubmitOnce = true;
+                        $scope.discountList(1);
                     })
                     .catch(function (data) {
                         $scope.discountSubmitOnce = true;
@@ -1924,10 +1930,17 @@ angular.module('User')
                 $(".discountEditStartTime").pDatepicker("setDate",dateSetterService.persianToArray(persianDate($scope.discountsList[index].effectDate).pDate));
                 dateSetterService.initDate("discountEditEndTime");
                 $(".discountEditEndTime").pDatepicker("setDate",dateSetterService.persianToArray(persianDate($scope.discountsList[index].expirationDate).pDate));
+                $scope.discountEditProperties.effectDatePersian = document.getElementById("editDiscountStartDate").value;
+                $scope.discountEditProperties.expirationDatePersian = document.getElementById("editDiscountEndDate").value;
+
                 $('#discount-codes').modal('hide');
                 $('#discount-code-edit').modal('show');
             };
             $scope.editDiscountSubmit = function (discountEditData) {
+                document.getElementById("successEditDiscount").style.display = "none";
+                document.getElementById("errorEditDiscount").style.display = "none";
+                discountEditData.effectDatePersian = document.getElementById("editDiscountStartDate").value;
+                discountEditData.expirationDatePersian = document.getElementById("editDiscountEndDate").value;
                 var discountEditSubmit = {
                     amount : 0,
                     blitTypeIds : $scope.discountsList[discountIndex].blitTypeIds,
