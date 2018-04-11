@@ -61,7 +61,7 @@ angular.module('userProfileApi', [])
         event.getEventsByType = function (type, page) {
             var queryParam = {
                 cache : true,
-                params : {page: page-1, size: 12, sort: "createdAt,desc"}
+                params : {page: page-1, size: 12, sort: ["endDate,desc", "createdAt,desc"]}
             };
             var bodyJson = {
                 restrictions: [
