@@ -914,7 +914,8 @@ angular.module('User')
                 return showTime;
             });
             eventFields.ticketStartTime = document.getElementById("eventTicketStartTimeMain").value;
-            eventFields.ticketEndTime = document.getElementById("eventTicketEndTimeMain").value;            var eventSubmitData = {
+            eventFields.ticketEndTime = document.getElementById("eventTicketEndTimeMain").value;
+            var eventSubmitData = {
                 eventName : eventFields.name,
                 eventType : eventFields.eventType,
                 eventHostId : eventFields.eventPlanner.eventHostId,
@@ -953,7 +954,7 @@ angular.module('User')
                 .then(function () {
                     $scope.eventSubmitOnce = false;
                     $scope.additionalFields = [];
-                    $(angular.element(document.getElementById('PlannerSection')).siblings()[0]).slideUp(300);
+                    $(angular.element(document.getElementById('PlannerSection'))).next().slideUp(300);
                     $(angular.element(document.getElementById('PlannerSection'))).removeClass('orangeBackground');
                     angular.element(document.getElementsByClassName("profilePhotoUpload"))[0].src = '';
                     angular.element(document.getElementsByClassName("galleryOne"))[0].src = '';
@@ -975,6 +976,8 @@ angular.module('User')
                         $scope.showTimeForms = [];
                         $timeout(function () {
                             dateSetterService.initDate("eventDateClass0");
+                            dateSetterService.initDate("persianTimeEventStart");
+                            dateSetterService.initDate("persianTimeEventEnd");
                         }, 1000);
                         sansWithSeats = [];
                         mainSeatMapPrices = [];
