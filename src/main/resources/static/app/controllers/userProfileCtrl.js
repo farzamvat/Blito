@@ -1318,7 +1318,7 @@ angular.module('User')
                     return !(item.imageUUID === null || item.imageUUID === undefined);
                 });
                 $scope.editEventSpinner = true;
-                eventService.editEvent(sendingData)
+            eventService.editEvent(sendingData)
                     .then(function () {
                         $scope.editEventSpinner = false;
                         $scope.editEventNotif = true;
