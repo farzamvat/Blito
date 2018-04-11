@@ -975,9 +975,9 @@ angular.module('User')
                         setInitMaps('makeEventSection');
                         $scope.showTimeForms = [];
                         $timeout(function () {
-                            dateSetterService.initDate("eventDateClass0");
-                            dateSetterService.initDate("persianTimeEventStart");
-                            dateSetterService.initDate("persianTimeEventEnd");
+                            dateSetterService.initDate("eventDateClass0", 0);
+                            dateSetterService.initDate("persianTimeEventStart", 3600000);
+                            dateSetterService.initDate("persianTimeEventEnd", 7200000);
                         }, 1000);
                         sansWithSeats = [];
                         mainSeatMapPrices = [];
@@ -1207,11 +1207,11 @@ angular.module('User')
                 }
                 $timeout(function () {
                     for(var i = 0 ; i < editEventDetail.eventDates.length; i++) {
-                        dateSetterService.initDate("classDate"+i);
+                        dateSetterService.initDate("classDate"+i, 0);
                         $(".classDate"+i).pDatepicker("setDate",dateSetterService.persianToArray(persianDate(editEventDetail.eventDates[i].date).pDate));
                     }
-                    dateSetterService.initDate("blitSaleEndDate");
-                    dateSetterService.initDate("blitSaleStartDate");
+                    dateSetterService.initDate("blitSaleEndDate", 0);
+                    dateSetterService.initDate("blitSaleStartDate", 0);
                     $(".blitSaleEndDate").pDatepicker("setDate",dateSetterService.persianToArray(persianDate(editEventDetail.blitSaleEndDate).pDate));
                     $(".blitSaleStartDate").pDatepicker("setDate",dateSetterService.persianToArray(persianDate(editEventDetail.blitSaleStartDate).pDate));
                     $scope.editEventFields.blitSaleEndDate = document.getElementById("eventTicketEndTimeEdit").value;
@@ -1238,7 +1238,7 @@ angular.module('User')
 
                 sansIndexPicked = sansIndex;
                 $scope.$broadcast('blitTypeUidsReset', []);
-                dateSetterService.initDate("eventDateClassEdit0");
+                dateSetterService.initDate("eventDateClassEdit0", 0);
                 $scope.blitTypesWithSeatsEdit = [];
                 $scope.blitTypesWithOutSeatsEdit = [];
                 $(".eventDateClassEdit0").pDatepicker("setDate",dateSetterService.persianToArray(persianDate($scope.showTimeEditForms[sansIndex].date).pDate));
@@ -1267,7 +1267,7 @@ angular.module('User')
                 }
             };
             $scope.newSansEdit = function () {
-                dateSetterService.initDate("newSansEditSubmitDate");
+                dateSetterService.initDate("newSansEditSubmitDate", 0);
                 if(document.getElementById("editEventNewSansSubmit")) {
                     document.getElementById("editEventNewSansSubmit").style.display = "block";
                 }
@@ -1318,7 +1318,7 @@ angular.module('User')
                     return !(item.imageUUID === null || item.imageUUID === undefined);
                 });
                 $scope.editEventSpinner = true;
-                eventService.editEvent(sendingData)
+            eventService.editEvent(sendingData)
                     .then(function () {
                         $scope.editEventSpinner = false;
                         $scope.editEventNotif = true;
@@ -1423,7 +1423,7 @@ angular.module('User')
                     lat : $scope.exchangeEditTickets[index].latitude,
                     lng : $scope.exchangeEditTickets[index].longitude
                 };
-                dateSetterService.initDate("persianEditExchangeTime");
+                dateSetterService.initDate("persianEditExchangeTime", 0);
                 $(".persianEditExchangeTime").pDatepicker("setDate",dateSetterService.persianToArray(persianDate($scope.exchangeEditTickets[index].eventDate).pDate));
                 $scope.exchangeEdit.eventDate = document.getElementById("eventEditExchangeDate").value;
                 $scope.exchangeEditImageId = $scope.exchangeEditTickets[index].image.imageUUID;
@@ -1729,6 +1729,7 @@ angular.module('User')
 
             //==================================================== ********* =================================
             //==================================================== DISCOUNT SECTION =======================
+            $scope.discountProperties = {};
             $scope.discountCodeShow = function (index) {
                 document.getElementById("successDiscount").style.display = "none";
                 document.getElementById("errorDiscount").style.display = "none";
@@ -1743,8 +1744,10 @@ angular.module('User')
                 $scope.eventDiscount = angular.copy($scope.userEvents[index]);
                 $scope.flatEventDates($scope.eventDiscount.eventDates);
                 $timeout(function () {
-                    dateSetterService.initDate("discountStartTime");
-                    dateSetterService.initDate("discountEndTime");
+                    dateSetterService.initDate("discountStartTime", 0);
+                    $scope.discountProperties.effectDatePersian = document.getElementById("discountStartDate").value;
+                    dateSetterService.initDate("discountEndTime", 0);
+                    $scope.discountProperties.expirationDatePersian = document.getElementById("discountEndDate").value;
                 }, 1000);
                 $scope.currentPageDiscount = 1;
                 $scope.discountList(1);
@@ -1889,6 +1892,8 @@ angular.module('User')
             $scope.submitDiscountCode = function (discountData) {
                 document.getElementById("successDiscount").style.display = "none";
                 document.getElementById("errorDiscount").style.display = "none";
+                discountData.effectDatePersian = document.getElementById("discountStartDate").value;
+                discountData.expirationDatePersian = document.getElementById("discountEndDate").value;
                 var discountSubmit = {};
                 $scope.discountSubmitOnce = false;
                 discountSubmit.code = discountData.code;
@@ -1905,6 +1910,7 @@ angular.module('User')
                         document.getElementById("successDiscount").style.display = "block";
                         document.getElementsByClassName("discountSpinner")[0].style.display = "none";
                         $scope.discountSubmitOnce = true;
+                        $scope.discountList(1);
                     })
                     .catch(function (data) {
                         $scope.discountSubmitOnce = true;
@@ -1920,14 +1926,21 @@ angular.module('User')
                 document.getElementById("errorEditDiscount").style.display = "none";
                 discountIndex = index;
                 $scope.discountEditProperties.reusability = $scope.discountsList[index].reusability;
-                dateSetterService.initDate("discountEditStartTime");
+                dateSetterService.initDate("discountEditStartTime", 0);
                 $(".discountEditStartTime").pDatepicker("setDate",dateSetterService.persianToArray(persianDate($scope.discountsList[index].effectDate).pDate));
-                dateSetterService.initDate("discountEditEndTime");
+                dateSetterService.initDate("discountEditEndTime", 0);
                 $(".discountEditEndTime").pDatepicker("setDate",dateSetterService.persianToArray(persianDate($scope.discountsList[index].expirationDate).pDate));
+                $scope.discountEditProperties.effectDatePersian = document.getElementById("editDiscountStartDate").value;
+                $scope.discountEditProperties.expirationDatePersian = document.getElementById("editDiscountEndDate").value;
+
                 $('#discount-codes').modal('hide');
                 $('#discount-code-edit').modal('show');
             };
             $scope.editDiscountSubmit = function (discountEditData) {
+                document.getElementById("successEditDiscount").style.display = "none";
+                document.getElementById("errorEditDiscount").style.display = "none";
+                discountEditData.effectDatePersian = document.getElementById("editDiscountStartDate").value;
+                discountEditData.expirationDatePersian = document.getElementById("editDiscountEndDate").value;
                 var discountEditSubmit = {
                     amount : 0,
                     blitTypeIds : $scope.discountsList[discountIndex].blitTypeIds,
@@ -1985,8 +1998,8 @@ angular.module('User')
             //==================================================== ********* =================================
             //==================================================== PERSIAN DATE PICKER =======================
             $timeout(function () {
-                dateSetterService.initDate("persianTimeEventStart");
-                dateSetterService.initDate("persianTimeEventEnd");
+                dateSetterService.initDate("persianTimeEventStart", 3600000);
+                dateSetterService.initDate("persianTimeEventEnd", 7200000);
                 dateSetterService.initDate("persianExchangeTime");
                 if(document.getElementById("eventExchangeDateMain")) {
                     $scope.exchange.eventTime = document.getElementById("eventExchangeDateMain").value;
@@ -2113,7 +2126,7 @@ angular.module('User')
             };
             $scope.sansSet = function () {
                 $timeout(function () {
-                    dateSetterService.initDate("eventDateClass0");
+                    dateSetterService.initDate("eventDateClass0", 0);
                     if(document.getElementById("createSansWithoutSeat")) {
                         $scope.newShowTime.persianDate = document.getElementById("createSansWithoutSeat").value;
                     }
@@ -2317,7 +2330,7 @@ angular.module('User')
                     edited : true
                 });
                 $timeout(function () {
-                    dateSetterService.initDate("classDate"+($scope.showTimeEditForms.length-1));
+                    dateSetterService.initDate("classDate"+($scope.showTimeEditForms.length-1), 0);
                     $(".classDate"+($scope.showTimeEditForms.length-1)).pDatepicker("setDate",dateSetterService.persianToArray(persianDate(newShowTimeEdit.date).pDate));
                 }, 500);
                 newEditedBlitTypes = [];
@@ -2347,7 +2360,7 @@ angular.module('User')
                 delete newShowTimeEdit.persianDate;
                 $scope.showTimeEditForms.push(newShowTimeEdit);
                 $timeout(function () {
-                    dateSetterService.initDate("classDate"+($scope.showTimeEditForms.length-1));
+                    dateSetterService.initDate("classDate"+($scope.showTimeEditForms.length-1), 0);
                     $(".classDate"+($scope.showTimeEditForms.length-1)).pDatepicker("setDate",dateSetterService.persianToArray(persianDate(newShowTimeEdit.date).pDate));
                 }, 500);
                 $scope.newShowTimeEdit = {blitTypes : []};

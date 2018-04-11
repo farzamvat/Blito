@@ -163,14 +163,30 @@ angular.module('UiServices', [])
     }])
     .service('dateSetterService', [function () {
         var dateSetter = this;
-        dateSetter.initDate = function (className) {
-            $("."+className).pDatepicker({
+        dateSetter.initDate = function (className, startTime) {
+            $("."+className).persianDatepicker({
                 timePicker: {
-                    enabled: true
-                },
+                    "enabled": true,
+                    "step": 1,
+                    "hour": {
+                        "enabled": true,
+                        "step": null
+                    },
+                    "minute": {
+                        "enabled": true,
+                        "step": null
+                    },
+                    "second": {
+                        "enabled": false,
+                        "step": null
+                    },
+                    "meridian": {
+                        "enabled": false
+                    }
+                    },
                 formatter : function (unixDate) {
                     var self = this;
-                    var pdate = new persianDate(unixDate);
+                    var pdate = new persianDate(unixDate+startTime);
                     pdate.formatPersian = true;
                     return pdate.format(self.format);
                 },
