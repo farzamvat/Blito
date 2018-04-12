@@ -2,10 +2,7 @@ package com.blito.models;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Entity(name="event")
 public class Event {
@@ -359,6 +356,6 @@ public class Event {
 		this.eventDates.stream()
 				.filter(b -> b.getUid().equals(uid))
 				.findFirst()
-				.ifPresent(eventDate -> this.eventDates.removeIf(b -> b.getUid().equals(uid)));
+				.ifPresent(eventDate -> this.eventDates.removeIf(b -> Objects.nonNull(b.getUid()) && b.getUid().equals(uid)));
 	}
 }

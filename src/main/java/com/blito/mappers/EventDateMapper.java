@@ -37,7 +37,7 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 		vmodel.setDate(eventDate.getDate());
 		vmodel.setDateTime(eventDate.getDateTime());
 		vmodel.setUid(eventDate.getUid());
-		vmodel.setBlitTypes(eventDate.getBlitTypes().stream().map(blitTypeMapper::createFromEntity).collect(Collectors.toSet()));
+		vmodel.setBlitTypes(blitTypeMapper.createFromEntities(eventDate.getBlitTypes()));
 		vmodel.setEventDateId(eventDate.getEventDateId());
 		vmodel.setState(Enum.valueOf(State.class, eventDate.getEventDateState()));
 		Option.of(eventDate.getSalon()).peek(salon -> vmodel.setHasSalon(true)).onEmpty(() -> vmodel.setHasSalon(false));
@@ -48,7 +48,7 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 	public EventDate updateEntity(EventDateViewModel vmodel, EventDate eventDate) {
 		eventDate.setDate(vmodel.getDate());
 		eventDate.setDateTime(vmodel.getDateTime());
-		List<String> oldOnes = vmodel.getBlitTypes().stream().map(BlitTypeViewModel::getUid).filter(uid -> Objects.nonNull(uid)).filter(uid -> !uid.isEmpty()).collect(Collectors.toList());
+		List<String> oldOnes = vmodel.getBlitTypes().stream().map(BlitTypeViewModel::getUid).filter(uid -> Objects.nonNull(uid) && !uid.isEmpty()).collect(Collectors.toList());
 		List<String> shouldDelete = new ArrayList<>();
 		eventDate.getBlitTypes().forEach(bt -> {
 			if(!oldOnes.contains(bt.getUid()))
