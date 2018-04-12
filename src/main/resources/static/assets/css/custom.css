@@ -3253,6 +3253,11 @@ input:disabled, textarea:disabled, select:disabled {
     border-radius: 5px;
     border: 1px solid rgba(0, 0, 0, .2);
 }
+.generateSeatGuest {
+    border-bottom-right-radius: 0 !important;
+    height: 40px;
+    border-top-right-radius: 0 !important;
+}
 .h_iframe-aparat_embed_frame {
     width: 50% !important;
     height: 50% !important;
