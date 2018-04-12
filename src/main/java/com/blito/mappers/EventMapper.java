@@ -17,10 +17,7 @@ import org.springframework.stereotype.Component;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -132,7 +129,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
                     event.setAdditionalFields(null);
                 });
 
-        List<String> oldOnes = vmodel.getEventDates().stream().map(EventDateViewModel::getUid).filter(uid -> !uid.isEmpty()).collect(Collectors.toList());
+        List<String> oldOnes = vmodel.getEventDates().stream().map(EventDateViewModel::getUid).filter(uid -> Objects.nonNull(uid) && !uid.isEmpty()).collect(Collectors.toList());
         List<String> shouldDelete = new ArrayList<>();
         event.getEventDates().forEach(eventDate -> {
             if (!oldOnes.contains(eventDate.getUid())) {
@@ -144,7 +141,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         vmodel.getEventDates().forEach(edvm ->
             Option.ofOptional(event.getEventDates()
                     .stream()
-                    .filter(eventDate -> !edvm.getUid().isEmpty() && eventDate.getUid().equals(edvm.getUid()))
+                    .filter(eventDate -> Objects.nonNull(edvm.getUid()) && !edvm.getUid().isEmpty() && eventDate.getUid().equals(edvm.getUid()))
                     .findFirst())
                     .peek(eventDate -> eventDateMapper.updateEntity(edvm, eventDate))
                     .onEmpty(() -> {
