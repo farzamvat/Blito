@@ -146,7 +146,11 @@ public class EventService {
 	public EventViewModel getEventByLink(String eventLink) {
 		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(eventLink)
 				.orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
-		if(!event.getOperatorState().equals(OperatorState.APPROVED.name())) {
+		if(!(
+				event.getOperatorState().equals(OperatorState.APPROVED.name()) ||
+						event.getOperatorState().equals(OperatorState.EDITED.name()) ||
+						event.getOperatorState().equals(OperatorState.EDIT_REJECTED.name())
+				)) {
 			throw new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND));
 		}
 		event.setViews(event.getViews() + 1);
