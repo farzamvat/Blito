@@ -74,6 +74,11 @@ public class UpdateEventWithEditVersionTest extends AbstractEventRestControllerT
 
         EventViewModel afterUpdateViewModel = eventUpdateResponse.thenReturn().as(EventViewModel.class);
 
+        eventViewModel.setEventName("SECOND EDITING");
+        givenRestIntegration()
+                .body(eventViewModel)
+                .when().put(getServerAddress() + "/api/blito/v1.0/events").then().statusCode(202);
+
         AdminChangeEventOperatorStateVm operatorStateVm = new AdminChangeEventOperatorStateVm();
         operatorStateVm.setOperatorState(OperatorState.APPROVED);
         operatorStateVm.setEventId(afterUpdateViewModel.getEventId());

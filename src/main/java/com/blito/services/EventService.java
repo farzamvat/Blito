@@ -97,7 +97,7 @@ public class EventService {
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.SHARED_SEAT_AND_INCONSISTENT_CAPACITY_ERROR));
 		}
 
-		if(vmodel.getSalonUid() != null && vmodel.getEventDates().stream().anyMatch(eventDateViewModel -> !validateConsistencyOfSeatCounts(eventDateViewModel, vmodel.getSalonUid()))){
+		if(vmodel.getSalonUid() != null && vmodel.getEventDates().stream().filter(eventDateViewModel -> eventDateViewModel.isHasSalon()).anyMatch(eventDateViewModel -> !validateConsistencyOfSeatCounts(eventDateViewModel, vmodel.getSalonUid()))){
 		    throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_SEAT_COUNTS));
         }
 
@@ -196,6 +196,9 @@ public class EventService {
 	@Transactional
 	public EventViewModel updateWithEditedVersion(EventViewModel vmodel,Event event,EventHost eventHost,Set<Image> images) {
 		Event editedVersion = eventMapper.createFromViewModel(vmodel);
+		// NOTE : updating same event
+		Option.of(event.getEditedVersion())
+				.peek(oldEditedVersion -> editedVersion.setEventId(oldEditedVersion.getEventId()));
 		editedVersion.setImages(images);
 		editedVersion.setOperatorState(OperatorState.OPERATOR_IGNORE.name());
 		editedVersion.setDeleted(true);
