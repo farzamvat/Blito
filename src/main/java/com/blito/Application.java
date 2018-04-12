@@ -2,6 +2,7 @@ package com.blito;
 
 
 import com.blito.services.Initiallizer;
+import com.blito.services.MigrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,7 +22,9 @@ import javax.annotation.PostConstruct;
 public class Application {
 
 	@Autowired
-	Initiallizer initializer;
+	private Initiallizer initializer;
+	@Autowired
+	private MigrationService migrationService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
@@ -29,6 +32,8 @@ public class Application {
 
 	@PostConstruct
 	public void init() {
+		// TODO: 4/12/2018 must be deleted after deployment 
+		migrationService.updateEventDates_And_BlitTypes_Uids();
 		initializer.importPermissionsToDataBase();
 		initializer.insertAdminUserAndRoleAndOldBlitoUsers();
 		initializer.insertSalonSchemasAndDataIntoDB();

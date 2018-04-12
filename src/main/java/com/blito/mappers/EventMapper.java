@@ -123,7 +123,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         event.setLatitude(vmodel.getLatitude());
         event.setEventType(vmodel.getEventType().name());
         event.setMembers(vmodel.getMembers());
-        Option.of(vmodel.getAdditionalFields())
+        Option.of(event.getAdditionalFields())
                 .filter(additionalFieldList -> !additionalFieldList.isEmpty())
                 .peek(additionalFieldList -> {
                     event.setAdditionalFields(vmodel.getAdditionalFields().stream().collect(Collectors.toMap(AdditionalField::getKey, AdditionalField::getValue)));
