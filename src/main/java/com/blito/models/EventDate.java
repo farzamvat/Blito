@@ -124,8 +124,6 @@ public class EventDate {
 	}
 	public void removeBlitTypeByUid(String uid)
 	{
-		this.blitTypes.stream().filter(b -> b.getUid().equals(uid))
-                .findFirst().ifPresent(blitType -> this.blitTypes.removeIf(b -> Objects.nonNull(b.getUid()) && b.getUid().equals(uid)));
-
+		this.blitTypes.removeIf(b -> Objects.nonNull(b.getUid()) && b.getUid().equals(uid));
 	}
 }
