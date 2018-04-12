@@ -2155,7 +2155,9 @@ angular.module('User')
                 })
             };
             $scope.salonSchema = {sections : []};
+            $scope.EditSalonValidation = true;
             $scope.salonSeatPicker = function (salonUID, seatMapIndex) {
+                $scope.EditSalonValidation = false;
                 for(var i = 0; i < 4 ; i++) {
                     if(document.getElementsByClassName("seatMapSection"+i)[0]) {
                         if(i !== 2) {
@@ -2343,6 +2345,7 @@ angular.module('User')
             };
             $scope.submitSansWithSeatpickerEditSubmit = function (newSans) {
                 var newShowTimeEdit = angular.copy(newSans);
+                $scope.EditSalonValidation = true;
                 newShowTimeEdit.persianDate = document.getElementById("newSansTimeEditSubmit").value;
                 newShowTimeEdit.date = dateSetterService.persianToMs(newShowTimeEdit.persianDate);
                 newShowTimeEdit.blitTypes = newShowTimeEdit.blitTypes.concat(sansWithSeats);
