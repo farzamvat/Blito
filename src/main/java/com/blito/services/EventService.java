@@ -135,10 +135,6 @@ public class EventService {
 		event.setImages(images);
 		event.setEventHost(eventHost);
 		event.setEventLink(generateEventLink(event));
-		event.getEventDates().forEach(eventDate -> {
-			eventDate.setUid(UUID.randomUUID().toString());
-			eventDate.getBlitTypes().forEach(blitType -> blitType.setUid(UUID.randomUUID().toString()));
-		});
 		return eventMapper.createFromEntity(eventRepository.save(event));
 	}
 

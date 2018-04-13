@@ -9,12 +9,11 @@ import com.blito.models.Seat;
 import com.blito.repositories.BlitTypeSeatRepository;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
 import com.blito.services.SeatPickerService;
+import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -38,7 +37,10 @@ public class BlitTypeMapper implements GenericMapper<BlitType,BlitTypeViewModel>
 		blitType.setName(vmodel.getName());
 		blitType.setCapacity(vmodel.getCapacity());
 		blitType.setFree(vmodel.isFree());
-		blitType.setUid(vmodel.getUid());
+		Option.of(vmodel.getUid())
+				.filter(uid -> Objects.nonNull(uid) && !uid.isEmpty())
+				.peek(uid -> blitType.setUid(uid))
+				.onEmpty(() -> blitType.setUid(UUID.randomUUID().toString()));
 		blitType.setPrice(vmodel.getPrice());
 		blitType.setBlitTypeState(State.CLOSED.name());
 		Optional.ofNullable(vmodel.getSeatUids()).filter(seatUids -> !seatUids.isEmpty())

@@ -3,21 +3,25 @@ package com.blito.mappers;
 import com.blito.configs.Constants;
 import com.blito.enums.*;
 import com.blito.exceptions.FileNotFoundException;
-import com.blito.models.*;
+import com.blito.models.Event;
+import com.blito.models.EventDate;
+import com.blito.models.Salon;
 import com.blito.repositories.SalonRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.event.AdditionalField;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import io.vavr.control.Option;
-import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -146,7 +150,6 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
                     .peek(eventDate -> eventDateMapper.updateEntity(edvm, eventDate))
                     .onEmpty(() -> {
                         EventDate eventDate = eventDateMapper.createFromViewModel(edvm);
-                        eventDate.setUid(UUID.randomUUID().toString());
                         event.addEventDate(eventDate);
                     })
         );

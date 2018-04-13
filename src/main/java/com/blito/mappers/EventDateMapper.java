@@ -23,7 +23,10 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 		EventDate eventDate = new EventDate();
 		eventDate.setDate(vmodel.getDate());
 		eventDate.setDateTime(vmodel.getDateTime());
-		eventDate.setUid(vmodel.getUid());
+		Option.of(vmodel.getUid())
+				.filter(uid -> Objects.nonNull(uid) && !uid.isEmpty())
+				.peek(uid -> eventDate.setUid(uid))
+				.onEmpty(() -> eventDate.setUid(UUID.randomUUID().toString()));
 		eventDate.setEventDateState(State.CLOSED.name());
 		vmodel.getBlitTypes().forEach(bt -> {
 			eventDate.addBlitType(blitTypeMapper.createFromViewModel(bt));
@@ -66,7 +69,6 @@ public class EventDateMapper implements GenericMapper<EventDate,EventDateViewMod
 					.peek(blitType -> blitTypeMapper.updateEntity(bvm,blitType))
 					.onEmpty(() -> {
 						BlitType blitType = blitTypeMapper.createFromViewModel(bvm);
-						blitType.setUid(UUID.randomUUID().toString());
 						eventDate.addBlitType(blitType);
 					})
 		);
