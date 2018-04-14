@@ -15,9 +15,9 @@
                         <i class="fa fa-calendar" aria-hidden="true"></i>
                     </a>
                     <ul class="tabDropDown" id="toggleEvent">
-                        <li ng-click="scrollTo('eventList', 'eventListSection')"><a ><span class="">  رویدادها و برگزارکننده ها </span><i class="fa fa-list"></i></a></li>
-                        <li ng-click="scrollTo('makeEvent', 'makeEventSection')"><a ><span class="">ایجاد رویداد</span><i class="fa fa-magic"></i></a></li>
-                        <li ng-click="scrollTo('eventPlannerSection', 'PlannerSection')"><a ><span class="">ایجاد برگزارکننده</span><i class="fa fa-user"></i></a></li>
+                        <li ng-click="scrollTo('eventList', 'eventListSection')"><a ><span class="">  رویدادها و برگزارکننده ها </span><i class="fa fa-list"></i> </a></li>
+                        <li ng-click="scrollTo('makeEvent', 'makeEventSection')"><a ><span class=""> ایجاد رویداد </span><i class="fa fa-magic"></i></a></li>
+                        <li ng-click="scrollTo('eventPlannerSection', 'PlannerSection')"><a ><span class=""> ایجاد برگزارکننده </span><i class="fa fa-user"></i></a></li>
                     </ul>
                 </li>
                 <li>
@@ -452,7 +452,7 @@
                                                             <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editEvent($index, true)">ویرایش</button></td>
                                                             <td class="dataCenter" ng-show="item.operatorState === 'ویرایش شده'"><button class="btn btn-info editButton" ng-click="editEvent($index, false)">اطلاعات فعلی رویداد</button></td>
                                                             <td ng-show="item.operatorState === 'تأیید شده'" class="dataCenter"><button class="btn editButton btn-default" ng-click="showTickets($index)">بلیت ها</button></td>
-                                                            <td ng-show="item.operatorState === 'تأیید شده'" class="dataCenter"><button class="btn editButton btn-success" ng-click="discountCodeShow($index)">کد تخفیف</button></td>
+                                                            <td ng-show="item.operatorState !== 'انتظار' && item.operatorState !== 'رد شده' && item.operatorState !== 'عدم تایید ویرایش'" class="dataCenter"><button class="btn editButton btn-success" ng-click="discountCodeShow($index)">کد تخفیف</button></td>
                                                             <td ng-if="item.operatorState === 'رد شده'" class="dataCenter"><button type="button" ng-click="showSetting($index)"  class="btn editButton btn-info" >تنظیمات رویداد </button></td>
                                                             <td ng-if="item.salonUid" class="dataCenter"><button type="button" ng-click="openGuestTicketModal($index)"  class="btn editButton btn-info" >صدور بلیت مهمان‌ها </button></td>
                                                         </tr>

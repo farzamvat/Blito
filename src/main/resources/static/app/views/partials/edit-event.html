@@ -493,7 +493,7 @@
                                 <button class="btn btn-info center-block" ng-click="addFieldTicketTypeEditSubmit()">تعریف بلیت بدون انتخاب صندلی <i class="fa fa-plus"></i></button>
                             </div>
                             <div class="col-xs-12 marginTop30">
-                                <button class="btn btn-success center-block marginTop30" ng-disabled="editEventForm.blitNameEditSubmit.$invalid || editEventForm.blitCapacityEditSubmit.$invalid || editEventForm.blitPriceEditSubmit.$invalid || ( (newShowTimeEdit.blitTypes.length === 0) && !(editEventFields.salonUid) ) " ng-click="submitSansWithSeatpickerEditSubmit(newShowTimeEdit)">ثبت  سانس</button>
+                                <button class="btn btn-success center-block marginTop30" ng-disabled="editEventForm.blitNameEditSubmit.$invalid || editEventForm.blitCapacityEditSubmit.$invalid || editEventForm.blitPriceEditSubmit.$invalid || ( (newShowTimeEdit.blitTypes.length === 0) && !(editEventFields.salonUid) ) || (editEventFields.salonUid && EditSalonValidation) " ng-click="submitSansWithSeatpickerEditSubmit(newShowTimeEdit)">ثبت  سانس</button>
                             </div>
                         </div>
                         <div class="hrLine marginTop30"></div>
