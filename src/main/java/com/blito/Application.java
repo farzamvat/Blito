@@ -43,11 +43,6 @@ public class Application {
 		return new ModelAndView("index");
 	}
 
-	@GetMapping("/webpack/*")
-	public ModelAndView webpackFiles() {
-		return new ModelAndView("index");
-	}
-
 	@GetMapping("/not-found")
 	public ModelAndView notFound()
 	{
