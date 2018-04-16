@@ -817,160 +817,160 @@ angular.module('User')
                 }
             };
 
-        $scope.deleteFieldShowTimeEdit=function(i){
-            if( 1 < $scope.showTimeEditForms.length) {
-                $scope.showTimeEditForms.splice(i,1);
-            }
-        };
-        $scope.deleteFieldShowTime=function(i){
-            if( 0 < $scope.showTimeForms.length) {
-                userProfile.showTimeNumber--;
-                $scope.showTimeForms.splice(i,1);
-            }
-        };
-        //==================================================== ********* =================================
-        //==================================================== EVENT PLANNER SUBMIT =================================
-        $scope.submitPlannerSpinner = false;
-        $scope.submitPlannerNotif = false;
-        $scope.plannerSubmitOnce = false;
-        $scope.submitEventPlanner = function (plannerData) {
-            $scope.plannerSubmitOnce = true;
+            $scope.deleteFieldShowTimeEdit=function(i){
+                if( 1 < $scope.showTimeEditForms.length) {
+                    $scope.showTimeEditForms.splice(i,1);
+                }
+            };
+            $scope.deleteFieldShowTime=function(i){
+                if( 0 < $scope.showTimeForms.length) {
+                    userProfile.showTimeNumber--;
+                    $scope.showTimeForms.splice(i,1);
+                }
+            };
+            //==================================================== ********* =================================
+            //==================================================== EVENT PLANNER SUBMIT =================================
+            $scope.submitPlannerSpinner = false;
             $scope.submitPlannerNotif = false;
-            var eventPlannerData = {
-                hostName: plannerData.name,
-                hostType: plannerData.type,
-                images: [
-                    {
-                        imageUUID: $scope.plannerImageId,
-                        type: "HOST_PHOTO"
-                    },
-                    {
-                        imageUUID: $scope.coverImageId,
-                        type: "HOST_COVER_PHOTO"
-                    }
-                ],
-                instagramLink: plannerData.instagram,
-                linkedinLink: plannerData.linkedin,
-                telegramLink: plannerData.telegram,
-                telephone: dataService.persianToEnglishDigit(persianJs(plannerData.mobile).englishNumber().toString()),
-                twitterLink: plannerData.twitter,
-                websiteLink: plannerData.website,
-                description : plannerData.description
+            $scope.plannerSubmitOnce = false;
+            $scope.submitEventPlanner = function (plannerData) {
+                $scope.plannerSubmitOnce = true;
+                $scope.submitPlannerNotif = false;
+                var eventPlannerData = {
+                    hostName: plannerData.name,
+                    hostType: plannerData.type,
+                    images: [
+                        {
+                            imageUUID: $scope.plannerImageId,
+                            type: "HOST_PHOTO"
+                        },
+                        {
+                            imageUUID: $scope.coverImageId,
+                            type: "HOST_COVER_PHOTO"
+                        }
+                    ],
+                    instagramLink: plannerData.instagram,
+                    linkedinLink: plannerData.linkedin,
+                    telegramLink: plannerData.telegram,
+                    telephone: dataService.persianToEnglishDigit(persianJs(plannerData.mobile).englishNumber().toString()),
+                    twitterLink: plannerData.twitter,
+                    websiteLink: plannerData.website,
+                    description : plannerData.description
+                };
+                eventPlannerData.images = eventPlannerData.images.filter(function (images) {
+                    return images.imageUUID !== undefined;
+                });
+                if(!$scope.plannerImageId && !$scope.coverImageId){
+                    delete eventPlannerData.images;
+                }
+                $scope.submitPlannerSpinner = true;
+                plannerService.submitPlannerForm(eventPlannerData)
+                    .then(function () {
+                        $scope.plannerSubmitOnce = false;
+                        $scope.submitPlannerSpinner = false;
+                        $scope.submitPlannerNotif = true;
+                        $scope.submitPlannerErrorNotif = false;
+                        $scope.getPlannersData(1);
+                        $scope.getPlannersDataList();
+                        $scope.eventPlanner = [];
+                        $scope.plannerImageId = '';
+                        $scope.coverImageId = '';
+                        $scope.coverPhotoSuccess = false;
+                        $scope.plannerPhotoSuccess = false;
+                        angular.element(document.getElementsByClassName("coverPhotoUpload"))[0].src = '';
+                        angular.element(document.getElementsByClassName("eventPlannerPhotoUpload"))[0].src = '';
+                    }, function (data) {
+                        $scope.plannerSubmitOnce = false;
+                        $scope.submitPlannerErrorNotif = true;
+                        document.getElementById("submitPlannerErrorNotif").innerHTML= data.data.message;
+                        $scope.submitPlannerSpinner = false;
+                    })
             };
-            eventPlannerData.images = eventPlannerData.images.filter(function (images) {
-                return images.imageUUID !== undefined;
-            });
-            if(!$scope.plannerImageId && !$scope.coverImageId){
-                delete eventPlannerData.images;
-            }
-            $scope.submitPlannerSpinner = true;
-            plannerService.submitPlannerForm(eventPlannerData)
-                .then(function () {
-                    $scope.plannerSubmitOnce = false;
-                    $scope.submitPlannerSpinner = false;
-                    $scope.submitPlannerNotif = true;
-                    $scope.submitPlannerErrorNotif = false;
-                    $scope.getPlannersData(1);
-                    $scope.getPlannersDataList();
-                    $scope.eventPlanner = [];
-                    $scope.plannerImageId = '';
-                    $scope.coverImageId = '';
-                    $scope.coverPhotoSuccess = false;
-                    $scope.plannerPhotoSuccess = false;
-                    angular.element(document.getElementsByClassName("coverPhotoUpload"))[0].src = '';
-                    angular.element(document.getElementsByClassName("eventPlannerPhotoUpload"))[0].src = '';
-                }, function (data) {
-                    $scope.plannerSubmitOnce = false;
-                    $scope.submitPlannerErrorNotif = true;
-                    document.getElementById("submitPlannerErrorNotif").innerHTML= data.data.message;
-                    $scope.submitPlannerSpinner = false;
-                })
-        };
-        //==================================================== ********* =================================
-        //==================================================== EVENT SUBMIT =================================
-        $scope.galleryOneUUID = null;
-        $scope.galleryTwoUUID = null;
-        $scope.galleryThreeUUID = null;
-        $scope.galleryFourUUID = null;
-        $scope.galleryFiveUUID = null;
-        $scope.gallerySixUUID = null;
-        $scope.eventSubmitOnce = false;
-        $scope.submitEvent = function (eventFields) {
-            $scope.eventSubmitOnce = true;
-            $scope.createEventNotif = false;
-            $scope.eventPhotoSuccess = false;
-            $scope.eventPhotoOneSuccess = false;
-            $scope.eventPhotoTwoSuccess = false;
-            $scope.eventPhotoThreeSuccess = false;
-            $scope.eventPhotoFourSuccess = false;
-            $scope.eventPhotoFiveSuccess = false;
-            $scope.eventPhotoSixSuccess = false;
-            var latLng = mapMarkerService.getMarker();
-            var newShowTime = angular.copy($scope.showTimeForms);
-            newShowTime = newShowTime.map(function (showTime) {
-                delete showTime.newSeatsPrice;
-                delete showTime.persianDate;
-                showTime.dateTime =  persianDate(showTime.date).format("dddd,DD MMMM, ساعت HH:mm");
-                return showTime;
-            });
-            eventFields.ticketStartTime = document.getElementById("eventTicketStartTimeMain").value;
-            eventFields.ticketEndTime = document.getElementById("eventTicketEndTimeMain").value;
-            var eventSubmitData = {
-                eventName : eventFields.name,
-                eventType : eventFields.eventType,
-                eventHostId : eventFields.eventPlanner.eventHostId,
-                address : eventFields.address,
-                aparatDisplayCode : eventFields.aparatLink,
-                blitSaleEndDate : dateSetterService.persianToMs(eventFields.ticketEndTime),
-                blitSaleStartDate : dateSetterService.persianToMs(eventFields.ticketStartTime),
-                description : eventFields.description,
-                members : eventFields.members,
-                isPrivate : eventFields.isPrivate,
-                eventDates : newShowTime,
-                images : [
-                    {imageUUID : $scope.eventImageId,   type : "EVENT_PHOTO"},
-                    {imageUUID : $scope.galleryOneUUID, type : "GALLERY"},
-                    {imageUUID : $scope.galleryTwoUUID,  type : "GALLERY"},
-                    {imageUUID : $scope.galleryThreeUUID, type : "GALLERY"},
-                    {imageUUID : $scope.galleryFourUUID, type : "GALLERY"},
-                    {imageUUID : $scope.galleryFiveUUID, type : "GALLERY"},
-                    {imageUUID : $scope.gallerySixUUID, type : "GALLERY"}
-                ],
-                latitude : latLng.lat,
-                longitude : latLng.lng,
-                additionalFields : $scope.additionalFields
-            };
-            if($scope.seatPicker.isChosen === 'true') {
-                eventSubmitData.salonUid = $scope.seatMapListChosen.salonUid;
-            }
-            eventSubmitData.images = eventSubmitData.images.filter(function (item) {
-                return !(item.imageUUID === null || item.imageUUID === undefined);
-            });
-            if(!$scope.eventImageId){
-                delete eventSubmitData.images;
-            }
-            $scope.createEventSpinner = true;
-            eventService.submitEventForm(eventSubmitData)
-                .then(function () {
-                    $scope.eventSubmitOnce = false;
-                    $scope.additionalFields = [];
-                    $(angular.element(document.getElementById('PlannerSection'))).next().slideUp(300);
-                    $(angular.element(document.getElementById('PlannerSection'))).removeClass('orangeBackground');
-                    angular.element(document.getElementsByClassName("profilePhotoUpload"))[0].src = '';
-                    angular.element(document.getElementsByClassName("galleryOne"))[0].src = '';
-                    angular.element(document.getElementsByClassName("galleryTwo"))[0].src = '';
-                    angular.element(document.getElementsByClassName("galleryThree"))[0].src = '';
-                    angular.element(document.getElementsByClassName("galleryFour"))[0].src = '';
-                    angular.element(document.getElementsByClassName("galleryFive"))[0].src = '';
-                    angular.element(document.getElementsByClassName("gallerySix"))[0].src = '';
-                    document.getElementsByClassName("seatMapSection0")[0].style.display = "none";
-                    $scope.eventImageId = null;
-                    $scope.galleryOneUUID = null;
-                    $scope.galleryTwoUUID = null;
-                    $scope.galleryThreeUUID = null;
-                    $scope.galleryFourUUID = null;
-                    $scope.galleryFiveUUID = null;
-                    $scope.gallerySixUUID = null;
+            //==================================================== ********* =================================
+            //==================================================== EVENT SUBMIT =================================
+            $scope.galleryOneUUID = null;
+            $scope.galleryTwoUUID = null;
+            $scope.galleryThreeUUID = null;
+            $scope.galleryFourUUID = null;
+            $scope.galleryFiveUUID = null;
+            $scope.gallerySixUUID = null;
+            $scope.eventSubmitOnce = false;
+            $scope.submitEvent = function (eventFields) {
+                $scope.eventSubmitOnce = true;
+                $scope.createEventNotif = false;
+                $scope.eventPhotoSuccess = false;
+                $scope.eventPhotoOneSuccess = false;
+                $scope.eventPhotoTwoSuccess = false;
+                $scope.eventPhotoThreeSuccess = false;
+                $scope.eventPhotoFourSuccess = false;
+                $scope.eventPhotoFiveSuccess = false;
+                $scope.eventPhotoSixSuccess = false;
+                var latLng = mapMarkerService.getMarker();
+                var newShowTime = angular.copy($scope.showTimeForms);
+                newShowTime = newShowTime.map(function (showTime) {
+                    delete showTime.newSeatsPrice;
+                    delete showTime.persianDate;
+                    showTime.dateTime =  persianDate(showTime.date).format("dddd,DD MMMM, ساعت HH:mm");
+                    return showTime;
+                });
+                eventFields.ticketStartTime = document.getElementById("eventTicketStartTimeMain").value;
+                eventFields.ticketEndTime = document.getElementById("eventTicketEndTimeMain").value;
+                var eventSubmitData = {
+                    eventName : eventFields.name,
+                    eventType : eventFields.eventType,
+                    eventHostId : eventFields.eventPlanner.eventHostId,
+                    address : eventFields.address,
+                    aparatDisplayCode : eventFields.aparatLink,
+                    blitSaleEndDate : dateSetterService.persianToMs(eventFields.ticketEndTime),
+                    blitSaleStartDate : dateSetterService.persianToMs(eventFields.ticketStartTime),
+                    description : eventFields.description,
+                    members : eventFields.members,
+                    isPrivate : eventFields.isPrivate,
+                    eventDates : newShowTime,
+                    images : [
+                        {imageUUID : $scope.eventImageId,   type : "EVENT_PHOTO"},
+                        {imageUUID : $scope.galleryOneUUID, type : "GALLERY"},
+                        {imageUUID : $scope.galleryTwoUUID,  type : "GALLERY"},
+                        {imageUUID : $scope.galleryThreeUUID, type : "GALLERY"},
+                        {imageUUID : $scope.galleryFourUUID, type : "GALLERY"},
+                        {imageUUID : $scope.galleryFiveUUID, type : "GALLERY"},
+                        {imageUUID : $scope.gallerySixUUID, type : "GALLERY"}
+                    ],
+                    latitude : latLng.lat,
+                    longitude : latLng.lng,
+                    additionalFields : $scope.additionalFields
+                };
+                if($scope.seatPicker.isChosen === 'true') {
+                    eventSubmitData.salonUid = $scope.seatMapListChosen.salonUid;
+                }
+                eventSubmitData.images = eventSubmitData.images.filter(function (item) {
+                    return !(item.imageUUID === null || item.imageUUID === undefined);
+                });
+                if(!$scope.eventImageId){
+                    delete eventSubmitData.images;
+                }
+                $scope.createEventSpinner = true;
+                eventService.submitEventForm(eventSubmitData)
+                    .then(function () {
+                        $scope.eventSubmitOnce = false;
+                        $scope.additionalFields = [];
+                        $(angular.element(document.getElementById('PlannerSection'))).next().slideUp(300);
+                        $(angular.element(document.getElementById('PlannerSection'))).removeClass('orangeBackground');
+                        angular.element(document.getElementsByClassName("profilePhotoUpload"))[0].src = '';
+                        angular.element(document.getElementsByClassName("galleryOne"))[0].src = '';
+                        angular.element(document.getElementsByClassName("galleryTwo"))[0].src = '';
+                        angular.element(document.getElementsByClassName("galleryThree"))[0].src = '';
+                        angular.element(document.getElementsByClassName("galleryFour"))[0].src = '';
+                        angular.element(document.getElementsByClassName("galleryFive"))[0].src = '';
+                        angular.element(document.getElementsByClassName("gallerySix"))[0].src = '';
+                        document.getElementsByClassName("seatMapSection0")[0].style.display = "none";
+                        $scope.eventImageId = null;
+                        $scope.galleryOneUUID = null;
+                        $scope.galleryTwoUUID = null;
+                        $scope.galleryThreeUUID = null;
+                        $scope.galleryFourUUID = null;
+                        $scope.galleryFiveUUID = null;
+                        $scope.gallerySixUUID = null;
                         $scope.mapMarkerClickCheckEvent = true;
                         $scope.showTimeForms = [];
                         $timeout(function () {
@@ -1097,6 +1097,7 @@ angular.module('User')
 
             //==================================================== EDIT EVENT =================================
             $scope.editEventFields = {};
+            var showTimes = [];
             $scope.editEvent = function (index, isEdit) {
                 $scope.isEdit = isEdit;
                 $scope.editEventErrorNotif = false;
@@ -1139,50 +1140,51 @@ angular.module('User')
                     document.getElementById("eventDescriptionAppend").insertAdjacentHTML('afterbegin', editEventDetail.members);
                 }
 
-            $scope.showTimeEditForms = angular.copy(editEventDetail.eventDates);
-            $scope.additionalFieldsEdit = angular.copy(editEventDetail.additionalFields);
-            if(!$scope.additionalFieldsEdit) {
-                $scope.additionalFieldsEdit = [];
-            } else {
-                $scope.additionalFieldsSection = true;
-            }
-                editEventDetail.eventDates.forEach(function (eventDate) {
-                eventDate.blitTypes.forEach(function (blitType) {
-                    if(blitType.soldCount > 0) {
-                        $scope.checkSoldCountForAdditionalField = true;
-                    }
-                })
-            });
-            $scope.editEventFields = {
-                eventId : editEventDetail.eventId,
-                eventName : editEventDetail.eventName,
-                eventType : editEventDetail.eventType,
-                description : editEventDetail.description,
-                address : editEventDetail.address,
-                aparatDisplayCode : editEventDetail.aparatDisplayCode,
-                eventHostId : editEventDetail.eventHostId,
-                eventLink : editEventDetail.eventLink,
-                members : editEventDetail.members,
-                isPrivate : editEventDetail.isPrivate,
-                eventState : editEventDetail.eventState
-            };
-            if(editEventDetail.salonUid) {
-                $scope.editEventFields.salonUid = editEventDetail.salonUid;
-            }
-            $scope.dateClass = function (classNumber) {
-                return "classDate"+classNumber;
-            };
-            $("#editEvent").modal("show");
-            var imageUUID, gallery = [];
-                editEventDetail.images.forEach(function (image) {
-                if(image.type === "EVENT_PHOTO") {
-                    imageUUID = image.imageUUID;
+                $scope.showTimeEditForms = angular.copy(editEventDetail.eventDates);
+                showTimes = editEventDetail.eventDates;
+                $scope.additionalFieldsEdit = angular.copy(editEventDetail.additionalFields);
+                if(!$scope.additionalFieldsEdit) {
+                    $scope.additionalFieldsEdit = [];
                 } else {
-                    gallery.push(image.imageUUID);
+                    $scope.additionalFieldsSection = true;
                 }
-            });
-            $scope.eventEditImageId = imageUUID;
-            imageServices.downloadPhotos($scope.eventEditImageId, "profilePhotoUploadEditEvent");
+                editEventDetail.eventDates.forEach(function (eventDate) {
+                    eventDate.blitTypes.forEach(function (blitType) {
+                        if(blitType.soldCount > 0) {
+                            $scope.checkSoldCountForAdditionalField = true;
+                        }
+                    })
+                });
+                $scope.editEventFields = {
+                    eventId : editEventDetail.eventId,
+                    eventName : editEventDetail.eventName,
+                    eventType : editEventDetail.eventType,
+                    description : editEventDetail.description,
+                    address : editEventDetail.address,
+                    aparatDisplayCode : editEventDetail.aparatDisplayCode,
+                    eventHostId : editEventDetail.eventHostId,
+                    eventLink : editEventDetail.eventLink,
+                    members : editEventDetail.members,
+                    isPrivate : editEventDetail.isPrivate,
+                    eventState : editEventDetail.eventState
+                };
+                if(editEventDetail.salonUid) {
+                    $scope.editEventFields.salonUid = editEventDetail.salonUid;
+                }
+                $scope.dateClass = function (classNumber) {
+                    return "classDate"+classNumber;
+                };
+                $("#editEvent").modal("show");
+                var imageUUID, gallery = [];
+                editEventDetail.images.forEach(function (image) {
+                    if(image.type === "EVENT_PHOTO") {
+                        imageUUID = image.imageUUID;
+                    } else {
+                        gallery.push(image.imageUUID);
+                    }
+                });
+                $scope.eventEditImageId = imageUUID;
+                imageServices.downloadPhotos($scope.eventEditImageId, "profilePhotoUploadEditEvent");
 
                 if(gallery.length >= 1) {
                     $scope.galleryOneEditUUID = gallery[0];
@@ -1286,24 +1288,31 @@ angular.module('User')
                 }
             };
 
-        $scope.editEventSubmit = function (editEventData) {
-            var sendingData = angular.copy(editEventData);
-            var latLong = mapMarkerService.getMarker();
-            $scope.newShowTimeEditForms = angular.copy($scope.showTimeEditForms);
-            $scope.newShowTimeEditForms.map(function (item) {
-                delete item.edited;
-                item.dateTime =  persianDate(item.date).format("dddd,DD MMMM, ساعت HH:mm");
-                return item;
-            });
-            editEventData.blitSaleEndDate = document.getElementById("eventTicketEndTimeEdit").value;
-            editEventData.blitSaleStartDate = document.getElementById("eventTicketStartTimeEdit").value;
+            $scope.editEventSubmit = function (editEventData) {
+                var sendingData = angular.copy(editEventData);
+                var latLong = mapMarkerService.getMarker();
+                $scope.newShowTimeEditForms = angular.copy($scope.showTimeEditForms);
+                $scope.newShowTimeEditForms.map(function (item) {
+                    delete item.edited;
+                    item.dateTime =  persianDate(item.date).format("dddd,DD MMMM, ساعت HH:mm");
+                    return item;
+                });
+                showTimes.forEach(function (sans) {
+                    $scope.newShowTimeEditForms.forEach(function (newSans) {
+                        if(sans.eventDateId === newSans.eventDateId) {
+                            newSans.uid = sans.uid;
+                        }
+                    })
+                });
+                editEventData.blitSaleEndDate = document.getElementById("eventTicketEndTimeEdit").value;
+                editEventData.blitSaleStartDate = document.getElementById("eventTicketStartTimeEdit").value;
 
-            sendingData.blitSaleEndDate = dateSetterService.persianToMs(editEventData.blitSaleEndDate);
-            sendingData.blitSaleStartDate = dateSetterService.persianToMs(editEventData.blitSaleStartDate);
-            sendingData.eventDates = $scope.newShowTimeEditForms;
-            sendingData.latitude = latLong.lat;
-            sendingData.longitude = latLong.lng;
-            sendingData.additionalFields = $scope.additionalFieldsEdit;
+                sendingData.blitSaleEndDate = dateSetterService.persianToMs(editEventData.blitSaleEndDate);
+                sendingData.blitSaleStartDate = dateSetterService.persianToMs(editEventData.blitSaleStartDate);
+                sendingData.eventDates = $scope.newShowTimeEditForms;
+                sendingData.latitude = latLong.lat;
+                sendingData.longitude = latLong.lng;
+                sendingData.additionalFields = $scope.additionalFieldsEdit;
 
                 sendingData.images = [
                     {imageUUID : $scope.eventEditImageId, type : "EVENT_PHOTO"},
@@ -1321,7 +1330,7 @@ angular.module('User')
                     return !(item.imageUUID === null || item.imageUUID === undefined);
                 });
                 $scope.editEventSpinner = true;
-            eventService.editEvent(sendingData)
+                eventService.editEvent(sendingData)
                     .then(function () {
                         $scope.editEventSpinner = false;
                         $scope.editEventNotif = true;
