@@ -4,7 +4,7 @@
 
 angular.module('animationServices', [])
 
-    .service('scrollAnimation', function () {
+    .service('scrollAnimation', [function () {
 
         var scrollAnimation = this;
         scrollAnimation.scrollTo =  function(eID) {
@@ -54,4 +54,4 @@ angular.module('animationServices', [])
             }
 
         };
-    })
+    }])

@@ -17,10 +17,11 @@ public class View {
 	public interface EventDateFlat extends DefaultView {}
 	
 	public interface BlitType extends DefaultView {}
-	
+
 	public interface SimpleEventHost extends DefaultView {}
 	public interface EventHost extends SimpleEventHost {}
-	public interface AdminEventHost extends EventHost {}
+	public interface OwnerEventHost extends EventHost {}
+	public interface AdminEventHost extends OwnerEventHost {}
 	
 	public interface IndexBanner extends DefaultView {}
 	public interface AdminIndexBanner extends IndexBanner {}

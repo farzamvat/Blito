@@ -1,6 +1,7 @@
 package com.blito.rest.viewmodels.event;
 
 import com.blito.annotations.AdditionalFields;
+import com.blito.annotations.AparatUrl;
 import com.blito.enums.EventType;
 import com.blito.enums.OfferTypeEnum;
 import com.blito.enums.OperatorState;
@@ -57,31 +58,35 @@ public class EventViewModel {
 	private Timestamp createdAt;
 
 	@JsonView(View.Event.class)
+	private Timestamp endDate;
+
+	@JsonView(View.Event.class)
 	private Double longitude;
 
+	@AparatUrl(message = "{aparat.url.not.valid}")
 	@JsonView(View.Event.class)
 	private String aparatDisplayCode;
 
 	@JsonView(View.Event.class)
 	@NotNull
-	long eventHostId;
+	private Long eventHostId;
 
 	@JsonView(View.SimpleEvent.class)
-	String eventHostName;
+	private String eventHostName;
 
 	@JsonView(View.SimpleEvent.class)
-	Set<OfferTypeEnum> offers;
+	private Set<OfferTypeEnum> offers;
 
 	@JsonView(View.Event.class)
 	@Valid
 	@NotEmpty
-	Set<EventDateViewModel> eventDates;
+	private Set<EventDateViewModel> eventDates;
 
 	@JsonView(View.SimpleEvent.class)
-	Set<ImageViewModel> images;
+	private Set<ImageViewModel> images;
 	
 	@JsonView(View.SimpleEvent.class)
-	private long views;
+	private Long views;
 
 	@JsonView(View.SimpleEvent.class)
 	private String eventLink;
@@ -93,7 +98,7 @@ public class EventViewModel {
 	private OperatorState operatorState;
 
 	@JsonView(View.AdminEvent.class)
-	private int orderNumber;
+	private Integer orderNumber;
 
 	@JsonView(View.SimpleEvent.class)
 	private boolean isEvento;
@@ -111,6 +116,8 @@ public class EventViewModel {
 	private boolean isPrivate;
 	@JsonView(View.Event.class)
 	private String salonUid;
+	@JsonView(View.AdminEvent.class)
+	private EventViewModel editedVersion;
 
 	public EventViewModel() {
 		eventDates = new HashSet<>();
@@ -119,147 +126,12 @@ public class EventViewModel {
 		additionalFields = new ArrayList<>();
 	}
 
-	@Override
-	public String toString() {
-		return "EventViewModel{" +
-				"eventId=" + eventId +
-				", eventName='" + eventName + '\'' +
-				", eventType=" + eventType +
-				", blitSaleStartDate=" + blitSaleStartDate +
-				", blitSaleEndDate=" + blitSaleEndDate +
-				", eventSoldDate=" + eventSoldDate +
-				", address='" + address + '\'' +
-				", description='" + description + '\'' +
-				", latitude=" + latitude +
-				", createdAt=" + createdAt +
-				", longitude=" + longitude +
-				", aparatDisplayCode='" + aparatDisplayCode + '\'' +
-				", eventHostId=" + eventHostId +
-				", eventHostName='" + eventHostName + '\'' +
-				", offers=" + offers +
-				", eventDates=" + eventDates +
-				", images=" + images +
-				", views=" + views +
-				", eventLink='" + eventLink + '\'' +
-				", eventState=" + eventState +
-				", operatorState=" + operatorState +
-				", orderNumber=" + orderNumber +
-				", isEvento=" + isEvento +
-				", members='" + members + '\'' +
-				", isDeleted=" + isDeleted +
-				", additionalFields=" + additionalFields +
-				", isPrivate=" + isPrivate +
-				", salonUid='" + salonUid + '\'' +
-				'}';
+	public EventViewModel getEditedVersion() {
+		return editedVersion;
 	}
 
-	public String getSalonUid() {
-		return salonUid;
-	}
-
-	public void setSalonUid(String salonUid) {
-		this.salonUid = salonUid;
-	}
-	public List<AdditionalField> getAdditionalFields() {
-		return additionalFields;
-	}
-
-	public void setAdditionalFields(List<AdditionalField> additionalFields) {
-		this.additionalFields = additionalFields;
-	}
-
-	public long getViews() {
-		return views;
-	}
-
-	public void setViews(long views) {
-		this.views = views;
-	}
-
-	public Timestamp getEventSoldDate() {
-		return eventSoldDate;
-	}
-
-	public void setEventSoldDate(Timestamp eventSoldDate) {
-		this.eventSoldDate = eventSoldDate;
-	}
-
-	public boolean isDeleted() {
-		return isDeleted;
-	}
-
-	public void setDeleted(boolean isDeleted) {
-		this.isDeleted = isDeleted;
-	}
-
-	public String getMembers() {
-		return members;
-	}
-
-	public void setMembers(String members) {
-		this.members = members;
-	}
-
-	public Timestamp getCreatedAt() {
-		return createdAt;
-	}
-	public void setCreatedAt(Timestamp createdAt) {
-		this.createdAt = createdAt;
-	}
-	public boolean isEvento() {
-		return isEvento;
-	}
-
-	public void setEvento(boolean isEvento) {
-		this.isEvento = isEvento;
-	}
-
-	public String getEventHostName() {
-		return eventHostName;
-	}
-
-	public void setEventHostName(String eventHostName) {
-		this.eventHostName = eventHostName;
-	}
-
-	public Set<OfferTypeEnum> getOffers() {
-		return offers;
-	}
-
-	public void setOffers(Set<OfferTypeEnum> offers) {
-		this.offers = offers;
-	}
-
-	public String getEventLink() {
-		return eventLink;
-	}
-
-	public void setEventLink(String eventLink) {
-		this.eventLink = eventLink;
-	}
-
-	public State getEventState() {
-		return eventState;
-	}
-
-	public void setEventState(State eventState) {
-		this.eventState = eventState;
-	}
-
-	public OperatorState getOperatorState() {
-		return operatorState;
-	}
-
-	public void setOperatorState(OperatorState operatorState) {
-		this.operatorState = operatorState;
-	}
-
-	public int getOrderNumber() {
-		return orderNumber;
-	}
-
-	public void setOrderNumber(int orderNumber) {
-		this.orderNumber = orderNumber;
+	public void setEditedVersion(EventViewModel editedVersion) {
+		this.editedVersion = editedVersion;
 	}
 
 	public long getEventId() {
@@ -302,6 +174,14 @@ public class EventViewModel {
 		this.blitSaleEndDate = blitSaleEndDate;
 	}
 
+	public Timestamp getEventSoldDate() {
+		return eventSoldDate;
+	}
+
+	public void setEventSoldDate(Timestamp eventSoldDate) {
+		this.eventSoldDate = eventSoldDate;
+	}
+
 	public String getAddress() {
 		return address;
 	}
@@ -326,6 +206,14 @@ public class EventViewModel {
 		this.latitude = latitude;
 	}
 
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
 	public Double getLongitude() {
 		return longitude;
 	}
@@ -342,12 +230,28 @@ public class EventViewModel {
 		this.aparatDisplayCode = aparatDisplayCode;
 	}
 
-	public long getEventHostId() {
+	public Long getEventHostId() {
 		return eventHostId;
 	}
 
-	public void setEventHostId(long eventHostId) {
+	public void setEventHostId(Long eventHostId) {
 		this.eventHostId = eventHostId;
+	}
+
+	public String getEventHostName() {
+		return eventHostName;
+	}
+
+	public void setEventHostName(String eventHostName) {
+		this.eventHostName = eventHostName;
+	}
+
+	public Set<OfferTypeEnum> getOffers() {
+		return offers;
+	}
+
+	public void setOffers(Set<OfferTypeEnum> offers) {
+		this.offers = offers;
 	}
 
 	public Set<EventDateViewModel> getEventDates() {
@@ -366,15 +270,108 @@ public class EventViewModel {
 		this.images = images;
 	}
 
+	public Long getViews() {
+		return views;
+	}
+
+	public void setViews(Long views) {
+		this.views = views;
+	}
+
+	public String getEventLink() {
+		return eventLink;
+	}
+
+	public void setEventLink(String eventLink) {
+		this.eventLink = eventLink;
+	}
+
+	public State getEventState() {
+		return eventState;
+	}
+
+	public void setEventState(State eventState) {
+		this.eventState = eventState;
+	}
+
+	public OperatorState getOperatorState() {
+		return operatorState;
+	}
+
+	public void setOperatorState(OperatorState operatorState) {
+		this.operatorState = operatorState;
+	}
+
+	public Integer getOrderNumber() {
+		return orderNumber;
+	}
+
+	public void setOrderNumber(Integer orderNumber) {
+		this.orderNumber = orderNumber;
+	}
+
+
+
+	public String getMembers() {
+		return members;
+	}
+
+	public void setMembers(String members) {
+		this.members = members;
+	}
+
+
+	public List<AdditionalField> getAdditionalFields() {
+		return additionalFields;
+	}
+
+	public void setAdditionalFields(List<AdditionalField> additionalFields) {
+		this.additionalFields = additionalFields;
+	}
+
+
+
+	public String getSalonUid() {
+		return salonUid;
+	}
+
+	public void setSalonUid(String salonUid) {
+		this.salonUid = salonUid;
+	}
+
+
+	public Timestamp getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Timestamp endDate) {
+		this.endDate = endDate;
+	}
+
+	@JsonProperty("isEvento")
+	public boolean isEvento() {
+		return isEvento;
+	}
+
+	public void setEvento(boolean evento) {
+		isEvento = evento;
+	}
+
+	@JsonProperty("isDeleted")
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		isDeleted = deleted;
+	}
+
 	@JsonProperty("isPrivate")
 	public boolean isPrivate() {
 		return isPrivate;
 	}
 
-
-	public void setPrivate(boolean isPrivate) {
-		this.isPrivate = isPrivate;
+	public void setPrivate(boolean aPrivate) {
+		isPrivate = aPrivate;
 	}
-	
-	
 }

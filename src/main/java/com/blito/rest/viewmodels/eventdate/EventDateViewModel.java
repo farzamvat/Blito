@@ -19,6 +19,25 @@ public class EventDateViewModel {
 	private Set<BlitTypeViewModel> blitTypes;
 	private State state;
 	private boolean hasSalon;
+	@NotEmpty
+	private String dateTime;
+	private String uid;
+
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+
+	public String getDateTime() {
+		return dateTime;
+	}
+
+	public void setDateTime(String dateTime) {
+		this.dateTime = dateTime;
+	}
 
 	public boolean isHasSalon() {
 		return hasSalon;

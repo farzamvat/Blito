@@ -3,7 +3,16 @@
  */
 
 angular.module('eventsPageModule')
-    .controller('endedEventsPageCtrl', function ($scope, $location, eventService, photoService, eventDetailService, config, miniSliderService) {
+    .controller('endedEventsPageCtrl', [
+        '$scope',
+        '$location',
+        'eventService',
+        'photoService',
+        'eventDetailService',
+        'config',
+        'miniSliderService',
+
+        function ($scope, $location, eventService, photoService, eventDetailService, config, miniSliderService) {
 
         $scope.url = config.baseUrl+"/event-page/";
 
@@ -51,4 +60,4 @@ angular.module('eventsPageModule')
         };
         $scope.currentPage = 1;
         $scope.getEventsByTypeData(1);
-    });
+    }]);

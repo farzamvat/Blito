@@ -19,7 +19,7 @@
                             <input type="text"  required class=" datePickerFormatTicket dateClassGuestTicket{{$index}}"  disabled readonly/>
                         </div>
                         <div class="col-xs-12  col-sm-2 floatRight text-center">
-                            <button ng-click="generateSeatMapGuestTicket($index)" class="btn btn-success"><i class="fa fa-image"></i>سالن</button>
+                            <button ng-click="generateSeatMapGuestTicket($index)" class="btn btn-success generateSeatGuest"><i class="fa fa-image"></i> مشاهده سالن </button>
                         </div>
                     </div>
                 </div>
@@ -37,8 +37,8 @@
                 </div>
                 <div id="labelDrillUpSection5"  class="col-xs-12 labelSvgHeight"></div>
                 <div id="seatMaperChart5"  class="col-xs-12 marginTop30 marginBottom20 seatMaperChartStyle"></div>
-                <p class="text-center colorRed" > در صورت صدور بلیت برای مهمان دیگر امکان ویرایش آن صندلی وجود ندارد *</p>
-                <button ng-click="generateTicketForGuest()"  class="btn btn-success center-block"><i id="generateBlitForGuestSpinner" class="fa fa-spin fa-spinner dispNone"></i><i class="fa fa-download"></i>صدور بلیت مهمان </button>
+                 <div class="col-xs-12"><p class="text-center colorRed" > در صورت صدور بلیت برای مهمان دیگر امکان ویرایش آن صندلی وجود ندارد *</p></div>
+                <button ng-click="generateTicketForGuest()"  class="btn btn-success center-block "><i id="generateBlitForGuestSpinner" class="fa fa-spin fa-spinner dispNone"></i><i class="fa fa-download"></i>صدور بلیت مهمان </button>
 
             </div>
             <div class="modal-footer ">

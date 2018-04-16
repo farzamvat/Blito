@@ -152,8 +152,8 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         blitTypeSeats.stream().map(BlitTypeSeat::getBlitType).distinct().forEach(this::checkBlitTypeRestrictionsForBuy);
         EventDate eventDate = blitTypeSeats.stream().findAny().map(BlitTypeSeat::getBlitType).map(BlitType::getEventDate)
                 .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
+        Option.of(eventDate.getDateTime()).peek(dateTime -> seatBlit.setEventDateAndTime(dateTime));
         validateAdditionalFields(eventDate.getEvent(),seatBlit);
-
         validateSeatBlitForBuy(blitTypeSeats);
         blitTypeSeats.forEach(blitTypeSeat -> {
             blitTypeSeat.setState(BlitTypeSeatState.RESERVED.name());
@@ -238,6 +238,7 @@ public class SeatBlitService extends AbstractBlitService<SeatBlit,SeatBlitViewMo
         }
         EventDate eventDate = blitTypeSeats.stream().findAny().map(BlitTypeSeat::getBlitType).map(BlitType::getEventDate)
                 .orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_DATE_NOT_FOUND)));
+        Option.of(eventDate.getDateTime()).peek(dateTime -> seatBlit.setEventDateAndTime(dateTime));
         validateAdditionalFields(eventDate.getEvent(),seatBlit);
         validateSeatBlitForBuy(blitTypeSeats);
         blitTypeSeats.forEach(blitTypeSeat -> {

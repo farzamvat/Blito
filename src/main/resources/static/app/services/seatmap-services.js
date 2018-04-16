@@ -2,7 +2,10 @@
  * Created by soroush on 10/25/17.
  */
 angular.module('UiServices')
-    .service('seatmapService', function ($http, config) {
+    .service('seatmapService', [
+        '$http',
+        'config',
+        function ($http, config) {
         var seatMap = this;
         seatMap.getSeatmapList = function () {
             var queryParam = {
@@ -144,4 +147,4 @@ angular.module('UiServices')
             });
             return pickedSeatsCheck;
         };
-    });
+    }]);

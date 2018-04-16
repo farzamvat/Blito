@@ -79,6 +79,7 @@ public class EventFlatMapper implements GenericMapper<Event,EventFlatViewModel> 
 		vmodel.setEvento(event.isEvento());
 		vmodel.setOffers(event.getOffers().stream().map(offer -> Enum.valueOf(OfferTypeEnum.class, offer)).collect(Collectors.toSet()));
 		vmodel.setCreatedAt(event.getCreatedAt());
+		vmodel.setEndDate(event.getEndDate());
 		vmodel.setMembers(event.getMembers());
 		vmodel.setOperatorState(Enum.valueOf(OperatorState.class, event.getOperatorState()));
 		vmodel.setOrderNumber(event.getOrderNumber());

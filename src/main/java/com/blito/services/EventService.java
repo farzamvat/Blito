@@ -1,10 +1,7 @@
 package com.blito.services;
 
 import com.blito.configs.Constants;
-import com.blito.enums.ImageType;
-import com.blito.enums.OperatorState;
-import com.blito.enums.Response;
-import com.blito.enums.State;
+import com.blito.enums.*;
 import com.blito.exceptions.*;
 import com.blito.mappers.*;
 import com.blito.models.*;
@@ -16,10 +13,9 @@ import com.blito.rest.viewmodels.event.EventFlatViewModel;
 import com.blito.rest.viewmodels.event.EventViewModel;
 import com.blito.rest.viewmodels.eventdate.EventDateViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
-import com.blito.search.Operation;
-import com.blito.search.SearchViewModel;
-import com.blito.search.Simple;
+import com.blito.search.*;
 import com.blito.security.SecurityContextHolder;
+import io.vavr.control.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,7 +97,7 @@ public class EventService {
 			throw new InconsistentDataException(ResourceUtil.getMessage(Response.SHARED_SEAT_AND_INCONSISTENT_CAPACITY_ERROR));
 		}
 
-		if(vmodel.getSalonUid() != null && vmodel.getEventDates().stream().anyMatch(eventDateViewModel -> !validateConsistencyOfSeatCounts(eventDateViewModel, vmodel.getSalonUid()))){
+		if(vmodel.getSalonUid() != null && vmodel.getEventDates().stream().filter(eventDateViewModel -> eventDateViewModel.isHasSalon()).anyMatch(eventDateViewModel -> !validateConsistencyOfSeatCounts(eventDateViewModel, vmodel.getSalonUid()))){
 		    throw new InconsistentDataException(ResourceUtil.getMessage(Response.INCONSISTENT_SEAT_COUNTS));
         }
 
@@ -146,26 +142,107 @@ public class EventService {
 	public EventViewModel getEventByLink(String eventLink) {
 		Event event = eventRepository.findByEventLinkAndIsDeletedFalse(eventLink)
 				.orElseThrow(() -> new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
-		if(!event.getOperatorState().equals(OperatorState.APPROVED.name())) {
+		if(!(
+				event.getOperatorState().equals(OperatorState.APPROVED.name()) ||
+						event.getOperatorState().equals(OperatorState.EDITED.name()) ||
+						event.getOperatorState().equals(OperatorState.EDIT_REJECTED.name())
+				)) {
 			throw new ResourceNotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND));
 		}
 		event.setViews(event.getViews() + 1);
 		this.openOrCloseEventOnSaleDateConditions(event);
-		return eventMapper.createFromEntity(event);
+		EventViewModel viewModel = eventMapper.createFromEntity(event);
+		transformAparatUrlToIframe(viewModel.getAparatDisplayCode()).peek(iframe -> viewModel.setAparatDisplayCode(iframe));
+		return viewModel;
 	}
 
+	private Option<String> transformAparatUrlToIframe(String aparatUrl) {
+		return Option.of(aparatUrl)
+				.filter(Objects::nonNull)
+				.filter(url -> url.startsWith(Constants.APARAT_STARTING_URL))
+				.map(aparatDisplayCode -> new StringBuilder(Constants.APARAT_IFRAME_TEMPLATE_PART_1).append(String.format(Constants.APARAT_IFRAME_TEMPLATE_PART_2,aparatDisplayCode.split(Constants.APARAT_STARTING_URL)[1])).toString());
+	}
+
+	@Transactional
 	public EventFlatViewModel getFlatEventById(long eventId) {
 		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
 		this.openOrCloseEventOnSaleDateConditions(event);
-		return eventFlatMapper.createFromEntity(event);
+		EventFlatViewModel viewModel = eventFlatMapper.createFromEntity(event);
+		transformAparatUrlToIframe(viewModel.getAparatDisplayCode()).peek(iframe -> viewModel.setAparatDisplayCode(iframe));
+		return viewModel;
 	}
 
+	@Transactional
 	public EventViewModel getEventById(long eventId) {
 		Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId)
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+		EventViewModel viewModel = eventMapper.createFromEntity(event);
+		transformAparatUrlToIframe(viewModel.getAparatDisplayCode()).peek(iframe -> viewModel.setAparatDisplayCode(iframe));
+		return viewModel;
+	}
 
-		return eventMapper.createFromEntity(event);
+
+	@Transactional
+	public EventViewModel updatePendingRejected(EventViewModel vmodel,Event event,EventHost eventHost,Set<Image> images) {
+		event = eventMapper.updateEntity(vmodel, event);
+		event.setImages(images);
+		event.setEventHost(eventHost);
+		event.setOperatorState(OperatorState.PENDING.name());
+		event.setEventLink(vmodel.getEventLink());
+		return eventMapper.createFromEntity(eventRepository.save(event));
+	}
+
+	@Transactional
+	public EventViewModel updateWithEditedVersion(EventViewModel vmodel,Event event,EventHost eventHost,Set<Image> images) {
+		Event editedVersion = eventMapper.createFromViewModel(vmodel);
+		// NOTE : updating same event
+		Option.of(event.getEditedVersion())
+				.peek(oldEditedVersion -> editedVersion.setEventId(oldEditedVersion.getEventId()));
+		editedVersion.setImages(images);
+		editedVersion.setOperatorState(OperatorState.OPERATOR_IGNORE.name());
+		editedVersion.setDeleted(true);
+		editedVersion.setEventHost(eventHost);
+		editedVersion.setEventLink(Constants.EVENT_UPDATE_EDITED_LINK + vmodel.getEventLink());
+		event.setOperatorState(OperatorState.EDITED.name());
+		event.setEditedVersion(editedVersion);
+		return eventMapper.createFromEntity(eventRepository.save(event));
+	}
+
+	public void validateIfEventHasBoughtBlit(EventViewModel vmodel,Event event) {
+		Set<String> eventDateUids = vmodel.getEventDates().stream()
+				.filter(ed -> Objects.nonNull(ed.getUid()) && !ed.getUid().isEmpty())
+				.map(EventDateViewModel::getUid).collect(Collectors.toSet());
+
+		Set<String> blitTypeUids = vmodel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream())
+				.filter(bt -> Objects.nonNull(bt.getUid()) && !bt.getUid().isEmpty())
+				.map(BlitTypeViewModel::getUid).collect(Collectors.toSet());
+		event.getEventDates().stream().filter(eventDate -> !eventDateUids.contains(eventDate.getUid()))
+				.forEach(this::validateIfRemovingEventDateHasBoughtBlit);
+
+		event.getEventDates().stream().flatMap(eventDate -> eventDate.getBlitTypes().stream())
+				.filter(blitType ->  !blitTypeUids.contains(blitType.getUid()))
+				.forEach(blitType -> {
+					if(validateIfRemovingBlitTypeHasBoughtBlit(blitType)) {
+						throw new NotAllowedException(String.format(ResourceUtil.getMessage(Response.CANT_REMOVE_BLIT_TYPE),blitType.getName()));
+					}
+				});
+	}
+
+	public void validateIfRemovingEventDateHasBoughtBlit(EventDate eventDate) {
+		eventDate.getBlitTypes().forEach(blitType -> {
+			if(validateIfRemovingBlitTypeHasBoughtBlit(blitType)) {
+				throw new NotAllowedException(String.format(ResourceUtil.getMessage(Response.CANT_REMOVE_EVENT_DATE),eventDate.getDateTime()));
+			}
+		});
+	}
+
+	public Boolean validateIfRemovingBlitTypeHasBoughtBlit(BlitType blitType) {
+		if(blitType.getCommonBlits().size() > 0 ||
+				(blitType.getBlitTypeSeats().size() > 0 && blitType.getBlitTypeSeats().stream().anyMatch(blitTypeSeat -> blitTypeSeat.getState().equals(State.SOLD.name())))) {
+			return true;
+		}
+		return false;
 	}
 
 	@Transactional
@@ -173,6 +250,11 @@ public class EventService {
 		validateEventViewModel(vmodel);
 		Event event = eventRepository.findByEventIdAndIsDeletedFalse(vmodel.getEventId())
 				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+
+		if(event.getOperatorState().equals(OperatorState.OPERATOR_IGNORE.name())) {
+			throw new NotAllowedException("Cannot update operator ignore event");
+		}
+
 		if(event.getAdditionalFields().size() > vmodel.getAdditionalFields().size()) {
 			if(event.getEventDates().stream().flatMap(eventDate -> eventDate.getBlitTypes().stream()).anyMatch(
 					blitType -> blitType.getSoldCount() > 0 ? true : false))
@@ -191,7 +273,10 @@ public class EventService {
 		if (event.getEventState().equals(State.ENDED.name())) {
 			throw new NotAllowedException(ResourceUtil.getMessage(Response.CANNOT_EDIT_EVENT_WHEN_CLOSED));
 		}
-		vmodel.setEventLink(vmodel.getEventLink().replaceAll(" ", "-"));
+
+		validateIfEventHasBoughtBlit(vmodel,event);
+
+		vmodel.setEventLink(vmodel.getEventLink().trim().replaceAll(" ", "-"));
 		if (!vmodel.getEventLink().equals(event.getEventLink())) {
 			Optional<Event> eventResult = eventRepository.findByEventLinkAndIsDeletedFalse(vmodel.getEventLink());
 			if (eventResult.isPresent() && eventResult.get().getEventId() != vmodel.getEventId()) {
@@ -203,10 +288,12 @@ public class EventService {
 				vmodel.getImages().stream().map(ImageViewModel::getImageUUID).collect(Collectors.toSet()));
 		images = imageMapper.setImageTypeFromImageViewModels(images, vmodel.getImages());
 
-		event = eventMapper.updateEntity(vmodel, event);
-		event.setImages(images);
-		event.setEventHost(eventHost);
-		return eventMapper.createFromEntity(eventRepository.save(event));
+		if(event.getOperatorState().equals(OperatorState.PENDING.name()) ||
+				event.getOperatorState().equals(OperatorState.REJECTED.name())) {
+			return updatePendingRejected(vmodel,event,eventHost,images);
+		} else {
+			return updateWithEditedVersion(vmodel,event,eventHost,images);
+		}
 	}
 
 	@Transactional
@@ -277,15 +364,20 @@ public class EventService {
 		}
 	}
 
+
+
 	@Transactional
 	public <V> Page<V> searchEvents(SearchViewModel<Event> searchViewModel, Pageable pageable,
 			GenericMapper<Event, V> mapper) {
 		Simple<Event> isDeletedRestriction = new Simple<>(Operation.eq, "isDeleted", "false");
 		Simple<Event> isPrivateRestriction = new Simple<>(Operation.eq, "isPrivate", "false");
 		Simple<Event> isApprovedRestriction = new Simple<>(Operation.eq, "operatorState", OperatorState.APPROVED.name());
-		searchViewModel.getRestrictions().addAll(Arrays.asList(isDeletedRestriction, isPrivateRestriction, isApprovedRestriction));
+		Simple<Event> isEditedRestriction = new Simple<>(Operation.eq, "operatorState", OperatorState.EDITED.name());
+		Simple<Event> isEditRejectedRestriction = new Simple<>(Operation.eq, "operatorState", OperatorState.EDIT_REJECTED.name());
+		Complex<Event> isEditedOrApprovedOrEditRejected = new Complex<>(Operator.or,
+				Arrays.asList(isApprovedRestriction,isEditedRestriction,isEditRejectedRestriction));
+		searchViewModel.getRestrictions().addAll(Arrays.asList(isDeletedRestriction, isPrivateRestriction, isEditedOrApprovedOrEditRejected));
 		Page<Event> page = searchService.search(searchViewModel, pageable, eventRepository);
-//		page.forEach(this::openOrCloseEventOnSaleDateConditions);
 		return page.map(mapper::createFromEntity);
 	}
 
