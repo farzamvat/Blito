@@ -972,9 +972,9 @@ angular.module('User')
                     $scope.galleryFiveUUID = null;
                     $scope.gallerySixUUID = null;
                         $scope.mapMarkerClickCheckEvent = true;
-                        setInitMaps('makeEventSection');
                         $scope.showTimeForms = [];
                         $timeout(function () {
+                            setInitMaps('makeEventSection');
                             dateSetterService.initDate("eventDateClass0", 0);
                             dateSetterService.initDate("persianTimeEventStart", 3600000);
                             dateSetterService.initDate("persianTimeEventEnd", 7200000);
@@ -1043,7 +1043,10 @@ angular.module('User')
                         $scope.getExchangeData(1);
                         $scope.exchange = {};
                         $scope.exchangeImageId = '';
-                        setInitMaps('exchangeTicketSection');
+                        $timeout(function () {
+                            dateSetterService.initDate("persianExchangeTime", 0);
+                            setInitMaps('exchangeTicketSection');
+                        }, 1000);
                         $scope.mapMarkerClickCheckExchange = true;
                         angular.element(document.getElementsByClassName("exchangePhotoUpload"))[0].src = '';
 
@@ -2000,7 +2003,7 @@ angular.module('User')
             $timeout(function () {
                 dateSetterService.initDate("persianTimeEventStart", 3600000);
                 dateSetterService.initDate("persianTimeEventEnd", 7200000);
-                dateSetterService.initDate("persianExchangeTime");
+                dateSetterService.initDate("persianExchangeTime", 0);
                 if(document.getElementById("eventExchangeDateMain")) {
                     $scope.exchange.eventTime = document.getElementById("eventExchangeDateMain").value;
                 }
