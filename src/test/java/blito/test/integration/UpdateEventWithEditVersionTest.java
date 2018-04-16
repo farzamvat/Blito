@@ -6,6 +6,8 @@ import com.blito.enums.State;
 import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.EventRepository;
 import com.blito.rest.viewmodels.blittype.BlitTypeViewModel;
+import com.blito.rest.viewmodels.discount.DiscountValidationViewModel;
+import com.blito.rest.viewmodels.discount.DiscountViewModel;
 import com.blito.rest.viewmodels.event.AdditionalField;
 import com.blito.rest.viewmodels.event.AdminChangeEventOperatorStateVm;
 import com.blito.rest.viewmodels.event.EventViewModel;
@@ -17,6 +19,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,6 +58,25 @@ public class UpdateEventWithEditVersionTest extends AbstractEventRestControllerT
     @Test
     public void updateEvent() {
 
+        DiscountViewModel discountViewModel = new DiscountViewModel();
+        discountViewModel.setCode("DISCOUNT*");
+        discountViewModel.setBlitTypeIds(eventViewModel.getEventDates().stream().flatMap(ed -> ed.getBlitTypes().stream().map(bt -> bt.getBlitTypeId())).collect(Collectors.toSet()));
+        discountViewModel.setPercentage(50.0);
+        discountViewModel.setPercent(true);
+        discountViewModel.setEffectDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+        discountViewModel.setExpirationDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).plusDays(2).toInstant()));
+        discountViewModel.setReusability(20);
+        discountViewModel.setEnabled(true);
+        discountViewModel.setAmount(0L);
+
+        Response setDiscountResponse =
+                givenRestIntegration()
+                        .body(discountViewModel)
+                        .when()
+                        .post(getServerAddress() + "/api/blito/v1.0/discount/set-discount-code");
+        setDiscountResponse.then().statusCode(200);
+
+
         eventViewModel.setEventName("Edited Name Event");
         BlitTypeViewModel blitTypeViewModel = new BlitTypeViewModel();
         blitTypeViewModel.setName("newType");
@@ -88,6 +112,28 @@ public class UpdateEventWithEditVersionTest extends AbstractEventRestControllerT
                     .when()
                     .put(getServerAddress() + "/api/blito/v1.0/admin/events/change-event-operator-state");
         changeOperatorStateResponse.then().statusCode(200);
+
+        DiscountValidationViewModel discountValidationViewModel = new DiscountValidationViewModel();
+        discountValidationViewModel.setBlitTypeId(eventViewModel.getEventDates()
+                .stream()
+                .flatMap(ed -> ed.getBlitTypes().stream())
+                .filter(bt -> bt.getName().equals("vaysade"))
+                .findFirst()
+                .map(bt -> bt.getBlitTypeId())
+                .get()
+                );
+
+        discountValidationViewModel.setCount(1);
+        discountValidationViewModel.setCode("DISCOUNT*");
+
+        Response discountCodeValidationResponse =
+                givenRestIntegration()
+                        .body(discountValidationViewModel)
+                        .when()
+                        .post(getServerAddress() + "/api/blito/v1.0/validate-discount-code");
+        discountCodeValidationResponse.then().statusCode(200);
+        discountValidationViewModel = discountCodeValidationResponse.body().as(DiscountValidationViewModel.class);
+        discountValidationViewModel.isValid();
     }
 
 }
