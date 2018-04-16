@@ -171,6 +171,7 @@ public class AdminEventService {
 		Future.runRunnable(() -> smsService.sendOperatorStatusSms(event.getEventHost().getUser().getMobile(),
 				fillOperatorStateSmsMessage(vmodel.getOperatorState(),event)))
 				.onFailure(throwable -> log.debug("Error in sending sms in change operator state '{}'",throwable));
+
 	}
 
 	@Transactional
