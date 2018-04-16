@@ -28,7 +28,7 @@
                                         <label class="registerLabel" >  زمان شروع اعتبار :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input height="60" required  name="discountStartEdit" ng-model="discountEditProperties.effectDatePersian" class="form-group datePickerFormat  discountEditStartTime" type="text"  readonly>
+                                        <input height="60"   name="discountStartEdit" ng-model="discountEditProperties.effectDatePersian" class="form-group datePickerFormat  discountEditStartTime" type="text" id="editDiscountStartDate" readonly>
                                     </div>
 
                                 </div>
@@ -37,7 +37,7 @@
                                         <label class="registerLabel" >  زمان پایان اعتبار :</label>
                                     </div>
                                     <div class="col-xs-7 col-sm-8 floatRight ">
-                                        <input height="60" required  name="discountEndEdit" ng-model="discountEditProperties.expirationDatePersian" class="form-group  datePickerFormat  discountEditEndTime" type="text"  readonly>
+                                        <input height="60"   name="discountEndEdit" ng-model="discountEditProperties.expirationDatePersian" class="form-group  datePickerFormat  discountEditEndTime" type="text" id="editDiscountEndDate"  readonly>
                                     </div>
 
                                 </div>
@@ -50,7 +50,7 @@
                                     </div>
                                     <label class="control-label" for="editDiscount"></label>
                                     <div class="controls ">
-                                        <button id="editDiscount" ng-disabled="discountFormEdit.$invalid" ng-click="editDiscountSubmit(discountEditProperties)" name="signin" class="btn btn-success center-block btnLogin">ویرایش کد تخفیف <i  class="fa fa-spinner fa-spin discountEditSpinner dispNone"></i></button>
+                                        <button id="editDiscount" ng-disabled="discountFormEdit.$invalid" ng-click="editDiscountSubmit(discountEditProperties)" name="signin" class="btn btn-success center-block btnLogin marginBottom20">ویرایش کد تخفیف <i  class="fa fa-spinner fa-spin discountEditSpinner dispNone"></i></button>
                                     </div>
                                 </div>
                             </fieldset>

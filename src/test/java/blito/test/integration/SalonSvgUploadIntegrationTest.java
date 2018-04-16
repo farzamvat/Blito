@@ -22,7 +22,7 @@ public class SalonSvgUploadIntegrationTest extends AbstractRestControllerTest {
     private ObjectMapper objectMapper;
     @Test
     public void uploadSalonAndSectionsSvg_success() {
-        Salon salon = Try.of(() -> new File(EventsContainSalonIntegrationTest.class.getResource(Constants.BASE_SALON_SCHEMAS + "/TestSalon" ).toURI()))
+        Salon salon = Try.of(() -> new File(EventsContainSalonIntegrationTest.class.getResource(Constants.BASE_SALON_SCHEMAS + "/AzadiTower" ).toURI()))
                 .flatMapTry(file -> Try.of(() -> objectMapper.readValue(file,Salon.class))).get();
         SalonViewModel salonViewModel =
                 givenRestIntegration()

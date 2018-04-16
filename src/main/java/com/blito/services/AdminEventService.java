@@ -1,5 +1,6 @@
 package com.blito.services;
 
+import com.blito.configs.Constants;
 import com.blito.enums.OperatorState;
 import com.blito.enums.Response;
 import com.blito.enums.SmsMessage;
@@ -28,6 +29,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -85,6 +89,13 @@ public class AdminEventService {
 						ResourceUtil.getMessage(SmsMessage.OPERATOR_STATE_REJECTED),
 						ResourceUtil.getMessage(SmsMessage.OPERATOR_STATE_REJECTED_MESSAGE));
 				break;
+			case EDIT_REJECTED:
+				message = String.format(ResourceUtil.getMessage(SmsMessage.OPERATOR_STATE_EDIT_REJECTED_MESSAGE),
+						event.getEventHost().getUser().getFirstname(),
+						event.getEventName(),
+						ResourceUtil.getMessage(SmsMessage.OPERATOR_STATE_REJECTED_MESSAGE));
+				break;
+
 			default:
 				message = ResourceUtil.getMessage(SmsMessage.OPERATOR_STATE_DEFAULT_MESSAGE);
 				break;
@@ -102,6 +113,9 @@ public class AdminEventService {
 				ed.setEventDateState(State.CLOSED.name());
 				ed.getBlitTypes().forEach(bt -> bt.setBlitTypeState(State.CLOSED.name()));
 			});
+
+		if(vmodel.getState() == State.ENDED)
+		    event.setEndDate(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
 
 		event.setEventState(vmodel.getState().name());
 	}
@@ -131,10 +145,33 @@ public class AdminEventService {
 	public void changeOperatorState(AdminChangeEventOperatorStateVm vmodel) {
 		Event event = getEventFromRepository(vmodel.getEventId());
 		checkEventRestricitons(event);
-		event.setOperatorState(vmodel.getOperatorState().name());
+		if(event.getOperatorState().equals(OperatorState.APPROVED.name()) &&
+				(vmodel.getOperatorState().equals(OperatorState.EDIT_REJECTED) ||
+						vmodel.getOperatorState().equals(OperatorState.OPERATOR_IGNORE) ||
+						vmodel.getOperatorState().equals(OperatorState.EDITED))) {
+			throw new NotAllowedException(ResourceUtil.getMessage(Response.NOT_ALLOWED));
+		}
+		if(event.getOperatorState().equals(OperatorState.EDITED.name())
+				&& event.getEditedVersion() != null
+				&& vmodel.getOperatorState().name().equals(OperatorState.APPROVED.name())) {
+			EventViewModel editedVersionViewModel = eventMapper.createFromEntity(event.getEditedVersion());
+			eventMapper.updateEntity(editedVersionViewModel,event);
+			event.setEventLink(editedVersionViewModel.getEventLink());
+			event.setImages(event.getEditedVersion().getImages());
+			event.setEventHost(event.getEditedVersion().getEventHost());
+			event.setOperatorState(OperatorState.APPROVED.name());
+			event.setEditedVersion(null);
+		} else {
+			if((vmodel.getOperatorState().equals(OperatorState.PENDING.name())
+					|| vmodel.getOperatorState().equals(OperatorState.REJECTED.name())) && event.getEditedVersion() != null) {
+				event.setEditedVersion(null);
+			}
+			event.setOperatorState(vmodel.getOperatorState().name());
+		}
 		Future.runRunnable(() -> smsService.sendOperatorStatusSms(event.getEventHost().getUser().getMobile(),
 				fillOperatorStateSmsMessage(vmodel.getOperatorState(),event)))
 				.onFailure(throwable -> log.debug("Error in sending sms in change operator state '{}'",throwable));
+
 	}
 
 	@Transactional

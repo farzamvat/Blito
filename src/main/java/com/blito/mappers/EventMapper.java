@@ -1,8 +1,11 @@
 package com.blito.mappers;
 
+import com.blito.configs.Constants;
 import com.blito.enums.*;
 import com.blito.exceptions.FileNotFoundException;
-import com.blito.models.*;
+import com.blito.models.Event;
+import com.blito.models.EventDate;
+import com.blito.models.Salon;
 import com.blito.repositories.SalonRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.event.AdditionalField;
@@ -17,6 +20,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -47,6 +51,7 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         event.setAdditionalFields(vmodel.getAdditionalFields().stream().collect(Collectors.toMap(AdditionalField::getKey, AdditionalField::getValue)));
         event.setMembers(vmodel.getMembers());
         event.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).toInstant()));
+        event.setEndDate(new Timestamp(Constants.EVENT_DEFAULT_END_DATE));
         event.setEventState(State.CLOSED.name());
         event.setEvento(false);
         event.setPrivate(vmodel.isPrivate());
@@ -55,8 +60,6 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
                     Salon salon = salonRepository.findBySalonUid(salonUid).orElseThrow(() -> new FileNotFoundException(ResourceUtil.getMessage(Response.SALON_NOT_FOUND)));
                     event.getEventDates().forEach(eventDate -> eventDate.setSalon(salon));
                 });
-
-
         return event;
     }
 
@@ -71,7 +74,10 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         vmodel.setEventHostId(event.getEventHost().getEventHostId());
         vmodel.setEventHostName(event.getEventHost().getHostName());
         vmodel.setEventId(event.getEventId());
-        vmodel.setEventLink(event.getEventLink());
+        Option.of(event.getEventLink())
+                .filter(link -> link.startsWith(Constants.EVENT_UPDATE_EDITED_LINK))
+                .peek(link -> vmodel.setEventLink(link.replaceFirst(Constants.EVENT_UPDATE_EDITED_LINK,"")))
+                .onEmpty(() -> vmodel.setEventLink(event.getEventLink()));
         vmodel.setEventName(event.getEventName());
         vmodel.setEventType(Enum.valueOf(EventType.class, event.getEventType()));
         vmodel.setOrderNumber(event.getOrderNumber());
@@ -98,7 +104,11 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
                             .collect(Collectors.toList()));
                 });
         vmodel.setPrivate(event.isPrivate());
+        vmodel.setEndDate(event.getEndDate());
         event.getEventDates().stream().filter(eventDate -> eventDate.getSalon() != null).findAny().ifPresent(eventDate -> vmodel.setSalonUid(eventDate.getSalon().getSalonUid()));
+        if(event.getEditedVersion() != null) {
+            vmodel.setEditedVersion(createFromEntity(event.getEditedVersion()));
+        }
         return vmodel;
     }
 
@@ -110,14 +120,11 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
         event.setBlitSaleEndDate(vmodel.getBlitSaleEndDate());
         event.setDescription(vmodel.getDescription());
         event.setEventName(vmodel.getEventName());
-        event.setEventState(State.CLOSED.name());
-        event.setOperatorState(OperatorState.PENDING.name());
         event.setLongitude(vmodel.getLongitude());
         event.setLatitude(vmodel.getLatitude());
-        event.setEventLink(vmodel.getEventLink());
         event.setEventType(vmodel.getEventType().name());
         event.setMembers(vmodel.getMembers());
-        Option.of(vmodel.getAdditionalFields())
+        Option.of(event.getAdditionalFields())
                 .filter(additionalFieldList -> !additionalFieldList.isEmpty())
                 .peek(additionalFieldList -> {
                     event.setAdditionalFields(vmodel.getAdditionalFields().stream().collect(Collectors.toMap(AdditionalField::getKey, AdditionalField::getValue)));
@@ -126,22 +133,25 @@ public class EventMapper implements GenericMapper<Event, EventViewModel> {
                     event.setAdditionalFields(null);
                 });
 
-        List<Long> oldOnes = vmodel.getEventDates().stream().map(EventDateViewModel::getEventDateId).filter(id -> id > 0).collect(Collectors.toList());
-        List<Long> shouldDelete = new ArrayList<>();
-        event.getEventDates().forEach(bt -> {
-            if (!oldOnes.contains(bt.getEventDateId())) {
-                shouldDelete.add(bt.getEventDateId());
+        List<String> oldOnes = vmodel.getEventDates().stream().map(EventDateViewModel::getUid).filter(uid -> Objects.nonNull(uid) && !uid.isEmpty()).collect(Collectors.toList());
+        List<String> shouldDelete = new ArrayList<>();
+        event.getEventDates().forEach(eventDate -> {
+            if (!oldOnes.contains(eventDate.getUid())) {
+                shouldDelete.add(eventDate.getUid());
             }
         });
-        shouldDelete.forEach(event::removeEventDateById);
+        shouldDelete.forEach(event::removeEventDateByUid);
 
         vmodel.getEventDates().forEach(edvm ->
             Option.ofOptional(event.getEventDates()
                     .stream()
-                    .filter(eventDate -> edvm.getEventDateId() > 0 && eventDate.getEventDateId() == edvm.getEventDateId())
+                    .filter(eventDate -> Objects.nonNull(edvm.getUid()) && !edvm.getUid().isEmpty() && eventDate.getUid().equals(edvm.getUid()))
                     .findFirst())
                     .peek(eventDate -> eventDateMapper.updateEntity(edvm, eventDate))
-                    .onEmpty(() -> event.addEventDate(eventDateMapper.createFromViewModel(edvm)))
+                    .onEmpty(() -> {
+                        EventDate eventDate = eventDateMapper.createFromViewModel(edvm);
+                        event.addEventDate(eventDate);
+                    })
         );
         event.setPrivate(vmodel.isPrivate());
         Optional.ofNullable(vmodel.getSalonUid()).filter(salonUid -> !salonUid.isEmpty())

@@ -19,11 +19,11 @@ $(document).ready(function () {
     })
     //Initialize tooltips
     $('.nav-tabs > li a[title]').tooltip();
-
+    $('#registrationModal').on('hide.bs.modal', function () {
+        $('body').removeClass('modal-open-position');
+    })
     $('#buyTicket').on('hidden.bs.modal', function () {
-        console.log("a");
         if($('#ticketPay3').hasClass('active')) {
-            console.log("B");
             $('.progress-bar').css('width', '0');
             $('#ticketPay3').removeClass('active');
             $('#ticketPay1').addClass('active').addClass('in');

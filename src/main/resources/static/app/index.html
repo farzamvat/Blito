@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="Blito" ng-controller="mainCtrl as main">
+<html lang="en" ng-app="Blito" ng-controller="mainCtrl as main" >
 <head>
     <base href="/"/>
     <meta name="enamad" content="717583151"/>
@@ -16,77 +16,6 @@
     <link rel="manifest" href="fav-icons/manifest.json"/>
     <link rel="mask-icon" href="fav-icons/safari-pinned-tab.svg" />
     <meta name="theme-color" content="#1e1e1e"/>
-    <!-- external css libraries-->
-    <link rel='stylesheet' href='assets/css/anychart/anychart-ui.min.css'/>
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="bower_components/slick-carousel/slick/slick.css"/>
-    <link rel="stylesheet" href="bower_components/slick-carousel/slick/slick-theme.css"/>
-    <link rel="stylesheet" href="assets/css/wizardStyle.css"/>
-    <link rel="stylesheet" href="assets/css/custom.css"/>
-    <link rel="stylesheet" href="assets/css/tabProfile.css"/>
-
-    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="assets/js/anychart/anychart-base.min.js"></script>
-    <script type="text/javascript" src="assets/js/anychart/anychart-map.min.js"></script>
-    <script type="text/javascript" src="assets/js/anychart/anychart-exports.min.js"></script>
-    <script type="text/javascript" src="assets/js/anychart/anychart-ui.min.js"></script>
-    <!-- angular js libraries-->
-    <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
-    <script type="text/javascript" src="bower_components/angularUtils-pagination/dirPagination.js"></script>
-    <!-- external js libraries-->
-    <script type="text/javascript" src="bower_components/angulartics/dist/angulartics.min.js"></script>
-    <script type="text/javascript" src="bower_components/angulartics-google-analytics/dist/angulartics-ga.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular-file-saver/dist/angular-file-saver.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular-file-saver/dist/angular-file-saver.bundle.min.js"></script>
-    <link rel='stylesheet' href='bower_components/textAngular/dist/textAngular.css'/>
-    <script type="text/javascript" src='bower_components/textAngular/dist/textAngular-rangy.min.js'></script>
-    <script type="text/javascript" src='bower_components/textAngular/dist/textAngular-sanitize.min.js'></script>
-    <script type="text/javascript" src='bower_components/textAngular/dist/textAngular.min.js'></script>
-
-    <script type="text/javascript" src="bower_components/persianjs/persian.js"></script>
-    <script type="text/javascript" src="bower_components/angular-persian/dist/angularpersian.min.js"></script>
-    <script type="text/javascript" src="bower_components/angular-slick/dist/slick.min.js"></script>
-    <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="bower_components/slick-carousel/slick/slick.min.js"></script>
-    <script type="text/javascript" src="assets/js/script.js"></script>
-    <!-- jalali date-picker -->
-    <link rel="stylesheet" href="bower_components/persian-datepicker/dist/css/persian-datepicker-0.4.5.min.css"/>
-    <link rel="stylesheet" href="bower_components/persian-datepicker/dist/css/theme/persian-datepicker-dark.css"/>
-    <script src="bower_components/persian-datepicker/lib/persian-date.js"></script>
-    <script src="bower_components/persian-datepicker/dist/js/persian-datepicker-0.4.5.min.js"></script>
-    <!-- angular modules-->
-    <script type="text/javascript" src="app/app.js"></script>
-    <script type="text/javascript" src="app/route.js"></script>
-    <!-- angular controllers-->
-    <script type="text/javascript" src="app/controllers/mainCtrl.js"></script>
-    <script type="text/javascript" src="app/controllers/homeCtrl.js"></script>
-    <script type="text/javascript" src="app/controllers/eventsListPageCtrl.js"></script>
-    <script type="text/javascript" src="app/controllers/eventPageCtrl.js"></script>
-    <script type="text/javascript" src="app/controllers/bioPageCtrl.js"></script>
-    <script type="text/javascript" src="app/controllers/activateUserCtrl.js"></script>
-    <script type="text/javascript" src="app/controllers/userProfileCtrl.js"></script>
-    <script type="text/javascript" src="app/controllers/exchangeList.js"></script>
-    <script type="text/javascript" src="app/controllers/exchange-page-ctrl.js"></script>
-    <script type="text/javascript" src="app/controllers/not-found-ctrl.js"></script>
-    <script type="text/javascript" src="app/controllers/user-ticket-ctrl.js"></script>
-    <script type="text/javascript" src="app/controllers/ended-events-ctrl.js"></script>
-
-    <!-- angular services-->
-    <script type="text/javascript" src="app/services/auth-services.js"></script>
-    <script type="text/javascript" src="app/services/animate-services.js"></script>
-    <script type="text/javascript" src="app/services/ui-services.js"></script>
-    <script type="text/javascript" src="app/services/user-profile-api-services.js"></script>
-    <script type="text/javascript" src="app/services/home-page-services.js"></script>
-    <script type="text/javascript" src="app/services/seatmap-services.js"></script>
-
-    <!-- angular directives-->
-    <script type="text/javascript" src="app/directives/changeClassBySize.js"></script>
-    <script type="text/javascript" src="app/directives/validation.js"></script>
-    <script type="text/javascript" src="app/directives/seatmap-directive.js"></script>
-
-
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
                 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -95,7 +24,6 @@
 
         ga('create', 'UA-103668411-1', 'auto');
     </script>
-    <!-- hotjar -->
     <script>
         (function(h,o,t,j,a,r){
             h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
@@ -108,10 +36,7 @@
     </script>
 </head>
 <body ng-cloak="">
-
 <nav class="navbar navbar-inverse navbar-fixed-top">
-
-
     <div class="navbar-header">
         <button  type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" ng-click="closeDropDown()">
             <span class="sr-only">Toggle navigation</span>
@@ -120,14 +45,10 @@
             <span class="icon-bar"></span>
         </button>
         <a  href="/" >
-
         <span class= "navbar-header navbar-header-backcolor">
-
         <img src="assets/img/logo.png" alt=""/>
-
             </span>
         </a>
-
     </div>
     <div id="navbar" class="navbar-collapse collapse ">
         <ul class="nav navbar-nav floatRight textAlignRight">
@@ -144,12 +65,11 @@
                     <li><a href="/entertainment"> سرگرمی</a></li>
                     <li><a href="/cinema">سینما</a></li>
                     <li><a href="/other">سایر</a></li>
-
                 </ul>
             </li>
             <li class="floatRight" ng-class="{ active: isActive('/exchange-tickets')}"><a href="/exchange-tickets"><i class="fa fa-ticket" aria-hidden="true"></i> آگهی بلیت   </a>
             </li>
-            <li ng-hide="logoutMenu" class="floatRight signInButton"><a href="" data-toggle="modal" data-target="#registrationModal"><i class="fa fa-sign-in" aria-hidden="true"></i> ورود/ثبت نام  </a></li>
+            <li ng-hide="logoutMenu" class="floatRight signInButton"><a href="" ng-click="showRegistrationModal()"><i class="fa fa-sign-in" aria-hidden="true"></i> ورود/ثبت نام  </a></li>
 
             <li ng-show="logoutMenu" ng-click="logout()" class="floatRight signInButton"><a href=""><i class="fa fa-sign-out" aria-hidden="true"></i> خروج</a></li>
             <li class="floatRight  btn-success submitEventMenu" ><a ng-click="submitEventPlannerIntro()"><i class="fa fa-star-o" aria-hidden="true"></i> ثبت رویداد   </a>
@@ -158,13 +78,8 @@
     </div>
 </nav>
 <div class="container">
-
     <div ng-view="">
-
-
     </div>
-
-
 </div>
 <footer id="footer">
     <div class="row">
@@ -177,11 +92,8 @@
                 support@blito.ir</p>
             <p><i class="fa fa-location-arrow"></i> آدرس: خیابان کارگر شمالی، پردیس فنی دانشگاه تهران، شتاب دهنده دیموند</p>
             <p><i class="fa fa-support"></i>پیشنهادات و انتقادات خود را با من در میان بگذارید.</p>
-
         </div>
         <div class="col-xs-12 col-sm-5 col-md-3 paddingtop-bottom footerleft floatRight textAlignRight footerInfo">
-
-
             <h6 class="heading7">اطلاعات</h6>
             <p><i class="fa fa-info"></i><a href="/about-us" class="footerAnchor footerP">درباره ما</a></p>
             <p><i class="fa fa-file-text-o"></i><a href="/term-of-use" class="footerAnchor footerP">قوانین بلیتو</a></p>
@@ -212,7 +124,6 @@
             </div>
         </div>
     </div>
-
 </footer>
 <div ng-include="'app/views/partials/registerModal.html'"></div>
 <div ng-include="'app/views/partials/loading.html'"></div>
@@ -220,7 +131,7 @@
 <div ng-include="'app/views/partials/forget-password.html'"></div>
 <div ng-include="'app/views/partials/resend-activation-email.html'"></div>
 
+
 </body>
 <script  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0K9LZjvsK4TGAOLzQVVnGfY20eyO5nbY"></script>
-
 </html>

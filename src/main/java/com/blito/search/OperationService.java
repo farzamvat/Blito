@@ -22,6 +22,7 @@ public class OperationService {
 		case eq:
 			return cb.equal(joinQueryBuilder(field, root), value);
 		case ge:
+
 			return cb.ge(root.get(field), (long) value);
 		case gt:
 			return cb.gt(root.get(field), (long) value);

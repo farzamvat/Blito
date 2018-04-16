@@ -2,7 +2,9 @@
  * Created by soroush on 5/17/17.
  */
 angular.module('UiServices', [])
-    .service('mapMarkerService', function ($timeout) {
+    .service('mapMarkerService', [
+        '$timeout',
+        function ($timeout) {
         var mapMarkerService = this;
         var markers = [], map, latitudeLongtitude = {lat : 35.724569, lng : 51.387749};
 
@@ -120,8 +122,8 @@ angular.module('UiServices', [])
             } catch (err) {
             }
         }
-    })
-    .service('eventDetailService', function () {
+    }])
+    .service('eventDetailService', [function () {
         var eventDetail = this;
         var soldCount = 0, capacity = 0;
         eventDetail.calculateFreeBlits = function (event) {
@@ -133,8 +135,11 @@ angular.module('UiServices', [])
             event.soldCount = soldCount;
             return event
         };
-    })
-    .service('imageServices', function ($rootScope, photoService) {
+    }])
+    .service('imageServices', [
+        '$rootScope',
+        'photoService',
+        function ($rootScope, photoService) {
         var image = this;
         image.readBase64Data = function (fileSelector, className) {
             var f = fileSelector.files[0], r = new FileReader();
@@ -155,17 +160,33 @@ angular.module('UiServices', [])
                 .catch(function (data, status) {
                 });
         };
-    })
-    .service('dateSetterService', function () {
+    }])
+    .service('dateSetterService', [function () {
         var dateSetter = this;
-        dateSetter.initDate = function (className) {
-            $("."+className).pDatepicker({
+        dateSetter.initDate = function (className, startTime) {
+            $("."+className).persianDatepicker({
                 timePicker: {
-                    enabled: true
-                },
+                    "enabled": true,
+                    "step": 1,
+                    "hour": {
+                        "enabled": true,
+                        "step": null
+                    },
+                    "minute": {
+                        "enabled": true,
+                        "step": null
+                    },
+                    "second": {
+                        "enabled": false,
+                        "step": null
+                    },
+                    "meridian": {
+                        "enabled": false
+                    }
+                    },
                 formatter : function (unixDate) {
                     var self = this;
-                    var pdate = new persianDate(unixDate);
+                    var pdate = new persianDate(unixDate+startTime);
                     pdate.formatPersian = true;
                     return pdate.format(self.format);
                 },
@@ -203,8 +224,8 @@ angular.module('UiServices', [])
             });
             return dateArray;
         };
-    })
-    .service('dataService', function () {
+    }])
+    .service('dataService', [function () {
         var data = this;
         data.persianToEnglishDigit = function (persianDigit) {
                 var persian = {'۰':0,'۱':1,'۲':2,'۳':3,'۴':4,'۵': 5,'۶': 6,'۷': 7,'۸' : 8,'۹': 9};
@@ -299,6 +320,12 @@ angular.module('UiServices', [])
                 case "APPROVED" :
                     persianOperatorState = 'تأیید شده';
                     break;
+                case "EDITED" :
+                    persianOperatorState = 'ویرایش شده';
+                    break;
+                case "EDIT_REJECTED" :
+                    persianOperatorState = 'عدم تایید ویرایش';
+                    break;
                 default :
                     persianOperatorState = 'گونه';
                     break;
@@ -340,4 +367,4 @@ angular.module('UiServices', [])
             return item;
         }
 
-    });
+    }]);

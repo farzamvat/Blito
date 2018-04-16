@@ -20,6 +20,8 @@ public class BlitType {
 	private long price;
 	
 	private String blitTypeState;
+
+	private String uid;
 	
 	@ManyToOne
 	@JoinColumn(name="eventDateId")
@@ -35,7 +37,15 @@ public class BlitType {
 	
 	@ManyToMany
 	private Set<Discount> discounts;
-	
+
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+
 	public Set<Discount> getDiscounts() {
 		return discounts;
 	}

@@ -2,10 +2,7 @@ package com.blito.models;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Entity(name="event")
 public class Event {
@@ -15,7 +12,7 @@ public class Event {
 	
 	@OneToMany(mappedBy="event",targetEntity=EventDate.class,cascade=CascadeType.ALL,fetch=FetchType.EAGER,orphanRemoval=true)
 	@OrderBy("date DESC")
-	Set<EventDate> eventDates;
+	private Set<EventDate> eventDates;
 	
 	@ManyToOne(optional=false)
 	@JoinColumn(name="eventHostId")
@@ -80,6 +77,31 @@ public class Event {
 	
 	private boolean isPrivate = false;
 
+	private Timestamp endDate;
+
+	@OneToOne(optional = true, orphanRemoval = true, cascade = CascadeType.ALL)
+	private Event editedVersion;
+
+	@ElementCollection(fetch=FetchType.EAGER)
+	@Column(name="fields")
+	private Map<String,String> additionalFields;
+
+	public Event getEditedVersion() {
+		return editedVersion;
+	}
+
+	public void setEditedVersion(Event editedVersion) {
+		this.editedVersion = editedVersion;
+	}
+
+	public Timestamp getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Timestamp endDate) {
+		this.endDate = endDate;
+	}
+
 	public boolean isPrivate() {
 		return isPrivate;
 	}
@@ -87,10 +109,6 @@ public class Event {
 	public void setPrivate(boolean isPrivate) {
 		this.isPrivate = isPrivate;
 	}
-
-	@ElementCollection(fetch=FetchType.EAGER)
-	@Column(name="fields")
-	private Map<String,String> additionalFields;
 	
 	public Event() {
 		offers = new HashSet<>();
@@ -333,11 +351,8 @@ public class Event {
 		}
 	}
 	
-	public void removeEventDateById(Long id)
+	public void removeEventDateByUid(String uid)
 	{
-		this.eventDates.stream()
-				.filter(b -> b.getEventDateId() == id)
-				.findFirst()
-				.ifPresent(eventDate -> this.eventDates.removeIf(b -> b.getEventDateId() == id));
+		this.eventDates.removeIf(b -> Objects.nonNull(b.getUid()) && b.getUid().equals(uid));
 	}
 }

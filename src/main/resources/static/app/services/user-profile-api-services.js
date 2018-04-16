@@ -3,7 +3,10 @@
  */
 
 angular.module('userProfileApi', [])
-    .service('photoService', function ($http, config) {
+    .service('photoService', [
+        '$http',
+        'config',
+        function ($http, config) {
         var photo = this;
 
 
@@ -29,8 +32,11 @@ angular.module('userProfileApi', [])
         photo.deleteGalleryPhoto = function (eventId, UUID) {
             return $http.delete(config.baseUrl+'/api/blito/v1.0/events/'+eventId+'/'+UUID)
         }
-    })
-    .service('eventService', function ($http, config) {
+    }])
+    .service('eventService', [
+        '$http',
+        'config',
+        function ($http, config) {
         var event = this;
 
         event.submitEventForm = function (eventData) {
@@ -55,7 +61,7 @@ angular.module('userProfileApi', [])
         event.getEventsByType = function (type, page) {
             var queryParam = {
                 cache : true,
-                params : {page: page-1, size: 12, sort: "createdAt,desc"}
+                params : {page: page-1, size: 12, sort: ["endDate,desc", "createdAt,desc"]}
             };
             var bodyJson = {
                 restrictions: [
@@ -90,8 +96,11 @@ angular.module('userProfileApi', [])
             };
             return $http.post(config.baseUrl+'/api/blito/v1.0/discount/search', bodyJson, queryParam)
         };
-    })
-    .service('exchangeService', function ($http, config) {
+    }])
+    .service('exchangeService', [
+        '$http',
+        'config',
+        function ($http, config) {
         var exchange = this;
 
 
@@ -128,8 +137,11 @@ angular.module('userProfileApi', [])
             };
             return $http.post(config.baseUrl+'/api/blito/v1.0/public/exchange-blits/search', bodyJson,queryParam);
         };
-    })
-    .service('ticketsService', function ($http, config) {
+    }])
+    .service('ticketsService', [
+        '$http',
+        'config',
+        function ($http, config) {
         var ticket = this;
         ticket.buyTicket = function (ticketInfo) {
             return $http.post(config.baseUrl+'/api/blito/v1.0/blits/buy-request', ticketInfo);
@@ -212,8 +224,11 @@ angular.module('userProfileApi', [])
                 responseType: "arraybuffer"
             });
         }
-    })
-    .service('plannerService', function ($http, config) {
+    }])
+    .service('plannerService', [
+        '$http',
+        'config',
+        function ($http, config) {
         var planner = this;
         planner.getPlanners = function (page, size) {
             var queryParam = {
@@ -250,4 +265,4 @@ angular.module('userProfileApi', [])
             };
             return $http.delete(config.baseUrl+'/api/blito/v1.0/event-hosts', queryParam)
         };
-    });
+    }]);

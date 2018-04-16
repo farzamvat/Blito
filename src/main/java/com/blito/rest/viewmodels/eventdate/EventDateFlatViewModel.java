@@ -28,6 +28,16 @@ public class EventDateFlatViewModel {
 	State blitTypeState;
 	@JsonView(View.EventDateFlat.class)
 	boolean isFree;
+	@JsonView(View.EventDateFlat.class)
+	private String dateTime;
+
+	public String getDateTime() {
+		return dateTime;
+	}
+
+	public void setDateTime(String dateTime) {
+		this.dateTime = dateTime;
+	}
 
 	public Timestamp getDate() {
 		return date;

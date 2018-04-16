@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 		@Type(value = Collection.class, name = "collection"),
 		@Type(value = Range.class, name = "range"),
 		@Type(value = Time.class , name = "time"),
-		@Type(value = Complex.class, name = "complex")
+		@Type(value = Complex.class, name = "complex"),
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class AbstractSearchViewModel<T> {

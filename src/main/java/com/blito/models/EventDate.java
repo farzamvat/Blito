@@ -2,6 +2,7 @@ package com.blito.models;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -20,21 +21,41 @@ public class EventDate {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	long eventDateId;
 	
-	Timestamp date;
+	private Timestamp date;
 	
-	String eventDateState;
+	private String eventDateState;
 	
 	@OneToMany(mappedBy="eventDate", targetEntity=BlitType.class,fetch=FetchType.EAGER, cascade=CascadeType.ALL,orphanRemoval=true)
-	Set<BlitType> blitTypes;
+	private Set<BlitType> blitTypes;
 	
 	@ManyToOne
 	@JoinColumn(name="eventId")
-	Event event;
+	private Event event;
 	
 	@ManyToOne(optional=true)
 	@JoinColumn(name="salonId")
-	Salon salon;
-	
+	private Salon salon;
+
+	private String dateTime;
+
+	private String uid;
+
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+
+	public String getDateTime() {
+		return dateTime;
+	}
+
+	public void setDateTime(String dateTime) {
+		this.dateTime = dateTime;
+	}
+
 	public EventDate()
 	{
 		blitTypes = new HashSet<>();
@@ -101,12 +122,8 @@ public class EventDate {
 		this.blitTypes.remove(blitType);
 		blitType.setEventDate(null);
 	}
-	public void removeBlitTypeById(Long id)
+	public void removeBlitTypeByUid(String uid)
 	{
-		Optional<BlitType> bt = this.blitTypes.stream().filter(b -> b.getBlitTypeId() == id).findFirst();
-		if(bt.isPresent())
-		{
-			this.blitTypes.removeIf(b -> b.getBlitTypeId() == id);
-		}
+		this.blitTypes.removeIf(b -> Objects.nonNull(b.getUid()) && b.getUid().equals(uid));
 	}
 }
