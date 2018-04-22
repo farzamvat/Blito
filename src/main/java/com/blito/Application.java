@@ -33,7 +33,7 @@ public class Application {
 	@PostConstruct
 	public void init() {
 		// TODO: 4/12/2018 must be deleted after deployment 
-		migrationService.updateEventDates_And_BlitTypes_Uids();
+//		migrationService.updateEventDates_And_BlitTypes_Uids();
 		initializer.importPermissionsToDataBase();
 		initializer.insertAdminUserAndRoleAndOldBlitoUsers();
 		initializer.insertSalonSchemasAndDataIntoDB();
