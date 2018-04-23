@@ -31,7 +31,7 @@ public interface EventRepository
 	Set<Event> findByOperatorStateIsAndEventStateNotAndIsDeletedFalse(String operatorState, String eventState);
 
 	// Analytics
-	@Query(value = "select new com.blito.rest.viewmodels.event.EventTypeStatisticsViewModel(e.eventType,avg(bt.capacity),avg(bt.price),sum(bt.soldCount),sum(bt.capacity),count(distinct(e))) " +
+	@Query(value = "select new com.blito.rest.viewmodels.event.EventTypeStatisticsViewModel(e.eventType,avg(bt.capacity),avg(bt.price),sum(bt.soldCount),sum(bt.capacity),count(distinct e)) " +
 			"from event as e join e.eventDates as ed join ed.blitTypes as bt " +
 			"where e.operatorState =  :operatorState \n" +
 			"group by e.eventType")
