@@ -656,21 +656,25 @@ button.slick-next {
 
 .eventNameSearch {
     border-radius: 0 !important;
+    width: 22%;
 }
 .typeSelect {
     border-radius: 0 !important;
+    width: 15%;
+
 }
 .priceSelect {
+    width: 20%;
     border-radius: 0 !important;
 }
 .timeSelect {
+    width: 15%;
     border-radius: 0 10px 10px 0 !important;
 }
 .searchInputsHomePage {
     font-family: FontAwesome, "Iranian Sans";
     text-align: right;
     padding: 10px;
-    width: 150px;
     height: 80px;
     border: 2px #666 !important;
     font-size: 18px;
@@ -691,7 +695,42 @@ button.slick-next {
 }
 .searchBarSection {
     margin-top: -15px;
-    margin-right: 30%;
+    margin-right: 22%;
+}
+.myDropDown {
+    float: right;
+    position: absolute;
+    text-align: right;
+    background-color: #fff;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    top: 59px;
+    display: none;
+    z-index: 10000;
+}
+.timeDropDown {
+    width: 120px;
+    right: 23.5%;
+}
+.priceDropDown {
+    width: 170px;
+    right: 45.35%;
+}
+.typeDropDown {
+    width: 120px;
+    right: 33.5%;
+}
+.dropDownsItems {
+    padding: 10px 15px;
+
+}
+.dropDownsItems:hover {
+    background-color: rgb(252, 183, 49);
+    cursor: pointer;
+}
+.dropDownsItems:last-of-type:hover {
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
 .colorWhite {
     color: white;

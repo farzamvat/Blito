@@ -40,10 +40,20 @@
     </div>
     <div class="col-xs-12">
         <div class=" searchBarSection">
-            <input type="text" placeholder="&#xf274; زمان رویداد" class="timeSelect floatRight searchInputsHomePage" >
-            <input type="text" placeholder="&#xf3d1; قیمت رویداد" class="priceSelect floatRight searchInputsHomePage" >
-            <input type="text" placeholder="&#xf3a5; نوع رویداد" class="typeSelect floatRight searchInputsHomePage" >
-            <input type="text" placeholder="&#xf328; نام رویداد" class="eventNameSearch floatRight searchInputsHomePage" >
+            <input id="timeSearchPart" type="text" placeholder="&#xf107;  زمان رویداد " class="timeSelect floatRight searchInputsHomePage withDropDown" readonly >
+            <div class="timeDropDown myDropDown">
+                <div class="dropDownsItems" ng-click="setSearchTime(time)" ng-repeat="time in timePickedSearch">{{time}}</div>
+            </div>
+            <input id="typeSearchPart"  type="text" placeholder="&#xf107; نوع رویداد" class="typeSelect floatRight searchInputsHomePage withDropDown" readonly>
+            <div class="typeDropDown myDropDown">
+                <div class="dropDownsItems" ng-click="setSearchType(type)" ng-repeat="type in typePickedSearch">{{type}}</div>
+            </div>
+            <input id="priceSearchPart"  type="text" placeholder="&#xf107; قیمت رویداد " class="priceSelect floatRight searchInputsHomePage withDropDown" readonly>
+            <div class="priceDropDown myDropDown">
+                <div class="dropDownsItems" ng-click="setSearchPrice(price)" ng-repeat="price in pricePickedSearch">{{price}}</div>
+            </div>
+
+            <input type="text" placeholder=" نام رویداد" class="eventNameSearch floatRight searchInputsHomePage" >
             <button class="btn btn-blito floatRight searchHomePageBtn"><i class="fa fa-search fa-2x colorWhite"></i></button>
         </div>
     </div>
