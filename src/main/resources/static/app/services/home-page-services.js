@@ -7,73 +7,64 @@ angular.module('homePageApi', [])
         '$http',
         'config',
         function ($http, config) {
-        var miniSlider = this;
-        miniSlider.getAllEventsCount = function () {
-            return $http.get(config.baseUrl + '/api/blito/v1.0/public/events/count');
-        };
-        miniSlider.getSlidingDataEvents = function (eventType, size, evento) {
-            var queryParam = {
-                cache : true,
-                params : {page: 0, size: size, sort: "orderNumber,desc"}
+            var miniSlider = this;
+            miniSlider.getAllEventsCount = function () {
+                return $http.get(config.baseUrl + '/api/blito/v1.0/public/events/count');
             };
-            if(!evento) {
+            miniSlider.getSlidingDataEvents = function (size) {
+                var queryParam = {
+                    cache : true,
+                    params : {page: 0, size: size, sort: "orderNumber,desc"}
+                };
                 var bodyJson = {
                     restrictions: [
                         {field: "eventState", type: "simple", operation: "neq", value: "ENDED"},
-                        {field: "eventType", type: "simple", operation: "eq", value: eventType}
+                        {field: "eventType", type: "simple", operation: "eq", value: 'CONCERT'}
 
                     ]
                 };
-            } else if(evento) {
+
+                return $http.post(config.baseUrl + '/api/blito/v1.0/public/events/search',bodyJson, queryParam);
+
+            };
+            miniSlider.getSlidingDataExchange = function (size) {
+                var queryParam = {
+                    cache : true,
+                    params : {page: 0, size: size, sort: "createdAt,desc"}
+                };
+                var bodyJson = {
+                    restrictions: []
+                };
+
+                return $http.post(config.baseUrl + '/api/blito/v1.0/public/exchange-blits/search',bodyJson, queryParam);
+            };
+            miniSlider.getEndedEvents = function (page, size) {
+                var queryParam = {
+                    cache : true,
+                    params : {page: page-1, size: size, sort: "createdAt,desc"}
+                };
                 var bodyJson = {
                     restrictions: [
-                        {field: "eventState", type: "simple", operation: "neq", value: "ENDED"},
-                        {field: "isEvento", type: "simple", operation: "eq", value: "true"}
-
+                        {field: "eventState", type: "simple", operation: "eq", value: "ENDED"}
                     ]
                 };
+
+                return $http.post(config.baseUrl + '/api/blito/v1.0/public/events/search',bodyJson, queryParam);
             }
-            return $http.post(config.baseUrl + '/api/blito/v1.0/public/events/search',bodyJson, queryParam);
-
-        };
-        miniSlider.getSlidingDataExchange = function (size) {
-            var queryParam = {
-                cache : true,
-                params : {page: 0, size: size, sort: "createdAt,desc"}
-            };
-            var bodyJson = {
-                restrictions: []
-            };
-
-            return $http.post(config.baseUrl + '/api/blito/v1.0/public/exchange-blits/search',bodyJson, queryParam);
-        };
-        miniSlider.getEndedEvents = function (page, size) {
-            var queryParam = {
-                cache : true,
-                params : {page: page-1, size: size, sort: "createdAt,desc"}
-            };
-            var bodyJson = {
-                restrictions: [
-                    {field: "eventState", type: "simple", operation: "eq", value: "ENDED"}
-                ]
-            };
-
-            return $http.post(config.baseUrl + '/api/blito/v1.0/public/events/search',bodyJson, queryParam);
-        }
-    }])
+        }])
     .service('indexBannerService', [
         '$http',
         'config',
         function ($http, config) {
-        var indexBanner = this;
-        indexBanner.getIndexBanner = function () {
-            var queryParam = {
-                cache : true,
-                params : {page: 0, size: 5}
-            };
-            return $http.get(config.baseUrl + '/api/blito/v1.0/public/index-banners', queryParam);
+            var indexBanner = this;
+            indexBanner.getIndexBanner = function () {
+                var queryParam = {
+                    cache : true,
+                    params : {page: 0, size: 5}
+                };
+                return $http.get(config.baseUrl + '/api/blito/v1.0/public/index-banners', queryParam);
 
-        }
+            }
 
-    }])
- ;
+        }])
+;

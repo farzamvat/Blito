@@ -38,7 +38,7 @@
             <div class="ground"></div>
         </div>
     </div>
-    <div class="col-xs-12">
+    <div class="col-xs-12 searchSection">
         <div class=" searchBarSection">
             <input id="timeSearchPart" type="text" placeholder="&#xf107;  زمان رویداد " class="timeSelect floatRight searchInputsHomePage withDropDown" readonly >
             <div class="timeDropDown myDropDown">
@@ -57,7 +57,18 @@
             <button class="btn btn-blito floatRight searchHomePageBtn"><i class="fa fa-search fa-2x colorWhite"></i></button>
         </div>
     </div>
-
+    <div class="row">
+        <div class="col-xs-12">
+            <div ng-repeat="event in eventsWithImage" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 floatRight eventBox">
+                <img ng-src="{{event.image}}" alt="{{event.eventName}}" class="homePageEventImages floatRight ">
+                <div class="floatRight  eventBoxDescription width50">
+                <h3 class="textAlignRight floatRight">{{event.eventName}}</h3>
+                <p class="textAlignRight">زمان رویداد:</p>
+                <p class="textAlignRight">قیمت رویداد:</p>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row slidingEventsRow" >
         <div class="hidden-xs hidden-sm col-sm-1 blitoOffer floatRight">
 

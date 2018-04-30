@@ -20,6 +20,7 @@ angular.module('homePageModule', [])
             $scope.typePickedSearch = ['کنسرت', 'تئاتر', 'سینما', 'تور', 'کارگاه', 'سرگرمی', 'نمایشگاه', 'سایر', 'همه رویداد‌ها' ];
             $scope.showSectionsExcahnge = [false,false];
             $scope.bannerData = [];
+            var promisesEvent = [];
             var promisesExchange = [[], []];
             $scope.url = config.baseUrl+"/event-page/";
             $scope.urlExchange = config.baseUrl+"/exchange-page/";
@@ -37,7 +38,13 @@ angular.module('homePageModule', [])
                 });
             // use search with getSlidingDataEvents api
 
+            miniSliderService.getSlidingDataEvents(6)
+                .then(function (data) {
+                    $scope.eventsWithImage = $scope.catchImagesEvents(data.data.content);
+                })
+                .catch(function () {
 
+                })
 
             miniSliderService.getSlidingDataExchange(6)
                 .then(function (data) {
@@ -47,7 +54,21 @@ angular.module('homePageModule', [])
                 });
 
 
-
+            $scope.catchImagesEvents = function (events) {
+                 return events.map(function (item) {
+                    var eventImage =  item.images.filter(function (image) {
+                        return image.type === "EVENT_PHOTO";
+                    });
+                    photoService.download(eventImage[0].imageUUID)
+                        .then(function (data) {
+                            item.image = data.data.encodedBase64;
+                        })
+                        .catch(function () {
+                            item.image = '';
+                        })
+                    return item;
+                });
+            };
 
             $scope.calculateCapacitySoldOut = function (eventList) {
                 eventList.forEach(function (item) {

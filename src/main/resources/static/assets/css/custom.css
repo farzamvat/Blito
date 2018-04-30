@@ -671,22 +671,24 @@ button.slick-next {
     width: 15%;
     border-radius: 0 10px 10px 0 !important;
 }
+.searchHomePageBtn {
+    width: 80px;
+    height: 80px !important;
+    border-radius: 10px 0 0 10px !important;
+}
 .searchInputsHomePage {
     font-family: FontAwesome, "Iranian Sans";
     text-align: right;
     padding: 10px;
     height: 80px;
     border: 2px #666 !important;
-    font-size: 18px;
+    font-size: 1.2em !important;
 }
 .searchInputsHomePage:focus {
     border: 2px #666 !important;
+    outline: none !important;
 }
-.searchHomePageBtn {
-    width: 80px;
-    height: 80px !important;
-    border-radius: 10px 0 0 10px !important;
-}
+
 .slidingEvents h2:hover {
     color: rgb(252,183, 49);
 }
@@ -731,6 +733,32 @@ button.slick-next {
 .dropDownsItems:last-of-type:hover {
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
+}
+.homePageEventImages {
+    height: 233px;
+    width: 163px;
+}
+.eventBox {
+    box-shadow: 0px 2px 9px 1px;
+    padding: 0;
+    background-color: white;
+}
+.width50 {
+    width: 50%;
+}
+.eventBoxDescription {
+    padding: 10px;
+    background-color: #fff;
+    height: 233px;
+}
+.eventBoxDescription h3 {
+    border-bottom: 1px solid #999;
+}
+.width40 {
+    width: 40%;
+}
+.width60 {
+    width: 60%;
 }
 .colorWhite {
     color: white;
@@ -3839,7 +3867,7 @@ input[type=number] {
         width: 100%;
     }
     .loadingSlider {
-        height: 190px ;
+        height: 220px ;
     }
     .carousel-inner > .item > img {
         width:100%;
@@ -4059,6 +4087,46 @@ input[type=number] {
 }
 
 @media (max-width: 1200px) {
+    .timeDropDown {
+        width: 120px;
+        right: 1%;
+    }
+    .priceDropDown {
+        width: 170px;
+        right: 40%;
+    }
+    .typeDropDown {
+        width: 120px;
+        right: 22.5%;
+    }
+    .searchInputsHomePage {
+        font-size: 1.1em !important;
+    }
+    .searchSection {
+        padding: 0;
+    }
+    .searchBarSection {
+        margin-top: 0;
+        margin-right: 0;
+    }
+    .eventNameSearch {
+        width: 20%;
+    }
+    .typeSelect {
+        width: 17.5%;
+
+    }
+    .priceSelect {
+        width: 25%;
+    }
+    .timeSelect {
+        width: 22.5%;
+        border-radius: 0 !important;
+    }
+    .searchHomePageBtn {
+        width: 15%;
+        border-radius: 0 !important;
+    }
     .plannerIntroBox {
         -moz-box-shadow:    none;
         -webkit-box-shadow: none;
