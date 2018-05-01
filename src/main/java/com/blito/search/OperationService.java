@@ -43,13 +43,13 @@ public class OperationService {
 			String field) {
 		switch (operation) {
 		case ge:
-			return cb.greaterThanOrEqualTo(root.get(field), value);
+			return cb.greaterThanOrEqualTo(joinQueryBuilder(field, root), value);
 		case gt:
-			return cb.greaterThan(root.get(field), value);
+			return cb.greaterThan(joinQueryBuilder(field, root), value);
 		case le:
-			return cb.lessThanOrEqualTo(root.get(field), value);
+			return cb.lessThanOrEqualTo(joinQueryBuilder(field, root), value);
 		case lt:
-			return cb.lessThan(root.get(field), value);
+			return cb.lessThan(joinQueryBuilder(field, root), value);
 		default:
 			throw new NotAllowedException("Operation not allowed");
 		}
