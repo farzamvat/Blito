@@ -155,6 +155,12 @@ textarea:focus, input:focus {
     background-size: 100% 500px;
     height: 500px;
 }
+.fontSize12 {
+    font-size: 12px;
+}
+.fontSize14 {
+    font-size: 14px;
+}
 .fontSize16 {
     font-size: 16px;
 }
@@ -672,11 +678,16 @@ button.slick-next {
     border-radius: 0 10px 10px 0 !important;
 }
 .searchHomePageBtn {
+    box-shadow: -1px 1px 5px 0px;
     width: 80px;
     height: 80px !important;
     border-radius: 10px 0 0 10px !important;
 }
+.searchHomePageBtn:hover {
+    box-shadow: -1px 1px 5px 2px;
+}
 .searchInputsHomePage {
+    box-shadow: -1px 0px 2px 1px;
     font-family: FontAwesome, "Iranian Sans";
     text-align: right;
     padding: 10px;
@@ -716,11 +727,11 @@ button.slick-next {
 }
 .priceDropDown {
     width: 170px;
-    right: 45.35%;
+    right: 46.35%;
 }
 .typeDropDown {
     width: 120px;
-    right: 33.5%;
+    right: 34.5%;
 }
 .dropDownsItems {
     padding: 10px 15px;
@@ -747,7 +758,6 @@ button.slick-next {
     background-color: white;
     border: 1px solid #999;
     border-radius: 5px;
-    box-shadow: 0 0 11px -2px;
     transition: 200ms;
     color: black;
 }
@@ -768,6 +778,7 @@ button.slick-next {
 .eventBoxDescription h4 {
     border-bottom: 1px solid #999;
     line-height: 25px;
+    margin-top: 0 !important;
 }
 .width40 {
     width: 40%;
@@ -4106,7 +4117,7 @@ input[type=number] {
 }
 @media (min-width : 992px) and (max-width: 1200px) {
     .eventBoxDescription {
-        width: 40%;
+        width: 45%;
     }
     .customPanelEventPage {
         width: calc(98% + 5px);

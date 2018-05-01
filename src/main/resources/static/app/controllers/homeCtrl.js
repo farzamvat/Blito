@@ -15,9 +15,10 @@ angular.module('homePageModule', [])
 
         function ($scope, miniSliderService, photoService, indexBannerService, eventDetailService, $q,config) {
             $scope.concertRow = [];
-            $scope.timePickedSearch = ['امروز', 'این هفته', 'این ماه', 'همه روزها'];
-            $scope.pricePickedSearch = ['تا ۱۵ هزار تومان', 'تا ۴۰ هزار تومان', 'بالای ۴۰ هزار تومان', 'همه قیمت‌ها'];
-            $scope.typePickedSearch = ['کنسرت', 'تئاتر', 'سینما', 'تور', 'کارگاه', 'سرگرمی', 'نمایشگاه', 'سایر', 'همه رویداد‌ها' ];
+            $scope.timePickedSearch = [{n : 'امروز', v : 'T'}, {n : 'تا یک هفته', v : 'W'},{n : 'تا یک ماه', v : 'M'},{n : 'همه روزها', v : 'AllTimes'}];
+            $scope.pricePickedSearch = [{p : 'تا ۱۵ هزار تومان', v : '15L'},{p : 'تا ۴۰ هزار تومان', v : '40L'} , {p : 'بالای ۴۰ هزار تومان', v : '40U'}, {p : 'همه قیمت‌ها', v : 'AllPrices'}];
+            $scope.typePickedSearch = [{t : 'کنسرت', v : 'CONCERT'}, {t : 'تئاتر', v: 'THEATER'}, {t :'سینما', v: 'CINEMA'}, {t :'تور', v: 'TOUR'}, {t :'کارگاه', v: 'WORKSHOP'}, {t :'سرگرمی', v: 'ENTERTAINMENT'}, {t :'نمایشگاه', v: 'EXHIBITION'}, {t :'سایر', v: 'OTHER'}, {t :'همه رویداد‌ها', v: 'AllTypes'} ];
+            $scope.searchData = {timePicked : {n : 'همه روزها', v : 'AllTimes'}, typePicked : {t :'همه رویداد‌ها', v: 'AllTypes'}, pricePicked : {p : 'همه قیمت‌ها', v : 'AllPrices'}, name:''};
             $scope.showSectionsExcahnge = [false,false];
             $scope.bannerData = [];
             var promisesExchange = [[], []];
@@ -37,10 +38,9 @@ angular.module('homePageModule', [])
                 });
             // use search with getSlidingDataEvents api
 
-            miniSliderService.getSlidingDataEvents(8)
+            miniSliderService.getSlidingDataEvents(8, [])
                 .then(function (data) {
                     $scope.eventsWithImage = $scope.setEventData(data.data.content);
-                    console.log($scope.eventsWithImage);
                 })
                 .catch(function () {
 
@@ -53,7 +53,105 @@ angular.module('homePageModule', [])
                 .catch(function (data) {
                 });
 
+            $scope.searchHomePage = function (searchData) {
+                console.log(searchData);
+                var restrictions = [], endTime = 0;
+                var d = new Date();
+                if(searchData.timePicked.v !== 'AllTimes') {
+                    console.log("11");
+                    switch (searchData.timePicked.v) {
+                        case "T" :
+                            endTime =  (d.setHours(0,0,0,0) + 86400000);
+                            break;
+                        case "W" :
+                            endTime =  (d.setHours(0,0,0,0) + (86400000*7));
+                            break;
+                        case "M" :
+                            endTime =  (d.setHours(0,0,0,0) + (86400000*30));
+                            break;
+                        default:
+                            endTime = 0;
+                            break;
+                    }
+                    restrictions.push(
+                        {
+                            type : "complex",
+                            operator : "and",
+                            restrictions: [
+                                {
+                                    type : "time",
+                                    field : "eventDates-date",
+                                    operation : "gt",
+                                    value : d.getTime()
+                                },
+                                {
+                                    type : "time",
+                                    field : "eventDates-date",
+                                    operation : "lt",
+                                    value : endTime
+                                }
+                            ]
+                        }
+                    )
+                }
+                if( searchData.typePicked.v !== 'AllTypes') {
+                    restrictions.push(
+                        {
+                            field: "eventType",
+                            type: "simple",
+                            operation: "eq",
+                            value: searchData.typePicked.v
+                        }
+                    )
+                }
+                if( searchData.pricePicked.v !== 'AllPrices') {
+                    var price = 0, comp = '';
+                    switch (searchData.pricePicked.v) {
+                        case "15L":
+                            price = 15000;
+                            comp = "lt";
+                            break;
+                        case "40L":
+                            price = 40000;
+                            comp = "lt";
+                            break;
+                        case "40U":
+                            price = 40000;
+                            comp = "gt";
+                            break;
+                        default:
+                            price = '0';
+                            comp = "gt";
+                            break;
+                    }
+                    restrictions.push(
+                        {
+                            type: "simple",
+                            field : "eventDates-blitTypes-price",
+                            value : price,
+                            operation : comp
+                        }
+                    )
+                }
+                if(searchData.name !== '') {
+                    restrictions.concat(
+                        {
+                            type : "simple",
+                            field : "eventName",
+                            value : searchData.name,
+                            operation : "like"
+                        }
+                    )
+                }
+                console.log(restrictions);
+                miniSliderService.getSlidingDataEvents(8, restrictions)
+                    .then(function (data) {
+                        console.log(data);
+                    })
+                    .catch(function () {
 
+                    })
+                };
             $scope.setEventData = function (events) {
                 return events.map(function (item) {
                     var firstEventDate = '';
@@ -64,8 +162,12 @@ angular.module('homePageModule', [])
                         return image.type === "EVENT_PHOTO";
                     });
                     item.eventDates.forEach(function (eventDate) {
-                        if(eventDate < tempDate) {
-                            firstEventDate = eventDate.dateTime;
+                        if(eventDate.date < tempDate) {
+                            if(eventDate.dateTime) {
+                                firstEventDate = eventDate.dateTime;
+                            } else {
+                                firstEventDate = persianDate(eventDate.date).format("dddd,DD MMMM, ساعت HH:mm")
+                            }
                         }
                         if(item.minPrice > eventDate.price) {
                             item.minPrice = eventDate.price;
@@ -130,16 +232,19 @@ angular.module('homePageModule', [])
                 $(".timeDropDown").slideUp();
             });
             $scope.setSearchTime = function (time) {
-                $("#timeSearchPart").val(time);
+                $("#timeSearchPart").val(time.n);
+                $scope.searchData.timePicked = time;
             };
             $scope.setSearchPrice = function (price) {
-                $("#priceSearchPart").val(price);
+                $("#priceSearchPart").val(price.p);
+                $scope.searchData.pricePicked = price;
             };
             $scope.setSearchType = function (type) {
-                $("#typeSearchPart").val(type);
+                $("#typeSearchPart").val(type.t);
+                $scope.searchData.typePicked = type;
             };
+
             document.body.addEventListener('click', function (event) {
-                console.log(event.srcElement.classList);
                 if(event.srcElement.classList.value.indexOf('withDropDown') === -1) {
                     $(".typeDropDown").slideUp();
                     $(".priceDropDown").slideUp();

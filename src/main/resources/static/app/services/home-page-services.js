@@ -11,7 +11,7 @@ angular.module('homePageApi', [])
             miniSlider.getAllEventsCount = function () {
                 return $http.get(config.baseUrl + '/api/blito/v1.0/public/events/count');
             };
-            miniSlider.getSlidingDataEvents = function (size) {
+            miniSlider.getSlidingDataEvents = function (size, restriction) {
                 var queryParam = {
                     cache : true,
                     params : {page: 0, size: size, sort: "orderNumber,desc"}
@@ -21,6 +21,7 @@ angular.module('homePageApi', [])
                         {field: "eventState", type: "simple", operation: "neq", value: "ENDED"}
                     ]
                 };
+                bodyJson.restrictions = bodyJson.restrictions.concat(restriction);
 
                 return $http.post(config.baseUrl + '/api/blito/v1.0/public/events/search',bodyJson, queryParam);
 

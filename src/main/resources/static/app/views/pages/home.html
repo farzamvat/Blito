@@ -40,34 +40,38 @@
     </div>
     <div class="col-xs-12 searchSection">
         <div class=" searchBarSection">
-            <input id="timeSearchPart" type="text" placeholder="&#xf107;  زمان رویداد " class="timeSelect floatRight searchInputsHomePage withDropDown" readonly >
+            <input  id="timeSearchPart" type="text" placeholder="&#xf107;  زمان رویداد " class="timeSelect floatRight searchInputsHomePage withDropDown" readonly >
             <div class="timeDropDown myDropDown">
-                <div class="dropDownsItems" ng-click="setSearchTime(time)" ng-repeat="time in timePickedSearch">{{time}}</div>
+                <div class="dropDownsItems" ng-click="setSearchTime(item)" ng-repeat="item in timePickedSearch">{{item.n}}</div>
             </div>
-            <input id="typeSearchPart"  type="text" placeholder="&#xf107; نوع رویداد" class="typeSelect floatRight searchInputsHomePage withDropDown" readonly>
+            <input  id="typeSearchPart"  type="text" placeholder="&#xf107; نوع رویداد" class="typeSelect floatRight searchInputsHomePage withDropDown" readonly>
             <div class="typeDropDown myDropDown">
-                <div class="dropDownsItems" ng-click="setSearchType(type)" ng-repeat="type in typePickedSearch">{{type}}</div>
+                <div class="dropDownsItems" ng-click="setSearchType(type)" ng-repeat="type in typePickedSearch">{{type.t}}</div>
             </div>
-            <input id="priceSearchPart"  type="text" placeholder="&#xf107; قیمت رویداد " class="priceSelect floatRight searchInputsHomePage withDropDown" readonly>
+            <input  id="priceSearchPart"  type="text" placeholder="&#xf107; قیمت رویداد " class="priceSelect floatRight searchInputsHomePage withDropDown" readonly>
             <div class="priceDropDown myDropDown">
-                <div class="dropDownsItems" ng-click="setSearchPrice(price)" ng-repeat="price in pricePickedSearch">{{price}}</div>
+                <div class="dropDownsItems" ng-click="setSearchPrice(price)" ng-repeat="price in pricePickedSearch">{{price.p}}</div>
             </div>
 
-            <input type="text" placeholder=" نام رویداد" class="eventNameSearch floatRight searchInputsHomePage" >
-            <button class="btn btn-blito floatRight searchHomePageBtn"><i class="fa fa-search fa-2x colorWhite"></i></button>
+            <input ng-model="searchData.name" type="text" placeholder=" نام رویداد" class="eventNameSearch floatRight searchInputsHomePage" >
+            <button class="btn btn-blito floatRight searchHomePageBtn" ng-click="searchHomePage(searchData)"><i class="fa fa-search fa-2x colorWhite"></i></button>
         </div>
     </div>
     <div class="row ">
         <div class="col-xs-12 marginTop60 paddingLeft30">
-            <div ng-repeat="event in eventsWithImage" class="col-xs-12 col-sm-6 col-md-4  floatRight eventBox">
+            <div ng-repeat="event in eventsWithImage" class="col-xs-12 col-sm-6 col-md-6 col-lg-4  floatRight eventBox">
                 <a class="col-xs-12 width95 marginTop10 padding0 eventBoxInner" >
-                    <img ng-src="{{event.image}}" alt="{{event.eventName}}" class="homePageEventImages floatRight ">
+                    <img ng-src="{{event.image}}" alt="{{event.eventName }}" class="homePageEventImages floatRight ">
                     <div class="floatRight  eventBoxDescription ">
-                        <h4 class="textAlignRight floatRight col-xs-12">{{event.eventName}}</h4>
-                        <p class="textAlignRight">اولین سانس:</p>
-                        <p class="textAlignRight">{{event.firstEventDate}}</p>
-                        <p class="textAlignRight">محدوده قیمت:</p>
-                        <p class="textAlignRight">{{event.minPrice}} - {{event.maxPrice}}</p>
+                        <h4 class="textAlignRight floatRight col-xs-12">{{event.eventName | limitTo : 25}}<span ng-if="event.eventName.length > 25">...</span></h4>
+                        <p class="textAlignRight fontSize14 ">اولین سانس:</p>
+                        <p class="textAlignRight fontSize16 ">{{event.firstEventDate}}</p>
+                        <p class="textAlignRight fontSize14"> قیمت:</p>
+                        <p class="textAlignRight fontSize16 " ng-show="event.maxPrice !== 0 && event.minPrice !== 0 && event.minPrice === event.maxPrice">  {{event.minPrice | number | pNumber}}  تومان</p>
+                        <p class="textAlignRight fontSize16 " ng-show="event.maxPrice !== 0 && event.minPrice !== 0 && event.minPrice !== event.maxPrice">  {{event.minPrice | number | pNumber}} - {{event.maxPrice | number | pNumber}} تومان</p>
+                        <p class="textAlignRight fontSize16 " ng-show="event.maxPrice === 0">    رایگان</p>
+                        <p class="textAlignRight fontSize16 " ng-show="event.maxPrice !== 0 && event.minPrice === 0">  رایگان - {{event.maxPrice | number | pNumber}} تومان</p>
+
                     </div>
                 </a>
             </div>
