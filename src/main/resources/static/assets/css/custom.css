@@ -89,7 +89,7 @@ textarea:focus, input:focus {
     width: 100%;
     white-space: normal;
     min-height: 800px;
-    background:#efefef;
+    background:#f8f8fa;
     padding: 0;
 }
 .carousel .item img {
@@ -737,11 +737,24 @@ button.slick-next {
 .homePageEventImages {
     height: 233px;
     width: 163px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
 }
 .eventBox {
-    box-shadow: 0px 2px 9px 1px;
     padding: 0;
+}
+.eventBoxInner {
     background-color: white;
+    border: 1px solid #999;
+    border-radius: 5px;
+    box-shadow: 0 0 11px -2px;
+    transition: 200ms;
+    color: black;
+}
+.eventBoxInner:hover {
+    cursor: pointer;
+    color: black !important;
+    box-shadow: 0 0 11px 0 #333 !important;
 }
 .width50 {
     width: 50%;
@@ -750,9 +763,11 @@ button.slick-next {
     padding: 10px;
     background-color: #fff;
     height: 233px;
+    width: 50%;
 }
-.eventBoxDescription h3 {
+.eventBoxDescription h4 {
     border-bottom: 1px solid #999;
+    line-height: 25px;
 }
 .width40 {
     width: 40%;
@@ -3232,6 +3247,9 @@ table td{
 .paddingLeft50{
     padding-left: 50px !important;
 }
+.paddingLeft30 {
+    padding-left: 30px !important;
+}
 .homePageImage {
     width: 120px !important;
     height: 182px !important;
@@ -3422,6 +3440,9 @@ input:disabled, textarea:disabled, select:disabled {
     display: block;
     margin: 1px auto;
 }
+.width95 {
+    width: 95%;
+}
 .centerImageItem {
     padding-top: 20px;
 }
@@ -3567,6 +3588,9 @@ input[type=number] {
 
 
 @media (max-width: 992px) {
+    .eventBoxDescription {
+        width: 52%;
+    }
     .moreInfo{
         width:150px !important;
     }
@@ -4081,6 +4105,9 @@ input[type=number] {
 
 }
 @media (min-width : 992px) and (max-width: 1200px) {
+    .eventBoxDescription {
+        width: 40%;
+    }
     .customPanelEventPage {
         width: calc(98% + 5px);
     }

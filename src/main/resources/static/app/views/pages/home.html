@@ -57,15 +57,19 @@
             <button class="btn btn-blito floatRight searchHomePageBtn"><i class="fa fa-search fa-2x colorWhite"></i></button>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <div ng-repeat="event in eventsWithImage" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 floatRight eventBox">
-                <img ng-src="{{event.image}}" alt="{{event.eventName}}" class="homePageEventImages floatRight ">
-                <div class="floatRight  eventBoxDescription width50">
-                <h3 class="textAlignRight floatRight">{{event.eventName}}</h3>
-                <p class="textAlignRight">زمان رویداد:</p>
-                <p class="textAlignRight">قیمت رویداد:</p>
-                </div>
+    <div class="row ">
+        <div class="col-xs-12 marginTop60 paddingLeft30">
+            <div ng-repeat="event in eventsWithImage" class="col-xs-12 col-sm-6 col-md-4  floatRight eventBox">
+                <a class="col-xs-12 width95 marginTop10 padding0 eventBoxInner" >
+                    <img ng-src="{{event.image}}" alt="{{event.eventName}}" class="homePageEventImages floatRight ">
+                    <div class="floatRight  eventBoxDescription ">
+                        <h4 class="textAlignRight floatRight col-xs-12">{{event.eventName}}</h4>
+                        <p class="textAlignRight">اولین سانس:</p>
+                        <p class="textAlignRight">{{event.firstEventDate}}</p>
+                        <p class="textAlignRight">محدوده قیمت:</p>
+                        <p class="textAlignRight">{{event.minPrice}} - {{event.maxPrice}}</p>
+                    </div>
+                </a>
             </div>
         </div>
     </div>

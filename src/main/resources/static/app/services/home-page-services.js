@@ -18,9 +18,7 @@ angular.module('homePageApi', [])
                 };
                 var bodyJson = {
                     restrictions: [
-                        {field: "eventState", type: "simple", operation: "neq", value: "ENDED"},
-                        {field: "eventType", type: "simple", operation: "eq", value: 'CONCERT'}
-
+                        {field: "eventState", type: "simple", operation: "neq", value: "ENDED"}
                     ]
                 };
 

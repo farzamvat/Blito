@@ -20,7 +20,6 @@ angular.module('homePageModule', [])
             $scope.typePickedSearch = ['کنسرت', 'تئاتر', 'سینما', 'تور', 'کارگاه', 'سرگرمی', 'نمایشگاه', 'سایر', 'همه رویداد‌ها' ];
             $scope.showSectionsExcahnge = [false,false];
             $scope.bannerData = [];
-            var promisesEvent = [];
             var promisesExchange = [[], []];
             $scope.url = config.baseUrl+"/event-page/";
             $scope.urlExchange = config.baseUrl+"/exchange-page/";
@@ -38,9 +37,10 @@ angular.module('homePageModule', [])
                 });
             // use search with getSlidingDataEvents api
 
-            miniSliderService.getSlidingDataEvents(6)
+            miniSliderService.getSlidingDataEvents(8)
                 .then(function (data) {
-                    $scope.eventsWithImage = $scope.catchImagesEvents(data.data.content);
+                    $scope.eventsWithImage = $scope.setEventData(data.data.content);
+                    console.log($scope.eventsWithImage);
                 })
                 .catch(function () {
 
@@ -54,11 +54,28 @@ angular.module('homePageModule', [])
                 });
 
 
-            $scope.catchImagesEvents = function (events) {
-                 return events.map(function (item) {
+            $scope.setEventData = function (events) {
+                return events.map(function (item) {
+                    var firstEventDate = '';
+                    var tempDate = 10000000000000;
+                    item.minPrice = 1000000000;
+                    item.maxPrice = 0;
                     var eventImage =  item.images.filter(function (image) {
                         return image.type === "EVENT_PHOTO";
                     });
+                    item.eventDates.forEach(function (eventDate) {
+                        if(eventDate < tempDate) {
+                            firstEventDate = eventDate.dateTime;
+                        }
+                        if(item.minPrice > eventDate.price) {
+                            item.minPrice = eventDate.price;
+                        }
+                        if(item.maxPrice < eventDate.price) {
+                            item.maxPrice = eventDate.price;
+                        }
+                        tempDate = eventDate.date;
+                    });
+                    item.firstEventDate = firstEventDate;
                     photoService.download(eventImage[0].imageUUID)
                         .then(function (data) {
                             item.image = data.data.encodedBase64;
