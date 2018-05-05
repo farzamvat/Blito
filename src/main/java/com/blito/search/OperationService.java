@@ -23,15 +23,15 @@ public class OperationService {
 			return cb.equal(joinQueryBuilder(field, root), value);
 		case ge:
 
-			return cb.ge(joinQueryBuilder(field, root), (long) value);
+			return cb.ge(joinQueryBuilder(field, root), (Number) value);
 		case gt:
-			return cb.gt(joinQueryBuilder(field, root), (long) value);
+			return cb.gt(joinQueryBuilder(field, root),  (Number) value);
 		case le:
-			return cb.le(joinQueryBuilder(field, root), (long) value);
+			return cb.le(joinQueryBuilder(field, root), (Number) value);
 		case like:
 			return cb.like(joinQueryBuilder(field, root), '%' + value.toString() + '%');
 		case lt:
-			return cb.lt(joinQueryBuilder(field, root), (long) value);
+			return cb.lt(joinQueryBuilder(field, root), (Number) value);
 		case neq:
 			return cb.notEqual(joinQueryBuilder(field, root), value);
 		default:

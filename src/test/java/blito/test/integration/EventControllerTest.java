@@ -344,6 +344,24 @@ public class EventControllerTest extends AbstractRestControllerTest {
 		}
 		assertEquals(4,responseJson.get("numberOfElements"));
 	}
+
+	@Test
+	public void priceGreaterThanTest() throws JSONException {
+		JSONObject simple = new JSONObject();
+		simple.put("type", "simple");
+		simple.put("field", "eventDates-blitTypes-price");
+		simple.put("operation", "gt");
+		simple.put("value", 10000);
+		JSONArray restrictions = new JSONArray();
+		restrictions.put(simple);
+		JSONObject requestBody = new JSONObject();
+		requestBody.put("restrictions",restrictions);
+		given().header("Content-Type",MediaType.APPLICATION_JSON_UTF8_VALUE)
+				.body(requestBody.toString())
+				.when()
+				.post(getServerAddress() +"/api/blito/v1.0/public/events/search?page=0&size=20")
+				.then().statusCode(200);
+	}
 	
 	@Test
 	public void greaterThanTest() throws URISyntaxException, JSONException

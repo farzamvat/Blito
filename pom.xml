@@ -28,9 +28,6 @@
 			<version>1.5.3</version>
 		</dependency>
 
-		<!-- Actuator dependencies -->
-		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-security</artifactId> 
-			</dependency> -->
 		<!-- https://mvnrepository.com/artifact/com.google.auto.service/auto-service -->
 		<dependency>
 			<groupId>org.hsqldb</groupId>
