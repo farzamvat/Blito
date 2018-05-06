@@ -284,7 +284,7 @@ button.slick-next {
 
 .plannerIntroRow {
     background: url('../img/back.jpg') fixed;
-    /*background-color: rgba(250, 250, 250, 0.4);*/
+
 }
 
 
@@ -699,7 +699,44 @@ button.slick-next {
     border: 2px #666 !important;
     outline: none !important;
 }
+.homePageMoreButton {
+    width: 200px;
+    color: white !important;
+}
+.homePageMoreButton button:hover {
+    color: white !important;
+    background-color: rgb(255, 170, 0);
+}
 
+.bigRoundButton {
+    display: block;
+    width: 200px;
+    border-radius: 50% !important;
+    height: 200px !important;
+    margin: 30px auto;
+    font-size: 32px;
+    box-shadow: 0 -6px 0 5px rgb(200,130,0) inset, 0 5px 5px rgba(103, 73, 0, 0.97), 0 12px rgba(255, 255, 255, 0.4) inset;
+    transition: 200ms;
+    padding-bottom: 20px;
+}
+.bigRoundButton:hover {
+    box-shadow: 0 -6px 0 5px rgb(190, 120, 0) inset, 0 5px 5px rgba(103, 73, 0, 0.97), 0 12px rgba(255, 255, 255, 0.5) inset;
+    background-color: rgb(255, 170, 0);
+}
+.bigRoundButton:active {
+    color: black !important;
+    box-shadow: 0 -1px 0 0 rgb(216, 157, 41) inset, 0 5px 5px rgba(103, 73, 0, 0.97), 0 12px rgba(255, 255, 255, 0.3) inset;
+    transform: translateY(4px);
+}
+.whiteBlocks {
+    background-color: rgba(256, 256, 256, 0.95);
+    height: 200px;
+    width: 95%;
+    display: block;
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin: 30px auto;
+}
 .slidingEvents h2:hover {
     color: rgb(252,183, 49);
 }
@@ -753,6 +790,8 @@ button.slick-next {
 }
 .eventBox {
     padding: 0;
+    margin-top: 40px;
+    margin-bottom: 20px;
 }
 .eventBoxInner {
     background-color: white;

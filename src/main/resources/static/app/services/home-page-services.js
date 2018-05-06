@@ -11,10 +11,10 @@ angular.module('homePageApi', [])
             miniSlider.getAllEventsCount = function () {
                 return $http.get(config.baseUrl + '/api/blito/v1.0/public/events/count');
             };
-            miniSlider.getSlidingDataEvents = function (size, restriction) {
+            miniSlider.getSlidingDataEvents = function (page, size, restriction) {
                 var queryParam = {
                     cache : true,
-                    params : {page: 0, size: size, sort: "orderNumber,desc"}
+                    params : {page: page, size: size, sort: "orderNumber,desc"}
                 };
                 var bodyJson = {
                     restrictions: [

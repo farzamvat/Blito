@@ -12,9 +12,11 @@ angular.module('homePageModule', [])
         '$q',
         'config',
         '$interval',
+        'dataService',
 
-        function ($scope, miniSliderService, photoService, indexBannerService, eventDetailService, $q,config) {
+        function ($scope, miniSliderService, photoService, indexBannerService, eventDetailService, $q,config, dataService) {
             $scope.concertRow = [];
+            var restrictions = [];
             $scope.timePickedSearch = [{n : 'امروز', v : 'T'}, {n : 'تا یک هفته', v : 'W'},{n : 'تا یک ماه', v : 'M'},{n : 'همه روزها', v : 'AllTimes'}];
             $scope.pricePickedSearch = [{p : 'تا ۱۵ هزار تومان', v : '15L'},{p : 'تا ۴۰ هزار تومان', v : '40L'} , {p : 'بالای ۴۰ هزار تومان', v : '40U'}, {p : 'همه قیمت‌ها', v : 'AllPrices'}];
             $scope.typePickedSearch = [{t : 'کنسرت', v : 'CONCERT'}, {t : 'تئاتر', v: 'THEATER'}, {t :'سینما', v: 'CINEMA'}, {t :'تور', v: 'TOUR'}, {t :'کارگاه', v: 'WORKSHOP'}, {t :'سرگرمی', v: 'ENTERTAINMENT'}, {t :'نمایشگاه', v: 'EXHIBITION'}, {t :'سایر', v: 'OTHER'}, {t :'همه رویداد‌ها', v: 'AllTypes'} ];
@@ -36,14 +38,14 @@ angular.module('homePageModule', [])
                 })
                 .catch(function (data) {
                 });
-            // use search with getSlidingDataEvents api
-
-            miniSliderService.getSlidingDataEvents(8, [])
+            miniSliderService.getSlidingDataEvents(0, 6, [])
                 .then(function (data) {
                     $scope.eventsWithImage = $scope.setEventData(data.data.content);
+                    if(data.data.totalElements === $scope.eventsWithImage.length) {
+                        $scope.showMoreButton = false;
+                    }
                 })
                 .catch(function () {
-
                 })
 
             miniSliderService.getSlidingDataExchange(6)
@@ -54,11 +56,10 @@ angular.module('homePageModule', [])
                 });
 
             $scope.searchHomePage = function (searchData) {
-                console.log(searchData);
-                var restrictions = [], endTime = 0;
+                var endTime = 0;
+                restrictions = [];
                 var d = new Date();
                 if(searchData.timePicked.v !== 'AllTimes') {
-                    console.log("11");
                     switch (searchData.timePicked.v) {
                         case "T" :
                             endTime =  (d.setHours(0,0,0,0) + 86400000);
@@ -120,7 +121,7 @@ angular.module('homePageModule', [])
                             comp = "gt";
                             break;
                         default:
-                            price = '0';
+                            price = 0;
                             comp = "gt";
                             break;
                     }
@@ -134,7 +135,7 @@ angular.module('homePageModule', [])
                     )
                 }
                 if(searchData.name !== '') {
-                    restrictions.concat(
+                    restrictions.push(
                         {
                             type : "simple",
                             field : "eventName",
@@ -143,21 +144,46 @@ angular.module('homePageModule', [])
                         }
                     )
                 }
-                console.log(restrictions);
-                miniSliderService.getSlidingDataEvents(8, restrictions)
+                miniSliderService.getSlidingDataEvents(0, 8, restrictions)
                     .then(function (data) {
                         console.log(data);
+                        moreButtonClicked = 1;
+                        $scope.showMoreButton = true;
+                        $scope.eventsWithImage = $scope.setEventData(data.data.content);
+                        if(data.data.totalElements === $scope.eventsWithImage.length) {
+                            $scope.showMoreButton = false;
+                        }
                     })
                     .catch(function () {
 
                     })
                 };
+            $scope.moreEventsSpinner = false;
+            $scope.showMoreButton = true;
+            var moreButtonClicked = 1;
+            $scope.moreEvents = function () {
+                $scope.moreEventsSpinner = true;
+                miniSliderService.getSlidingDataEvents(moreButtonClicked, 8, restrictions)
+                    .then(function (data) {
+                        moreButtonClicked += 1;
+                        $scope.moreEventsSpinner = false;
+                        $scope.eventsWithImage = $scope.eventsWithImage.concat($scope.setEventData(data.data.content));
+                        if(data.data.totalElements === $scope.eventsWithImage.length) {
+                          $scope.showMoreButton = false;
+                        }
+                    })
+                    .catch(function () {
+                        $scope.moreEventsSpinner = false;
+
+                    })
+            }
             $scope.setEventData = function (events) {
                 return events.map(function (item) {
                     var firstEventDate = '';
                     var tempDate = 10000000000000;
                     item.minPrice = 1000000000;
                     item.maxPrice = 0;
+
                     var eventImage =  item.images.filter(function (image) {
                         return image.type === "EVENT_PHOTO";
                     });
