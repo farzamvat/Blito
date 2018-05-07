@@ -1094,9 +1094,7 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     padding-right: 5px;
     color: black;
 }
-.modal-open-position {
-    position: fixed;
-}
+
 .datePickerFormat {
     width: 100%;
     direction: ltr;
