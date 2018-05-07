@@ -13,6 +13,7 @@ public class Range<T> extends AbstractSearchViewModel<T> {
 	@Override
 	public Specification<T> action() {
 		return (root, query, cb) -> {
+			query.distinct(true);
 			return cb.between(root.get(field), minValue, maxValue);
 		};
 	}
