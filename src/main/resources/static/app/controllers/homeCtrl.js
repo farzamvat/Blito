@@ -23,7 +23,9 @@ angular.module('homePageModule', [])
             $scope.searchData = {timePicked : {n : 'همه روزها', v : 'AllTimes'}, typePicked : {t :'همه رویداد‌ها', v: 'AllTypes'}, pricePicked : {p : 'همه قیمت‌ها', v : 'AllPrices'}, name:''};
             $scope.showSectionsExcahnge = [false,false];
             $scope.bannerData = [];
+            $scope.eventLoading = true;
             var promisesExchange = [[], []];
+            $scope.homePageSearchSpinner = false;
             $scope.url = config.baseUrl+"/event-page/";
             $scope.urlExchange = config.baseUrl+"/exchange-page/";
             miniSliderService.getAllEventsCount()
@@ -40,12 +42,14 @@ angular.module('homePageModule', [])
                 });
             miniSliderService.getSlidingDataEvents(0, 6, [])
                 .then(function (data) {
+                    $scope.eventLoading = false;
                     $scope.eventsWithImage = $scope.setEventData(data.data.content);
                     if(data.data.totalElements === $scope.eventsWithImage.length) {
                         $scope.showMoreButton = false;
                     }
                 })
                 .catch(function () {
+                    $scope.eventLoading = false;
                 })
 
             miniSliderService.getSlidingDataExchange(6)
@@ -144,8 +148,12 @@ angular.module('homePageModule', [])
                         }
                     )
                 }
-                miniSliderService.getSlidingDataEvents(0, 8, restrictions)
+                $scope.eventLoading = true;
+                $scope.homePageSearchSpinner = true;
+                miniSliderService.getSlidingDataEvents(0, 6, restrictions)
                     .then(function (data) {
+                        $scope.eventLoading = false;
+                        $scope.homePageSearchSpinner = false;
                         console.log(data);
                         moreButtonClicked = 1;
                         $scope.showMoreButton = true;
@@ -155,7 +163,8 @@ angular.module('homePageModule', [])
                         }
                     })
                     .catch(function () {
-
+                        $scope.eventLoading = false;
+                        $scope.homePageSearchSpinner = false;
                     })
                 };
             $scope.moreEventsSpinner = false;
@@ -163,7 +172,7 @@ angular.module('homePageModule', [])
             var moreButtonClicked = 1;
             $scope.moreEvents = function () {
                 $scope.moreEventsSpinner = true;
-                miniSliderService.getSlidingDataEvents(moreButtonClicked, 8, restrictions)
+                miniSliderService.getSlidingDataEvents(moreButtonClicked, 6, restrictions)
                     .then(function (data) {
                         moreButtonClicked += 1;
                         $scope.moreEventsSpinner = false;
@@ -278,4 +287,7 @@ angular.module('homePageModule', [])
                 }
 
             }, true);
+
+
+
         }]);

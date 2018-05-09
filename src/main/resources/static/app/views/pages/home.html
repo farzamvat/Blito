@@ -54,11 +54,11 @@
             </div>
 
             <input ng-model="searchData.name" type="text" placeholder=" نام رویداد" class="eventNameSearch floatRight searchInputsHomePage" >
-            <button class="btn btn-blito floatRight searchHomePageBtn" ng-click="searchHomePage(searchData)"><i class="fa fa-search fa-2x colorWhite"></i></button>
+            <button ng-disable="homePageSearchSpinner" class="btn btn-blito floatRight searchHomePageBtn" ng-click="searchHomePage(searchData)"><i ng-show="!homePageSearchSpinner" class="fa fa-search fa-2x colorWhite"></i><i ng-show="homePageSearchSpinner" class="fa fa-spin fa-spinner fa-2x colorWhite"></i></button>
         </div>
     </div>
     <div class="row ">
-        <div class="col-xs-12 marginTop60 paddingLeft30">
+        <div class="col-xs-12 marginTop60 paddingLeft30" ng-show="!eventLoading">
             <div ng-repeat="event in eventsWithImage" class="col-xs-12 col-sm-6 col-md-6 col-lg-4  floatRight eventBox">
                 <a class="col-xs-12 width95 marginTop10 padding0 eventBoxInner" >
                     <img ng-src="{{event.image}}" alt="{{event.eventName }}" class="homePageEventImages floatRight ">
@@ -76,6 +76,18 @@
                 </a>
             </div>
         </div>
+        <div class="col-xs-12 marginTop60 paddingLeft30" ng-show="eventLoading">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4  floatRight eventBox">
+                <img class="loadingEventBox" src="../../../assets/img/loadingEvent.png" alt="">
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4  floatRight eventBox">
+                <img class="loadingEventBox" src="../../../assets/img/loadingEvent.png" alt="">
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4  floatRight eventBox">
+                <img class="loadingEventBox" src="../../../assets/img/loadingEvent.png" alt="">
+            </div>
+        </div>
+        <p class="text-center fontSize32" ng-show="eventsWithImage.length === 0">رویدادی یافت نشد </p>
     </div>
     <div class="row">
         <div class="col-xs-12">
@@ -85,6 +97,8 @@
         </div>
 
     </div>
+
+
     <div class="row plannerIntroRow">
         <div class="col-xs-12 col-md-4  floatRight">
             <div class="whiteBlocks">
@@ -93,12 +107,51 @@
             </div>
         </div>
         <div class="col-xs-12 col-md-4 floatRight">
-            <button class="bigRoundButton btn btn-blito">برگزار کن</button>
+            <div class="arrow_box text-center">
+                 تا الان {{totalNumberOfEvents | pNumber}} رویداد برگزار شده
+            </div>
+            <button class="bigRoundButton btn btn-blito" ng-click="submitEventPlannerIntro()"> بعدی رو برگزار کن</button>
         </div>
         <div class="col-xs-12 col-md-4  floatRight">
             <div class="whiteBlocks">
                 <h3 class="textAlignRight">محل برگزاری داری؟</h3>
                 <p class="textAlignRight text-justify">اگر صاحب کافه‌ای یا یک جایی داری که میشه اونجا رویداد برگزار کرد به ما اطلاع بده</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-xs-12">
+            <h2 class="text-center marginTop60">فعال‌ترین برگزار‌کننده‌های این هفته</h2>
+            <div class="col-xs-12 col-sm-6 col-md-3 floatRight marginTop30 marginBottom50 ">
+                <a class="plannerBoxHomePage" href="">
+                <img class="circleImage center-block eventPageHostImage" src="../../../assets/img/1.jpeg" alt="">
+                </a>
+                <h4 class="text-center">کافه ویس</h4>
+                <p class="text-center">کافه فرهنگی و هنری ویس</p>
+
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 floatRight marginTop30 marginBottom50">
+                <a class="plannerBoxHomePage" href="">
+                <img class="circleImage center-block eventPageHostImage" src="../../../assets/img/4.jpeg" alt="">
+                </a>
+                <h4 class="text-center">لی‌کو ایونت</h4>
+                <p class="text-center">رویدادهای خاص و متفاوت را در لی‌کو کافه تجربه کنید.</p>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 floatRight marginTop30 marginBottom50 ">
+                <a class="plannerBoxHomePage" href="">
+                <img class="circleImage center-block eventPageHostImage" src="../../../assets/img/2.jpeg" alt="">
+                </a>
+                <h4 class="text-center">خط اتصال</h4>
+                <p class="text-center">کلوپ موسیقی" خط اتصال" برگزار کننده: رویدادهای پ‍‍‍ژوهشی جمسشن(گروه نوازی) ...</p>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3 floatRight marginTop30 marginBottom50 ">
+                <a class="plannerBoxHomePage" href="">
+                <img class="circleImage center-block eventPageHostImage" src="../../../assets/img/3.jpeg" alt="">
+                </a>
+                <h4 class="text-center">Lucky Clover</h4>
+                <p class="text-center">خیابان ولی عصر٬شماره 2208</p>
             </div>
         </div>
     </div>
