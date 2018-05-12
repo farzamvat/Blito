@@ -2,6 +2,7 @@ package com.blito.services;
 
 import com.blito.configs.Constants;
 import com.blito.enums.ImageType;
+import com.blito.enums.OperatorState;
 import com.blito.enums.Response;
 import com.blito.exceptions.AlreadyExistsException;
 import com.blito.exceptions.NotAllowedException;
@@ -9,6 +10,7 @@ import com.blito.exceptions.NotFoundException;
 import com.blito.exceptions.ResourceNotFoundException;
 import com.blito.mappers.EventHostMapper;
 import com.blito.mappers.ImageMapper;
+import com.blito.models.Event;
 import com.blito.models.EventHost;
 import com.blito.models.Image;
 import com.blito.models.User;
@@ -18,14 +20,18 @@ import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
 import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
-import com.blito.search.SearchViewModel;
+import com.blito.search.*;
 import com.blito.security.SecurityContextHolder;
+import org.apache.poi.ss.formula.functions.Even;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -152,7 +158,21 @@ public class EventHostService {
 	}
 
 	public Page<EventHostViewModel> searchEventHosts(SearchViewModel<EventHost> searchViewModel, Pageable pageable) {
-		return searchService.search(searchViewModel, pageable, eventHostMapper, eventHostRepository);
+		Specification<EventHost> orderByCountOfApprovedEvents =
+				(root, query, cb) -> {
+					Subquery<Event> eventSubquery = query.subquery(Event.class);
+					Root<Event> subqueryRoot = eventSubquery.from(Event.class);
+					query.groupBy(root.get("hostName"))
+							.orderBy(cb.desc(cb.count(root.get("eventHostId"))));
+					eventSubquery.select(subqueryRoot).where(cb.equal(subqueryRoot.get("operatorState"),OperatorState.APPROVED.name()));
+					return cb.exists(eventSubquery);
+				};
+		return searchViewModel.getRestrictions().stream().map(AbstractSearchViewModel::action)
+				.reduce((s1, s2) -> SearchServiceUtil.combineSpecifications(s1, s2, Optional.ofNullable(searchViewModel.getOperator())))
+				.map(specifications -> SearchServiceUtil.combineSpecifications(specifications,orderByCountOfApprovedEvents,Optional.of(Operator.and)))
+				.map(specifications -> eventHostRepository.findAll(specifications,pageable))
+				.map(result -> eventHostMapper.toPage(result))
+				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
 	}
 
 	public Map<String, Object> searchEventHostsForExcel(SearchViewModel<EventHost> searchViewModel) {

@@ -5,24 +5,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 
 import com.blito.exceptions.NotAllowedException;
+import org.springframework.data.domain.Sort;
 
 public class OperationService {
 
 	public static <T> Predicate doOperation(Operation operation, Object value, CriteriaBuilder cb, Root<T> root,
-			String field) {
+											String field) {
 
 		switch (operation) {
 		case eq:
 			return cb.equal(joinQueryBuilder(field, root), value);
 		case ge:
-
 			return cb.ge(joinQueryBuilder(field, root), (Number) value);
 		case gt:
 			return cb.gt(joinQueryBuilder(field, root),  (Number) value);

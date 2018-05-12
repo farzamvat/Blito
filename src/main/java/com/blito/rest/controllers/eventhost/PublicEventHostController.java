@@ -52,8 +52,8 @@ public class PublicEventHostController {
 	@ApiResponses({@ApiResponse(code = 200, message="search ok", response = EventHostViewModel.class),
 				   @ApiResponse(code = 404, message="NotFoundException", response = ExceptionViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
-	@JsonView(View.EventHost.class)
-	@PostMapping("/search")
+	@JsonView(View.SimpleEventHost.class)
+	@PostMapping("/home-page/search")
 	public ResponseEntity<Page<EventHostViewModel>> search(@RequestBody SearchViewModel<EventHost> searchViewModel,Pageable pageable)
 	{
 		return ResponseEntity.ok(eventHostService.searchEventHosts(searchViewModel, pageable));
