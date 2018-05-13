@@ -367,8 +367,8 @@ public class EventControllerTest extends AbstractRestControllerTest {
 	public void activeEventHosts() throws JSONException {
 		given().header("Content-Type",MediaType.APPLICATION_JSON_UTF8_VALUE)
 				.when()
-				.get(getServerAddress() +"/api/blito/v1.0/public/event-hosts/search?page=0&size=20")
-				.then().statusCode(200);
+				.get(getServerAddress() +"/api/blito/v1.0/public/event-hosts/home-page/search?page=0&size=4")
+				.then().body(equalTo(""));
 	}
 	
 	@Test
