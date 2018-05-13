@@ -184,12 +184,15 @@ public class EventHostService {
 	}
 
 	public Optional<Page<EventHost>> getCountOfEventsByEventHostDesc(Option<SearchViewModel<EventHost>> optionalHostSearchViewModel, Pageable pageable) {
-		return optionalHostSearchViewModel.getOrElse(new SearchViewModel<>())
-				.getRestrictions().stream().map(AbstractSearchViewModel::action)
-				.map(specifications -> SearchServiceUtil.combineSpecifications(specifications,
-						eventHostRepository.orderByCountOfApprovedEvents,Optional.of(Operator.and)))
-				.map(specifications -> eventHostRepository.findAll(specifications,pageable))
-				.findFirst();
+		if(!optionalHostSearchViewModel.isEmpty())
+			return optionalHostSearchViewModel.getOrElse(new SearchViewModel<>())
+					.getRestrictions().stream().map(AbstractSearchViewModel::action)
+					.map(specifications -> SearchServiceUtil.combineSpecifications(specifications,
+							eventHostRepository.orderByCountOfApprovedEvents,Optional.of(Operator.and)))
+					.map(specifications -> eventHostRepository.findAll(specifications,pageable))
+					.findFirst();
+		else
+			return Optional.of(eventHostRepository.findAll(eventHostRepository.orderByCountOfApprovedEvents,pageable));
 	}
 
 	public Map<String, Object> searchEventHostsForExcel(SearchViewModel<EventHost> searchViewModel) {
