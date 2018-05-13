@@ -37,10 +37,7 @@ import javax.persistence.criteria.Subquery;
 import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -167,15 +164,16 @@ public class EventHostService {
 		return searchService.search(searchViewModel,pageable,eventHostMapper,eventHostRepository);
 	}
 
-	public Page<EventHostViewModel> getActiveEventHosts(Pageable pageable) {
+	public Page<EventHostViewModel> getActiveEventHosts(Pageable pageable,Timestamp timestamp) {
 		SearchViewModel<EventHost> searchViewModel = new SearchViewModel<>();
 		searchViewModel.getRestrictions().add(new Time<>(
-				Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(7).toInstant()),
+				timestamp,
 				Operation.gt,"events-createdAt"));
 		return getCountOfEventsByEventHostDesc(Option.of(searchViewModel),pageable)
-				.filter(page -> page.getNumberOfElements() != 0)
-				.orElseGet(() -> getCountOfEventsByEventHostDesc(Option.none(),pageable)
-						.orElseGet(() -> new PageImpl<>(Collections.emptyList())));
+				.filter(page -> page.getNumberOfElements() == 4)
+				.orElseGet(() -> getActiveEventHosts(pageable,
+						Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(30).toInstant())
+						));
 
 	}
 

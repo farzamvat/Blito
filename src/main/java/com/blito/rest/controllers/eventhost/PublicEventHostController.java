@@ -23,6 +23,10 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 @RestController
 @RequestMapping("${api.base.url}" + "/public/event-hosts")
 public class PublicEventHostController {
@@ -56,6 +60,7 @@ public class PublicEventHostController {
 	@GetMapping("/home-page/search")
 	public ResponseEntity<Page<EventHostViewModel>> search(Pageable pageable)
 	{
-		return ResponseEntity.ok(eventHostService.getActiveEventHosts(pageable));
+		return ResponseEntity.ok(eventHostService.getActiveEventHosts(pageable,
+				Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(7).toInstant())));
 	}
 }
