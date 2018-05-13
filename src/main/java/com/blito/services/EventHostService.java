@@ -185,7 +185,7 @@ public class EventHostService {
 
 	public Optional<Page<EventHost>> getCountOfEventsByEventHostDesc(Option<SearchViewModel<EventHost>> optionalHostSearchViewModel, Pageable pageable) {
 		if(!optionalHostSearchViewModel.isEmpty())
-			return optionalHostSearchViewModel.getOrElse(new SearchViewModel<>())
+			return optionalHostSearchViewModel.get()
 					.getRestrictions().stream().map(AbstractSearchViewModel::action)
 					.map(specifications -> SearchServiceUtil.combineSpecifications(specifications,
 							eventHostRepository.orderByCountOfApprovedEvents,Optional.of(Operator.and)))
