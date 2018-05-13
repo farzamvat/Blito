@@ -173,7 +173,7 @@ public class EventHostService {
 				Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(7).toInstant()),
 				Operation.gt,"events-createdAt"));
 		return getCountOfEventsByEventHostDesc(Option.of(searchViewModel),pageable)
-				.filter(page -> page.getSize() != 0)
+				.filter(page -> page.getNumberOfElements() != 0)
 				.orElseGet(() -> getCountOfEventsByEventHostDesc(Option.none(),pageable)
 						.orElseGet(() -> new PageImpl<>(Collections.emptyList())));
 
