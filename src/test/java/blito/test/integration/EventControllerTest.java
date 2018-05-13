@@ -60,6 +60,10 @@ public class EventControllerTest extends AbstractRestControllerTest {
 	Event event2;
 	Event event3;
 	Event event4;
+	Event event5;
+	Event event6;
+	Event event7;
+	Event event8;
 	EventHost eventHost1;
 	EventHost eventHost2;
 	private EventViewModel eventViewModel = null;
@@ -178,17 +182,73 @@ public class EventControllerTest extends AbstractRestControllerTest {
 			event4.setBlitSaleEndDate(Timestamp.from(ZonedDateTime.now().plusDays(2).toInstant()));
 			event4.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(2).toInstant()));
 
+			event5 = new Event();
+			event5.setAddress("سلام جطوری");
+			event5.setEventState(State.OPEN.name());
+			event5.setOperatorState(OperatorState.APPROVED.name());
+			event5.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER.name(), OfferTypeEnum.SPECIAL_OFFER.name()).stream().collect(Collectors.toSet()));
+			event5.setEventName("RANDOM");
+			event5.setLatitude(1D);
+			event5.setEventType(EventType.CONCERT.name());
+			event5.setBlitSaleStartDate(Timestamp.from(ZonedDateTime.now().minusHours(24).toInstant()));
+			event5.setBlitSaleEndDate(Timestamp.from(ZonedDateTime.now().plusDays(2).toInstant()));
+			event5.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(2).toInstant()));
+
+			event6 = new Event();
+			event6.setAddress("سلام جطوری");
+			event6.setEventState(State.OPEN.name());
+			event6.setOperatorState(OperatorState.APPROVED.name());
+			event6.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER.name(), OfferTypeEnum.SPECIAL_OFFER.name()).stream().collect(Collectors.toSet()));
+			event6.setEventName("RANDOM");
+			event6.setLatitude(1D);
+			event6.setEventType(EventType.CONCERT.name());
+			event6.setBlitSaleStartDate(Timestamp.from(ZonedDateTime.now().minusHours(24).toInstant()));
+			event6.setBlitSaleEndDate(Timestamp.from(ZonedDateTime.now().plusDays(2).toInstant()));
+			event6.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(2).toInstant()));
+
+			event7 = new Event();
+			event7.setAddress("سلام جطوری");
+			event7.setEventState(State.OPEN.name());
+			event7.setOperatorState(OperatorState.APPROVED.name());
+			event7.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER.name(), OfferTypeEnum.SPECIAL_OFFER.name()).stream().collect(Collectors.toSet()));
+			event7.setEventName("RANDOM");
+			event7.setLatitude(1D);
+			event7.setEventType(EventType.CONCERT.name());
+			event7.setBlitSaleStartDate(Timestamp.from(ZonedDateTime.now().minusHours(24).toInstant()));
+			event7.setBlitSaleEndDate(Timestamp.from(ZonedDateTime.now().plusDays(2).toInstant()));
+			event7.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(2).toInstant()));
+
+			event8 = new Event();
+			event8.setAddress("سلام جطوری");
+			event8.setEventState(State.OPEN.name());
+			event8.setOperatorState(OperatorState.APPROVED.name());
+			event8.setOffers(Arrays.asList(OfferTypeEnum.OUR_OFFER.name(), OfferTypeEnum.SPECIAL_OFFER.name()).stream().collect(Collectors.toSet()));
+			event8.setEventName("RANDOM");
+			event8.setLatitude(1D);
+			event8.setEventType(EventType.CONCERT.name());
+			event8.setBlitSaleStartDate(Timestamp.from(ZonedDateTime.now().minusHours(24).toInstant()));
+			event8.setBlitSaleEndDate(Timestamp.from(ZonedDateTime.now().plusDays(2).toInstant()));
+			event8.setCreatedAt(Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(2).toInstant()));
+
 			event.setEventHost(eventHost1);
 			event1.setEventHost(eventHost1);
 			event2.setEventHost(eventHost1);
 			event3.setEventHost(eventHost1);
 			event4.setEventHost(eventHost1);
+			event5.setEventHost(eventHost1);
+			event6.setEventHost(eventHost1);
+			event7.setEventHost(eventHost1);
+			event8.setEventHost(eventHost1);
 
 			eventRepository.save(event);
 			eventRepository.save(event1);
 			eventRepository.save(event2);
 			eventRepository.save(event3);
 			eventRepository.save(event4);
+			eventRepository.save(event5);
+			eventRepository.save(event6);
+			eventRepository.save(event7);
+			eventRepository.save(event8);
 
 			eventViewModel = new EventViewModel();
 			eventViewModel.setAddress("Amirabad");

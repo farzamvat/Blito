@@ -164,38 +164,30 @@ public class EventHostService {
 		return searchService.search(searchViewModel,pageable,eventHostMapper,eventHostRepository);
 	}
 
-	public Page<EventHostViewModel> getActiveEventHosts(Pageable pageable) {
+	public Page<EventHost> getActiveEventHosts(Pageable pageable) {
 		SearchViewModel<EventHost> searchViewModel = new SearchViewModel<>();
 		searchViewModel.setRestrictions(Arrays.asList(new Time<>(
 				Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(7).toInstant()),
 				Operation.gt,"events-createdAt")));
-		Page<EventHostViewModel> fromSevenDays =
-				getCountOfEventsByEventHostDesc(Option.of(searchViewModel),pageable);
-		if(fromSevenDays.getNumberOfElements() == 4)
-			return fromSevenDays;
-		else {
-			searchViewModel.setRestrictions(Arrays.asList(new Time<>(
-					Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(30).toInstant()),
-					Operation.gt,"events-createdAt")));
-			Page<EventHostViewModel> fromThirtyDays =
-					getCountOfEventsByEventHostDesc(Option.of(searchViewModel),pageable);
-			if(fromThirtyDays.getNumberOfElements() == 4)
-				return fromThirtyDays;
-			else {
-				return getCountOfEventsByEventHostDesc(Option.none(),pageable);
-			}
-		}
+		return getCountOfEventsByEventHostDesc(Option.of(searchViewModel),pageable)
+				.filter(page -> page.getNumberOfElements() == 4)
+				.orElseGet(() -> {
+					searchViewModel.setRestrictions(Arrays.asList(new Time<>(
+							Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(30).toInstant()),
+							Operation.gt,"events-createdAt")));
+					return getCountOfEventsByEventHostDesc(Option.of(searchViewModel),pageable)
+							.orElseGet(() -> getCountOfEventsByEventHostDesc(Option.none(),pageable)
+							.orElseGet(() -> new PageImpl<>(Collections.emptyList())));
+				});
 	}
 
-	public Page<EventHostViewModel> getCountOfEventsByEventHostDesc(Option<SearchViewModel<EventHost>> optionalHostSearchViewModel, Pageable pageable) {
+	public Optional<Page<EventHost>> getCountOfEventsByEventHostDesc(Option<SearchViewModel<EventHost>> optionalHostSearchViewModel, Pageable pageable) {
 		return optionalHostSearchViewModel.getOrElse(new SearchViewModel<>())
 				.getRestrictions().stream().map(AbstractSearchViewModel::action)
-				.reduce((s1,s2) -> SearchServiceUtil.combineSpecifications(s1,s2,Optional.of(Operator.and)))
 				.map(specifications -> SearchServiceUtil.combineSpecifications(specifications,
 						eventHostRepository.orderByCountOfApprovedEvents,Optional.of(Operator.and)))
 				.map(specifications -> eventHostRepository.findAll(specifications,pageable))
-				.map(result -> eventHostMapper.toPage(result))
-				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_HOST_NOT_FOUND)));
+				.findFirst();
 	}
 
 	public Map<String, Object> searchEventHostsForExcel(SearchViewModel<EventHost> searchViewModel) {
