@@ -15,6 +15,13 @@ public class Time<T> extends AbstractSearchViewModel<T> {
 			return OperationService.doOperation(operation, value, cb, root, field);
 		};
 	}
+
+	public Time(Timestamp value, Operation operation,String field) {
+		this.value = value;
+		this.operation = operation;
+		super.field = field;
+	}
+
 	public Timestamp getValue() {
 		return value;
 	}

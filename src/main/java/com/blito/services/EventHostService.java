@@ -22,9 +22,11 @@ import com.blito.rest.viewmodels.eventhost.EventHostViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;
 import com.blito.search.*;
 import com.blito.security.SecurityContextHolder;
+import io.vavr.control.Option;
 import org.apache.poi.ss.formula.functions.Even;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -157,22 +163,25 @@ public class EventHostService {
 				.toPage(eventHostRepository.findByUserUserIdAndIsDeletedFalse(user.getUserId(), pageable));
 	}
 
-	public Page<EventHostViewModel> searchEventHosts(SearchViewModel<EventHost> searchViewModel, Pageable pageable) {
-		Specification<EventHost> orderByCountOfApprovedEvents =
-				(root, query, cb) -> {
-					Subquery<Event> eventSubquery = query.subquery(Event.class);
-					Root<Event> subqueryRoot = eventSubquery.from(Event.class);
-					query.groupBy(root.get("hostName"))
-							.orderBy(cb.desc(cb.count(root.get("eventHostId"))));
-					eventSubquery.select(subqueryRoot).where(cb.equal(subqueryRoot.get("operatorState"),OperatorState.APPROVED.name()));
-					return cb.exists(eventSubquery);
-				};
-		return searchViewModel.getRestrictions().stream().map(AbstractSearchViewModel::action)
-				.reduce((s1, s2) -> SearchServiceUtil.combineSpecifications(s1, s2, Optional.ofNullable(searchViewModel.getOperator())))
-				.map(specifications -> SearchServiceUtil.combineSpecifications(specifications,orderByCountOfApprovedEvents,Optional.of(Operator.and)))
+	public Page<EventHostViewModel> searchEventHosts(Pageable pageable) {
+		SearchViewModel<EventHost> searchViewModel = new SearchViewModel<>();
+		searchViewModel.getRestrictions().add(new Time<>(
+				Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(7).toInstant()),
+				Operation.gt,"events-createdAt"));
+		return getCountOfEventsByEventHostDesc(Option.of(searchViewModel),pageable)
+				.filter(page -> page.getSize() != 0)
+				.orElseGet(() -> getCountOfEventsByEventHostDesc(Option.none(),pageable)
+						.orElseGet(() -> new PageImpl<>(Collections.emptyList())));
+
+	}
+
+	public Optional<Page<EventHostViewModel>> getCountOfEventsByEventHostDesc(Option<SearchViewModel<EventHost>> optionalHostSearchViewModel, Pageable pageable) {
+		return optionalHostSearchViewModel.getOrElse(new SearchViewModel<>())
+				.getRestrictions().stream().map(AbstractSearchViewModel::action)
+				.map(specifications -> SearchServiceUtil.combineSpecifications(specifications,
+						eventHostRepository.orderByCountOfApprovedEvents,Optional.of(Operator.and)))
 				.map(specifications -> eventHostRepository.findAll(specifications,pageable))
-				.map(result -> eventHostMapper.toPage(result))
-				.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.SEARCH_UNSUCCESSFUL)));
+				.map(result -> eventHostMapper.toPage(result)).findAny();
 	}
 
 	public Map<String, Object> searchEventHostsForExcel(SearchViewModel<EventHost> searchViewModel) {
