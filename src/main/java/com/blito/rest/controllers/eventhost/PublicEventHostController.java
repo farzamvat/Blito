@@ -56,6 +56,6 @@ public class PublicEventHostController {
 	@GetMapping("/home-page/search")
 	public ResponseEntity<Page<EventHostViewModel>> search(Pageable pageable)
 	{
-		return ResponseEntity.ok(eventHostService.searchEventHosts(pageable));
+		return ResponseEntity.ok(eventHostService.getActiveEventHosts(pageable));
 	}
 }

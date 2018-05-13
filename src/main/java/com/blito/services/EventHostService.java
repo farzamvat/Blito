@@ -163,7 +163,11 @@ public class EventHostService {
 				.toPage(eventHostRepository.findByUserUserIdAndIsDeletedFalse(user.getUserId(), pageable));
 	}
 
-	public Page<EventHostViewModel> searchEventHosts(Pageable pageable) {
+	public Page<EventHostViewModel> searchEventHosts(SearchViewModel<EventHost> searchViewModel,Pageable pageable) {
+		return searchService.search(searchViewModel,pageable,eventHostMapper,eventHostRepository);
+	}
+
+	public Page<EventHostViewModel> getActiveEventHosts(Pageable pageable) {
 		SearchViewModel<EventHost> searchViewModel = new SearchViewModel<>();
 		searchViewModel.getRestrictions().add(new Time<>(
 				Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(7).toInstant()),

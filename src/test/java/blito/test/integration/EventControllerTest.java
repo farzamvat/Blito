@@ -364,20 +364,10 @@ public class EventControllerTest extends AbstractRestControllerTest {
 	}
 
 	@Test
-	public void maxEventsByEventHost() throws JSONException {
-		JSONObject requestBody = new JSONObject();
-		JSONArray restrictions = new JSONArray();
-		JSONObject simple = new JSONObject();
-		simple.put("type", "time");
-		simple.put("field", "events-createdAt");
-		simple.put("operation", "gt");
-		simple.put("value", Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(11).toInstant()).getTime());
-		restrictions.put(simple);
-		requestBody.put("restrictions", restrictions);
+	public void activeEventHosts() throws JSONException {
 		given().header("Content-Type",MediaType.APPLICATION_JSON_UTF8_VALUE)
-				.body(requestBody.toString())
 				.when()
-				.post(getServerAddress() +"/api/blito/v1.0/public/event-hosts/search?page=0&size=20")
+				.get(getServerAddress() +"/api/blito/v1.0/public/event-hosts/search?page=0&size=20")
 				.then().statusCode(200);
 	}
 	
