@@ -176,8 +176,10 @@ public class EventHostService {
 							Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(30).toInstant()),
 							Operation.gt,"events-createdAt")));
 					return getCountOfEventsByEventHostDesc(Option.of(searchViewModel),pageable)
+							.filter(page -> page.getNumberOfElements() == 4)
 							.orElseGet(() -> getCountOfEventsByEventHostDesc(Option.none(),pageable)
-							.orElseGet(() -> new PageImpl<>(Collections.emptyList())));
+									.filter(page -> page.getNumberOfElements() == 4)
+									.orElseGet(() -> new PageImpl<>(Collections.emptyList())));
 				});
 	}
 
