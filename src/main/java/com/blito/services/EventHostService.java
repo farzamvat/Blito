@@ -164,16 +164,22 @@ public class EventHostService {
 		return searchService.search(searchViewModel,pageable,eventHostMapper,eventHostRepository);
 	}
 
-	public Page<EventHostViewModel> getActiveEventHosts(Pageable pageable,Timestamp timestamp) {
+	public Page<EventHostViewModel> getActiveEventHosts(Pageable pageable,int fromDays) {
 		SearchViewModel<EventHost> searchViewModel = new SearchViewModel<>();
-		searchViewModel.getRestrictions().add(new Time<>(
-				timestamp,
-				Operation.gt,"events-createdAt"));
+		searchViewModel.setRestrictions(Arrays.asList(new Time<>(
+				Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(fromDays).toInstant()),
+				Operation.gt,"events-createdAt")));
 		return getCountOfEventsByEventHostDesc(Option.of(searchViewModel),pageable)
 				.filter(page -> page.getNumberOfElements() == 4)
-				.orElseGet(() -> getActiveEventHosts(pageable,
-						Timestamp.from(ZonedDateTime.now(ZoneId.of("Asia/Tehran")).minusDays(30).toInstant())
-						));
+				.orElseGet(() -> {
+							if(fromDays == 7)
+								return getActiveEventHosts(pageable,30);
+							else {
+								return getCountOfEventsByEventHostDesc(Option.none(),pageable)
+										.filter(page -> page.getNumberOfElements() == 4)
+										.orElseGet(() -> new PageImpl<>(Collections.emptyList()));
+							}
+						});
 
 	}
 
