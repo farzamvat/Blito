@@ -170,6 +170,12 @@ textarea:focus, input:focus {
 .fontSize32 {
     font-size: 32px;
 }
+.fontSize36 {
+    font-size: 36px;
+}
+.fontWeightBold {
+    font-weight: bold;
+}
 .fontSize18H1Tag {
     font-size: 18px !important;
 }
@@ -290,7 +296,71 @@ button.slick-next {
 
 }
 
-
+.ribbon {
+    position: absolute;
+    left: -5px; top: 5px;
+    z-index: 1;
+    overflow: hidden;
+    width: 75px; height: 75px;
+    text-align: right;
+}
+.ribbon span {
+    font-size: 14px;
+    font-weight: bold;
+    color: #FFF;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 20px;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    width: 100px;
+    display: block;
+    box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+    position: absolute;
+    top: 19px; left: -21px;
+}
+.ribbon span::before {
+    content: "";
+    position: absolute; left: 0px; top: 100%;
+    z-index: -1;
+    border-left: 3px solid #8F5408;
+    border-right: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    border-top: 3px solid #8F5408;
+}
+.ribbon span::after {
+    content: "";
+    position: absolute; right: 0px; top: 100%;
+    z-index: -1;
+    border-left: 3px solid transparent;
+    border-right: 3px solid #8F5408;
+    border-bottom: 3px solid transparent;
+    border-top: 3px solid #8F5408;
+}
+.ribbonColorConcert {
+    background-image: linear-gradient(-35deg, #36AC91 3%, #5AD0FF 94%);
+}
+.ribbonColorTheater {
+    background-image: linear-gradient(-35deg, #C85000 3%, #F8C332 94%);
+}
+.ribbonColorWorkshop {
+    background-image: linear-gradient(-35deg, #9119B3 0%, #E64C4C 88%);
+}
+.ribbonColorTour {
+    background-image: linear-gradient(-35deg, #57A900 3%, #69DFC4 94%);
+}
+.ribbonColorExhibition {
+    background-image: linear-gradient(-35deg, #4E2BCC 3%, #B620E0 100%);
+}
+.ribbonColorEntertainment {
+    background-image: linear-gradient(-35deg, #C85000 3%, #F8C332 94%);
+}
+.ribbonColorCinema {
+    background-image: linear-gradient(-35deg, #289DCC 3%, #815EFF 94%);
+}
+.ribbonColorOther {
+    background-image: linear-gradient(-35deg, #C85000 30%, #F8C332 50%);
+}
 .circleAnimate {
     background:rgb(252, 183, 49);
     width: 100px;
@@ -305,7 +375,9 @@ button.slick-next {
     background: rgb(252, 183, 49);
     border: 4px solid rgb(252, 183, 49);
     border-radius: 10px;
-    margin-top: 30px;
+    width: 95%;
+    display: block;
+    margin: 30px auto;
     font-size: 32px;
 
 }
@@ -699,6 +771,10 @@ button.slick-next {
 .searchHomePageBtn:hover {
     box-shadow: -1px 1px 5px 2px;
 }
+.searchHomePageBtn:disabled {
+    opacity: 0.9 !important;
+    box-shadow: -1px 1px 5px 0px !important;
+}
 .searchInputsHomePage {
     box-shadow: -1px 0px 2px 1px;
     font-family: FontAwesome, "Iranian Sans";
@@ -820,6 +896,7 @@ button.slick-next {
     padding: 0;
     margin-top: 40px;
     margin-bottom: 20px;
+    z-index: 100;
 }
 .eventBoxInner {
     background-color: white;
@@ -1165,12 +1242,7 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
     display: block;
     margin: 0px auto;
 }
-.blitImageOne {
-    margin-top: -400px;
-}
-.blitImage {
-    margin-top: 200px;
-}
+
 .nav-tabs {
 }
 .nav-tabs a {

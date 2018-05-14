@@ -55,6 +55,7 @@ angular.module('eventsPageModule')
 
         eventService.getEvent($routeParams.eventLink)
             .then(function (data) {
+
                 $scope.eventDataDetails = angular.copy(data.data);
                 $rootScope.pageDescription = $scope.eventDataDetails.description;
                 $rootScope.keyWord =  $scope.eventDataDetails.eventName + ","
@@ -85,8 +86,7 @@ angular.module('eventsPageModule')
                     document.getElementById('menu1').insertAdjacentHTML('afterbegin',$scope.eventDataDetails.aparatDisplayCode);
                 }
             })
-            .catch(function (data) {
-            });
+
         $scope.eventFlatDates = [];
         $scope.sansListData = function (dates) {
             $scope.eventDates = dates.sort(function (a, b) {

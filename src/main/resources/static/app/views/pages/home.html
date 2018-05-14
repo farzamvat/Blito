@@ -54,13 +54,13 @@
             </div>
 
             <input ng-model="searchData.name" type="text" placeholder=" نام رویداد" class="eventNameSearch floatRight searchInputsHomePage" >
-            <button ng-disable="homePageSearchSpinner" class="btn btn-blito floatRight searchHomePageBtn" ng-click="searchHomePage(searchData)"><i ng-show="!homePageSearchSpinner" class="fa fa-search fa-2x colorWhite"></i><i ng-show="homePageSearchSpinner" class="fa fa-spin fa-spinner fa-2x colorWhite"></i></button>
+            <button ng-disabled="homePageSearchSpinner" class="btn btn-blito floatRight searchHomePageBtn" ng-click="searchHomePage(searchData)"><i ng-show="!homePageSearchSpinner" class="fa fa-search fa-2x colorWhite"></i><i ng-show="homePageSearchSpinner" class="fa fa-spin fa-spinner fa-2x colorWhite"></i></button>
         </div>
     </div>
-    <div class="row ">
+    <div class="row " >
         <div class="col-xs-12 marginTop60 paddingLeft30" ng-show="!eventLoading">
             <div ng-repeat="event in eventsWithImage" class="col-xs-12 col-sm-6 col-md-6 col-lg-4  floatRight eventBox">
-                <a class="col-xs-12 width95 marginTop10 padding0 eventBoxInner" >
+                <a href="{{url+event.eventLink}}" class="col-xs-12 width95 marginTop10 padding0 eventBoxInner" >
                     <img ng-src="{{event.image}}" alt="{{event.eventName }}" class="homePageEventImages floatRight ">
                     <div class="floatRight  eventBoxDescription ">
                         <h4 class="textAlignRight floatRight col-xs-12">{{event.eventName | limitTo : 25}}<span ng-if="event.eventName.length > 25">...</span></h4>
@@ -74,6 +74,14 @@
 
                     </div>
                 </a>
+                <div class="ribbon"><span ng-class="{'ribbonColorCinema': event.eventType === 'CINEMA',
+                                                                     'ribbonColorTheater': event.eventType === 'THEATER',
+                                                                     'ribbonColorWorkshop': event.eventType === 'WORKSHOP',
+                                                                     'ribbonColorEntertainment': event.eventType === 'ENTERTAINMENT',
+                                                                     'ribbonColorTour': event.eventType === 'TOURISM',
+                                                                     'ribbonColorConcert': event.eventType === 'CONCERT',
+                                                                     'ribbonColorExhibition': event.eventType === 'EXHIBITION',
+                                                                     'ribbonColorOther': event.eventType === 'OTHER'}">{{event.eventTypeFarsi}}</span></div>
             </div>
         </div>
         <div class="col-xs-12 marginTop60 paddingLeft30" ng-show="eventLoading">
@@ -87,7 +95,8 @@
                 <img class="loadingEventBox" src="../../../assets/img/loadingEvent.png" alt="">
             </div>
         </div>
-        <p class="text-center fontSize32" ng-show="eventsWithImage.length === 0">رویدادی یافت نشد </p>
+        <p class="text-center fontSize32" ng-show="eventsWithImage.length === 0 && !eventLoading">رویدادی یافت نشد </p>
+
     </div>
     <div class="row">
         <div class="col-xs-12">
@@ -108,7 +117,7 @@
         </div>
         <div class="col-xs-12 col-md-4 floatRight">
             <div class="arrow_box text-center">
-                 تا الان {{totalNumberOfEvents | pNumber}} رویداد برگزار شده
+                 تا الان <span class="fontSize36 fontWeightBold">{{totalNumberOfEvents | pNumber}}</span> رویداد برگزار شده
             </div>
             <button class="bigRoundButton btn btn-blito" ng-click="submitEventPlannerIntro()"> بعدی رو برگزار کن</button>
         </div>
@@ -123,35 +132,13 @@
     <div class="row">
 
         <div class="col-xs-12">
-            <h2 class="text-center marginTop60">فعال‌ترین برگزار‌کننده‌های این هفته</h2>
-            <div class="col-xs-12 col-sm-6 col-md-3 floatRight marginTop30 marginBottom50 ">
-                <a class="plannerBoxHomePage" href="">
-                <img class="circleImage center-block eventPageHostImage" src="../../../assets/img/1.jpeg" alt="">
+            <h2 class="text-center marginTop60">فعال‌ترین برگزار‌کننده‌های بلیتو</h2>
+            <div ng-repeat="planer in eventPlaners" class="col-xs-12 col-sm-6 col-md-3 floatRight marginTop30 marginBottom50 ">
+                <a class="plannerBoxHomePage" href="{{planerUrl+planer.eventHostLink}}">
+                <img class="circleImage center-block eventPageHostImage" ng-src="{{planer.image}}" alt="">
                 </a>
-                <h4 class="text-center">کافه ویس</h4>
-                <p class="text-center">کافه فرهنگی و هنری ویس</p>
-
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-3 floatRight marginTop30 marginBottom50">
-                <a class="plannerBoxHomePage" href="">
-                <img class="circleImage center-block eventPageHostImage" src="../../../assets/img/4.jpeg" alt="">
-                </a>
-                <h4 class="text-center">لی‌کو ایونت</h4>
-                <p class="text-center">رویدادهای خاص و متفاوت را در لی‌کو کافه تجربه کنید.</p>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-3 floatRight marginTop30 marginBottom50 ">
-                <a class="plannerBoxHomePage" href="">
-                <img class="circleImage center-block eventPageHostImage" src="../../../assets/img/2.jpeg" alt="">
-                </a>
-                <h4 class="text-center">خط اتصال</h4>
-                <p class="text-center">کلوپ موسیقی" خط اتصال" برگزار کننده: رویدادهای پ‍‍‍ژوهشی جمسشن(گروه نوازی) ...</p>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-3 floatRight marginTop30 marginBottom50 ">
-                <a class="plannerBoxHomePage" href="">
-                <img class="circleImage center-block eventPageHostImage" src="../../../assets/img/3.jpeg" alt="">
-                </a>
-                <h4 class="text-center">Lucky Clover</h4>
-                <p class="text-center">خیابان ولی عصر٬شماره 2208</p>
+                <h4 class="text-center">{{planer.hostName}}</h4>
+                <!--<p class="text-center">{{planer}}</p>-->
             </div>
         </div>
     </div>

@@ -11,7 +11,6 @@ angular.module('homePageModule', [])
         'eventDetailService',
         '$q',
         'config',
-        '$interval',
         'dataService',
 
         function ($scope, miniSliderService, photoService, indexBannerService, eventDetailService, $q,config, dataService) {
@@ -19,13 +18,14 @@ angular.module('homePageModule', [])
             var restrictions = [];
             $scope.timePickedSearch = [{n : 'امروز', v : 'T'}, {n : 'تا یک هفته', v : 'W'},{n : 'تا یک ماه', v : 'M'},{n : 'همه روزها', v : 'AllTimes'}];
             $scope.pricePickedSearch = [{p : 'تا ۱۵ هزار تومان', v : '15L'},{p : 'تا ۴۰ هزار تومان', v : '40L'} , {p : 'بالای ۴۰ هزار تومان', v : '40U'}, {p : 'همه قیمت‌ها', v : 'AllPrices'}];
-            $scope.typePickedSearch = [{t : 'کنسرت', v : 'CONCERT'}, {t : 'تئاتر', v: 'THEATER'}, {t :'سینما', v: 'CINEMA'}, {t :'تور', v: 'TOUR'}, {t :'کارگاه', v: 'WORKSHOP'}, {t :'سرگرمی', v: 'ENTERTAINMENT'}, {t :'نمایشگاه', v: 'EXHIBITION'}, {t :'سایر', v: 'OTHER'}, {t :'همه رویداد‌ها', v: 'AllTypes'} ];
+            $scope.typePickedSearch = [{t : 'کنسرت', v : 'CONCERT'}, {t : 'تئاتر', v: 'THEATER'}, {t :'سینما', v: 'CINEMA'}, {t :'تور', v: 'TOURISM'}, {t :'کارگاه', v: 'WORKSHOP'}, {t :'سرگرمی', v: 'ENTERTAINMENT'}, {t :'نمایشگاه', v: 'EXHIBITION'}, {t :'سایر', v: 'OTHER'}, {t :'همه رویداد‌ها', v: 'AllTypes'} ];
             $scope.searchData = {timePicked : {n : 'همه روزها', v : 'AllTimes'}, typePicked : {t :'همه رویداد‌ها', v: 'AllTypes'}, pricePicked : {p : 'همه قیمت‌ها', v : 'AllPrices'}, name:''};
             $scope.showSectionsExcahnge = [false,false];
             $scope.bannerData = [];
             $scope.eventLoading = true;
             var promisesExchange = [[], []];
             $scope.homePageSearchSpinner = false;
+            $scope.planerUrl = config.baseUrl+"/event-host-page/";
             $scope.url = config.baseUrl+"/event-page/";
             $scope.urlExchange = config.baseUrl+"/exchange-page/";
             miniSliderService.getAllEventsCount()
@@ -154,7 +154,6 @@ angular.module('homePageModule', [])
                     .then(function (data) {
                         $scope.eventLoading = false;
                         $scope.homePageSearchSpinner = false;
-                        console.log(data);
                         moreButtonClicked = 1;
                         $scope.showMoreButton = true;
                         $scope.eventsWithImage = $scope.setEventData(data.data.content);
@@ -185,14 +184,20 @@ angular.module('homePageModule', [])
                         $scope.moreEventsSpinner = false;
 
                     })
-            }
+            };
+            miniSliderService.getHomePagePlaners()
+                .then(function (data) {
+                    $scope.eventPlaners = $scope.setPlanerImages(data.data.content);
+                })
+                .catch(function () {
+                })
             $scope.setEventData = function (events) {
                 return events.map(function (item) {
                     var firstEventDate = '';
                     var tempDate = 10000000000000;
                     item.minPrice = 1000000000;
                     item.maxPrice = 0;
-
+                    item.eventTypeFarsi = dataService.eventTypePersian(item.eventType);
                     var eventImage =  item.images.filter(function (image) {
                         return image.type === "EVENT_PHOTO";
                     });
@@ -222,6 +227,21 @@ angular.module('homePageModule', [])
                         })
                     return item;
                 });
+            };
+            $scope.setPlanerImages = function (planers) {
+                return planers.map(function (planer) {
+                    var planerImage =  planer.images.filter(function (image) {
+                        return image.type === "HOST_PHOTO";
+                    });
+                    photoService.download(planerImage[0].imageUUID)
+                        .then(function (data) {
+                            planer.image = data.data.encodedBase64;
+                        })
+                        .catch(function () {
+                            planer.image = '';
+                        })
+                    return planer;
+                })
             };
 
             $scope.calculateCapacitySoldOut = function (eventList) {

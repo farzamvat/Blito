@@ -26,6 +26,14 @@ angular.module('homePageApi', [])
                 return $http.post(config.baseUrl + '/api/blito/v1.0/public/events/search',bodyJson, queryParam);
 
             };
+            miniSlider.getHomePagePlaners = function () {
+                var queryParam = {
+                    cache : true,
+                    params : {page: 0, size: 4}
+                };
+
+                return $http.get(config.baseUrl + '/api/blito/v1.0/public/event-hosts/home-page/search', queryParam);
+            };
             miniSlider.getSlidingDataExchange = function (size) {
                 var queryParam = {
                     cache : true,
