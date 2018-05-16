@@ -89,7 +89,7 @@ textarea:focus, input:focus {
     width: 100%;
     white-space: normal;
     min-height: 800px;
-    background:#efefef;
+    background:#f8f8fa;
     padding: 0;
 }
 .carousel .item img {
@@ -155,11 +155,26 @@ textarea:focus, input:focus {
     background-size: 100% 500px;
     height: 500px;
 }
+.fontSize12 {
+    font-size: 12px;
+}
+.fontSize14 {
+    font-size: 14px;
+}
 .fontSize16 {
     font-size: 16px;
 }
 .fontSize18 {
     font-size: 18px;
+}
+.fontSize32 {
+    font-size: 32px;
+}
+.fontSize36 {
+    font-size: 36px;
+}
+.fontWeightBold {
+    font-weight: bold;
 }
 .fontSize18H1Tag {
     font-size: 18px !important;
@@ -278,39 +293,118 @@ button.slick-next {
 
 .plannerIntroRow {
     background: url('../img/back.jpg') fixed;
-    /*background-color: rgba(250, 250, 250, 0.4);*/
+
 }
 
-
+.ribbon {
+    position: absolute;
+    left: -5px; top: 5px;
+    z-index: 1;
+    overflow: hidden;
+    width: 75px; height: 75px;
+    text-align: right;
+}
+.ribbon span {
+    font-size: 14px;
+    font-weight: bold;
+    color: #FFF;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 20px;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    width: 100px;
+    display: block;
+    box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+    position: absolute;
+    top: 19px; left: -21px;
+}
+.ribbon span::before {
+    content: "";
+    position: absolute; left: 0px; top: 100%;
+    z-index: -1;
+    border-left: 3px solid #8F5408;
+    border-right: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    border-top: 3px solid #8F5408;
+}
+.ribbon span::after {
+    content: "";
+    position: absolute; right: 0px; top: 100%;
+    z-index: -1;
+    border-left: 3px solid transparent;
+    border-right: 3px solid #8F5408;
+    border-bottom: 3px solid transparent;
+    border-top: 3px solid #8F5408;
+}
+.ribbonColorConcert {
+    background-image: linear-gradient(-35deg, #36AC91 3%, #5AD0FF 94%);
+}
+.ribbonColorTheater {
+    background-image: linear-gradient(-35deg, #C85000 3%, #F8C332 94%);
+}
+.ribbonColorWorkshop {
+    background-image: linear-gradient(-35deg, #9119B3 0%, #E64C4C 88%);
+}
+.ribbonColorTour {
+    background-image: linear-gradient(-35deg, #57A900 3%, #69DFC4 94%);
+}
+.ribbonColorExhibition {
+    background-image: linear-gradient(-35deg, #4E2BCC 3%, #B620E0 100%);
+}
+.ribbonColorEntertainment {
+    background-image: linear-gradient(-35deg, #C85000 3%, #F8C332 94%);
+}
+.ribbonColorCinema {
+    background-image: linear-gradient(-35deg, #289DCC 3%, #815EFF 94%);
+}
+.ribbonColorOther {
+    background-image: linear-gradient(-35deg, #C85000 30%, #F8C332 50%);
+}
 .circleAnimate {
     background:rgb(252, 183, 49);
     width: 100px;
     height: 100px;
     margin: 1px auto;
-    border-radius: 100%;
     z-index: 0;
 }
 
-.circleAnimate {
-    -webkit-animation: grow 3s;
+.arrow_box {
+    position: relative;
+    padding: 10px 15px;
+    background: rgb(252, 183, 49);
+    border: 4px solid rgb(252, 183, 49);
+    border-radius: 10px;
+    width: 95%;
+    display: block;
+    margin: 30px auto;
+    font-size: 32px;
+
+}
+.arrow_box:after, .arrow_box:before {
+    top: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
 }
 
-@-webkit-keyframes grow {
-    0% {
-        -webkit-transform: scale(0);
-        -moz-transform: scale(0);
-        -o-transform: scale(0);
-        -ms-transform: scale(0);
-        transform: scale(0);
-    }
-    100% {
-        -webkit-transform: scale(1);
-        -moz-transform: scale(1);
-        -o-transform: scale(1);
-        -ms-transform: scale(1);
-        transform: scale(1);
-    }
+.arrow_box:after {
+    border-color: rgba(252, 183, 49, 0);
+    border-top-color: rgb(252, 183, 49);
+    border-width: 30px;
+    margin-left: -30px;
 }
+.arrow_box:before {
+    border-color: rgba(252, 183, 49, 0);
+    border-top-color: rgb(252, 183, 49);
+    border-width: 36px;
+    margin-left: -36px;
+}
+
 .bliBox {
     margin-top: -40px;
     position: absolute;
@@ -350,16 +444,12 @@ button.slick-next {
 }
 .plannerIntroBox {
     background-color: rgba(250, 250, 250, 0.9);
-    -moz-box-shadow:    inset  0px 11px 5px -5px #000;
-    -webkit-box-shadow: inset  0px 11px 5px -5px #000;
-    box-shadow:         inset  0px 11px 5px -5px #000;
+
     padding-top: 30px;
-    height: 270px;
+    height: 340px;
 }
 .plannerIntroButtonSection {
-    -moz-box-shadow:    inset  0px -9px 5px 5px #000;
-    -webkit-box-shadow: inset  0px -9px 5px 5px #000;
-    box-shadow:         inset  0px -9px 5px 5px #000;
+    background-color: rgba(250, 250, 250, 0.9);
 }
 .submitEventIntroHomePage {
     width: 90%;
@@ -368,6 +458,7 @@ button.slick-next {
     border-radius: 3px;
     display: block;
     margin: 10px auto;
+    height: 270px;
 }
 .nav-dropdown-menu>li>a:focus, .nav-dropdown-menu>li>a:hover{
     background-color: #303030;
@@ -652,43 +743,196 @@ button.slick-next {
     margin-top: 5px !important;
 }
 
-.searchBarHomePage {
-    margin: 0 auto;
+
+
+.eventNameSearch {
+    border-radius: 0 !important;
+    width: 22%;
 }
-.searchHomeHeader {
-    color: white;
+.typeSelect {
+    border-radius: 0 !important;
+    width: 15%;
+
 }
-.eventListAnchorContainer{
-    padding-right: 40px !important;
+.priceSelect {
+    width: 20%;
+    border-radius: 0 !important;
 }
-.searchHomePageForm {
-    margin: 0 auto;
+.timeSelect {
+    width: 15%;
+    border-radius: 0 10px 10px 0 !important;
 }
-.searchBarHomePageInput {
+.searchHomePageBtn {
+    box-shadow: -1px 1px 5px 0px;
+    width: 80px;
+    height: 80px !important;
+    border-radius: 10px 0 0 10px !important;
+}
+.searchHomePageBtn:hover {
+    box-shadow: -1px 1px 5px 2px;
+}
+.searchHomePageBtn:disabled {
+    opacity: 0.9 !important;
+    box-shadow: -1px 1px 5px 0px !important;
+}
+.searchInputsHomePage {
+    box-shadow: -1px 0px 2px 1px;
+    font-family: FontAwesome, "Iranian Sans";
     text-align: right;
-    /*width: 400px !important;*/
-    height: 50px ;
-    margin: 0 auto !important;
-    padding: 0 10px;
+    padding: 10px;
+    height: 80px;
+    border: 2px #666 !important;
+    font-size: 1.2em !important;
 }
-.searchBarButton {
-    color: white;
-    /*width: 100%;*/
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-    margin: 0;
+.searchInputsHomePage:focus {
+    border: 2px #666 !important;
+    outline: none !important;
 }
-.searchSection {
-    padding-top: 10px;
-    padding-bottom: 15px;
-    background: url('../img/back.jpg') fixed;
-    border-bottom: 2px solid #202020;
+.homePageMoreButton {
+    width: 200px;
+    color: white !important;
+}
+.homePageMoreButton button:hover {
+    color: white !important;
+    background-color: rgb(255, 170, 0);
+}
+
+.bigRoundButton {
+    display: block;
+    width: 200px;
+    border-radius: 50% !important;
+    height: 200px !important;
+    margin: 30px auto;
+    font-size: 24px;
+    box-shadow: 0 -6px 0 5px rgb(200,130,0) inset, 0 5px 5px rgba(103, 73, 0, 0.97), 0 12px rgba(255, 255, 255, 0.4) inset;
+    transition: 200ms;
+    padding-bottom: 20px;
+}
+.bigRoundButton:hover {
+    box-shadow: 0 -6px 0 5px rgb(190, 120, 0) inset, 0 5px 5px rgba(103, 73, 0, 0.97), 0 12px rgba(255, 255, 255, 0.5) inset;
+    background-color: rgb(255, 170, 0);
+}
+.bigRoundButton:active {
+    color: black !important;
+    box-shadow: 0 -1px 0 0 rgb(216, 157, 41) inset, 0 5px 5px rgba(103, 73, 0, 0.97), 0 12px rgba(255, 255, 255, 0.3) inset;
+    transform: translateY(4px);
+}
+.whiteBlocks {
+    background-color: rgba(256, 256, 256, 0.95);
+    height: 200px;
+    width: 95%;
+    display: block;
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin: 30px auto;
+    height: 320px;
 }
 .slidingEvents h2:hover {
     color: rgb(252,183, 49);
 }
 .sideBar {
     background: transparent;
+}
+.searchBarSection {
+    margin-top: -15px;
+    margin-right: 22%;
+}
+.myDropDown {
+    float: right;
+    position: absolute;
+    text-align: right;
+    background-color: #fff;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    top: 59px;
+    display: none;
+    z-index: 10000;
+}
+.timeDropDown {
+    width: 120px;
+    right: 23.5%;
+}
+.priceDropDown {
+    width: 170px;
+    right: 46.35%;
+}
+.typeDropDown {
+    width: 120px;
+    right: 34.5%;
+}
+.dropDownsItems {
+    padding: 10px 15px;
+
+}
+.dropDownsItems:hover {
+    background-color: rgb(252, 183, 49);
+    cursor: pointer;
+}
+.dropDownsItems:last-of-type:hover {
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.homePageEventImages {
+    height: 233px;
+    width: 163px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+}
+.loadingEventBox {
+    height: 233px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    animation: fadeIn 1s infinite alternate;
+    display: block;
+    margin: 0 auto;
+}
+
+.eventBox {
+    padding: 0;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    z-index: 100;
+}
+.eventBoxInner {
+    background-color: white;
+    border: 1px solid #999;
+    border-radius: 5px;
+    transition: 200ms;
+    color: black;
+}
+.eventBoxInner:hover {
+    cursor: pointer;
+    color: black !important;
+    box-shadow: 0 0 11px 0 #333 !important;
+}
+.width50 {
+    width: 50%;
+}
+.eventBoxDescription {
+    padding: 10px;
+    background-color: #fff;
+    height: 233px;
+    width: 50%;
+}
+.eventBoxDescription h4 {
+    border-bottom: 1px solid #999;
+    line-height: 25px;
+    margin-top: 0 !important;
+}
+.width40 {
+    width: 40%;
+}
+.width60 {
+    width: 60%;
+}
+.colorWhite {
+    color: white;
 }
 .datepicker-plot-area { z-index: 1151 !important; }
 div.row.slidingEventsRow {
@@ -991,16 +1235,15 @@ div.hidden-xs.col-sm-3.floatRight.blitoOffer {
 .exchangeTicketText p {
     font-size: 16px !important;
 }
+.plannerBoxHomePage {
+    color: black !important;
+    cursor: pointer;
+}
 .item>img {
     display: block;
     margin: 0px auto;
 }
-.blitImageOne {
-    margin-top: -400px;
-}
-.blitImage {
-    margin-top: 200px;
-}
+
 .nav-tabs {
 }
 .nav-tabs a {
@@ -3159,6 +3402,9 @@ table td{
 .paddingLeft50{
     padding-left: 50px !important;
 }
+.paddingLeft30 {
+    padding-left: 30px !important;
+}
 .homePageImage {
     width: 120px !important;
     height: 182px !important;
@@ -3349,6 +3595,9 @@ input:disabled, textarea:disabled, select:disabled {
     display: block;
     margin: 1px auto;
 }
+.width95 {
+    width: 95%;
+}
 .centerImageItem {
     padding-top: 20px;
 }
@@ -3448,7 +3697,7 @@ input[type=number] {
 @media (max-width: 770px) {
     select,
     input{
-        font-size: 22px !important;
+        font-size: 18px !important;
     }
     .navbar-header-backcolor{
         width: 172px !important;
@@ -3494,6 +3743,9 @@ input[type=number] {
 
 
 @media (max-width: 992px) {
+    .eventBoxDescription {
+        width: 52%;
+    }
     .moreInfo{
         width:150px !important;
     }
@@ -3794,7 +4046,7 @@ input[type=number] {
         width: 100%;
     }
     .loadingSlider {
-        height: 190px ;
+        height: 220px ;
     }
     .carousel-inner > .item > img {
         width:100%;
@@ -4008,12 +4260,55 @@ input[type=number] {
 
 }
 @media (min-width : 992px) and (max-width: 1200px) {
+    .eventBoxDescription {
+        width: 45%;
+    }
     .customPanelEventPage {
         width: calc(98% + 5px);
     }
 }
 
 @media (max-width: 1200px) {
+    .timeDropDown {
+        width: 120px;
+        right: 1%;
+    }
+    .priceDropDown {
+        width: 170px;
+        right: 40%;
+    }
+    .typeDropDown {
+        width: 120px;
+        right: 22.5%;
+    }
+    .searchInputsHomePage {
+        font-size: 1.1em !important;
+    }
+    .searchSection {
+        padding: 0;
+    }
+    .searchBarSection {
+        margin-top: 0;
+        margin-right: 0;
+    }
+    .eventNameSearch {
+        width: 20%;
+    }
+    .typeSelect {
+        width: 17.5%;
+
+    }
+    .priceSelect {
+        width: 25%;
+    }
+    .timeSelect {
+        width: 22.5%;
+        border-radius: 0 !important;
+    }
+    .searchHomePageBtn {
+        width: 15%;
+        border-radius: 0 !important;
+    }
     .plannerIntroBox {
         -moz-box-shadow:    none;
         -webkit-box-shadow: none;

@@ -226,14 +226,14 @@ angular.module('UiServices', [])
         };
     }])
     .service('dataService', [function () {
-        var data = this;
-        data.persianToEnglishDigit = function (persianDigit) {
+        var dataService = this;
+        dataService.persianToEnglishDigit = function (persianDigit) {
                 var persian = {'۰':0,'۱':1,'۲':2,'۳':3,'۴':4,'۵': 5,'۶': 6,'۷': 7,'۸' : 8,'۹': 9};
                 return persianDigit.split('').map(function (persianNumb) {
                     return persian[persianNumb];
                 }).join('');
         };
-        data.eventTypePersian = function (type) {
+        dataService.eventTypePersian = function (type) {
             var persianType = '';
             switch (type) {
                 case "CINEMA" :
@@ -285,7 +285,7 @@ angular.module('UiServices', [])
             return persianType;
         };
 
-        data.stateTypePersian = function (state) {
+        dataService.stateTypePersian = function (state) {
             var persianState = '';
             switch (state) {
                 case "SOLD" :
@@ -308,7 +308,7 @@ angular.module('UiServices', [])
             return persianState;
         };
 
-        data.operatorStatePersian = function (operatorState) {
+        dataService.operatorStatePersian = function (operatorState) {
             var persianOperatorState = '';
             switch (operatorState) {
                 case "REJECTED" :
@@ -332,7 +332,7 @@ angular.module('UiServices', [])
             }
             return persianOperatorState;
         };
-        data.ticketStatusPersian = function (operatorState) {
+        dataService.ticketStatusPersian = function (operatorState) {
             var persianOperatorState = '';
             switch (operatorState) {
                 case "PAID" :
@@ -353,14 +353,14 @@ angular.module('UiServices', [])
             }
             return persianOperatorState;
         };
-        data.mapToPersianEvent = function (item) {
+        dataService.mapToPersianEvent = function (item) {
             item.eventState = data.stateTypePersian(item.eventState);
             item.eventType = data.eventTypePersian(item.eventType);
             item.operatorState = data.operatorStatePersian(item.operatorState);
             return item;
         };
 
-        data.mapToPersianExchange = function (item) {
+        dataService.mapToPersianExchange = function (item) {
             item.operatorState = data.operatorStatePersian(item.operatorState);
             item.state = data.stateTypePersian(item.state);
             item.type = data.eventTypePersian(item.type);
