@@ -22,6 +22,7 @@ public class Simple<T> extends AbstractSearchViewModel<T> {
     @Override
     public Specification<T> action() {
         return (root, query, cb) -> {
+            query.distinct(true);
             return OperationService.doOperation(operation, value, cb, root, field);
         };
     }

@@ -2,12 +2,13 @@ package com.blito.search;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SearchViewModel<T> {
 	
-	private List<AbstractSearchViewModel<T>> restrictions;
+	private List<AbstractSearchViewModel<T>> restrictions = new ArrayList<>();
 
 	private Operator operator;
 
