@@ -1,5 +1,6 @@
 package com.blito.rest.controllers.eventhost;
 
+import com.blito.mappers.EventHostMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,10 +24,15 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 @RestController
 @RequestMapping("${api.base.url}" + "/public/event-hosts")
 public class PublicEventHostController {
 	@Autowired EventHostService eventHostService;
+	@Autowired EventHostMapper eventHostMapper;
 	
 	// ***************** SWAGGER DOCS ***************** //
 	@ApiOperation(value = "get event host by ID")
@@ -52,10 +58,10 @@ public class PublicEventHostController {
 	@ApiResponses({@ApiResponse(code = 200, message="search ok", response = EventHostViewModel.class),
 				   @ApiResponse(code = 404, message="NotFoundException", response = ExceptionViewModel.class)})
 	// ***************** SWAGGER DOCS ***************** //
-	@JsonView(View.EventHost.class)
-	@PostMapping("/search")
-	public ResponseEntity<Page<EventHostViewModel>> search(@RequestBody SearchViewModel<EventHost> searchViewModel,Pageable pageable)
+	@JsonView(View.SimpleEventHost.class)
+	@GetMapping("/home-page/search")
+	public ResponseEntity<Page<EventHostViewModel>> search(Pageable pageable)
 	{
-		return ResponseEntity.ok(eventHostService.searchEventHosts(searchViewModel, pageable));
+		return ResponseEntity.ok(eventHostMapper.toPage(eventHostService.getActiveEventHosts(pageable)));
 	}
 }

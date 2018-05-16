@@ -21,7 +21,7 @@ public class EventHostViewModel {
 	@NotNull
 	String hostName;
 	
-	@JsonView(View.EventHost.class)
+	@JsonView(View.SimpleEventHost.class)
 	String description;
 	
 	@JsonView(View.EventHost.class)

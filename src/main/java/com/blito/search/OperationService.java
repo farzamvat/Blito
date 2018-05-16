@@ -5,35 +5,31 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 
 import com.blito.exceptions.NotAllowedException;
+import org.springframework.data.domain.Sort;
 
 public class OperationService {
 
 	public static <T> Predicate doOperation(Operation operation, Object value, CriteriaBuilder cb, Root<T> root,
-			String field) {
+											String field) {
 
 		switch (operation) {
 		case eq:
 			return cb.equal(joinQueryBuilder(field, root), value);
 		case ge:
-
-			return cb.ge(root.get(field), (long) value);
+			return cb.ge(joinQueryBuilder(field, root), (Number) value);
 		case gt:
-			return cb.gt(root.get(field), (long) value);
+			return cb.gt(joinQueryBuilder(field, root),  (Number) value);
 		case le:
-			return cb.le(root.get(field), (long) value);
+			return cb.le(joinQueryBuilder(field, root), (Number) value);
 		case like:
-			return cb.like(root.get(field), '%' + value.toString() + '%');
+			return cb.like(joinQueryBuilder(field, root), '%' + value.toString() + '%');
 		case lt:
-			return cb.lt(root.get(field), (long) value);
+			return cb.lt(joinQueryBuilder(field, root), (Number) value);
 		case neq:
-			return cb.notEqual(root.get(field), value);
+			return cb.notEqual(joinQueryBuilder(field, root), value);
 		default:
 			return cb.or();
 		}
@@ -43,13 +39,13 @@ public class OperationService {
 			String field) {
 		switch (operation) {
 		case ge:
-			return cb.greaterThanOrEqualTo(root.get(field), value);
+			return cb.greaterThanOrEqualTo(joinQueryBuilder(field, root), value);
 		case gt:
-			return cb.greaterThan(root.get(field), value);
+			return cb.greaterThan(joinQueryBuilder(field, root), value);
 		case le:
-			return cb.lessThanOrEqualTo(root.get(field), value);
+			return cb.lessThanOrEqualTo(joinQueryBuilder(field, root), value);
 		case lt:
-			return cb.lessThan(root.get(field), value);
+			return cb.lessThan(joinQueryBuilder(field, root), value);
 		default:
 			throw new NotAllowedException("Operation not allowed");
 		}

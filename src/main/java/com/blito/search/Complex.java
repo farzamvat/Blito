@@ -21,8 +21,11 @@ public class Complex<T> extends AbstractSearchViewModel<T> {
     @Override
     public Specification<T> action() {
         return (root,query,cb) ->
-                restrictions.stream().map(r -> r.action()).reduce((s1,s2) ->
-                        SearchServiceUtil.combineSpecifications(s1,s2, Optional.ofNullable(this.operator))).get().toPredicate(root,query,cb);
+        {
+            query.distinct(true);
+            return restrictions.stream().map(r -> r.action()).reduce((s1,s2) ->
+                    SearchServiceUtil.combineSpecifications(s1,s2, Optional.ofNullable(this.operator))).get().toPredicate(root,query,cb);
+        };
     }
 
     public Operator getOperator() {
