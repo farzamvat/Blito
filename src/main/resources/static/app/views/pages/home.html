@@ -112,7 +112,8 @@
         <div class="col-xs-12 col-md-4  floatRight">
             <div class="whiteBlocks">
                 <h3 class="textAlignRight">رویداد برگزار می‌کنی؟</h3>
-                <p class="textAlignRight text-justify">اگر رویداد برگزار می‌کنی یا دوست داری این کار رو شروع کنی از وبسایت ما این کار رو به راحتی انچام بده</p>
+                <p class="textAlignRight text-justify fontSize16">اگر رویداد برگزار می‌کنی یا یک ایده خلاقانه برای ایجاد یک رویداد داری، با بلیتو این کار رو راحت‌‌‌‌‌تر و سریع‌تر انجام بده </p>
+                <img class="center-block" src="../../../assets/img/planner.gif" alt="">
             </div>
         </div>
         <div class="col-xs-12 col-md-4 floatRight">
@@ -124,7 +125,8 @@
         <div class="col-xs-12 col-md-4  floatRight">
             <div class="whiteBlocks">
                 <h3 class="textAlignRight">محل برگزاری داری؟</h3>
-                <p class="textAlignRight text-justify">اگر صاحب کافه‌ای یا یک جایی داری که میشه اونجا رویداد برگزار کرد به ما اطلاع بده</p>
+                <p class="textAlignRight text-justify fontSize16">اگر صاحب یک کافه ‌هستی یا یک جایی داری که میشه اونجا رویداد برگزار کرد، به ما خبر بده</p>
+                <img class="center-block" src="../../../assets/img/place.gif" alt="">
             </div>
         </div>
     </div>
@@ -138,7 +140,7 @@
                 <img class="circleImage center-block eventPageHostImage" ng-src="{{planer.image}}" alt="">
                 </a>
                 <h4 class="text-center">{{planer.hostName}}</h4>
-                <!--<p class="text-center">{{planer}}</p>-->
+                <p class="text-center">{{planer.description | limitTo : 40}}</p>
             </div>
         </div>
     </div>
