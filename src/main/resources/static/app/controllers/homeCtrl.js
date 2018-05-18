@@ -208,6 +208,7 @@ angular.module('homePageModule', [])
                             } else {
                                 firstEventDate = persianDate(eventDate.date).format("dddd,DD MMMM, ساعت HH:mm")
                             }
+                            tempDate = eventDate.date;
                         }
                         if(item.minPrice > eventDate.price) {
                             item.minPrice = eventDate.price;
@@ -215,7 +216,6 @@ angular.module('homePageModule', [])
                         if(item.maxPrice < eventDate.price) {
                             item.maxPrice = eventDate.price;
                         }
-                        tempDate = eventDate.date;
                     });
                     item.firstEventDate = firstEventDate;
                     photoService.download(eventImage[0].imageUUID)
