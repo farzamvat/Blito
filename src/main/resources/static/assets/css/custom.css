@@ -155,6 +155,9 @@ textarea:focus, input:focus {
     background-size: 100% 500px;
     height: 500px;
 }
+.fontSize10 {
+    font-size: 10px;
+}
 .fontSize12 {
     font-size: 12px;
 }
@@ -190,6 +193,9 @@ textarea:focus, input:focus {
 }
 .marginTop10 {
     margin-top: 10px;
+}
+.marginTop15 {
+    margin-top: 15px;
 }
 .padding5 {
     padding: 5px;
@@ -348,7 +354,7 @@ button.slick-next {
     background-image: linear-gradient(-35deg, #36AC91 3%, #5AD0FF 94%);
 }
 .ribbonColorTheater {
-    background-image: linear-gradient(-35deg, #C85000 3%, #F8C332 94%);
+    background-image: linear-gradient(-35deg, #C8503E 42%, #F8C381 94%);;
 }
 .ribbonColorWorkshop {
     background-image: linear-gradient(-35deg, #9119B3 0%, #E64C4C 88%);
@@ -921,6 +927,11 @@ button.slick-next {
     cursor: pointer;
     color: black !important;
     box-shadow: 0 0 11px 0 #333 !important;
+}
+.eventBoxPlannerDesc {
+    position: absolute;
+    right: 172px;
+    top: 190px;
 }
 .width50 {
     width: 50%;
@@ -4283,7 +4294,7 @@ input[type=number] {
 }
 @media (min-width : 992px) and (max-width: 1200px) {
     .eventBoxDescription {
-        width: 64%;
+        width: 56%;
     }
     .customPanelEventPage {
         width: calc(98% + 5px);
