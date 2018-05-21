@@ -12,8 +12,9 @@ angular.module('homePageModule', [])
         '$q',
         'config',
         'dataService',
+        '$window',
 
-        function ($scope, miniSliderService, photoService, indexBannerService, eventDetailService, $q,config, dataService) {
+        function ($scope, miniSliderService, photoService, indexBannerService, eventDetailService, $q,config, dataService, $window) {
             $scope.concertRow = [];
             var restrictions = [];
             $scope.timePickedSearch = [{n : 'امروز', v : 'T'}, {n : 'تا یک هفته', v : 'W'},{n : 'تا یک ماه', v : 'M'},{n : 'همه روزها', v : 'AllTimes'}];
@@ -208,6 +209,7 @@ angular.module('homePageModule', [])
                             } else {
                                 firstEventDate = persianDate(eventDate.date).format("dddd,DD MMMM, ساعت HH:mm")
                             }
+                            tempDate = eventDate.date;
                         }
                         if(item.minPrice > eventDate.price) {
                             item.minPrice = eventDate.price;
@@ -215,7 +217,6 @@ angular.module('homePageModule', [])
                         if(item.maxPrice < eventDate.price) {
                             item.maxPrice = eventDate.price;
                         }
-                        tempDate = eventDate.date;
                     });
                     item.firstEventDate = firstEventDate;
                     photoService.download(eventImage[0].imageUUID)
@@ -307,7 +308,15 @@ angular.module('homePageModule', [])
                 }
 
             }, true);
-
+            var setDropDownsSearch = function () {
+                $(".timeDropDown").css("width", $("#timeSearchPart").width()+"px");
+                $(".typeDropDown").css("width", $("#typeSearchPart").width()+"px");
+                $(".priceDropDown").css("width", $("#priceSearchPart").width()+"px");
+            };
+            setDropDownsSearch();
+            $($window).resize(function() {
+                setDropDownsSearch();
+            });
 
 
         }]);
