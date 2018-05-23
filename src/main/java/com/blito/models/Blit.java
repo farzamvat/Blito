@@ -24,6 +24,7 @@ public class Blit {
 	private String customerName;
 	private String customerMobileNumber;
 	private String customerEmail;
+	@Column(columnDefinition = "TEXT")
 	private String eventAddress;
 	private String blitTypeName;
 	private String seatType;
