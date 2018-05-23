@@ -62,7 +62,7 @@ angular.module('eventsPageModule')
                     +dataService.eventTypePersian($scope.eventDataDetails.eventType) + ","
                     + " بلیت " + dataService.eventTypePersian($scope.eventDataDetails.eventType) + ","
                     +  dataService.eventTypePersian($scope.eventDataDetails.eventType) + " این هفته " +","
-                    + "سرگرمی تهران";
+                    + "سرگرمی تهران" +"رویداد بیلیتو" + "رویداد بلیتو";
                 $rootScope.robotValue = 'index';
                 $rootScope.title = $location.path().replace('/event-page/','').replace( /\d+/,'').replace( /-/,'');
 
