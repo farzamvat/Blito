@@ -165,6 +165,13 @@ angular.module('UiServices', [])
         var dateSetter = this;
         dateSetter.initDate = function (className, startTime) {
             $("."+className).persianDatepicker({
+                format: "YYYY/MM/DD , HH:mm",
+                formatter : function (unixDate) {
+                    var self = this;
+                    var pdate = new persianDate(unixDate);
+                    pdate.formatPersian = true;
+                    return pdate.format(self.format);
+                },
                 timePicker: {
                     "enabled": true,
                     "step": 1,
@@ -183,15 +190,7 @@ angular.module('UiServices', [])
                     "meridian": {
                         "enabled": false
                     }
-                    },
-                formatter : function (unixDate) {
-                    var self = this;
-                    var pdate = new persianDate(unixDate+startTime);
-                    pdate.formatPersian = true;
-                    return pdate.format(self.format);
-                },
-                altField: '#persianDigitAlt',
-                format: "YYYY/MM/DD , HH:mm"
+                    }
             });
         };
 
