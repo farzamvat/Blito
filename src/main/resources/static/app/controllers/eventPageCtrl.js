@@ -62,7 +62,7 @@ angular.module('eventsPageModule')
                     +dataService.eventTypePersian($scope.eventDataDetails.eventType) + ","
                     + " بلیت " + dataService.eventTypePersian($scope.eventDataDetails.eventType) + ","
                     +  dataService.eventTypePersian($scope.eventDataDetails.eventType) + " این هفته " +","
-                    + "سرگرمی تهران";
+                    + "سرگرمی تهران" +"رویداد بیلیتو" + "رویداد بلیتو";
                 $rootScope.robotValue = 'index';
                 $rootScope.title = $location.path().replace('/event-page/','').replace( /\d+/,'').replace( /-/,'');
 
@@ -592,10 +592,12 @@ angular.module('eventsPageModule')
                 })
         };
         $scope.buyTicketFormatData = function (eventNestedData) {
-                $scope.buyTicketPickData = eventNestedData.map(function (eventDate) {
+            $scope.buyTicketPickData = eventNestedData.sort(function (eventDateOne, eventDateSecond) {
+                    return eventDateOne.date - eventDateSecond.date;
+                }).map(function (eventDate) {
                     eventDate.date = (eventDate.dateTime !== null) ? eventDate.dateTime : (persianDate(eventDate.date).format("dddd,DD MMMM, ساعت HH:mm"));
                     return eventDate;
-                })
+                });
         };
         $scope.getFreeTicket = function () {
             $window.open($scope.ticketTrackCode);

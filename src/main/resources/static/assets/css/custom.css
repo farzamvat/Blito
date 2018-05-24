@@ -155,6 +155,9 @@ textarea:focus, input:focus {
     background-size: 100% 500px;
     height: 500px;
 }
+.fontSize10 {
+    font-size: 10px;
+}
 .fontSize12 {
     font-size: 12px;
 }
@@ -166,6 +169,9 @@ textarea:focus, input:focus {
 }
 .fontSize18 {
     font-size: 18px;
+}
+.fontSize22 {
+    font-size: 22px;
 }
 .fontSize32 {
     font-size: 32px;
@@ -187,6 +193,9 @@ textarea:focus, input:focus {
 }
 .marginTop10 {
     margin-top: 10px;
+}
+.marginTop15 {
+    margin-top: 15px;
 }
 .padding5 {
     padding: 5px;
@@ -249,8 +258,14 @@ button.slick-next {
 .marginTop20 {
     margin-top: 150px !important;
 }
+.marginTop25 {
+    margin-top: 25px;
+}
 .marginTop30 {
     margin-top: 30px;
+}
+.marginTop50 {
+    margin-top: 50px;
 }
 .marginTopMinus10{
     margin-top: -10px;
@@ -264,10 +279,8 @@ button.slick-next {
 .sliderSection {
     margin-top: 0;
     padding: 0 !important;
-    /*box-shadow: 10px 10px 10px #000;*/
 }
 .slidingEvents {
-    /*background-color: #eee;*/
     padding: 15px 60px;
 }
 .slidingEventsTitle {
@@ -341,7 +354,7 @@ button.slick-next {
     background-image: linear-gradient(-35deg, #36AC91 3%, #5AD0FF 94%);
 }
 .ribbonColorTheater {
-    background-image: linear-gradient(-35deg, #C85000 3%, #F8C332 94%);
+    background-image: linear-gradient(-35deg, #C8503E 42%, #F8C381 94%);;
 }
 .ribbonColorWorkshop {
     background-image: linear-gradient(-35deg, #9119B3 0%, #E64C4C 88%);
@@ -765,7 +778,7 @@ button.slick-next {
 .searchHomePageBtn {
     box-shadow: -1px 1px 5px 0px;
     width: 80px;
-    height: 80px !important;
+    height: 60px !important;
     border-radius: 10px 0 0 10px !important;
 }
 .searchHomePageBtn:hover {
@@ -780,13 +793,16 @@ button.slick-next {
     font-family: FontAwesome, "Iranian Sans";
     text-align: right;
     padding: 10px;
-    height: 80px;
+    height: 60px;
     border: 2px #666 !important;
     font-size: 1.2em !important;
 }
 .searchInputsHomePage:focus {
-    border: 2px #666 !important;
     outline: none !important;
+    border: 2px solid rgb(252, 183, 49) !important;
+}
+.withDropDown:hover {
+    cursor: pointer;
 }
 .homePageMoreButton {
     width: 200px;
@@ -819,14 +835,14 @@ button.slick-next {
 }
 .whiteBlocks {
     background-color: rgba(256, 256, 256, 0.95);
-    height: 200px;
     width: 95%;
     display: block;
     padding: 10px 15px;
     border-radius: 10px;
     margin: 30px auto;
-    height: 320px;
+    height: 340px;
 }
+
 .slidingEvents h2:hover {
     color: rgb(252,183, 49);
 }
@@ -835,7 +851,7 @@ button.slick-next {
 }
 .searchBarSection {
     margin-top: -15px;
-    margin-right: 22%;
+    margin-right: 18%;
 }
 .myDropDown {
     float: right;
@@ -844,21 +860,21 @@ button.slick-next {
     background-color: #fff;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
-    top: 59px;
+    top: 40px;
     display: none;
     z-index: 10000;
 }
 .timeDropDown {
     width: 120px;
-    right: 23.5%;
+    right: 19.5%;
 }
 .priceDropDown {
     width: 170px;
-    right: 46.35%;
+    right: 43.35%;
 }
 .typeDropDown {
     width: 120px;
-    right: 34.5%;
+    right: 31.5%;
 }
 .dropDownsItems {
     padding: 10px 15px;
@@ -891,17 +907,18 @@ button.slick-next {
     animation: fadeIn 1s infinite alternate;
     display: block;
     margin: 0 auto;
+    width: 90%;
 }
 
 .eventBox {
     padding: 0;
-    margin-top: 40px;
+    margin-top: 20px;
     margin-bottom: 20px;
     z-index: 100;
 }
 .eventBoxInner {
     background-color: white;
-    border: 1px solid #999;
+    border: 1px solid #aaa;
     border-radius: 5px;
     transition: 200ms;
     color: black;
@@ -910,6 +927,11 @@ button.slick-next {
     cursor: pointer;
     color: black !important;
     box-shadow: 0 0 11px 0 #333 !important;
+}
+.eventBoxPlannerDesc {
+    position: absolute;
+    right: 172px;
+    top: 190px;
 }
 .width50 {
     width: 50%;
@@ -924,6 +946,7 @@ button.slick-next {
     border-bottom: 1px solid #999;
     line-height: 25px;
     margin-top: 0 !important;
+    padding-bottom: 10px;
 }
 .width40 {
     width: 40%;
@@ -3679,6 +3702,9 @@ input:disabled, textarea:disabled, select:disabled {
     margin-right: 0px;
     float: right;
 }
+.plannerParagraph {
+    height: 30px;
+}
 .hrLine {
     height: 1px;
     background-color: #9c9c9c;
@@ -3719,13 +3745,6 @@ input[type=number] {
     .carousel-caption h1 {
         font-size: 18px;
     }
-    /*.navbar-collapse li{*/
-    /*width: 100%;*/
-    /*display: block;*/
-    /*}*/
-
-
-
 }
 @media (max-width: 700px) {
     .closed{
@@ -3741,6 +3760,7 @@ input[type=number] {
 
 
 @media (max-width: 992px) {
+
     .eventBoxDescription {
         width: 52%;
     }
@@ -3836,7 +3856,18 @@ input[type=number] {
 
 
 @media (max-width: 768px) {
-
+    .searchInputsHomePage {
+        height: 80px;
+    }
+    .searchHomePageBtn {
+        height: 80px !important;
+    }
+    .myDropDown {
+        top: 60px;
+    }
+    .loadingEventBox {
+        width: 70%;
+    }
     .buyTicketDropDown {
         bottom: 0;
         height: auto;
@@ -4231,12 +4262,6 @@ input[type=number] {
 
 }
 
-
-@media (min-width: 700px) {
-
-
-
-}
 @media (min-width: 992px) {
 
     .eventPageSoldOut {
@@ -4257,9 +4282,19 @@ input[type=number] {
     }
 
 }
+@media (min-width : 1200px) and (max-width: 1310px) {
+    .eventBoxDescription {
+        width: 55%;
+    }
+}
+@media (min-width: 1310px) {
+    .eventBoxDescription {
+        width: 60%;
+    }
+}
 @media (min-width : 992px) and (max-width: 1200px) {
     .eventBoxDescription {
-        width: 45%;
+        width: 56%;
     }
     .customPanelEventPage {
         width: calc(98% + 5px);
@@ -4267,17 +4302,23 @@ input[type=number] {
 }
 
 @media (max-width: 1200px) {
+    .plannerParagraph {
+        height: 60px;
+    }
+    .plannerGifs {
+        width: 350px;
+    }
     .timeDropDown {
         width: 120px;
         right: 1%;
     }
     .priceDropDown {
         width: 170px;
-        right: 40%;
+        right: 41%;
     }
     .typeDropDown {
         width: 120px;
-        right: 22.5%;
+        right: 23%;
     }
     .searchInputsHomePage {
         font-size: 1.1em !important;
