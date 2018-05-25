@@ -29,6 +29,9 @@ public class EventHost {
 	@OneToMany(mappedBy="eventHost",targetEntity=Event.class)
 	Set<Event> events;
 
+	@OneToMany(mappedBy = "eventHost",targetEntity=Address.class, orphanRemoval=true, cascade=CascadeType.ALL)
+	Set<Address> addresses;
+
 	@Column(name="host_name")
 	private String hostName;
 	
@@ -70,10 +73,19 @@ public class EventHost {
 	String description;
 	
 	boolean isDeleted = false;
-	
+
+	public Set<Address> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(Set<Address> addresses) {
+		this.addresses = addresses;
+	}
+
 	public EventHost() {
 		images = new HashSet<>();
 		events = new HashSet<>();
+		addresses = new HashSet<>();
 	}
 	
 	public long getViews() {

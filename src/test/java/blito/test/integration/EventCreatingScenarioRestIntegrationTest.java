@@ -154,6 +154,34 @@ public class EventCreatingScenarioRestIntegrationTest extends AbstractEventRestC
     }
 
     @Test
+    public void createEvent_aparatUrl_validation_fail() {
+        EventHostViewModel eventHostViewModel =
+                createEventHost_success("aparatLinkValidationFailHost").thenReturn().body().as(EventHostViewModel.class);
+        EventViewModel eventViewModel = createSampleEventViewModel(eventHostViewModel, "AparatValidationFailedEvent");
+        eventViewModel.setAparatDisplayCode("https://www.aparat");
+        Response response =
+                givenRestIntegration()
+                .body(eventViewModel)
+                .when()
+                .post(getServerAddress() + "/api/blito/v1.0/events");
+        response.then().statusCode(400);
+    }
+
+    @Test
+    public void createEvent_aparatUrl_validation_success() {
+        EventHostViewModel eventHostViewModel =
+                createEventHost_success("aparatLinkValidationSuccessHost").thenReturn().body().as(EventHostViewModel.class);
+        EventViewModel eventViewModel = createSampleEventViewModel(eventHostViewModel, "AparatValidationSuccessEvent");
+        eventViewModel.setAparatDisplayCode("https://www.aparat.com/v/Ga81b");
+        Response response =
+                givenRestIntegration()
+                        .body(eventViewModel)
+                        .when()
+                        .post(getServerAddress() + "/api/blito/v1.0/events");
+        response.then().statusCode(201);
+    }
+
+    @Test
     public void createEvent_additionalFields_validation_fail_in_case_of_invalid_schema_type() {
         EventHostViewModel eventHostViewModel =
                 createEventHost_success("eventHostName3")

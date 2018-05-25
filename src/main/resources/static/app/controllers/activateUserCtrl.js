@@ -3,8 +3,11 @@
  */
 
 angular.module('User', [])
-    .controller('activateUserCtrl', function ($scope, userInfo) {
+    .controller('activateUserCtrl',[
+        '$scope',
+        'userInfo',
+        function ($scope, userInfo) {
         $scope.userData = userInfo.getData();
 
-    })
+    }])
 ;

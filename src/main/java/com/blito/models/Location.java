@@ -1,8 +1,11 @@
 package com.blito.models;
 
+import com.vividsolutions.jts.geom.Point;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Transient;
 
 
 @Entity(name="location")

@@ -4,7 +4,13 @@
 
 angular.module('authServices', [])
 
-    .service('Auth', function($http, AuthToken, config, $location) {
+    .service('Auth', [
+        '$http',
+        'AuthToken',
+        'config',
+        '$location',
+
+        function($http, AuthToken, config, $location) {
         var authService = this;
 
 
@@ -56,8 +62,11 @@ angular.module('authServices', [])
         };
 
 
-    })
-    .service('updateInfo', function ($http, config) {
+    }])
+    .service('updateInfo', [
+        '$http',
+        'config',
+        function ($http, config) {
         var updateInfo = this;
         updateInfo.updateData = function (updateData) {
             return $http.post(config.baseUrl + '/api/blito/v1.0/account/update-info', updateData);
@@ -71,8 +80,11 @@ angular.module('authServices', [])
             };
             return $http.get(config.baseUrl + '/api/blito/v1.0/forget-password', queryParam);
         };
-    })
-    .service('userCreate', function ($http, config) {
+    }])
+    .service('userCreate', [
+        '$http',
+        'config',
+        function ($http, config) {
         var userService = this;
 
 
@@ -80,9 +92,13 @@ angular.module('authServices', [])
             return $http.post(config.baseUrl+'/api/blito/v1.0/register', regData);
         }
 
-    })
+    }])
 
-    .service('refresh', function ($http, config, AuthToken) {
+    .service('refresh', [
+        '$http',
+        'config',
+        'AuthToken',
+        function ($http, config, AuthToken) {
         var refresh = this;
         refresh.getTokenByRefresh = function () {
             var refreshToken = {
@@ -93,8 +109,10 @@ angular.module('authServices', [])
 
             return $http.get(config.baseUrl + '/api/blito/v1.0/refresh', refreshToken);
         }
-    })
-    .service('AuthToken', function($window) {
+    }])
+    .service('AuthToken', [
+        '$window',
+        function($window) {
         var authTokenService = this;
 
 
@@ -136,9 +154,16 @@ angular.module('authServices', [])
             }
 
         }
-    })
+    }])
 
-    .service('AuthInterceptors', function (AuthToken, $q, $injector, config, $location) {
+    .service('AuthInterceptors', [
+        'AuthToken',
+        '$q',
+        '$injector',
+        'config',
+        '$location',
+
+        function (AuthToken, $q, $injector, config, $location) {
         var AuthInterceptors = this;
         var inFlightAuthRequest = null;
 
@@ -203,9 +228,10 @@ angular.module('authServices', [])
 
         }
 
-    })
+    }])
 
-    .service('userInfo', function () {
+    .service('userInfo', [
+        function () {
         var userInfo = this;
         var userDataService = { firstname : 'کاربر', lastname : '', mobile : '', email : ''};
 
@@ -218,7 +244,7 @@ angular.module('authServices', [])
         userInfo.getData = function () {
             return userDataService;
         }
-    })
+    }])
 
 ;
 

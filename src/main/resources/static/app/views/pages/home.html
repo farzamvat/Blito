@@ -37,294 +37,111 @@
             <div class="co_name">!بی برنامه نمونید </div>
             <div class="ground"></div>
         </div>
-        <div class="bliBox hidden-xs" >
-        <img src="../../../assets/img/up.png" ng-click="bliBoxClick()" id="bliBoxImageUp" alt="">
-        </div>
     </div>
-    <div class="row plannerIntroRow dispNone">
-        <div class="col-xs-12 col-md-4 floatRight plannerIntroBox">
-            <div class="submitEventIntroHomePage">
+    <div class="col-xs-12 searchSection">
+        <div class=" searchBarSection">
+            <input  id="timeSearchPart" type="text" placeholder="&#xf107;  زمان رویداد " class="timeSelect floatRight searchInputsHomePage withDropDown" readonly >
+            <div class="timeDropDown myDropDown">
+                <div class="dropDownsItems" ng-click="setSearchTime(item)" ng-repeat="item in timePickedSearch">{{item.n}}</div>
+            </div>
+            <input  id="typeSearchPart"  type="text" placeholder="&#xf107; نوع رویداد" class="typeSelect floatRight searchInputsHomePage withDropDown" readonly>
+            <div class="typeDropDown myDropDown">
+                <div class="dropDownsItems" ng-click="setSearchType(type)" ng-repeat="type in typePickedSearch">{{type.t}}</div>
+            </div>
+            <input  id="priceSearchPart"  type="text" placeholder="&#xf107; قیمت رویداد " class="priceSelect floatRight searchInputsHomePage withDropDown" readonly>
+            <div class="priceDropDown myDropDown">
+                <div class="dropDownsItems" ng-click="setSearchPrice(price)" ng-repeat="price in pricePickedSearch">{{price.p}}</div>
+            </div>
 
-                <div class="circleAnimate">
-                    <div class="topPagePictures">
-                        <div id="counter">{{totalEventsShown | pNumber}}</div>
-                    </div>
-                </div>
-
-                <div class="topPageDescription">
-                    <h4 class="text-center">رویداد‌های برگزار شده</h4>
-                    <p class="text-center fontSize16 padding5 width200px">شما می‌توانید با ثبت نام در بلیتو رویداد‌ دلخواه خود را ثبت کنید و بلیت فروشی آنلاین خود را شروع کنید</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-md-4 floatRight plannerIntroBox">
-            <div class="submitEventIntroHomePage">
-                <div class="topPagePictures">
-                    <div class="graph__wrapper">
-                        <div class="coordinates">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                        <svg width="315px" height="107px" viewBox="0 0 315 107" version="1.1">
-                            <defs>
-                                <linearGradient x1="0%" y1="100%" x2="100%" y2="100%" id="linearGradient-1">
-                                    <stop stop-color="#333" offset="0%"></stop>
-                                    <stop stop-color="#999" offset="41.7610013%"></stop>
-                                    <stop stop-color="#FCB731" offset="78.6870217%"></stop>
-                                    <stop stop-color="#FCB731" offset="100%"></stop>
-                                </linearGradient>
-                            </defs>
-                            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-                                <path d="M2.10546875,50.75 L30.5546875,40.3476562 L50.5546875,15.3476562 L70.5546875,2.3476562   " id="Path-1" stroke="url(#linearGradient-1)" stroke-width="4" sketch:type="MSShapeGroup" class="path"></path>
-                            </g>
-                        </svg>
-                    </div>
-                </div>
-                <div class="topPageDescription">
-                    <h4 class="text-center">موفقیت فروش</h4>
-                    <p class="text-center fontSize16 padding5 width200px">بلیتو با استفاده از تبلیغات و اطلاع رسانی از طریق شبکه‌های اجتماعی، فروش شما را افزایش می‌دهد</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-md-4 floatRight plannerIntroBox">
-            <div class="submitEventIntroHomePage">
-                <div class="topPagePictures">
-                    <div class="loading-clock"></div>
-                </div>
-                <div class="topPageDescription marginTop10">
-                    <h4 class="text-center">برگزاری سریع رویداد</h4>
-                    <p class="text-center fontSize16 padding5 width80Per">با استفاده از بلیتو در کم‌ترین زمان، رویداد خود را ثبت  و برگزار کنید</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 plannerIntroButtonSection">
-            <button class="btn btn-success center-block marginBottom50 marginTop30 fontSize18 submitEventHomePage" ng-click="submitEventPlannerIntro()">ثبت رویداد </button>
+            <input ng-model="searchData.name" type="text" placeholder=" نام رویداد" class="eventNameSearch floatRight searchInputsHomePage" >
+            <button ng-disabled="homePageSearchSpinner" class="btn btn-blito floatRight searchHomePageBtn" ng-click="searchHomePage(searchData)"><i ng-show="!homePageSearchSpinner" class="fa fa-search fa-2x colorWhite"></i><i ng-show="homePageSearchSpinner" class="fa fa-spin fa-spinner fa-2x colorWhite"></i></button>
         </div>
     </div>
-    <div class="bliBox hidden-xs" ng-click="bliBoxClick()">
-        <img src="../../../assets/img/down.png" id="bliBoxImageDown"  alt="">
-    </div>
-    <div class="categorySectionBackground">
-        <div class="row categorySection">
-            <div  class="col-xs-3 floatRight">
-                <a href="/concert" class="img-responsive marginTopMinus10 center-block categoryImage categoryConcert borderRound15">
-                    <div class="categoryInside borderRound15">
-                        <h4 class="categoryTitle">کنسرت</h4>
+    <div class="row " >
+        <div class="col-xs-12 marginTop30 paddingLeft30" ng-show="!eventLoading">
+            <div ng-repeat="event in eventsWithImage" class="col-xs-12 col-sm-6 col-md-6 col-lg-4  floatRight eventBox">
+                <a href="{{url+event.eventLink}}" class="col-xs-12 width95 marginTop10 padding0 eventBoxInner" >
+                    <img ng-src="{{event.image}}" alt="{{event.eventName }}" class="homePageEventImages floatRight ">
+                    <div class="floatRight  eventBoxDescription ">
+                        <h4 class="textAlignRight floatRight fontSize16 col-xs-12">{{event.eventName | limitTo : 30}}<span ng-if="event.eventName.length > 30">...</span></h4>
+                        <p class="textAlignRight  marginTop50 fontSize12"> <i class="fa fa-calendar"></i>  اولین سانس:</p>
+                        <p class="textAlignRight fontSize16 ">{{event.firstEventDate}}</p>
+                        <p class="textAlignRight marginTop10 fontSize12"><i class="fa fa-money"></i>  قیمت: </p>
+                        <p class="textAlignRight fontSize16 " ng-show="event.maxPrice !== 0 && event.minPrice !== 0 && event.minPrice === event.maxPrice">  {{event.minPrice | number | pNumber}}  تومان</p>
+                        <p class="textAlignRight fontSize16 " ng-show="event.maxPrice !== 0 && event.minPrice !== 0 && event.minPrice !== event.maxPrice">  {{event.minPrice | number | pNumber}} - {{event.maxPrice | number | pNumber}} تومان</p>
+                        <p class="textAlignRight fontSize16 " ng-show="event.maxPrice === 0">    رایگان</p>
+                        <p class="textAlignRight fontSize16 " ng-show="event.maxPrice !== 0 && event.minPrice === 0">  رایگان - {{event.maxPrice | number | pNumber}} تومان</p>
+                        <p class="textAlignRight marginTop25   eventBoxPlannerDesc fontSize10"><i class="fa fa-user"></i>  برگزار کننده: {{ event.eventHostName | limitTo : 30}}<span ng-if="event.eventHostName.length > 30">...</span></p>
                     </div>
                 </a>
+                <div class="ribbon"><span ng-class="{'ribbonColorCinema': event.eventType === 'CINEMA',
+                                                                     'ribbonColorTheater': event.eventType === 'THEATER',
+                                                                     'ribbonColorWorkshop': event.eventType === 'WORKSHOP',
+                                                                     'ribbonColorEntertainment': event.eventType === 'ENTERTAINMENT',
+                                                                     'ribbonColorTour': event.eventType === 'TOURISM',
+                                                                     'ribbonColorConcert': event.eventType === 'CONCERT',
+                                                                     'ribbonColorExhibition': event.eventType === 'EXHIBITION',
+                                                                     'ribbonColorOther': event.eventType === 'OTHER'}">{{event.eventTypeFarsi}}</span></div>
             </div>
-            <div  class="col-xs-3 col-sm-2 floatRight">
-                <a href="/theater" class="img-responsive marginTopMinus10 center-block categoryImage categoryTheatre borderRound15">
-                    <div class="categoryInside borderRound15">
-                        <h4 class="categoryTitle">تئاتر</h4>
-                    </div>
+        </div>
+        <div class="col-xs-12 marginTop60 paddingLeft30" ng-show="eventLoading">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4  floatRight eventBox">
+                <img class="loadingEventBox" src="../../../assets/img/loadingEvent.png" alt="">
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4  floatRight eventBox">
+                <img class="loadingEventBox" src="../../../assets/img/loadingEvent.png" alt="">
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4  floatRight eventBox">
+                <img class="loadingEventBox" src="../../../assets/img/loadingEvent.png" alt="">
+            </div>
+        </div>
+        <p class="text-center fontSize32" ng-show="eventsWithImage.length === 0 && !eventLoading">رویدادی یافت نشد </p>
+
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="homePageMoreButton center-block marginTop30 marginBottom50">
+            <button ng-show="showMoreButton" class="btn btn-blito moreEventsButton fontSize18" ng-click="moreEvents()"><i ng-show="moreEventsSpinner" class="fa fa-spin fa-spinner"></i><i class="fa fa-angle-down" ng-show="!moreEventsSpinner"></i> بیشتر  </button>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="row plannerIntroRow">
+        <div class="col-xs-12 col-md-4  floatRight">
+            <div class="whiteBlocks">
+                <h3 class="textAlignRight">رویداد برگزار می‌کنی؟</h3>
+                <p class="textAlignRight text-justify fontSize16 plannerParagraph">اگر رویداد برگزار می‌کنی یا یک ایده خلاقانه برای ایجاد یک رویداد داری، با بلیتو این کار رو راحت‌‌‌‌‌تر و سریع‌تر انجام بده </p>
+                <img class="center-block plannerGifs" src="../../../assets/img/planner.gif" alt="">
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-4 floatRight">
+            <div class="arrow_box text-center">
+                 تا الان <span class="fontSize36 fontWeightBold">{{totalNumberOfEvents | pNumber}}</span> رویداد برگزار شده
+            </div>
+            <button class="bigRoundButton btn btn-blito" ng-click="submitEventPlannerIntro()"> بعدی رو برگزار کن</button>
+        </div>
+        <div class="col-xs-12 col-md-4  floatRight">
+            <div class="whiteBlocks">
+                <h3 class="textAlignRight">محل برگزاری داری؟</h3>
+                <p class="textAlignRight text-justify fontSize16 plannerParagraph">اگر صاحب یک کافه ‌هستی یا یک جایی داری که میشه اونجا رویداد برگزار کرد، به ما خبر بده</p>
+                <img class="center-block plannerGifs" src="../../../assets/img/place.gif" alt="">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-xs-12">
+            <h2 class="text-center marginTop60">فعال‌ترین برگزار‌کننده‌های بلیتو</h2>
+            <div ng-repeat="planer in eventPlaners" class="col-xs-12 col-sm-6 col-md-3 floatRight marginTop30 marginBottom50 ">
+                <a class="plannerBoxHomePage" href="{{planerUrl+planer.eventHostLink}}">
+                <img class="circleImage center-block eventPageHostImage" ng-src="{{planer.image}}" alt="">
                 </a>
-
+                <h4 class="text-center">{{planer.hostName}}</h4>
+                <p class="text-center"><span ng-if="planer.description.length > 50">...</span>{{planer.description | limitTo : 50}}</p>
             </div>
-            <div  class="hidden-xs col-sm-2 floatRight">
-            </div>
-            <div  class="col-xs-3  col-sm-2 floatRight">
-                <a href="/workshop" class="img-responsive marginTopMinus10 center-block categoryImage categoryWorkshop borderRound15">
-                    <div class="categoryInside borderRound15">
-                        <h4 class="categoryTitle">کارگاه</h4>
-                    </div>
-                </a>
-
-            </div>
-            <div  class="col-xs-3 floatRight">
-                <a href="/tour" class="img-responsive marginTopMinus10 center-block categoryImage categoryTour borderRound15">
-                    <div class="categoryInside borderRound15">
-                        <h4 class="categoryTitle">تور</h4>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div ng-show="concertRow.length > 0" class="row slidingEventsRow">
-        <div class="col-xs-12 col-md-9 slidingEvents floatRight">
-            <img src="../../../assets/img/concertLogo.png" class="slidingEventsMiniLogo">
-            <h2 class="textAlignRight">کنسرت</h2>
-            <div class="marginTop30">
-                <a href="/concert" class="  eventMore "><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</a>
-            </div>
-            <div class="col-xs-12 slickSliders">
-                <slick ng-if="showSections[0]" dots="true" lazy-load="ondemand"   infinite="true" autoplay="true"   speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
-                    <div ng-repeat="event in concertRow" >
-                        <a class="slidingEventsImg" href="{{url+event.eventLink}}">
-                            <img ng-src="{{event.image}}" alt="{{event.eventName}}" class=" center-block homePageImage" />
-                            <div class="moreInfo">
-                                <h4>{{ event.eventName }}</h4>
-                                <h5>{{ event.capacity - event.soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
-                            </div>
-                            <div ng-show="event.eventState === 'SOLD'" class="soldout">
-                                <img src="../../../assets/img/soldout.png"/>
-                            </div>
-                            <h4 class="text-center slidingEventsTitle"><span ng-if="event.eventName.length > 20">...</span>{{event.eventName | limitTo : 20}}</h4>
-                        </a>
-                        <a href="{{url+event.eventLink}}" class="btn btn-success slidingEventsBtn center-block hidden-xs">مشاهده رویداد  </a>
-                    </div>
-
-                </slick>
-                <div ng-if="!showSections[0]" class="homePageLoader"></div>
-            </div>
-        </div>
-        <div class="hidden-xs hidden-sm col-sm-3   floatRight blitoOffer">
-            <h4 ng-show="ourOfferConcert.length > 0"  class="text-center marginTop10"> بلیتو کنسرت  </h4>
-            <div ng-show="ourOfferConcert.length > 0"  class="row marginTop33 ">
-                <div class="col-sm-1 floatRight">
-                </div>
-                <div ng-show="showSections[1]" class="col-sm-10 floatRight blitoOfferMain  ">
-                    <a class="slidingEventsImg  " href="{{url+ourOfferConcert[0].eventLink}}"><img ng-src="{{ourOfferConcert[0].image}}" alt="{{ourOfferConcert[0].eventName}}" class=" center-block homePageImage">
-                        <div class="moreInfo">
-                            <h4>{{ ourOfferConcert[0].eventName }}</h4>
-                            <h5>{{ ourOfferConcert[0].capacity - ourOfferConcert[0].soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
-                        </div>
-
-                        <div ng-show="ourOfferConcert[0].eventState === 'SOLD'" class="soldout marginBottomOurOffer">
-                            <img src="../../../assets/img/soldout.png"/>
-                        </div>
-
-                        <h4 class="text-center slidingEventsTitle"><span ng-if="ourOfferConcert[0].eventName.length > 20">...</span>{{ ourOfferConcert[0].eventName | limitTo: 20}}</h4>
-                    </a>
-                    <a href="{{url+ourOfferConcert[0].eventLink}}" class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  </a>
-                </div>
-                <div ng-if="!showSections[1]" class="homePageLoader"></div>
-                <div class="col-sm-1 floatRight">
-                </div>
-            </div>
-        </div>
-    </div>
-    <div ng-show="secondSection.length > 0" class="row slidingEventsRow" >
-        <div class="col-xs-12 col-md-9 slidingEvents floatRight">
-            <img src="../../../assets/img/edu-logo.png" class="slidingEventsMiniLogo">
-            <h2 class="textAlignRight">کارگاه</h2>
-            <div class="marginTop30">
-                <a href="/tour" class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</a>
-            </div>
-            <div class="col-xs-12 slickSliders">
-                <slick ng-if="showSections[2]" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
-                    <div ng-repeat="event in secondSection" >
-                        <a class="slidingEventsImg" href="{{url+event.eventLink}}">
-                            <img ng-src="{{event.image}}" alt="{{ event.eventName }}" class=" center-block homePageImage">
-                            <div class="moreInfo">
-                                <h4>{{ event.eventName }}</h4>
-                                <h5>{{ event.capacity - event.soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
-                            </div>
-
-                            <div ng-show="event.eventState === 'SOLD'" class="soldout">
-                                <img src="../../../assets/img/soldout.png"/>
-                            </div>
-
-                            <h4 class="text-center slidingEventsTitle"><span ng-if="event.eventName.length > 20">...</span>{{event.eventName | limitTo : 20}}</h4>
-                        </a>
-                        <a href="{{url+event.eventLink}}" class="btn btn-success slidingEventsBtn center-block hidden-xs">مشاهده رویداد  </a>
-                    </div>
-                </slick>
-                <div ng-if="!showSections[2]" class="homePageLoader"></div>
-            </div>
-        </div>
-        <div class="hidden-xs hidden-sm col-sm-3  floatRight blitoOffer">
-            <h4 ng-show="ourOfferTour.length > 0" class="text-center marginTop10">بلیتو کارگاه</h4>
-            <div ng-show="ourOfferTour.length > 0" class="row marginTop30">
-                <div class="col-sm-1 floatRight">
-                </div>
-                <div ng-show="showSections[3]" class="col-sm-10 floatRight blitoOfferMain">
-                    <a class="slidingEventsImg" href="{{url+ourOfferTour[0].eventLink}}"><img ng-src="{{ourOfferTour[0].image}}" alt="{{ourOfferTour[0].eventName}}" class=" center-block homePageImage">
-                        <div class="moreInfo">
-                            <h4>{{ ourOfferTour[0].eventName }}</h4>
-                            <h5>{{ ourOfferTour[0].capacity - ourOfferTour[0].soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
-                        </div>
-
-                        <div ng-show="ourOfferTour[0].eventState === 'SOLD'" class="soldout marginBottomOurOffer">
-                            <img src="../../../assets/img/soldout.png"/>
-                        </div>
-                        <h4 class="text-center slidingEventsTitle"><span ng-if="ourOfferTour[0].eventName.length > 20">...</span>{{ ourOfferTour[0].eventName  | limitTo:20}}</h4>
-                    </a>
-                    <a href="{{url+ourOfferTour[0].eventLink}}" class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  </a>
-                </div>
-                <div ng-if="!showSections[3]" class="homePageLoader"></div>
-                <div class="col-sm-1 floatRight">
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row slidingEventsRow" >
-        <div class="col-xs-12 col-md-9 slidingEvents floatRight">
-            <img src="../../../assets/img/eventoLogo.png" class="slidingEventsMiniLogo">
-            <h2 class="textAlignRight">عیدانه</h2>
-            <div class="col-xs-12 slickSliders">
-                <slick ng-if="showSections[4]" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
-                    <div ng-repeat="event in evento" >
-                        <a class="slidingEventsImg" href="{{url+event.eventLink}}">
-                            <img ng-src="{{event.image}}" alt="{{ event.eventName }}" class=" center-block homePageImage">
-                            <div class="moreInfo">
-                                <h4>{{ event.eventName }}</h4>
-                                <h5 ng-show="event.eventType !== 'EXHIBITION'">{{ event.capacity - event.soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
-                            </div>
-
-                            <div ng-show="event.eventState === 'SOLD'" class="soldout">
-                                <img src="../../../assets/img/soldout.png"/>
-                            </div>
-
-                            <h4 class="text-center slidingEventsTitle"><span ng-if="event.eventName.length > 20">...</span>{{event.eventName | limitTo:20}}</h4>
-                        </a>
-                        <a href="{{url+event.eventLink}}" class="btn btn-success slidingEventsBtn center-block hidden-xs">مشاهده رویداد  </a>
-                    </div>
-
-                </slick>
-                <div ng-if="!showSections[4]" class="homePageLoader"></div>
-            </div>
-
-
-        </div>
-        <div class="hidden-xs hidden-sm col-sm-3  floatRight blitoOffer">
-            <h4 ng-show="ourOfferEvento.length > 0"  class="text-center marginTop10"> پیشنهاد عیدانه</h4>
-            <div ng-show="ourOfferEvento.length > 0"  class="row marginTop30">
-                <div class="col-sm-1 floatRight">
-                </div>
-                <div ng-show="showSections[5]" class="col-sm-10 floatRight blitoOfferMain">
-                    <a class="slidingEventsImg" href="{{url+ourOfferEvento[0].eventLink}}"><img ng-src="{{ourOfferEvento[0].image}}" alt="{{ ourOfferEvento[0].eventName }}" class=" center-block homePageImage">
-                        <div class="moreInfo">
-                            <h4>{{ ourOfferEvento[0].eventName }}</h4>
-                            <h5 ng-show="ourOfferEvento[0].eventType !== 'EXHIBITION'">{{ ourOfferEvento[0].capacity - ourOfferEvento[0].soldCount | number | pNumber}}: بلیت باقی مانده <i class="fa fa-calendar-check-o"></i></h5>
-                        </div>
-
-                        <div ng-show="ourOfferEvento[0].eventState === 'SOLD'" class="soldout marginBottomOurOffer">
-                            <img src="../../../assets/img/soldout.png"/>
-                        </div>
-                        <h4 class="text-center slidingEventsTitle"><span ng-if="ourOfferEvento[0].eventName.length > 20">...</span>{{ ourOfferEvento[0].eventName | limitTo:20}}</h4>
-                    </a>
-                    <a href="{{url+ourOfferEvento[0].eventLink}}" class="btn btn-success slidingEventsBtn center-block">مشاهده رویداد  </a>
-                </div>
-                <div ng-if="!showSections[5]" class="homePageLoader"></div>
-                <div class="col-sm-1 floatRight">
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="row textAlignRight marginLeft0 imgRelative" >
-        <div class="col-xs-12 col-sm-6 col-md-6 floatRight exchangeTicketText">
-            <h2>آگهی بلیت</h2>
-            <p class="fontSize16Mobile fontSize18">
-                تا بحال شده بلیت فیلم مورد علاقتون یا کنسرت خواننده ای ک دوستش دارید رو بخرید اما نتونید شرکت کنید؟ قطعا نگران این موضوع میشید که چطوری پول از دست رفته رو برگردونید؟بلیتو فضایی رو ایجاد کرده که شما میتونید بلیت‌های خودتون رو اگهی کنید و نگران هزینه ای که بابت خریدش پرداخت کردید نباشید.رایگان اگهی کنید.
-            </p>
-            <a ng-click="makeNewExchange()" class="btn btn-success co-xs-6 btn-lg btnExchangeTicket fontSize16Mobile btnSubmitExchange"> <i class="fa fa-ticket" aria-hidden="true"></i> ثبت آگهی </a>
-            <a href="/exchange-tickets" class="btn btn-success co-xs-6 btn-lg btnExchangeTicket fontSize16Mobile btnExchangeList"> <i class="fa fa-list-alt" aria-hidden="true"></i> بلیت های آگهی شده </a>
-        </div>
-
-        <div class="col-md-3 floatRight col-sm-3 hidden-xs ">
-            <img src="assets/img/blit.png" data-parallax="true" data-speed="0.2" data-direction="down" class="blitImageOne">
-            <div class="col-xs-12 blitFade"></div>
-        </div>
-        <div class="col-md-3 floatRight col-sm-3 hidden-xs">
-            <img src="assets/img/b3.png" data-parallax="true" data-speed="0.2" data-direction="up" class="blitImage">
-            <div class="col-xs-12 blitFade"></div>
         </div>
     </div>
     <div class="row slidingEventsRow" >
@@ -368,36 +185,5 @@
 
     </div>
 
-    <div class="row slidingEventsRow" >
-
-        <div class="hidden-xs hidden-sm col-sm-1 blitoOffer floatRight">
-
-        </div>
-        <div class="col-xs-12 col-md-10 slidingEvents floatRight">
-            <h2 class="textAlignRight">رویداد های تمام شده</h2>
-            <div class="marginTop30">
-                <a href="/ended-events" class=" eventMore"><i class="fa fa-arrow-left" aria-hidden="true"></i>  بیشتر</a>
-            </div>
-            <div class="col-xs-12 slickSliders">
-                <slick ng-if="showSections[6]" dots="true" infinite="true"     lazy-load="ondemand" speed=700 slides-to-show=3 touch-move="true" slides-to-scroll=1  >
-                    <div ng-repeat="event in ended" >
-                        <a class="slidingEventsImg" href="{{url+event.eventLink}}">
-                            <img ng-src="{{event.image}}" alt="{{ event.eventName }}" class=" center-block homePageImage">
-                            <div class="moreInfo">
-                                <h4>{{ event.eventName }}</h4>
-                            </div>
-                            <h4 class="text-center slidingEventsTitle"><span ng-if="event.eventName.length > 20">...</span>{{event.eventName | limitTo}}</h4>
-                        </a>
-                    </div>
-
-                </slick>
-                <div ng-if="!showSections[6]" class="homePageLoader"></div>
-            </div>
-
-        </div>
-        <div class="hidden-xs hidden-sm col-sm-1 blitoOffer floatRight">
-
-        </div>
-    </div>
 </div>
 

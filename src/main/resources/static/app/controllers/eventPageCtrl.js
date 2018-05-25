@@ -2,7 +2,26 @@
  * Created by soroush on 4/25/17.
  */
 angular.module('eventsPageModule')
-    .controller('eventPageCtrl', function ($rootScope,
+    .controller('eventPageCtrl', [
+        '$rootScope',
+        '$scope',
+        '$routeParams',
+        'eventService',
+        'mapMarkerService',
+        'photoService',
+        '$q',
+        'dateSetterService',
+        '$timeout',
+        'userInfo',
+        'ticketsService',
+        '$window',
+        'dataService',
+        'plannerService',
+        '$filter',
+        'seatmapService',
+        '$location',
+
+        function ($rootScope,
                                            $scope,
                                            $routeParams,
                                            eventService,
@@ -36,13 +55,14 @@ angular.module('eventsPageModule')
 
         eventService.getEvent($routeParams.eventLink)
             .then(function (data) {
+
                 $scope.eventDataDetails = angular.copy(data.data);
                 $rootScope.pageDescription = $scope.eventDataDetails.description;
                 $rootScope.keyWord =  $scope.eventDataDetails.eventName + ","
                     +dataService.eventTypePersian($scope.eventDataDetails.eventType) + ","
                     + " بلیت " + dataService.eventTypePersian($scope.eventDataDetails.eventType) + ","
                     +  dataService.eventTypePersian($scope.eventDataDetails.eventType) + " این هفته " +","
-                    + "سرگرمی تهران";
+                    + "سرگرمی تهران" +"رویداد بیلیتو" + "رویداد بلیتو";
                 $rootScope.robotValue = 'index';
                 $rootScope.title = $location.path().replace('/event-page/','').replace( /\d+/,'').replace( /-/,'');
 
@@ -66,8 +86,7 @@ angular.module('eventsPageModule')
                     document.getElementById('menu1').insertAdjacentHTML('afterbegin',$scope.eventDataDetails.aparatDisplayCode);
                 }
             })
-            .catch(function (data) {
-            });
+
         $scope.eventFlatDates = [];
         $scope.sansListData = function (dates) {
             $scope.eventDates = dates.sort(function (a, b) {
@@ -93,7 +112,7 @@ angular.module('eventsPageModule')
             });
             $timeout(function () {
                 for(var sansIndex in $scope.eventDates) {
-                    dateSetterService.initDate("classDate"+sansIndex);
+                    dateSetterService.initDate("classDate"+sansIndex, 0);
                     $scope.eventDates[sansIndex].persianDate = persianDate($scope.eventDates[sansIndex].date).format("dddd,DD MMMM, ساعت HH:mm");
                     $(".classDate"+sansIndex).text(persianDate($scope.eventDates[sansIndex].date).format("dddd,DD MMMM, ساعت HH:mm"));
                 }
@@ -573,10 +592,12 @@ angular.module('eventsPageModule')
                 })
         };
         $scope.buyTicketFormatData = function (eventNestedData) {
-            $scope.buyTicketPickData = eventNestedData.map(function (eventDate) {
-                eventDate.date = persianDate(eventDate.date).format("dddd,DD MMMM, ساعت HH:mm");
-                return eventDate;
-            })
+            $scope.buyTicketPickData = eventNestedData.sort(function (eventDateOne, eventDateSecond) {
+                    return eventDateOne.date - eventDateSecond.date;
+                }).map(function (eventDate) {
+                    eventDate.date = (eventDate.dateTime !== null) ? eventDate.dateTime : (persianDate(eventDate.date).format("dddd,DD MMMM, ساعت HH:mm"));
+                    return eventDate;
+                });
         };
         $scope.getFreeTicket = function () {
             $window.open($scope.ticketTrackCode);
@@ -623,4 +644,4 @@ angular.module('eventsPageModule')
             $(window).scroll(sticky_relocate);
             sticky_relocate();
         });
-    });
+    }]);

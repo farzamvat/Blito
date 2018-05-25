@@ -15,9 +15,9 @@
                         <i class="fa fa-calendar" aria-hidden="true"></i>
                     </a>
                     <ul class="tabDropDown" id="toggleEvent">
-                        <li ng-click="scrollTo('eventList', 'eventListSection')"><a ><span class="">  رویدادها و برگزارکننده ها </span><i class="fa fa-list"></i></a></li>
-                        <li ng-click="scrollTo('makeEvent', 'makeEventSection')"><a ><span class="">ایجاد رویداد</span><i class="fa fa-magic"></i></a></li>
-                        <li ng-click="scrollTo('eventPlannerSection', 'PlannerSection')"><a ><span class="">ایجاد برگزارکننده</span><i class="fa fa-user"></i></a></li>
+                        <li ng-click="scrollTo('eventList', 'eventListSection')"><a ><span class="">  رویدادها و برگزارکننده ها </span><i class="fa fa-list"></i> </a></li>
+                        <li ng-click="scrollTo('makeEvent', 'makeEventSection')"><a ><span class=""> ایجاد رویداد </span><i class="fa fa-magic"></i></a></li>
+                        <li ng-click="scrollTo('eventPlannerSection', 'PlannerSection')"><a ><span class=""> ایجاد برگزارکننده </span><i class="fa fa-user"></i></a></li>
                     </ul>
                 </li>
                 <li>
@@ -301,7 +301,7 @@
                                                     <label class="registerLabel floatRight" for="eventExchangeDateMain" >تاریخ و ساعت رویداد  :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input type="text" id="eventExchangeDateMain" name="exchangeDateTime"required ng-model="exchange.eventTime" class="persianExchangeTime datePickerFormat borderRound15" readonly/>
+                                                    <input type="text" id="eventExchangeDateMain" name="exchangeDateTime"  ng-model="exchange.eventTime" class="persianExchangeTime datePickerFormat borderRound15" readonly/>
                                                 </div>
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-6 formRegGroup floatRight">
@@ -434,8 +434,7 @@
 
                                                             <th class="dataCenter">نام رویداد
                                                             </th>
-                                                            <th class="dataCenter hidden-xs" >نوع
-                                                            </th>
+
 
                                                             <th class="dataCenter" >وضعیت ثبت
                                                             </th>
@@ -448,12 +447,12 @@
                                                         <tbody class="showTimeList">
                                                         <tr  total-items="totalEventsNumber" dir-paginate="item in getDataUserEvents | itemsPerPage: 4" pagination-id="events" current-page="currentPageEvent">
                                                             <td class="dataCenter"><a href="/event-page/{{ item.eventLink}}">{{ item.eventName}}</a></td>
-                                                            <td class="dataCenter hidden-xs">{{ item.eventType}}</td>
                                                             <td class="dataCenter">{{ item.operatorState}}</td>
                                                             <td class="dataCenter hidden-xs">{{ item.eventState}}</td>
-                                                            <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editEvent($index)">ویرایش</button></td>
+                                                            <td class="dataCenter"><button class="btn btn-warning editButton" ng-click="editEvent($index, true)">ویرایش</button></td>
+                                                            <td class="dataCenter" ng-show="item.operatorState === 'ویرایش شده'"><button class="btn btn-info editButton" ng-click="editEvent($index, false)">اطلاعات فعلی رویداد</button></td>
                                                             <td ng-show="item.operatorState === 'تأیید شده'" class="dataCenter"><button class="btn editButton btn-default" ng-click="showTickets($index)">بلیت ها</button></td>
-                                                            <td ng-show="item.operatorState === 'تأیید شده'" class="dataCenter"><button class="btn editButton btn-success" ng-click="discountCodeShow($index)">کد تخفیف</button></td>
+                                                            <td ng-show="item.operatorState !== 'انتظار' && item.operatorState !== 'رد شده' && item.operatorState !== 'عدم تایید ویرایش'" class="dataCenter"><button class="btn editButton btn-success" ng-click="discountCodeShow($index)">کد تخفیف</button></td>
                                                             <td ng-if="item.operatorState === 'رد شده'" class="dataCenter"><button type="button" ng-click="showSetting($index)"  class="btn editButton btn-info" >تنظیمات رویداد </button></td>
                                                             <td ng-if="item.salonUid" class="dataCenter"><button type="button" ng-click="openGuestTicketModal($index)"  class="btn editButton btn-info" >صدور بلیت مهمان‌ها </button></td>
                                                         </tr>
@@ -584,7 +583,7 @@
                                                     <label class="registerLabel floatRight" for="eventTicketStartTimeMain">زمان شروع فروش بلیت :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input height="60" id="eventTicketStartTimeMain" required name="eventStartTime" ng-model="eventFields.ticketStartTime" type="text"  class="form-group datePickerFormat persianTimeEventStart borderRound15" readonly>
+                                                    <input height="60" id="eventTicketStartTimeMain"  name="eventStartTime" ng-model="eventFields.ticketStartTime"  type="text"  class="form-group datePickerFormat persianTimeEventStart borderRound15" readonly>
                                                 </div>
 
                                             </div>
@@ -594,7 +593,7 @@
                                                     <label class="registerLabel floatRight" for="eventTicketEndTimeMain" > زمان پایان فروش بلیت :</label>
                                                 </div>
                                                 <div class="col-xs-11 floatRight ">
-                                                    <input height="60" id="eventTicketEndTimeMain" required name="eventEndTime" ng-model="eventFields.ticketEndTime"  type="text"  class="form-group datePickerFormat persianTimeEventEnd borderRound15" readonly>
+                                                    <input height="60" id="eventTicketEndTimeMain"  name="eventEndTime" ng-model="eventFields.ticketEndTime"  type="text"  class="form-group datePickerFormat persianTimeEventEnd borderRound15" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -761,10 +760,10 @@
                                             </div>
                                             <div class="form-group col-xs-12 col-sm-10  formRegGroup floatRight marginTop30">
                                                 <div class="col-xs-5 col-sm-6 floatRight text-center">
-                                                    <label class="registerLabel" for="aparatVideoMain"> <a href="http://www.aparat.com"  target="_blank"><img class="aparatLink" src="assets/img/aparat.png" alt=""></a> لینک آپارات (iframe) :(اختیاری)</label>
+                                                    <label class="registerLabel" for="aparatVideoMain"> <a href="http://www.aparat.com"  target="_blank"><img class="aparatLink" src="assets/img/aparat.png" alt=""></a> لینک آپارات (صفحه وبسایت) :(اختیاری)</label>
                                                 </div>
                                                 <div class="col-xs-7 col-sm-6 floatRight ">
-                                                    <input height="60"  id="aparatVideoMain"  ng-model="eventFields.aparatLink"  type="text"  class="form-group registerInput borderRound15" >
+                                                    <input height="60"  id="aparatVideoMain" placeholder="www.aparat.com/example"  ng-model="eventFields.aparatLink"  type="text"  class="form-group registerInput borderRound15" >
                                                 </div>
 
                                             </div>
@@ -809,7 +808,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div ng-show="seatPicker.isChosen === 'true'" class="col-xs-12 marginTop60">
+                                        <div  ng-show="seatPicker.isChosen === 'true'" class="col-xs-12 marginTop60 slideUpOnSubmit">
                                             <p class="marginRight30">سالن مورد نظر را انتخاب کنید:
                                             </p>
                                             <div class="col-xs-12 floatRight ">
@@ -835,7 +834,7 @@
                                             </div>
                                         </div>
 
-                                        <div ng-if="(seatPicker.isChosen === 'true') && (seatMapListChosen) && (allCheckedSeats === schemaNumberOfSeats) && (schemaNumberOfSeats !== 0)" class="col-xs-12 marginTop60">
+                                        <div ng-if="(seatPicker.isChosen === 'true') && (seatMapListChosen) && (allCheckedSeats === schemaNumberOfSeats) && (schemaNumberOfSeats !== 0)" class="col-xs-12 marginTop60 slideUpOnSubmit">
 
                                             <div class="form-group col-xs-12 col-sm-12 formRegGroup floatRight marginTop30 marginBottom20" >
                                                 <div  class="col-xs-12 text-center" >
@@ -869,7 +868,7 @@
                                                             <label class="registerLabel" >تاریخ و ساعت : </label>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-6 floatRight inputXsSize">
-                                                            <input type="text" required ng-model="newShowTime.persianDate" name="newSansTime" class="datePickerFormat eventDateClass0 borderRound15"  readonly/>
+                                                            <input type="text" required ng-model="newShowTime.persianDate" name="newSansTime" id="createSansWithSeat" class="datePickerFormat eventDateClass0 borderRound15"  readonly/>
                                                         </div>
                                                     </div>
 
@@ -948,7 +947,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div ng-if="seatPicker.isChosen ===  'false'" class="col-xs-12 marginTop60">
+                                        <div ng-if="seatPicker.isChosen ===  'false'" class="col-xs-12 marginTop60 slideUpOnSubmit">
                                             <div class="form-group col-xs-12 col-sm-12 formRegGroup floatRight marginTop30 marginBottom20" >
                                                 <div  class="col-xs-12 text-center" >
                                                     <table class="table">
@@ -981,7 +980,7 @@
                                                             <label class="registerLabel" >تاریخ و ساعت : </label>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-6 floatRight inputXsSize">
-                                                            <input type="text" required ng-model="newShowTime.persianDate" name="newSansTimeWithoutSeat" class="datePickerFormat eventDateClass0 borderRound15"  readonly/>
+                                                            <input type="text" required ng-model="newShowTime.persianDate"   name="newSansTimeWithoutSeat" id="createSansWithoutSeat" class="datePickerFormat eventDateClass0  borderRound15"  />
                                                         </div>
                                                     </div>
 
@@ -995,7 +994,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-6 floatRight ">
-                                                            <select id="eventTicketWithoutSeat" required ng-model="ticketType.isFree" class="form-control dropDownInput borderRound15" ng-options="o.v as o.n for o in [{n : 'رایگان', v: true}, {n : 'پولی', v: false}]">
+                                                            <select id="eventTicketWithoutSeat" required ng-model="ticketType.isFree"  class="form-control dropDownInput borderRound15" ng-options="o.v as o.n for o in [{n : 'رایگان', v: true}, {n : 'پولی', v: false}]">
 
                                                             </select>
                                                         </div>
@@ -1012,7 +1011,7 @@
                                                                 <label class="registerLabel" for="ticketCapacityWithoutSeat">ظرفیت بلیت :</label>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-6 floatRight ">
-                                                                <input height="60" required id="ticketCapacityWithoutSeat" ng-model="ticketType.capacity" name="blitCapacityWithoutSeat"  type="number"  class="form-group registerInput inputXsSize borderRound15" >
+                                                                <input height="60" required id="ticketCapacityWithoutSeat"  ng-model="ticketType.capacity" name="blitCapacityWithoutSeat"  type="number"  class="form-group registerInput inputXsSize borderRound15" >
                                                             </div>
                                                         </div>
                                                         <div ng-if="ticketType.isFree === false" class="col-xs-12 col-sm-12 floatRight marginTop10">
@@ -1082,7 +1081,8 @@
                                                 <p class="text-center colorRed" ng-show="(schemaNumberOfSeats != allCheckedSeats)">* تمام صندلی ها را قیمت گذاری کنید.</p>
                                             </div>
                                             <p class="text-center colorRed" ng-show="(submitEventForm.$invalid || mapMarkerClickCheckEvent) && !((submitEventForm.eventType.$invalid)||(submitEventForm.eventPlannerSelect.$invalid))">* همه فیلد های اجباری را پر نمایید.</p>
-                                            <button id="signInButtonMain" type="submit"  ng-disabled="submitEventForm.$invalid || mapMarkerClickCheckEvent || eventSubmitOnce || (schemaNumberOfSeats != allCheckedSeats) || showTimeForms.length === 0" ng-click="submitEvent(eventFields)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت رویداد <i ng-show="createEventSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
+                                            <button id="signInButtonMain" type="submit" ng-disabled="submitEventForm.$invalid || mapMarkerClickCheckEvent || eventSubmitOnce || (schemaNumberOfSeats != allCheckedSeats) || showTimeForms.length === 0"  ng-click="submitEvent(eventFields)" name="signin" class="btn btn-success btn-lg btnLogin">ثبت رویداد <i ng-show="createEventSpinner" class="fa fa-spinner fa-spin"></i><i class="fa fa-check"></i></button>
+
                                         </div>
 
                                     </div>
