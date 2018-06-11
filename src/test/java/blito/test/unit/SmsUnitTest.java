@@ -12,6 +12,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.UnsupportedEncodingException;
+
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -27,17 +29,14 @@ public class SmsUnitTest {
 	TestRestTemplate rest = new TestRestTemplate();
 	
 	@Test
-	public void sendSmsKaveNegar() throws InterruptedException
-	{
+	public void sendSmsKaveNegar() throws InterruptedException, UnsupportedEncodingException {
 //
 //		ResponseEntity<String> response = rest.getForEntity("https://api.kavenegar.com/v1/"+ apiKey + "/verify/lookup.json?receptor=09127976837&token=852596&template=Blito", String.class);
 //		System.out.println("******************************");
 //		System.out.println(response.getBody());
 //		System.out.println("******************************");
 //		
-		
-		smsService.sendBlitRecieptSms("09127976837", "32816213");
-		Thread.sleep(5000);
+		System.out.println(urlShortenerService.generateBitlyShortenedUrl("http://blito.ir//api/blito/v1.0/public/blits/17593015/blit.pdf").toString());
 	}
 
 
