@@ -32,7 +32,7 @@ public class UrlShortenerService {
 
 	public UrlShortenerResponseViewModel generateBitlyShortenedUrl(String url) throws UnsupportedEncodingException {
 		ResponseEntity<UrlShortenerResponseViewModel> response =
-				rest.getForEntity("https://api-ssl.bitly.com/v3/shorten?access_token=" + bitlyUrlShortenerApiKey + "&longUrl=" + URLEncoder.encode(url,"UTF-8"),UrlShortenerResponseViewModel.class);
+				rest.getForEntity("https://api-ssl.bitly.com/v3/shorten?access_token=" + bitlyUrlShortenerApiKey + "&longUrl=" + url,UrlShortenerResponseViewModel.class);
 		return response.getBody();
 	}
 }
