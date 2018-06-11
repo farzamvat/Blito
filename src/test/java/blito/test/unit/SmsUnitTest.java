@@ -1,17 +1,16 @@
 package blito.test.unit;
 
+import com.blito.Application;
+import com.blito.services.SmsService;
+import com.blito.services.UrlShortenerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import com.blito.Application;
-import com.blito.services.SmsService;
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
@@ -22,6 +21,8 @@ public class SmsUnitTest {
 	String apiKey;
 	@Autowired
 	private SmsService smsService;
+	@Autowired
+	private UrlShortenerService urlShortenerService;
 	
 	TestRestTemplate rest = new TestRestTemplate();
 	
@@ -38,5 +39,6 @@ public class SmsUnitTest {
 		smsService.sendBlitRecieptSms("09127976837", "32816213");
 		Thread.sleep(5000);
 	}
+
 
 }
