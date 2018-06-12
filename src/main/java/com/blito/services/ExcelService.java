@@ -106,6 +106,8 @@ public class ExcelService {
 				));
 		if(v instanceof SeatBlitViewModel) {
 			values.add(((SeatBlitViewModel)v).getSeats());
+		} else {
+			values.add("");
 		}
 		Optional.ofNullable(v.getAdditionalFields()).filter(additionalFieldList -> !additionalFieldList.isEmpty())
 				.ifPresent(additionalFieldList ->
