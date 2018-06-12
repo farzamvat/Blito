@@ -9,10 +9,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 @Service
 public class UrlShortenerService {
 	@Value("${google.url.shortener.api.key}")
 	private String googleUrlShortenerApiKey;
+	@Value("${bit.ly.url.shortener.access.token}")
+	private String bitlyUrlShortenerApiKey;
 	private RestTemplate rest = new RestTemplate();
 	private Logger log = LoggerFactory.getLogger(getClass());
 	
@@ -25,4 +30,9 @@ public class UrlShortenerService {
 		return response.getBody();
 	}
 
+	public UrlShortenerResponseViewModel generateBitlyShortenedUrl(String url) throws UnsupportedEncodingException {
+		ResponseEntity<UrlShortenerResponseViewModel> response =
+				rest.getForEntity("https://api-ssl.bitly.com/v3/shorten?access_token=" + bitlyUrlShortenerApiKey + "&longUrl=" + url,UrlShortenerResponseViewModel.class);
+		return response.getBody();
+	}
 }
