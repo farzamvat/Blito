@@ -21,4 +21,10 @@ public class PaymentCallbackController extends AbstractPaymentCallbackController
 	public CompletionStage<RedirectView> payDotIrCallback(@ModelAttribute PayDotIrCallbackRequest payload) {
 		return completePayment(String.valueOf(payload.getTransId()),() -> BlitoPaymentResult.transformPayDotIr(payload.getStatus(),payload.getTransId(),payload.getMessage()));
 	}
+
+	@PostMapping("/jibit-payment-callback")
+	public CompletionStage<RedirectView> jibitCallback(@RequestParam String orderStatus,
+													   @RequestParam String orderId) {
+		return completePayment(orderId,() -> BlitoPaymentResult.transformJibit(orderStatus,orderId));
+	}
 }

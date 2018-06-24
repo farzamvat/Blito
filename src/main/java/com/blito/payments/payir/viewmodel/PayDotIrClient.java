@@ -64,7 +64,7 @@ public class PayDotIrClient {
             }
             throw new PayDotIrException(ResourceUtil.getMessage(Response.PAY_DOT_IR_ERROR));
         }).onFailure(throwable -> {
-            log.debug("pay.ir error '{}'", throwable.getMessage());
+            log.error("pay.ir error '{}'", throwable.getMessage());
             throw new PayDotIrException(ResourceUtil.getMessage(Response.PAY_DOT_IR_ERROR));
         });
     }
