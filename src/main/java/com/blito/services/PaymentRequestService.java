@@ -2,10 +2,13 @@ package com.blito.services;
 
 import com.blito.enums.BankGateway;
 import com.blito.enums.Response;
+import com.blito.exceptions.JibitException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.exceptions.PayDotIrException;
 import com.blito.mappers.CommonBlitMapper;
 import com.blito.models.Blit;
+import com.blito.payments.jibit.JibitClient;
+import com.blito.payments.jibit.JibitPaymentResponse;
 import com.blito.payments.payir.viewmodel.PayDotIrClient;
 import com.blito.payments.payir.viewmodel.response.PayDotIrResponse;
 import com.blito.payments.saman.SamanBankService;
@@ -14,6 +17,7 @@ import com.blito.repositories.BlitTypeRepository;
 import com.blito.repositories.CommonBlitRepository;
 import com.blito.repositories.UserRepository;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.viewmodels.payments.JibitPaymentRequestResponseViewModel;
 import com.blito.rest.viewmodels.payments.PayDotIrRequestViewModel;
 import com.blito.rest.viewmodels.payments.PaymentRequestViewModel;
 import com.blito.rest.viewmodels.payments.ZarinpalPayRequestResponseViewModel;
@@ -25,6 +29,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -51,11 +56,15 @@ public class PaymentRequestService {
 	private DiscountService discountService;
 	@Autowired
 	private PayDotIrClient payDotIrClient;
+	@Autowired
+	private JibitClient jibitClient;
 	
 	@Value("${zarinpal.web.gateway}")
 	private String zarinpalGatewayURL;
 	@Value("${pay.ir.payment.gateway}")
 	private String payDotIrGateway;
+	@Value("${jibit.web.gateway}")
+	private String jibitWebRedirectGateway;
 
 	private final Logger log = LoggerFactory.getLogger(PaymentRequestService.class);
 	
@@ -85,6 +94,15 @@ public class PaymentRequestService {
 						blit.getCustomerMobileNumber(),
 						blit.getTrackCode()).map(PayDotIrResponse::getTransId).map(String::valueOf)
 						.getOrElseThrow(() -> new PayDotIrException(ResourceUtil.getMessage(Response.PAY_DOT_IR_ERROR)));
+			case JIBIT:
+				log.debug("Before requesting token from Jibit gateway user email '{}' and blit track code '{}'",
+						blit.getCustomerEmail(), blit.getTrackCode());
+				return jibitClient.createPaymentRequest(blit.getTotalAmount()*10,blit.getCustomerMobileNumber())
+						.map(JibitPaymentResponse::getOrderId)
+						.filter(Objects::nonNull)
+						.getOrElseThrow(() -> new JibitException(ResourceUtil.getMessage(Response.JIBIT_ERROR)));
+
+
 
 		default:
 			throw new NotFoundException(ResourceUtil.getMessage(Response.BANK_GATEWAY_NOT_FOUND));
@@ -97,6 +115,8 @@ public class PaymentRequestService {
 				return new ZarinpalPayRequestResponseViewModel(zarinpalGatewayURL + token);
 			case PAYDOTIR:
 				return new PayDotIrRequestViewModel(payDotIrGateway + token);
+			case JIBIT:
+				return new JibitPaymentRequestResponseViewModel(jibitWebRedirectGateway + token);
 			default:
 				throw new RuntimeException(ResourceUtil.getMessage(Response.BANK_GATEWAY_NOT_FOUND));
 		}

@@ -101,6 +101,7 @@ public enum Response {
 	SHARED_SEAT_AND_INCONSISTENT_CAPACITY_ERROR("error.shared.seat.and.inconsistent.capacity"),
 	ERROR_PESSIMISTIC_LOCK("error.pessimistic.lock"),
 	PAY_DOT_IR_ERROR("error.pay.ir"),
+	JIBIT_ERROR("error.jibit"),
 	USER_ACTIVATION_RETRY_TIMEOUT("error.user.activation.retry.timeout"),
 	ADDRESS_NOT_FOUND("error.address.not.found"),
 	CANT_REMOVE_BLIT_TYPE("error.cant.remove.blit.type"),

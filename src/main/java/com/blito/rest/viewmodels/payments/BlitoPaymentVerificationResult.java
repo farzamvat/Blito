@@ -46,6 +46,14 @@ public class BlitoPaymentVerificationResult {
                 response.getRefID());
     }
 
+    public static BlitoPaymentVerificationResult transformJibitVerificationResponse(String result) {
+        return new BlitoPaymentVerificationResult(
+                result.equalsIgnoreCase("true") ?
+                        PayResult.SUCCESS :
+                        PayResult.FAILURE
+        );
+    }
+
     public PayResult getResult() {
         return result;
     }

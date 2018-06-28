@@ -27,6 +27,10 @@ public class BlitoPaymentResult {
         return new BlitoPaymentResult(String.valueOf(transId), status == 1 ? PayResult.SUCCESS : PayResult.FAILURE , message);
     }
 
+    public static BlitoPaymentResult transformJibit(String orderStatus,String orderId) {
+        return new BlitoPaymentResult(orderId, orderStatus.equals("SUCCESS") ? PayResult.SUCCESS : PayResult.FAILURE);
+    }
+
     public BlitoPaymentResult(String token, PayResult result) {
         this.token = token;
         this.result = result;
