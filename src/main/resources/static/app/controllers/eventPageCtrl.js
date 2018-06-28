@@ -389,6 +389,9 @@ angular.module('eventsPageModule')
                     if($scope.gateWayDetails.gateway === 'PAYDOTIR') {
                         $window.location.href = $scope.gateWayDetails.payDotIrWebGatewayURL;
                     }
+                    if($scope.gateWayDetails.gateway === 'JIBIT') {
+                        $window.location.href = $scope.gateWayDetails.jibitWebGatewayURL;
+                    }
                 })
                 .catch(function (data) {
                     $scope.buyTicketOnce = false;
@@ -411,6 +414,9 @@ angular.module('eventsPageModule')
                     }
                     if($scope.gateWayDetails.gateway === 'PAYDOTIR') {
                         $window.location.href = $scope.gateWayDetails.payDotIrWebGatewayURL;
+                    }
+                    if($scope.gateWayDetails.gateway === 'JIBIT') {
+                        $window.location.href = $scope.gateWayDetails.jibitWebGatewayURL;
                     }
                 })
                 .catch(function (data) {
@@ -435,6 +441,9 @@ angular.module('eventsPageModule')
                     if($scope.gateWayDetails.gateway === 'PAYDOTIR') {
                         $window.location.href = $scope.gateWayDetails.payDotIrWebGatewayURL;
                     }
+                    if($scope.gateWayDetails.gateway === 'JIBIT') {
+                        $window.location.href = $scope.gateWayDetails.jibitWebGatewayURL;
+                    }
                 })
                 .catch(function (data) {
                     $scope.buyTicketOnce = false;
@@ -458,6 +467,9 @@ angular.module('eventsPageModule')
                     }
                     if($scope.gateWayDetails.gateway === 'PAYDOTIR') {
                         $window.location.href = $scope.gateWayDetails.payDotIrWebGatewayURL;
+                    }
+                    if($scope.gateWayDetails.gateway === 'JIBIT') {
+                        $window.location.href = $scope.gateWayDetails.jibitWebGatewayURL;
                     }
                 })
                 .catch(function (data) {
