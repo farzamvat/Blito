@@ -62,6 +62,8 @@ public class HandleUtility {
 			return ResponseEntity.status(500).body(ExceptionUtil.generate(HttpStatus.INTERNAL_SERVER_ERROR,req,throwable));
 		else if(throwable instanceof PessimisticLockException || throwable instanceof CannotAcquireLockException)
 			return ResponseEntity.status(400).body(ExceptionUtil.generate(HttpStatus.BAD_REQUEST,req,new SeatException(ResourceUtil.getMessage(Response.ERROR_PESSIMISTIC_LOCK))));
+		else if(throwable instanceof ResourceNotFoundException)
+			return ResponseEntity.status(404).body(ExceptionUtil.generate(HttpStatus.NOT_FOUND,req,throwable));
 		else
 			return ResponseEntity.status(400).body(ExceptionUtil.generate(HttpStatus.BAD_REQUEST, req, throwable));
 	}
