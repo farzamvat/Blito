@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -98,6 +99,7 @@ public class PaymentRequestService {
 						blit.getCustomerEmail(), blit.getTrackCode());
 				return jibitClient.createPaymentRequest(blit.getTotalAmount()*10,blit.getCustomerMobileNumber())
 						.map(JibitPaymentResponse::getOrderId)
+						.filter(Objects::nonNull)
 						.getOrElseThrow(() -> new JibitException(ResourceUtil.getMessage(Response.JIBIT_ERROR)));
 
 

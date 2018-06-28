@@ -1,14 +1,14 @@
 package com.blito.payments.jibit;
 
 public class JibitPaymentResponse {
-    private String errors;
+    private String[] errors;
     private String orderId;
 
-    public String getErrors() {
+    public String[] getErrors() {
         return errors;
     }
 
-    public void setErrors(String errors) {
+    public void setErrors(String[] errors) {
         this.errors = errors;
     }
 
