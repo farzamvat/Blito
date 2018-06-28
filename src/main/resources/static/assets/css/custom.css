@@ -2524,6 +2524,9 @@ a{
 .paymentImages {
     width: 100px;
 }
+.JIBIT img {
+    width: 70px;
+}
 .col-sm-8-5{
     width:11.5% !important;
 }
