@@ -112,7 +112,7 @@ public class PaymentRequestService {
 	public PaymentRequestViewModel createPaymentRequest(BankGateway bankGateway,String token) {
 		switch (bankGateway) {
 			case ZARINPAL:
-				return new ZarinpalPayRequestResponseViewModel(zarinpalGatewayURL + token);
+				return new ZarinpalPayRequestResponseViewModel(zarinpalGatewayURL + token +"/ZarinGate");
 			case PAYDOTIR:
 				return new PayDotIrRequestViewModel(payDotIrGateway + token);
 			case JIBIT:
