@@ -6,6 +6,8 @@ import java.util.concurrent.CompletionStage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.blito.services.AdminEventService;
+import com.blito.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,9 @@ public class AdminImageController {
 
 	@Autowired
 	private ImageService imageService;
+
+	@Autowired
+	private AdminEventService adminEventService;
 	
 	@Permission(value = ApiBusinessName.ADMIN)
 	@PostMapping
@@ -38,5 +43,16 @@ public class AdminImageController {
 	{
 		return CompletableFuture.supplyAsync(() -> imageService.createOrUpdateDefaultImage(file, defaultId))
 				.handle((either, throwable) -> HandleUtility.generateEitherResponse(either,throwable,req,res));
+	}
+
+	@Permission(value = ApiBusinessName.ADMIN)
+	@PostMapping("/upload-event-photo")
+	public  CompletionStage<ResponseEntity<?>> uploadEventPhoto(@RequestParam("file") MultipartFile file,
+																@RequestParam("eventId") long eventId,
+																HttpServletRequest req,
+																HttpServletResponse res)
+	{
+		return  CompletableFuture.supplyAsync(() -> adminEventService.uploadEventPhoto(file, eventId))
+				.handle((either, throwable) -> HandleUtility.generateEitherResponse(either, throwable, req, res));
 	}
 }
