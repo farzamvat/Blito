@@ -1,25 +1,23 @@
 package com.blito.services;
 
 import com.blito.configs.Constants;
-import com.blito.enums.OperatorState;
-import com.blito.enums.Response;
-import com.blito.enums.SmsMessage;
-import com.blito.enums.State;
+import com.blito.enums.*;
 import com.blito.exceptions.NotAllowedException;
 import com.blito.exceptions.NotFoundException;
 import com.blito.mappers.*;
-import com.blito.models.BlitType;
-import com.blito.models.CommonBlit;
-import com.blito.models.Event;
-import com.blito.models.EventDate;
+import com.blito.models.*;
 import com.blito.repositories.*;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.adminreport.BlitBuyerViewModel;
 import com.blito.rest.viewmodels.blittype.ChangeBlitTypeStateVm;
 import com.blito.rest.viewmodels.event.*;
 import com.blito.rest.viewmodels.eventdate.ChangeEventDateStateVm;
+import com.blito.rest.viewmodels.exception.ExceptionViewModel;
+import com.blito.rest.viewmodels.image.ImageViewModel;
 import com.blito.search.SearchViewModel;
 import io.vavr.concurrent.Future;
+import io.vavr.control.Either;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +26,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 import java.time.ZoneId;
@@ -262,5 +261,24 @@ public class AdminEventService {
 	public <V> Page<V> searchEvents(SearchViewModel<Event> searchViewModel, Pageable pageable,GenericMapper<Event,V> mapper ) {
 		return searchService.search(searchViewModel, pageable, mapper, eventRepository);
 	}
+
+	@Transactional
+	public Either<ExceptionViewModel, ?> uploadEventPhoto(MultipartFile file, long eventId) {
+		Either<ExceptionViewModel, ImageViewModel> either = imageService.saveMultipartFile(file);
+		if(either.isRight()) {
+			Event event = eventRepository.findByEventIdAndIsDeletedFalse(eventId)
+					.orElseThrow(() -> new NotFoundException(ResourceUtil.getMessage(Response.EVENT_NOT_FOUND)));
+			Image eventPhoto = event.getImages()
+					.stream()
+					.filter(image -> image.getImageType().equals(ImageType.EVENT_PHOTO.name()))
+					.findFirst()
+					.get();
+			eventPhoto.setImageUUID(either.get().getImageUUID());
+			return  Either.right(new ResultVm(ResourceUtil.getMessage(Response.UPLOAD_SUCCESSFUL)));
+		} else {
+			return Either.left(either.getLeft());
+		}
+	}
+
 
 }
