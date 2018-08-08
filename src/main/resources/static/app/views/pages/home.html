@@ -62,6 +62,7 @@
             <div ng-repeat="event in eventsWithImage" class="col-xs-12 col-sm-6 col-md-6 col-lg-4  floatRight eventBox">
                 <a href="{{url+event.eventLink}}" class="col-xs-12 width95 marginTop10 padding0 eventBoxInner" >
                     <img ng-src="{{event.image}}" alt="{{event.eventName }}" class="homePageEventImages floatRight ">
+                    <img ng-show="event.eventState === 'SOLD'" src="../../../assets/img/soldout.png" class="soldoutHomePage">
                     <div class="floatRight  eventBoxDescription ">
                         <h4 class="textAlignRight floatRight fontSize16 col-xs-12">{{event.eventName | limitTo : 30}}<span ng-if="event.eventName.length > 30">...</span></h4>
                         <p class="textAlignRight  marginTop50 fontSize12"> <i class="fa fa-calendar"></i>  اولین سانس:</p>

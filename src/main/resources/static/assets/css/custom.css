@@ -2845,6 +2845,10 @@ a>h5 {
     max-width: 30px;
     margin-right: 15px;
 }
+.soldoutHomePage{
+    position: absolute;
+    right: -20px;
+}
 .soldout{
     transition: .5s;
     pointer-events: none;
