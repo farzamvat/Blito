@@ -9,6 +9,7 @@ import com.blito.mappers.ImageMapper;
 import com.blito.models.Image;
 import com.blito.repositories.ImageRepository;
 import com.blito.resourceUtil.ResourceUtil;
+import com.blito.rest.viewmodels.ResultVm;
 import com.blito.rest.viewmodels.exception.ExceptionViewModel;
 import com.blito.rest.viewmodels.image.ImageBase64ViewModel;
 import com.blito.rest.viewmodels.image.ImageViewModel;

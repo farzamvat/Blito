@@ -101,7 +101,7 @@ angular.module('Blito',
         $analyticsProvider.withBase(true);
     }])
     .constant('config', {
-        baseUrl : 'http://157.119.188.140',
+        baseUrl : 'http://blito.ir',
         redirectToUrlAfterLogin : {url : '/'}
     })
 ;
