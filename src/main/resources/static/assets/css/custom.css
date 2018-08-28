@@ -2862,6 +2862,9 @@ a>h5 {
     margin-left: auto;
     text-align: center;
 }
+.ojPicClass {
+    width: 100px;
+}
 .endedEvents{
     transition: .5s;
     pointer-events: none;
