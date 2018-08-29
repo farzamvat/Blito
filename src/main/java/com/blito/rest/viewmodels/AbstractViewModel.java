@@ -19,3 +19,4 @@ public class AbstractViewModel {
 		this.result = result;
 	}
 }
+
