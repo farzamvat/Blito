@@ -26,3 +26,6 @@ task.json
 /newrelic/logs/
 /src/main/resources/static/webpack/
 /src/main/resources/static/index.html
+/src/main/resources/application-dev.properties
+/src/main/resources/application-live.properties
+/src/main/resources/application-qa.properties
