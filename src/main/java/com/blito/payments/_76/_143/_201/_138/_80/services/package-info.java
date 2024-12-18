@@ -5,5 +5,5 @@
 // Generated on: 2017.06.25 at 09:34:32 PM IRDT 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://138.201.143.76:80/services")
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://138.201.143.76:80/services")
 package com.blito.payments._76._143._201._138._80.services;

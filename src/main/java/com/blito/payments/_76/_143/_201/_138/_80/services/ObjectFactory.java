@@ -8,7 +8,7 @@
 
 package com.blito.payments._76._143._201._138._80.services;
 
-import javax.xml.bind.annotation.XmlRegistry;
+import jakarta.xml.bind.annotation.XmlRegistry;
 
 
 /**

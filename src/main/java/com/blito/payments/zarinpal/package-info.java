@@ -5,5 +5,5 @@
 // Generated on: 2017.07.04 at 03:27:43 PM IRDT 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://zarinpal.com/", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://zarinpal.com/", elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package com.blito.payments.zarinpal;
