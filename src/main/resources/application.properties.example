@@ -1,0 +1,76 @@
+spring.profiles.active: local
+
+log4j.logger.org.apache.axis.ConfigurationException = INFO
+#server.compression.enabled=true
+#server.compression.mime-types=text/html,text/xml,text/plain,application/json,application/xml
+
+sensitive.data.logging.level=DEBUG
+
+token.secret = {SECRET_HERE}
+api.base.url = /api/blito/v1.0
+
+spring.http.encoding.charset=UTF-8
+spring.http.encoding.enabled=true
+fifteenMins.accessToken = 900000
+thirtyDays.refreshToken = 604800000
+
+#flyway configs
+flyway.enabled=true
+flyway.baselineOnMigrate=true
+
+#payments
+#saman bank
+saman.bank.merchantCode={CODEHERE}
+saman.bank.password={PASSWORDHERE}
+
+#Zarinpal
+zarinpal.merchant.id={MERCHANTIDHERE}
+zarinpal.web.gateway=https://www.zarinpal.com/pg/StartPay/
+
+#Jibit
+jibit.merchant.id={MERCHANTIDHERE}
+jibit.web.gateway=http://qrpg.jibit.ir/?order_id=
+jibit.payment.url=https://appserver.jibit.mobi/order_service/order/
+jibit.payment.verification.url=https://appserver.jibit.mobi/order_service/order/verify/
+
+#Pay.ir
+pay.ir.api.key={APIKEYHERE}
+pay.ir.payment.url=https://pay.ir/payment/send
+pay.ir.payment.verification.url=https://pay.ir/payment/verify
+pay.ir.payment.gateway=https://pay.ir/payment/gateway/
+
+# Google url shortener api key
+google.url.shortener.api.key={APIKEYHERE}
+
+#bit.ly url shortener access token
+bit.ly.url.shortener.access.token={ACCESSTOKENHERE}
+#kavehnegar
+kaveh.negar.api.key={APIKEYHERE}
+
+#email
+spring.mail.host=smtp.zoho.com
+spring.mail.port=465
+spring.mail.username={MAIL_USERNAME}
+spring.mail.password={MAIL_PASSWORD}
+#spring.mail.protocol=smtp
+
+#spring.mail.properties.mail.smtp.starttls.enable=true
+spring.mail.smtp.auth = true
+spring.mail.properties.mail.smtp.ssl.enable = true
+spring.mail.smtp.socketFactory.port=465
+spring.mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory
+spring.mail.smtp.socketFactory.fallback=false
+
+
+blito.admin.username={ADMIN_PANEL_USERNAME}
+blito.admin.password={ADMIN_PANEL_PASSWORD}
+
+#Thymeleaf
+spring.thymeleaf.mode=HTML5
+spring.thymeleaf.cache=false
+
+#multipart 
+spring.http.multipart.max-file-size=1700KB
+spring.http.multipart.max-request-size=1700KB
+#adding default mime type 
+server.compression.mime-types = application/json
